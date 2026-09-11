@@ -1,0 +1,56 @@
+{
+  "grounded_in": "Cobertura e acurácia medidas no teste de TI. Transferência para suporte comercial não validada.",
+  "assumptions": {
+    "eligible_share_after_risk_rules": 0.7,
+    "annual_ticket_volume": 30000,
+    "manual_triage_minutes_per_ticket": 3.0,
+    "hourly_loaded_cost_brl": 50.0,
+    "rework_minutes_per_misroute": 8.0
+  },
+  "measured_from_classifier": {
+    "coverage_at_60pct_confidence": 0.8284,
+    "accuracy_when_covered": 0.9136
+  },
+  "calculation": {
+    "auto_routed_tickets_per_year": 17396,
+    "correctly_auto_routed_per_year": 15893,
+    "incorrectly_auto_routed_per_year": 1503,
+    "hours_saved_from_correct_routing": 795,
+    "hours_lost_to_rework_from_wrong_routing": 200,
+    "potential_capacity_hours_per_year": 594,
+    "potential_capacity_value_brl_per_year": 29713
+  },
+  "caveat": "Economia potencial de capacidade após retrabalho estimado e antes de implantação, manutenção e supervisão. Não mede desperdício atual nem garante economia de caixa. A elegibilidade de 70% após regras de risco, 3 minutos de triagem e 8 minutos de retrabalho são hipóteses. A acurácia de TI é mantida como hipótese após os filtros e na operação comercial; essa transferência precisa ser validada. Não é piso garantido.",
+  "pilot": [
+    "Medir tempo ativo de triagem e retrabalho por canal, prioridade e tipo.",
+    "Em modo de observação, medir elegibilidade após regras de risco e acerto no público elegível.",
+    "Comparar com grupo de controle: transferências, reaberturas, tempo ativo e satisfação.",
+    "Descontar implantação, manutenção e supervisão; comparar outras oportunidades antes de declarar o maior desperdício recuperável."
+  ],
+  "scenarios": [
+    {
+      "name": "Menor benefício",
+      "eligible_share": 0.5,
+      "triage_minutes": 1,
+      "rework_minutes": 12,
+      "capacity_hours": -26,
+      "capacity_value_brl": -1276
+    },
+    {
+      "name": "Referência ilustrativa",
+      "eligible_share": 0.7,
+      "triage_minutes": 3,
+      "rework_minutes": 8,
+      "capacity_hours": 594,
+      "capacity_value_brl": 29713
+    },
+    {
+      "name": "Comparação histórica: sem desconto de risco",
+      "eligible_share": 1.0,
+      "triage_minutes": 3,
+      "rework_minutes": 8,
+      "capacity_hours": 849,
+      "capacity_value_brl": 42447
+    }
+  ]
+}
