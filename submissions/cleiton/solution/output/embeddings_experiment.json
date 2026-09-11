@@ -1,0 +1,38 @@
+{
+  "hypothesis": "Trocar TF-IDF por embeddings de um sentence-transformer pré-treinado (sinal semântico em vez de bag-of-words) aumentaria a acurácia do classificador.",
+  "model_tested": "all-MiniLM-L6-v2",
+  "embedding_dim": 384,
+  "tfidf_baseline": {
+    "accuracy": 0.849,
+    "macro_f1": 0.846,
+    "coverage_at_threshold": 0.8284,
+    "accuracy_when_covered": 0.9136,
+    "vocab_size": 3000
+  },
+  "embeddings_result": {
+    "accuracy": 0.7825,
+    "macro_f1": 0.7783,
+    "coverage_at_threshold": 0.7601,
+    "accuracy_when_covered": 0.8785,
+    "per_class_f1": {
+      "Access": { "f1": 0.844, "support": 1425 },
+      "Administrative rights": { "f1": 0.648, "support": 352 },
+      "HR Support": { "f1": 0.806, "support": 2183 },
+      "Hardware": { "f1": 0.756, "support": 2724 },
+      "Internal Project": { "f1": 0.769, "support": 424 },
+      "Miscellaneous": { "f1": 0.741, "support": 1412 },
+      "Purchase": { "f1": 0.872, "support": 493 },
+      "Storage": { "f1": 0.789, "support": 555 }
+    }
+  },
+  "delta": {
+    "accuracy": -0.0665,
+    "macro_f1": -0.0677,
+    "coverage_at_threshold": -0.0683,
+    "accuracy_when_covered": -0.0351
+  },
+  "encoding_seconds": 1330.2,
+  "docs_per_second": 36.0,
+  "outcome": "rejected",
+  "conclusion": "A hipótese não se confirmou: embeddings pioraram em todas as métricas e em todas as 8 categorias, sem exceção. O texto deste corpus já chega pré-processado e lematizado (stopwords removidas), então vira um saco de palavras-chave sem estrutura de frase — exatamente o cenário onde um embedding de frase genérico (treinado para entender linguagem natural fluente) perde para TF-IDF, que foi desenhado para valorizar termos raros e específicos em vez de captar sentido geral. Mantivemos TF-IDF + regressão logística em produção: além de mais simples, auditável e ~600KB (roda no navegador), é empiricamente o modelo melhor para este dataset específico."
+}

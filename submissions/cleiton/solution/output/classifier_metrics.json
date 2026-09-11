@@ -1,0 +1,166 @@
+{
+  "model": "TF-IDF (unigrams+bigrams, max 3000 features) + multinomial Logistic Regression",
+  "train_rows": 38269,
+  "test_rows": 9568,
+  "accuracy": 0.849,
+  "macro_f1": 0.8462,
+  "per_class": {
+    "Access": {
+      "precision": 0.88,
+      "recall": 0.893,
+      "f1": 0.887,
+      "support": 1425
+    },
+    "Administrative rights": {
+      "precision": 0.662,
+      "recall": 0.849,
+      "f1": 0.744,
+      "support": 352
+    },
+    "HR Support": {
+      "precision": 0.881,
+      "recall": 0.847,
+      "f1": 0.864,
+      "support": 2183
+    },
+    "Hardware": {
+      "precision": 0.867,
+      "recall": 0.796,
+      "f1": 0.83,
+      "support": 2724
+    },
+    "Internal Project": {
+      "precision": 0.798,
+      "recall": 0.913,
+      "f1": 0.851,
+      "support": 424
+    },
+    "Miscellaneous": {
+      "precision": 0.802,
+      "recall": 0.853,
+      "f1": 0.827,
+      "support": 1412
+    },
+    "Purchase": {
+      "precision": 0.876,
+      "recall": 0.888,
+      "f1": 0.882,
+      "support": 493
+    },
+    "Storage": {
+      "precision": 0.864,
+      "recall": 0.906,
+      "f1": 0.885,
+      "support": 555
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "Access",
+      "Administrative rights",
+      "HR Support",
+      "Hardware",
+      "Internal Project",
+      "Miscellaneous",
+      "Purchase",
+      "Storage"
+    ],
+    "matrix": [
+      [
+        1273,
+        14,
+        27,
+        52,
+        13,
+        35,
+        1,
+        10
+      ],
+      [
+        4,
+        299,
+        6,
+        33,
+        1,
+        8,
+        1,
+        0
+      ],
+      [
+        45,
+        15,
+        1850,
+        123,
+        37,
+        85,
+        7,
+        21
+      ],
+      [
+        87,
+        100,
+        130,
+        2169,
+        26,
+        139,
+        44,
+        29
+      ],
+      [
+        3,
+        0,
+        9,
+        12,
+        387,
+        11,
+        1,
+        1
+      ],
+      [
+        28,
+        12,
+        54,
+        71,
+        19,
+        1204,
+        8,
+        16
+      ],
+      [
+        4,
+        7,
+        9,
+        22,
+        1,
+        10,
+        438,
+        2
+      ],
+      [
+        2,
+        5,
+        14,
+        21,
+        1,
+        9,
+        0,
+        503
+      ]
+    ]
+  },
+  "confidence_threshold": 0.6,
+  "coverage_at_threshold": 0.8284,
+  "accuracy_when_confidence_above_threshold": 0.9136,
+  "accuracy_when_confidence_below_threshold": 0.5371,
+  "class_distribution_train": {
+    "Hardware": 10893,
+    "HR Support": 8732,
+    "Access": 5700,
+    "Miscellaneous": 5648,
+    "Storage": 2222,
+    "Purchase": 1971,
+    "Internal Project": 1695,
+    "Administrative rights": 1408
+  },
+  "interpretation": "Acurácia geral de 84.9% num holdout estratificado de 9,568 tickets nunca vistos no treino. Mais importante para produção: ao só auto-rotear quando a confiança do modelo é >= 60%, isso cobre 82.8% dos tickets e acerta 91.4% deles — a fatia coberta é significativamente mais confiável que a média geral. É esse número (coverage x accuracy_when_covered), não a acurácia bruta, que deveria virar a política de auto-roteamento e a base do cálculo de ROI."
+}
