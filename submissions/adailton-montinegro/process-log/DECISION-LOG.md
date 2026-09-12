@@ -64,3 +64,17 @@ Entregar Streamlit e PDF, evitando que a avaliação dependa da execução do ap
 ### Decisão do autor
 
 Formato duplo aprovado. O Streamlit será a superfície explorável; o PDF será o artefato canônico. O Markdown versionado será a fonte editável, e os dois formatos deverão consumir as mesmas métricas gold.
+
+## 2026-09-12 — Gate profissional de parada
+
+### Problema
+
+A parcela recuperável permite uma análise demonstrativa, mas continuar a análise após encontrar falhas sistêmicas poderia sugerir que essa é a conduta recomendada para uma empresa real.
+
+### Complemento do autor
+
+Entre a auditoria e a continuação analítica, a entrega deve avisar que a decisão correta seria parar, corrigir o sistema e somente depois retomar o diagnóstico. Se houver urgência, a investigação precisa buscar evidência independente em clientes e nos times de CS e Suporte.
+
+### Decisão
+
+Foi aprovado o gate descrito em `docs/adr/0004-gate-de-parada-e-analise-demonstrativa.md`. O Streamlit e o PDF deverão apresentar o callout antes de qualquer conclusão sobre churn. Pesquisa de satisfação, coleta de sugestões, entrevistas e revisão operacional serão recomendadas como rota de curto prazo.
