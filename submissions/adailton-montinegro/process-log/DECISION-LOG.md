@@ -50,3 +50,17 @@ A política só é aceitável se os dados necessários ao Streamlit estiverem di
 ### Decisão
 
 Foi aprovada a política descrita em `docs/adr/0002-distribuicao-e-reprodutibilidade-dos-dados.md`: bootstrap automatizado, validação de integridade, rebuild determinístico e artefato estático final avaliável sem executar o app.
+
+## 2026-09-12 — Superfícies da entrega
+
+### Decisão avaliada
+
+Escolher entre uma aplicação interativa, um relatório estático ou uma entrega combinada.
+
+### Recomendação da IA
+
+Entregar Streamlit e PDF, evitando que a avaliação dependa da execução do app e preservando a exploração detalhada.
+
+### Decisão do autor
+
+Formato duplo aprovado. O Streamlit será a superfície explorável; o PDF será o artefato canônico. O Markdown versionado será a fonte editável, e os dois formatos deverão consumir as mesmas métricas gold.

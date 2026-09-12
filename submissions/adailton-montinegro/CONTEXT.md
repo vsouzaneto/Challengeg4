@@ -25,6 +25,9 @@ Glossário da submissão do Challenge 001. Cada termo possui um único significa
 - **Manifesto de dados:** inventário versionado com origem, versão, tamanho, quantidade esperada de linhas e SHA-256 de cada arquivo raw.
 - **Bootstrap de dados:** processo automatizado que baixa a fonte pública, verifica o manifesto e reconstrói o banco analítico local.
 - **Artefato estático:** versão final da análise que pode ser avaliada sem executar o Streamlit.
+- **Superfície interativa:** aplicação Streamlit para exploração, filtros, detalhamento e priorização de contas.
+- **Artefato canônico:** relatório executivo em PDF, derivado das mesmas consultas e métricas do Streamlit.
+- **Fonte editável do relatório:** documento Markdown versionado usado para gerar e revisar o PDF.
 
 ## Estados de confiabilidade
 
