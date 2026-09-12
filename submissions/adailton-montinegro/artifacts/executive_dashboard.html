@@ -2,235 +2,188 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>RavenStack — Diagnóstico de Churn Executivo</title>
+    <title>RavenStack — Diagnóstico Causal de Churn (Executive Cockpit v2)</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 24px; }
-        .header { margin-bottom: 24px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 24px; line-height: 1.5; }
+        .header { margin-bottom: 24px; border-bottom: 1px solid #334155; padding-bottom: 16px; }
         h1 { margin: 0 0 8px 0; font-size: 28px; color: #38bdf8; }
         p.subtitle { margin: 0; color: #94a3b8; font-size: 15px; }
-        .grid-kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 28px; }
-        .kpi-card { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 16px; }
-        .kpi-title { font-size: 13px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
-        .kpi-value { font-size: 26px; font-weight: bold; margin: 8px 0 4px 0; color: #f1f5f9; }
-        .kpi-sub { font-size: 12px; color: #38bdf8; }
-        .kpi-danger { color: #f43f5e; }
-        .grid-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
-        .chart-box { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 20px; }
-        .chart-box h3 { margin-top: 0; font-size: 16px; color: #e2e8f0; }
-        .table-box { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 20px; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
-        th { background: #0f172a; color: #94a3b8; padding: 10px; border-bottom: 1px solid #334155; }
-        td { padding: 10px; border-bottom: 1px solid #1e293b; }
+        .badge-curr { display: inline-block; background: #1e3a8a44; border: 1px solid #38bdf8; color: #38bdf8; padding: 4px 10px; border-radius: 20px; font-size: 12px; margin-top: 8px; }
+        .grid-kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 24px 0; }
+        .kpi-card { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 18px; }
+        .kpi-title { font-size: 12px; color: #94a3b8; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+        .kpi-value { font-size: 26px; font-weight: bold; margin: 8px 0 4px 0; }
+        .kpi-green { color: #34d399; }
+        .kpi-red { color: #f43f5e; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+        .box { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 20px; }
+        .box h3 { margin-top: 0; font-size: 16px; color: #e2e8f0; border-bottom: 1px solid #334155; padding-bottom: 8px; }
+        .box p.desc { font-size: 13px; color: #94a3b8; margin: 0 0 16px 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; margin-top: 10px; }
+        th { background: #0f172a; color: #94a3b8; padding: 10px; border-bottom: 1px solid #334155; font-weight: 600; }
+        td { padding: 10px; border-bottom: 1px solid #243248; }
         tr:hover { background: #243248; }
-        .badge { padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
-        .badge-crit { background: rgba(244, 63, 94, 0.2); color: #f43f5e; }
-        .badge-att { background: rgba(251, 146, 60, 0.2); color: #fb923c; }
-        .badge-ok { background: rgba(52, 211, 153, 0.2); color: #34d399; }
-        .insight-box { background: #1e3a8a22; border-left: 4px solid #38bdf8; padding: 14px; border-radius: 4px; margin-bottom: 24px; font-size: 14px; line-height: 1.5; }
+        .pill { padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+        .pill-q1 { background: rgba(244, 63, 94, 0.2); color: #f43f5e; }
+        .pill-q2 { background: rgba(251, 146, 60, 0.2); color: #fb923c; }
+        .pill-q3 { background: rgba(5, 150, 105, 0.2); color: #34d399; }
+        .pill-q4 { background: rgba(56, 189, 248, 0.2); color: #38bdf8; }
+        .fact-box { background: #1e3a8a22; border-left: 4px solid #38bdf8; padding: 16px; border-radius: 4px; margin-bottom: 24px; font-size: 14px; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🦅 RavenStack — Diagnóstico de Churn & Cockpit Executivo</h1>
-        <p class="subtitle">Investigação Causal, Decomposição de Paradoxo e Matriz Prescritiva | G4 AI Master</p>
+        <h1>🦅 RavenStack — Diagnóstico Causal de Churn (Executive Cockpit v2)</h1>
+        <p class="subtitle">Análise Factual de 24 Meses, Desmistificação de Vieses de Produto/CSAT e Segmentação por Quadrantes | Squad Altman (Codex CLI) & Japax (Antigravity)</p>
+        <span class="badge-curr">Valores em USD ($) | Conversão Referencial PTAX R$ 5,50 disponível no app</span>
     </div>
 
-    <div class="insight-box">
-        <strong>Síntese Causal para o CEO:</strong> O churn não aumentou por falta de uso — o uso atingiu a máxima histórica em 2024-Q4 (32.227 eventos) impulsionado por novas contas de curta retenção (67.5% da coorte Q4 cancelou em semanas). O CSAT de 4.0 é falso devido a 41.2% de não-resposta; o sinal predecessor real é a <strong>taxa de escalação de suporte, que salta de 4.5% para 14.6% nas duas semanas anteriores ao cancelamento</strong>.
+    <div class="fact-box">
+        <strong>🔬 Conclusão Causal Definitiva:</strong> 
+        O uso médio mensal por conta ativa permaneceu <strong>matematicamente plano entre 23,0 e 26,7 usos/mês</strong> em todos os 24 meses avaliados (média de 24,6 usos/mês). A alegação da diretoria de produto de que "o uso cresceu" baseou-se em flutuação nominal de final de ano (+2,6%), enquanto os cancelamentos explodiram de <strong>1 em Jan/2023 para 117 em Dez/2024</strong>. O churn é <strong>descolado do volume de uso</strong>: clientes cancelam devido a falhas operacionais críticas (escalações de suporte sobem para 14,6% nas 2 semanas pré-churn) e atrito em features beta instáveis.
     </div>
 
     <div class="grid-kpi">
         <div class="kpi-card">
             <div class="kpi-title">Total de Contas</div>
             <div class="kpi-value">500</div>
-            <div class="kpi-sub">500 contas auditadas</div>
+            <div style="font-size: 12px; color: #38bdf8;">Base 100% Auditada</div>
         </div>
         <div class="kpi-card">
             <div class="kpi-title">Contas Ativas</div>
-            <div class="kpi-value">390</div>
-            <div class="kpi-sub">78.0% da base retida</div>
+            <div class="kpi-value kpi-green">390</div>
+            <div style="font-size: 12px; color: #34d399; font-weight: 600;">▲ 78.0% retidas</div>
         </div>
         <div class="kpi-card">
-            <div class="kpi-title">Logo Churn Total</div>
-            <div class="kpi-value kpi-danger">110</div>
-            <div class="kpi-sub kpi-danger">22.0% churn acumulado</div>
+            <div class="kpi-title">Logo Churn Acumulado</div>
+            <div class="kpi-value kpi-red">110</div>
+            <div style="font-size: 12px; color: #f43f5e; font-weight: 600;">▼ 22.0% de perda</div>
         </div>
         <div class="kpi-card">
-            <div class="kpi-title">MRR Ativo</div>
-            <div class="kpi-value">$982,948</div>
-            <div class="kpi-sub">Receita mensal corrente</div>
+            <div class="kpi-title">MRR Ativo Mensal</div>
+            <div class="kpi-value kpi-green">$982,948.00</div>
+            <div style="font-size: 12px; color: #34d399; font-weight: 600;">▲ $11,795,376.00 ARR</div>
         </div>
         <div class="kpi-card">
             <div class="kpi-title">MRR Perdido (Churn)</div>
-            <div class="kpi-value kpi-danger">$255,442</div>
-            <div class="kpi-sub kpi-danger">-$3,065,304 ARR sangrado</div>
+            <div class="kpi-value kpi-red">$255,442.00</div>
+            <div style="font-size: 12px; color: #f43f5e; font-weight: 600;">▼ -$3,065,304.00 ARR</div>
         </div>
     </div>
 
-    <div class="grid-charts">
-        <div class="chart-box">
-            <h3>Evolução Trimestral: O Ponto de Inflexão em 2024-Q4</h3>
-            <canvas id="churnTrendChart"></canvas>
+    <div class="grid-2">
+        <div class="box">
+            <h3>1. Linha do Tempo Mensal (24 Meses): Churn vs Uso Médio por Conta</h3>
+            <p class="desc">Barras vermelhas indicam eventos de cancelamento mensais; linha azul representa o uso médio per capita (estável em ~24.6/mês).</p>
+            <canvas id="timelineChart" height="150"></canvas>
         </div>
-        <div class="chart-box">
-            <h3>O Sinal Crítico do Suporte: Escalações Pré-Churn</h3>
-            <canvas id="supportEscChart"></canvas>
-        </div>
-    </div>
-
-    <div class="grid-charts">
-        <div class="chart-box">
-            <h3>Taxa de Churn por Vertical de Indústria</h3>
-            <canvas id="industryChart"></canvas>
-        </div>
-        <div class="chart-box">
-            <h3>Importância Relativa de Features no Modelo Preditivo</h3>
-            <canvas id="featuresChart"></canvas>
+        <div class="box">
+            <h3>2. O Viés do Suporte: Escalações Críticas na Janela Pré-Cancelamento</h3>
+            <p class="desc">Enquanto o CSAT médio de 4.0 mascara 41.2% de não-resposta, as escalações para engenharia triplicam para 14.6% a 14 dias do churn.</p>
+            <canvas id="supportChart" height="150"></canvas>
         </div>
     </div>
 
-    <div class="table-box">
-        <h3>Top 10 Contas Ativas em Maior Risco de Churn (Prescrição CS)</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Conta</th>
-                    <th>Vertical</th>
-                    <th>Plano</th>
-                    <th>MRR</th>
-                    <th>Score Risco</th>
-                    <th>Classificação</th>
-                    <th>Ação Prescritiva Recomendada</th>
-                </tr>
-            </thead>
-            <tbody>
+    <div class="grid-2">
+        <div class="box">
+            <h3>3. Segmentação Cartesiana por Quadrantes (500 Contas)</h3>
+            <p class="desc">Divisão estratégica da base pelo impacto financeiro (MRR > $1.500) vs Risco de Churn (Score > 0.40).</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Quadrante</th>
+                        <th>Contas</th>
+                        <th>MRR Total</th>
+                        <th>Ticket Médio</th>
+                        <th>Churn Histórico</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-                <tr>
-                    <td><strong>Company_303</strong> (A-a6d261)</td>
-                    <td>FinTech</td>
-                    <td>Pro</td>
-                    <td>$247.00</td>
-                    <td><strong>0.56</strong></td>
-                    <td><span class="badge badge-att">Atenção (Médio Risco)</span></td>
-                    <td>Monitoramento Ativo + Pesquisa Qualitativa de NPS/CSAT</td>
-                </tr>
+                    <tr>
+                        <td><span class="pill pill-q1">Q1: Zona Crítica (Alto MRR + Alto Risco)</span></td>
+                        <td>102</td>
+                        <td><strong>$462,530.00</strong></td>
+                        <td>$4,534.61</td>
+                        <td>49.0%</td>
+                    </tr>
     
-                <tr>
-                    <td><strong>Company_145</strong> (A-4f18f0)</td>
-                    <td>DevTools</td>
-                    <td>Pro</td>
-                    <td>$456.00</td>
-                    <td><strong>0.55</strong></td>
-                    <td><span class="badge badge-att">Atenção (Médio Risco)</span></td>
-                    <td>Monitoramento Ativo + Pesquisa Qualitativa de NPS/CSAT</td>
-                </tr>
+                    <tr>
+                        <td><span class="pill pill-q2">Q2: Cauda Vulnerável (Baixo MRR + Alto Risco)</span></td>
+                        <td>137</td>
+                        <td><strong>$57,521.00</strong></td>
+                        <td>$419.86</td>
+                        <td>43.8%</td>
+                    </tr>
     
-                <tr>
-                    <td><strong>Company_159</strong> (A-f97b9a)</td>
-                    <td>FinTech</td>
-                    <td>Pro</td>
-                    <td>$784.00</td>
-                    <td><strong>0.54</strong></td>
-                    <td><span class="badge badge-att">Atenção (Médio Risco)</span></td>
-                    <td>Monitoramento Ativo + Pesquisa Qualitativa de NPS/CSAT</td>
-                </tr>
+                    <tr>
+                        <td><span class="pill pill-q3">Q3: Vacas Leiteiras (Alto MRR + Baixo Risco)</span></td>
+                        <td>104</td>
+                        <td><strong>$635,711.00</strong></td>
+                        <td>$6,112.61</td>
+                        <td>0.0%</td>
+                    </tr>
     
-                <tr>
-                    <td><strong>Company_121</strong> (A-e2cd1b)</td>
-                    <td>DevTools</td>
-                    <td>Enterprise</td>
-                    <td>$3,184.00</td>
-                    <td><strong>0.54</strong></td>
-                    <td><span class="badge badge-att">Atenção (Médio Risco)</span></td>
-                    <td>Monitoramento Ativo + Pesquisa Qualitativa de NPS/CSAT</td>
-                </tr>
+                    <tr>
+                        <td><span class="pill pill-q4">Q4: Base Estável (Baixo MRR + Baixo Risco)</span></td>
+                        <td>157</td>
+                        <td><strong>$82,628.00</strong></td>
+                        <td>$526.29</td>
+                        <td>0.0%</td>
+                    </tr>
     
-                <tr>
-                    <td><strong>Company_119</strong> (A-7d514c)</td>
-                    <td>HealthTech</td>
-                    <td>Enterprise</td>
-                    <td>$3,383.00</td>
-                    <td><strong>0.54</strong></td>
-                    <td><span class="badge badge-att">Atenção (Médio Risco)</span></td>
-                    <td>Monitoramento Ativo + Pesquisa Qualitativa de NPS/CSAT</td>
-                </tr>
-    
-                <tr>
-                    <td><strong>Company_476</strong> (A-19b2c8)</td>
-                    <td>DevTools</td>
-                    <td>Pro</td>
-                    <td>$3,980.00</td>
-                    <td><strong>0.53</strong></td>
-                    <td><span class="badge badge-att">Atenção (Médio Risco)</span></td>
-                    <td>Monitoramento Ativo + Pesquisa Qualitativa de NPS/CSAT</td>
-                </tr>
-    
-                <tr>
-                    <td><strong>Company_248</strong> (A-bcf664)</td>
-                    <td>DevTools</td>
-                    <td>Pro</td>
-                    <td>$2,303.00</td>
-                    <td><strong>0.53</strong></td>
-                    <td><span class="badge badge-att">Atenção (Médio Risco)</span></td>
-                    <td>Monitoramento Ativo + Pesquisa Qualitativa de NPS/CSAT</td>
-                </tr>
-    
-                <tr>
-                    <td><strong>Company_487</strong> (A-ac9111)</td>
-                    <td>HealthTech</td>
-                    <td>Pro</td>
-                    <td>$4,179.00</td>
-                    <td><strong>0.52</strong></td>
-                    <td><span class="badge badge-att">Atenção (Médio Risco)</span></td>
-                    <td>Monitoramento Ativo + Pesquisa Qualitativa de NPS/CSAT</td>
-                </tr>
-    
-                <tr>
-                    <td><strong>Company_75</strong> (A-c45b23)</td>
-                    <td>FinTech</td>
-                    <td>Basic</td>
-                    <td>$5,174.00</td>
-                    <td><strong>0.52</strong></td>
-                    <td><span class="badge badge-att">Atenção (Médio Risco)</span></td>
-                    <td>Monitoramento Ativo + Pesquisa Qualitativa de NPS/CSAT</td>
-                </tr>
-    
-                <tr>
-                    <td><strong>Company_12</strong> (A-6c093d)</td>
-                    <td>DevTools</td>
-                    <td>Basic</td>
-                    <td>$0.00</td>
-                    <td><strong>0.52</strong></td>
-                    <td><span class="badge badge-att">Atenção (Médio Risco)</span></td>
-                    <td>Monitoramento Ativo + Pesquisa Qualitativa de NPS/CSAT</td>
-                </tr>
-    
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
+        <div class="box">
+            <h3>4. Motivos Declarados e Feedbacks (600 Cancelamentos)</h3>
+            <p class="desc">Distribuição de Reason Codes e prevalência das principais dores relatadas pelos clientes.</p>
+            <canvas id="reasonsChart" height="150"></canvas>
+        </div>
     </div>
 
     <script>
-        // Chart 1: Churn Trend
-        new Chart(document.getElementById('churnTrendChart'), {
+        // Timeline Chart
+        new Chart(document.getElementById('timelineChart'), {
             type: 'bar',
             data: {
-                labels: ['2023-Q1', '2023-Q2', '2023-Q3', '2023-Q4', '2024-Q1', '2024-Q2', '2024-Q3', '2024-Q4'],
-                datasets: [{
-                    label: 'Eventos de Churn',
-                    data: [6, 11, 19, 37, 54, 92, 130, 251],
-                    backgroundColor: '#f43f5e',
-                    borderRadius: 4
-                }]
+                labels: ["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12"],
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: 'Cancelamentos Mensais',
+                        data: [1, 0, 5, 3, 3, 5, 6, 7, 6, 10, 11, 16, 20, 10, 24, 25, 27, 40, 35, 42, 53, 66, 68, 117],
+                        backgroundColor: '#f43f5e',
+                        borderRadius: 3,
+                        yAxisID: 'y'
+                    },
+                    {
+                        type: 'line',
+                        label: 'Uso Médio / Conta',
+                        data: [24.7, 23.0, 25.6, 24.0, 24.6, 23.8, 26.7, 24.3, 23.8, 25.7, 23.0, 24.2, 24.9, 24.3, 24.9, 23.7, 24.7, 24.3, 24.6, 25.0, 24.6, 26.3, 24.5, 25.1],
+                        borderColor: '#38bdf8',
+                        backgroundColor: '#38bdf8',
+                        borderWidth: 2,
+                        pointRadius: 2,
+                        yAxisID: 'y1'
+                    }
+                ]
             },
-            options: { responsive: true, plugins: { legend: { display: false } } }
+            options: {
+                responsive: true,
+                scales: {
+                    y: { position: 'left', title: { display: true, text: 'Cancelamentos', color: '#f43f5e' }, grid: { color: '#1e293b' } },
+                    y1: { position: 'right', min: 0, max: 35, title: { display: true, text: 'Uso / Conta', color: '#38bdf8' }, grid: { display: false } }
+                }
+            }
         });
 
-        // Chart 2: Support Escalation Pre-Churn
-        new Chart(document.getElementById('supportEscChart'), {
+        // Support Chart
+        new Chart(document.getElementById('supportChart'), {
             type: 'bar',
             data: {
-                labels: ['60+ dias antes', '31-60 dias antes', '15-30 dias antes', '0-14 dias antes (Gatilho)'],
+                labels: ['60+ dias antes (Normal)', '31-60 dias antes', '15-30 dias antes', '0-14 dias antes (Gatilho Fatal)'],
                 datasets: [{
                     label: 'Taxa de Escalação (%)',
                     data: [5.0, 4.1, 4.5, 14.6],
@@ -241,30 +194,15 @@
             options: { responsive: true, plugins: { legend: { display: false } } }
         });
 
-        // Chart 3: Industry
-        new Chart(document.getElementById('industryChart'), {
+        // Reasons Chart
+        new Chart(document.getElementById('reasonsChart'), {
             type: 'bar',
             data: {
-                labels: ['DevTools', 'FinTech', 'HealthTech', 'EdTech', 'Cybersecurity'],
+                labels: ['Features', 'Suporte', 'Orçamento (Budget)', 'Desconhecido', 'Concorrente', 'Preço (Pricing)'],
                 datasets: [{
-                    label: 'Taxa de Churn (%)',
-                    data: [31.0, 22.3, 21.9, 16.5, 16.0],
-                    backgroundColor: ['#f43f5e', '#38bdf8', '#38bdf8', '#34d399', '#34d399'],
-                    borderRadius: 4
-                }]
-            },
-            options: { responsive: true, indexAxis: 'y', plugins: { legend: { display: false } } }
-        });
-
-        // Chart 4: Features
-        new Chart(document.getElementById('featuresChart'), {
-            type: 'bar',
-            data: {
-                labels: ['Taxa Erro Geral', 'Tempo Resolução Tickets', 'First Response Time', 'Uso Features Beta', 'Uso por Licença'],
-                datasets: [{
-                    label: 'Importância (%)',
-                    data: [8.71, 6.34, 6.25, 6.19, 5.41],
-                    backgroundColor: '#38bdf8',
+                    label: 'Volume de Cancelamentos',
+                    data: [114, 104, 104, 95, 92, 91],
+                    backgroundColor: ['#38bdf8', '#f43f5e', '#fb923c', '#64748b', '#a855f7', '#eab308'],
                     borderRadius: 4
                 }]
             },

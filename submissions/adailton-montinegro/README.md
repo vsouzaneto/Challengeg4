@@ -10,11 +10,13 @@
 
 ## Executive Summary
 
-Auditamos e cruzamos as 5 tabelas relacionais da RavenStack (~500 contas, 5.000 assinaturas, 25.000 logs de telemetria, 2.000 tickets e 600 eventos de cancelamento) utilizando DuckDB, análise de sobrevivência (Kaplan-Meier) e aprendizado de máquina explicável. 
+Auditamos e cruzamos as 5 tabelas relacionais da RavenStack (~500 contas, 5.000 assinaturas, 25.000 logs de telemetria, 2.000 tickets e 600 eventos de cancelamento) utilizando DuckDB, modelagem estatística de sobrevivência (Kaplan-Meier), aprendizado de máquina explicável (Random Forest) e governança multi-agente determinística.
 
-Desmontamos o paradoxo apresentado pelo CEO: o uso aparente da plataforma bateu recorde no 4º trimestre de 2024 (32.227 eventos) devido a uma ilusão de agregação gerada pela entrada rápida de contas com onboarding intenso que cancelam em poucas semanas (67.5% da coorte 2024-Q4 cancelou), enquanto o CSAT de 4.0/5.0 mascara um viés severo de não-resposta (41.2% dos tickets sem nota). 
+**Desmontamos os dois paradoxos centrais apresentados pelo CEO:**
+1. **O Paradoxo do Produto ("O uso cresceu"):** A análise temporal contínua de 24 meses prova que o uso médio por conta ativa permaneceu **matematicamente estável entre 23,0 e 26,7 eventos/mês** (média de 24,6 usos/mês; desvio padrão < 0,9). O crescimento alegado pela diretoria de produto foi uma miragem baseada em ruído estocástico de final de ano (+2,6% nominal), enquanto os cancelamentos mensais aceleravam de **1 em Jan/2023 para 117 em Dez/2024 (+11.600%)**. O churn é **descolado do volume de uso**.
+2. **O Paradoxo do Suporte ("A satisfação está OK"):** A nota média de satisfação (CSAT de 4,0/5,0) mascara um **viés severo de não-resposta de 41,2%** (clientes insatisfeitos não avaliam). O indicador preditivo real é a **taxa de escalação de chamados para engenharia, que salta de 4,5% para 14,6% nas duas semanas anteriores ao cancelamento**.
 
-O sinal predecessor letal de cancelamento é operacional: **a taxa de escalação em tickets de suporte salta de 4.5% para 14.6% nas duas semanas imediatamente anteriores ao churn**. O cancelamento sangrou **$255.442/mês em MRR (~$3.06M ARR)**, com 72.6% da perda concentrada em planos Enterprise e Pro. Entregamos um Cockpit Prescritivo em Streamlit e HTML interativo que rankeia contas em risco e aciona playbooks determinísticos, projetando preservação de mais de $393k em ARR anual no primeiro ano.
+O cancelamento sangrou **$255.442,00/mês em MRR (~$3.065.304,00 ARR)**. Entregamos uma **Matriz Cartesiana de Quadrantes**, segmentando a base em Zona Crítica (102 contas que concentram $462k de MRR sob risco), Cauda Vulnerável (137 contas), Vacas Leiteiras (104 contas retidas) e Base Estável (157 contas), acompanhada de um **Cockpit Prescritivo em Streamlit e HTML Standalone** com semáforos estritos, toggle de moeda (USD/BRL com PTAX R$ 5,50) e playbooks determinísticos por squad.
 
 ---
 
@@ -22,83 +24,99 @@ O sinal predecessor letal de cancelamento é operacional: **a taxa de escalaçã
 
 ### Abordagem
 
-Para superar o baseline genérico de ferramentas de IA (que se limitam a afirmar que "clientes que usam menos cancelam mais"), adotamos uma abordagem de **Engenharia de Dados e Investigação Causal em 5 fases**:
+Para superar o baseline genérico de ferramentas de IA (que se limitam a afirmar que "clientes que usam menos cancelam mais"), a squad conduziu uma investigação profunda em 6 eixos:
 
-1. **Auditoria de Integridade e Profiling Estrito (DuckDB):** Validação de integridade referencial em todas as chaves primárias e estrangeiras (0 órfãos), conciliação matemática de faturamento (`ARR == MRR * 12` em 100% dos registros) e mapeamento de missing values.
-2. **Decomposição Temporal e Coortes de Sobrevivência:** Análise de coortes por trimestre de aquisição e estimação da função de sobrevivência de Kaplan-Meier para mapear a tenure real até o ponto de inflexão de abandono.
-3. **Desconstrução de Vieses Operacionais:** Isolamento do Paradoxo de Simpson no volume de uso e auditoria de viés de sobrevivente no CSAT de suporte técnico.
-4. **Modelagem Preditiva com Explicabilidade (Random Forest + Feature Importance):** Engenharia de 28 features multidimensionais para cálculo de probabilidade calibrada de churn e ranking de importância de atrito.
-5. **Cockpit Prescritivo Operacional (Streamlit + HTML Standalone):** Tradução dos achados analíticos em ferramenta de ação diária para Customer Success e CEO.
+1. **Auditoria de Integridade e Profiling Estrito (DuckDB):** Validação de 100% de integridade referencial nas 4 relações de chave estrangeira (0 órfãos) e conciliação matemática contábil (`ARR == MRR * 12` em 100% dos 5.000 contratos).
+2. **Série Temporal Contínua de 24 Meses (Mês a Mês):** Reconstrução do histórico completo de Jan/2023 a Dez/2024, provando a constância matemática do engajamento per capita e a trajetória exponencial de churn.
+3. **Desconstrução de Vieses Operacionais e Análise Pré-Churn:** Mapeamento da janela retrospectiva pré-cancelamento (0-14 dias, 15-30 dias, 31-60 dias e 60+ dias), isolando o gatilho operacional de suporte.
+4. **Matriz Cartesiana de Quadrantes:** Cruzamento bidimensional entre Impacto Financeiro (MRR > $1.500) e Probabilidade de Churn (Score > 0,40), classificando as 500 contas em 4 quadrantes acionáveis.
+5. **Análise Qualitativa de Motivos e Feedbacks:** Decomposição dos 600 eventos de churn por `reason_code`, quantificação de reembolsos e frequência de termos textuais.
+6. **Benchmark do Sucesso (ICP Retido):** Análise comparativa das 390 contas retidas para identificar os fatores de proteção da base.
 
 ---
 
 ### Resultados / Findings
 
-#### 1. A Anatomia do Churn: O Ponto de Inflexão em 2024-Q4
-A perda de clientes não ocorreu de forma linear. Entre 2023-Q1 e 2023-Q3, a empresa operou com churn residual (6 a 19 eventos/trimestre). No entanto, a partir de 2024-Q1 o churn acelerou vertiginosamente, culminando em **251 cancelamentos em 2024-Q4 (41.8% de todo o churn dos 2 anos)**.
+#### 1. Linha do Tempo Mensal: A Prova Factual da Estabilidade de Uso
+A tabela a seguir consolida a evolução mensal nos momentos-chave dos 24 meses avaliados:
 
-| Trimestre | Eventos de Churn | Contas Únicas | Reembolsos Solicitados ($) | Uso Total de Features | Taxa de Erro (%) |
-|-----------|------------------|---------------|----------------------------|-----------------------|------------------|
-| 2023-Q1   | 6                | 6             | $0.00                      | 31,400                | 5.72%            |
-| 2023-Q2   | 11               | 11            | $38.15                     | 31,128                | 6.00%            |
-| 2023-Q3   | 19               | 17            | $70.81                     | 31,155                | 5.45%            |
-| 2023-Q4   | 37               | 36            | $658.57                    | 30,878                | 5.60%            |
-| 2024-Q1   | 54               | 50            | $681.52                    | 31,593                | 5.70%            |
-| 2024-Q2   | 92               | 77            | $990.30                    | 30,789                | 5.71%            |
-| 2024-Q3   | 130              | 107           | $2,502.58                  | 31,355                | 5.66%            |
-| 2024-Q4   | **251**          | **180**       | **$3,710.32**              | **32,227** (Recorde)  | 5.22%            |
+| Mês | Novos Clientes | Clientes Ativos c/ Uso | Uso Total | Uso Médio / Conta Ativa | Cancelamentos | Reembolsos ($) | Taxa Erro (%) |
+|---|---|---|---|---|---|---|---|
+| **2023-01** | 17 | 440 | 10.877 | **24,7** | 1 | $0,00 | 5,44% |
+| **2023-06** | 13 | 420 | 10.002 | **23,8** | 5 | $0,00 | 6,26% |
+| **2023-12** | 20 | 431 | 10.435 | **24,2** | 16 | $358,06 | 6,23% |
+| **2024-03** | 27 | 430 | 10.725 | **24,9** | 24 | $355,24 | 5,50% |
+| **2024-06** | 21 | 416 | 10.106 | **24,3** | 40 | $514,46 | 5,33% |
+| **2024-09** | 25 | 415 | 10.195 | **24,6** | 53 | $1.019,21 | 5,53% |
+| **2024-10** | 31 | 435 | 11.450 | **26,3** | 66 | $832,18 | 4,98% |
+| **2024-11** | 32 | 410 | 10.039 | **24,5** | 68 | $732,06 | 5,35% |
+| **2024-12** | 17 | 428 | 10.738 | **25,1** | **117** (Pico) | **$2.146,08** | 5,35% |
 
-#### 2. Desmontando a Afirmação de Produto: "O uso cresceu"
-- O volume total de eventos de fato atingiu a máxima histórica em 2024-Q4 (32.227).
-- Porém, contas que cancelaram no plano Basic apresentaram uso médio **superior** às retidas (586.2 vs 512.3 interações). 
-- **Causa Raiz:** O crescimento de uso decorre de um fluxo inflado de novas contas em onboarding rápido. Os usuários tentam adotar a plataforma com intensidade inicial, mas encontram gargalos de estabilidade ou valor percebido e abandonam. A tenure mediana até o churn é de apenas **103 dias (Basic), 124 dias (Pro) e 135 dias (Enterprise)**.
+**Conclusão Causal:** O uso per capita nunca caiu nem disparou; manteve-se perfeitamente estabilizado em ~24,6 usos/mês. O churn não é provocado por falta de adoção, mas por atrito insolúvel em contas ativas.
 
-#### 3. Desmontando a Afirmação de CS: "A satisfação está OK"
-- O CSAT aparente da base é de ~4.0 em todos os planos.
-- **Causa Raiz:** **41.2% dos chamados não possuem nota de satisfação (825 de 2.000 tickets)**. Clientes severamente insatisfeitos simplesmente não respondem a pesquisas de satisfação.
-- O sinal real não é a nota, mas o **colapso operacional do suporte**:
-  * Em períodos de estabilidade (>60 dias antes do churn), a taxa de escalação de chamados é de 5.0%.
-  * **Nos 14 dias imediatamente anteriores ao cancelamento, a taxa de escalação salta para 14.6% (quase o triplo)**.
-  * O First Response Time em tickets urgentes atinge média de 89 minutos, inaceitável para clientes corporativos.
+#### 2. O Gatilho Operacional no Suporte Técnico
+Analisando os 2.000 tickets de suporte das contas que cancelaram na janela regressiva até o dia do cancelamento:
 
-#### 4. Vulnerabilidade Setorial e Canais Tóxicos
-- **DevTools:** Taxa de churn de **31.0%** (113 contas, 35 cancelamentos). Desenvolvedores e times técnicos possuem tolerância zero a falhas em features beta e tempos lentos de resposta.
-- **Canal de Aquisição:** Contas vindas de **Eventos (30.2% churn)** e **Ads (23.5% churn)** apresentam qualidade significativamente inferior às originadas por **Parceiros (14.6% churn)** e **Orgânico (17.5% churn)**.
+| Janela Retrospectiva Pré-Churn | Total de Tickets | Tempo Médio Resposta (min) | Taxa de Escalação (%) | Nota Média (1-5) | % Sem Avaliação |
+|---|---|---|---|---|---|
+| **60+ dias antes (Normal)** | 1.629 | 87,1 min | 5,0% | 3,98 | 43,1% |
+| **31-60 dias antes** | 97 | 103,0 min | 4,1% | 4,03 | 40,2% |
+| **15-30 dias antes** | 66 | 77,7 min | 4,5% | 4,00 | 51,5% |
+| **0-14 dias antes (Gatilho Fatal)** | 41 | 78,4 min | **14,6%** (3x) | 4,03 | 29,3% |
 
-#### 5. O Impacto Financeiro Real (MRR)
-Perda acumulada de **$255.442,00/mês em MRR**:
-- **Enterprise:** $93.651,00/mês perdidos (34 contas).
-- **Pro:** $91.882,00/mês perdidos (39 contas).
-- **Basic:** $69.909,00/mês perdidos (37 contas).
-- As Top 10 contas Enterprise canceladas sozinhas somam mais de **$60.000/mês** em perda de receita (ex: Company_4 com $21.691/mês e Company_240 com $10.945/mês).
+**Conclusão:** O CSAT aparente de 4,0 é irrelevante por conta do viés de não-resposta. O indicador crítico é a escalação: nas últimas duas semanas, quando um chamado escala para engenharia, a probabilidade de cancelamento atinge o ápice.
+
+#### 3. Matriz Cartesiana de Quadrantes (500 Contas)
+Segmentamos toda a base em 4 quadrantes operacionais:
+
+| Quadrante | Critério | Contas | MRR Total ($) | Ticket Médio ($) | Churn Histórico | Ação Estratégica Prescritiva |
+|---|---|---|---|---|---|---|
+| **Q1: Zona Crítica** | MRR > $1,5k & Risco > 0,40 | 102 | $462.530,00 | $4.534,61 | 49,0% | Intervenção C-Level + Executive Sponsor + SLA Prioritário |
+| **Q2: Cauda Vulnerável** | MRR <= $1,5k & Risco > 0,40 | 137 | $57.521,00 | $419,86 | 43,8% | Régua Automatizada de CS + Tutoriais de Auto-atendimento |
+| **Q3: Vacas Leiteiras** | MRR > $1,5k & Risco <= 0,40 | 104 | $635.711,00 | $6.112,61 | 0,0% | Plano de Expansão / Upsell + Contratos Plurianuais |
+| **Q4: Base Estável** | MRR <= $1,5k & Risco <= 0,40 | 157 | $82.628,00 | $526,29 | 0,0% | Manutenção Padrão de Sucesso do Cliente |
+
+#### 4. Análise Qualitativa: Motivos e Feedbacks Declarados (600 Eventos)
+- **Motivos (`reason_code`):** Features (19,0%), Suporte (17,3%), Orçamento/Budget (17,3%), Desconhecido (15,8%), Concorrente (15,3%) e Preço/Pricing (15,2%).
+- **Feedbacks Mais Frequentes:**
+  1. `"too expensive"`: 161 ocorrências (26,8%)
+  2. `"missing features"`: 155 ocorrências (25,8%)
+  3. `Sem feedback`: 148 ocorrências (24,7%)
+  4. `"switched to competitor"`: 136 ocorrências (22,7%)
+- **Precedentes Críticos:**
+  * **10,0% das contas** reduziram o plano (downgrade) nos 90 dias anteriores ao cancelamento fatal.
+  * **10,0% dos eventos** foram reativações de clientes que já haviam cancelado antes.
+  * Reembolsos somaram **$9.155,75**, liderados por cancelamentos de produto/features ($1.905,90).
+
+#### 5. Benchmark de Contas Retidas (O ICP de Sucesso)
+Comparando as 390 contas ativas contra as 110 canceladas:
+- **Canal de Parcerias:** 19,5% das contas ativas vieram de Parcerias (contra apenas 11,8% nas canceladas). Canais como Eventos (30,2% churn) trazem clientes desqualificados.
+- **Modelo Contratual:** Contratos anuais e auto-renovação conferem previsibilidade, mas não blindam contra falhas de suporte (ambos grupos têm ~82% de auto-renovação).
+- **Estabilidade Operacional:** Contas retidas têm menor incidência de escalações de suporte (0,18 vs 0,22).
 
 ---
 
 ### Recomendações
 
-Priorizamos as ações na matriz Impacto x Esforço:
+1. **Gatilho Operacional "Red Alert" no Suporte (Impacto Imediato / Esforço Baixo):**
+   - Implementar webhook imediato: qualquer chamado de conta do **Quadrante Q1 (Zona Crítica)** que for escalado notifica em tempo real o Head de CS e o Arquiteto Responsável no Slack.
+   - Meta: Atendimento em < 15 minutos em incidentes críticos, neutralizando o gatilho das duas semanas pré-churn.
 
-1. **Protocolo "Red Alert" no Suporte (Impacto Imediato / Esforço Baixo):**
-   - Automatizar gatilho no Zendesk/Jira: Qualquer ticket escalado ou com First Response Time > 60 min em contas Enterprise/Pro aciona notificação imediata no Slack do Head de CS e Executive Sponsor.
-   - Meta: Eliminar o pico de 14.6% de escalação desassistida na janela de 14 dias pré-churn.
+2. **Revisão de Qualificação em RevOps (Impacto Alto / Esforço Médio):**
+   - Realocar 40% do orçamento de marketing de Eventos (30,2% de churn) para o Programa de Canais e Parcerias (14,6% de churn), elevando a retenção estrutural da coorte de entrada.
 
-2. **Blindagem de Estabilidade em DevTools e Beta Features (Impacto Alto / Esforço Médio):**
-   - Desativar a inclusão compulsória de clientes Enterprise em flags de beta que apresentem erro acima de 5%.
-   - Revisar as features com maior volume absoluto de falhas (Feature_4 e Feature_9 acumulam mais de 750 erros em contas ativas).
+3. **Política de Blindagem de Downgrade (Janela de 90 Dias):**
+   - Criar playbook automático: solicitações de downgrade acionam oferta imediata de renegociação contratual e lock-in anual com desconto escalonado antes da saída definitiva.
 
-3. **Revisão dos Canais de Aquisição em RevOps (Impacto Médio / Esforço Baixo):**
-   - Redirecionar verba de eventos patrocinados (30.2% de churn) para o programa de co-marketing e Parcerias (14.6% de churn).
-   - Ajustar a qualificação de ICP para evitar entrada de clientes sem fit técnico.
-
-4. **Cockpit Prescritivo Ativo de CS (Entregue nesta Submissão):**
-   - Utilizar o arquivo `ravenstack_account_risk_scores.csv` para intervenção prioritária nas contas ativas classificadas como `Crítico (Alto Risco)`.
+4. **Operação Diária via Cockpit Prescritivo:**
+   - Adotar o arquivo `ravenstack_account_risk_scores.csv` no dia a dia da squad de CS, priorizando as contas ativas do Quadrante 1.
 
 ---
 
 ### Limitações
 
-- **Granularidade Diária de Telemetria:** Os dados fornecem somatórios diários por feature, mas não logs de clickstream em nível de sessão de usuário, o que permitiria mapear a sequência exata de eventos antes de um erro.
-- **Natureza Sintética do Dataset:** Por ser um dataset simulado, variáveis como planos e frequências de cobrança possuem distribuições parcialmente uniformes geradas por scripts, exigindo que a inteligência de diagnóstico focasse em anomalias temporais, coortes e cruzamento entre tickets e churn.
+- **Granularidade Diária:** Ausência de clickstream em nível de sessão individual; a análise baseia-se em agregados diários por funcionalidade.
+- **Natureza Simulada do Dataset:** O dataset sintético possui certas distribuições uniformes (como planos e auto-renovação), exigindo que a inteligência causal focasse em anomalias temporais, escalações e regressões comportamentais.
 
 ---
 
@@ -106,67 +124,62 @@ Priorizamos as ações na matriz Impacto x Esforço:
 
 ### Ferramentas usadas
 
-| Ferramenta | Para que usou |
-|------------|--------------|
-| **Antigravity (Orquestrador Chefe / Japax)** | Análise das diretrizes, síntese de specs, formulação de hipóteses, redação técnica e condução da sessão. |
-| **Taiga MCP (`taigaApi`)** | Governança e rastreabilidade determinística em tempo real (Épico 02, US 1007 e Tasks #9 a #13). |
-| **DuckDB + Pandas** | Profiling in-memory dos 5 CSVs, auditoria de integridade referencial, detecção de Simpson's Paradox e conciliação de MRR/ARR. |
-| **Lifelines (Kaplan-Meier)** | Modelagem de sobrevivência não-paramétrica para cálculo da probabilidade acumulada de retenção temporal. |
-| **Scikit-Learn (Random Forest & Pipeline)** | Treinamento de modelo preditivo com pipeline blindada contra vazamento de dados e extração de feature importance. |
-| **Streamlit + Altair + Chart.js** | Construção do cockpit interativo executivo e prescritivo com simulador financeiro de ROI. |
+| Ferramenta / Agente | Papel Operacional | O que Executou |
+|---|---|---|
+| **Japax (Antigravity)** | Orquestrador Chefe & Auditoria | Decomposição do problema, formulação de hipóteses, code review adversário, governança no Taiga e redação final. |
+| **Altman (Codex CLI)** | Arquiteto de Dados | Modelagem matemática de 24 meses, script de analítica avançada (`07_codex_advanced_analytics.py`), matriz de quadrantes e reconstrução do app Streamlit. |
+| **Taiga MCP (`taigaApi`)** | Governança Determinística | Registro em tempo real de 3 Épicos (#1 a #3), 3 User Stories (#2, #8 e #15) e 10 Tasks (#3 a #6, #9 a #13 e #14 a #17). |
+| **DuckDB + Pandas** | Motor Analítico | Processamento in-memory de mais de 33 mil linhas relacionais sem dependência de banco externo. |
+| **Streamlit + Altair + Chart.js** | Visualização Executiva | Cockpit interativo em 6 abas e dashboard standalone HTML com toggle de moeda USD/BRL e semáforos estritos. |
 
 ---
 
-### Workflow
+### Workflow Multi-Agente & Iteração Crítica
 
-1. **Kickoff e Fase-Gate:** Leitura dos 4 desafios, definição do foco inegociável no Challenge 001 (Analytics) e criação da infraestrutura de governança no Taiga sob o Épico 02.
-2. **Ingestão e Profiling Determinístico (Task #9):** Download dos 5 CSVs oficiais e execução do script DuckDB (`01_data_profiling.py`), constatando integridade referencial de 100% e confirmando que ARR = MRR * 12.
-3. **Investigação Causal e Quebra do Baseline (Task #10):** Formulação e teste das 4 hipóteses causais. Identificação do pico de 41.8% de cancelamentos em 2024-Q4 e da subida de escalações para 14.6% nas duas semanas pré-churn.
-4. **Engenharia de Features e Modelagem Preditiva (Task #11):** Geração de dataset tabular com 28 variáveis agregadas por conta, validação cruzada 5-fold e geração do arquivo de scores prescritivos.
-5. **Desenvolvimento do Cockpit Executivo (Task #12):** Criação da aplicação Streamlit em 4 abas e geração do artefato HTML standalone com Chart.js para visualização imediata sem dependências.
-6. **Consolidação Formal e Handoff (Task #13):** Estruturação do relatório final de submissão e documentação do Process Log.
-
----
-
-### Onde a IA errou e como corrigi
-
-1. **Erro de Correlação Superficial Inicial (Alucinação de Baseline):**
-   - *O que a IA tentou fazer:* Em sua primeira inferência sobre os dados de uso, o modelo de linguagem sugeriu a hipótese clássica de que "clientes com menor uso cancelam mais".
-   - *Como corrigi:* Forcei uma consulta analítica no DuckDB estratificada por plano. Descobrimos exatamente o oposto: clientes cancelados no plano Basic tinham uso médio superior (586 vs 512). Essa intervenção humana guiou a descoberta do Paradoxo de Simpson e da curta tenure das novas coortes.
-
-2. **Viés no CSAT Não Percebido pela IA:**
-   - *O que a IA tentou fazer:* A IA avaliou a média simples de CSAT (4.0/5.0) e concluiu que o suporte estava bem avaliado.
-   - *Como corrigi:* Ordenei uma contagem de nulos na coluna `satisfaction_score`. Constatamos que 41.2% dos tickets não tinham nota (viés do sobrevivente). Instruí a IA a analisar os tickets filtrando por janela temporal pré-churn, o que revelou o salto de escalações para 14.6% a 14 dias do churn.
-
-3. **Falha de Sintaxe no DuckDB:**
-   - *O que a IA fez:* O script gerado usou `%q` dentro de `strftime(churn_date, '%Y-Q%q')`, causando erro de compilação no motor DuckDB.
-   - *Como corrigi:* Corrigi a expressão para `cast(year(...) as varchar) || '-Q' || cast(quarter(...) as varchar)`.
-
-4. **Erro de Valores Ausentes no Pipeline Scikit-Learn:**
-   - *O que a IA fez:* Ao instanciar `StandardScaler` diretamente sobre features de suporte, o modelo quebrou devido a contas sem nenhum ticket registrado (NaNs resultantes do LEFT JOIN).
-   - *Como corrigi:* Reestruturei a pipeline adicionando `SimpleImputer(strategy='median')` antes do escalonamento, garantindo robustez matemática sem data leakage.
+1. **Kickoff & Mapeamento:** Japax explorou as diretrizes e estruturou o Épico 01 e 02 no Taiga.
+2. **Primeira Rodada Analítica (Tasks #9 a #13):** Profiling inicial via DuckDB, detecção do pico de Q4 e prototipação do app Streamlit.
+3. **Revisão Crítica do Operador Humano (HITL):** O operador apontou descasamento visual no gráfico de uso, jargão em CSAT, ausência de dispersão em quadrantes e inversão de cores nos deltas do header.
+4. **Delegação e Fact-Checking pelo Codex CLI (Altman):** 
+   - Altman reprocessou a série histórica em 24 meses com DuckDB e **desmentiu factualmente a hipótese de que o uso per capita havia despencado ou crescido**: provou que ele foi constante em ~24,6 usos/mês.
+   - Construiu a Matriz Cartesiana de Quadrantes, detalhou os 600 eventos de cancelamento e isolou o benchmark das contas retidas.
+5. **Reconstrução dos Entregáveis (Task #16):** Reescrita completa de `app.py` e `executive_dashboard.html`, corrigindo semáforos (vermelho para perdas), adicionando toggle USD/BRL e formatação brasileira.
+6. **Auditoria Final por Japax (Task #17):** Validação cruzada dos números, garantia de rastreabilidade no Taiga e consolidação deste relatório.
 
 ---
 
-### O que eu adicionei que a IA sozinha não faria
+### Onde a IA errou e como foi corrigida
 
-1. **Visão de Negócio Executiva (C-Level):** Tradução de métricas brutas em impacto financeiro real ($255k/mês em MRR perdido; perda concentrada de $60k/mês nas top 10 contas Enterprise).
-2. **Decomposição do Paradoxo:** Identificação de que o crescimento de uso da plataforma era uma miragem provocada pelo onboarding agressivo de coortes recentes de baixa retenção.
-3. **Simulador de ROI de Retenção:** Construção de um modelo de payback que prova ao CFO e CEO que reter apenas 35% das contas Enterprise cobre com folga os investimentos em CS e engenharia de confiabilidade.
-4. **Governança Multi-Agente Rastreável:** Criação de um rastro auditável no Taiga onde cada tarefa técnica possui evidências, scripts e comentários estruturados.
+1. **Alucinação Inicial sobre Queda de Uso:**
+   - *Erro:* Diante da observação de que o uso bruto era plano enquanto o churn subia, a IA sugeriu inicialmente que "o uso per capita despencou".
+   - *Correção Humana & Fact-Checking:* O operador questionou a evidência e exigiu prova numérica. Altman rodou a query mensal contínua no DuckDB e constatou que o uso por conta ativa era rigorosamente estável (23 a 26 usos/mês). Corrigimos o insight para o fato verdadeiro: o churn é descolado do volume de uso.
+2. **Inversão Semântica das Cores no Streamlit:**
+   - *Erro:* O Streamlit renderizou a perda de receita em verde devido ao delta negativo (`-$3M`).
+   - *Correção:* Substituição por blocos HTML customizados com semáforo vermelho explícito para perdas e verde para contas ativas.
+3. **Jargão Técnico de Atendimento:**
+   - *Erro:* Uso do termo técnico "CSAT" sem explicação para gestores de fora da área.
+   - *Correção:* Substituição por "Nota Média de Satisfação (1 a 5)" e explicitação do viés de não-resposta (41,2% sem nota).
+
+---
+
+### O que adicionei que a IA sozinha não faria
+
+1. **Rigor Causal e Julgamento Crítico:** Recusa de conclusões fáceis ou respostas de cartilha ("cliente que usa menos cancela mais").
+2. **Matriz de Quadrantes Acionável:** Tradução de scores estatísticos em 4 gavetas de decisão de negócio com playbooks específicos.
+3. **Simulador Financeiro Conectado a Payback:** Prova matemática de que reter 35% das contas Enterprise cobre o custo anual de uma squad de resiliência.
+4. **Governança Auditável:** Linha do tempo completa e verificável no Taiga registrando cada interação e tomada de decisão.
 
 ---
 
 ## Evidências
 
 - [x] **Repositório Git:** Branch `submission/adailton-montinegro` no clone local `/Users/montinegro/G4 AI Master/repo`.
-- [x] **Aplicação Streamlit:** Código-fonte em [`repo/submissions/adailton-montinegro/app/app.py`](app/app.py).
-- [x] **Dashboard HTML Standalone:** Artefato em [`repo/submissions/adailton-montinegro/artifacts/executive_dashboard.html`](artifacts/executive_dashboard.html).
-- [x] **Base de Risco Prescritivo (500 contas):** [`repo/submissions/adailton-montinegro/artifacts/ravenstack_account_risk_scores.csv`](artifacts/ravenstack_account_risk_scores.csv).
-- [x] **Métricas de Modelagem e Feature Importance:** [`repo/submissions/adailton-montinegro/artifacts/model_metrics.json`](artifacts/model_metrics.json).
-- [x] **Scripts de Análise Causal e Profiling:** Localizados em `/Users/montinegro/G4 AI Master/scripts/`.
-- [x] **Governança no Taiga:** Projeto `g4-ai-master` (ID 3), Épico 02 (ID 36), User Story 02 (ID 1007), Tasks #9 a #13 com histórico e logs completos.
+- [x] **Aplicação Streamlit Reconstruída:** [`repo/submissions/adailton-montinegro/app/app.py`](app/app.py).
+- [x] **Dashboard Standalone HTML v2:** [`repo/submissions/adailton-montinegro/artifacts/executive_dashboard.html`](artifacts/executive_dashboard.html).
+- [x] **Matriz de Quadrantes & Scores (500 contas):** [`repo/submissions/adailton-montinegro/artifacts/ravenstack_account_risk_scores.csv`](artifacts/ravenstack_account_risk_scores.csv).
+- [x] **JSON Analítico Avançado (24 meses, quadrantes, feedbacks):** [`repo/submissions/adailton-montinegro/artifacts/advanced_analytics.json`](artifacts/advanced_analytics.json).
+- [x] **Scripts de Engenharia e Análise:** Em [`repo/submissions/adailton-montinegro/scripts/`](scripts/).
+- [x] **Governança no Taiga:** Projeto `g4-ai-master` (ID 3), Épicos 01, 02 e 03 concluídos, com histórico cronológico auditável.
 
 ---
 
-_Submissão concluída e auditada em: 12 de Setembro de 2026_
+_Submissão final revisada e auditada em: 12 de Setembro de 2026_
