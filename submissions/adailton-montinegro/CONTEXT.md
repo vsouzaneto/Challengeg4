@@ -22,6 +22,9 @@ Glossário da submissão do Challenge 001. Cada termo possui um único significa
 - **Raw:** arquivos originais imutáveis e seus metadados de ingestão.
 - **Stage:** dados tipados, padronizados, classificados por qualidade e separados entre elegíveis e quarentena.
 - **Gold:** fatos, dimensões, métricas e conjuntos analíticos derivados de regras de negócio documentadas.
+- **Manifesto de dados:** inventário versionado com origem, versão, tamanho, quantidade esperada de linhas e SHA-256 de cada arquivo raw.
+- **Bootstrap de dados:** processo automatizado que baixa a fonte pública, verifica o manifesto e reconstrói o banco analítico local.
+- **Artefato estático:** versão final da análise que pode ser avaliada sem executar o Streamlit.
 
 ## Estados de confiabilidade
 
@@ -29,4 +32,3 @@ Glossário da submissão do Challenge 001. Cada termo possui um único significa
 - **Derivado:** calculado a partir de regras reproduzíveis sobre dados observados.
 - **Condicional:** depende de uma premissa ou cenário explícito.
 - **Indisponível:** não identificável de forma defensável com os dados atuais.
-

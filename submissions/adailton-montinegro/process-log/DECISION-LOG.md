@@ -33,3 +33,20 @@ O autor aprovou separar snapshot, eventos e assinaturas; preservar sujeira em qu
 
 Adotar o contrato descrito em `docs/adr/0001-politica-de-verdade-analitica.md` antes de construir o pipeline e o dashboard.
 
+## 2026-09-12 — Distribuição dos dados e artefato final
+
+### Problema
+
+Os dados precisam alimentar a aplicação e permanecer reproduzíveis, mas os CSVs públicos e o banco derivado não devem ser versionados como se fossem código da submissão.
+
+### Recomendação da IA
+
+Versionar apenas o downloader, o manifesto e os hashes, reconstruindo o DuckDB a partir da fonte pública.
+
+### Complemento do autor
+
+A política só é aceitável se os dados necessários ao Streamlit estiverem disponíveis e se houver um artefato final com a análise concluída.
+
+### Decisão
+
+Foi aprovada a política descrita em `docs/adr/0002-distribuicao-e-reprodutibilidade-dos-dados.md`: bootstrap automatizado, validação de integridade, rebuild determinístico e artefato estático final avaliável sem executar o app.
