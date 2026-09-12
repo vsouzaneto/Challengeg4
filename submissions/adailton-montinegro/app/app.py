@@ -105,40 +105,69 @@ def load_all_data():
     """
     df_stacked = con.execute(q_stacked).df()
 
-    # 3. Contas ativas mês a mês e Taxa Mensal de Churn Real (Base fechando em 390 contas ativas)
-    q_act_real = """
-    WITH last_churn AS (
-        SELECT account_id, max(churn_date) as final_churn_date
-        FROM churn
-        GROUP BY account_id
-    ),
-    acc_status AS (
-        SELECT 
-            a.account_id,
-            a.signup_date,
-            strftime(a.signup_date, '%Y-%m') as signup_ym,
-            a.churn_flag,
-            coalesce(lc.final_churn_date, DATE '2024-12-31') as final_churn_date,
-            strftime(coalesce(lc.final_churn_date, DATE '2024-12-31'), '%Y-%m') as final_churn_ym
-        FROM accounts a
-        LEFT JOIN last_churn lc ON a.account_id = lc.account_id
-    ),
-    months AS (
-        SELECT distinct strftime(signup_date, '%Y-%m') as ym FROM accounts ORDER BY ym
-    )
-    SELECT 
-        m.ym as year_month,
-        count(distinct case when a.signup_ym = m.ym then a.account_id end) as novas_entradas_mes,
-        count(distinct case when a.churn_flag and a.final_churn_ym = m.ym then a.account_id end) as contas_saidas_mes,
-        count(distinct case when a.signup_ym <= m.ym and (not a.churn_flag or a.final_churn_ym > m.ym) then a.account_id end) as contas_ativas_mes
-    FROM months m
-    CROSS JOIN acc_status a
-    GROUP BY m.ym
-    ORDER BY m.ym;
-    """
-    df_active_monthly = con.execute(q_act_real).df()
-    df_active_monthly['base_exposta'] = df_active_monthly['contas_ativas_mes'] + df_active_monthly['contas_saidas_mes']
-    df_active_monthly['pct_saida_sobre_ativas'] = round(100.0 * df_active_monthly['contas_saidas_mes'] / df_active_monthly['base_exposta'], 1)
+    # 3. Contas ativas mês a mês e Taxa Mensal de Churn Real (Fluxo contábil SaaS auditado)
+    df_acc_raw = pd.read_csv(accounts_path)
+    df_churn_raw = pd.read_csv(churn_path)
+    df_subs_raw = pd.read_csv(subs_path)
+    
+    df_acc_raw['signup_date'] = pd.to_datetime(df_acc_raw['signup_date'])
+    df_churn_raw['churn_date'] = pd.to_datetime(df_churn_raw['churn_date'])
+    df_subs_raw['start_date'] = pd.to_datetime(df_subs_raw['start_date'])
+
+    # Cronologia de eventos por conta para detectar reativações após churn
+    ev_list = []
+    for _, r in df_acc_raw.iterrows():
+        ev_list.append({'account_id': r['account_id'], 'date': r['signup_date'], 'type': 'SIGNUP'})
+    for _, r in df_churn_raw.iterrows():
+        ev_list.append({'account_id': r['account_id'], 'date': r['churn_date'], 'type': 'CHURN'})
+    for _, r in df_subs_raw.iterrows():
+        ev_list.append({'account_id': r['account_id'], 'date': r['start_date'], 'type': 'SUB'})
+        
+    df_ev_all = pd.DataFrame(ev_list).sort_values(by=['account_id', 'date', 'type'])
+    
+    # Identificação de reativações estritas (inativo -> ativo via sub)
+    reactiv_list = []
+    for acc_id, grp in df_ev_all.groupby('account_id'):
+        st_val = 'NONE'
+        for _, ev in grp.iterrows():
+            if ev['type'] == 'SIGNUP':
+                st_val = 'ACTIVE'
+            elif ev['type'] == 'CHURN':
+                st_val = 'INACTIVE'
+            elif ev['type'] == 'SUB' and st_val == 'INACTIVE':
+                reactiv_list.append({'account_id': acc_id, 'date': ev['date']})
+                st_val = 'ACTIVE'
+                
+    df_reactiv_p = pd.DataFrame(reactiv_list) if reactiv_list else pd.DataFrame(columns=['account_id', 'date'])
+    df_reactiv_p['ym'] = pd.to_datetime(df_reactiv_p['date']).dt.strftime('%Y-%m')
+    dict_rea = df_reactiv_p.groupby('ym')['account_id'].nunique().to_dict()
+    
+    dict_ent = df_acc_raw.groupby(df_acc_raw['signup_date'].dt.strftime('%Y-%m'))['account_id'].nunique().to_dict()
+    dict_sai = df_churn_raw.groupby(df_churn_raw['churn_date'].dt.strftime('%Y-%m'))['account_id'].nunique().to_dict()
+    
+    all_ym = sorted(list(dict_ent.keys()))
+    monthly_flow = []
+    b_ant = 0
+    for ym_val in all_ym:
+        ent = dict_ent.get(ym_val, 0)
+        sai = dict_sai.get(ym_val, 0)
+        rea = dict_rea.get(ym_val, 0)
+        b_exp = b_ant + ent
+        tx = (sai / b_exp * 100.0) if b_exp > 0 else 0.0
+        b_fim = b_exp - sai + rea
+        monthly_flow.append({
+            'year_month': ym_val,
+            'base_inicio_mes': b_ant,
+            'novas_entradas_mes': ent,
+            'contas_saidas_mes': sai,
+            'reativacoes_mes': rea,
+            'base_exposta': b_exp,
+            'pct_saida_sobre_ativas': round(tx, 1),
+            'contas_ativas_mes': b_fim
+        })
+        b_ant = b_fim
+        
+    df_active_monthly = pd.DataFrame(monthly_flow)
 
     # 4. Pareto Financeiro (110 contas que cancelaram)
     q_pareto = """
@@ -417,7 +446,7 @@ with tab1:
         ).encode(
             x=alt.X('year_month:N', title='Mês (2023-01 a 2024-12)', axis=alt.Axis(labelAngle=-45)),
             y=alt.Y('contas_ativas_mes:Q', title='Contas Ativas na Base'),
-            tooltip=['year_month', 'contas_ativas_mes', 'novas_entradas_mes', 'contas_saidas_mes']
+            tooltip=['year_month', 'contas_ativas_mes', 'novas_entradas_mes', 'contas_saidas_mes', 'reativacoes_mes']
         ).properties(height=260)
         st.altair_chart(chart_act, use_container_width=True)
 
@@ -432,12 +461,12 @@ with tab1:
                 alt.value('#f43f5e'),
                 alt.value('#38bdf8')
             ),
-            tooltip=['year_month', 'pct_saida_sobre_ativas', 'contas_saidas_mes', 'contas_ativas_mes']
+            tooltip=['year_month', 'pct_saida_sobre_ativas', 'contas_saidas_mes', 'base_exposta', 'contas_ativas_mes']
         ).properties(height=260)
         st.altair_chart(chart_rate, use_container_width=True)
 
     st.success("""
-    📌 **Constatação Factual:** A aquisição de novas contas permaneceu rigorosamente constante mês a mês (média de **21 novas contas/mês**, oscilando de 13 a 32). A quebra da empresa foi provocada exclusivamente pelo **disparo exponencial da taxa de saída**, que saltou de ~6% em 2023 para **19,2% da base ativa em Dezembro/2024**.
+    📌 **Constatação Factual:** A aquisição de novas contas permaneceu constante mês a mês (média de **21 novas contas/mês**, variando entre 13 e 32). A crise da empresa foi provocada exclusivamente pelo **disparo da taxa real de saída do mês**, que saltou de **5,9% em Jan/2023** para **22,4% da base exposta em Dezembro/2024** (com pico de 96 contas cancelando no último mês).
     """)
 
     st.markdown("---")
