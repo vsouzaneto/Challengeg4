@@ -49,12 +49,16 @@ def load_all_data():
     df_contracts = pd.DataFrame(analytics['contracts_breakdown'])
     df_benchmark = pd.DataFrame(analytics['retention_benchmark'])
     
-    # DuckDB para flow de entradas/saidas e canais empilhados 100%
+    # DuckDB para análises causais aprofundadas
+    subs_path = os.path.join(DATA_DIR, "ravenstack_subscriptions.csv")
     con = duckdb.connect()
     con.execute(f"""
         CREATE TABLE accounts AS SELECT * FROM read_csv_auto('{accounts_path}');
         CREATE TABLE churn AS SELECT * FROM read_csv_auto('{churn_path}');
+        CREATE TABLE subs AS SELECT * FROM read_csv_auto('{subs_path}');
     """)
+    
+    # 1. Fluxo líquido mensal
     q_flow = """
     WITH in_flow AS (
         SELECT strftime(signup_date, '%Y-%m') as ym, count(account_id) as entradas
@@ -80,6 +84,7 @@ def load_all_data():
     """
     df_flow = con.execute(q_flow).df()
 
+    # 2. Canais empilhados 100%
     q_stacked = """
     SELECT 
         referral_source,
@@ -99,10 +104,144 @@ def load_all_data():
     ORDER BY referral_source, status;
     """
     df_stacked = con.execute(q_stacked).df()
-    
-    return df_scores, df_monthly, df_quadrants, df_reasons, df_feedback, df_contracts, df_benchmark, df_flow, df_stacked
 
-df_scores, df_monthly, df_quadrants, df_reasons, df_feedback, df_contracts, df_benchmark, df_flow, df_stacked = load_all_data()
+    # 3. Contas ativas mês a mês e Taxa Mensal de Churn calculados com rigor contábil
+    base_inicio = 0
+    records_act = []
+    for _, row in df_flow.iterrows():
+        ym = row['year_month']
+        ent = int(row['entradas'])
+        sai = int(row['saidas'])
+        base_exposta = base_inicio + ent
+        taxa_churn = (sai / base_exposta * 100.0) if base_exposta > 0 else 0.0
+        base_fim = max(0, base_exposta - sai)
+        records_act.append({
+            'year_month': ym,
+            'base_inicio': base_inicio,
+            'novas_entradas_mes': ent,
+            'contas_saidas_mes': sai,
+            'base_exposta': base_exposta,
+            'contas_ativas_mes': base_fim,
+            'pct_saida_sobre_ativas': round(taxa_churn, 1)
+        })
+        base_inicio = base_fim
+    df_active_monthly = pd.DataFrame(records_act)
+
+    # 4. Pareto Financeiro (110 contas que cancelaram)
+    q_pareto = """
+    WITH churned AS (
+        SELECT 
+            account_id,
+            account_name,
+            (SELECT arg_max(mrr_amount, start_date) FROM subs s WHERE s.account_id = a.account_id) as latest_mrr
+        FROM accounts a
+        WHERE churn_flag = true
+        ORDER BY latest_mrr DESC
+    ),
+    ranked AS (
+        SELECT 
+            row_number() over (order by latest_mrr desc) as rank_idx,
+            account_name,
+            latest_mrr,
+            sum(latest_mrr) over (order by latest_mrr desc) as cum_mrr,
+            sum(latest_mrr) over () as total_mrr
+        FROM churned
+    )
+    SELECT 
+        rank_idx,
+        account_name,
+        latest_mrr,
+        round(100.0 * cum_mrr / total_mrr, 1) as pct_cum_mrr
+    FROM ranked;
+    """
+    df_pareto = con.execute(q_pareto).df()
+
+    # 5. Retenção por Faixa de Ticket
+    q_tiers = """
+    WITH tiers AS (
+        SELECT 
+            CASE 
+                WHEN latest_mrr < 1000 THEN '1. Baixo Ticket (< $1k)'
+                WHEN latest_mrr BETWEEN 1000 AND 3000 THEN '2. Médio Ticket ($1k-$3k)'
+                WHEN latest_mrr BETWEEN 3000 AND 7000 THEN '3. Alto Ticket ($3k-$7k)'
+                ELSE '4. Enterprise (> $7k)'
+            END as faixa_ticket,
+            churn_flag,
+            latest_mrr
+        FROM (
+            SELECT a.account_id, a.churn_flag,
+                   (SELECT arg_max(mrr_amount, start_date) FROM subs s WHERE s.account_id = a.account_id) as latest_mrr
+            FROM accounts a
+        )
+    )
+    SELECT 
+        faixa_ticket,
+        count(*) as total_contas,
+        sum(case when not churn_flag then 1 else 0 end) as retidas,
+        sum(case when churn_flag then 1 else 0 end) as churned,
+        round(100.0 * sum(case when not churn_flag then 1 else 0 end) / count(*), 1) as pct_retencao,
+        round(100.0 * sum(case when churn_flag then 1 else 0 end) / count(*), 1) as pct_churn,
+        round(sum(latest_mrr), 2) as mrr_total,
+        round(sum(case when churn_flag then latest_mrr else 0 end), 2) as mrr_perdido
+    FROM tiers
+    GROUP BY faixa_ticket
+    ORDER BY faixa_ticket;
+    """
+    df_tiers = con.execute(q_tiers).df()
+
+    # 6. Churn Recorrente por Canal
+    q_rec_channel = """
+    WITH multi AS (
+        SELECT 
+            account_id,
+            count(churn_event_id) as total_churns
+        FROM churn
+        GROUP BY account_id
+        HAVING count(churn_event_id) > 1
+    )
+    SELECT 
+        a.referral_source,
+        count(distinct m.account_id) as contas_com_multiplo_churn,
+        sum(case when not a.churn_flag then 1 else 0 end) as permaneceram_ativas,
+        sum(case when a.churn_flag then 1 else 0 end) as sairam_definitivo,
+        round(100.0 * sum(case when not a.churn_flag then 1 else 0 end) / count(distinct m.account_id), 1) as pct_permaneceram,
+        round(100.0 * sum(case when a.churn_flag then 1 else 0 end) / count(distinct m.account_id), 1) as pct_sairam_definitivo
+    FROM multi m
+    JOIN accounts a ON m.account_id = a.account_id
+    GROUP BY a.referral_source
+    ORDER BY pct_permaneceram ASC;
+    """
+    df_rec_channel = con.execute(q_rec_channel).df()
+
+    # 7. Transição de Motivos (1ª saída vs 2ª saída)
+    q_reasons_1_2 = """
+    WITH ordered AS (
+        SELECT 
+            account_id,
+            reason_code,
+            row_number() over (partition by account_id order by churn_date) as rn
+        FROM churn
+    )
+    SELECT 
+        o1.reason_code as primeiro_motivo,
+        o2.reason_code as segundo_motivo,
+        count(*) as ocorrencias
+    FROM ordered o1
+    JOIN ordered o2 ON o1.account_id = o2.account_id AND o2.rn = 2
+    WHERE o1.rn = 1
+    GROUP BY o1.reason_code, o2.reason_code
+    ORDER BY ocorrencias DESC
+    LIMIT 8;
+    """
+    df_reasons_1_2 = con.execute(q_reasons_1_2).df()
+    
+    return (df_scores, df_monthly, df_quadrants, df_reasons, df_feedback, 
+            df_contracts, df_benchmark, df_flow, df_stacked, df_active_monthly, 
+            df_pareto, df_tiers, df_rec_channel, df_reasons_1_2)
+
+(df_scores, df_monthly, df_quadrants, df_reasons, df_feedback, 
+ df_contracts, df_benchmark, df_flow, df_stacked, df_active_monthly, 
+ df_pareto, df_tiers, df_rec_channel, df_reasons_1_2) = load_all_data()
 
 # ------------------------------------------------------------------------------
 # SIDEBAR: CONFIGURAÇÕES & LOCALIZAÇÃO
@@ -247,14 +386,49 @@ with tab1:
         st.altair_chart(chart_esc_v, use_container_width=True)
         
         st.warning("""
-        ⚠️ **O Viés do Sobrevivente no Suporte:**
-        - **41,2% dos chamados não possuem nota (825 de 2.000 tickets):** Clientes severamente frustrados simplesmente não avaliam o suporte.
-        - **O sinal fatal:** Nas duas semanas imediatamente anteriores ao cancelamento (0 a 14 dias), a taxa de escalação de chamados **salta de 4,5% para 14,6% (mais que o triplo)**.
-        - **Causa Raiz Operacional:** Incidentes graves não resolvidos na primeira linha foram o gatilho final que culminou no cancelamento.
+        ⚠️ **Concentração Temporal de Chamados Pré-Churn:**
+        - **O CSAT é uma métrica cega:** A nota média é estável (~4.0) porque quem está decepcionado simplesmente não avalia (41,2% dos chamados sem nota).
+        - **O gatilho de 2 semanas:** Quando uma conta sofre incidentes críticos não resolvidos e acumula chamados escalados na janela de 14 dias (salto de 4,5% para 14,6%), o cancelamento é disparado em até 2 semanas.
+        - **SLA Geral não caiu:** O time de suporte manteve seus tempos médios globais; o problema foi o acúmulo de atrito sem solução rápida na conta específica em crise.
         """)
 
     st.markdown("---")
-    st.markdown("### **Diagnóstico Estrutural: Fluxo Líquido Mensal & Fit por Canal de Aquisição**")
+    st.markdown("### **Evolução da Base Ativa & Taxa Mensal de Saída (% Churn)**")
+    
+    col_act1, col_act2 = st.columns(2)
+    with col_act1:
+        st.markdown("#### **Contas Ativas Acumuladas Mês a Mês**")
+        st.caption("Evolução da base líquida de clientes com contrato ativo")
+        chart_act = alt.Chart(df_active_monthly).mark_area(
+            color='#38bdf8', opacity=0.3, line={'color': '#0284c7', 'width': 3}
+        ).encode(
+            x=alt.X('year_month:N', title='Mês (2023-01 a 2024-12)', axis=alt.Axis(labelAngle=-45)),
+            y=alt.Y('contas_ativas_mes:Q', title='Contas Ativas na Base'),
+            tooltip=['year_month', 'contas_ativas_mes', 'novas_entradas_mes', 'contas_saidas_mes']
+        ).properties(height=260)
+        st.altair_chart(chart_act, use_container_width=True)
+
+    with col_act2:
+        st.markdown("#### **Taxa Mensal de Churn (% Saída sobre Base Ativa)**")
+        st.caption("Percentual de clientes ativos que cancelaram no mês correspondente")
+        chart_rate = alt.Chart(df_active_monthly).mark_bar().encode(
+            x=alt.X('year_month:N', title='Mês', axis=alt.Axis(labelAngle=-45)),
+            y=alt.Y('pct_saida_sobre_ativas:Q', title='% Saída sobre Base Ativa'),
+            color=alt.condition(
+                alt.datum.pct_saida_sobre_ativas > 10,
+                alt.value('#f43f5e'),
+                alt.value('#38bdf8')
+            ),
+            tooltip=['year_month', 'pct_saida_sobre_ativas', 'contas_saidas_mes', 'contas_ativas_mes']
+        ).properties(height=260)
+        st.altair_chart(chart_rate, use_container_width=True)
+
+    st.success("""
+    📌 **Constatação Factual:** A aquisição de novas contas permaneceu rigorosamente constante mês a mês (média de **21 novas contas/mês**, oscilando de 13 a 32). A quebra da empresa foi provocada exclusivamente pelo **disparo exponencial da taxa de saída**, que saltou de ~6% em 2023 para **19,2% da base ativa em Dezembro/2024**.
+    """)
+
+    st.markdown("---")
+    st.markdown("### **Fluxo Líquido Mensal & Fit por Canal de Aquisição**")
     
     col_flow, col_canal = st.columns([3, 2])
     
@@ -262,7 +436,6 @@ with tab1:
         st.markdown("#### **Fluxo Líquido Mensal de Contas (Entradas vs Saídas)**")
         st.caption("Eixo Y Positivo: Novas Entradas (+) | Eixo Y Negativo: Contas Saindo (-) | Linha Dourada: Saldo Líquido")
         
-        # Grafico Bidirecional Altair
         bar_in = alt.Chart(df_flow).mark_bar(color='#10b981', opacity=0.85).encode(
             x=alt.X('year_month:N', title='Mês (2023-01 a 2024-12)', axis=alt.Axis(labelAngle=-45)),
             y=alt.Y('entradas:Q', title='Novas Contas (+) / Saídas (-)'),
@@ -280,15 +453,8 @@ with tab1:
         )
         rule_zero = alt.Chart(pd.DataFrame({'y': [0]})).mark_rule(color='#64748b', strokeDash=[2, 2]).encode(y='y:Q')
         
-        chart_flow = (bar_in + bar_out + line_net + rule_zero).properties(height=320)
+        chart_flow = (bar_in + bar_out + line_net + rule_zero).properties(height=300)
         st.altair_chart(chart_flow, use_container_width=True)
-        
-        st.info("""
-        📉 **A Inversão do Balanço em 2024:**
-        - **2023:** Saldo líquido sempre positivo (+4 a +23 contas/mês). Empresa em expansão sustentada.
-        - **2024:** A partir de Junho/2024 o saldo colapsa em terreno negativo, culminando em **-79 contas líquidas em Dez/2024** (17 novas entradas vs 96 cancelamentos!).
-        - **Gatilho:** Vencimento em massa de contratos anuais firmados no final de 2023.
-        """)
 
     with col_canal:
         st.markdown("#### **Taxa de Cancelamento por Canal (Barra 100%)**")
@@ -305,47 +471,7 @@ with tab1:
         ).properties(height=260)
         
         st.altair_chart(chart_channel_stacked, use_container_width=True)
-        
-        st.markdown("""
-        **Efeito Fit de Necessidade:**
-        - **Eventos lidera perdas (30,2% de churn):** Vendas impulsionadas por networking sem dor latente comprovada.
-        - **Parcerias é a âncora (14,6% de churn):** Metade da perda de eventos (85,4% de retenção). Clientes recomendados com escopo já alinhado.
-        """)
-
-    st.markdown("---")
-    st.markdown("#### **Fact-Checking Rigoroso: Mitos Descartados na Investigação Causal**")
-    
-    mc1, mc2, mc3 = st.columns(3)
-    with mc1:
-        st.markdown("""
-        <div style="background: #1e293b; border: 1px solid #475569; border-radius: 6px; padding: 12px;">
-            <div style="font-weight: 700; color: #94a3b8; font-size: 13px;">❌ MITO: AUTO-RENEW PREVINE CHURN</div>
-            <div style="font-size: 20px; font-weight: 700; color: #f8fafc; margin-top: 4px;">22,0% vs 22,1%</div>
-            <div style="font-size: 12px; color: #cbd5e1; margin-top: 4px;">
-                A taxa de cancelamento entre quem tem auto-renew ligado e desligado é matematicamente idêntica. Clientes insatisfeitos cancelam ativamente.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-    with mc2:
-        st.markdown("""
-        <div style="background: #1e293b; border: 1px solid #475569; border-radius: 6px; padding: 12px;">
-            <div style="font-weight: 700; color: #94a3b8; font-size: 13px;">❌ MITO: USO DE BETA EXPLICA CHURN</div>
-            <div style="font-size: 20px; font-weight: 700; color: #f8fafc; margin-top: 4px;">54 vs 50 usos</div>
-            <div style="font-size: 12px; color: #cbd5e1; margin-top: 4px;">
-                Variação irrelevante. Clientes retidos utilizaram praticamente a mesma quantidade de recursos beta que clientes que saíram.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-    with mc3:
-        st.markdown("""
-        <div style="background: #1e293b; border: 1px solid #475569; border-radius: 6px; padding: 12px;">
-            <div style="font-weight: 700; color: #94a3b8; font-size: 13px;">❌ MITO: MAIS ERROS DE PRODUTO</div>
-            <div style="font-size: 20px; font-weight: 700; color: #f8fafc; margin-top: 4px;">5,4% vs 5,7%</div>
-            <div style="font-size: 12px; color: #cbd5e1; margin-top: 4px;">
-                Clientes retidos encontraram ligeiramente mais erros na telemetria que os churns. O cancelamento foi motivado por suporte e preço, não bugs brutos.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.caption("Eventos lidera perdas (30,2% churn), enquanto Parcerias tem a menor taxa (14,6% churn).")
 
 # ==============================================================================
 # TAB 2: MATRIZ CARTESIANA DE QUADRANTES (SCATTER PLOT COMPARATIVO)
