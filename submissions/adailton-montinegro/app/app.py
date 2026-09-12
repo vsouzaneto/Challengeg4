@@ -232,20 +232,27 @@ with tab1:
         st.caption("Eventos (30,2%) e Ads (23,5%) trazem contas frágeis; Parcerias (14,6%) é o canal com maior retenção e LTV.")
 
 # ==============================================================================
-# TAB 2: MATRIZ CARTESIANA DE QUADRANTES (SCATTER PLOT)
+# TAB 2: MATRIZ CARTESIANA DE QUADRANTES (SCATTER PLOT COMPARATIVO)
 # ==============================================================================
 with tab2:
-    st.subheader("2. Matriz Cartesiana de Quadrantes: Segmentação Estratégica da Base")
-    st.markdown("Distribuição das 500 contas por **MRR Mensal (Impacto Financeiro)** vs **Score de Risco de Churn (Probabilidade)**.")
+    st.subheader("2. Matrizes Cartesianas Comparativas: Base Total vs Ativas vs Canceladas")
+    st.markdown("""
+    Comparativo lado a lado para eliminar a confusão entre **Risco Preditivo (Contas Ativas)** e **Fato Consumado (Cancelamentos Históricos)**.
+    Todas as 3 matrizes utilizam a mesma escala métrica (Eixo X: Score 0.1 a 0.9 | Eixo Y: MRR 0 a 24k) com cortes em **Score = 0,40** e **MRR = $ 1.500**.
+    """)
     
-    col2a, col2b = st.columns([3, 2])
+    # Subsets
+    df_active = df_scores[~df_scores['churn_flag']].copy()
+    df_churned = df_scores[df_scores['churn_flag']].copy()
     
-    with col2a:
-        scatter = alt.Chart(df_scores).mark_circle().encode(
-            x=alt.X('churn_risk_score:Q', title='Score de Risco de Churn (0 a 1.0)', scale=alt.Scale(domain=[0.1, 0.9])),
-            y=alt.Y('latest_mrr:Q', title=f'MRR da Conta ({simbolo})', scale=alt.Scale(domain=[0, 24000])),
-            size=alt.Size('seats:Q', title='Licenças (Seats)', scale=alt.Scale(range=[30, 400])),
-            color=alt.Color('quadrant:N', title='Quadrante Estratégico', scale=alt.Scale(
+    col_m1, col_m2, col_m3 = st.columns(3)
+    
+    def build_scatter(data, title_text, point_color=None):
+        chart = alt.Chart(data).mark_circle().encode(
+            x=alt.X('churn_risk_score:Q', title='Score de Risco (0 a 1.0)', scale=alt.Scale(domain=[0.1, 0.9])),
+            y=alt.Y('latest_mrr:Q', title=f'MRR ({simbolo})', scale=alt.Scale(domain=[0, 24000])),
+            size=alt.Size('seats:Q', title='Licenças', scale=alt.Scale(range=[25, 260]), legend=None),
+            color=alt.Color('quadrant:N', title='Quadrante', scale=alt.Scale(
                 domain=[
                     'Q1: Zona Crítica (Alto MRR + Alto Risco)',
                     'Q2: Cauda Vulnerável (Baixo MRR + Alto Risco)',
@@ -253,34 +260,123 @@ with tab2:
                     'Q4: Base Estável (Baixo MRR + Baixo Risco)'
                 ],
                 range=['#f43f5e', '#fb923c', '#059669', '#38bdf8']
-            )),
-            tooltip=['account_name', 'account_id', 'industry', 'plan_tier', 'latest_mrr', 'churn_risk_score', 'quadrant']
-        ).properties(height=480)
+            ), legend=None),
+            tooltip=['account_name', 'account_id', 'industry', 'latest_mrr', 'churn_risk_score', 'churn_flag', 'quadrant']
+        ).properties(title=title_text, height=360)
         
-        # Linhas divisórias cartesianas
         rule_x = alt.Chart(pd.DataFrame({'x': [0.40]})).mark_rule(color='#64748b', strokeDash=[4, 4]).encode(x='x:Q')
         rule_y = alt.Chart(pd.DataFrame({'y': [1500]})).mark_rule(color='#64748b', strokeDash=[4, 4]).encode(y='y:Q')
-        
-        st.altair_chart(scatter + rule_x + rule_y, use_container_width=True)
+        return chart + rule_x + rule_y
 
-    with col2b:
-        st.markdown("#### **Resumo Executivo dos 4 Quadrantes**")
+    # --- MATRIZ 1: TODAS AS CONTAS ---
+    with col_m1:
+        st.markdown("#### **1. Base Completa (500 contas)**")
+        st.caption("Visão Histórica Global (Ativas + Canceladas)")
+        st.altair_chart(build_scatter(df_scores, "Todas as 500 Contas"), use_container_width=True)
         
-        for _, q in df_quadrants.iterrows():
-            badge_color = "#f43f5e" if "Q1" in q['quadrant'] else ("#fb923c" if "Q2" in q['quadrant'] else ("#059669" if "Q3" in q['quadrant'] else "#38bdf8"))
-            st.markdown(f"""
-            <div style="background: #1e293b; border-left: 4px solid {badge_color}; padding: 10px 14px; margin-bottom: 10px; border-radius: 4px;">
-                <div style="font-weight: 700; color: #f8fafc; font-size: 14px;">{q['quadrant']}</div>
-                <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
-                    Contas: <strong>{q['contas']}</strong> | MRR Total: <strong>{fmt_money(q['mrr_total'])}</strong> | Ticket Médio: <strong>{fmt_money(q['mrr_medio'])}</strong>
-                </div>
-                <div style="font-size: 12px; color: {badge_color}; margin-top: 2px;">
-                    Histórico de Churn: <strong>{q['churn_rate']}%</strong> | Escalações Médias: <strong>{q['escalacoes_medias']}</strong>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-            
-        st.info("💡 **Decisão Prescritiva:** O foco de choque imediato deve ser o **Q1 (Zona Crítica)**, onde 102 contas concentram **$462.530/mês de MRR** em risco direto.")
+        st.markdown("""
+        <div style="background: #1e293b; padding: 10px; border-radius: 6px; font-size: 12px; margin-bottom: 8px;">
+            <strong>Distribuição:</strong><br>
+            • Q1: 108 contas | MRR $493,3k<br>
+            • Q2: 146 contas | MRR $63,5k<br>
+            • Q3: 98 contas | MRR $604,9k<br>
+            • Q4: 148 contas | MRR $76,7k
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown("""
+        **O que indica visualmente:**
+        Apresenta a dispersão geral de calibragem do algoritmo. O lado direito concentra todas as contas com atritos acumulados na jornada.
+        
+        **Direcionamento:**
+        Usada para auditoria do modelo e validação executiva da metodologia estatística.
+        """)
+
+    # --- MATRIZ 2: CONTAS ATIVAS ---
+    with col_m2:
+        st.markdown("#### **2. Base Ativa (390 contas)**")
+        st.caption("Foco de Ação de CS & Retenção (Risco Real)")
+        st.altair_chart(build_scatter(df_active, "390 Contas Ativas (Sem Churn)"), use_container_width=True)
+        
+        mrr_q1_active = df_active[df_active['quadrant'].str.contains('Q1', na=False)]['latest_mrr'].sum()
+        cnt_q1_active = len(df_active[df_active['quadrant'].str.contains('Q1', na=False)])
+        
+        st.markdown(f"""
+        <div style="background: #1e293b; border-left: 4px solid #f43f5e; padding: 10px; border-radius: 6px; font-size: 12px; margin-bottom: 8px;">
+            <strong style="color: #f43f5e;">Alvo de Intervenção (Q1):</strong><br>
+            • <strong>{cnt_q1_active} contas ativas</strong> sob alto risco<br>
+            • <strong>{fmt_money(mrr_q1_active)}/mês</strong> em perigo real<br>
+            • Q3/Q4: 246 contas saudáveis
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown("""
+        **O que indica visualmente:**
+        Elimina ruído de perdas antigas. O canto superior direito mostra unicamente os clientes pagantes que estão sofrendo fricção técnica agora.
+        
+        **Direcionamento:**
+        Lista de trabalho diária da Squad de Customer Success. Choque imediato nas contas ativas do Q1.
+        """)
+
+    # --- MATRIZ 3: CONTAS CANCELADAS ---
+    with col_m3:
+        st.markdown("#### **3. Base Cancelada (110 contas)**")
+        st.caption("Diagnóstico Post-Mortem & Win-Back (Fato Consumado)")
+        st.altair_chart(build_scatter(df_churned, "110 Contas que Cancelaram"), use_container_width=True)
+        
+        mrr_q1_churned = df_churned[df_churned['quadrant'].str.contains('Q1', na=False)]['latest_mrr'].sum()
+        cnt_q1_churned = len(df_churned[df_churned['quadrant'].str.contains('Q1', na=False)])
+        
+        st.markdown(f"""
+        <div style="background: #1e293b; border-left: 4px solid #38bdf8; padding: 10px; border-radius: 6px; font-size: 12px; margin-bottom: 8px;">
+            <strong style="color: #38bdf8;">Autópsia de Perdas:</strong><br>
+            • Q1: <strong>{cnt_q1_churned} contas</strong> | <strong>{fmt_money(mrr_q1_churned)}</strong> perdidos<br>
+            • Outlier topo: <strong>Company_4</strong> ($21.691/mês)<br>
+            • Q3 e Q4: <strong>0 cancelamentos (0%)</strong>
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown("""
+        **O que indica visualmente:**
+        100% dos cancelamentos estão situados na metade direita (Q1 e Q2). Nenhuma conta cancelou em Q3 ou Q4, comprovando acurácia diagnóstica.
+        
+        **Direcionamento:**
+        Alimentar a engenharia com a causa-raiz dos cancelamentos e direcionar SDRs para campanhas de win-back.
+        """)
+
+    st.markdown("---")
+    st.markdown("#### **Tabela Comparativa Consolidada das 3 Visões**")
+    
+    tab_comp = pd.DataFrame([
+        {
+            "Dimensão": "Q1: Zona Crítica (Alto MRR + Alto Risco)",
+            "1. Base Total (500)": "108 contas ($493,3k)",
+            "2. Base Ativa (390) - Risco Real": f"{cnt_q1_active} contas ({fmt_money(mrr_q1_active)})",
+            "3. Base Cancelada (110) - Fato": f"{cnt_q1_churned} contas ({fmt_money(mrr_q1_churned)})",
+            "Conclusão": "50 contas já foram perdidas (ex: Company_4); 58 ainda podem ser salvas."
+        },
+        {
+            "Dimensão": "Q2: Cauda Vulnerável (Baixo MRR + Alto Risco)",
+            "1. Base Total (500)": "146 contas ($63,5k)",
+            "2. Base Ativa (390) - Risco Real": "86 contas ($36,5k)",
+            "3. Base Cancelada (110) - Fato": "60 contas ($27,0k)",
+            "Conclusão": "Erosão contínua de contratos pequenos; demanda réguas de auto-atendimento."
+        },
+        {
+            "Dimensão": "Q3: Vacas Leiteiras (Alto MRR + Baixo Risco)",
+            "1. Base Total (500)": "98 contas ($604,9k)",
+            "2. Base Ativa (390) - Risco Real": "98 contas ($604,9k)",
+            "3. Base Cancelada (110) - Fato": "0 contas ($0)",
+            "Conclusão": "Blindagem perfeita. Nenhuma conta deste quadrante cancelou."
+        },
+        {
+            "Dimensão": "Q4: Base Estável (Baixo MRR + Baixo Risco)",
+            "1. Base Total (500)": "148 contas ($76,7k)",
+            "2. Base Ativa (390) - Risco Real": "148 contas ($76,7k)",
+            "3. Base Cancelada (110) - Fato": "0 contas ($0)",
+            "Conclusão": "Estabilidade operacional total. Zero perdas históricas."
+        }
+    ])
+    st.table(tab_comp)
+    
+    st.info("💡 **Decisão Executiva:** O esforço humano de Customer Success deve ser focado estritamente na **Matriz 2 (Base Ativa)**, onde 58 contas concentram **$264.857/mês** em risco real. As contas da Matriz 3 já saíram e devem ir para o fluxo de pós-morte/win-back.")
 
 # ==============================================================================
 # TAB 3: MOTIVOS DE CHURN & FEEDBACKS

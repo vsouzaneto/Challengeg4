@@ -268,43 +268,43 @@
   "quadrants_summary": [
     {
       "quadrant": "Q1: Zona Crítica (Alto MRR + Alto Risco)",
-      "contas": 102,
-      "mrr_total": 462530.0,
-      "mrr_medio": 4534.61,
-      "churn_rate": 49.0,
-      "score_medio": 0.56,
-      "taxa_erro_media": 5.23,
-      "escalacoes_medias": 0.28
+      "contas": 108,
+      "mrr_total": 493328.0,
+      "mrr_medio": 4567.85,
+      "churn_rate": 46.3,
+      "score_medio": 0.55,
+      "taxa_erro_media": 5.19,
+      "escalacoes_medias": 0.24
     },
     {
       "quadrant": "Q2: Cauda Vulnerável (Baixo MRR + Alto Risco)",
-      "contas": 137,
-      "mrr_total": 57521.0,
-      "mrr_medio": 419.86,
-      "churn_rate": 43.8,
-      "score_medio": 0.54,
-      "taxa_erro_media": 5.16,
-      "escalacoes_medias": 0.15
+      "contas": 146,
+      "mrr_total": 63457.0,
+      "mrr_medio": 434.64,
+      "churn_rate": 41.1,
+      "score_medio": 0.53,
+      "taxa_erro_media": 5.15,
+      "escalacoes_medias": 0.14
     },
     {
       "quadrant": "Q3: Vacas Leiteiras (Alto MRR + Baixo Risco)",
-      "contas": 104,
-      "mrr_total": 635711.0,
-      "mrr_medio": 6112.61,
+      "contas": 98,
+      "mrr_total": 604913.0,
+      "mrr_medio": 6172.58,
       "churn_rate": 0.0,
       "score_medio": 0.34,
-      "taxa_erro_media": 6.01,
-      "escalacoes_medias": 0.2
+      "taxa_erro_media": 6.1,
+      "escalacoes_medias": 0.24
     },
     {
       "quadrant": "Q4: Base Estável (Baixo MRR + Baixo Risco)",
-      "contas": 157,
-      "mrr_total": 82628.0,
-      "mrr_medio": 526.29,
+      "contas": 148,
+      "mrr_total": 76692.0,
+      "mrr_medio": 518.19,
       "churn_rate": 0.0,
-      "score_medio": 0.33,
-      "taxa_erro_media": 6.11,
-      "escalacoes_medias": 0.15
+      "score_medio": 0.32,
+      "taxa_erro_media": 6.17,
+      "escalacoes_medias": 0.17
     }
   ],
   "churn_reasons": [
@@ -319,16 +319,6 @@
       "reactivations": 13.0
     },
     {
-      "reason_code": "support",
-      "event_count": 104,
-      "pct_events": 17.3,
-      "avg_refund": 11.73,
-      "total_refund": 1219.64,
-      "preceded_by_upgrade": 28.0,
-      "preceded_by_downgrade": 13.0,
-      "reactivations": 6.0
-    },
-    {
       "reason_code": "budget",
       "event_count": 104,
       "pct_events": 17.3,
@@ -337,6 +327,16 @@
       "preceded_by_upgrade": 24.0,
       "preceded_by_downgrade": 6.0,
       "reactivations": 12.0
+    },
+    {
+      "reason_code": "support",
+      "event_count": 104,
+      "pct_events": 17.3,
+      "avg_refund": 11.73,
+      "total_refund": 1219.64,
+      "preceded_by_upgrade": 28.0,
+      "preceded_by_downgrade": 13.0,
+      "reactivations": 6.0
     },
     {
       "reason_code": "unknown",
