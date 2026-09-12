@@ -105,27 +105,40 @@ def load_all_data():
     """
     df_stacked = con.execute(q_stacked).df()
 
-    # 3. Contas ativas mês a mês e Taxa Mensal de Churn calculados com rigor contábil
-    base_inicio = 0
-    records_act = []
-    for _, row in df_flow.iterrows():
-        ym = row['year_month']
-        ent = int(row['entradas'])
-        sai = int(row['saidas'])
-        base_exposta = base_inicio + ent
-        taxa_churn = (sai / base_exposta * 100.0) if base_exposta > 0 else 0.0
-        base_fim = max(0, base_exposta - sai)
-        records_act.append({
-            'year_month': ym,
-            'base_inicio': base_inicio,
-            'novas_entradas_mes': ent,
-            'contas_saidas_mes': sai,
-            'base_exposta': base_exposta,
-            'contas_ativas_mes': base_fim,
-            'pct_saida_sobre_ativas': round(taxa_churn, 1)
-        })
-        base_inicio = base_fim
-    df_active_monthly = pd.DataFrame(records_act)
+    # 3. Contas ativas mês a mês e Taxa Mensal de Churn Real (Base fechando em 390 contas ativas)
+    q_act_real = """
+    WITH last_churn AS (
+        SELECT account_id, max(churn_date) as final_churn_date
+        FROM churn
+        GROUP BY account_id
+    ),
+    acc_status AS (
+        SELECT 
+            a.account_id,
+            a.signup_date,
+            strftime(a.signup_date, '%Y-%m') as signup_ym,
+            a.churn_flag,
+            coalesce(lc.final_churn_date, DATE '2024-12-31') as final_churn_date,
+            strftime(coalesce(lc.final_churn_date, DATE '2024-12-31'), '%Y-%m') as final_churn_ym
+        FROM accounts a
+        LEFT JOIN last_churn lc ON a.account_id = lc.account_id
+    ),
+    months AS (
+        SELECT distinct strftime(signup_date, '%Y-%m') as ym FROM accounts ORDER BY ym
+    )
+    SELECT 
+        m.ym as year_month,
+        count(distinct case when a.signup_ym = m.ym then a.account_id end) as novas_entradas_mes,
+        count(distinct case when a.churn_flag and a.final_churn_ym = m.ym then a.account_id end) as contas_saidas_mes,
+        count(distinct case when a.signup_ym <= m.ym and (not a.churn_flag or a.final_churn_ym > m.ym) then a.account_id end) as contas_ativas_mes
+    FROM months m
+    CROSS JOIN acc_status a
+    GROUP BY m.ym
+    ORDER BY m.ym;
+    """
+    df_active_monthly = con.execute(q_act_real).df()
+    df_active_monthly['base_exposta'] = df_active_monthly['contas_ativas_mes'] + df_active_monthly['contas_saidas_mes']
+    df_active_monthly['pct_saida_sobre_ativas'] = round(100.0 * df_active_monthly['contas_saidas_mes'] / df_active_monthly['base_exposta'], 1)
 
     # 4. Pareto Financeiro (110 contas que cancelaram)
     q_pareto = """
