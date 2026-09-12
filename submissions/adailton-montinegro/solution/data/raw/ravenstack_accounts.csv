@@ -1,0 +1,501 @@
+account_id,account_name,industry,country,signup_date,referral_source,plan_tier,seats,is_trial,churn_flag
+82412398-206b-409f-b297-9aa03adee5a7,"Thomas, Lee and Greene",EdTech,DE,2023-03-22,ads,Pro,9,False,True
+9e8d9235-adef-4411-b52a-e59ac0d8e8e7,Short-Garcia,Retail,UK,2026-01-17,Event,Pro,10,False,False
+2757457f-63c8-4d15-a3da-cbe8c594e424,"Gallegos, Adams and White",Hospitality,AU,2021-12-20,ads,Pro,12,False,True
+5091c923-b75a-4517-a887-1c0f457c8a05,"Bryan, Smith and Booth",EdTech,US,2022-07-15,Other,Enterprise,13,False,True
+844c0472-92a9-4103-8a0d-8bb9c889d794,Mitchell-Jordan,Healthcare,AU,2021-07-31,Other,Enterprise,12,True,True
+66dd2bcf-a7ce-40ae-bc97-926c2406311b,"Washington, Hardy and Bray",Hospitality,UK,2022-09-16,Google,Pro,15,False,True
+c8a054e3-62cf-4aeb-ad82-544cd310cb8e,Torres Group,Hospitality,UK,2022-07-19,Other,Pro,9,False,True
+7cd3d5e1-5ec3-430c-a8a2-b1d9b2839d66,"Simmons, Meadows and Griffin",EdTech,UK,2023-04-19,Other,Free,9,False,False
+d4a52e49-12be-41ee-99dd-d1e4ff5e3b53,Estrada-Nolan,Finance,AU,2024-08-28,Event,Pro,14,False,True
+86b46e5c-fda1-44d9-9d76-f9d7a58e0749,"Lewis, Kennedy and Santana",Healthcare,UK,2021-11-25,Other,Free,13,False,False
+73fbffdd-8152-4d5c-828d-4fbb32d4d481,Jackson-Meza,EdTech,AU,2023-04-16,Google,Free,17,False,False
+0ee17029-cea8-485a-962e-6d471da8c78b,Harvey PLC,Healthcare,UK,2023-04-21,Organic,Enterprise,16,False,False
+def62551-7dae-401d-bac4-1d1625686653,Carter Inc,Healthcare,DE,2024-09-13,Event,Free,11,False,False
+75f76097-3f8d-48aa-a520-a947e6b7e61f,Hayes and Sons,Hospitality,UK,2025-08-17,Organic,Free,12,True,True
+69059bfb-5e07-4faa-841f-e400357a1573,Marshall-Elliott,Retail,AU,2024-02-22,Event,Free,17,False,False
+703c5acb-1664-48ad-a7f5-cafb433f8c13,Mckee-Lee,Healthcare,CA,2023-03-30,Partner,Free,13,False,True
+5a251a49-cfe9-46ba-bec1-43fad717d725,"Kim, Gonzales and Mills",FinTech,UK,2024-04-07,ads,Pro,13,False,True
+f4699be2-38e9-4e68-88db-0734cc894ae3,"Romero, Gonzalez and Brooks",Hospitality,CA,2025-01-10,Partner,Free,16,False,True
+70f31ff5-5808-4c22-b7ec-13dc21c04427,Patton-Jenkins,Finance,DE,2021-05-09,Other,Free,9,False,False
+b0464072-9b13-475e-b050-f7c59e90f969,White-Green,Retail,US,2024-06-04,Organic,Free,18,False,False
+39273c88-ef61-44ff-9486-1c82f8309f8e,Jimenez Ltd,FinTech,DE,2023-02-06,Other,Pro,14,False,False
+b1b08f05-32a4-4dc7-9f69-914b4d65b7e5,Burton Ltd,FinTech,UK,2023-08-20,ads,Pro,11,False,False
+6f4d2655-4874-4b7d-8485-e57025b786ac,"Smith, Garrison and Thomas",Finance,CA,2024-10-26,Event,Free,17,True,False
+e6b819eb-7355-4841-b11c-e148e91d1bfb,"Mullen, Brewer and Hernandez",Retail,CA,2021-11-13,ads,Free,9,True,True
+375b90dc-e1e8-4584-b9c0-5cd205eb970c,Castaneda-Ashley,Hospitality,AU,2021-03-22,Google,Free,9,True,False
+1b812897-5a25-4881-b4a8-6f6359972374,"Alvarez, Joseph and West",Technology,CA,2025-04-24,ads,Pro,18,False,True
+076c98cd-0e94-4f4b-a32a-1fab009b2414,Brock-Mcdonald,Retail,AU,2024-06-16,Google,Pro,13,False,False
+2a6b0757-43c0-48be-9304-8c5f58b808be,"Rosales, Mitchell and Hines",Finance,US,2023-04-05,ads,Free,11,False,True
+a41a6701-027c-4e5a-8816-9b36f39ed038,Gibson-Morris,FinTech,UK,2021-09-12,Google,Free,10,False,True
+28155b9f-4fb5-4276-b477-ef8c5d13deb9,Davis PLC,Hospitality,AU,2022-04-01,Organic,Free,10,False,True
+5223cc36-293c-48e6-9d51-96422156a1f5,Harper and Sons,Retail,US,2024-04-17,Other,Pro,6,False,False
+4d3b2109-8b49-487e-b447-928687c5d083,"Williams, Logan and Camacho",Technology,CA,2022-11-17,Other,Free,10,False,False
+36227862-6894-4f5c-9914-b6aed818c0be,Wilson-Jones,Technology,CA,2025-10-25,Partner,Free,15,False,False
+6f5b2906-4d6d-4b56-ac32-107a537975de,Morton-Chase,Healthcare,US,2021-03-25,Other,Free,12,False,False
+14bd02a8-ca70-42e0-afc6-870cb81b37a7,"West, Henderson and Ramirez",Healthcare,CA,2021-11-01,Event,Free,17,False,False
+4ef28fbf-f320-471f-8775-01044a6081e2,Pollard and Sons,EdTech,US,2023-04-27,ads,Pro,11,False,True
+aeca099a-29eb-4c22-bf16-80dc6fa53a91,"Robinson, Jones and Welch",Finance,AU,2022-12-03,Partner,Free,16,True,True
+179899c8-23d2-493e-9a03-89b3f2ada527,Gray Group,Retail,AU,2023-04-16,Event,Pro,14,False,False
+9f488ee1-c1d0-4319-8af3-935c1a466d4f,"Sparks, Jackson and Miller",Retail,US,2021-06-14,Event,Pro,12,False,False
+d494246b-164b-4a31-b836-0b1123441539,Hoover-Campbell,EdTech,AU,2021-10-03,Google,Free,11,False,True
+0950e8b8-02a6-4700-8dde-2472b25b6572,"Jimenez, Glass and Stone",FinTech,AU,2022-11-26,Other,Free,12,False,True
+b9598ab2-44a5-4bf2-8375-006d153ef00a,Wilkerson-Arias,FinTech,AU,2022-08-22,Organic,Pro,15,False,True
+d8cab586-bbc8-45fa-b79d-dec103510033,Harrison-Alexander,EdTech,DE,2022-06-18,Organic,Free,14,False,False
+bb407952-a9a2-4bfa-b08a-c0ecd76a1658,Walker Ltd,FinTech,UK,2025-11-14,Partner,Free,14,False,False
+7f03f6d9-24b9-4044-92d0-6c6f528c92ae,House-Glover,Healthcare,CA,2021-03-13,Organic,Enterprise,10,False,False
+25880355-74ca-4a11-b915-e567147c886b,Guerrero Inc,Retail,DE,2021-12-30,ads,Free,9,False,False
+bdd22797-ad47-4398-9794-7b76421ed467,Salazar-Ball,EdTech,AU,2023-08-28,Organic,Free,12,False,False
+62d2eec1-66dc-4f9d-b093-51da70aeb6fd,"Lopez, Jacobs and Mason",Retail,US,2025-08-21,Partner,Free,11,False,True
+dd77860d-b667-415f-b661-4aae822e2445,"Holmes, Williams and Wright",Technology,AU,2021-08-28,Organic,Enterprise,14,False,True
+6f3283a4-e446-4e6c-aeff-50700da8e1b3,Berry-Mckinney,Healthcare,UK,2024-12-10,ads,Free,9,False,False
+3573bf25-9b3e-4454-90e7-ce082d8967ca,"Ramsey, Whitney and Coffey",Hospitality,AU,2024-08-03,Google,Free,12,False,True
+743a2c6d-5b39-41e3-9a52-02014b4d5db8,"Graham, Olsen and Costa",Healthcare,US,2022-02-21,Partner,Free,12,False,True
+3b18cdad-7354-480d-b458-c6966369c428,Williams PLC,EdTech,UK,2024-02-16,Google,Free,24,False,True
+c70d0a21-7d37-41f7-a028-9de5f58808af,Good-Hodges,Hospitality,AU,2024-07-15,Google,Free,10,False,True
+e9bcb8c6-3951-402d-9531-8346c74ae2ea,Jones-Lin,Technology,UK,2026-01-23,Google,Free,7,False,True
+1e20501d-1fb2-4f61-9ed9-47f68b79197e,"Adams, Zuniga and Wong",EdTech,CA,2022-01-25,Event,Free,14,False,False
+80f6dce8-10f7-4965-a02e-f984892bfb74,Lyons-Bender,Finance,CA,2021-09-29,Other,Free,9,False,False
+d9147c02-af9a-4c4d-891e-0f4e6cf46798,"Miller, Murphy and Craig",Retail,AU,2021-06-09,Event,Free,8,False,True
+6a6ce026-9397-41c4-acf7-30cf5d1a05c0,Burch-Montoya,Technology,UK,2021-12-06,Other,Free,11,False,True
+65fe35a1-7f3e-4b86-87b7-e2e2f846f4f5,Cole-Palmer,Retail,US,2024-08-20,Google,Free,11,False,False
+1ae7d97d-6d8d-4270-a0bb-3ffe34d620bb,Dudley Group,FinTech,AU,2026-01-20,Partner,Free,13,False,True
+c573eb60-69ce-4207-a6f8-8f364b5bfaea,"Estrada, Williams and Foster",Finance,CA,2025-02-13,Other,Pro,11,False,True
+bee10e7e-6511-4ced-ab20-f665343c2541,"Harrison, Johnson and Roberts",Finance,CA,2025-11-27,ads,Free,18,False,True
+d39c94eb-22a2-413a-883b-004da59a3656,Williams-Hughes,Technology,AU,2026-01-01,ads,Free,16,True,False
+36b8f73e-e639-462d-aa8a-50bb5dbc2a3a,"Sanchez, Wheeler and Harvey",Finance,UK,2024-05-29,Organic,Free,14,False,False
+2558046e-948c-464f-940a-73ca80e4c7d8,Zhang PLC,Hospitality,CA,2024-08-13,Other,Pro,13,False,True
+f58ba41a-e585-4db1-9553-79a85da066da,"Miller, Lucas and Williams",Finance,UK,2023-10-26,Partner,Pro,13,False,False
+b174b967-224f-48a8-b1d4-ba3126faebf0,Carlson-Cruz,Retail,CA,2022-07-09,Event,Free,15,False,True
+8d702758-365d-4d9b-bf2e-5676e4b9cce9,Frazier Inc,Retail,CA,2022-07-27,Google,Free,15,False,False
+f371964a-5011-41e7-8f18-136d18bcecf4,"Cole, Glass and Cunningham",EdTech,DE,2021-11-08,Organic,Enterprise,10,True,False
+8c5b8d31-a81e-4d52-93cd-5951817aa003,Kelly-Norman,Retail,CA,2024-08-13,ads,Free,11,False,False
+d1657b6f-617f-42d7-9c86-26c0b18e610a,Dixon Inc,EdTech,US,2024-07-27,Event,Free,9,True,True
+3bed2097-3c8d-4740-9d46-0ce2f7c804dd,"Le, Lewis and Hayes",Retail,AU,2021-12-09,Event,Free,21,False,False
+7a8140d7-74c4-4e61-acdb-2765398c5fb1,Gay Inc,Hospitality,AU,2022-11-16,Google,Free,19,False,True
+413d7a40-f2a2-49a2-b542-d9bc717244a9,Robinson-Lee,EdTech,UK,2022-03-10,Other,Enterprise,13,False,False
+47965465-a0cf-4c69-8ab0-52a2f5cd2a0f,Thompson Ltd,Healthcare,CA,2025-12-29,ads,Pro,14,False,True
+f11136f0-4009-482e-8a94-0a4033f10645,White-Lewis,FinTech,US,2025-01-11,Partner,Free,8,False,True
+119d1887-96eb-472c-b555-b583a95b9980,Young-Martinez,Technology,UK,2022-04-02,Event,Free,13,False,True
+931fcbad-59aa-4cef-ae3d-44f875876f5d,Mcdaniel Group,Retail,DE,2023-07-16,Google,Enterprise,8,True,True
+4ff3cae1-8a9e-496c-bf79-c48991b38331,Campbell-Clark,Finance,UK,2022-11-15,Partner,Pro,14,False,True
+60cec69c-5b0f-4d9c-ac1f-373c766c3f6f,Johnson-Rogers,Retail,UK,2023-12-06,Other,Pro,12,False,False
+ec0cd9c5-2c3d-4c9d-ab43-73ce0d3a1089,"Mitchell, Nelson and Flores",Finance,CA,2023-05-28,ads,Enterprise,9,False,True
+040a492d-5532-45f0-a194-f4e9dd865278,Fernandez and Sons,FinTech,DE,2025-12-25,Other,Enterprise,13,False,True
+c22a8c23-0e65-4d45-b42c-fd11e57d623f,Garcia LLC,FinTech,UK,2021-09-19,Event,Pro,14,False,True
+868f904f-7fef-45f5-b95f-2928d064d136,"James, Stewart and Higgins",FinTech,US,2025-06-28,Partner,Free,12,False,True
+73227ba4-2c2d-4fa7-ab92-14f2083ad2a0,"Wood, Ramos and Sampson",Finance,US,2021-05-25,Partner,Free,7,True,True
+a1fca56f-0020-41db-b80f-49f7c70761e1,Wilson-Jimenez,Retail,AU,2023-01-22,Partner,Pro,10,False,True
+f9a84b24-0f5e-468c-abc4-4b5ffad4909b,"Morris, Thompson and Williams",FinTech,DE,2024-08-26,Event,Free,15,False,True
+01d518a9-6d92-42be-9aa7-4404c6869e74,"Bentley, Byrd and Orr",Hospitality,DE,2023-06-18,Event,Pro,14,False,True
+dbd31ac0-19e9-4b11-abfa-6e04f219cbba,Jackson-Lawson,EdTech,AU,2023-02-14,Other,Free,10,False,True
+3deacd76-e1e1-4ab9-83c0-c034960f0b43,Walker-Flores,Finance,UK,2023-02-12,Organic,Free,9,True,True
+a8b58e08-20bd-4fb8-a83e-792c4f5c4ca7,Erickson and Sons,Finance,DE,2023-12-11,Other,Free,17,False,True
+de450260-bad9-4f91-be56-eb21d4dec4f7,"Lloyd, Mckinney and Collins",Retail,US,2021-09-10,ads,Free,16,False,True
+8f6c412d-1275-4892-90b5-3214ae71d9af,"Austin, Day and Johnson",Finance,US,2022-08-27,Google,Enterprise,15,True,True
+a3b2011d-8a6a-4e67-8944-7c4699201fc8,Rowe Group,Finance,CA,2021-06-09,Partner,Pro,13,False,True
+f73e8b55-7f0f-4fc6-9988-a42362c6b41f,Ortiz Ltd,FinTech,DE,2023-05-26,Organic,Pro,9,False,False
+82264b53-b70c-448d-9685-94ec51e9fe6d,Brown-Copeland,Retail,UK,2023-08-28,Google,Pro,22,False,True
+34d4c7c6-08a9-4a40-9d1d-7236b12cfced,Williams Inc,FinTech,AU,2021-09-16,Organic,Free,8,False,True
+15ce015c-88a1-416b-9318-97776c7e1c3a,Moore Group,EdTech,AU,2025-03-19,Other,Free,16,False,False
+df77997e-200e-47b8-959d-4d58efbc51ea,Collier-Gillespie,EdTech,UK,2023-10-29,Event,Free,15,False,True
+2811ad45-f1dd-445c-9695-e813747e519a,"Diaz, Anderson and Browning",FinTech,CA,2024-01-03,Partner,Free,14,False,False
+cd3b54a4-1f50-4e7f-be06-0550d678dac2,Davis Inc,EdTech,AU,2024-11-27,Other,Free,17,False,False
+65b39b00-2a58-4dcb-b668-304c6a1208c8,Gray-Mayo,Retail,DE,2021-09-17,Google,Free,9,False,False
+885c3004-4b03-47c8-baa2-5609234f851a,"Lee, Horton and Snyder",Technology,CA,2023-08-01,Google,Free,5,False,False
+5c00a276-72df-4f6c-b5a7-878756634700,Gilbert PLC,FinTech,DE,2025-05-30,Google,Enterprise,10,False,True
+189f41bb-ab3f-4a7c-9f3d-b7baeda9a347,Bishop-Goodwin,Hospitality,US,2025-03-23,Google,Pro,13,False,False
+cb19d691-6a34-449e-bea6-308f120fce5d,Cordova Group,Hospitality,CA,2023-08-29,Google,Free,9,False,False
+f09edd2d-f019-4cb7-8ac4-55d07237453f,Wilkerson-Day,Finance,AU,2022-08-03,Organic,Pro,17,False,False
+d779cfee-3a78-45b5-ae28-f013ae079b5a,"Daniels, Adkins and Brown",EdTech,CA,2021-11-16,Other,Pro,14,False,False
+3d9c4a0d-d3c5-4d27-9fed-233c9dc07971,Yu Inc,Hospitality,CA,2025-09-28,Partner,Free,8,False,False
+4128d269-1186-432f-b6f0-d9411022c932,Jones-Hensley,Finance,CA,2022-03-12,Event,Pro,17,False,True
+c1c68ea7-edd5-4ef6-a61e-6532d8ead2d4,Hernandez-Jones,Technology,CA,2025-10-22,Event,Pro,11,False,True
+32f2975c-33e6-4fff-9c8a-609ea7a7c877,Miller Ltd,Retail,DE,2023-08-31,Other,Free,10,False,True
+f8919d30-20f3-4ede-aedb-edf8d0b009e2,Abbott-Munoz,Retail,US,2022-06-27,Other,Free,17,False,True
+f60a8505-4714-44de-90ab-bf8c652275e0,Combs Ltd,Retail,UK,2021-06-18,Event,Free,12,False,True
+cf90904a-2e18-4dfb-8106-272271bf0664,Garner-Thornton,Hospitality,CA,2022-01-18,Event,Free,12,False,False
+0ee141fb-be6f-4094-898e-adaf44ce6c41,Hancock Inc,Technology,AU,2025-11-07,Organic,Free,12,True,False
+e9b16a48-7bd2-45ac-87b7-c4c618f7b1f5,Miller-Wright,Hospitality,CA,2022-06-10,ads,Pro,8,False,False
+04a5a354-8dcf-4f91-aa53-5409af6d05c1,"Phillips, Wagner and Jordan",EdTech,AU,2024-03-11,Partner,Free,13,False,True
+95688d2f-89b1-4c99-b11b-00f19e8c9a7f,Cox LLC,Hospitality,DE,2024-02-21,Google,Free,16,False,True
+5e0a128a-6d39-401e-af06-6cb6f8e40610,"Avery, Horton and Fernandez",Technology,AU,2021-07-14,ads,Enterprise,12,False,False
+8d52d60e-24b5-476a-ab39-ed2efb64bda8,"Hoffman, Santiago and Jenkins",Technology,UK,2024-04-10,Other,Pro,17,False,False
+40aa0e5c-c8a7-48ba-a5b4-9b5cf4582dd4,Moon-White,EdTech,US,2024-01-11,Event,Free,12,False,False
+57113301-8fc0-4cda-afa9-200a7f7c99e5,Morgan-French,Technology,AU,2023-12-21,ads,Free,13,False,True
+67614b5c-c072-4dbc-8791-5a32db7d2096,"Ferrell, Jones and Lewis",Technology,AU,2021-12-03,Partner,Free,16,False,True
+f246031e-917f-407a-bb9d-de92df96b409,Barnes PLC,Retail,US,2024-03-10,Other,Pro,10,False,False
+9d9ce12d-7270-4eea-a381-85cee190a557,May-Ross,EdTech,UK,2025-07-30,Google,Free,22,False,True
+55d1f7c4-798e-4597-b870-e339544a92a8,"Wilson, Pena and Rich",Healthcare,CA,2022-10-03,Google,Free,18,False,True
+849ac761-7933-4be3-8398-a86ae4a70c2c,"Wise, Conley and Stephenson",Healthcare,AU,2025-09-09,Partner,Enterprise,8,False,True
+d2b8a616-4930-452b-8e07-28b3fc0ffd10,Russell-Daniels,Technology,US,2021-04-10,Partner,Free,8,False,True
+ef5eb2e3-f145-46fd-adc0-c189a5871ee3,Strickland-Palmer,Healthcare,DE,2025-05-22,Event,Pro,19,False,True
+7885c747-229d-4236-896c-70ba00d81e29,Novak and Sons,Healthcare,US,2021-06-22,Google,Enterprise,14,False,False
+845a84b8-fc61-4184-b360-39b1f0b1c1b5,Rodriguez-Johnson,Technology,DE,2025-10-23,Other,Free,5,False,True
+7954db6c-d24b-4f3c-8c0e-0614974e2d21,"Johnston, Sanchez and Kennedy",Healthcare,UK,2024-12-03,ads,Pro,14,False,True
+a58779ec-b609-4764-a32a-c1a1213d7732,"Hensley, Powell and David",Hospitality,CA,2022-05-23,Other,Free,12,True,False
+9903fa93-e06e-4f1d-aa63-a0b6c7a0da2a,"Fuller, Ingram and Moss",Finance,US,2022-02-14,Organic,Enterprise,12,False,False
+405410e4-b86c-485f-a751-e0746b06f5f4,"Lucas, Parker and Alexander",EdTech,AU,2023-12-06,Organic,Free,15,False,True
+e24edc8d-2666-4066-938f-21205988892f,Thomas and Sons,Finance,UK,2024-02-28,Partner,Pro,15,False,False
+aefb6ac4-96fc-49dc-aa9c-26fd6484672c,"Hernandez, Martinez and Weber",Technology,US,2021-03-21,Event,Free,18,False,True
+5529d2d7-69e0-4ac1-8965-58d3b0538f94,Roberts-Landry,Retail,AU,2025-07-07,Organic,Pro,13,False,True
+26848b4a-e302-486a-a1bf-9e150d492f8b,Hicks-Hill,EdTech,US,2023-10-18,Google,Pro,16,True,True
+8e98453d-db96-490d-a77f-df3670b8438c,Baird-Sanchez,Technology,DE,2024-04-11,Other,Free,9,True,True
+63c3fb67-69b4-463b-98b3-a967015af6c9,Gonzalez Group,Retail,US,2022-07-30,Other,Pro,11,False,True
+e5717e50-ccc6-4fb7-a5b8-cd694d9bc645,Davis-Lozano,Finance,US,2022-04-17,Partner,Free,10,False,False
+7a1ff574-700e-4eb1-92c4-40fe87308af9,Paul-Kline,Technology,US,2025-02-08,ads,Free,15,False,False
+4105a2d5-de0e-427b-9364-30fb40f0cffb,Riggs PLC,EdTech,UK,2023-02-05,Partner,Free,15,False,False
+e7d38d53-0327-41b4-a1b6-f18b2af1f2ba,King-Miller,EdTech,US,2023-05-03,ads,Free,22,False,True
+a4eacc6a-b83a-4aab-928b-2bb9344e6565,"Carroll, Sullivan and Bass",FinTech,AU,2024-07-06,Partner,Free,9,False,False
+b4681d85-41c0-410c-8115-a2e25b704839,Mendez and Sons,Hospitality,DE,2021-11-09,Partner,Enterprise,12,False,True
+cde5472e-5119-4c72-aec3-514759171848,Taylor and Sons,Healthcare,DE,2023-02-23,Partner,Free,16,False,False
+17f03bda-9451-46a7-ab11-356f993c8050,Torres-Pope,Retail,US,2023-05-23,ads,Pro,8,False,True
+8598594b-44f0-4c72-8862-0836f6b0b950,"Becker, Taylor and Davis",FinTech,UK,2022-10-08,ads,Free,7,False,False
+ed3a172a-034f-4a43-9f4e-d0e2ba7e7f1d,Smith-Bowen,Healthcare,UK,2021-10-14,Partner,Pro,18,False,False
+507779f2-8e43-4cbd-a5c9-3b733fe2b2a7,Martinez-Dudley,Healthcare,AU,2025-05-17,Organic,Enterprise,9,False,False
+29c6ba92-9dd3-4082-86b0-9c31a9c5333a,Webster Inc,Technology,US,2022-08-31,Event,Free,18,False,True
+95995f3f-be3a-4e85-8a32-8358d67c0869,Gutierrez Group,Healthcare,DE,2026-01-04,Event,Pro,15,False,False
+0788880b-db01-46f9-bd8a-ecb0ea8a27ab,Howell and Sons,Hospitality,UK,2022-10-17,Event,Free,14,True,True
+8e82ad70-8df3-4a8f-a037-926fcd111c16,Scott and Sons,EdTech,US,2023-01-23,ads,Pro,12,False,True
+15dbb480-16be-4cbd-bd72-325d0d02a27c,"Wright, Garcia and Deleon",FinTech,UK,2024-11-14,ads,Free,13,False,True
+0347fa9d-9d26-4068-9c44-adf24c981dd2,"Wood, Hunter and Peterson",Healthcare,UK,2023-08-23,Organic,Enterprise,16,False,True
+c12ceea1-0a66-4ec3-ae45-02732ab67c63,Christensen PLC,Technology,DE,2021-08-06,Event,Free,13,False,False
+595783c1-02b5-4f67-aaeb-e49f0990aa1f,"Edwards, Baker and Anderson",Hospitality,CA,2022-04-11,Event,Free,8,False,True
+9cca5217-df20-4f28-9102-247505ad7a41,"Rodriguez, Brennan and Garrison",Finance,AU,2021-09-05,Partner,Pro,14,True,False
+e41f5b8d-16f5-499f-9939-feca0a43157a,Gregory-Watkins,EdTech,AU,2023-04-26,ads,Free,10,False,True
+3f3f1e60-9278-4667-be02-b0ef8c691288,"Kennedy, Johnson and Lucas",EdTech,DE,2021-10-09,Event,Free,15,False,True
+82299ef0-692c-4015-9878-77a4330217ae,Hernandez Inc,FinTech,UK,2021-04-27,Other,Free,9,False,False
+dbe1293f-5e25-4052-ad5c-17ccf5b84a1e,"Mcclain, Miller and Henderson",EdTech,US,2025-10-18,Organic,Free,9,False,True
+071dc089-fdbb-4189-9103-698e25fb961b,Reynolds Ltd,Healthcare,UK,2025-05-22,Other,Free,12,False,False
+85c50457-3625-47df-a8b2-619bc9c3f534,Larson-Holloway,Technology,DE,2023-02-27,Other,Free,18,False,False
+ebb3ed1f-af4e-401a-9cc8-89b26a48613b,Robertson-Hays,EdTech,AU,2025-11-18,Organic,Free,15,False,False
+5a320048-52ff-4cc2-9669-d83bd0215714,"Barnett, Rogers and Snyder",EdTech,UK,2025-07-31,Other,Free,10,False,True
+d42ded26-a57d-4c52-93b0-81d1618ccd33,Curry Inc,Finance,AU,2025-02-19,Event,Pro,6,False,False
+387077d7-3ae5-4718-b932-2cad78edad52,James Group,Finance,US,2025-09-26,ads,Free,14,False,False
+b60b8e87-33bb-4d25-90ef-fe3684478477,Hughes Inc,Retail,AU,2024-09-03,Organic,Free,14,False,False
+9879fa8a-75d0-461f-9e63-caea0d15d0f0,"Arroyo, Miller and Tucker",Hospitality,AU,2022-01-06,Partner,Free,15,False,True
+9730db1a-2465-4f8b-a3b1-7e8bc7930789,"Nelson, Morton and Medina",Healthcare,CA,2021-11-12,Other,Free,17,False,True
+1070b661-78bf-44ae-9744-09fed4b70de5,Marshall-Petersen,EdTech,CA,2026-01-18,Organic,Pro,12,False,False
+aae47c25-1088-4bac-829d-ac47d6560aff,Walsh LLC,EdTech,CA,2023-05-27,Google,Free,16,False,True
+36364b90-f86b-4435-9756-3c5ab9ccf93d,"Dyer, Potter and Mack",Technology,AU,2025-06-19,Google,Free,12,False,True
+351ab627-7268-4d96-86ad-8de51772100f,Bean LLC,Retail,DE,2023-07-22,ads,Pro,16,False,False
+9eae9b96-334d-490c-9c5d-fe8b2da4717e,"Higgins, Strickland and Martin",Hospitality,AU,2021-07-08,Event,Pro,16,False,True
+f8d3e579-42d8-471f-875a-cb16b6077991,"Reid, Ferguson and Sanchez",Retail,DE,2023-01-13,ads,Free,9,False,False
+438e3886-8b55-4b73-9839-e63b60077c38,Reid Group,FinTech,DE,2023-05-10,ads,Pro,13,False,True
+efe2492d-e5c8-43c7-9cd0-ca1bf693754d,"Morales, Thomas and Schultz",Hospitality,CA,2022-04-09,ads,Enterprise,21,True,True
+5022f098-7ebc-4f4c-ac98-b4a3664b412f,Mccarthy Inc,EdTech,UK,2023-12-26,ads,Free,9,False,False
+6cf1601a-a1db-404e-a899-ec62bb1d1db9,Williams-Cook,EdTech,US,2021-04-23,Partner,Pro,14,False,True
+ae83e383-2558-4878-a427-a63e17aa17e1,"Ross, Robinson and Bright",Hospitality,CA,2022-06-23,Partner,Pro,16,False,False
+040c8e76-f5ae-4f0d-b8e0-c933983c9fdf,Price LLC,EdTech,CA,2024-01-21,Organic,Free,17,False,True
+2822b220-5d17-4506-a389-7df0032376f3,"Brooks, Lam and Hayes",Healthcare,UK,2025-04-13,Google,Free,12,False,True
+b0b4c3bf-ae0a-42a7-9a70-60eb6ab3a5df,"Turner, Schneider and Johnson",Hospitality,US,2024-06-06,ads,Free,13,False,True
+8290db09-7629-49d4-a0b7-08462b0b9da7,Allen-Allen,Retail,AU,2022-07-01,Organic,Pro,14,False,True
+fe0e3d67-8f43-45f8-9679-17919f640746,"Hicks, Bullock and Bailey",Hospitality,AU,2021-02-08,Google,Enterprise,16,False,True
+6115c860-9505-43a8-80c9-b7dc83a2db80,Spencer-Lee,EdTech,CA,2021-08-09,Other,Pro,6,True,True
+ebd58fd9-aa05-4fc6-ad4b-620e5ec1e0fc,"Evans, Stewart and Walton",Healthcare,US,2021-09-26,Event,Free,8,False,True
+d47637ef-d697-4657-9cdd-6291a9557735,Rodriguez LLC,Healthcare,CA,2022-05-23,Partner,Pro,19,False,True
+13ddb970-bb69-4376-95d6-5ac6d4c7300b,"Smith, Montoya and Evans",FinTech,DE,2022-11-24,Other,Free,5,False,False
+e6f12751-1ae0-4c12-ae69-dac5f8b5200b,"Ferrell, Rice and Maddox",Retail,CA,2023-01-31,Google,Free,10,False,True
+70f5e1a8-180d-4f10-bd41-05cd42a2683a,Carlson-Smith,Finance,CA,2021-04-17,Other,Free,12,False,True
+652fa8b0-bfac-48d2-b037-f65d4ace48fa,"Stanley, Tucker and Lee",Finance,AU,2021-04-28,Event,Pro,17,False,False
+c6f9984f-1971-4b40-bb48-3b5b64880d73,Bass PLC,Hospitality,AU,2023-11-17,Google,Free,9,False,False
+eba9c23d-8bcc-432a-a1d3-aa54380a0352,Harrell LLC,FinTech,AU,2022-11-18,Other,Pro,14,False,True
+5480d511-d039-4eb5-aa01-231f6bc8ac5e,Wagner-King,Technology,DE,2022-07-06,Partner,Free,11,False,False
+ecff4491-bf15-4132-b72f-38e50058b3e2,Newton and Sons,Hospitality,AU,2022-12-31,Partner,Free,7,True,True
+a4e790e3-1859-4bc5-8951-62b65b32e67c,Vargas Ltd,FinTech,US,2023-04-27,Organic,Free,15,False,True
+a77f9905-7283-4016-89bf-b550da966adc,"Rivera, Martinez and Richardson",Retail,UK,2023-10-26,Other,Free,12,False,False
+2a4377d6-fbb8-40af-a1e4-cbe139f9802a,"Clark, Guerrero and Moore",Retail,US,2025-03-12,ads,Enterprise,16,True,False
+680fc4b2-e867-4365-8d0f-175ac8a905e5,Ryan PLC,Retail,US,2024-03-08,Other,Free,9,False,False
+0d5b7d2f-f267-4b0f-932e-29d54a340d86,"Brown, Harris and Dougherty",Retail,AU,2024-02-15,Google,Pro,9,False,True
+394f5510-f7cb-476c-996a-1ee63c9dbc41,Wright and Sons,Retail,UK,2021-09-17,Google,Free,23,False,True
+e06dfa71-b735-4bbc-82e5-c043345c0ff3,"Snyder, Campos and Callahan",FinTech,UK,2021-07-20,Other,Pro,12,False,False
+5a7d2fba-63b6-41d6-af93-e20e1b25dece,Hernandez Ltd,FinTech,UK,2022-12-07,Event,Free,15,False,False
+a21e816e-913c-487a-97e7-4c8219892df6,Young-Allen,Healthcare,DE,2026-01-01,Partner,Pro,12,False,True
+f228fc34-568c-446e-862a-0712d7b53408,Wolf-Harris,Finance,AU,2023-11-10,Google,Pro,16,False,False
+0d363015-65f9-486e-a405-ac6acfc8e41f,Hancock and Sons,EdTech,UK,2022-11-23,Partner,Free,14,False,True
+142a94df-5ffc-473d-9f58-77a8ebc66e4d,"Hall, Hansen and Barnett",Retail,DE,2021-10-15,Google,Free,17,False,False
+c912502c-6650-4452-a126-b62ca0eb36aa,"Downs, Morris and Maddox",Technology,CA,2024-01-30,Organic,Pro,9,False,False
+d2af801f-e613-4333-b135-c32d9e46e1e7,Boone LLC,EdTech,CA,2023-01-28,ads,Enterprise,10,False,True
+85ddad4c-5cac-4c7f-9f2a-46861623eb50,Young Ltd,FinTech,DE,2021-04-08,Google,Free,17,False,False
+f1ef8c7f-e949-45f6-b15d-7ec2c690fa46,Blake Group,Technology,DE,2021-04-06,Partner,Pro,16,False,True
+22cf8b74-3b00-436c-ad57-51e8832f5dc3,"Duran, Obrien and Gibbs",Technology,AU,2024-08-20,Organic,Enterprise,16,True,False
+b78f2bee-1469-43e9-899e-034c01132104,"Williams, Mccoy and Cook",Technology,AU,2025-02-01,Google,Pro,16,False,False
+a1c27335-bf77-4a7e-a630-423661046af7,"Matthews, Smith and Hubbard",Healthcare,CA,2023-08-31,Event,Enterprise,11,False,True
+fe3a255a-355d-45de-b141-ad14cbffd120,Johnston-Odonnell,FinTech,UK,2021-10-24,ads,Pro,13,False,True
+cb450553-68a4-47e1-9501-c73ceb666db8,Hernandez PLC,Technology,CA,2025-07-14,Google,Free,16,False,False
+3facb198-fc97-4ae6-aa2e-20d2d2156337,Spencer-Garcia,Retail,UK,2021-10-07,Organic,Free,8,False,True
+5463bc6a-3ae6-4809-af74-124df99396af,Blackwell LLC,Hospitality,UK,2025-09-22,Event,Free,9,False,True
+c85532e3-f008-4f0d-b6e8-a1667f79744a,Suarez LLC,Technology,AU,2022-08-29,Other,Pro,20,False,False
+294934d4-daf9-404a-b77e-fe7d3264ac2a,Santana-Byrd,Healthcare,US,2023-01-12,Organic,Pro,16,False,True
+4530afda-46ea-4e44-b840-40f0c9bc9d0a,Medina-Navarro,EdTech,US,2024-02-25,Organic,Free,13,False,False
+7c5e38d4-accb-4ad3-9029-0f41af237331,"Reyes, Chase and Jenkins",FinTech,DE,2025-04-13,Event,Pro,11,False,True
+7a75e007-ccd8-4215-bdce-4c5dc915c21b,"Hall, Baker and Moody",Healthcare,AU,2024-01-14,Organic,Pro,12,True,False
+e2dc799d-768d-474f-a152-900daf9eb0a7,"Anderson, Roberts and Gilmore",Technology,UK,2023-08-09,Event,Free,12,False,False
+481e82d6-c2e6-43f5-b6d5-0853abdbc45d,Rodriguez-Hall,FinTech,US,2023-08-14,Google,Free,12,False,True
+0b62a8f2-89a1-4b64-ad1d-de2dbb8a87a7,Stanley PLC,Hospitality,UK,2023-07-08,Event,Free,12,False,True
+a0764964-7320-49e0-be95-b41cce906816,Moore-Bass,Technology,US,2023-11-19,Event,Free,9,False,True
+48f23417-dd5a-4263-a968-5b4a0047b11f,Anderson Group,Healthcare,US,2023-06-11,ads,Free,11,False,True
+f405f431-244a-4238-8896-7794f68b64bd,Thompson-James,Finance,US,2021-02-24,Event,Free,10,False,False
+c310bcd3-19ad-4d1b-aff2-95975d3110fc,Novak PLC,Retail,AU,2022-09-22,Event,Free,14,False,True
+e2a0c427-dd0a-47c3-b6f0-52f28d07ed55,"Washington, Ryan and Cummings",EdTech,CA,2021-08-13,Other,Free,18,False,False
+fc0cc81b-44fb-4331-9155-1ee2632bdb9c,"Smith, Gilmore and Johnston",Healthcare,UK,2023-02-25,Google,Free,12,False,False
+2a12dc87-dc4e-493d-822e-771e218090d3,"Conner, Li and Santiago",FinTech,AU,2022-08-10,ads,Free,9,False,True
+314c35d2-1040-4713-a46a-b28e3137505c,Ortiz-Morgan,Technology,AU,2025-07-25,Other,Pro,9,True,True
+2c855219-eef2-43e3-9559-4abea7fb5d73,Harvey-Allen,Retail,AU,2025-06-06,Partner,Free,14,False,False
+4c203733-12dc-477c-947b-4671d347772a,Terry-Martinez,Technology,AU,2024-03-19,Google,Enterprise,11,False,True
+1d880894-d150-409b-b302-350ce47e07cc,Perez Inc,FinTech,AU,2024-01-20,Google,Enterprise,17,False,True
+7a9de1f3-359a-4307-9f8d-a8fe9cc5deab,Brown-Wall,Technology,DE,2022-05-25,Partner,Free,17,True,False
+8d68cfbe-6c9e-4a76-b1c2-c3ff07ac805f,Arnold and Sons,Finance,UK,2024-05-06,Event,Free,16,False,True
+dc145ee0-9d22-460b-9743-252d1d529094,Jones Inc,Retail,AU,2025-12-05,Other,Free,8,False,True
+0af131f7-9b59-40a7-ac38-1b867ea75005,"Gardner, Robinson and Lawrence",Retail,UK,2023-12-17,Organic,Free,7,False,True
+d07a5a86-3b00-4c67-9ccc-9ea37fa5cccf,"Phillips, Spence and Barrett",FinTech,DE,2022-03-16,ads,Pro,17,False,True
+6b0a912a-18c9-4ed1-8ce0-8144456f5678,Herman-Walker,EdTech,DE,2021-04-28,Organic,Free,11,False,True
+ad52b592-dd3d-4f99-8a63-cdb7903aa699,"Fisher, Wilson and Brown",Finance,UK,2023-06-21,Partner,Free,19,False,True
+5881e400-5d3e-4982-af69-b9e6b02344b0,Harris-Walters,Healthcare,US,2023-09-09,Google,Free,18,False,False
+f5323c9f-3c40-4efb-bbdb-7352c709fa93,Burgess-Thompson,Technology,CA,2024-09-03,Google,Free,11,False,True
+e682ec26-f47a-45f6-86bb-c1db4a606409,Scott Ltd,Hospitality,US,2024-12-10,ads,Pro,13,False,True
+4c5099df-c36e-43eb-b8e8-8e3ee19859bd,Collins Group,Technology,US,2022-12-20,Google,Free,8,False,True
+f8740a1b-b32d-43d0-8d5d-54cc03433226,Chapman and Sons,Technology,US,2025-03-06,Google,Free,15,True,True
+11a9639f-1654-4009-93ce-0ae4119aee56,Gomez-Jenkins,Healthcare,AU,2022-04-12,ads,Free,18,False,True
+43ab3905-29b7-4901-a7d9-52f4e279c4d1,"Gould, Marshall and Scott",Technology,DE,2023-12-07,Other,Enterprise,9,False,False
+a3f38ea6-149d-4a3a-9d50-f10877e830cf,"Pugh, Henderson and Moon",Finance,US,2024-07-27,Other,Free,12,False,True
+161c1126-62f0-4458-96c3-0c8159966ad4,Bowen Group,Finance,DE,2022-01-08,ads,Free,17,False,False
+8b840cfd-6804-4f4c-963d-6f671203d6f5,Garcia-Lozano,Retail,UK,2023-04-10,Partner,Pro,8,False,False
+94f32641-341d-46d4-9546-cb0766835d0a,"Walter, Edwards and Rios",FinTech,CA,2023-03-01,Google,Free,9,False,True
+6fc8fcb3-6a6b-40c1-a3e4-00330a1491af,Ramirez-Bean,EdTech,UK,2023-02-18,Google,Enterprise,7,True,False
+1049dccb-59b4-4e66-a7cc-c24f6c52c8df,"Miller, Hernandez and Reyes",Hospitality,UK,2022-02-01,Partner,Pro,17,False,True
+79c1e6b0-471d-493d-92c2-49cf333e5417,"Woods, Calhoun and Schmidt",Technology,AU,2023-07-30,Other,Pro,11,False,False
+b5eef157-9c84-47c8-879d-a23dda03c943,Johnson-Carlson,Technology,CA,2024-02-16,Event,Pro,16,False,False
+94d72b33-f931-428f-98ac-b69b84ad3a68,Kim Inc,Healthcare,UK,2023-06-05,Event,Enterprise,10,True,False
+82f72ad0-51c7-403f-bf42-7d0f80a1fed8,Johnson-Wood,FinTech,UK,2025-04-23,Event,Enterprise,12,False,False
+3daca347-bbc7-413f-b985-60255aee79e8,"Newton, Moore and Perry",Finance,CA,2024-09-14,Other,Pro,10,False,False
+3848b54b-7627-4511-bbdb-8b8887a26a3d,King-Smith,Hospitality,CA,2024-08-06,Other,Pro,8,False,False
+f59f19a1-d61e-4eb1-8421-7d971b94b87d,Acosta Inc,Retail,UK,2023-08-30,Partner,Free,16,False,True
+9262a65e-7c97-4a4e-a620-c6c02a3db399,"Jackson, Miller and Robertson",Finance,CA,2023-11-15,Google,Free,14,False,False
+d9c69920-50fe-479f-bcf8-ff014f2b670d,"Brennan, Wallace and Benson",FinTech,UK,2026-01-22,Partner,Free,13,False,True
+73af2159-7fb3-434d-b790-f7d66708b5e5,White Ltd,EdTech,UK,2023-06-17,Partner,Free,12,False,False
+e574e4b9-f6f0-4818-9380-3e4c568579f1,"Beard, Peters and Black",Retail,AU,2022-12-14,Other,Free,8,False,True
+86ced9eb-3e66-40fc-80e6-00491fcf9f32,Chambers and Sons,EdTech,US,2025-11-07,Event,Free,10,False,True
+7575648a-0063-4fcb-bf7d-fd218254eafe,Doyle Ltd,Healthcare,UK,2023-05-14,Organic,Free,14,False,True
+0f96c09e-9b34-438b-afe6-285064a1b062,"Bentley, Lynch and Henderson",Healthcare,DE,2023-09-26,Google,Pro,17,False,True
+dd45a302-5ae1-4360-8068-7b57e405c240,"Valentine, Joyce and Murray",Technology,US,2023-10-20,Other,Enterprise,10,False,False
+b5369af0-4fe7-40d4-9dca-92ab26371863,Reed Inc,EdTech,US,2024-06-12,Event,Free,14,False,True
+2abdee47-f882-4bfb-92f7-70b94e6b93c2,Hickman Ltd,FinTech,US,2025-05-29,Organic,Free,11,False,False
+b79b8d4e-8e8b-4084-b51b-1fe5c312cb77,Ross LLC,Hospitality,AU,2024-06-21,Organic,Pro,13,False,False
+aa65c705-bc1b-4418-8dbe-6f2233911a28,"Evans, Hayden and Vaughn",Retail,UK,2025-02-01,Other,Free,11,True,False
+133f26c5-118d-4c0a-ba2c-c743f7a5467c,Hill Inc,Finance,AU,2022-05-22,ads,Pro,10,False,False
+b14381e1-f200-4891-8a88-28053aac900e,Davis Ltd,FinTech,UK,2023-06-28,Google,Free,14,False,True
+b43f6aa2-bea5-461a-a32b-45e6dd7b2a73,"Mcdaniel, Bentley and Mclaughlin",FinTech,AU,2025-11-09,Organic,Free,10,False,False
+d43d54b4-0ede-478e-85ac-f1cbcf6a37f4,Figueroa PLC,Healthcare,AU,2022-06-18,Other,Enterprise,13,False,False
+68d1f50a-4013-4a7f-82b8-d10db15493f6,Smith-Grimes,EdTech,DE,2022-07-24,Other,Free,13,False,True
+1b3cd0ac-4000-449a-a493-6912cb7e78a7,"Hernandez, Thompson and Boyd",Technology,AU,2025-10-11,Event,Pro,18,False,False
+6b7f6894-59aa-420f-9ef7-384f511e1170,"Adams, Christian and Rivas",Technology,CA,2025-12-24,ads,Pro,21,False,True
+e3724f83-8e0b-4020-bb50-abb98b0ccbf2,Arnold Ltd,Retail,DE,2024-12-03,Google,Free,15,False,False
+bf358b7c-aa31-40bf-8d33-718a928eb64a,Lee-Cooke,Healthcare,AU,2024-08-04,Partner,Pro,19,False,True
+09ce84d0-6352-400c-bb7a-1159cb4840cd,"Kelley, Nguyen and Vang",FinTech,US,2024-07-09,Event,Enterprise,8,False,True
+556ca697-4d87-45e7-88fb-5c64905639aa,Lam LLC,Hospitality,CA,2023-07-07,Organic,Free,9,False,False
+09c37220-5167-4bfc-8862-3242059069ac,"Winters, Newman and Brown",Healthcare,CA,2023-06-20,Organic,Pro,20,False,False
+b77a1bea-628a-45a3-8ca5-b3721dce5293,"Choi, Garcia and Farmer",Retail,CA,2023-11-15,Event,Free,16,False,True
+a76612af-634b-45a6-a137-437e10e391fe,"Parker, Ortiz and Powell",Retail,DE,2025-09-28,Other,Pro,15,True,False
+4899f5aa-0a62-4c8c-bd63-c6a5fc9ffe5e,George Group,Healthcare,AU,2024-09-04,Organic,Pro,10,False,False
+86b40688-3f1c-48b5-b85a-2a2ca1295122,"Brown, Valdez and Lucas",Retail,AU,2022-07-04,ads,Free,23,True,True
+0d87323b-49f3-4b6b-bba5-e819dc339c56,Hayes LLC,Healthcare,US,2023-12-08,Google,Enterprise,10,False,False
+f98ad27e-af0c-4a99-a456-46f9f392de65,"Brown, Romero and Collins",Finance,US,2023-10-14,ads,Enterprise,12,True,True
+3b5e01ef-3304-4c0e-bbba-594a2f3a0fed,"Fernandez, Kim and George",Healthcare,CA,2025-07-19,Organic,Pro,10,True,False
+efd0e3ab-2d85-4854-9d8d-2b4fa0f8c4bc,"Yates, Ramsey and Pittman",EdTech,US,2023-01-15,Partner,Pro,12,False,True
+b1c2e6db-8815-4a97-8e39-644948f79500,Valentine-Holland,Healthcare,DE,2022-10-17,Google,Pro,14,False,True
+97a0d31a-aadb-49ea-8bc4-b724fdfa8673,Monroe-Carpenter,Retail,AU,2024-12-07,Google,Free,12,False,True
+f4a74b2c-b315-42f3-9ef2-192568fcb105,Bryant Group,EdTech,CA,2021-10-19,Event,Pro,14,False,True
+e1808957-e176-44ac-9ebb-9d613e14b527,"Harris, Collins and Carney",Retail,US,2021-04-11,Event,Free,17,False,True
+492bb7a4-f175-4d59-bde5-3cb86a6c405c,Perry-Davis,Technology,DE,2025-11-05,Partner,Free,11,False,False
+ac612560-bb6c-4ecd-817e-5d929b14bee0,Jones and Sons,Technology,DE,2021-06-18,Other,Pro,12,False,False
+2cbba416-d14e-45de-8761-5572f4ed52c6,"Richardson, Farmer and Andrews",EdTech,US,2025-09-09,Google,Free,12,False,True
+2f7684a1-d048-4d50-81ce-665142efdaad,Lee-Davis,Finance,AU,2024-05-07,Partner,Free,11,False,False
+cbc3f65e-aa3a-4073-b138-43b6154d968b,Welch-Hogan,Technology,US,2024-10-21,Event,Free,13,False,True
+9c727860-9313-4ea0-9fba-76da033a1c98,Baxter Inc,Healthcare,CA,2022-02-19,Event,Free,14,False,False
+b01e697d-d158-49bf-ab38-54d4b69ca4cb,King-Martinez,Retail,US,2025-03-17,Google,Pro,15,False,False
+fdc5be83-e090-4c48-a7b3-612a9da370fb,Green-Wright,Technology,DE,2022-06-04,ads,Free,9,False,True
+25ce4bc3-7689-44fd-a4d3-2b999e5f8a27,Jones-Soto,Technology,US,2023-11-17,Organic,Pro,15,False,False
+6b2f3498-a9ad-4f96-87a6-71954bfecee7,Blake and Sons,Finance,AU,2022-06-05,Event,Free,15,False,True
+fbf9e740-5834-46c5-bee8-38b85e41ac69,Lopez-Martinez,EdTech,UK,2021-08-12,Other,Pro,17,False,False
+3740912f-7c8a-4fb2-9aa4-783500d22572,Smith and Sons,EdTech,US,2024-10-09,Other,Free,18,False,False
+d1f55b4e-5561-4cf0-ae72-70863e1549e4,Diaz-Ball,FinTech,AU,2022-04-07,Event,Free,15,False,True
+a15cdf37-15e7-486c-b303-bb4914678de3,White-Estes,Finance,AU,2021-04-27,ads,Pro,14,False,False
+9d741024-7a8e-4028-921f-2a52ec944e6c,"Butler, Beck and Miller",Healthcare,DE,2025-08-05,ads,Pro,18,False,False
+71bf5573-b529-4b22-a092-353d749075e4,Buchanan LLC,EdTech,AU,2022-03-13,Partner,Free,11,False,True
+733d3d67-c474-4d96-bd64-08e3f29dd488,Smith-Frost,Retail,AU,2022-03-26,Other,Free,12,False,True
+ec2318f1-15e7-4e1d-a94f-2c70c2006cdd,"Wood, Tran and Cooper",Finance,AU,2021-07-27,Partner,Free,14,False,False
+ea8f909c-aa22-40dc-a804-2124a2c314ab,Blair PLC,Technology,AU,2022-09-20,Other,Free,8,False,True
+608af91a-fb65-4a75-a317-ad766ebafa14,Powell LLC,Retail,CA,2023-06-07,Organic,Pro,9,False,True
+f537ecb5-9da0-422d-98cc-8f0ca251c817,Perez-White,Retail,CA,2024-06-22,Organic,Free,14,False,False
+51576be8-35c8-485f-8f11-17e7c794289d,Lowery-Kennedy,Technology,DE,2021-10-03,Google,Free,13,True,False
+1e0d15db-0f86-4a46-911e-bf386af65344,Duran LLC,Finance,US,2025-11-22,Partner,Free,15,False,True
+d37308c5-01c0-43dd-97ed-704227eb5707,"Harper, Smith and Buchanan",Technology,AU,2025-12-16,Event,Free,12,False,True
+a8b83e63-06f0-4324-adda-9570f96d0c84,Ruiz Ltd,FinTech,US,2021-11-09,Partner,Free,12,False,True
+7b461af5-d66a-44f1-8d8e-fba10025704b,Bright-Francis,Retail,US,2024-05-01,Event,Free,16,False,True
+8e198fde-23fa-4efa-b486-230300bd57d9,"Lamb, Martin and Kim",Hospitality,DE,2025-06-21,ads,Free,13,False,False
+7c3783dd-c405-433d-bfb7-7001c1a59955,Rangel LLC,Hospitality,AU,2023-06-13,Partner,Free,6,False,True
+e8e50054-519c-4667-84e5-9276f953832f,"Rodriguez, Figueroa and Sanchez",Healthcare,AU,2024-04-27,ads,Pro,17,False,False
+fd017637-29fb-44d2-9683-6d4cdd0ac542,Gibson Ltd,EdTech,UK,2024-11-06,Organic,Free,7,False,True
+03ca9d7a-e54d-4910-9143-0c952e999f37,Moore-Collins,Technology,US,2022-07-03,Organic,Enterprise,17,False,True
+5ebfdbc5-542b-417c-abd5-22dca3cb8fd5,Stafford Inc,Technology,US,2022-06-30,Google,Free,10,False,True
+090479d3-c788-49c1-b46b-26deb72cd4aa,Davis-Lewis,Healthcare,CA,2021-05-13,Partner,Pro,12,False,True
+ade803bd-c3f1-4a4d-a0f0-d1113ffa7b29,Bruce-Villegas,Healthcare,UK,2024-11-29,ads,Pro,16,False,True
+406e0f50-4ae4-49e7-8c25-65ff9f149dc7,Brown-Shaw,Healthcare,CA,2024-04-30,Event,Pro,18,False,False
+c2303e55-1554-4088-8c62-977ba9bdfda5,Sheppard LLC,Retail,CA,2022-03-25,Organic,Pro,12,False,True
+388dcb54-10b1-49f7-a4a5-7c10f5967c81,Hooper PLC,FinTech,CA,2024-10-05,Organic,Free,12,False,True
+0f14777f-bbc9-4849-9d3f-9af2c5dea92b,Chandler-Edwards,Technology,DE,2025-04-27,Event,Free,13,False,True
+af7f0c27-d4a3-4ec8-8b1f-f7a9e818968b,"Mckee, Gardner and Davenport",Retail,DE,2021-04-03,ads,Free,14,False,True
+8e645b33-29f7-4b60-b75c-24cb11342996,Peterson-Beard,Healthcare,CA,2025-09-04,ads,Free,11,True,True
+aabaa7e7-6be7-4fe1-b4a7-1b02b76251a3,Nolan-Flynn,Technology,UK,2023-02-27,Partner,Free,12,False,True
+da94a970-b85a-4817-9cea-d01b5ac850ba,Edwards-Scott,Retail,US,2025-04-04,Partner,Free,12,False,True
+a9da4e38-b0f6-402b-850d-781877be04ee,Morgan-Lopez,FinTech,UK,2025-09-27,Other,Pro,14,False,False
+5d5087c7-90cd-4f41-9be8-6dbdf5deecf2,"Watson, Anderson and Brown",Retail,AU,2021-04-01,Other,Free,17,True,True
+d85a63eb-bdc8-4cea-a1db-692b9c83ef3d,Roberts-Sullivan,FinTech,DE,2025-04-01,Google,Pro,17,False,True
+5814745e-3080-4598-bb21-b11ed09bff86,Smith-Bell,Healthcare,US,2025-01-03,Organic,Pro,14,False,False
+05ee9fa0-fc3a-4f6e-bdf9-3f791bc5e060,Cortez LLC,FinTech,US,2021-12-31,Partner,Enterprise,13,False,False
+31cb2127-87ff-4efd-90b8-89902901ba8c,Davis-Gregory,Technology,AU,2024-10-24,ads,Free,8,False,False
+17a096bf-3082-4356-9e01-de872300fad0,Ford-Spencer,Healthcare,AU,2025-06-06,Event,Free,19,False,True
+f035fa3e-7f0d-43e6-9483-3967f232ed60,"Walker, Hernandez and Baker",Technology,CA,2022-07-07,ads,Free,12,False,True
+ae0b732b-38d7-4341-a775-3aa1ac4b3460,Atkins PLC,Hospitality,DE,2021-04-03,Organic,Free,9,False,False
+de122825-319a-4718-aedf-c753dba42be0,"Booker, Jones and Harrington",Finance,DE,2022-07-24,Other,Pro,12,False,False
+99e2d72a-06e2-4a9f-94cb-295454f7fd75,Smith PLC,FinTech,UK,2024-01-31,ads,Free,13,False,True
+843bd06b-0ea1-4928-9669-0efeefd3a1c8,Bell-Lane,Finance,CA,2025-09-17,Google,Pro,7,False,True
+71b26c9c-e97f-4689-a72d-0d05d0512759,"Farmer, Dorsey and Bell",Finance,CA,2022-09-29,Organic,Free,9,False,True
+b854836b-42fc-46d0-838e-91f93175d165,"Joyce, Wilson and Lam",FinTech,CA,2023-05-05,Other,Pro,13,True,False
+e56f1dff-3aae-440b-9e52-57807c05fc42,Anderson-Bell,Healthcare,CA,2024-04-10,Event,Pro,10,False,True
+a5655ef0-ca16-477d-b0dc-5a39fc3fbf76,"Henderson, Ramirez and Lewis",Hospitality,DE,2023-09-09,Other,Free,11,False,True
+6b28a825-48c7-401c-8ea9-47c12d7898dd,"Hoffman, Baker and Richards",Technology,DE,2025-07-07,Google,Free,15,False,False
+bd622fea-4c34-44ff-b12e-b2c0e13f6632,Garcia-James,Retail,CA,2021-09-27,Organic,Free,13,False,False
+23bb6419-3941-4370-b6b0-11b66a2839a0,Wells Inc,Technology,UK,2023-08-04,Event,Free,10,False,True
+c12f8018-d7b2-4f4a-8b40-d7e386185781,Reid-Poole,Retail,US,2022-06-07,Google,Free,13,True,True
+cb83fc9a-edc0-4b46-bfd2-d5eba0b6d4b1,"Ramirez, Strickland and Washington",Technology,US,2025-02-10,Other,Free,9,False,False
+41eed48f-51c5-4480-91b6-8a98dc7572e0,Schmitt PLC,FinTech,UK,2022-09-21,Google,Free,10,False,True
+172e190f-3487-497d-b33f-ca2d872afdbb,Anderson-Bailey,Hospitality,CA,2024-09-21,Organic,Free,16,False,True
+2aeaddf8-a42d-4525-96d0-b042f26d3100,King-York,Retail,DE,2024-04-23,Partner,Free,11,False,True
+5ff81b90-8488-47c9-8ff0-9f5be7104798,"Williams, Johnson and Wright",EdTech,US,2024-08-29,Google,Pro,13,False,True
+d4e2dbb6-f9d2-4bc8-9386-be885d6cfa52,"Pollard, Simpson and Johnson",Healthcare,AU,2021-02-19,Google,Free,9,False,True
+8ad6ab8d-85b4-4a3c-97ea-b87767fa00dc,Jones-Fox,Technology,AU,2022-10-02,Other,Pro,8,False,False
+2442169c-63c7-48d5-b3ec-bc9de0a98fbe,Kane PLC,Technology,UK,2022-07-18,Other,Free,14,False,True
+fbb47da1-9496-4137-8ecf-24fb12e261d0,Cook and Sons,Retail,CA,2024-06-10,Event,Free,12,False,True
+1a796a36-f3c2-4a00-8a0c-d13ddabe06d9,Johnson-Doyle,Healthcare,US,2022-01-12,Other,Pro,16,False,False
+89ade298-6cab-487d-b21d-ea735c5d9d3d,Rodriguez-Graham,Healthcare,CA,2024-02-15,ads,Free,13,False,True
+99f8e370-d0aa-4e90-b61b-ace6aeb1b94f,Williams-Brown,FinTech,US,2024-04-05,Organic,Free,13,True,True
+ee83debb-0d4b-4868-b4b8-80f6c7b2c5b7,Ramirez Group,EdTech,UK,2023-02-04,Organic,Free,16,False,False
+f653ffef-3280-4575-a4f1-85fe58b16377,Morrison Ltd,FinTech,UK,2023-03-17,Partner,Free,11,False,True
+069ab46e-5272-4f69-83c9-35425be87974,"Hale, Myers and Larson",FinTech,AU,2022-09-16,Partner,Free,13,False,False
+059c761c-d6d5-485c-92bc-c0c0459df186,Howard-Jordan,FinTech,CA,2023-01-27,Organic,Free,12,False,False
+84391579-daa9-4227-9119-ca610993e00e,"Martin, Rose and Obrien",FinTech,AU,2021-07-18,Partner,Pro,19,False,True
+864b57fa-0e90-4bf5-83fe-9bfd1df757c6,"Schmidt, Hansen and Stewart",FinTech,CA,2025-12-23,Event,Free,12,False,False
+8c26c4e5-d8f9-4105-b4aa-783145b47556,"Taylor, Wright and Davidson",Hospitality,AU,2023-06-16,Other,Free,14,False,True
+3c95e177-5682-4f3a-adfe-5586f0e8e19a,"Shields, Cochran and Adams",Healthcare,DE,2025-09-30,Organic,Free,16,False,False
+3d456bc8-3470-44db-a176-b9fc97314d40,"Mcclure, Ward and Lee",FinTech,DE,2021-02-06,Partner,Pro,11,True,True
+56290ecc-8486-47b1-bd58-b15689be6240,Reed Group,Healthcare,DE,2022-12-26,Organic,Free,11,False,True
+7c32307a-8eed-4cf5-89a9-6131c823446f,Morgan-Schwartz,Healthcare,DE,2023-04-21,ads,Free,10,False,True
+f21c7686-63ad-4f8e-9ef3-a3b730b230e8,Garcia-Smith,Finance,US,2022-05-27,Google,Free,13,False,False
+206d5f9a-15b3-4048-a51c-f7a3625f3614,Meadows PLC,Hospitality,DE,2022-09-19,Other,Enterprise,14,False,True
+db4818cf-f22f-4586-be9a-6668735a7ad0,"Guerrero, Peck and Coleman",FinTech,UK,2023-12-25,Organic,Free,11,False,False
+b0ecf163-3149-48a3-abae-14e8d3dbe8d9,Garcia-Jennings,Technology,UK,2023-12-07,Google,Free,13,False,False
+b38120ee-d325-4ef8-867d-b4ec62b19077,"Burns, Hernandez and Ryan",Retail,US,2022-05-17,Partner,Free,11,False,True
+b0b5e20e-9d61-4031-830b-586ccaf5f12d,Gilbert-Bullock,EdTech,DE,2022-11-12,Google,Pro,6,False,False
+5b07b40a-4e43-4634-af78-2aed7de2e6c6,Diaz Inc,Technology,DE,2022-04-01,Other,Free,15,False,False
+c61a2d02-dfdc-4404-a1fd-aec94c15eb92,Henderson-Bernard,Hospitality,DE,2024-05-29,Organic,Free,12,False,False
+4b23401a-c72a-45be-94d1-6b4e47c42d84,Manning Group,Retail,AU,2023-05-25,ads,Pro,11,False,True
+c81e8263-f5dd-46b7-8b05-6b08a3e3df0a,Crosby-Ramirez,Hospitality,CA,2021-11-12,Partner,Pro,13,False,True
+64977827-3a56-4d75-9cad-dd27a478221f,Donovan-Harris,Healthcare,AU,2024-07-01,Organic,Free,14,False,True
+a9fa8341-402f-4656-a957-3eafaa3cc55d,Jones LLC,Retail,CA,2025-09-07,Other,Pro,10,False,True
+cffa0fe3-9d85-4dd9-b354-2ec2c2c37b03,Hughes-Alvarado,Healthcare,DE,2025-07-05,Partner,Free,9,False,False
+b817c2bd-77d9-4a29-89a6-5fcecbfd8885,Jones-Young,Technology,DE,2024-12-01,Event,Free,15,False,False
+c82a732d-1143-4d77-9997-7de52822cee0,Sandoval-Cunningham,Technology,AU,2024-07-09,Google,Free,17,False,False
+3819cf08-65f9-49f0-b0ae-761980f08d7e,Jones PLC,Retail,AU,2024-04-05,Other,Enterprise,11,False,True
+e5123d9e-d524-4e4a-82e9-a3073c54adf6,"Rivera, Johnson and Wiley",Retail,CA,2025-10-09,Event,Free,10,False,True
+8fb5332b-92fc-4d89-bd95-30d2e109416a,"Burke, Martinez and Riggs",FinTech,UK,2022-11-27,Organic,Free,14,False,False
+f11e583b-e78d-4c13-9b0a-c49625f48c0c,"Martinez, Richardson and Curry",Hospitality,CA,2022-03-04,ads,Free,13,False,False
+dc588861-8c6a-49db-a996-fe0ff0d9deeb,Williams and Sons,FinTech,AU,2025-11-09,Partner,Pro,12,False,False
+b10d159a-1116-4a78-aa2f-e9ebf26fca35,Freeman-Chang,Hospitality,AU,2023-06-17,Google,Free,9,False,False
+8b235ad0-2be1-4832-8e4f-4b5bb8f53dda,Walker LLC,FinTech,US,2023-05-06,Partner,Free,17,False,False
+254f827a-3dbe-4ec4-918b-729ee9462349,Strickland-Shaw,Healthcare,AU,2026-01-05,Organic,Free,17,False,True
+b11fd476-98a5-4f55-ba93-9fe1a7beca76,Russell Group,Retail,US,2022-12-08,Partner,Free,14,False,True
+4e22226b-8db8-4a92-ac38-da7917c5b902,Frank-Bradley,Technology,UK,2024-07-30,Google,Free,13,False,True
+2643b915-ee46-4fc3-bd35-e1daaaa159a4,Dickson-Brady,Hospitality,CA,2025-08-19,Organic,Pro,11,False,True
+50061a95-9c0f-40de-aee4-b25ad7117e97,"Johnson, Miller and King",Hospitality,CA,2024-11-08,Partner,Free,14,False,True
+581447b9-1b89-4685-8e7b-8ce7bf8b2323,"Patterson, Smith and Jones",Technology,US,2025-01-29,ads,Free,12,False,False
+6629b1a6-434b-4935-9167-7ccc2de9e898,"Ramos, Nelson and Fischer",FinTech,CA,2025-03-13,Other,Pro,15,False,False
+e7a70f9f-a30f-4f90-9f86-e0a9d991283e,Holt-Torres,Hospitality,AU,2024-11-16,Organic,Free,12,False,True
+df879633-9e30-4bb0-bce9-ac6e6c422eea,Bennett Group,EdTech,DE,2024-06-20,Other,Free,15,False,False
+e085dfdf-5ca3-481e-94df-97f5ffe05108,Lewis-Murphy,Healthcare,US,2024-01-18,Organic,Enterprise,18,False,True
+a6c704ba-c11c-4272-88fd-ff6641a5f77b,Bruce-Gonzalez,Retail,CA,2025-01-02,ads,Free,13,False,False
+2bd127f2-16ee-47d2-9cda-90d0ff3280e0,Baker and Sons,Technology,US,2023-09-12,Other,Free,20,False,False
+8154b7d8-81ca-4111-8949-bb410d876327,Davis Group,Retail,US,2023-09-16,Event,Free,19,False,True
+1a098b23-a4e7-4ae6-8aea-ec827f30f29d,Henry Group,EdTech,DE,2022-11-16,Google,Free,8,False,False
+722c8c75-0815-4330-a5c4-ff8fdae7a757,"Miller, Ramos and Coleman",Hospitality,AU,2025-08-27,Event,Free,17,False,False
+29946d0b-2bdd-485e-9ac6-375cf7b43c71,Morales-Jones,Hospitality,US,2021-08-18,Partner,Free,12,False,True
+d3896365-2db6-428a-bef8-8a05d539730c,Byrd-Le,EdTech,CA,2025-03-19,ads,Free,8,True,True
+22f3db45-e649-4b49-a66e-49ce6ac3fcf9,Graham Group,Technology,UK,2025-08-01,Event,Free,17,False,False
+c00f7f56-22e0-43c3-be83-789eb19d0dda,"Alvarado, Miller and Patterson",Healthcare,US,2022-01-29,Organic,Enterprise,8,False,False
+69f1fa4a-2d9c-41ff-b23e-91113056d85a,"Thomas, Murray and King",Finance,US,2023-10-02,Partner,Pro,18,False,False
+4922cd8c-3211-4829-a2bb-7dda9c5af127,Johnston-Hines,Technology,DE,2021-11-21,Partner,Free,10,False,True
+8075dafd-f6a7-41e9-9320-654bd01284e4,"Garcia, Martin and Jenkins",Finance,AU,2025-05-05,Event,Free,10,False,False
+692bb7be-0990-4930-a86e-4eadf36c2f1d,Spence PLC,EdTech,UK,2023-04-12,Event,Pro,8,False,True
+74cd7a71-ea8f-4a84-89b2-0ac62d29e6cb,Stewart Ltd,FinTech,CA,2024-06-20,ads,Free,12,False,True
+24803224-04f5-4f18-a703-851c1435cc87,Gutierrez-Lopez,Finance,UK,2024-08-26,Google,Free,13,False,False
+718e0db2-ba24-4801-b079-c93a91b458c8,"Beltran, Lozano and Mcgee",Healthcare,CA,2023-07-07,Event,Enterprise,14,False,True
+71ca5877-047f-49c5-a24c-2c6c9258881a,"Huang, Cole and Pacheco",FinTech,AU,2025-07-25,Event,Free,9,False,True
+9e481dc0-ae27-4398-884f-c8811d5cae37,Coffey-Phillips,Finance,CA,2023-04-18,Other,Pro,12,False,False
+27f31bd6-02ca-4149-99b4-46a37200998b,Tran Inc,EdTech,DE,2021-05-06,Organic,Enterprise,12,False,False
+c752fa29-e697-45e3-97b6-23707869f481,"Diaz, Gibbs and Smith",FinTech,DE,2021-09-23,Other,Free,15,False,True
+e130d051-a20a-4b32-a11b-788bd672fc0b,Richards-Carson,EdTech,DE,2023-02-22,Other,Free,16,False,True
+1f19ad40-7136-4e4c-b29e-b7029a7a692b,"Carlson, Hooper and Wall",Finance,DE,2023-11-21,Partner,Free,19,False,False
+e0a2704e-f90f-49a2-8290-cce1c710e660,"Marks, Cook and Aguilar",EdTech,UK,2023-11-11,Google,Pro,13,False,False
+965c7118-2c33-4670-86ba-bad975329970,Navarro-Munoz,Healthcare,AU,2024-06-07,Organic,Pro,7,False,False
+bf6abf7c-44a8-444a-846a-b51def1c2e55,Gonzales-Harrison,Finance,CA,2022-08-11,ads,Pro,16,False,True
+ff08125b-45b8-4b16-a3d5-5593bfc9ddc4,Warner-Gibson,Finance,CA,2021-03-05,ads,Free,8,False,False
+47aa0898-ba33-4274-b456-17dba04b1d5d,Parsons-Hall,Finance,DE,2022-05-04,Event,Pro,20,False,True
+96db13b3-0afc-4e71-89cc-cae3a2e7d1c4,Brennan-Johnson,Technology,DE,2021-01-30,Event,Enterprise,16,False,True
+6fa1b069-55b6-4b94-a93b-70338bf10fe6,Castaneda-Rodriguez,Technology,US,2022-02-27,ads,Pro,18,False,False
+fd41ecdd-68bc-43b5-be8a-dfdccee25857,Boone-Simmons,Technology,AU,2021-06-07,Event,Enterprise,16,False,False
+7d739ea1-30c7-4b2d-ae87-dfef0f047193,Brown Group,Healthcare,UK,2023-03-10,Google,Pro,10,False,False
+9594cc8f-2415-40c3-95bd-15c8336c8310,"Harvey, Davis and Crane",FinTech,CA,2024-07-27,Other,Pro,14,False,True
+a5f77078-8458-49dc-9399-dc49f97382aa,"Andrews, Higgins and Carter",EdTech,US,2023-10-10,Event,Free,12,False,False
+f117428f-698d-4579-808a-c0f63b03e958,Schroeder-Kramer,Hospitality,US,2021-05-15,Partner,Free,9,False,True
+81b34fe0-a4f6-4918-8ded-617b0c922152,"Henderson, Cox and Cox",Finance,CA,2025-07-16,Event,Free,11,False,True
+4392d013-7066-46f7-9f28-6a53bc67465d,"Hurst, Freeman and Nelson",EdTech,UK,2025-12-31,Organic,Pro,16,False,True
+61cd8fe4-fb8d-4335-b4e6-ce130ca1763f,Schmidt PLC,Finance,US,2023-06-06,Google,Free,14,False,False
+5fc88f6a-6110-493d-a512-4f95fc677fc8,"Watts, Robinson and Nguyen",Healthcare,US,2022-07-03,Organic,Pro,14,False,True
+10b68585-320b-4332-8065-b2d4c4f1a7ee,"Lawson, Morris and Ramos",Finance,AU,2021-12-19,Organic,Enterprise,13,False,False
+0a3b84aa-6ed6-4009-bf6e-b3dc9ebc194a,"Garcia, Humphrey and Baker",Technology,UK,2021-09-29,Partner,Pro,15,False,False
+8578af71-a70b-4f8d-9d55-d8c9ed28667c,"Flowers, Martin and Kelly",Hospitality,US,2024-04-11,Google,Free,17,False,True
+ec79a83b-94e9-44b4-b556-3197f8b7e399,Walker-Jones,Retail,UK,2024-09-18,Google,Free,11,True,False
+0e734f9e-691c-4ed7-a522-a666fc6e6f14,Willis and Sons,Finance,CA,2025-11-20,Google,Free,14,False,True
+96313735-8cdd-414a-8558-e528f4a23449,Moody-Taylor,EdTech,DE,2022-12-10,Google,Pro,10,False,False
+541b1030-32a6-4fa4-822e-2863159874c5,"Tapia, Vaughn and Lee",Technology,US,2025-07-11,Google,Pro,15,True,False
+68421d4b-f4fd-420f-9b63-34e2d57fcd0f,"Mccall, Hanson and Alvarado",Retail,AU,2023-04-24,Partner,Enterprise,14,False,True
+679a6fdf-3c7b-40f0-9ba1-301f4f88a921,"Pierce, Bell and Chavez",Hospitality,CA,2025-08-27,Event,Free,10,False,True
+cf518b68-a275-4d6c-b799-527167adb649,"Sanford, Rivera and Garcia",Retail,UK,2022-12-15,Organic,Enterprise,17,True,False
+5c26e2ab-6fdf-41b9-80f2-ecf927d6c110,"Turner, Ortiz and Taylor",Technology,CA,2021-06-20,Google,Pro,13,False,True
+a677d19a-ab93-4a1f-9396-43dc4aaeeb11,"Guzman, Hoffman and Baldwin",FinTech,US,2025-11-21,Event,Free,9,False,True
+b7daba32-8b7e-45f7-b0a6-3fdf5de24302,Bailey-Cook,FinTech,UK,2025-06-10,Event,Pro,11,False,True
+28dd23f0-b7fc-4666-a0e8-f257539f75e5,Cooper Ltd,Retail,DE,2021-09-24,Organic,Free,13,False,False
+982637a9-6b96-4690-b6d0-0ce9945e093e,"Tran, Jordan and Williams",Healthcare,CA,2025-05-15,Partner,Free,15,False,False
+00fea7d0-e5db-4a67-bdc1-a33716f5dfc3,Stein-Silva,EdTech,US,2021-08-29,ads,Pro,19,False,False
+0e0bd5a2-20d7-443f-8d7c-8d92007e97fa,Nolan and Sons,EdTech,AU,2026-01-12,ads,Free,10,False,False
+d0bcedcd-28d4-4637-9f57-d9e4eca1a6a8,Dean-Jimenez,Retail,UK,2023-01-13,Event,Pro,12,False,True
+6bee115f-662b-45cc-9b6f-de5f36c3b584,Cook-Hines,Finance,CA,2021-09-14,Other,Pro,16,False,True
+a028ebe7-3030-4689-874b-2d0b4f482604,"Miller, Harrell and Reese",Finance,CA,2025-12-18,Other,Free,20,False,True
+531678f8-2ffa-4640-802b-fed9144591c2,"Suarez, Shields and Hill",EdTech,DE,2025-03-30,Organic,Free,16,False,False
+b1b96bba-1c78-4904-ba90-aa513f5686d0,"Turner, Riggs and Roman",EdTech,DE,2024-11-06,ads,Free,9,True,True
+09793e37-5a18-4188-939a-964ff800f5bc,"Osborn, Gaines and Davis",FinTech,AU,2025-12-17,Event,Free,13,False,False
+365117cf-5cd6-4f8c-a44f-8c4d7ae4209a,"Branch, Torres and Oliver",Healthcare,AU,2023-05-20,Partner,Free,15,True,False
+9615e00c-bf59-4a8a-a31b-94c3fc9d37af,"Marshall, Dominguez and Welch",Technology,US,2024-08-30,ads,Free,12,False,True
+8be78495-a77e-4160-9c1e-670efab165d9,Davis and Sons,Finance,US,2023-03-10,Event,Free,8,False,True
+df3ad876-442d-400d-874e-d9ac04516cf6,Kerr-Evans,EdTech,AU,2022-12-18,Event,Free,13,False,True
+904697db-12f1-4779-abb5-64464930f59e,Li-Thompson,FinTech,AU,2022-03-20,Google,Free,21,False,False
+f1d9c479-d606-4c0f-a0d9-968f4b582276,Galloway-Wyatt,Hospitality,UK,2023-05-16,Partner,Pro,10,False,True
+1dd2d112-074e-4097-924b-f44491051f1b,"Hartman, Romero and Smith",FinTech,DE,2021-11-04,Google,Pro,19,True,True
+172877ba-29c6-4a50-92ad-ec29390b6b22,Rasmussen LLC,Finance,US,2022-01-04,Organic,Free,10,False,False
+4d5597e1-331d-4c6f-9f17-1b33736cbe66,Armstrong-Andrews,Finance,DE,2025-06-12,Google,Free,15,False,True
+a6442ee7-89ab-474f-90d5-f63781d6591b,Robinson-Brock,FinTech,DE,2024-11-23,Google,Enterprise,15,False,True
+ecdcb809-80e9-4ba1-bdc7-81a2db6c81aa,"Shaw, Nelson and Martin",Technology,AU,2021-03-24,ads,Pro,12,False,True
+260ce4ff-265f-4fbb-af29-a73d3d3f2892,Sanders-Espinoza,Retail,UK,2024-05-15,Other,Enterprise,16,False,True
+e74ed637-eb86-4de3-ab3e-2744619226ff,"Baker, Mason and White",Finance,CA,2024-02-22,Event,Pro,10,False,True
+521c9862-a1a5-486b-b53a-7afe2df38699,Ware and Sons,FinTech,UK,2025-10-01,Partner,Free,14,False,False
