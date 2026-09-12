@@ -1,0 +1,496 @@
+{
+  "monthly_timeline": [
+    {
+      "year_month": "2023-01",
+      "new_accounts": 17,
+      "active_using_accounts": 440,
+      "total_usage": 10877.0,
+      "usage_per_active_account": 24.7,
+      "churn_events": 1,
+      "churned_accounts": 1,
+      "total_refunds": 0.0,
+      "error_rate_pct": 5.44
+    },
+    {
+      "year_month": "2023-02",
+      "new_accounts": 18,
+      "active_using_accounts": 412,
+      "total_usage": 9492.0,
+      "usage_per_active_account": 23.0,
+      "churn_events": 0,
+      "churned_accounts": 0,
+      "total_refunds": 0.0,
+      "error_rate_pct": 6.34
+    },
+    {
+      "year_month": "2023-03",
+      "new_accounts": 20,
+      "active_using_accounts": 431,
+      "total_usage": 11031.0,
+      "usage_per_active_account": 25.6,
+      "churn_events": 5,
+      "churned_accounts": 5,
+      "total_refunds": 0.0,
+      "error_rate_pct": 5.45
+    },
+    {
+      "year_month": "2023-04",
+      "new_accounts": 15,
+      "active_using_accounts": 432,
+      "total_usage": 10369.0,
+      "usage_per_active_account": 24.0,
+      "churn_events": 3,
+      "churned_accounts": 3,
+      "total_refunds": 38.15,
+      "error_rate_pct": 5.59
+    },
+    {
+      "year_month": "2023-05",
+      "new_accounts": 26,
+      "active_using_accounts": 438,
+      "total_usage": 10757.0,
+      "usage_per_active_account": 24.6,
+      "churn_events": 3,
+      "churned_accounts": 3,
+      "total_refunds": 0.0,
+      "error_rate_pct": 6.16
+    },
+    {
+      "year_month": "2023-06",
+      "new_accounts": 13,
+      "active_using_accounts": 420,
+      "total_usage": 10002.0,
+      "usage_per_active_account": 23.8,
+      "churn_events": 5,
+      "churned_accounts": 5,
+      "total_refunds": 0.0,
+      "error_rate_pct": 6.26
+    },
+    {
+      "year_month": "2023-07",
+      "new_accounts": 14,
+      "active_using_accounts": 415,
+      "total_usage": 11083.0,
+      "usage_per_active_account": 26.7,
+      "churn_events": 6,
+      "churned_accounts": 6,
+      "total_refunds": 0.0,
+      "error_rate_pct": 5.4
+    },
+    {
+      "year_month": "2023-08",
+      "new_accounts": 16,
+      "active_using_accounts": 426,
+      "total_usage": 10335.0,
+      "usage_per_active_account": 24.3,
+      "churn_events": 7,
+      "churned_accounts": 6,
+      "total_refunds": 70.81,
+      "error_rate_pct": 5.45
+    },
+    {
+      "year_month": "2023-09",
+      "new_accounts": 23,
+      "active_using_accounts": 409,
+      "total_usage": 9737.0,
+      "usage_per_active_account": 23.8,
+      "churn_events": 6,
+      "churned_accounts": 6,
+      "total_refunds": 0.0,
+      "error_rate_pct": 5.5
+    },
+    {
+      "year_month": "2023-10",
+      "new_accounts": 20,
+      "active_using_accounts": 426,
+      "total_usage": 10968.0,
+      "usage_per_active_account": 25.7,
+      "churn_events": 10,
+      "churned_accounts": 10,
+      "total_refunds": 0.0,
+      "error_rate_pct": 5.48
+    },
+    {
+      "year_month": "2023-11",
+      "new_accounts": 25,
+      "active_using_accounts": 412,
+      "total_usage": 9475.0,
+      "usage_per_active_account": 23.0,
+      "churn_events": 11,
+      "churned_accounts": 11,
+      "total_refunds": 300.51,
+      "error_rate_pct": 5.04
+    },
+    {
+      "year_month": "2023-12",
+      "new_accounts": 20,
+      "active_using_accounts": 431,
+      "total_usage": 10435.0,
+      "usage_per_active_account": 24.2,
+      "churn_events": 16,
+      "churned_accounts": 16,
+      "total_refunds": 358.06,
+      "error_rate_pct": 6.23
+    },
+    {
+      "year_month": "2024-01",
+      "new_accounts": 16,
+      "active_using_accounts": 426,
+      "total_usage": 10621.0,
+      "usage_per_active_account": 24.9,
+      "churn_events": 20,
+      "churned_accounts": 18,
+      "total_refunds": 326.28,
+      "error_rate_pct": 5.78
+    },
+    {
+      "year_month": "2024-02",
+      "new_accounts": 13,
+      "active_using_accounts": 422,
+      "total_usage": 10247.0,
+      "usage_per_active_account": 24.3,
+      "churn_events": 10,
+      "churned_accounts": 10,
+      "total_refunds": 0.0,
+      "error_rate_pct": 5.84
+    },
+    {
+      "year_month": "2024-03",
+      "new_accounts": 27,
+      "active_using_accounts": 430,
+      "total_usage": 10725.0,
+      "usage_per_active_account": 24.9,
+      "churn_events": 24,
+      "churned_accounts": 24,
+      "total_refunds": 355.24,
+      "error_rate_pct": 5.5
+    },
+    {
+      "year_month": "2024-04",
+      "new_accounts": 22,
+      "active_using_accounts": 428,
+      "total_usage": 10131.0,
+      "usage_per_active_account": 23.7,
+      "churn_events": 25,
+      "churned_accounts": 23,
+      "total_refunds": 286.32,
+      "error_rate_pct": 5.97
+    },
+    {
+      "year_month": "2024-05",
+      "new_accounts": 22,
+      "active_using_accounts": 427,
+      "total_usage": 10552.0,
+      "usage_per_active_account": 24.7,
+      "churn_events": 27,
+      "churned_accounts": 25,
+      "total_refunds": 189.52,
+      "error_rate_pct": 5.81
+    },
+    {
+      "year_month": "2024-06",
+      "new_accounts": 21,
+      "active_using_accounts": 416,
+      "total_usage": 10106.0,
+      "usage_per_active_account": 24.3,
+      "churn_events": 40,
+      "churned_accounts": 38,
+      "total_refunds": 514.46,
+      "error_rate_pct": 5.33
+    },
+    {
+      "year_month": "2024-07",
+      "new_accounts": 26,
+      "active_using_accounts": 431,
+      "total_usage": 10601.0,
+      "usage_per_active_account": 24.6,
+      "churn_events": 35,
+      "churned_accounts": 33,
+      "total_refunds": 653.9,
+      "error_rate_pct": 6.19
+    },
+    {
+      "year_month": "2024-08",
+      "new_accounts": 21,
+      "active_using_accounts": 422,
+      "total_usage": 10559.0,
+      "usage_per_active_account": 25.0,
+      "churn_events": 42,
+      "churned_accounts": 40,
+      "total_refunds": 829.47,
+      "error_rate_pct": 5.26
+    },
+    {
+      "year_month": "2024-09",
+      "new_accounts": 25,
+      "active_using_accounts": 415,
+      "total_usage": 10195.0,
+      "usage_per_active_account": 24.6,
+      "churn_events": 53,
+      "churned_accounts": 48,
+      "total_refunds": 1019.21,
+      "error_rate_pct": 5.53
+    },
+    {
+      "year_month": "2024-10",
+      "new_accounts": 31,
+      "active_using_accounts": 435,
+      "total_usage": 11450.0,
+      "usage_per_active_account": 26.3,
+      "churn_events": 66,
+      "churned_accounts": 60,
+      "total_refunds": 832.18,
+      "error_rate_pct": 4.98
+    },
+    {
+      "year_month": "2024-11",
+      "new_accounts": 32,
+      "active_using_accounts": 410,
+      "total_usage": 10039.0,
+      "usage_per_active_account": 24.5,
+      "churn_events": 68,
+      "churned_accounts": 60,
+      "total_refunds": 732.06,
+      "error_rate_pct": 5.35
+    },
+    {
+      "year_month": "2024-12",
+      "new_accounts": 17,
+      "active_using_accounts": 428,
+      "total_usage": 10738.0,
+      "usage_per_active_account": 25.1,
+      "churn_events": 117,
+      "churned_accounts": 96,
+      "total_refunds": 2146.08,
+      "error_rate_pct": 5.35
+    }
+  ],
+  "quadrants_summary": [
+    {
+      "quadrant": "Q1: Zona Crítica (Alto MRR + Alto Risco)",
+      "contas": 108,
+      "mrr_total": 493328.0,
+      "mrr_medio": 4567.85,
+      "churn_rate": 46.3,
+      "score_medio": 0.55,
+      "taxa_erro_media": 5.19,
+      "escalacoes_medias": 0.24
+    },
+    {
+      "quadrant": "Q2: Cauda Vulnerável (Baixo MRR + Alto Risco)",
+      "contas": 146,
+      "mrr_total": 63457.0,
+      "mrr_medio": 434.64,
+      "churn_rate": 41.1,
+      "score_medio": 0.53,
+      "taxa_erro_media": 5.15,
+      "escalacoes_medias": 0.14
+    },
+    {
+      "quadrant": "Q3: Vacas Leiteiras (Alto MRR + Baixo Risco)",
+      "contas": 98,
+      "mrr_total": 604913.0,
+      "mrr_medio": 6172.58,
+      "churn_rate": 0.0,
+      "score_medio": 0.34,
+      "taxa_erro_media": 6.1,
+      "escalacoes_medias": 0.24
+    },
+    {
+      "quadrant": "Q4: Base Estável (Baixo MRR + Baixo Risco)",
+      "contas": 148,
+      "mrr_total": 76692.0,
+      "mrr_medio": 518.19,
+      "churn_rate": 0.0,
+      "score_medio": 0.32,
+      "taxa_erro_media": 6.17,
+      "escalacoes_medias": 0.17
+    }
+  ],
+  "churn_reasons": [
+    {
+      "reason_code": "features",
+      "event_count": 114,
+      "pct_events": 19.0,
+      "avg_refund": 16.72,
+      "total_refund": 1905.9,
+      "preceded_by_upgrade": 17.0,
+      "preceded_by_downgrade": 9.0,
+      "reactivations": 13.0
+    },
+    {
+      "reason_code": "budget",
+      "event_count": 104,
+      "pct_events": 17.3,
+      "avg_refund": 12.0,
+      "total_refund": 1247.54,
+      "preceded_by_upgrade": 24.0,
+      "preceded_by_downgrade": 6.0,
+      "reactivations": 12.0
+    },
+    {
+      "reason_code": "support",
+      "event_count": 104,
+      "pct_events": 17.3,
+      "avg_refund": 11.73,
+      "total_refund": 1219.64,
+      "preceded_by_upgrade": 28.0,
+      "preceded_by_downgrade": 13.0,
+      "reactivations": 6.0
+    },
+    {
+      "reason_code": "unknown",
+      "event_count": 95,
+      "pct_events": 15.8,
+      "avg_refund": 18.34,
+      "total_refund": 1742.39,
+      "preceded_by_upgrade": 19.0,
+      "preceded_by_downgrade": 9.0,
+      "reactivations": 9.0
+    },
+    {
+      "reason_code": "competitor",
+      "event_count": 92,
+      "pct_events": 15.3,
+      "avg_refund": 13.08,
+      "total_refund": 1203.53,
+      "preceded_by_upgrade": 17.0,
+      "preceded_by_downgrade": 12.0,
+      "reactivations": 12.0
+    },
+    {
+      "reason_code": "pricing",
+      "event_count": 91,
+      "pct_events": 15.2,
+      "avg_refund": 14.65,
+      "total_refund": 1333.25,
+      "preceded_by_upgrade": 18.0,
+      "preceded_by_downgrade": 4.0,
+      "reactivations": 9.0
+    }
+  ],
+  "feedback_frequencies": [
+    {
+      "feedback": "too expensive",
+      "occurrences": 161,
+      "pct_total": 26.8
+    },
+    {
+      "feedback": "missing features",
+      "occurrences": 155,
+      "pct_total": 25.8
+    },
+    {
+      "feedback": "[Sem feedback]",
+      "occurrences": 148,
+      "pct_total": 24.7
+    },
+    {
+      "feedback": "switched to competitor",
+      "occurrences": 136,
+      "pct_total": 22.7
+    }
+  ],
+  "contracts_breakdown": [
+    {
+      "billing_frequency": "annual",
+      "auto_renew_flag": false,
+      "is_trial": false,
+      "total_subs": 414,
+      "churned_subs": 44.0,
+      "churn_rate_pct": 10.6,
+      "avg_mrr": 2688.47
+    },
+    {
+      "billing_frequency": "annual",
+      "auto_renew_flag": false,
+      "is_trial": true,
+      "total_subs": 77,
+      "churned_subs": 4.0,
+      "churn_rate_pct": 5.2,
+      "avg_mrr": 0.0
+    },
+    {
+      "billing_frequency": "annual",
+      "auto_renew_flag": true,
+      "is_trial": false,
+      "total_subs": 1673,
+      "churned_subs": 172.0,
+      "churn_rate_pct": 10.3,
+      "avg_mrr": 2680.44
+    },
+    {
+      "billing_frequency": "annual",
+      "auto_renew_flag": true,
+      "is_trial": true,
+      "total_subs": 297,
+      "churned_subs": 27.0,
+      "churn_rate_pct": 9.1,
+      "avg_mrr": 0.0
+    },
+    {
+      "billing_frequency": "monthly",
+      "auto_renew_flag": false,
+      "is_trial": false,
+      "total_subs": 434,
+      "churned_subs": 40.0,
+      "churn_rate_pct": 9.2,
+      "avg_mrr": 2583.9
+    },
+    {
+      "billing_frequency": "monthly",
+      "auto_renew_flag": false,
+      "is_trial": true,
+      "total_subs": 70,
+      "churned_subs": 8.0,
+      "churn_rate_pct": 11.4,
+      "avg_mrr": 0.0
+    },
+    {
+      "billing_frequency": "monthly",
+      "auto_renew_flag": true,
+      "is_trial": false,
+      "total_subs": 1701,
+      "churned_subs": 152.0,
+      "churn_rate_pct": 8.9,
+      "avg_mrr": 2716.01
+    },
+    {
+      "billing_frequency": "monthly",
+      "auto_renew_flag": true,
+      "is_trial": true,
+      "total_subs": 334,
+      "churned_subs": 39.0,
+      "churn_rate_pct": 11.7,
+      "avg_mrr": 0.0
+    }
+  ],
+  "retention_benchmark": [
+    {
+      "churn_flag": false,
+      "total_contas": 390,
+      "mrr_medio": 2520.38,
+      "seats_medio": 20.9,
+      "taxa_erro_media_pct": 5.72,
+      "tickets_medios": 4.0,
+      "escalacoes_medias": 0.18,
+      "frt_medio_min": 89.6,
+      "pct_contratos_anuais": 54.6,
+      "pct_auto_renew": 82.8,
+      "pct_canal_partner": 19.5
+    },
+    {
+      "churn_flag": true,
+      "total_contas": 110,
+      "mrr_medio": 2322.2,
+      "seats_medio": 19.2,
+      "taxa_erro_media_pct": 5.39,
+      "tickets_medios": 3.9,
+      "escalacoes_medias": 0.22,
+      "frt_medio_min": 85.0,
+      "pct_contratos_anuais": 61.8,
+      "pct_auto_renew": 82.7,
+      "pct_canal_partner": 11.8
+    }
+  ]
+}

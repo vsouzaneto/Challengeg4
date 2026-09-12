@@ -1,0 +1,98 @@
+{
+  "model_results": [
+    {
+      "Modelo": "Logistic Regression",
+      "ROC-AUC (M\u00e9dia)": 0.4956,
+      "ROC-AUC (DesvPad)": 0.0663,
+      "PR-AUC (M\u00e9dia)": 0.2745,
+      "F1-Score": 0.2773,
+      "Precision": 0.2112,
+      "Recall": 0.4091
+    },
+    {
+      "Modelo": "Random Forest",
+      "ROC-AUC (M\u00e9dia)": 0.5211,
+      "ROC-AUC (DesvPad)": 0.039,
+      "PR-AUC (M\u00e9dia)": 0.279,
+      "F1-Score": 0.2717,
+      "Precision": 0.2654,
+      "Recall": 0.2818
+    },
+    {
+      "Modelo": "Gradient Boosting",
+      "ROC-AUC (M\u00e9dia)": 0.5423,
+      "ROC-AUC (DesvPad)": 0.0477,
+      "PR-AUC (M\u00e9dia)": 0.2614,
+      "F1-Score": 0.0416,
+      "Precision": 0.1119,
+      "Recall": 0.0273
+    }
+  ],
+  "top_features": [
+    {
+      "Feature": "error_rate_pct",
+      "Importance": 0.08917991340463532
+    },
+    {
+      "Feature": "avg_resolution_hours",
+      "Importance": 0.06682033679445683
+    },
+    {
+      "Feature": "avg_frt_minutes",
+      "Importance": 0.0667403445152353
+    },
+    {
+      "Feature": "usage_per_seat",
+      "Importance": 0.06409996211815154
+    },
+    {
+      "Feature": "total_usage_count",
+      "Importance": 0.05874201065524604
+    },
+    {
+      "Feature": "beta_usage_count",
+      "Importance": 0.058288081827630144
+    },
+    {
+      "Feature": "total_usage_duration",
+      "Importance": 0.05104477749500134
+    },
+    {
+      "Feature": "total_error_count",
+      "Importance": 0.04487940601201843
+    },
+    {
+      "Feature": "latest_mrr",
+      "Importance": 0.042650498654926455
+    },
+    {
+      "Feature": "seats",
+      "Importance": 0.042425244330457454
+    },
+    {
+      "Feature": "beta_error_count",
+      "Importance": 0.0411096756850772
+    },
+    {
+      "Feature": "total_tickets",
+      "Importance": 0.03215074049500817
+    },
+    {
+      "Feature": "total_subs_history",
+      "Importance": 0.029770108304172663
+    },
+    {
+      "Feature": "high_urgent_tickets",
+      "Importance": 0.027514419398062043
+    },
+    {
+      "Feature": "avg_csat",
+      "Importance": 0.027396894186493062
+    }
+  ],
+  "risk_distribution": {
+    "Aten\u00e7\u00e3o (M\u00e9dio Risco)": 292,
+    "Saud\u00e1vel (Baixo Risco)": 147,
+    "Cr\u00edtico (Alto Risco)": 61
+  }
+}
