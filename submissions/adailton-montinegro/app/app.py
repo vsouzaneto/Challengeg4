@@ -13,8 +13,17 @@ st.set_page_config(
 
 # Caminhos dos dados
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-ARTIFACTS_DIR = os.path.join(BASE_DIR, "..", "artifacts")
-DATA_DIR = os.path.join(BASE_DIR, "..", "..", "..", "data", "churn")
+ARTIFACTS_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", "artifacts"))
+
+# Busca resiliente de dados (workspace root ou repo root)
+CANDIDATE_DATA_DIRS = [
+    os.path.abspath(os.path.join(BASE_DIR, "..", "..", "..", "..", "data", "churn")),
+    os.path.abspath(os.path.join(BASE_DIR, "..", "..", "..", "data", "churn")),
+    os.path.abspath(os.path.join(BASE_DIR, "..", "data", "churn")),
+    "/Users/montinegro/G4 AI Master/data/churn",
+    "/Users/montinegro/G4 AI Master/repo/data/churn"
+]
+DATA_DIR = next((d for d in CANDIDATE_DATA_DIRS if os.path.exists(d) and os.path.exists(os.path.join(d, "ravenstack_accounts.csv"))), CANDIDATE_DATA_DIRS[0])
 
 @st.cache_data
 def load_data():

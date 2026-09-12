@@ -7,8 +7,12 @@ Thumbs.db
 
 # Data downloads (candidates get from Kaggle)
 datasets/
+data/
+__pycache__/
+*.pyc
 
 # IDE
+
 .vscode/
 .idea/
 
