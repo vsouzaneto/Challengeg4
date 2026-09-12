@@ -1,0 +1,98 @@
+{
+  "model_results": [
+    {
+      "Modelo": "Logistic Regression",
+      "ROC-AUC (M\u00e9dia)": 0.5308,
+      "ROC-AUC (DesvPad)": 0.0683,
+      "PR-AUC (M\u00e9dia)": 0.2762,
+      "F1-Score": 0.2976,
+      "Precision": 0.2331,
+      "Recall": 0.4182
+    },
+    {
+      "Modelo": "Random Forest",
+      "ROC-AUC (M\u00e9dia)": 0.5431,
+      "ROC-AUC (DesvPad)": 0.0513,
+      "PR-AUC (M\u00e9dia)": 0.2832,
+      "F1-Score": 0.2693,
+      "Precision": 0.3052,
+      "Recall": 0.2545
+    },
+    {
+      "Modelo": "Gradient Boosting",
+      "ROC-AUC (M\u00e9dia)": 0.5473,
+      "ROC-AUC (DesvPad)": 0.0388,
+      "PR-AUC (M\u00e9dia)": 0.2588,
+      "F1-Score": 0.0873,
+      "Precision": 0.2452,
+      "Recall": 0.0545
+    }
+  ],
+  "top_features": [
+    {
+      "Feature": "error_rate_pct",
+      "Importance": 0.08706447394772542
+    },
+    {
+      "Feature": "avg_resolution_hours",
+      "Importance": 0.06336591149521492
+    },
+    {
+      "Feature": "avg_frt_minutes",
+      "Importance": 0.06245725163995141
+    },
+    {
+      "Feature": "beta_usage_count",
+      "Importance": 0.061940818292067615
+    },
+    {
+      "Feature": "total_usage_count",
+      "Importance": 0.058728138371414
+    },
+    {
+      "Feature": "usage_per_seat",
+      "Importance": 0.05412040359278239
+    },
+    {
+      "Feature": "total_usage_duration",
+      "Importance": 0.04944728360389021
+    },
+    {
+      "Feature": "seats",
+      "Importance": 0.04820709923559998
+    },
+    {
+      "Feature": "latest_mrr",
+      "Importance": 0.045136503351881505
+    },
+    {
+      "Feature": "total_error_count",
+      "Importance": 0.04333208174096354
+    },
+    {
+      "Feature": "beta_error_count",
+      "Importance": 0.04161309024690146
+    },
+    {
+      "Feature": "total_tickets",
+      "Importance": 0.03207658625148314
+    },
+    {
+      "Feature": "high_urgent_tickets",
+      "Importance": 0.03160170990575268
+    },
+    {
+      "Feature": "total_subs_history",
+      "Importance": 0.03145221736158243
+    },
+    {
+      "Feature": "avg_csat",
+      "Importance": 0.027820772540925038
+    }
+  ],
+  "risk_distribution": {
+    "Aten\u00e7\u00e3o (M\u00e9dio Risco)": 295,
+    "Saud\u00e1vel (Baixo Risco)": 143,
+    "Cr\u00edtico (Alto Risco)": 62
+  }
+}
