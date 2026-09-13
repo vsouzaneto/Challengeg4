@@ -10,7 +10,7 @@ Manter análises independentes em cada formato criaria risco de números diverge
 
 1. Entregar uma aplicação Streamlit como superfície interativa.
 2. Entregar um relatório executivo em PDF como artefato canônico e avaliável sem execução de código.
-3. Manter a fonte do relatório em Markdown versionado.
+3. Manter um gerador versionado e executável para o PDF, acompanhado por uma narrativa editorial em Markdown.
 4. Gerar os números e gráficos de ambas as superfícies a partir das mesmas tabelas gold e do mesmo catálogo de métricas.
 5. Registrar no PDF a versão dos dados, a data de corte, o universo, a cobertura e o estado de confiabilidade das métricas.
 6. Usar o Streamlit para filtros, drill-down, tabela de contas e cenários que não cabem no PDF.
@@ -33,4 +33,3 @@ Manter análises independentes em cada formato criaria risco de números diverge
 ## Status
 
 Aceita pelo autor da submissão em 2026-09-12.
-

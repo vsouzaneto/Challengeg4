@@ -27,7 +27,7 @@ Glossário da submissão do Challenge 001. Cada termo possui um único significa
 - **Artefato estático:** versão final da análise que pode ser avaliada sem executar o Streamlit.
 - **Superfície interativa:** aplicação Streamlit para exploração, filtros, detalhamento e priorização de contas.
 - **Artefato canônico:** relatório executivo em PDF, derivado das mesmas consultas e métricas do Streamlit.
-- **Fonte editável do relatório:** documento Markdown versionado usado para gerar e revisar o PDF.
+- **Fonte executável do relatório:** `scripts/build_report.py`, que gera o PDF a partir dos exports Gold; `docs/EXECUTIVE-NARRATIVE.md` preserva a narrativa editorial revisável.
 
 ## Estados de confiabilidade
 

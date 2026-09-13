@@ -5,4 +5,5 @@ streamlit>=1.48,<2
 altair>=5.5,<6
 plotly>=6,<7
 pytest>=8,<10
+reportlab>=4.2,<5
 scipy>=1.13,<2
