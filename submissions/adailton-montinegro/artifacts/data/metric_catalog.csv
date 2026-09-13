@@ -1,0 +1,9 @@
+metric_id,metric_label,definition,grain,universe_id,confidence_state,value_status,limitation
+grr,Gross Revenue Retention,MRR retido antes de expansão / MRR inicial.,account-month,none,Unavailable,Unavailable,Movimentos de MRR não reconciliam por conta e período.
+monthly_logo_churn,Logo churn mensal,Contas que perderam sua última assinatura paga / base pagante inicial.,account-month,none,Unavailable,Unavailable,Eventos não identificam assinatura e state machine não reconcilia.
+mrr_proxy_additive,MRR proxy aditivo,Soma do MRR das assinaturas pagas ativas da conta no corte.,account,account_revenue_proxy,Conditional,Available,Não é limite matemático e pode superestimar receita em sobreposições.
+mrr_proxy_conservative,MRR proxy conservador,Maior MRR individual entre assinaturas pagas ativas da conta no corte.,account,account_revenue_proxy,Conditional,Available,Não é limite matemático; não identifica módulos ou versões de contrato.
+nrr,Net Revenue Retention,MRR final de clientes existentes / MRR inicial.,account-month,none,Unavailable,Unavailable,"Movimentos de expansão, contração e churn não são identificáveis."
+snapshot_churn_rate,Churn no snapshot declarado,Contas com accounts.churn_flag=true / contas elegíveis.,account,accounts_snapshot,Observed,Available,Não mede churn mensal.
+triage_score,Índice de triagem,"Média ponderada de sinais válidos de uso, erro e suporte.",account without snapshot churn flag,account_triage,Conditional,Available,Sem flag de churn no snapshot; atividade atual não reconciliada. Não é probabilidade nem efeito causal.
+valid_churn_events,Eventos históricos válidos de churn,Contagem de churn_events após o signup da conta.,churn event,churn_event_ledger,Derived,Available,Uma conta pode possuir múltiplos eventos.

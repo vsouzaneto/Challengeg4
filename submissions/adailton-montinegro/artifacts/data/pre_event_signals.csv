@@ -1,0 +1,6 @@
+window_label,window_order,usage_events,usage_accounts,usage_count,error_count,error_rate_pct,support_tickets,support_accounts,escalated_tickets,escalation_rate_pct,rated_tickets,avg_csat
+0-14,1,301,159,2978,152,5.1,40,39,6,15.0,28,4.07
+15-30,2,212,132,2151,87,4.04,50,44,2,4.0,25,3.88
+31-60,3,337,159,3378,204,6.04,57,50,3,5.26,32,3.75
+61-90,4,244,119,2416,128,5.3,52,45,1,1.92,34,4.18
+91+,5,748,135,7428,433,5.83,191,109,11,5.76,119,3.95
