@@ -1,0 +1,43 @@
+{
+  "manifest_version": "ravenstack-kaggle-v1",
+  "source": {
+    "platform": "Kaggle",
+    "dataset_slug": "rivalytics/saas-subscription-and-churn-analytics-dataset",
+    "dataset_version": 1,
+    "download_handle": "rivalytics/saas-subscription-and-churn-analytics-dataset/versions/1",
+    "license": "MIT"
+  },
+  "files": [
+    {
+      "name": "ravenstack_accounts.csv",
+      "bytes": 36148,
+      "rows": 500,
+      "sha256": "301318d5b68ca777803ab934432dbcc1ce92323f65a59117dcd5d6f6c1fc974a"
+    },
+    {
+      "name": "ravenstack_subscriptions.csv",
+      "bytes": 432565,
+      "rows": 5000,
+      "sha256": "6d77c36b9f725214d3e560d54f7b0af7990b9bda2165b9f4393c04ef502c9c3c"
+    },
+    {
+      "name": "ravenstack_feature_usage.csv",
+      "bytes": 1375897,
+      "rows": 25000,
+      "sha256": "ef9a2ba1ae581ed9ab3b4b6886c4f25373984f47ed2a172c494b42a60d45e104"
+    },
+    {
+      "name": "ravenstack_support_tickets.csv",
+      "bytes": 143597,
+      "rows": 2000,
+      "sha256": "57fb4812b933df080ff1b389e76f0b566b6db005fd4f2e59fda2d05b7dafb55e"
+    },
+    {
+      "name": "ravenstack_churn_events.csv",
+      "bytes": 44029,
+      "rows": 600,
+      "sha256": "b532bb4e00af480f53e0d373669af6e5a94487b91365be123f4222b31b197c9e"
+    }
+  ]
+}
+

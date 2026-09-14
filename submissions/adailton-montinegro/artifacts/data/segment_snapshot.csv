@@ -1,0 +1,21 @@
+dimension_name,segment_value,total_accounts,snapshot_churned_accounts,snapshot_churn_rate_pct,mrr_proxy_conservative,mrr_proxy_additive,wilson_ci_low_pct,wilson_ci_high_pct,global_test_name,global_p_value,cramers_v,global_interpretation
+country,AU,32,4,12.5,252121.0,757401.0,4.97,28.07,Chi-square,0.6588010486832012,0.09090796837198577,No statistical evidence of association
+country,CA,23,4,17.39,169707.0,434235.0,6.98,37.14,Chi-square,0.6588010486832012,0.09090796837198577,No statistical evidence of association
+country,DE,25,8,32.0,142845.0,337907.0,17.2,51.59,Chi-square,0.6588010486832012,0.09090796837198577,No statistical evidence of association
+country,FR,22,5,22.73,161910.0,489233.0,10.12,43.44,Chi-square,0.6588010486832012,0.09090796837198577,No statistical evidence of association
+country,IN,49,10,20.41,379193.0,1130163.0,11.48,33.64,Chi-square,0.6588010486832012,0.09090796837198577,No statistical evidence of association
+country,UK,58,11,18.97,404569.0,1059199.0,10.93,30.85,Chi-square,0.6588010486832012,0.09090796837198577,No statistical evidence of association
+country,US,291,68,23.37,2158507.0,6051371.0,18.87,28.56,Chi-square,0.6588010486832012,0.09090796837198577,No statistical evidence of association
+industry,Cybersecurity,100,16,16.0,734422.0,2012950.0,10.1,24.42,Chi-square,0.06567465981750352,0.13283951153566953,No statistical evidence of association
+industry,DevTools,113,35,30.97,802007.0,2172682.0,23.19,40.01,Chi-square,0.06567465981750352,0.13283951153566953,No statistical evidence of association
+industry,EdTech,79,13,16.46,614991.0,1844571.0,9.88,26.15,Chi-square,0.06567465981750352,0.13283951153566953,No statistical evidence of association
+industry,FinTech,112,25,22.32,849603.0,2433216.0,15.6,30.88,Chi-square,0.06567465981750352,0.13283951153566953,No statistical evidence of association
+industry,HealthTech,96,21,21.88,667829.0,1796090.0,14.78,31.14,Chi-square,0.06567465981750352,0.13283951153566953,No statistical evidence of association
+plan_tier,Basic,168,37,22.02,1303235.0,3754860.0,16.42,28.88,Chi-square,0.9992809971620159,0.0016961856555120906,No statistical evidence of association
+plan_tier,Enterprise,154,34,22.08,1151614.0,2936681.0,16.25,29.26,Chi-square,0.9992809971620159,0.0016961856555120906,No statistical evidence of association
+plan_tier,Pro,178,39,21.91,1214003.0,3567968.0,16.46,28.54,Chi-square,0.9992809971620159,0.0016961856555120906,No statistical evidence of association
+referral_source,ads,98,23,23.47,718771.0,1961145.0,16.18,32.76,Chi-square,0.07935639594437033,0.12927921706120557,No statistical evidence of association
+referral_source,event,96,29,30.21,617374.0,1727360.0,21.93,40.01,Chi-square,0.07935639594437033,0.12927921706120557,No statistical evidence of association
+referral_source,organic,114,20,17.54,876776.0,2556896.0,11.65,25.55,Chi-square,0.07935639594437033,0.12927921706120557,No statistical evidence of association
+referral_source,other,103,25,24.27,723670.0,2104692.0,17.01,33.38,Chi-square,0.07935639594437033,0.12927921706120557,No statistical evidence of association
+referral_source,partner,89,13,14.61,732261.0,1909416.0,8.74,23.4,Chi-square,0.07935639594437033,0.12927921706120557,No statistical evidence of association

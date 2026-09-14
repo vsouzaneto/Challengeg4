@@ -1,0 +1,8 @@
+scope_id,scope_label,raw_rows,eligible_rows,quarantined_rows,coverage_pct,confidence_state,grain,notes
+account_revenue_proxy,Intervalo proxy de MRR por conta,500,500,0,100.0,Conditional,account,Proxy conservador=max MRR individual; proxy aditivo=soma das assinaturas pagas ativas.
+account_triage,Índice de triagem para contas sem flag de churn no snapshot,390,390,0,100.0,Conditional,account without snapshot churn flag,Sem flag de churn no snapshot; atividade atual não reconciliada. Não é probabilidade.
+accounts_snapshot,Snapshot declarado de contas,500,500,0,100.0,Observed,account,"churn_flag é snapshot declarado, não evento mensal."
+churn_event_ledger,Ledger histórico de eventos de churn,600,600,0,100.0,Derived,churn event,Não equivale ao estado atual da conta.
+subscriptions_observed,Assinaturas observadas,5000,5000,0,100.0,Observed,subscription,Sobreposições permanecem sinalizadas.
+support_temporal,Suporte temporal elegível,2000,923,1077,46.15,Derived,support ticket,"CSAT ausente é aviso, não descarte."
+usage_temporal,Uso temporal elegível,25000,5554,19446,22.22,Derived,usage event,Exclui duplicidade e eventos fora da vigência/cadastro.

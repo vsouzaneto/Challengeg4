@@ -1,0 +1,95 @@
+{
+  "manifest_version": "ravenstack-kaggle-v1",
+  "dataset_slug": "rivalytics/saas-subscription-and-churn-analytics-dataset",
+  "dataset_version": 1,
+  "generated_at": "2026-09-13T00:42:40.812877+00:00",
+  "data_cutoff": "2024-12-31",
+  "kpis": {
+    "total_accounts": 500,
+    "source_table_count": 5,
+    "valid_churn_events": 600,
+    "data_period": "2023-01-01 to 2024-12-31",
+    "raw_total_rows": 33100,
+    "snapshot_churned_accounts": 110,
+    "quality_issue_count": 43660
+  },
+  "analysis_scope": [
+    {
+      "scope_id": "account_revenue_proxy",
+      "scope_label": "Intervalo proxy de MRR por conta",
+      "raw_rows": 500,
+      "eligible_rows": 500,
+      "quarantined_rows": 0,
+      "coverage_pct": 100.0,
+      "confidence_state": "Conditional",
+      "grain": "account",
+      "notes": "Proxy conservador=max MRR individual; proxy aditivo=soma das assinaturas pagas ativas."
+    },
+    {
+      "scope_id": "account_triage",
+      "scope_label": "Índice de triagem para contas sem flag de churn no snapshot",
+      "raw_rows": 390,
+      "eligible_rows": 390,
+      "quarantined_rows": 0,
+      "coverage_pct": 100.0,
+      "confidence_state": "Conditional",
+      "grain": "account without snapshot churn flag",
+      "notes": "Sem flag de churn no snapshot; atividade atual não reconciliada. Não é probabilidade."
+    },
+    {
+      "scope_id": "accounts_snapshot",
+      "scope_label": "Snapshot declarado de contas",
+      "raw_rows": 500,
+      "eligible_rows": 500,
+      "quarantined_rows": 0,
+      "coverage_pct": 100.0,
+      "confidence_state": "Observed",
+      "grain": "account",
+      "notes": "churn_flag é snapshot declarado, não evento mensal."
+    },
+    {
+      "scope_id": "churn_event_ledger",
+      "scope_label": "Ledger histórico de eventos de churn",
+      "raw_rows": 600,
+      "eligible_rows": 600,
+      "quarantined_rows": 0,
+      "coverage_pct": 100.0,
+      "confidence_state": "Derived",
+      "grain": "churn event",
+      "notes": "Não equivale ao estado atual da conta."
+    },
+    {
+      "scope_id": "subscriptions_observed",
+      "scope_label": "Assinaturas observadas",
+      "raw_rows": 5000,
+      "eligible_rows": 5000,
+      "quarantined_rows": 0,
+      "coverage_pct": 100.0,
+      "confidence_state": "Observed",
+      "grain": "subscription",
+      "notes": "Sobreposições permanecem sinalizadas."
+    },
+    {
+      "scope_id": "support_temporal",
+      "scope_label": "Suporte temporal elegível",
+      "raw_rows": 2000,
+      "eligible_rows": 923,
+      "quarantined_rows": 1077,
+      "coverage_pct": 46.15,
+      "confidence_state": "Derived",
+      "grain": "support ticket",
+      "notes": "CSAT ausente é aviso, não descarte."
+    },
+    {
+      "scope_id": "usage_temporal",
+      "scope_label": "Uso temporal elegível",
+      "raw_rows": 25000,
+      "eligible_rows": 5554,
+      "quarantined_rows": 19446,
+      "coverage_pct": 22.22,
+      "confidence_state": "Derived",
+      "grain": "usage event",
+      "notes": "Exclui duplicidade e eventos fora da vigência/cadastro."
+    }
+  ]
+}
