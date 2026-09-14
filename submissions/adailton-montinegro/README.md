@@ -196,7 +196,7 @@ O índice de triagem não é modelo preditivo. O intervalo de receita por conta 
 
 ### Evidências
 
-- [Conversa completa com o Codex](https://chatgpt.com/s/cx_6aa6002b2a088191ab20e15596113ec3)
+- [Conversa completa com o Codex — export sanitizado](evidencias-manuais/conversa-codex-sanitizada.md)
 - [Capturas manuais do processo](evidencias-manuais/)
 - [Decision log completo](process-log/DECISION-LOG.md)
 - [Política de verdade analítica](docs/adr/0001-politica-de-verdade-analitica.md)
@@ -248,6 +248,8 @@ submissions/adailton-montinegro/
 │   └── adr/
 │       Quatro decisões sobre verdade analítica, dados, entrega e gate.
 ├── evidencias-manuais/
+│   ├── conversa-codex-sanitizada.md
+│   │   Export completo e sanitizado da conversa com o Codex.
 │   └── 001 a 011 — capturas do trabalho com IA
 │       Orientações, inconsistências, análises paralelas, refinamentos e revisão.
 ├── output/

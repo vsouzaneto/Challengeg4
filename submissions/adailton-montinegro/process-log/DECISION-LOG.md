@@ -12,7 +12,7 @@ Estruturar uma submissão reproduzível para o Challenge 001, com Streamlit e Du
 - **GPT-5.6 Sol xHigh em subagentes Codex:** revisões independentes e somente leitura das regras da submissão, da arquitetura enxuta e dos limites estatísticos.
 - **Gemini 3.8 High no Antigravity:** segunda análise e revisão adversarial dos achados e da primeira implementação.
 - **RTK:** redução do volume das saídas de terminal durante a investigação.
-- **Conversa completa:** https://chatgpt.com/s/cx_6aa6002b2a088191ab20e15596113ec3
+- **Conversa completa:** [export sanitizado versionado](../evidencias-manuais/conversa-codex-sanitizada.md).
 - **Capturas selecionadas:** `evidencias-manuais/`.
 
 ### Trabalho realizado
@@ -190,3 +190,17 @@ O README ainda descrevia o protótipo rejeitado e apontava para arquivos removid
 ### Estado
 
 Documentação preparada para revisão humana. A reprodução limpa foi adiada pelo autor; nenhum envio remoto será realizado antes de autorização explícita.
+
+## 2026-09-14 — Preservação da conversa com o Codex
+
+### Contexto
+
+O link público inicialmente registrado expirou. Para manter a evidência acessível e auditável, o autor exportou e sanitizou a conversa completa com o Codex.
+
+### Decisão
+
+Versionar o arquivo `evidencias-manuais/conversa-codex-sanitizada.md` na mesma branch da submissão e substituir as referências ao link expirado no README e neste decision log.
+
+### Integridade
+
+SHA-256 do export: `d731c04d36e8b7f57e54ca9657a226ebf75285366dea1094ddb835fafc4fe067`.
