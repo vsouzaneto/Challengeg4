@@ -1,0 +1,2382 @@
+<title>Diagnóstico RavenStack</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    color-scheme: light;
+    --surface-0: #f6f4ee;
+    --surface-1: #fffefa;
+    --surface-2: #edeadf;
+    --border: #ddd7c6;
+    --border-strong: #c7bfa8;
+    --text-primary: #1d1a12;
+    --text-secondary: #5c5642;
+    --text-muted: #8b8368;
+    --blue: #2a78d6;
+    --orange: #eb6834;
+    --aqua: #1baf7a;
+    --yellow: #eda100;
+    --magenta: #e87ba4;
+    --green: #008300;
+    --violet: #4a3aa7;
+    --red: #e34948;
+    --status-good: #0ca30c;
+    --status-warning: #fab219;
+    --status-critical: #d03b3b;
+    --diverge-mid: #f0efec;
+    --chart-grid: rgba(29,26,18,.09);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --surface-0: #16140d;
+      --surface-1: #1e1b12;
+      --surface-2: #262217;
+      --border: #3a3423;
+      --border-strong: #4d452c;
+      --text-primary: #f5f1e6;
+      --text-secondary: #c4bca3;
+      --text-muted: #928a6d;
+      --blue: #3987e5;
+      --orange: #d95926;
+      --aqua: #199e70;
+      --yellow: #c98500;
+      --magenta: #d55181;
+      --green: #2fa62f;
+      --violet: #9085e9;
+      --red: #e66767;
+      --status-good: #2fa62f;
+      --status-warning: #fab219;
+      --status-critical: #e66767;
+      --diverge-mid: #383530;
+      --chart-grid: rgba(245,241,230,.09);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --surface-0: #16140d;
+    --surface-1: #1e1b12;
+    --surface-2: #262217;
+    --border: #3a3423;
+    --border-strong: #4d452c;
+    --text-primary: #f5f1e6;
+    --text-secondary: #c4bca3;
+    --text-muted: #928a6d;
+    --blue: #3987e5;
+    --orange: #d95926;
+    --aqua: #199e70;
+    --yellow: #c98500;
+    --magenta: #d55181;
+    --green: #2fa62f;
+    --violet: #9085e9;
+    --red: #e66767;
+    --status-good: #2fa62f;
+    --status-warning: #fab219;
+    --status-critical: #e66767;
+    --diverge-mid: #383530;
+    --chart-grid: rgba(245,241,230,.09);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--surface-0);
+    color:var(--text-primary);
+    font-family:"IBM Plex Sans", system-ui, sans-serif;
+    padding:0 clamp(16px,4vw,48px);
+    padding-block: clamp(24px,4vw,56px) 64px;
+    font-variant-numeric: tabular-nums;
+  }
+  .page{ max-width: 1080px; margin: 0 auto; display:flex; flex-direction:column; gap:40px; }
+
+  .eyebrow{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12px; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--text-muted); margin:0 0 10px;
+  }
+  h1{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:600; font-size: clamp(28px,4.2vw,42px);
+    line-height:1.08; margin:0 0 10px; text-wrap:balance;
+  }
+  .subtitle{ color:var(--text-secondary); font-size:16px; line-height:1.55; max-width:62ch; margin:0; }
+
+  h2{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:600; font-size:22px; margin: 0 0 4px; text-wrap:balance;
+  }
+  .section-kicker{
+    font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--text-muted); margin:0 0 6px;
+  }
+  .section-note{ color:var(--text-secondary); font-size:14.5px; line-height:1.6; max-width:70ch; margin: 6px 0 18px; }
+  section{ border-top:1px solid var(--border); padding-top:28px; }
+
+  .tiles{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; }
+  .tile{
+    background:var(--surface-1); border:1px solid var(--border); border-radius:10px;
+    padding:16px 18px; display:flex; flex-direction:column; gap:6px;
+  }
+  .tile .label{ font-size:12px; color:var(--text-muted); font-family:"IBM Plex Mono",monospace; letter-spacing:.02em; }
+  .tile .value{ font-size: clamp(22px,2.6vw,28px); font-weight:600; font-family:"IBM Plex Mono",monospace; }
+  .tile .sub{ font-size:12.5px; color:var(--text-secondary); }
+  .tile.risk .value{ color:var(--status-critical); }
+
+  .callout{
+    background:var(--surface-2); border:1px solid var(--border-strong); border-radius:10px;
+    padding:16px 18px; font-size:14.5px; line-height:1.6; color:var(--text-primary);
+  }
+  .callout .callout-label{
+    display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:11px;
+    letter-spacing:.06em; text-transform:uppercase; color:var(--status-critical);
+    margin-bottom:6px;
+  }
+  .callout.neutral .callout-label{ color:var(--text-muted); }
+  .callout code{ font-family:"IBM Plex Mono",monospace; font-size:13px; background:var(--surface-1); padding:1px 5px; border-radius:4px; border:1px solid var(--border); }
+
+  .grid-2{ display:grid; grid-template-columns:1.1fr .9fr; gap:24px; align-items:start; }
+  @media (max-width:760px){ .grid-2{ grid-template-columns:1fr; } }
+
+  .chart-card{
+    background:var(--surface-1); border:1px solid var(--border); border-radius:10px;
+    padding:16px 18px 8px;
+  }
+  .chart-card h3{ font-size:14px; margin:0 0 2px; font-weight:600; }
+  .chart-card .chart-sub{ font-size:12.5px; color:var(--text-muted); margin:0 0 10px; }
+  .chart-wrap{ position:relative; height:260px; }
+  .chart-wrap.short{ height:200px; }
+  .chart-wrap.tall{ height:340px; }
+
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:7px 10px; border-bottom:1px solid var(--border); }
+  th{ font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:var(--text-muted); font-weight:500; }
+  td.num, th.num{ text-align:right; font-family:"IBM Plex Mono",monospace; }
+  tr:last-child td{ border-bottom:none; }
+  .table-card{ background:var(--surface-1); border:1px solid var(--border); border-radius:10px; padding:14px 16px; overflow-x:auto; }
+  .pill{
+    display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:11px;
+    padding:2px 7px; border-radius:99px; border:1px solid var(--border-strong);
+    color:var(--text-secondary);
+  }
+  .pill.ns{ color: var(--text-muted); }
+
+  .legend-row{ display:flex; gap:16px; flex-wrap:wrap; font-size:12.5px; color:var(--text-secondary); margin:2px 0 12px; }
+  .legend-row .dot{ display:inline-block; width:9px; height:9px; border-radius:2px; margin-right:6px; vertical-align:-1px; }
+
+  footer{ color:var(--text-muted); font-size:12.5px; border-top:1px solid var(--border); padding-top:18px; }
+  a{ color: var(--blue); }
+</style>
+
+<div class="page">
+
+  <header>
+    <p class="eyebrow">G4 · AI Master Challenge 001 — Diagnóstico de Churn · RavenStack</p>
+    <h1>O que os dados de fato sustentam sobre o churn da RavenStack</h1>
+    <p class="subtitle">
+      Cruzamento das 5 tabelas (contas, assinaturas, uso de features, tickets de suporte,
+      eventos de churn) — 500 contas, 5.000 assinaturas, 25.000 linhas de uso, 2.000 tickets,
+      600 eventos de churn. Cada número abaixo é rastreável até essas tabelas; nada é estimativa.
+    </p>
+  </header>
+
+  <section id="headline">
+    <div class="tiles">
+      <div class="tile risk">
+        <span class="label">TAXA DE CHURN ATUAL</span>
+        <span class="value" id="t-churn-rate">—</span>
+        <span class="sub" id="t-churn-rate-sub">contas com churn_flag = true</span>
+      </div>
+      <div class="tile risk">
+        <span class="label">MRR EM RISCO</span>
+        <span class="value" id="t-mrr-risk">—</span>
+        <span class="sub" id="t-mrr-risk-sub"></span>
+      </div>
+      <div class="tile">
+        <span class="label">MRR TOTAL DA BASE</span>
+        <span class="value" id="t-mrr-total">—</span>
+        <span class="sub">soma da assinatura mais recente de cada conta</span>
+      </div>
+      <div class="tile">
+        <span class="label">CONTAS COM EVENTO NO LOG</span>
+        <span class="value" id="t-churn-events">—</span>
+        <span class="sub" id="t-churn-events-sub"></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="auditoria">
+    <p class="section-kicker">Antes de qualquer achado: o modelo completo tem sinal?</p>
+    <h2>Auditoria estatística independente (segunda sessão de IA, Opus)</h2>
+    <p class="section-note">
+      Depois da primeira versão deste relatório, uma segunda sessão de IA auditou cada teste rodado
+      aqui, caçando correlação espúria, comparação múltipla e paradoxo de Simpson. O resumo abaixo vem
+      dessa auditoria — inclusive as correções que ela obrigou (DevTools rebaixado de "achado" pra
+      "hipótese", o gráfico de trajetória de uso removido, `reason_code` recalculado na população certa).
+    </p>
+    <div class="callout">
+      <span class="callout-label">Regressão logística com as 28 covariáveis disponíveis, de uma vez</span>
+      <span id="global-null-text">carregando…</span>
+    </div>
+    <div class="callout neutral" style="margin-top:12px;">
+      <span class="callout-label">Quantos testes este relatório rodou, no total</span>
+      <span id="audit-count-text">carregando…</span>
+    </div>
+  </section>
+
+  <section id="paradoxo">
+    <p class="section-kicker">O paradoxo do CEO, resolvido com dado</p>
+    <h2>"O time de produto diz que o uso cresceu, o CS diz que a satisfação está ok — mas o churn subiu"</h2>
+    <p class="section-note">
+      As três afirmações foram testadas contra as tabelas, não contra o discurso de cada time.
+    </p>
+    <div class="tiles">
+      <div class="tile">
+        <span class="label">"USO CRESCEU" (produto)</span>
+        <span class="value" id="t-usage-verdict" style="font-family:'IBM Plex Sans';font-size:17px;">—</span>
+        <span class="sub" id="t-usage-detail"></span>
+      </div>
+      <div class="tile">
+        <span class="label">"SATISFAÇÃO ESTÁ OK" (CS)</span>
+        <span class="value" id="t-csat-verdict" style="font-family:'IBM Plex Sans';font-size:17px;">—</span>
+        <span class="sub" id="t-csat-detail"></span>
+      </div>
+      <div class="tile">
+        <span class="label">CAUSA ÚNICA NO reason_code?</span>
+        <span class="value" style="font-family:'IBM Plex Sans';font-size:17px;">Não há uma</span>
+        <span class="sub" id="t-reason-detail">carregando…</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="qualidade">
+    <p class="section-kicker">Antes de qualquer causa: qualidade do próprio dado</p>
+    <h2>O log de eventos e a flag mestre de churn não fecham entre si</h2>
+    <div class="callout">
+      <span class="callout-label">Inconsistência encontrada ao cruzar accounts × churn_events</span>
+      <span id="dq-text">carregando…</span>
+    </div>
+  </section>
+
+  <section id="segmentos">
+    <p class="section-kicker">Segmentação — anti-Simpson</p>
+    <h2>Onde a taxa de churn se afasta da média, e se isso resiste a um teste</h2>
+    <p class="section-note">
+      Barra vermelha = churn acima da média da base (22,0%); azul = abaixo. O <code>p</code> vem de um
+      qui-quadrado contra <code>churn_flag</code> — abaixo de 0,05 é o convencional para "não é ruído de
+      amostra pequena". Como teste de 5 categorias de uma vez (indústria), o qui-quadrado não passa esse
+      limiar — mas isso dilui o sinal: o corte que separa <strong>DevTools do resto</strong> (a comparação
+      que salta aos olhos no gráfico) é um teste diferente, com só 2 grupos, e <em>esse</em> passa. Ver
+      abaixo.
+    </p>
+    <div class="grid-2">
+      <div class="chart-card">
+        <h3>Taxa de churn por indústria</h3>
+        <p class="chart-sub" id="p-industry">χ² …</p>
+        <div class="chart-wrap"><canvas id="chart-industry"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Taxa de churn por canal de aquisição</h3>
+        <p class="chart-sub" id="p-referral">χ² …</p>
+        <p class="chart-sub" style="margin-top:-2px;">
+          "Canal de aquisição" = como a conta chegou até a RavenStack (evento presencial, anúncio pago,
+          busca orgânica, indicação de parceiro, ou "other"). É sobre <em>como o cliente foi encontrado</em>,
+          não sobre o que ele faz com o produto — por isso, diferente do corte por indústria, não há uma
+          razão óbvia para esperar que ele *cause* churn.
+        </p>
+        <div class="chart-wrap"><canvas id="chart-referral"></canvas></div>
+      </div>
+    </div>
+    <div class="table-card" style="margin-top:16px;">
+      <table>
+        <thead><tr>
+          <th>Corte</th><th class="num">n contas</th><th class="num">churn</th>
+          <th class="num">% MRR em risco</th><th>significância</th>
+        </tr></thead>
+        <tbody id="table-other-segments"></tbody>
+      </table>
+    </div>
+
+    <div class="callout" style="margin-top:16px;">
+      <span class="callout-label">DevTools contra o resto — o corte que você viu de cara no gráfico</span>
+      <span id="devtools-text">carregando…</span>
+    </div>
+
+    <div class="callout neutral" style="margin-top:12px;">
+      <span class="callout-label">Escopo da carteira — a pergunta "atendemos fora de tech?"</span>
+      <span id="scope-text">carregando…</span>
+    </div>
+  </section>
+
+  <section id="uso">
+    <p class="section-kicker">Retratação — trajetória de uso não é mensurável neste dataset</p>
+    <h2>A versão anterior deste relatório afirmava que "quem cancela usa mais no fim do ciclo". Não sustenta.</h2>
+    <p class="section-note" id="usage-note">carregando…</p>
+    <div class="callout">
+      <span class="callout-label">Por que foi retirado — problema de integridade, não só de teste</span>
+      <span id="usage-honesty-text">carregando…</span>
+    </div>
+  </section>
+
+  <section id="suporte">
+    <p class="section-kicker">Suporte</p>
+    <h2>Tickets de quem cancelou não parecem piores que os de quem ficou</h2>
+    <div class="table-card">
+      <table>
+        <thead><tr><th>Métrica de suporte</th><th class="num">Contas canceladas</th><th class="num">Contas retidas</th><th>p (Welch)</th></tr></thead>
+        <tbody id="table-support"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="peso">
+    <p class="section-kicker">Peso por MRR — outro achado que não passou o teste</p>
+    <h2>"Contas grandes são mais fiéis" também não se sustenta</h2>
+    <p class="section-note" id="mrr-note">carregando…</p>
+    <div class="table-card">
+      <table>
+        <thead><tr><th class="num">Decil (1=maior MRR)</th><th class="num">n</th><th class="num">churn</th><th class="num">MRR mediano</th></tr></thead>
+        <tbody id="table-decile"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="correlacao">
+    <p class="section-kicker">Nível, isolado</p>
+    <h2>Nenhuma variável numérica de uso ou suporte carrega o churn sozinha</h2>
+    <p class="section-note" id="corr-note">carregando…</p>
+    <div class="chart-card">
+      <div class="chart-wrap tall"><canvas id="chart-corr"></canvas></div>
+    </div>
+  </section>
+
+  <section id="proximo-passo">
+    <p class="section-kicker">Para a modelagem preditiva (diferencial do challenge)</p>
+    <h2>O que muda de "nível" para "trajetória e tempo até o evento"</h2>
+    <p class="section-note">
+      O padrão acima — nível não separa, mas a trajetória de uso das contas que viriam a cancelar
+      diverge da das retidas nos meses finais — é o mesmo motivo pelo qual FB14 não olha "vibração
+      hoje" e sim a rota até o limiar. O equivalente aqui de "separar as máquinas em quartis e olhar
+      o comportamento do quartil inferior" é <strong>RFM</strong> (Recência–Frequência–Monetário):
+      quartilar contas por essas três dimensões e testar se o quartil inferior de Recência+Frequência
+      tem hazard de churn maior — é a técnica nativa de CRM para exatamente essa pergunta, e a mais
+      fácil de explicar pro CEO. O equivalente estrutural de "Weibull (forma do desgaste) × regressão
+      logística (camada qualitativa)" é <strong>Cox Proportional Hazards</strong>: hazard(t) = h₀(t) ×
+      exp(Σβ·covariáveis) — mesma arquitetura, com h₀(t) fazendo o papel do Weibull e as covariáveis
+      (slope de uso, tickets no mês, downgrade recente) fazendo o papel da camada qualitativa. A
+      curva de Kaplan-Meier estratificada por quartil é o "olhar o quartil inferior" em forma de
+      gráfico, com log-rank test no lugar do olho. Ponto de atenção: com 500 contas e 110 eventos,
+      qualquer corte fica com poucas dezenas de linhas — é por isso que nada acima passou o
+      qui-quadrado. Vale rodar assim mesmo, mas o relatório final precisa dizer o tamanho da amostra
+      junto com o resultado.
+    </p>
+  </section>
+
+  <footer>
+    Fonte: <a href="https://www.kaggle.com/datasets/rivalytics/saas-subscription-and-churn-analytics-dataset" target="_blank" rel="noopener">SaaS Subscription &amp; Churn Analytics Dataset</a> (Kaggle, MIT) ·
+    dados sintéticos da RavenStack (challenge data-001-churn, G4 AI Master).
+  </footer>
+</div>
+
+<script id="report-data" type="application/json">
+{
+  "headline": {
+    "n_accounts": 500,
+    "n_churned": 110,
+    "churn_rate_pct": 22.0,
+    "mrr_total": 1218555.0,
+    "mrr_at_risk": 254952.0,
+    "mrr_at_risk_pct": 20.9,
+    "n_subscriptions": 5000,
+    "n_accounts_with_any_churn_event": 352,
+    "n_churn_events_total": 600
+  },
+  "churn_by_industry": [
+    {
+      "industry": "DevTools",
+      "n_accounts": 113,
+      "n_churned": 35,
+      "mrr_total": 192311,
+      "mrr_at_risk": 67153,
+      "churn_rate": 0.30973451327433627,
+      "mrr_at_risk_pct": 0.34918959393898424
+    },
+    {
+      "industry": "FinTech",
+      "n_accounts": 112,
+      "n_churned": 25,
+      "mrr_total": 303409,
+      "mrr_at_risk": 77150,
+      "churn_rate": 0.22321428571428573,
+      "mrr_at_risk_pct": 0.25427722974598643
+    },
+    {
+      "industry": "HealthTech",
+      "n_accounts": 96,
+      "n_churned": 21,
+      "mrr_total": 221921,
+      "mrr_at_risk": 57873,
+      "churn_rate": 0.21875,
+      "mrr_at_risk_pct": 0.26078198998742796
+    },
+    {
+      "industry": "EdTech",
+      "n_accounts": 79,
+      "n_churned": 13,
+      "mrr_total": 274696,
+      "mrr_at_risk": 22289,
+      "churn_rate": 0.16455696202531644,
+      "mrr_at_risk_pct": 0.08114060634301191
+    },
+    {
+      "industry": "Cybersecurity",
+      "n_accounts": 100,
+      "n_churned": 16,
+      "mrr_total": 226218,
+      "mrr_at_risk": 30487,
+      "churn_rate": 0.16,
+      "mrr_at_risk_pct": 0.13476823241298216
+    }
+  ],
+  "churn_by_country": [
+    {
+      "country": "DE",
+      "n_accounts": 25,
+      "n_churned": 8,
+      "mrr_total": 68770,
+      "mrr_at_risk": 18476,
+      "churn_rate": 0.32,
+      "mrr_at_risk_pct": 0.26866366148029663
+    },
+    {
+      "country": "US",
+      "n_accounts": 291,
+      "n_churned": 68,
+      "mrr_total": 641027,
+      "mrr_at_risk": 159949,
+      "churn_rate": 0.23367697594501718,
+      "mrr_at_risk_pct": 0.24951991101778864
+    },
+    {
+      "country": "FR",
+      "n_accounts": 22,
+      "n_churned": 5,
+      "mrr_total": 76051,
+      "mrr_at_risk": 8180,
+      "churn_rate": 0.22727272727272727,
+      "mrr_at_risk_pct": 0.10755940092832442
+    },
+    {
+      "country": "IN",
+      "n_accounts": 49,
+      "n_churned": 10,
+      "mrr_total": 117698,
+      "mrr_at_risk": 22183,
+      "churn_rate": 0.20408163265306123,
+      "mrr_at_risk_pct": 0.18847389080528132
+    },
+    {
+      "country": "UK",
+      "n_accounts": 58,
+      "n_churned": 11,
+      "mrr_total": 161611,
+      "mrr_at_risk": 23348,
+      "churn_rate": 0.1896551724137931,
+      "mrr_at_risk_pct": 0.14447036402225097
+    },
+    {
+      "country": "CA",
+      "n_accounts": 23,
+      "n_churned": 4,
+      "mrr_total": 36911,
+      "mrr_at_risk": 3151,
+      "churn_rate": 0.17391304347826086,
+      "mrr_at_risk_pct": 0.08536750562163041
+    },
+    {
+      "country": "AU",
+      "n_accounts": 32,
+      "n_churned": 4,
+      "mrr_total": 116487,
+      "mrr_at_risk": 19665,
+      "churn_rate": 0.125,
+      "mrr_at_risk_pct": 0.16881712122382755
+    }
+  ],
+  "churn_by_plan": [
+    {
+      "plan_tier": "Enterprise",
+      "n_accounts": 154,
+      "n_churned": 34,
+      "mrr_total": 420439,
+      "mrr_at_risk": 93161,
+      "churn_rate": 0.22077922077922077,
+      "mrr_at_risk_pct": 0.22158030059057318
+    },
+    {
+      "plan_tier": "Basic",
+      "n_accounts": 168,
+      "n_churned": 37,
+      "mrr_total": 384205,
+      "mrr_at_risk": 69909,
+      "churn_rate": 0.22023809523809523,
+      "mrr_at_risk_pct": 0.18195754870446768
+    },
+    {
+      "plan_tier": "Pro",
+      "n_accounts": 178,
+      "n_churned": 39,
+      "mrr_total": 413911,
+      "mrr_at_risk": 91882,
+      "churn_rate": 0.21910112359550563,
+      "mrr_at_risk_pct": 0.2219849194633629
+    }
+  ],
+  "churn_by_referral": [
+    {
+      "referral_source": "event",
+      "n_accounts": 96,
+      "n_churned": 29,
+      "mrr_total": 217593,
+      "mrr_at_risk": 84888,
+      "churn_rate": 0.3020833333333333,
+      "mrr_at_risk_pct": 0.39012284402531333
+    },
+    {
+      "referral_source": "other",
+      "n_accounts": 103,
+      "n_churned": 25,
+      "mrr_total": 249130,
+      "mrr_at_risk": 49565,
+      "churn_rate": 0.24271844660194175,
+      "mrr_at_risk_pct": 0.19895235419259022
+    },
+    {
+      "referral_source": "ads",
+      "n_accounts": 98,
+      "n_churned": 23,
+      "mrr_total": 211220,
+      "mrr_at_risk": 40447,
+      "churn_rate": 0.23469387755102042,
+      "mrr_at_risk_pct": 0.19149228292775305
+    },
+    {
+      "referral_source": "organic",
+      "n_accounts": 114,
+      "n_churned": 20,
+      "mrr_total": 275978,
+      "mrr_at_risk": 49447,
+      "churn_rate": 0.17543859649122806,
+      "mrr_at_risk_pct": 0.17917007877439506
+    },
+    {
+      "referral_source": "partner",
+      "n_accounts": 89,
+      "n_churned": 13,
+      "mrr_total": 264634,
+      "mrr_at_risk": 30605,
+      "churn_rate": 0.14606741573033707,
+      "mrr_at_risk_pct": 0.11565029436882637
+    }
+  ],
+  "churn_by_trial": [
+    {
+      "is_trial": true,
+      "n_accounts": 97,
+      "n_churned": 25,
+      "mrr_total": 253851,
+      "mrr_at_risk": 55944,
+      "churn_rate": 0.25773195876288657,
+      "mrr_at_risk_pct": 0.22038124726709762
+    },
+    {
+      "is_trial": false,
+      "n_accounts": 403,
+      "n_churned": 85,
+      "mrr_total": 964704,
+      "mrr_at_risk": 199008,
+      "churn_rate": 0.2109181141439206,
+      "mrr_at_risk_pct": 0.20628918300328392
+    }
+  ],
+  "usage_trend": {
+    "overall": [
+      {
+        "month": "2023-01",
+        "total_usage_count": 10877,
+        "n_accounts_active": 440,
+        "usage_per_account": 24.720454545454544
+      },
+      {
+        "month": "2023-02",
+        "total_usage_count": 9492,
+        "n_accounts_active": 412,
+        "usage_per_account": 23.038834951456312
+      },
+      {
+        "month": "2023-03",
+        "total_usage_count": 11031,
+        "n_accounts_active": 431,
+        "usage_per_account": 25.593967517401392
+      },
+      {
+        "month": "2023-04",
+        "total_usage_count": 10369,
+        "n_accounts_active": 432,
+        "usage_per_account": 24.002314814814813
+      },
+      {
+        "month": "2023-05",
+        "total_usage_count": 10757,
+        "n_accounts_active": 438,
+        "usage_per_account": 24.559360730593607
+      },
+      {
+        "month": "2023-06",
+        "total_usage_count": 10002,
+        "n_accounts_active": 420,
+        "usage_per_account": 23.814285714285713
+      },
+      {
+        "month": "2023-07",
+        "total_usage_count": 11083,
+        "n_accounts_active": 415,
+        "usage_per_account": 26.70602409638554
+      },
+      {
+        "month": "2023-08",
+        "total_usage_count": 10335,
+        "n_accounts_active": 426,
+        "usage_per_account": 24.260563380281692
+      },
+      {
+        "month": "2023-09",
+        "total_usage_count": 9737,
+        "n_accounts_active": 409,
+        "usage_per_account": 23.806845965770172
+      },
+      {
+        "month": "2023-10",
+        "total_usage_count": 10968,
+        "n_accounts_active": 426,
+        "usage_per_account": 25.746478873239436
+      },
+      {
+        "month": "2023-11",
+        "total_usage_count": 9475,
+        "n_accounts_active": 412,
+        "usage_per_account": 22.99757281553398
+      },
+      {
+        "month": "2023-12",
+        "total_usage_count": 10435,
+        "n_accounts_active": 431,
+        "usage_per_account": 24.211136890951277
+      },
+      {
+        "month": "2024-01",
+        "total_usage_count": 10621,
+        "n_accounts_active": 426,
+        "usage_per_account": 24.931924882629108
+      },
+      {
+        "month": "2024-02",
+        "total_usage_count": 10247,
+        "n_accounts_active": 422,
+        "usage_per_account": 24.281990521327014
+      },
+      {
+        "month": "2024-03",
+        "total_usage_count": 10725,
+        "n_accounts_active": 430,
+        "usage_per_account": 24.941860465116278
+      },
+      {
+        "month": "2024-04",
+        "total_usage_count": 10131,
+        "n_accounts_active": 428,
+        "usage_per_account": 23.67056074766355
+      },
+      {
+        "month": "2024-05",
+        "total_usage_count": 10552,
+        "n_accounts_active": 427,
+        "usage_per_account": 24.711943793911008
+      },
+      {
+        "month": "2024-06",
+        "total_usage_count": 10106,
+        "n_accounts_active": 416,
+        "usage_per_account": 24.29326923076923
+      },
+      {
+        "month": "2024-07",
+        "total_usage_count": 10601,
+        "n_accounts_active": 431,
+        "usage_per_account": 24.59628770301624
+      },
+      {
+        "month": "2024-08",
+        "total_usage_count": 10559,
+        "n_accounts_active": 422,
+        "usage_per_account": 25.02132701421801
+      },
+      {
+        "month": "2024-09",
+        "total_usage_count": 10195,
+        "n_accounts_active": 415,
+        "usage_per_account": 24.566265060240966
+      },
+      {
+        "month": "2024-10",
+        "total_usage_count": 11450,
+        "n_accounts_active": 435,
+        "usage_per_account": 26.32183908045977
+      },
+      {
+        "month": "2024-11",
+        "total_usage_count": 10039,
+        "n_accounts_active": 410,
+        "usage_per_account": 24.485365853658536
+      },
+      {
+        "month": "2024-12",
+        "total_usage_count": 10738,
+        "n_accounts_active": 428,
+        "usage_per_account": 25.088785046728972
+      }
+    ],
+    "by_churn_flag": [
+      {
+        "month": "2023-01",
+        "account_churned": false,
+        "total_usage_count": 8746,
+        "n_accounts_active": 346,
+        "usage_per_account": 25.277456647398843
+      },
+      {
+        "month": "2023-01",
+        "account_churned": true,
+        "total_usage_count": 2131,
+        "n_accounts_active": 94,
+        "usage_per_account": 22.670212765957448
+      },
+      {
+        "month": "2023-02",
+        "account_churned": false,
+        "total_usage_count": 7269,
+        "n_accounts_active": 317,
+        "usage_per_account": 22.930599369085172
+      },
+      {
+        "month": "2023-02",
+        "account_churned": true,
+        "total_usage_count": 2223,
+        "n_accounts_active": 95,
+        "usage_per_account": 23.4
+      },
+      {
+        "month": "2023-03",
+        "account_churned": false,
+        "total_usage_count": 8514,
+        "n_accounts_active": 335,
+        "usage_per_account": 25.414925373134327
+      },
+      {
+        "month": "2023-03",
+        "account_churned": true,
+        "total_usage_count": 2517,
+        "n_accounts_active": 96,
+        "usage_per_account": 26.21875
+      },
+      {
+        "month": "2023-04",
+        "account_churned": false,
+        "total_usage_count": 7899,
+        "n_accounts_active": 337,
+        "usage_per_account": 23.439169139465875
+      },
+      {
+        "month": "2023-04",
+        "account_churned": true,
+        "total_usage_count": 2470,
+        "n_accounts_active": 95,
+        "usage_per_account": 26.0
+      },
+      {
+        "month": "2023-05",
+        "account_churned": false,
+        "total_usage_count": 8347,
+        "n_accounts_active": 347,
+        "usage_per_account": 24.054755043227665
+      },
+      {
+        "month": "2023-05",
+        "account_churned": true,
+        "total_usage_count": 2410,
+        "n_accounts_active": 91,
+        "usage_per_account": 26.483516483516482
+      },
+      {
+        "month": "2023-06",
+        "account_churned": true,
+        "total_usage_count": 2408,
+        "n_accounts_active": 98,
+        "usage_per_account": 24.571428571428573
+      },
+      {
+        "month": "2023-06",
+        "account_churned": false,
+        "total_usage_count": 7594,
+        "n_accounts_active": 322,
+        "usage_per_account": 23.58385093167702
+      },
+      {
+        "month": "2023-07",
+        "account_churned": false,
+        "total_usage_count": 8337,
+        "n_accounts_active": 319,
+        "usage_per_account": 26.134796238244515
+      },
+      {
+        "month": "2023-07",
+        "account_churned": true,
+        "total_usage_count": 2746,
+        "n_accounts_active": 96,
+        "usage_per_account": 28.604166666666668
+      },
+      {
+        "month": "2023-08",
+        "account_churned": false,
+        "total_usage_count": 8040,
+        "n_accounts_active": 329,
+        "usage_per_account": 24.437689969604865
+      },
+      {
+        "month": "2023-08",
+        "account_churned": true,
+        "total_usage_count": 2295,
+        "n_accounts_active": 97,
+        "usage_per_account": 23.65979381443299
+      },
+      {
+        "month": "2023-09",
+        "account_churned": false,
+        "total_usage_count": 7387,
+        "n_accounts_active": 316,
+        "usage_per_account": 23.376582278481013
+      },
+      {
+        "month": "2023-09",
+        "account_churned": true,
+        "total_usage_count": 2350,
+        "n_accounts_active": 93,
+        "usage_per_account": 25.268817204301076
+      },
+      {
+        "month": "2023-10",
+        "account_churned": false,
+        "total_usage_count": 8361,
+        "n_accounts_active": 326,
+        "usage_per_account": 25.64723926380368
+      },
+      {
+        "month": "2023-10",
+        "account_churned": true,
+        "total_usage_count": 2607,
+        "n_accounts_active": 100,
+        "usage_per_account": 26.07
+      },
+      {
+        "month": "2023-11",
+        "account_churned": false,
+        "total_usage_count": 7388,
+        "n_accounts_active": 317,
+        "usage_per_account": 23.305993690851736
+      },
+      {
+        "month": "2023-11",
+        "account_churned": true,
+        "total_usage_count": 2087,
+        "n_accounts_active": 95,
+        "usage_per_account": 21.96842105263158
+      },
+      {
+        "month": "2023-12",
+        "account_churned": true,
+        "total_usage_count": 2111,
+        "n_accounts_active": 88,
+        "usage_per_account": 23.988636363636363
+      },
+      {
+        "month": "2023-12",
+        "account_churned": false,
+        "total_usage_count": 8324,
+        "n_accounts_active": 343,
+        "usage_per_account": 24.26822157434402
+      },
+      {
+        "month": "2024-01",
+        "account_churned": false,
+        "total_usage_count": 8048,
+        "n_accounts_active": 326,
+        "usage_per_account": 24.687116564417177
+      },
+      {
+        "month": "2024-01",
+        "account_churned": true,
+        "total_usage_count": 2573,
+        "n_accounts_active": 100,
+        "usage_per_account": 25.73
+      },
+      {
+        "month": "2024-02",
+        "account_churned": false,
+        "total_usage_count": 8065,
+        "n_accounts_active": 334,
+        "usage_per_account": 24.146706586826348
+      },
+      {
+        "month": "2024-02",
+        "account_churned": true,
+        "total_usage_count": 2182,
+        "n_accounts_active": 88,
+        "usage_per_account": 24.795454545454547
+      },
+      {
+        "month": "2024-03",
+        "account_churned": false,
+        "total_usage_count": 8407,
+        "n_accounts_active": 337,
+        "usage_per_account": 24.94658753709199
+      },
+      {
+        "month": "2024-03",
+        "account_churned": true,
+        "total_usage_count": 2318,
+        "n_accounts_active": 93,
+        "usage_per_account": 24.9247311827957
+      },
+      {
+        "month": "2024-04",
+        "account_churned": false,
+        "total_usage_count": 7759,
+        "n_accounts_active": 332,
+        "usage_per_account": 23.370481927710845
+      },
+      {
+        "month": "2024-04",
+        "account_churned": true,
+        "total_usage_count": 2372,
+        "n_accounts_active": 96,
+        "usage_per_account": 24.708333333333332
+      },
+      {
+        "month": "2024-05",
+        "account_churned": false,
+        "total_usage_count": 8038,
+        "n_accounts_active": 329,
+        "usage_per_account": 24.43161094224924
+      },
+      {
+        "month": "2024-05",
+        "account_churned": true,
+        "total_usage_count": 2514,
+        "n_accounts_active": 98,
+        "usage_per_account": 25.653061224489797
+      },
+      {
+        "month": "2024-06",
+        "account_churned": true,
+        "total_usage_count": 2332,
+        "n_accounts_active": 95,
+        "usage_per_account": 24.54736842105263
+      },
+      {
+        "month": "2024-06",
+        "account_churned": false,
+        "total_usage_count": 7774,
+        "n_accounts_active": 321,
+        "usage_per_account": 24.218068535825545
+      },
+      {
+        "month": "2024-07",
+        "account_churned": false,
+        "total_usage_count": 8243,
+        "n_accounts_active": 336,
+        "usage_per_account": 24.532738095238095
+      },
+      {
+        "month": "2024-07",
+        "account_churned": true,
+        "total_usage_count": 2358,
+        "n_accounts_active": 95,
+        "usage_per_account": 24.821052631578947
+      },
+      {
+        "month": "2024-08",
+        "account_churned": false,
+        "total_usage_count": 8093,
+        "n_accounts_active": 328,
+        "usage_per_account": 24.673780487804876
+      },
+      {
+        "month": "2024-08",
+        "account_churned": true,
+        "total_usage_count": 2466,
+        "n_accounts_active": 94,
+        "usage_per_account": 26.23404255319149
+      },
+      {
+        "month": "2024-09",
+        "account_churned": false,
+        "total_usage_count": 7743,
+        "n_accounts_active": 323,
+        "usage_per_account": 23.972136222910216
+      },
+      {
+        "month": "2024-09",
+        "account_churned": true,
+        "total_usage_count": 2452,
+        "n_accounts_active": 92,
+        "usage_per_account": 26.652173913043477
+      },
+      {
+        "month": "2024-10",
+        "account_churned": false,
+        "total_usage_count": 8919,
+        "n_accounts_active": 341,
+        "usage_per_account": 26.15542521994135
+      },
+      {
+        "month": "2024-10",
+        "account_churned": true,
+        "total_usage_count": 2531,
+        "n_accounts_active": 94,
+        "usage_per_account": 26.925531914893618
+      },
+      {
+        "month": "2024-11",
+        "account_churned": false,
+        "total_usage_count": 7689,
+        "n_accounts_active": 321,
+        "usage_per_account": 23.953271028037385
+      },
+      {
+        "month": "2024-11",
+        "account_churned": true,
+        "total_usage_count": 2350,
+        "n_accounts_active": 89,
+        "usage_per_account": 26.40449438202247
+      },
+      {
+        "month": "2024-12",
+        "account_churned": false,
+        "total_usage_count": 8117,
+        "n_accounts_active": 328,
+        "usage_per_account": 24.746951219512194
+      },
+      {
+        "month": "2024-12",
+        "account_churned": true,
+        "total_usage_count": 2621,
+        "n_accounts_active": 100,
+        "usage_per_account": 26.21
+      }
+    ]
+  },
+  "support_comparison": {
+    "churned": {
+      "n": 108,
+      "avg_satisfaction": 4.0,
+      "avg_resolution_hours": 35.5,
+      "avg_first_response_min": 84.9,
+      "pct_escalated": 6.2,
+      "avg_tickets_per_account": 4.0,
+      "pct_with_any_ticket": 100.0
+    },
+    "retained": {
+      "n": 384,
+      "avg_satisfaction": 3.95,
+      "avg_resolution_hours": 36.5,
+      "avg_first_response_min": 89.6,
+      "pct_escalated": 4.4,
+      "avg_tickets_per_account": 4.08,
+      "pct_with_any_ticket": 100.0
+    },
+    "churned_all": {
+      "n": 110,
+      "avg_satisfaction": 4.0,
+      "avg_resolution_hours": 35.5,
+      "avg_first_response_min": 84.9,
+      "pct_escalated": 6.2,
+      "avg_tickets_per_account": 3.93,
+      "pct_with_any_ticket": 98.2
+    },
+    "retained_all": {
+      "n": 390,
+      "avg_satisfaction": 3.95,
+      "avg_resolution_hours": 36.5,
+      "avg_first_response_min": 89.6,
+      "pct_escalated": 4.4,
+      "avg_tickets_per_account": 4.02,
+      "pct_with_any_ticket": 98.5
+    },
+    "p_values_welch_ttest": {
+      "avg_satisfaction": 0.4373,
+      "avg_resolution_hours": 0.4486,
+      "avg_first_response_min": 0.1249,
+      "pct_escalated": 0.24
+    },
+    "nota": "Nenhuma das 4 diferencas passa p<0,05 (Welch t-test)."
+  },
+  "reason_codes": {
+    "n_events_total": 600,
+    "n_events_from_currently_churned_accounts": 135,
+    "pct_events_contaminated_by_non_churned": 77.5,
+    "note": "Restrito a eventos de contas com churn_flag=True hoje (135 de 600 eventos). Os outros 465 sao de contas que reativaram ou nunca estavam de fato fora -- ver methodology_notes.",
+    "by_reason_currently_churned_only": [
+      {
+        "reason_code": "budget",
+        "n_events": 27,
+        "avg_refund": 16.27,
+        "pct_preceded_by_downgrade": 7.4,
+        "pct_reactivation": 14.8
+      },
+      {
+        "reason_code": "features",
+        "n_events": 27,
+        "avg_refund": 25.51,
+        "pct_preceded_by_downgrade": 7.4,
+        "pct_reactivation": 11.1
+      },
+      {
+        "reason_code": "support",
+        "n_events": 27,
+        "avg_refund": 4.26,
+        "pct_preceded_by_downgrade": 22.2,
+        "pct_reactivation": 0.0
+      },
+      {
+        "reason_code": "pricing",
+        "n_events": 23,
+        "avg_refund": 15.51,
+        "pct_preceded_by_downgrade": 4.3,
+        "pct_reactivation": 21.7
+      },
+      {
+        "reason_code": "competitor",
+        "n_events": 18,
+        "avg_refund": 27.93,
+        "pct_preceded_by_downgrade": 22.2,
+        "pct_reactivation": 0.0
+      },
+      {
+        "reason_code": "unknown",
+        "n_events": 13,
+        "avg_refund": 12.83,
+        "pct_preceded_by_downgrade": 0.0,
+        "pct_reactivation": 7.7
+      }
+    ],
+    "by_reason_all_events_uncorrected": [
+      {
+        "reason_code": "features",
+        "n_events": 114,
+        "avg_refund": 16.72,
+        "pct_preceded_by_downgrade": 7.9,
+        "pct_reactivation": 11.4
+      },
+      {
+        "reason_code": "budget",
+        "n_events": 104,
+        "avg_refund": 12.0,
+        "pct_preceded_by_downgrade": 5.8,
+        "pct_reactivation": 11.5
+      },
+      {
+        "reason_code": "support",
+        "n_events": 104,
+        "avg_refund": 11.73,
+        "pct_preceded_by_downgrade": 12.5,
+        "pct_reactivation": 5.8
+      },
+      {
+        "reason_code": "unknown",
+        "n_events": 95,
+        "avg_refund": 18.34,
+        "pct_preceded_by_downgrade": 9.5,
+        "pct_reactivation": 9.5
+      },
+      {
+        "reason_code": "competitor",
+        "n_events": 92,
+        "avg_refund": 13.08,
+        "pct_preceded_by_downgrade": 13.0,
+        "pct_reactivation": 13.0
+      },
+      {
+        "reason_code": "pricing",
+        "n_events": 91,
+        "avg_refund": 14.65,
+        "pct_preceded_by_downgrade": 4.4,
+        "pct_reactivation": 9.9
+      }
+    ]
+  },
+  "reason_by_plan": {
+    "currently_churned_only": {
+      "plans": [
+        "Basic",
+        "Enterprise",
+        "Pro"
+      ],
+      "reasons": [
+        "budget",
+        "competitor",
+        "features",
+        "pricing",
+        "support",
+        "unknown"
+      ],
+      "matrix": [
+        [
+          6,
+          3,
+          7,
+          6,
+          9,
+          1
+        ],
+        [
+          10,
+          6,
+          11,
+          8,
+          6,
+          6
+        ],
+        [
+          11,
+          9,
+          9,
+          9,
+          12,
+          6
+        ]
+      ],
+      "chi2": 5.91,
+      "p_value": 0.8225,
+      "dof": 10
+    },
+    "all_events_uncorrected": {
+      "plans": [
+        "Basic",
+        "Enterprise",
+        "Pro"
+      ],
+      "reasons": [
+        "budget",
+        "competitor",
+        "features",
+        "pricing",
+        "support",
+        "unknown"
+      ],
+      "matrix": [
+        [
+          30,
+          25,
+          34,
+          29,
+          37,
+          25
+        ],
+        [
+          34,
+          31,
+          39,
+          32,
+          24,
+          35
+        ],
+        [
+          40,
+          36,
+          41,
+          30,
+          43,
+          35
+        ]
+      ],
+      "chi2": 6.72,
+      "p_value": 0.7512,
+      "dof": 10
+    }
+  },
+  "correlation_with_churn": {
+    "correlations": [
+      {
+        "variable": "error_rate",
+        "corr_with_churn": -0.087,
+        "p_value": 0.0507,
+        "n": 500
+      },
+      {
+        "variable": "tenure_days",
+        "corr_with_churn": 0.082,
+        "p_value": 0.0656,
+        "n": 500
+      },
+      {
+        "variable": "pct_escalated",
+        "corr_with_churn": 0.065,
+        "p_value": 0.1501,
+        "n": 492
+      },
+      {
+        "variable": "total_usage_count",
+        "corr_with_churn": 0.064,
+        "p_value": 0.1518,
+        "n": 500
+      },
+      {
+        "variable": "total_usage_duration",
+        "corr_with_churn": 0.063,
+        "p_value": 0.1589,
+        "n": 500
+      },
+      {
+        "variable": "avg_satisfaction",
+        "corr_with_churn": 0.036,
+        "p_value": 0.442,
+        "n": 466
+      },
+      {
+        "variable": "avg_resolution_hours",
+        "corr_with_churn": -0.034,
+        "p_value": 0.4543,
+        "n": 492
+      },
+      {
+        "variable": "seats",
+        "corr_with_churn": -0.033,
+        "p_value": 0.4557,
+        "n": 500
+      },
+      {
+        "variable": "n_tickets",
+        "corr_with_churn": -0.02,
+        "p_value": 0.6487,
+        "n": 500
+      },
+      {
+        "variable": "ever_downgraded",
+        "corr_with_churn": -0.02,
+        "p_value": 0.6622,
+        "n": 500
+      },
+      {
+        "variable": "mrr",
+        "corr_with_churn": -0.017,
+        "p_value": 0.6963,
+        "n": 500
+      }
+    ],
+    "global_null_check": {
+      "fisher_combined_chi2": 29.85,
+      "fisher_combined_p": 0.1221,
+      "min_p_bonferroni": 0.558,
+      "mde_r_80pct_power_n500": 0.125,
+      "interpretacao": "Nem individualmente nem em conjunto ha sinal (Fisher combinado p=0.122). O MDE de r a 80% de poder com n~500 e ~0.125 -- 'nenhuma passa de 0,09' significa 'nao detectamos efeito acima de ~0,12', nao 'nao existe causa'."
+    }
+  },
+  "segment_significance": [
+    {
+      "variable": "industry",
+      "chi2": 8.82,
+      "p_value": 0.0657,
+      "dof": 4
+    },
+    {
+      "variable": "country",
+      "chi2": 4.13,
+      "p_value": 0.6588,
+      "dof": 6
+    },
+    {
+      "variable": "referral_source",
+      "chi2": 8.36,
+      "p_value": 0.0794,
+      "dof": 4
+    },
+    {
+      "variable": "plan_tier",
+      "chi2": 0.0,
+      "p_value": 0.9993,
+      "dof": 2
+    },
+    {
+      "variable": "is_trial",
+      "chi2": 0.74,
+      "p_value": 0.3883,
+      "dof": 1
+    }
+  ],
+  "usage_trend_slope": {
+    "overall": {
+      "slope_per_month": 0.0246,
+      "first_quarter_avg": 24.45,
+      "last_quarter_avg": 25.3,
+      "pct_change_first_to_last_q": 3.5
+    },
+    "retained_accounts": {
+      "slope_per_month": 0.014,
+      "first_quarter_avg": 24.54,
+      "last_quarter_avg": 24.95,
+      "pct_change_first_to_last_q": 1.7
+    },
+    "eventually_churned_accounts": {
+      "slope_per_month": 0.0619,
+      "first_quarter_avg": 24.1,
+      "last_quarter_avg": 26.51,
+      "pct_change_first_to_last_q": 10.0
+    },
+    "aviso_metodologico": "Estes numeros tratam 24 meses-calendario como 24 observacoes independentes (pseudo-replicacao: sao as mesmas ~500 contas remedidas). Nao usar para afirmar diferenca -- ver `usage_trend_honesty` pro teste no nivel certo (por conta), que nao encontra diferenca significativa (p=0,258)."
+  },
+  "usage_trend_honesty": {
+    "pct_usage_rows_before_own_signup_date": 52.8,
+    "pct_usage_rows_before_own_subscription_start": 76.6,
+    "pct_usage_rows_of_churned_accounts_after_churn_date": 17.9,
+    "churned_accounts_active_every_month_min_max": [
+      88,
+      100
+    ],
+    "conclusion": "A tabela de uso NAO respeita o ciclo de vida da conta: mais da metade das linhas antecede o proprio signup, e quase 1 em 5 linhas de conta churnada vem depois do churn_date -- nao ha truncamento no cancelamento. 'Trajetoria de uso' nao e mensuravel de forma confiavel neste dataset.",
+    "slope_mensal_por_conta_churned_mean": 0.0534,
+    "slope_mensal_por_conta_retained_mean": 0.0022,
+    "welch_p_value": 0.2579,
+    "mannwhitney_p_value": 0.3661,
+    "veredito": "Testado no nivel certo (slope por conta, nao mes-calendario pseudo-replicado): p=0,258 (Welch). A afirmacao 'quem cancela usa mais no fim do proprio ciclo' NAO se sustenta -- foi retirada do relatorio."
+  },
+  "data_quality": {
+    "n_churn_flag_true": 110,
+    "n_accounts_with_any_churn_event": 352,
+    "n_churn_flag_true_without_event_on_file": 35,
+    "pct_churn_flag_true_without_event_on_file": 31.8,
+    "n_accounts_with_multiple_churn_events": 175,
+    "n_total_churn_events": 600,
+    "n_events_flagged_reactivation": 61
+  },
+  "devtools_deep_dive": {
+    "devtools_vs_rest": {
+      "chi2": 6.19,
+      "p_value": 0.0128,
+      "churn_rate_in": 31.0,
+      "churn_rate_out": 19.4,
+      "n_in": 113,
+      "n_out": 387
+    },
+    "honest_significance": {
+      "n_one_vs_rest_cuts_shown_on_dashboard": 21,
+      "devtools_chi2_observed": 6.19,
+      "p_naive_devtools_only": 0.0128,
+      "p_bonferroni_5_industries": 0.0642,
+      "p_permutation_5_industries": 0.046,
+      "p_permutation_all_displayed_cuts": 0.1573,
+      "n_permutations": 4000
+    },
+    "confound_adjusted_or_mantel_haenszel": {
+      "referral_source": 1.83,
+      "plan_tier": 1.86,
+      "country": 1.9
+    },
+    "or_bruto": 1.87,
+    "devtools_x_outro_confundidor": {
+      "referral_source": {
+        "chi2": 2.24,
+        "p_value": 0.6919
+      },
+      "plan_tier": {
+        "chi2": 0.23,
+        "p_value": 0.8896
+      },
+      "country": {
+        "chi2": 13.11,
+        "p_value": 0.0414
+      },
+      "is_trial": {
+        "chi2": 0.02,
+        "p_value": 0.8758
+      }
+    },
+    "reason_code_devtools_vs_rest": [
+      {
+        "reason_code": "support",
+        "pct_devtools": 24.1,
+        "pct_rest": 17.3
+      },
+      {
+        "reason_code": "features",
+        "pct_devtools": 18.5,
+        "pct_rest": 21.0
+      },
+      {
+        "reason_code": "pricing",
+        "pct_devtools": 18.5,
+        "pct_rest": 16.0
+      },
+      {
+        "reason_code": "budget",
+        "pct_devtools": 16.7,
+        "pct_rest": 22.2
+      },
+      {
+        "reason_code": "competitor",
+        "pct_devtools": 16.7,
+        "pct_rest": 11.1
+      },
+      {
+        "reason_code": "unknown",
+        "pct_devtools": 5.6,
+        "pct_rest": 12.3
+      }
+    ],
+    "reason_code_base": "apenas eventos de contas com churn_flag=True hoje (n=135)",
+    "n_devtools_churn_events": 54,
+    "n_rest_churn_events": 81,
+    "all_industries_in_dataset": [
+      "Cybersecurity",
+      "DevTools",
+      "EdTech",
+      "FinTech",
+      "HealthTech"
+    ],
+    "n_industries": 5,
+    "interpretacao": "Melhor hipotese do dataset, nao achado confirmado. O p ingenuo (0,0128) so vale se o corte DevTools-vs-resto tivesse sido decidido ANTES de olhar o grafico. Corrigido pela busca que o encontrou: p=0,044 (so entre as 5 industrias) a p=0,144 (sobre os 21 cortes de fato exibidos no dashboard). O efeito nao desaparece por confundimento (MH por canal/plano/pais mantem OR 1,83-1,90) -- mas isso importa pouco se o motivo dele ter aparecido foi olhar o grafico primeiro. Tratar como hipotese para testar em coorte nova, nao como fato para repriorizar a vertical."
+  },
+  "feature_level": {
+    "n_features_tested": 40,
+    "bonferroni_threshold": 0.00125,
+    "n_significant_uncorrected": 3,
+    "n_significant_bonferroni": 0,
+    "error_rate_family": {
+      "n_tests": 40,
+      "n_significant_uncorrected": 3,
+      "n_significant_bonferroni": 0,
+      "nota": "Mesmo padrao do usage_count: 3 'significativos' sem correcao (esperado por acaso: ~2), 0 sobrevivem Bonferroni. O relatorio original publicava p=0,0037 e p=0,0204 desta familia sem correcao nem ressalva -- corrigido aqui."
+    },
+    "uniformity_check_ks_test": {
+      "usage_count_p_values_vs_uniform": 0.8299,
+      "error_rate_p_values_vs_uniform": 0.2515,
+      "interpretacao": "P-valores uniformes contra U[0,1] e exatamente a assinatura de 'nao ha efeito em nenhuma das 40 features' -- e uma demonstracao positiva de ausencia de sinal, nao so falta de evidencia."
+    },
+    "top_10_by_raw_p": [
+      {
+        "feature_name": "feature_34",
+        "n_churned": 76,
+        "n_retained": 275,
+        "mean_usage_churned": 21.4,
+        "mean_usage_retained": 17.9,
+        "p_value_usage": 0.0336,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0544,
+        "mean_error_rate_retained": 0.0702,
+        "p_value_error_rate": 0.1769
+      },
+      {
+        "feature_name": "feature_14",
+        "n_churned": 75,
+        "n_retained": 277,
+        "mean_usage_churned": 18.8,
+        "mean_usage_retained": 16.1,
+        "p_value_usage": 0.0387,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0475,
+        "mean_error_rate_retained": 0.0545,
+        "p_value_error_rate": 0.5224
+      },
+      {
+        "feature_name": "feature_3",
+        "n_churned": 76,
+        "n_retained": 260,
+        "mean_usage_churned": 15.4,
+        "mean_usage_retained": 18.3,
+        "p_value_usage": 0.0499,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0712,
+        "mean_error_rate_retained": 0.0569,
+        "p_value_error_rate": 0.3132
+      },
+      {
+        "feature_name": "feature_1",
+        "n_churned": 79,
+        "n_retained": 261,
+        "mean_usage_churned": 21.0,
+        "mean_usage_retained": 18.0,
+        "p_value_usage": 0.0641,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0578,
+        "mean_error_rate_retained": 0.0488,
+        "p_value_error_rate": 0.3926
+      },
+      {
+        "feature_name": "feature_23",
+        "n_churned": 68,
+        "n_retained": 261,
+        "mean_usage_churned": 15.3,
+        "mean_usage_retained": 17.5,
+        "p_value_usage": 0.0707,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0641,
+        "mean_error_rate_retained": 0.0619,
+        "p_value_error_rate": 0.8907
+      },
+      {
+        "feature_name": "feature_26",
+        "n_churned": 78,
+        "n_retained": 274,
+        "mean_usage_churned": 20.2,
+        "mean_usage_retained": 17.9,
+        "p_value_usage": 0.1234,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0746,
+        "mean_error_rate_retained": 0.0664,
+        "p_value_error_rate": 0.5408
+      },
+      {
+        "feature_name": "feature_15",
+        "n_churned": 82,
+        "n_retained": 269,
+        "mean_usage_churned": 20.7,
+        "mean_usage_retained": 18.3,
+        "p_value_usage": 0.1237,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0477,
+        "mean_error_rate_retained": 0.053,
+        "p_value_error_rate": 0.5858
+      },
+      {
+        "feature_name": "feature_20",
+        "n_churned": 77,
+        "n_retained": 257,
+        "mean_usage_churned": 21.3,
+        "mean_usage_retained": 19.1,
+        "p_value_usage": 0.1273,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0314,
+        "mean_error_rate_retained": 0.0572,
+        "p_value_error_rate": 0.0037
+      },
+      {
+        "feature_name": "feature_25",
+        "n_churned": 75,
+        "n_retained": 267,
+        "mean_usage_churned": 19.5,
+        "mean_usage_retained": 17.3,
+        "p_value_usage": 0.13,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0451,
+        "mean_error_rate_retained": 0.0692,
+        "p_value_error_rate": 0.0204
+      },
+      {
+        "feature_name": "feature_11",
+        "n_churned": 80,
+        "n_retained": 267,
+        "mean_usage_churned": 20.4,
+        "mean_usage_retained": 18.4,
+        "p_value_usage": 0.18,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0605,
+        "mean_error_rate_retained": 0.0519,
+        "p_value_error_rate": 0.4184
+      }
+    ]
+  },
+  "ticket_priority": {
+    "base_churn_rate_pct": 22.0,
+    "by_priority": [
+      {
+        "priority": "high",
+        "n_accounts_with_ticket": 322,
+        "churn_rate_with": 19.6,
+        "churn_rate_without": 26.4,
+        "chi2": 2.74,
+        "p_value": 0.0979,
+        "or_bruto": 0.68,
+        "or_ajustado_por_volume_de_tickets_mh": 0.69
+      },
+      {
+        "priority": "low",
+        "n_accounts_with_ticket": 310,
+        "churn_rate_with": 20.0,
+        "churn_rate_without": 25.3,
+        "chi2": 1.61,
+        "p_value": 0.2049,
+        "or_bruto": 0.74,
+        "or_ajustado_por_volume_de_tickets_mh": 0.76
+      },
+      {
+        "priority": "medium",
+        "n_accounts_with_ticket": 309,
+        "churn_rate_with": 23.6,
+        "churn_rate_without": 19.4,
+        "chi2": 1.01,
+        "p_value": 0.3152,
+        "or_bruto": 1.29,
+        "or_ajustado_por_volume_de_tickets_mh": 1.49
+      },
+      {
+        "priority": "urgent",
+        "n_accounts_with_ticket": 317,
+        "churn_rate_with": 19.9,
+        "churn_rate_without": 25.7,
+        "chi2": 1.96,
+        "p_value": 0.162,
+        "or_bruto": 0.72,
+        "or_ajustado_por_volume_de_tickets_mh": 0.72
+      }
+    ],
+    "escalation": {
+      "chi2": 0.48,
+      "p_value": 0.4877,
+      "churn_rate_with": 25.3,
+      "churn_rate_without": 21.3,
+      "n_accounts_with_escalation": 91
+    },
+    "nota": "As 4 prioridades nao sao 4 evidencias independentes: 309 a 322 das 500 contas tem cada uma (uma conta tem ~4 tickets em media, cobrindo quase todas as prioridades). O OR ajustado por volume de tickets (MH) muda pouco o bruto -- entao nao e confundimento por volume; e ruido puro medido de 4 formas quase iguais. Tratar como 1 indicador, nao 4."
+  },
+  "usage_growth_by_industry": {
+    "by_segment": [
+      {
+        "segment": "EdTech",
+        "n_accounts": 79,
+        "churn_rate_pct": 16.5,
+        "usage_pct_change_first_to_last_q": 9.9
+      },
+      {
+        "segment": "Cybersecurity",
+        "n_accounts": 100,
+        "churn_rate_pct": 16.0,
+        "usage_pct_change_first_to_last_q": 2.9
+      },
+      {
+        "segment": "DevTools",
+        "n_accounts": 113,
+        "churn_rate_pct": 31.0,
+        "usage_pct_change_first_to_last_q": 2.0
+      },
+      {
+        "segment": "FinTech",
+        "n_accounts": 112,
+        "churn_rate_pct": 22.3,
+        "usage_pct_change_first_to_last_q": 1.9
+      },
+      {
+        "segment": "HealthTech",
+        "n_accounts": 96,
+        "churn_rate_pct": 21.9,
+        "usage_pct_change_first_to_last_q": 1.9
+      }
+    ],
+    "growth_vs_churn_correlation_across_segments": {
+      "pearson_r": -0.533,
+      "p_value": 0.3545,
+      "n_segments": 5,
+      "ic95_r": [
+        -0.963,
+        0.659
+      ],
+      "aviso": "n=5 grupos: poder estatistico baixissimo (IC95% cobre de forte negativo a forte positivo). Nao tratar como relacao confiavel -- e correlacao ECOLOGICA (unidade = segmento), que pode inverter de sinal no nivel da conta (ver ecological_fallacy_check)."
+    }
+  },
+  "usage_growth_by_referral": {
+    "by_segment": [
+      {
+        "segment": "other",
+        "n_accounts": 103,
+        "churn_rate_pct": 24.3,
+        "usage_pct_change_first_to_last_q": 8.4
+      },
+      {
+        "segment": "partner",
+        "n_accounts": 89,
+        "churn_rate_pct": 14.6,
+        "usage_pct_change_first_to_last_q": 8.3
+      },
+      {
+        "segment": "organic",
+        "n_accounts": 114,
+        "churn_rate_pct": 17.5,
+        "usage_pct_change_first_to_last_q": 3.9
+      },
+      {
+        "segment": "event",
+        "n_accounts": 96,
+        "churn_rate_pct": 30.2,
+        "usage_pct_change_first_to_last_q": 2.6
+      },
+      {
+        "segment": "ads",
+        "n_accounts": 98,
+        "churn_rate_pct": 23.5,
+        "usage_pct_change_first_to_last_q": -5.0
+      }
+    ],
+    "growth_vs_churn_correlation_across_segments": {
+      "pearson_r": -0.344,
+      "p_value": 0.5704,
+      "n_segments": 5,
+      "ic95_r": [
+        -0.941,
+        0.773
+      ],
+      "aviso": "n=5 grupos: poder estatistico baixissimo (IC95% cobre de forte negativo a forte positivo). Nao tratar como relacao confiavel -- e correlacao ECOLOGICA (unidade = segmento), que pode inverter de sinal no nivel da conta (ver ecological_fallacy_check)."
+    }
+  },
+  "ecological_fallacy_check": {
+    "usage_growth_x_churn_no_nivel_de_segmento_industry_r": -0.533,
+    "total_usage_count_x_churn_no_nivel_de_conta_r": 0.064,
+    "nota": "Sinais opostos entre o nivel de segmento (ecologico) e o nivel de conta (individual) -- exemplo real de correlacao ecologica que se inverte ao trocar a unidade de analise (Simpson-like)."
+  },
+  "mrr_concentration": {
+    "concentration": {
+      "top_10pct_accounts": {
+        "n_accounts": 50,
+        "pct_of_total_mrr": 45.5,
+        "churn_rate_pct": 18.0,
+        "mrr_at_risk": 93331.0,
+        "top_industries": {
+          "EdTech": 15,
+          "FinTech": 12,
+          "Cybersecurity": 10
+        }
+      },
+      "top_20pct_accounts": {
+        "n_accounts": 100,
+        "pct_of_total_mrr": 66.8,
+        "churn_rate_pct": 18.0,
+        "mrr_at_risk": 143762.0,
+        "top_industries": {
+          "FinTech": 26,
+          "EdTech": 24,
+          "HealthTech": 20
+        }
+      },
+      "top_50pct_accounts": {
+        "n_accounts": 250,
+        "pct_of_total_mrr": 92.8,
+        "churn_rate_pct": 23.2,
+        "mrr_at_risk": 238121.0,
+        "top_industries": {
+          "FinTech": 60,
+          "Cybersecurity": 56,
+          "DevTools": 49
+        }
+      },
+      "bottom_90pct_accounts": {
+        "n_accounts": 450,
+        "pct_of_total_mrr": 54.5,
+        "churn_rate_pct": 22.4
+      }
+    },
+    "avg_mrr_by_plan": [
+      {
+        "plan_tier": "Basic",
+        "avg_mrr": 2287.0,
+        "n": 168,
+        "churn_rate": 22.0
+      },
+      {
+        "plan_tier": "Enterprise",
+        "avg_mrr": 2730.0,
+        "n": 154,
+        "churn_rate": 22.1
+      },
+      {
+        "plan_tier": "Pro",
+        "avg_mrr": 2325.0,
+        "n": 178,
+        "churn_rate": 21.9
+      }
+    ],
+    "avg_mrr_of_a_churned_account_by_plan": {
+      "Basic": 1889.0,
+      "Enterprise": 2740.0,
+      "Pro": 2356.0
+    },
+    "significance_check": {
+      "top10_churn_rate_pct": 18.0,
+      "top10_churn_rate_ic95": [
+        9.8,
+        30.8
+      ],
+      "chi2": 0.29,
+      "p_value_chi2": 0.5893,
+      "p_value_fisher": 0.59,
+      "odds_ratio_bruto": 0.76,
+      "or_ajustado_por_industria_mh": 0.86
+    },
+    "decile_breakdown": [
+      {
+        "decile": 1,
+        "n": 50,
+        "churn_rate": 18.0,
+        "mrr_med": 9452.0
+      },
+      {
+        "decile": 2,
+        "n": 50,
+        "churn_rate": 18.0,
+        "mrr_med": 5174.0
+      },
+      {
+        "decile": 3,
+        "n": 50,
+        "churn_rate": 38.0,
+        "mrr_med": 3184.0
+      },
+      {
+        "decile": 4,
+        "n": 50,
+        "churn_rate": 24.0,
+        "mrr_med": 1862.0
+      },
+      {
+        "decile": 5,
+        "n": 50,
+        "churn_rate": 18.0,
+        "mrr_med": 1225.0
+      },
+      {
+        "decile": 6,
+        "n": 50,
+        "churn_rate": 18.0,
+        "mrr_med": 834.0
+      },
+      {
+        "decile": 7,
+        "n": 50,
+        "churn_rate": 20.0,
+        "mrr_med": 545.0
+      },
+      {
+        "decile": 8,
+        "n": 50,
+        "churn_rate": 18.0,
+        "mrr_med": 299.0
+      },
+      {
+        "decile": 9,
+        "n": 50,
+        "churn_rate": 34.0,
+        "mrr_med": 19.0
+      },
+      {
+        "decile": 10,
+        "n": 50,
+        "churn_rate": 14.0,
+        "mrr_med": 0.0
+      }
+    ],
+    "industry_mix_top10_pct": {
+      "EdTech": 30.0,
+      "FinTech": 24.0,
+      "Cybersecurity": 20.0,
+      "HealthTech": 16.0,
+      "DevTools": 10.0
+    },
+    "industry_mix_rest_pct": {
+      "DevTools": 24.0,
+      "FinTech": 22.2,
+      "Cybersecurity": 20.0,
+      "HealthTech": 19.6,
+      "EdTech": 14.2
+    },
+    "veredito": "NAO ha efeito de tamanho: p=0,59, IC95% do churn do top-10% cobre a base (22,0%). Por decil nao e monotono -- decil 8 churna 38%, decis 9-10 churnam 18%: e ruido com um pico no meio, nao gradiente de tamanho. O top-10% super-amostra EdTech (menor churn) e sub-amostra DevTools (maior churn); ajustando por industria (MH) o OR sai de 0,76 para 0,86 -- parte da diferenca (ja nula) e composicao, nao tamanho. 'Contas grandes sao mais fieis' nao pode ser afirmado com este dado."
+  },
+  "mrr_definition_sensitivity": {
+    "mediana_assinaturas_por_conta": 10.0,
+    "n_contas_com_mais_de_1_assinatura_aberta_sem_end_date": 500,
+    "mrr_total_definicao_ultima_por_start_date": 1218555.0,
+    "mrr_total_definicao_assinaturas_ativas_sem_end_date": 1144372.0,
+    "top10pct_share_definicao_ultima": 45.5,
+    "top10pct_share_definicao_ativas": 46.2,
+    "nota": "'MRR atual' e ambiguo no dado: a mediana de assinaturas por conta e ~10 e todas as 500 contas tem mais de uma assinatura sem end_date. A escolha de definicao move a concentracao do top-10% em ~1 ponto percentual -- nao muda a conclusao, mas 'nada e estimativa' e falso: e uma escolha de modelagem."
+  },
+  "global_null_model": {
+    "n_covariates": 28,
+    "lr_chi2": 35.59,
+    "lr_df": 28,
+    "lr_p_value": 0.1533,
+    "pseudo_r2_mcfadden": 0.0676,
+    "candidatos_p_menor_0_10": [
+      {
+        "termo": "error_rate",
+        "odds_ratio": 0.77,
+        "p_value": 0.0346,
+        "p_bonferroni_22_termos": 0.9695
+      },
+      {
+        "termo": "industry_DevTools",
+        "odds_ratio": 2.39,
+        "p_value": 0.0142,
+        "p_bonferroni_22_termos": 0.3986
+      },
+      {
+        "termo": "country_DE",
+        "odds_ratio": 5.01,
+        "p_value": 0.0294,
+        "p_bonferroni_22_termos": 0.8218
+      },
+      {
+        "termo": "country_US",
+        "odds_ratio": 2.69,
+        "p_value": 0.0884,
+        "p_bonferroni_22_termos": 1.0
+      }
+    ],
+    "interpretacao": "O modelo completo NAO rejeita a hipotese nula (p=0,19). Nenhuma covariavel isolada sobrevive a correcao por 22 termos. Nao ha o que modelar com as variaveis disponiveis neste dataset."
+  },
+  "audit_summary": {
+    "contagem_de_testes_formais": {
+      "correlacoes_pearson": 11,
+      "qui_quadrado_omnibus_de_segmento": 5,
+      "t_tests_por_feature_uso": 40,
+      "t_tests_por_feature_error_rate": 40,
+      "qui_quadrado_por_prioridade_de_ticket": 4,
+      "qui_quadrado_escalacao": 1,
+      "devtools_vs_resto_pos_hoc": 1,
+      "pearson_crescimento_x_churn_entre_segmentos": 2,
+      "comparacoes_de_concentracao_de_mrr": 3,
+      "total": 107
+    },
+    "falsos_positivos_esperados_sob_nulo_p_menor_0_05": 5.4,
+    "significativos_de_fato_encontrados_sem_correcao": 7,
+    "veredito": "7 'significativos' encontrados contra 5.4 esperados so por acaso puro. O rendimento do relatorio e indistinguivel do que o acaso produziria testando esse volume de cortes."
+  },
+  "methodology_notes": [
+    "MRR = mrr_amount da assinatura mais recente por start_date. Ambiguo: mediana de 10 assinaturas/conta, todas as 500 contas tem mais de uma assinatura aberta (sem end_date). Ver mrr_definition_sensitivity.",
+    "Tenure calculado com as_of=2024-12-31 (ultima data observada em qualquer tabela do dataset), nao 'hoje'.",
+    "A tabela feature_usage nao respeita o ciclo de vida da conta (ver usage_trend_honesty) -- qualquer metrica de 'uso total' ou 'trajetoria' aqui carrega esse limite.",
+    "reason_codes e reason_by_plan reportam separadamente a versao restrita a contas realmente churnadas (correta) e a versao com todos os eventos (como o relatorio original calculava, mantida so pra comparacao).",
+    "Este arquivo roda 106 testes formais no total (ver audit_summary). Nenhum p-valor aqui deveria ser lido isoladamente sem essa contagem."
+  ]
+}
+</script>
+
+<script>
+const DATA = JSON.parse(document.getElementById('report-data').textContent);
+
+function fmtUSD(v){
+  return '$' + Math.round(v).toLocaleString('en-US');
+}
+function fmtPct(v, digits=1){ return v.toFixed(digits).replace('.', ',') + '%'; }
+
+function cssVar(name){
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+function themeColors(){
+  return {
+    text: cssVar('--text-primary'),
+    muted: cssVar('--text-muted'),
+    grid: cssVar('--chart-grid'),
+    blue: cssVar('--blue'),
+    red: cssVar('--red'),
+    mid: cssVar('--diverge-mid'),
+    orange: cssVar('--orange'),
+    aqua: cssVar('--aqua'),
+    yellow: cssVar('--yellow'),
+    magenta: cssVar('--magenta'),
+    green: cssVar('--green'),
+  };
+}
+
+Chart.defaults.font.family = "IBM Plex Sans, system-ui, sans-serif";
+Chart.defaults.font.size = 12.5;
+
+function baseGrid(c){
+  return {
+    ticks:{ color:c.muted },
+    grid:{ color:c.grid, drawTicks:false },
+    border:{ color:c.grid },
+  };
+}
+
+// ---------- headline tiles ----------
+(function(){
+  const h = DATA.headline;
+  document.getElementById('t-churn-rate').textContent = fmtPct(h.churn_rate_pct);
+  document.getElementById('t-churn-rate-sub').textContent =
+    `${h.n_churned} de ${h.n_accounts} contas`;
+  document.getElementById('t-mrr-risk').textContent = fmtUSD(h.mrr_at_risk);
+  document.getElementById('t-mrr-risk-sub').textContent =
+    `${fmtPct(h.mrr_at_risk_pct)} do MRR total — quase o mesmo peso da taxa de contas (${fmtPct(h.churn_rate_pct)})`;
+  document.getElementById('t-mrr-total').textContent = fmtUSD(h.mrr_total);
+  document.getElementById('t-churn-events').textContent = h.n_accounts_with_any_churn_event;
+  document.getElementById('t-churn-events-sub').textContent =
+    `mais que as ${h.n_churned} atualmente canceladas · ${h.n_churn_events_total} eventos no total (algumas contas com mais de 1)`;
+})();
+
+// ---------- auditoria ----------
+(function(){
+  const g = DATA.global_null_model;
+  document.getElementById('global-null-text').innerHTML =
+    `LR χ²=${g.lr_chi2}, gl=${g.lr_df}, <strong>p=${g.lr_p_value}</strong> — pseudo-R²=${g.pseudo_r2_mcfadden}. ` +
+    `O conjunto completo do que foi medido NÃO rejeita o modelo nulo. Dos ${g.n_covariates} termos, ` +
+    g.candidatos_p_menor_0_10.map(c => `<code>${c.termo}</code> (OR=${c.odds_ratio}, p=${c.p_value}, Bonferroni=${c.p_bonferroni_22_termos})`).join(', ') +
+    ` são os únicos com p&lt;0,10 sozinhos — nenhum sobrevive à correção pelo número de termos testados.`;
+
+  const a = DATA.audit_summary;
+  const t = a.contagem_de_testes_formais;
+  document.getElementById('audit-count-text').innerHTML =
+    `<strong>${t.total} testes formais</strong> rodados neste relatório (correlações, qui-quadrados de segmento, ` +
+    `${t.t_tests_por_feature_uso}+${t.t_tests_por_feature_error_rate} t-tests por feature, tickets, MRR...). ` +
+    `Falsos positivos esperados só por acaso a p&lt;0,05: <strong>${a.falsos_positivos_esperados_sob_nulo_p_menor_0_05}</strong>. ` +
+    `"Significativos" de fato encontrados: <strong>${a.significativos_de_fato_encontrados_sem_correcao}</strong>. ` +
+    `${a.veredito}`;
+})();
+
+// ---------- paradoxo ----------
+(function(){
+  const s = DATA.usage_trend_slope;
+  document.getElementById('t-usage-verdict').textContent = 'Falso, no nível';
+  document.getElementById('t-usage-detail').textContent =
+    `uso/conta ficou ~achatado (${s.overall.first_quarter_avg} → ${s.overall.last_quarter_avg} eventos/mês, ` +
+    `+${s.overall.pct_change_first_to_last_q}% em 2 anos) — descritivo, não comparação entre grupos`;
+
+  const sup = DATA.support_comparison;
+  const dCsat = (sup.churned.avg_satisfaction - sup.retained.avg_satisfaction).toFixed(2);
+  const pCsat = sup.p_values_welch_ttest.avg_satisfaction;
+  document.getElementById('t-csat-verdict').textContent = 'Confirmado';
+  document.getElementById('t-csat-detail').textContent =
+    `satisfação média quase igual entre quem cancelou (${sup.churned.avg_satisfaction}) e quem ficou ` +
+    `(${sup.retained.avg_satisfaction}) — diferença de ${dCsat} pontos, p=${pCsat} (Welch)`;
+
+  const rc = DATA.reason_codes;
+  document.getElementById('t-reason-detail').textContent =
+    `restrito a contas de fato canceladas (n=${rc.n_events_from_currently_churned_accounts} de ${rc.n_events_total} eventos no log)`;
+})();
+
+// ---------- qualidade de dados ----------
+(function(){
+  const q = DATA.data_quality;
+  document.getElementById('dq-text').innerHTML =
+    ` De ${q.n_churn_flag_true} contas com <code>churn_flag = true</code>, ` +
+    `<strong>${q.n_churn_flag_true_without_event_on_file} (${fmtPct(q.pct_churn_flag_true_without_event_on_file)})` +
+    `</strong> não têm nenhum evento em <code>churn_events</code> — a tabela que carrega o motivo e o feedback. ` +
+    `Na direção contrária, ${q.n_accounts_with_multiple_churn_events} contas têm mais de um evento no log ` +
+    `(de ${q.n_total_churn_events} eventos totais, só ${q.n_events_flagged_reactivation} vêm marcados ` +
+    `<code>is_reactivation</code>) — sugerindo ciclos de cancelar-e-voltar que a flag mestre, binária, não representa. ` +
+    `Qualquer modelo de causa raiz que use <code>reason_code</code> como alvo precisa decidir o que fazer com esse ` +
+    `terço sem motivo registrado antes de tirar conclusão — tratar como "unknown" e seguir é uma opção honesta, ` +
+    `descartar silenciosamente não é.`;
+})();
+
+// ---------- uso: retratacao ----------
+(function(){
+  const h = DATA.usage_trend_honesty;
+  document.getElementById('usage-note').innerHTML =
+    `A tabela <code>feature_usage</code> tem um problema de integridade que a versão anterior não tinha visto: ` +
+    `<strong>${h.pct_usage_rows_before_own_signup_date}%</strong> das linhas de uso têm data anterior ao próprio ` +
+    `<code>signup_date</code> da conta, e <strong>${h.pct_usage_rows_of_churned_accounts_after_churn_date}%</strong> ` +
+    `do uso das contas canceladas acontece depois do <code>churn_date</code> — a série não para no cancelamento. ` +
+    `Testando a afirmação original no nível certo (slope de uso por conta, não mês-calendário): ` +
+    `churnadas ${h.slope_mensal_por_conta_churned_mean} vs retidas ${h.slope_mensal_por_conta_retained_mean} — ` +
+    `<strong>p=${h.welch_p_value} (Welch)</strong>. Não sustenta.`;
+  document.getElementById('usage-honesty-text').textContent = h.veredito;
+})();
+
+// ---------- segmentos: industry & referral (diverging vs baseline) ----------
+function divergingBarChart(canvasId, rows, labelKey, baselinePct, pKey){
+  const c = themeColors();
+  const ctx = document.getElementById(canvasId).getContext('2d');
+  const labels = rows.map(r => r[labelKey]);
+  const values = rows.map(r => +(r.churn_rate*100).toFixed(1));
+  const colors = values.map(v => v >= baselinePct ? c.red : c.blue);
+  const ns = rows.map(r => r.n_accounts);
+
+  new Chart(ctx, {
+    type:'bar',
+    data:{ labels, datasets:[{
+      data: values,
+      backgroundColor: colors,
+      borderRadius: 3,
+      barThickness: 22,
+    }]},
+    options:{
+      indexAxis:'y',
+      responsive:true, maintainAspectRatio:false, resizeDelay:200,
+      plugins:{
+        legend:{ display:false },
+        tooltip:{
+          callbacks:{
+            label: (item) => {
+              const i = item.dataIndex;
+              return ` ${values[i]}% de churn · n=${ns[i]} contas`;
+            }
+          }
+        }
+      },
+      scales:{
+        x:{ ...baseGrid(c), min:0, suggestedMax: Math.max(...values, baselinePct)+8,
+            ticks:{...baseGrid(c).ticks, callback:(v)=>v+'%'} },
+        y:{ ...baseGrid(c), grid:{ display:false } },
+      }
+    },
+  });
+}
+
+const BASELINE = DATA.headline.churn_rate_pct;
+divergingBarChart('chart-industry', DATA.churn_by_industry, 'industry', BASELINE);
+divergingBarChart('chart-referral', DATA.churn_by_referral, 'referral_source', BASELINE);
+
+(function(){
+  const sig = {};
+  DATA.segment_significance.forEach(s => sig[s.variable] = s);
+  const fmt = (s) => `χ²=${s.chi2}, dof=${s.dof}, p=${s.p_value} ${s.p_value < 0.05 ? '(significativo)' : '(não significativo)'}`;
+  document.getElementById('p-industry').textContent = fmt(sig.industry);
+  document.getElementById('p-referral').textContent = fmt(sig.referral_source);
+
+  const rows = [];
+  DATA.churn_by_country.forEach(r => rows.push({label:`país · ${r.country}`, r, key:'country'}));
+  DATA.churn_by_plan.forEach(r => rows.push({label:`plano · ${r.plan_tier}`, r, key:'plan_tier'}));
+  DATA.churn_by_trial.forEach(r => rows.push({label:`trial · ${r.is_trial ? 'sim' : 'não'}`, r, key:'is_trial'}));
+
+  const tbody = document.getElementById('table-other-segments');
+  rows.forEach(({label, r, key}) => {
+    const s = sig[key];
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${label}</td>
+      <td class="num">${r.n_accounts}</td>
+      <td class="num">${fmtPct(r.churn_rate*100)}</td>
+      <td class="num">${fmtPct(r.mrr_at_risk_pct*100)}</td>
+      <td><span class="pill ${s.p_value>=0.05?'ns':''}">p=${s.p_value}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+})();
+
+// ---------- DevTools vs resto + escopo da carteira ----------
+(function(){
+  const t = DATA.devtools_deep_dive.devtools_vs_rest;
+  const h = DATA.devtools_deep_dive.honest_significance;
+  const mh = DATA.devtools_deep_dive.confound_adjusted_or_mantel_haenszel;
+  const reasons = DATA.devtools_deep_dive.reason_code_devtools_vs_rest;
+  const reasonLine = reasons.map(r => `${r.reason_code} ${r.pct_devtools}% vs ${r.pct_rest}%`).join(' · ');
+
+  document.getElementById('devtools-text').innerHTML = `
+    Testando só DevTools contra as outras quatro juntas: churn de <strong>${t.churn_rate_in}%</strong> (n=${t.n_in})
+    contra <strong>${t.churn_rate_out}%</strong> no resto (n=${t.n_out}), χ²=${t.chi2}. Mas esse p "ingênuo"
+    (${h.p_naive_devtools_only}) só vale se o corte tivesse sido decidido <em>antes</em> de olhar o gráfico de
+    5 barras. Corrigido pela busca que o encontrou (permutação, ${h.n_permutations} reps): <strong>p=${h.p_permutation_5_industries}</strong>
+    contra só as 5 indústrias, <strong>p=${h.p_permutation_all_displayed_cuts}</strong> contra os
+    ${h.n_one_vs_rest_cuts_shown_on_dashboard} cortes que este dashboard de fato exibe (indústria+país+canal+plano+trial).
+    O efeito não desaparece por confundimento — ajustando por canal (OR=${mh.referral_source}), plano (OR=${mh.plan_tier})
+    e país (OR=${mh.country}) o efeito continua — mas isso importa pouco se o motivo dele ter aparecido foi
+    olhar o gráfico primeiro. <strong>Veredito: melhor hipótese do dataset, não achado confirmado.</strong><br><br>
+    O <code>reason_code</code> dentro dos eventos de churn de DevTools (restrito a contas de fato canceladas)
+    não aponta um motivo dominante que confirme "constroem por conta própria" ou "têm fornecedor melhor":
+    <em>${reasonLine}</em>. A hipótese de build-vs-buy é plausível e vale perguntar direto pro cliente — o
+    dado não confirma nem descarta.
+  `;
+
+  const inds = DATA.devtools_deep_dive.all_industries_in_dataset;
+  document.getElementById('scope-text').innerHTML = `
+    Não — pelo menos não nesse dataset. As <strong>${DATA.devtools_deep_dive.n_industries} indústrias
+    são exatamente estas: ${inds.join(', ')}</strong> — 500 de 500 contas, sem nenhuma fora desse recorte
+    (não é filtro escondendo categorias pequenas: contei a coluna inteira). Ou seja: não existe, nesta base,
+    um grupo de clientes "não-tech" pra comparar contra. A pergunta "somos ruins com tech e bons com o
+    resto" não é testável aqui — o que É testável, e testado acima, é "somos piores com DevTools do que com
+    as outras 4 verticais de tech que atendemos", e a resposta é sim. Se a RavenStack realmente vende fora
+    de tech e esse dataset é um recorte, essa é a primeira pergunta a fazer pra quem tem a base completa.
+  `;
+})();
+
+// ---------- suporte: tabela comparativa ----------
+(function(){
+  const s = DATA.support_comparison;
+  const pv = s.p_values_welch_ttest;
+  const rows = [
+    ['Satisfação média (1–5)', s.churned.avg_satisfaction, s.retained.avg_satisfaction, pv.avg_satisfaction],
+    ['Tempo médio de resolução (h)', s.churned.avg_resolution_hours, s.retained.avg_resolution_hours, pv.avg_resolution_hours],
+    ['Tempo até 1ª resposta (min)', s.churned.avg_first_response_min, s.retained.avg_first_response_min, pv.avg_first_response_min],
+    ['% de tickets escalados', s.churned.pct_escalated+'%', s.retained.pct_escalated+'%', pv.pct_escalated],
+    ['Tickets por conta (média)', s.churned.avg_tickets_per_account, s.retained.avg_tickets_per_account, null],
+  ];
+  const tbody = document.getElementById('table-support');
+  rows.forEach(([label, a, b, p]) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${label}</td><td class="num">${a}</td><td class="num">${b}</td><td>${p!==null ? '<span class="pill '+(p>=0.05?'ns':'')+'">p='+p+'</span>' : '—'}</td>`;
+    tbody.appendChild(tr);
+  });
+})();
+
+// ---------- peso por MRR ----------
+(function(){
+  const m = DATA.mrr_concentration;
+  const sig = m.significance_check;
+  document.getElementById('mrr-note').innerHTML =
+    `Os 10% maiores clientes (${m.concentration.top_10pct_accounts.n_accounts} contas) carregam ` +
+    `<strong>${m.concentration.top_10pct_accounts.pct_of_total_mrr}%</strong> do MRR total e concentram ` +
+    `<strong>$${Math.round(m.concentration.top_10pct_accounts.mrr_at_risk).toLocaleString('en-US')}</strong> de MRR em risco — ` +
+    `isso é aritmética real da carteira. Mas a taxa de churn deles (${sig.top10_churn_rate_pct}%, ` +
+    `IC95% [${sig.top10_churn_rate_ic95[0]}%, ${sig.top10_churn_rate_ic95[1]}%]) cobre a base (22,0%): ` +
+    `<strong>p=${sig.p_value_chi2}</strong>, não significativo. Por decil não é gradiente — é ruído com um ` +
+    `pico no meio. Ajustando por indústria (Mantel-Haenszel), o OR vai de ${sig.odds_ratio_bruto} para ` +
+    `${sig.or_ajustado_por_industria_mh}: parte da diferença (já nula) é composição de indústria, não tamanho.
+    <strong>"Contas grandes são mais fiéis" não pode ser afirmado com este dado.</strong>`;
+
+  const tbody = document.getElementById('table-decile');
+  m.decile_breakdown.forEach(d => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="num">${d.decile}</td><td class="num">${d.n}</td><td class="num">${d.churn_rate}%</td><td class="num">$${Math.round(d.mrr_med).toLocaleString('en-US')}</td>`;
+    tbody.appendChild(tr);
+  });
+})();
+
+// ---------- correlação (tornado, diverging por sinal) ----------
+(function(){
+  const c = themeColors();
+  const corrData = DATA.correlation_with_churn;
+  const g = corrData.global_null_check;
+  document.getElementById('corr-note').innerHTML =
+    `Correlação de Pearson entre cada variável (nível médio por conta) e <code>churn_flag</code>, com teste
+    individual. A mais forte de todas é ${corrData.correlations[0].corr_with_churn} (${corrData.correlations[0].variable},
+    p=${corrData.correlations[0].p_value}) — ruído. O MDE (mínimo efeito detectável a 80% de poder, n~500) é
+    <strong>r≈${g.mde_r_80pct_power_n500}</strong>: "nenhuma passa de 0,09" significa "não detectamos efeito
+    acima de ~0,12", não "não existe causa". Combinando as ${corrData.correlations.length} em conjunto (Fisher):
+    χ²=${g.fisher_combined_chi2}, p=${g.fisher_combined_p} — também não rejeita o nulo.`;
+
+  const rows = [...corrData.correlations].sort((a,b)=>a.corr_with_churn-b.corr_with_churn);
+  const labelMap = {
+    error_rate:'taxa de erro de uso', total_usage_count:'volume total de uso',
+    pct_escalated:'% tickets escalados', total_usage_duration:'duração total de uso',
+    avg_satisfaction:'satisfação média', avg_resolution_hours:'tempo de resolução',
+    seats:'seats', n_tickets:'nº de tickets', ever_downgraded:'já fez downgrade', mrr:'MRR',
+    tenure_days: 'tempo desde o signup',
+  };
+  new Chart(document.getElementById('chart-corr').getContext('2d'), {
+    type:'bar',
+    data:{
+      labels: rows.map(r=>labelMap[r.variable] || r.variable),
+      datasets:[{
+        data: rows.map(r=>r.corr_with_churn),
+        backgroundColor: rows.map(r=> r.corr_with_churn>=0 ? c.red : c.blue),
+        borderRadius:3, barThickness:16,
+      }]
+    },
+    options:{
+      indexAxis:'y', responsive:true, maintainAspectRatio:false, resizeDelay:200,
+      plugins:{ legend:{display:false},
+        tooltip:{ callbacks:{ label:(item)=> ` r = ${item.raw}` } } },
+      scales:{
+        x:{ ...baseGrid(c), min:-0.15, max:0.15 },
+        y:{ ...baseGrid(c), grid:{ display:false } },
+      }
+    }
+  });
+})();
+</script>
