@@ -38,8 +38,11 @@ Antes de pedir qualquer análise, fiz a IA:
 11. Levantei a ideia de uma função de risco ponderada por MRR pra responder "qual segmento pesa mais" com número, não feeling. Pedi pra "dar zoom" nas 50 maiores contas por MRR pra caçar causalidade cruzando ticket com feature — a IA rodou os números reais (só 9 contas canceladas nesse grupo) e me devolveu um contra-argumento concreto: com 9 casos, minerar automaticamente reproduz o mesmo erro que a auditoria tinha acabado de corrigir, só que numa amostra ainda menor.
 12. Esse contra-argumento me fez inverter a hipótese: o valor estatístico está no volume (a "cauda" de contas menores), não na concentração. Nas 50-100 maiores, o que funciona é memória de caso, não modelo. Desenhamos os dois produtos com esse critério: fila de risco transparente pra volume, painel de casos com registro de ação persistente pras contas-âncora.
 13. Escrevi (com a IA) os três entregáveis finais: `DIAGNOSTICO.md` (CEO, zero jargão estatístico), `painel_retencao.html` (protótipo funcional, com banco de dados real pros registros de CS) e este log.
+14. Depois de abrir o PR, testei o painel com as próprias mãos e pedi pra IA confirmar a gravação direto no banco do artefato (sem depender do navegador de automação, que travava) — confirmado, com registros de dois autores diferentes em duas contas.
+15. Antes de considerar a submissão fechada, pedi uma leitura honesta da minha posição competitiva: uma sessão separada de IA leu os PRs #108, #111, #117, #120 e #122 (challenge 001, agosto–setembro/2026) e comparou com o que eu tinha. O achado mais importante que voltou: três das submissões mais fortes (José, Fabrício, Alexandre) chegam, por caminhos diferentes, a um padrão temporal nos primeiros 90 dias de conta que eu não tinha olhado — eu tinha concentrado a análise em cortes estáticos (indústria, canal, MRR).
+16. Fui verificar a alegação mais forte na fonte primária, não na paráfrase — abri o PR #117 (Fabrício) direto no GitHub. O número que ele publica (churn em 90 dias subindo de 15,6% para 59,7% entre safras de entrada, p<0,0001) está lá, documentado. Antes de usar qualquer coisa, perguntei explicitamente se copiar um achado de outro candidato feria as regras do desafio — a resposta, depois de reler os três documentos oficiais de novo, foi que não há essa restrição escrita, e a submissão é via PR público por desenho. Reproduzi o cálculo do zero, com meu próprio código e minha própria coorte semestral (não copiei o número dele): 15,6% → 60,8%, χ²=48,6, p=1,6×10⁻¹⁰, e testei se sobrevive a confundimento por composição de indústria/canal/plano — sobrevive (OR=2,08 por safra, p=1,5×10⁻¹⁰). Reformulei o `DIAGNOSTICO.md` pra colocar esse achado como manchete, e demovi DevTools/canal de evento pra pistas secundárias — porque, comparados a esse novo número, são isso mesmo.
 
-**Total de idas e voltas na análise estatística: pelo menos 6 rodadas completas** (a inicial, +feature-level, +deep-dive de segmentos, +tenure, +auditoria completa reescrevendo o script do zero, +risk-score final) — não foi um prompt e uma resposta.
+**Total de idas e voltas na análise estatística: pelo menos 7 rodadas completas** (a inicial, +feature-level, +deep-dive de segmentos, +tenure, +auditoria completa reescrevendo o script do zero, +risk-score final, +coorte de onboarding depois da revisão de concorrência) — não foi um prompt e uma resposta.
 
 ---
 
@@ -64,6 +67,23 @@ Ao pedir uma definição alternativa de MRR (assinatura ativa em vez de última 
 
 ---
 
+## Como tratei a informação pública de outros candidatos
+
+Isso merece uma seção própria em vez de ficar escondido no workflow, porque é o tipo de decisão que prefiro deixar visível a esconder.
+
+**O que aconteceu:** depois de já ter um PR aberto, pedi uma análise da minha posição competitiva olhando os outros PRs do mesmo challenge, que são públicos por desenho (é o único canal de submissão aceito). Um dos concorrentes (Fabrício, PR #117) publicou um achado que eu não tinha: churn concentrado nos primeiros 90 dias de conta, piorando a cada safra de entrada.
+
+**O que verifiquei antes de usar qualquer coisa:**
+1. **Se isso feria alguma regra do desafio.** Reli o README raiz, o README do challenge e o `submission-guide.md` de novo, especificamente procurando por isso. Não há restrição escrita contra consultar outras submissões — e o próprio desenho (PR público como único canal) assume visibilidade mútua.
+2. **Se o achado dele era real, não um erro ou exagero.** Abri o PR #117 direto, li o número na fonte, e reproduzi o cálculo do zero com meus próprios dados, meu próprio código, minha própria definição de coorte — não copiei o número dele pra dentro do meu relatório.
+3. **Se o achado sobrevivia a um teste que o dele não reportava.** Testei confundimento por composição (será que a piora é só porque a mistura de indústria/canal muda com o tempo?). Não é: o efeito continua praticamente do mesmo tamanho controlando por isso.
+
+**Por que decidi incorporar, e não ignorar:** o objetivo declarado do desafio é resolver o caso da RavenStack. Um achado real, verificado com metodologia própria, que muda a resposta certa pro CEO fictício, não deveria ficar de fora só porque a ideia de olhar pra isso veio de fora — principalmente quando eu já tinha, no meu próprio relatório anterior a essa revisão, marcado a lacuna exata que esse achado preenche ("tenure/signup_date foi parseado e nunca usado", seção de metodologia do `report_data.json`). Não é uma ideia que eu não tinha condição de ter; é uma que eu ainda não tinha executado.
+
+**A linha que eu não cruzei:** não escrevi como se tivesse chegado nisso sozinho, sem influência. Esta seção, a nota de origem dentro de `report_data.json` (`onboarding_cohort_deterioration.origem`) e a seção 8 do `DIAGNOSTICO.md` dizem a mesma coisa: o padrão apareceu primeiro numa submissão pública de outro candidato, e eu o verifiquei e reproduzi de forma independente antes de usar.
+
+---
+
 ## O que eu adicionei que a IA sozinha não faria
 
 - **A decisão de separar quem constrói de quem audita.** A IA não vai se auto-desconfiar por padrão; pedir uma sessão adversarial dedicada, com instrução explícita pra atacar (não confirmar) o que já tínhamos, foi minha decisão, e é o motivo de esse relatório ser diferente do que qualquer IA produziria de primeira.
@@ -71,11 +91,13 @@ Ao pedir uma definição alternativa de MRR (assinatura ativa em vez de última 
 - **A recusa de perseguir um modelo preditivo com AUC alto.** A IA propôs treinar um modelo; a decisão de **não** empurrar pra um resultado bonito — porque neste dataset isso só sai vazando informação do próprio evento de cancelamento — e em vez disso reportar o resultado nulo como achado, foi julgamento meu sobre o que um avaliador que conhece o dataset ia pegar.
 - **A virada da hipótese de negócio.** Eu cheguei acreditando que "os maiores clientes são o problema". Foi eu, olhando o número de que só 9 das 50 maiores contas cancelaram, que inverteu a própria pergunta: o espaço estatístico está no volume, não na concentração — e isso definiu a arquitetura dos dois produtos finais (fila de risco vs. memória de caso), não foi sugestão da IA.
 - **Nomear o que não construímos.** Decidi explicitamente que o painel de retenção não devia fingir estar conectado a um sistema ao vivo — o aviso "o que falta pra isso rodar sozinho" no painel é uma escolha de honestidade minha, não algo que a IA propõe por padrão.
+- **A pergunta sobre as regras, antes de agir, não depois.** Ao ver um achado forte de outro candidato, a decisão de perguntar explicitamente "isso fere as regras?" e só reformular a tese depois de ter a resposta (e de verificar o achado com metodologia própria) foi minha — a IA teria seguido direto pra reformulação se eu tivesse só pedido.
 
 ---
 
 ## Limitações — o que eu não consegui resolver ou verificar
 
-- **O registro de ação do painel foi testado manualmente e confirmado.** O navegador de automação usado durante a construção travava ao tentar chegar no botão "Salvar registro"; testei com as próprias mãos depois de publicar e confirmei direto no banco do artefato — o registro grava, persiste e é visível a qualquer um que abra o link (dois registros de autores diferentes já estão salvos: um meu, em `Company_4`, e um de outra pessoa, em `Company_177` — o que também confirma que o compartilhamento entre viewers funciona de verdade).
-- **O achado de DevTools e do canal de evento continuam sendo a melhor hipótese do dataset, não fato provado** — teria que ser testado em dado novo (coorte diferente, ou entrevista direta com o cliente) pra virar decisão de negócio de peso maior (repriorizar uma vertical inteira).
+- **O registro de ação do painel foi testado manualmente e confirmado.** O navegador de automação usado durante a construção travava ao tentar chegar no botão "Salvar registro"; testei com as próprias mãos depois de publicar e confirmei direto no banco do artefato — o registro grava, persiste e é visível a qualquer um que abra o link (dois registros de autores diferentes já estão salvos em contas distintas, o que também confirma que o compartilhamento entre viewers funciona de verdade).
+- **DevTools e canal de evento continuam sendo pistas, não fato provado** — bem mais fracas que o achado de safra de onboarding (seção 2 do `DIAGNOSTICO.md`), que tem confiança estatística muito maior. Precisariam de dado novo ou entrevista direta pra virar decisão de negócio de peso maior.
+- **A causa da deterioração de safra ainda não está explicada** — o padrão temporal é muito sólido, mas os dados não dizem se é perfil de cliente, promessa comercial, onboarding ou produto. É a próxima pergunta, não uma que este relatório responde.
 - **Não sei se a RavenStack real atende setores fora de tecnologia** — as 500 contas desta base são inteiramente de 5 verticais de tecnologia; se a empresa de verdade for mais ampla, esta base não a representa por completo.

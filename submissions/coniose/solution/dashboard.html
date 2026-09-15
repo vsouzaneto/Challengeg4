@@ -204,6 +204,21 @@
     </div>
   </section>
 
+  <section id="coorte">
+    <p class="section-kicker">O achado mais forte do dataset — adicionado após revisão de concorrência</p>
+    <h2>Churn em 90 dias piora a cada safra de entrada</h2>
+    <p class="section-note" id="coorte-note">carregando…</p>
+    <div class="chart-card">
+      <h3>Churn nos primeiros 90 dias, por safra de entrada (semestre de signup)</h3>
+      <p class="chart-sub">Só contas com 90 dias de exposição observável (n=422 de 500) — sem isso, safras recentes pareceriam artificialmente melhores por censura.</p>
+      <div class="chart-wrap"><canvas id="chart-cohort"></canvas></div>
+    </div>
+    <div class="callout" style="margin-top:12px;">
+      <span class="callout-label">Origem e verificação deste achado</span>
+      <span id="coorte-origem">carregando…</span>
+    </div>
+  </section>
+
   <section id="auditoria">
     <p class="section-kicker">Antes de qualquer achado: o modelo completo tem sinal?</p>
     <h2>Auditoria estatística independente (segunda sessão de IA, Opus)</h2>
@@ -2004,6 +2019,45 @@
     "top10pct_share_definicao_ativas": 46.2,
     "nota": "'MRR atual' e ambiguo no dado: a mediana de assinaturas por conta e ~10 e todas as 500 contas tem mais de uma assinatura sem end_date. A escolha de definicao move a concentracao do top-10% em ~1 ponto percentual -- nao muda a conclusao, mas 'nada e estimativa' e falso: e uma escolha de modelagem."
   },
+  "onboarding_cohort_deterioration": {
+    "n_accounts_eligible_90d_window": 422,
+    "n_accounts_excluded_too_recent": 78,
+    "by_cohort": [
+      {
+        "cohort_half": "2023-H1",
+        "n": 109,
+        "churn_90d_rate": 15.6,
+        "mrr_avg": 2570.0
+      },
+      {
+        "cohort_half": "2023-H2",
+        "n": 118,
+        "churn_90d_rate": 22.9,
+        "mrr_avg": 2552.0
+      },
+      {
+        "cohort_half": "2024-H1",
+        "n": 121,
+        "churn_90d_rate": 38.8,
+        "mrr_avg": 2572.0
+      },
+      {
+        "cohort_half": "2024-H2",
+        "n": 74,
+        "churn_90d_rate": 60.8,
+        "mrr_avg": 1840.0
+      }
+    ],
+    "chi2_omnibus": 48.63,
+    "p_omnibus": 1.565385976426403e-10,
+    "or_per_cohort_step_adjusted_industry_referral_plan": 2.08,
+    "p_adjusted_for_composition": 1.4840326305775512e-10,
+    "excess_accounts_per_semester_vs_first_cohort": 33.4,
+    "mrr_excess_lost_per_semester_usd": 61544.0,
+    "mrr_excess_lost_annualized_usd": 123089.0,
+    "origem": "Padrao inicialmente reportado publicamente no PR #117 do challenge (outro candidato). Verificado aqui de forma independente: metodologia propria, codigo proprio, e teste de confundimento por composicao que o PR original nao reportava. Ver PROCESS_LOG.md para a sequencia completa.",
+    "interpretacao": "Churn em 90 dias sobe de 15.6% (2023-H1) para 60.8% (2024-H2). p=1.57e-10 (omnibus), sobrevive ajuste por industria+canal+plano: OR=2.08 por safra, p=1.48e-10. E o achado mais forte de todo o dataset -- ordens de magnitude mais solido que qualquer corte de segmento estatico testado neste relatorio."
+  },
   "global_null_model": {
     "n_covariates": 28,
     "lr_chi2": 35.59,
@@ -2060,7 +2114,8 @@
     "Tenure calculado com as_of=2024-12-31 (ultima data observada em qualquer tabela do dataset), nao 'hoje'.",
     "A tabela feature_usage nao respeita o ciclo de vida da conta (ver usage_trend_honesty) -- qualquer metrica de 'uso total' ou 'trajetoria' aqui carrega esse limite.",
     "reason_codes e reason_by_plan reportam separadamente a versao restrita a contas realmente churnadas (correta) e a versao com todos os eventos (como o relatorio original calculava, mantida so pra comparacao).",
-    "Este arquivo roda 106 testes formais no total (ver audit_summary). Nenhum p-valor aqui deveria ser lido isoladamente sem essa contagem."
+    "Este arquivo roda 106 testes formais no total (ver audit_summary). Nenhum p-valor aqui deveria ser lido isoladamente sem essa contagem.",
+    "onboarding_cohort_deterioration foi adicionado apos revisar PRs publicos de outros candidatos no mesmo repositorio do desafio (#117). A lacuna -- tenure/signup_date nunca usado como janela -- ja estava marcada nas notas de metodologia antes dessa revisao; o calculo em si foi reproduzido do zero, com metodologia e codigo proprios, e testado contra confundimento antes de ser aceito. Ver PROCESS_LOG.md para a sequencia completa e honesta."
   ]
 }
 </script>
@@ -2117,6 +2172,62 @@ function baseGrid(c){
   document.getElementById('t-churn-events').textContent = h.n_accounts_with_any_churn_event;
   document.getElementById('t-churn-events-sub').textContent =
     `mais que as ${h.n_churned} atualmente canceladas · ${h.n_churn_events_total} eventos no total (algumas contas com mais de 1)`;
+})();
+
+// ---------- coorte de onboarding ----------
+(function(){
+  const c = themeColors();
+  const oc = DATA.onboarding_cohort_deterioration;
+  const rows = oc.by_cohort;
+
+  document.getElementById('coorte-note').innerHTML =
+    `De ${oc.n_accounts_eligible_90d_window} contas com pelo menos 90 dias de exposição observável ` +
+    `(${oc.n_accounts_excluded_too_recent} excluídas por serem muito recentes pra avaliar), o churn nos ` +
+    `primeiros 90 dias sobe de <strong>${rows[0].churn_90d_rate}%</strong> na safra mais antiga para ` +
+    `<strong>${rows[rows.length-1].churn_90d_rate}%</strong> na mais recente. χ²=${oc.chi2_omnibus}, ` +
+    `<strong>p=${oc.p_omnibus.toExponential(2)}</strong> — ordens de magnitude mais forte que qualquer outro ` +
+    `achado deste relatório. Testado contra confundimento de composição (indústria × canal × plano): ` +
+    `<strong>sobrevive</strong> — OR=${oc.or_per_cohort_step_adjusted_industry_referral_plan} por safra, ` +
+    `p=${oc.p_adjusted_for_composition.toExponential(2)}. Impacto: ~$${Math.round(oc.mrr_excess_lost_annualized_usd).toLocaleString('en-US')}/ano ` +
+    `em MRR novo perdido em excesso, comparando a pior safra com a melhor.`;
+
+  document.getElementById('coorte-origem').innerHTML =
+    `Este achado apareceu primeiro numa submissão pública de outro candidato a este desafio (PR #117). ` +
+    `Já tínhamos marcado a lacuna — tempo de vida da conta nunca usado como janela temporal — antes de ver ` +
+    `isso; o que mudou foi a prioridade de executar. Reproduzido aqui do zero, com código e metodologia ` +
+    `próprios, e testado contra confundimento (o PR original não reportava esse teste). Ver PROCESS_LOG.md ` +
+    `pra sequência completa.`;
+
+  new Chart(document.getElementById('chart-cohort').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: rows.map(r => r.cohort_half),
+      datasets: [{
+        data: rows.map(r => r.churn_90d_rate),
+        backgroundColor: rows.map((_, i) => {
+          const t = i / (rows.length - 1);
+          return t < 0.34 ? c.blue : t < 0.67 ? c.orange : c.red;
+        }),
+        borderRadius: 4,
+        barThickness: 48,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, resizeDelay: 200,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: (item) => {
+          const r = rows[item.dataIndex];
+          return ` ${r.churn_90d_rate}% de churn em 90 dias · n=${r.n} contas · MRR médio $${Math.round(r.mrr_avg).toLocaleString('en-US')}`;
+        } } }
+      },
+      scales: {
+        x: { ...baseGrid(c) },
+        y: { ...baseGrid(c), min: 0, max: 70, ticks: { ...baseGrid(c).ticks, callback: (v) => v + '%' },
+             title: { display: true, text: 'churn em 90 dias', color: c.muted, font: { size: 11.5 } } },
+      }
+    }
+  });
 })();
 
 // ---------- auditoria ----------

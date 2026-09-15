@@ -1624,6 +1624,45 @@
     "top10pct_share_definicao_ativas": 46.2,
     "nota": "'MRR atual' e ambiguo no dado: a mediana de assinaturas por conta e ~10 e todas as 500 contas tem mais de uma assinatura sem end_date. A escolha de definicao move a concentracao do top-10% em ~1 ponto percentual -- nao muda a conclusao, mas 'nada e estimativa' e falso: e uma escolha de modelagem."
   },
+  "onboarding_cohort_deterioration": {
+    "n_accounts_eligible_90d_window": 422,
+    "n_accounts_excluded_too_recent": 78,
+    "by_cohort": [
+      {
+        "cohort_half": "2023-H1",
+        "n": 109,
+        "churn_90d_rate": 15.6,
+        "mrr_avg": 2570.0
+      },
+      {
+        "cohort_half": "2023-H2",
+        "n": 118,
+        "churn_90d_rate": 22.9,
+        "mrr_avg": 2552.0
+      },
+      {
+        "cohort_half": "2024-H1",
+        "n": 121,
+        "churn_90d_rate": 38.8,
+        "mrr_avg": 2572.0
+      },
+      {
+        "cohort_half": "2024-H2",
+        "n": 74,
+        "churn_90d_rate": 60.8,
+        "mrr_avg": 1840.0
+      }
+    ],
+    "chi2_omnibus": 48.63,
+    "p_omnibus": 1.565385976426403e-10,
+    "or_per_cohort_step_adjusted_industry_referral_plan": 2.08,
+    "p_adjusted_for_composition": 1.4840326305775512e-10,
+    "excess_accounts_per_semester_vs_first_cohort": 33.4,
+    "mrr_excess_lost_per_semester_usd": 61544.0,
+    "mrr_excess_lost_annualized_usd": 123089.0,
+    "origem": "Padrao inicialmente reportado publicamente no PR #117 do challenge (outro candidato). Verificado aqui de forma independente: metodologia propria, codigo proprio, e teste de confundimento por composicao que o PR original nao reportava. Ver PROCESS_LOG.md para a sequencia completa.",
+    "interpretacao": "Churn em 90 dias sobe de 15.6% (2023-H1) para 60.8% (2024-H2). p=1.57e-10 (omnibus), sobrevive ajuste por industria+canal+plano: OR=2.08 por safra, p=1.48e-10. E o achado mais forte de todo o dataset -- ordens de magnitude mais solido que qualquer corte de segmento estatico testado neste relatorio."
+  },
   "global_null_model": {
     "n_covariates": 28,
     "lr_chi2": 35.59,
@@ -1680,6 +1719,7 @@
     "Tenure calculado com as_of=2024-12-31 (ultima data observada em qualquer tabela do dataset), nao 'hoje'.",
     "A tabela feature_usage nao respeita o ciclo de vida da conta (ver usage_trend_honesty) -- qualquer metrica de 'uso total' ou 'trajetoria' aqui carrega esse limite.",
     "reason_codes e reason_by_plan reportam separadamente a versao restrita a contas realmente churnadas (correta) e a versao com todos os eventos (como o relatorio original calculava, mantida so pra comparacao).",
-    "Este arquivo roda 106 testes formais no total (ver audit_summary). Nenhum p-valor aqui deveria ser lido isoladamente sem essa contagem."
+    "Este arquivo roda 106 testes formais no total (ver audit_summary). Nenhum p-valor aqui deveria ser lido isoladamente sem essa contagem.",
+    "onboarding_cohort_deterioration foi adicionado apos revisar PRs publicos de outros candidatos no mesmo repositorio do desafio (#117). A lacuna -- tenure/signup_date nunca usado como janela -- ja estava marcada nas notas de metodologia antes dessa revisao; o calculo em si foi reproduzido do zero, com metodologia e codigo proprios, e testado contra confundimento antes de ser aceito. Ver PROCESS_LOG.md para a sequencia completa e honesta."
   ]
 }

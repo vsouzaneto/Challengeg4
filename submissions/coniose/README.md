@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-Cruzei as 5 tabelas da RavenStack e testei as causas óbvias de churn (uso, suporte, preço) antes de aceitar qualquer uma — nenhuma se sustenta. Rodei uma segunda sessão de IA especificamente para auditar a primeira, e ela invalidou dois achados que eu tinha aceitado rápido demais (um deles, um gráfico inteiro, retirei do relatório). O que sobrevive: DevTools com o dobro do churn do resto da carteira, o canal de aquisição por evento decidindo o destino da conta antes da venda fechar, e 56% de toda a receita em risco concentrada em 100 contas nomeadas. A recomendação principal não é um modelo preditivo — é reconciliar os dois números de churn que a própria empresa tem hoje, e priorizar por MRR em risco, não por taxa.
+Cruzei as 5 tabelas da RavenStack e testei as causas óbvias de churn (uso, suporte, preço) antes de aceitar qualquer uma — nenhuma se sustenta. O achado central: o churn não é problema de carteira madura, é de onboarding, e piora a cada safra de entrada — 15,6% das contas que entraram no 1º semestre de 2023 cancelaram nos primeiros 90 dias; da safra mais recente (2º semestre de 2024), **60,8%** (p=1,6×10⁻¹⁰, sobrevive a controle de composição por indústria/canal/plano). Rodei uma segunda sessão de IA especificamente para auditar a primeira análise, e ela invalidou dois achados que eu tinha aceitado rápido demais (um deles, um gráfico inteiro, retirei do relatório); mais tarde, revisando a posição competitiva contra outras submissões públicas do mesmo desafio, verifiquei e reproduzi de forma independente o achado de safra, que se tornou a manchete — a sequência completa e honesta está no process log. DevTools e o canal de aquisição por evento seguem como pistas secundárias, mais fracas. A recomendação principal: reconciliar os dois números de churn que a própria empresa tem hoje, instituir checkpoints nos primeiros 90 dias de conta, e dentro dessa janela, priorizar por MRR — não por taxa de risco individual, que os dados não sustentam.
 
 ---
 
@@ -28,20 +28,22 @@ A decisão mais importante do processo foi separar **quem constrói** de **quem 
 
 - **[`solution/DIAGNOSTICO.md`](./solution/DIAGNOSTICO.md)** — o deliverable principal, para o CEO fictício da RavenStack. Zero jargão estatístico; cada número é rastreável até uma das 5 tabelas.
 - **[`solution/dashboard.html`](./solution/dashboard.html)** ([versão ao vivo](https://claude.ai/artifact/Vfrjf56P6w8Vp1HkRLNY3j)) — anexo técnico: todos os testes estatísticos, incluindo a seção de auditoria (regressão logística com as 28 covariáveis de uma vez, contagem de quantos testes formais foram rodados no total).
-- **[`solution/painel_retencao.html`](./solution/painel_retencao.html)** ([versão ao vivo](https://claude.ai/artifact/44PuoTrXZ5Vm1TYm3r618G)) — protótipo funcional, o diferencial: fila de retenção transparente (score = participação no MRR × churn do segmento) para as 500 contas, e um painel de memória de caso para as 100 maiores, com registro de ação persistente e compartilhado (o time de CS poderia abrir e usar amanhã).
-- **[`solution/analysis/`](./solution/analysis/)** — código-fonte completo: `build_report_data.py` gera `report_data.json` do zero a partir dos 5 CSVs do [dataset no Kaggle](https://www.kaggle.com/datasets/rivalytics/saas-subscription-and-churn-analytics-dataset); os 4 `audit_checks_*.py` são os scripts que a sessão de auditoria deixou, reproduzíveis (`python analysis/audit_checks_1_devtools_lookelsewhere.py` etc.).
+- **[`solution/painel_retencao.html`](./solution/painel_retencao.html)** ([versão ao vivo](https://claude.ai/artifact/44PuoTrXZ5Vm1TYm3r618G)) — protótipo funcional, o diferencial: 3 filas com lógicas diferentes — **fila preventiva de onboarding** (as 68 contas hoje dentro da janela crítica de 90 dias, ordenadas por MRR — a prioridade nº 1), fila de risco transparente (score = participação no MRR × churn do segmento) para as 500 contas, e um painel de memória de caso para as 100 maiores, com registro de ação persistente e compartilhado (o time de CS poderia abrir e usar amanhã).
+- **[`solution/analysis/`](./solution/analysis/)** — código-fonte completo: `build_report_data.py` gera `report_data.json` do zero a partir dos 5 CSVs do [dataset no Kaggle](https://www.kaggle.com/datasets/rivalytics/saas-subscription-and-churn-analytics-dataset), incluindo `onboarding_cohort_deterioration` (a análise de safra); os 4 `audit_checks_*.py` são os scripts que a sessão de auditoria deixou, reproduzíveis (`python analysis/audit_checks_1_devtools_lookelsewhere.py` etc.).
 
-**Achado central:** o conjunto completo de tudo que a RavenStack mede hoje (28 fatores testados ao mesmo tempo) não explica por que uma conta cancela (p=0,15, pseudo-R²=0,07). Isso não é falha da análise — é a resposta, e está detalhada na seção 8 do `DIAGNOSTICO.md`.
+**Achado central:** churn nos primeiros 90 dias sobe de 15,6% para 60,8% entre a safra mais antiga e a mais recente (χ²=48,6, p=1,6×10⁻¹⁰), e sobrevive a controle de composição por indústria/canal/plano (OR=2,08 por safra, p=1,5×10⁻¹⁰). É ordens de magnitude mais forte que qualquer outro achado deste relatório — inclusive o de que o conjunto completo de tudo que a RavenStack mede hoje, olhado de forma agregada (28 fatores ao mesmo tempo), não explica por que uma conta cancela (p=0,15, pseudo-R²=0,07). As duas coisas juntas são a resposta: a causa não está numa foto estática da carteira, está na trajetória dos primeiros 90 dias — seções 2 e 3 do `DIAGNOSTICO.md`.
 
 ### Recomendações
 
-Priorizadas, com dono e prazo, na seção 6 do `DIAGNOSTICO.md`. As duas primeiras:
+Priorizadas, com dono e prazo, na seção 7 do `DIAGNOSTICO.md`. As três primeiras:
 1. Reconciliar os dois números de churn (110 contas marcadas vs. 352 com evento no log) antes de qualquer outra decisão — sem isso nenhuma métrica de retenção é confiável.
-2. Tirar satisfação e uso do "score de saúde" da conta — nenhum dos dois separa quem cancela de quem fica.
+2. Instituir checkpoints de onboarding nos dias 14, 30, 60 e 90 — é a janela onde a safra mais recente cancela 4× mais que a de 2023.
+3. Não usar satisfação e volume de uso, isoladamente, como indicador de retenção — nenhum dos dois separa quem cancela de quem fica na carteira agregada.
 
 ### Limitações
 
-- O achado de DevTools e do canal de evento são a **melhor hipótese do dataset**, não fato provado — a amostra é pequena o suficiente para que uma seleção visual infle a confiança (testado e corrigido via permutação, ver `DIAGNOSTICO.md` seção 7).
+- O achado de safra de onboarding tem confiança estatística muito alta; **DevTools e o canal de evento continuam sendo pistas, não fato provado** — a amostra é pequena o suficiente para que uma seleção visual infle a confiança (testado e corrigido via permutação, ver `DIAGNOSTICO.md` seção 8).
+- A causa da deterioração de safra ainda não está explicada — o padrão temporal é sólido, mas os dados não dizem se é perfil de cliente, onboarding ou produto.
 - Não sei se a RavenStack real atende setores fora de tecnologia — as 500 contas desta base são inteiramente de 5 verticais de tech.
 - Testei manualmente o registro de ação do painel após publicar — grava e persiste no banco compartilhado do artefato (dois registros de autores diferentes já salvos, em contas distintas, confirmando que o compartilhamento entre viewers funciona).
 
@@ -61,7 +63,7 @@ Priorizadas, com dono e prazo, na seção 6 do `DIAGNOSTICO.md`. As duas primeir
 
 ### Workflow
 
-Ver a lista completa de 13 passos no process log. Resumo: estrutura → primeira análise → dashboard → **eu mesmo aceitei um achado (DevTools) sem testar seleção pós-hoc** → pedi analogia com manutenção preditiva → mais cortes (feature, ticket, MRR) → **eu mesmo descobri a primeira autocorreção** cruzando MRR com tenure → auditoria externa dedicada + estratégia de entrega em paralelo → reescrita completa do código com as correções → decisão de negócio (fila de risco vs. memória de caso) → 3 documentos finais.
+Ver a lista completa de 16 passos no process log. Resumo: estrutura → primeira análise → dashboard → **eu mesmo aceitei um achado (DevTools) sem testar seleção pós-hoc** → pedi analogia com manutenção preditiva → mais cortes (feature, ticket, MRR) → **eu mesmo descobri a primeira autocorreção** cruzando MRR com tenure → auditoria externa dedicada + estratégia de entrega em paralelo → reescrita completa do código com as correções → decisão de negócio (fila de risco vs. memória de caso) → 3 documentos finais → teste manual do painel → **revisão da posição competitiva contra outras submissões públicas do desafio** → verificação na fonte de um achado forte de outro candidato (safra de onboarding) → reprodução independente com metodologia própria → reformulação do `DIAGNOSTICO.md` com esse achado como manchete.
 
 ### Onde a IA errou e como corrigi
 
@@ -74,7 +76,7 @@ Cinco casos concretos, com número antes/depois, na seção correspondente do pr
 
 ### O que eu adicionei que a IA sozinha não faria
 
-A decisão de rodar uma auditoria adversarial dedicada (a IA não se auto-desconfia por padrão); a pergunta que gerou a primeira autocorreção (cruzar MRR com tenure); a recusa de perseguir um modelo preditivo com AUC artificialmente alto; e a virada de hipótese de negócio — de "os maiores clientes são o problema" para "o espaço estatístico está no volume, não na concentração" — que definiu a arquitetura dos dois produtos finais.
+A decisão de rodar uma auditoria adversarial dedicada (a IA não se auto-desconfia por padrão); a pergunta que gerou a primeira autocorreção (cruzar MRR com tenure); a recusa de perseguir um modelo preditivo com AUC artificialmente alto; a virada de hipótese de negócio — de "os maiores clientes são o problema" para "o espaço estatístico está no volume, não na concentração" — que definiu a arquitetura dos produtos; e, ao ver um achado forte de outro candidato (safra de onboarding), a decisão de perguntar explicitamente se usar isso feria as regras do desafio, verificar com metodologia própria, e só então reformular a tese — em vez de simplesmente incorporar ou simplesmente ignorar.
 
 ---
 
