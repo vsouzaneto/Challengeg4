@@ -1,0 +1,1725 @@
+{
+  "headline": {
+    "n_accounts": 500,
+    "n_churned": 110,
+    "churn_rate_pct": 22.0,
+    "mrr_total": 1218555.0,
+    "mrr_at_risk": 254952.0,
+    "mrr_at_risk_pct": 20.9,
+    "n_subscriptions": 5000,
+    "n_accounts_with_any_churn_event": 352,
+    "n_churn_events_total": 600
+  },
+  "churn_by_industry": [
+    {
+      "industry": "DevTools",
+      "n_accounts": 113,
+      "n_churned": 35,
+      "mrr_total": 192311,
+      "mrr_at_risk": 67153,
+      "churn_rate": 0.30973451327433627,
+      "mrr_at_risk_pct": 0.34918959393898424
+    },
+    {
+      "industry": "FinTech",
+      "n_accounts": 112,
+      "n_churned": 25,
+      "mrr_total": 303409,
+      "mrr_at_risk": 77150,
+      "churn_rate": 0.22321428571428573,
+      "mrr_at_risk_pct": 0.25427722974598643
+    },
+    {
+      "industry": "HealthTech",
+      "n_accounts": 96,
+      "n_churned": 21,
+      "mrr_total": 221921,
+      "mrr_at_risk": 57873,
+      "churn_rate": 0.21875,
+      "mrr_at_risk_pct": 0.26078198998742796
+    },
+    {
+      "industry": "EdTech",
+      "n_accounts": 79,
+      "n_churned": 13,
+      "mrr_total": 274696,
+      "mrr_at_risk": 22289,
+      "churn_rate": 0.16455696202531644,
+      "mrr_at_risk_pct": 0.08114060634301191
+    },
+    {
+      "industry": "Cybersecurity",
+      "n_accounts": 100,
+      "n_churned": 16,
+      "mrr_total": 226218,
+      "mrr_at_risk": 30487,
+      "churn_rate": 0.16,
+      "mrr_at_risk_pct": 0.13476823241298216
+    }
+  ],
+  "churn_by_country": [
+    {
+      "country": "DE",
+      "n_accounts": 25,
+      "n_churned": 8,
+      "mrr_total": 68770,
+      "mrr_at_risk": 18476,
+      "churn_rate": 0.32,
+      "mrr_at_risk_pct": 0.26866366148029663
+    },
+    {
+      "country": "US",
+      "n_accounts": 291,
+      "n_churned": 68,
+      "mrr_total": 641027,
+      "mrr_at_risk": 159949,
+      "churn_rate": 0.23367697594501718,
+      "mrr_at_risk_pct": 0.24951991101778864
+    },
+    {
+      "country": "FR",
+      "n_accounts": 22,
+      "n_churned": 5,
+      "mrr_total": 76051,
+      "mrr_at_risk": 8180,
+      "churn_rate": 0.22727272727272727,
+      "mrr_at_risk_pct": 0.10755940092832442
+    },
+    {
+      "country": "IN",
+      "n_accounts": 49,
+      "n_churned": 10,
+      "mrr_total": 117698,
+      "mrr_at_risk": 22183,
+      "churn_rate": 0.20408163265306123,
+      "mrr_at_risk_pct": 0.18847389080528132
+    },
+    {
+      "country": "UK",
+      "n_accounts": 58,
+      "n_churned": 11,
+      "mrr_total": 161611,
+      "mrr_at_risk": 23348,
+      "churn_rate": 0.1896551724137931,
+      "mrr_at_risk_pct": 0.14447036402225097
+    },
+    {
+      "country": "CA",
+      "n_accounts": 23,
+      "n_churned": 4,
+      "mrr_total": 36911,
+      "mrr_at_risk": 3151,
+      "churn_rate": 0.17391304347826086,
+      "mrr_at_risk_pct": 0.08536750562163041
+    },
+    {
+      "country": "AU",
+      "n_accounts": 32,
+      "n_churned": 4,
+      "mrr_total": 116487,
+      "mrr_at_risk": 19665,
+      "churn_rate": 0.125,
+      "mrr_at_risk_pct": 0.16881712122382755
+    }
+  ],
+  "churn_by_plan": [
+    {
+      "plan_tier": "Enterprise",
+      "n_accounts": 154,
+      "n_churned": 34,
+      "mrr_total": 420439,
+      "mrr_at_risk": 93161,
+      "churn_rate": 0.22077922077922077,
+      "mrr_at_risk_pct": 0.22158030059057318
+    },
+    {
+      "plan_tier": "Basic",
+      "n_accounts": 168,
+      "n_churned": 37,
+      "mrr_total": 384205,
+      "mrr_at_risk": 69909,
+      "churn_rate": 0.22023809523809523,
+      "mrr_at_risk_pct": 0.18195754870446768
+    },
+    {
+      "plan_tier": "Pro",
+      "n_accounts": 178,
+      "n_churned": 39,
+      "mrr_total": 413911,
+      "mrr_at_risk": 91882,
+      "churn_rate": 0.21910112359550563,
+      "mrr_at_risk_pct": 0.2219849194633629
+    }
+  ],
+  "churn_by_referral": [
+    {
+      "referral_source": "event",
+      "n_accounts": 96,
+      "n_churned": 29,
+      "mrr_total": 217593,
+      "mrr_at_risk": 84888,
+      "churn_rate": 0.3020833333333333,
+      "mrr_at_risk_pct": 0.39012284402531333
+    },
+    {
+      "referral_source": "other",
+      "n_accounts": 103,
+      "n_churned": 25,
+      "mrr_total": 249130,
+      "mrr_at_risk": 49565,
+      "churn_rate": 0.24271844660194175,
+      "mrr_at_risk_pct": 0.19895235419259022
+    },
+    {
+      "referral_source": "ads",
+      "n_accounts": 98,
+      "n_churned": 23,
+      "mrr_total": 211220,
+      "mrr_at_risk": 40447,
+      "churn_rate": 0.23469387755102042,
+      "mrr_at_risk_pct": 0.19149228292775305
+    },
+    {
+      "referral_source": "organic",
+      "n_accounts": 114,
+      "n_churned": 20,
+      "mrr_total": 275978,
+      "mrr_at_risk": 49447,
+      "churn_rate": 0.17543859649122806,
+      "mrr_at_risk_pct": 0.17917007877439506
+    },
+    {
+      "referral_source": "partner",
+      "n_accounts": 89,
+      "n_churned": 13,
+      "mrr_total": 264634,
+      "mrr_at_risk": 30605,
+      "churn_rate": 0.14606741573033707,
+      "mrr_at_risk_pct": 0.11565029436882637
+    }
+  ],
+  "churn_by_trial": [
+    {
+      "is_trial": true,
+      "n_accounts": 97,
+      "n_churned": 25,
+      "mrr_total": 253851,
+      "mrr_at_risk": 55944,
+      "churn_rate": 0.25773195876288657,
+      "mrr_at_risk_pct": 0.22038124726709762
+    },
+    {
+      "is_trial": false,
+      "n_accounts": 403,
+      "n_churned": 85,
+      "mrr_total": 964704,
+      "mrr_at_risk": 199008,
+      "churn_rate": 0.2109181141439206,
+      "mrr_at_risk_pct": 0.20628918300328392
+    }
+  ],
+  "usage_trend": {
+    "overall": [
+      {
+        "month": "2023-01",
+        "total_usage_count": 10877,
+        "n_accounts_active": 440,
+        "usage_per_account": 24.720454545454544
+      },
+      {
+        "month": "2023-02",
+        "total_usage_count": 9492,
+        "n_accounts_active": 412,
+        "usage_per_account": 23.038834951456312
+      },
+      {
+        "month": "2023-03",
+        "total_usage_count": 11031,
+        "n_accounts_active": 431,
+        "usage_per_account": 25.593967517401392
+      },
+      {
+        "month": "2023-04",
+        "total_usage_count": 10369,
+        "n_accounts_active": 432,
+        "usage_per_account": 24.002314814814813
+      },
+      {
+        "month": "2023-05",
+        "total_usage_count": 10757,
+        "n_accounts_active": 438,
+        "usage_per_account": 24.559360730593607
+      },
+      {
+        "month": "2023-06",
+        "total_usage_count": 10002,
+        "n_accounts_active": 420,
+        "usage_per_account": 23.814285714285713
+      },
+      {
+        "month": "2023-07",
+        "total_usage_count": 11083,
+        "n_accounts_active": 415,
+        "usage_per_account": 26.70602409638554
+      },
+      {
+        "month": "2023-08",
+        "total_usage_count": 10335,
+        "n_accounts_active": 426,
+        "usage_per_account": 24.260563380281692
+      },
+      {
+        "month": "2023-09",
+        "total_usage_count": 9737,
+        "n_accounts_active": 409,
+        "usage_per_account": 23.806845965770172
+      },
+      {
+        "month": "2023-10",
+        "total_usage_count": 10968,
+        "n_accounts_active": 426,
+        "usage_per_account": 25.746478873239436
+      },
+      {
+        "month": "2023-11",
+        "total_usage_count": 9475,
+        "n_accounts_active": 412,
+        "usage_per_account": 22.99757281553398
+      },
+      {
+        "month": "2023-12",
+        "total_usage_count": 10435,
+        "n_accounts_active": 431,
+        "usage_per_account": 24.211136890951277
+      },
+      {
+        "month": "2024-01",
+        "total_usage_count": 10621,
+        "n_accounts_active": 426,
+        "usage_per_account": 24.931924882629108
+      },
+      {
+        "month": "2024-02",
+        "total_usage_count": 10247,
+        "n_accounts_active": 422,
+        "usage_per_account": 24.281990521327014
+      },
+      {
+        "month": "2024-03",
+        "total_usage_count": 10725,
+        "n_accounts_active": 430,
+        "usage_per_account": 24.941860465116278
+      },
+      {
+        "month": "2024-04",
+        "total_usage_count": 10131,
+        "n_accounts_active": 428,
+        "usage_per_account": 23.67056074766355
+      },
+      {
+        "month": "2024-05",
+        "total_usage_count": 10552,
+        "n_accounts_active": 427,
+        "usage_per_account": 24.711943793911008
+      },
+      {
+        "month": "2024-06",
+        "total_usage_count": 10106,
+        "n_accounts_active": 416,
+        "usage_per_account": 24.29326923076923
+      },
+      {
+        "month": "2024-07",
+        "total_usage_count": 10601,
+        "n_accounts_active": 431,
+        "usage_per_account": 24.59628770301624
+      },
+      {
+        "month": "2024-08",
+        "total_usage_count": 10559,
+        "n_accounts_active": 422,
+        "usage_per_account": 25.02132701421801
+      },
+      {
+        "month": "2024-09",
+        "total_usage_count": 10195,
+        "n_accounts_active": 415,
+        "usage_per_account": 24.566265060240966
+      },
+      {
+        "month": "2024-10",
+        "total_usage_count": 11450,
+        "n_accounts_active": 435,
+        "usage_per_account": 26.32183908045977
+      },
+      {
+        "month": "2024-11",
+        "total_usage_count": 10039,
+        "n_accounts_active": 410,
+        "usage_per_account": 24.485365853658536
+      },
+      {
+        "month": "2024-12",
+        "total_usage_count": 10738,
+        "n_accounts_active": 428,
+        "usage_per_account": 25.088785046728972
+      }
+    ],
+    "by_churn_flag": [
+      {
+        "month": "2023-01",
+        "account_churned": false,
+        "total_usage_count": 8746,
+        "n_accounts_active": 346,
+        "usage_per_account": 25.277456647398843
+      },
+      {
+        "month": "2023-01",
+        "account_churned": true,
+        "total_usage_count": 2131,
+        "n_accounts_active": 94,
+        "usage_per_account": 22.670212765957448
+      },
+      {
+        "month": "2023-02",
+        "account_churned": false,
+        "total_usage_count": 7269,
+        "n_accounts_active": 317,
+        "usage_per_account": 22.930599369085172
+      },
+      {
+        "month": "2023-02",
+        "account_churned": true,
+        "total_usage_count": 2223,
+        "n_accounts_active": 95,
+        "usage_per_account": 23.4
+      },
+      {
+        "month": "2023-03",
+        "account_churned": false,
+        "total_usage_count": 8514,
+        "n_accounts_active": 335,
+        "usage_per_account": 25.414925373134327
+      },
+      {
+        "month": "2023-03",
+        "account_churned": true,
+        "total_usage_count": 2517,
+        "n_accounts_active": 96,
+        "usage_per_account": 26.21875
+      },
+      {
+        "month": "2023-04",
+        "account_churned": false,
+        "total_usage_count": 7899,
+        "n_accounts_active": 337,
+        "usage_per_account": 23.439169139465875
+      },
+      {
+        "month": "2023-04",
+        "account_churned": true,
+        "total_usage_count": 2470,
+        "n_accounts_active": 95,
+        "usage_per_account": 26.0
+      },
+      {
+        "month": "2023-05",
+        "account_churned": false,
+        "total_usage_count": 8347,
+        "n_accounts_active": 347,
+        "usage_per_account": 24.054755043227665
+      },
+      {
+        "month": "2023-05",
+        "account_churned": true,
+        "total_usage_count": 2410,
+        "n_accounts_active": 91,
+        "usage_per_account": 26.483516483516482
+      },
+      {
+        "month": "2023-06",
+        "account_churned": true,
+        "total_usage_count": 2408,
+        "n_accounts_active": 98,
+        "usage_per_account": 24.571428571428573
+      },
+      {
+        "month": "2023-06",
+        "account_churned": false,
+        "total_usage_count": 7594,
+        "n_accounts_active": 322,
+        "usage_per_account": 23.58385093167702
+      },
+      {
+        "month": "2023-07",
+        "account_churned": false,
+        "total_usage_count": 8337,
+        "n_accounts_active": 319,
+        "usage_per_account": 26.134796238244515
+      },
+      {
+        "month": "2023-07",
+        "account_churned": true,
+        "total_usage_count": 2746,
+        "n_accounts_active": 96,
+        "usage_per_account": 28.604166666666668
+      },
+      {
+        "month": "2023-08",
+        "account_churned": false,
+        "total_usage_count": 8040,
+        "n_accounts_active": 329,
+        "usage_per_account": 24.437689969604865
+      },
+      {
+        "month": "2023-08",
+        "account_churned": true,
+        "total_usage_count": 2295,
+        "n_accounts_active": 97,
+        "usage_per_account": 23.65979381443299
+      },
+      {
+        "month": "2023-09",
+        "account_churned": false,
+        "total_usage_count": 7387,
+        "n_accounts_active": 316,
+        "usage_per_account": 23.376582278481013
+      },
+      {
+        "month": "2023-09",
+        "account_churned": true,
+        "total_usage_count": 2350,
+        "n_accounts_active": 93,
+        "usage_per_account": 25.268817204301076
+      },
+      {
+        "month": "2023-10",
+        "account_churned": false,
+        "total_usage_count": 8361,
+        "n_accounts_active": 326,
+        "usage_per_account": 25.64723926380368
+      },
+      {
+        "month": "2023-10",
+        "account_churned": true,
+        "total_usage_count": 2607,
+        "n_accounts_active": 100,
+        "usage_per_account": 26.07
+      },
+      {
+        "month": "2023-11",
+        "account_churned": false,
+        "total_usage_count": 7388,
+        "n_accounts_active": 317,
+        "usage_per_account": 23.305993690851736
+      },
+      {
+        "month": "2023-11",
+        "account_churned": true,
+        "total_usage_count": 2087,
+        "n_accounts_active": 95,
+        "usage_per_account": 21.96842105263158
+      },
+      {
+        "month": "2023-12",
+        "account_churned": true,
+        "total_usage_count": 2111,
+        "n_accounts_active": 88,
+        "usage_per_account": 23.988636363636363
+      },
+      {
+        "month": "2023-12",
+        "account_churned": false,
+        "total_usage_count": 8324,
+        "n_accounts_active": 343,
+        "usage_per_account": 24.26822157434402
+      },
+      {
+        "month": "2024-01",
+        "account_churned": false,
+        "total_usage_count": 8048,
+        "n_accounts_active": 326,
+        "usage_per_account": 24.687116564417177
+      },
+      {
+        "month": "2024-01",
+        "account_churned": true,
+        "total_usage_count": 2573,
+        "n_accounts_active": 100,
+        "usage_per_account": 25.73
+      },
+      {
+        "month": "2024-02",
+        "account_churned": false,
+        "total_usage_count": 8065,
+        "n_accounts_active": 334,
+        "usage_per_account": 24.146706586826348
+      },
+      {
+        "month": "2024-02",
+        "account_churned": true,
+        "total_usage_count": 2182,
+        "n_accounts_active": 88,
+        "usage_per_account": 24.795454545454547
+      },
+      {
+        "month": "2024-03",
+        "account_churned": false,
+        "total_usage_count": 8407,
+        "n_accounts_active": 337,
+        "usage_per_account": 24.94658753709199
+      },
+      {
+        "month": "2024-03",
+        "account_churned": true,
+        "total_usage_count": 2318,
+        "n_accounts_active": 93,
+        "usage_per_account": 24.9247311827957
+      },
+      {
+        "month": "2024-04",
+        "account_churned": false,
+        "total_usage_count": 7759,
+        "n_accounts_active": 332,
+        "usage_per_account": 23.370481927710845
+      },
+      {
+        "month": "2024-04",
+        "account_churned": true,
+        "total_usage_count": 2372,
+        "n_accounts_active": 96,
+        "usage_per_account": 24.708333333333332
+      },
+      {
+        "month": "2024-05",
+        "account_churned": false,
+        "total_usage_count": 8038,
+        "n_accounts_active": 329,
+        "usage_per_account": 24.43161094224924
+      },
+      {
+        "month": "2024-05",
+        "account_churned": true,
+        "total_usage_count": 2514,
+        "n_accounts_active": 98,
+        "usage_per_account": 25.653061224489797
+      },
+      {
+        "month": "2024-06",
+        "account_churned": true,
+        "total_usage_count": 2332,
+        "n_accounts_active": 95,
+        "usage_per_account": 24.54736842105263
+      },
+      {
+        "month": "2024-06",
+        "account_churned": false,
+        "total_usage_count": 7774,
+        "n_accounts_active": 321,
+        "usage_per_account": 24.218068535825545
+      },
+      {
+        "month": "2024-07",
+        "account_churned": false,
+        "total_usage_count": 8243,
+        "n_accounts_active": 336,
+        "usage_per_account": 24.532738095238095
+      },
+      {
+        "month": "2024-07",
+        "account_churned": true,
+        "total_usage_count": 2358,
+        "n_accounts_active": 95,
+        "usage_per_account": 24.821052631578947
+      },
+      {
+        "month": "2024-08",
+        "account_churned": false,
+        "total_usage_count": 8093,
+        "n_accounts_active": 328,
+        "usage_per_account": 24.673780487804876
+      },
+      {
+        "month": "2024-08",
+        "account_churned": true,
+        "total_usage_count": 2466,
+        "n_accounts_active": 94,
+        "usage_per_account": 26.23404255319149
+      },
+      {
+        "month": "2024-09",
+        "account_churned": false,
+        "total_usage_count": 7743,
+        "n_accounts_active": 323,
+        "usage_per_account": 23.972136222910216
+      },
+      {
+        "month": "2024-09",
+        "account_churned": true,
+        "total_usage_count": 2452,
+        "n_accounts_active": 92,
+        "usage_per_account": 26.652173913043477
+      },
+      {
+        "month": "2024-10",
+        "account_churned": false,
+        "total_usage_count": 8919,
+        "n_accounts_active": 341,
+        "usage_per_account": 26.15542521994135
+      },
+      {
+        "month": "2024-10",
+        "account_churned": true,
+        "total_usage_count": 2531,
+        "n_accounts_active": 94,
+        "usage_per_account": 26.925531914893618
+      },
+      {
+        "month": "2024-11",
+        "account_churned": false,
+        "total_usage_count": 7689,
+        "n_accounts_active": 321,
+        "usage_per_account": 23.953271028037385
+      },
+      {
+        "month": "2024-11",
+        "account_churned": true,
+        "total_usage_count": 2350,
+        "n_accounts_active": 89,
+        "usage_per_account": 26.40449438202247
+      },
+      {
+        "month": "2024-12",
+        "account_churned": false,
+        "total_usage_count": 8117,
+        "n_accounts_active": 328,
+        "usage_per_account": 24.746951219512194
+      },
+      {
+        "month": "2024-12",
+        "account_churned": true,
+        "total_usage_count": 2621,
+        "n_accounts_active": 100,
+        "usage_per_account": 26.21
+      }
+    ]
+  },
+  "support_comparison": {
+    "churned": {
+      "n": 108,
+      "avg_satisfaction": 4.0,
+      "avg_resolution_hours": 35.5,
+      "avg_first_response_min": 84.9,
+      "pct_escalated": 6.2,
+      "avg_tickets_per_account": 4.0,
+      "pct_with_any_ticket": 100.0
+    },
+    "retained": {
+      "n": 384,
+      "avg_satisfaction": 3.95,
+      "avg_resolution_hours": 36.5,
+      "avg_first_response_min": 89.6,
+      "pct_escalated": 4.4,
+      "avg_tickets_per_account": 4.08,
+      "pct_with_any_ticket": 100.0
+    },
+    "churned_all": {
+      "n": 110,
+      "avg_satisfaction": 4.0,
+      "avg_resolution_hours": 35.5,
+      "avg_first_response_min": 84.9,
+      "pct_escalated": 6.2,
+      "avg_tickets_per_account": 3.93,
+      "pct_with_any_ticket": 98.2
+    },
+    "retained_all": {
+      "n": 390,
+      "avg_satisfaction": 3.95,
+      "avg_resolution_hours": 36.5,
+      "avg_first_response_min": 89.6,
+      "pct_escalated": 4.4,
+      "avg_tickets_per_account": 4.02,
+      "pct_with_any_ticket": 98.5
+    },
+    "p_values_welch_ttest": {
+      "avg_satisfaction": 0.4373,
+      "avg_resolution_hours": 0.4486,
+      "avg_first_response_min": 0.1249,
+      "pct_escalated": 0.24
+    },
+    "nota": "Nenhuma das 4 diferencas passa p<0,05 (Welch t-test)."
+  },
+  "reason_codes": {
+    "n_events_total": 600,
+    "n_events_from_currently_churned_accounts": 135,
+    "pct_events_contaminated_by_non_churned": 77.5,
+    "note": "Restrito a eventos de contas com churn_flag=True hoje (135 de 600 eventos). Os outros 465 sao de contas que reativaram ou nunca estavam de fato fora -- ver methodology_notes.",
+    "by_reason_currently_churned_only": [
+      {
+        "reason_code": "budget",
+        "n_events": 27,
+        "avg_refund": 16.27,
+        "pct_preceded_by_downgrade": 7.4,
+        "pct_reactivation": 14.8
+      },
+      {
+        "reason_code": "features",
+        "n_events": 27,
+        "avg_refund": 25.51,
+        "pct_preceded_by_downgrade": 7.4,
+        "pct_reactivation": 11.1
+      },
+      {
+        "reason_code": "support",
+        "n_events": 27,
+        "avg_refund": 4.26,
+        "pct_preceded_by_downgrade": 22.2,
+        "pct_reactivation": 0.0
+      },
+      {
+        "reason_code": "pricing",
+        "n_events": 23,
+        "avg_refund": 15.51,
+        "pct_preceded_by_downgrade": 4.3,
+        "pct_reactivation": 21.7
+      },
+      {
+        "reason_code": "competitor",
+        "n_events": 18,
+        "avg_refund": 27.93,
+        "pct_preceded_by_downgrade": 22.2,
+        "pct_reactivation": 0.0
+      },
+      {
+        "reason_code": "unknown",
+        "n_events": 13,
+        "avg_refund": 12.83,
+        "pct_preceded_by_downgrade": 0.0,
+        "pct_reactivation": 7.7
+      }
+    ],
+    "by_reason_all_events_uncorrected": [
+      {
+        "reason_code": "features",
+        "n_events": 114,
+        "avg_refund": 16.72,
+        "pct_preceded_by_downgrade": 7.9,
+        "pct_reactivation": 11.4
+      },
+      {
+        "reason_code": "budget",
+        "n_events": 104,
+        "avg_refund": 12.0,
+        "pct_preceded_by_downgrade": 5.8,
+        "pct_reactivation": 11.5
+      },
+      {
+        "reason_code": "support",
+        "n_events": 104,
+        "avg_refund": 11.73,
+        "pct_preceded_by_downgrade": 12.5,
+        "pct_reactivation": 5.8
+      },
+      {
+        "reason_code": "unknown",
+        "n_events": 95,
+        "avg_refund": 18.34,
+        "pct_preceded_by_downgrade": 9.5,
+        "pct_reactivation": 9.5
+      },
+      {
+        "reason_code": "competitor",
+        "n_events": 92,
+        "avg_refund": 13.08,
+        "pct_preceded_by_downgrade": 13.0,
+        "pct_reactivation": 13.0
+      },
+      {
+        "reason_code": "pricing",
+        "n_events": 91,
+        "avg_refund": 14.65,
+        "pct_preceded_by_downgrade": 4.4,
+        "pct_reactivation": 9.9
+      }
+    ]
+  },
+  "reason_by_plan": {
+    "currently_churned_only": {
+      "plans": [
+        "Basic",
+        "Enterprise",
+        "Pro"
+      ],
+      "reasons": [
+        "budget",
+        "competitor",
+        "features",
+        "pricing",
+        "support",
+        "unknown"
+      ],
+      "matrix": [
+        [
+          6,
+          3,
+          7,
+          6,
+          9,
+          1
+        ],
+        [
+          10,
+          6,
+          11,
+          8,
+          6,
+          6
+        ],
+        [
+          11,
+          9,
+          9,
+          9,
+          12,
+          6
+        ]
+      ],
+      "chi2": 5.91,
+      "p_value": 0.8225,
+      "dof": 10
+    },
+    "all_events_uncorrected": {
+      "plans": [
+        "Basic",
+        "Enterprise",
+        "Pro"
+      ],
+      "reasons": [
+        "budget",
+        "competitor",
+        "features",
+        "pricing",
+        "support",
+        "unknown"
+      ],
+      "matrix": [
+        [
+          30,
+          25,
+          34,
+          29,
+          37,
+          25
+        ],
+        [
+          34,
+          31,
+          39,
+          32,
+          24,
+          35
+        ],
+        [
+          40,
+          36,
+          41,
+          30,
+          43,
+          35
+        ]
+      ],
+      "chi2": 6.72,
+      "p_value": 0.7512,
+      "dof": 10
+    }
+  },
+  "correlation_with_churn": {
+    "correlations": [
+      {
+        "variable": "error_rate",
+        "corr_with_churn": -0.087,
+        "p_value": 0.0507,
+        "n": 500
+      },
+      {
+        "variable": "tenure_days",
+        "corr_with_churn": 0.082,
+        "p_value": 0.0656,
+        "n": 500
+      },
+      {
+        "variable": "pct_escalated",
+        "corr_with_churn": 0.065,
+        "p_value": 0.1501,
+        "n": 492
+      },
+      {
+        "variable": "total_usage_count",
+        "corr_with_churn": 0.064,
+        "p_value": 0.1518,
+        "n": 500
+      },
+      {
+        "variable": "total_usage_duration",
+        "corr_with_churn": 0.063,
+        "p_value": 0.1589,
+        "n": 500
+      },
+      {
+        "variable": "avg_satisfaction",
+        "corr_with_churn": 0.036,
+        "p_value": 0.442,
+        "n": 466
+      },
+      {
+        "variable": "avg_resolution_hours",
+        "corr_with_churn": -0.034,
+        "p_value": 0.4543,
+        "n": 492
+      },
+      {
+        "variable": "seats",
+        "corr_with_churn": -0.033,
+        "p_value": 0.4557,
+        "n": 500
+      },
+      {
+        "variable": "n_tickets",
+        "corr_with_churn": -0.02,
+        "p_value": 0.6487,
+        "n": 500
+      },
+      {
+        "variable": "ever_downgraded",
+        "corr_with_churn": -0.02,
+        "p_value": 0.6622,
+        "n": 500
+      },
+      {
+        "variable": "mrr",
+        "corr_with_churn": -0.017,
+        "p_value": 0.6963,
+        "n": 500
+      }
+    ],
+    "global_null_check": {
+      "fisher_combined_chi2": 29.85,
+      "fisher_combined_p": 0.1221,
+      "min_p_bonferroni": 0.558,
+      "mde_r_80pct_power_n500": 0.125,
+      "interpretacao": "Nem individualmente nem em conjunto ha sinal (Fisher combinado p=0.122). O MDE de r a 80% de poder com n~500 e ~0.125 -- 'nenhuma passa de 0,09' significa 'nao detectamos efeito acima de ~0,12', nao 'nao existe causa'."
+    }
+  },
+  "segment_significance": [
+    {
+      "variable": "industry",
+      "chi2": 8.82,
+      "p_value": 0.0657,
+      "dof": 4
+    },
+    {
+      "variable": "country",
+      "chi2": 4.13,
+      "p_value": 0.6588,
+      "dof": 6
+    },
+    {
+      "variable": "referral_source",
+      "chi2": 8.36,
+      "p_value": 0.0794,
+      "dof": 4
+    },
+    {
+      "variable": "plan_tier",
+      "chi2": 0.0,
+      "p_value": 0.9993,
+      "dof": 2
+    },
+    {
+      "variable": "is_trial",
+      "chi2": 0.74,
+      "p_value": 0.3883,
+      "dof": 1
+    }
+  ],
+  "usage_trend_slope": {
+    "overall": {
+      "slope_per_month": 0.0246,
+      "first_quarter_avg": 24.45,
+      "last_quarter_avg": 25.3,
+      "pct_change_first_to_last_q": 3.5
+    },
+    "retained_accounts": {
+      "slope_per_month": 0.014,
+      "first_quarter_avg": 24.54,
+      "last_quarter_avg": 24.95,
+      "pct_change_first_to_last_q": 1.7
+    },
+    "eventually_churned_accounts": {
+      "slope_per_month": 0.0619,
+      "first_quarter_avg": 24.1,
+      "last_quarter_avg": 26.51,
+      "pct_change_first_to_last_q": 10.0
+    },
+    "aviso_metodologico": "Estes numeros tratam 24 meses-calendario como 24 observacoes independentes (pseudo-replicacao: sao as mesmas ~500 contas remedidas). Nao usar para afirmar diferenca -- ver `usage_trend_honesty` pro teste no nivel certo (por conta), que nao encontra diferenca significativa (p=0,258)."
+  },
+  "usage_trend_honesty": {
+    "pct_usage_rows_before_own_signup_date": 52.8,
+    "pct_usage_rows_before_own_subscription_start": 76.6,
+    "pct_usage_rows_of_churned_accounts_after_churn_date": 17.9,
+    "churned_accounts_active_every_month_min_max": [
+      88,
+      100
+    ],
+    "conclusion": "A tabela de uso NAO respeita o ciclo de vida da conta: mais da metade das linhas antecede o proprio signup, e quase 1 em 5 linhas de conta churnada vem depois do churn_date -- nao ha truncamento no cancelamento. 'Trajetoria de uso' nao e mensuravel de forma confiavel neste dataset.",
+    "slope_mensal_por_conta_churned_mean": 0.0534,
+    "slope_mensal_por_conta_retained_mean": 0.0022,
+    "welch_p_value": 0.2579,
+    "mannwhitney_p_value": 0.3661,
+    "veredito": "Testado no nivel certo (slope por conta, nao mes-calendario pseudo-replicado): p=0,258 (Welch). A afirmacao 'quem cancela usa mais no fim do proprio ciclo' NAO se sustenta -- foi retirada do relatorio."
+  },
+  "data_quality": {
+    "n_churn_flag_true": 110,
+    "n_accounts_with_any_churn_event": 352,
+    "n_churn_flag_true_without_event_on_file": 35,
+    "pct_churn_flag_true_without_event_on_file": 31.8,
+    "n_accounts_with_multiple_churn_events": 175,
+    "n_total_churn_events": 600,
+    "n_events_flagged_reactivation": 61
+  },
+  "devtools_deep_dive": {
+    "devtools_vs_rest": {
+      "chi2": 6.19,
+      "p_value": 0.0128,
+      "churn_rate_in": 31.0,
+      "churn_rate_out": 19.4,
+      "n_in": 113,
+      "n_out": 387
+    },
+    "honest_significance": {
+      "n_one_vs_rest_cuts_shown_on_dashboard": 21,
+      "devtools_chi2_observed": 6.19,
+      "p_naive_devtools_only": 0.0128,
+      "p_bonferroni_5_industries": 0.0642,
+      "p_permutation_5_industries": 0.046,
+      "p_permutation_all_displayed_cuts": 0.1573,
+      "n_permutations": 4000
+    },
+    "confound_adjusted_or_mantel_haenszel": {
+      "referral_source": 1.83,
+      "plan_tier": 1.86,
+      "country": 1.9
+    },
+    "or_bruto": 1.87,
+    "devtools_x_outro_confundidor": {
+      "referral_source": {
+        "chi2": 2.24,
+        "p_value": 0.6919
+      },
+      "plan_tier": {
+        "chi2": 0.23,
+        "p_value": 0.8896
+      },
+      "country": {
+        "chi2": 13.11,
+        "p_value": 0.0414
+      },
+      "is_trial": {
+        "chi2": 0.02,
+        "p_value": 0.8758
+      }
+    },
+    "reason_code_devtools_vs_rest": [
+      {
+        "reason_code": "support",
+        "pct_devtools": 24.1,
+        "pct_rest": 17.3
+      },
+      {
+        "reason_code": "features",
+        "pct_devtools": 18.5,
+        "pct_rest": 21.0
+      },
+      {
+        "reason_code": "pricing",
+        "pct_devtools": 18.5,
+        "pct_rest": 16.0
+      },
+      {
+        "reason_code": "budget",
+        "pct_devtools": 16.7,
+        "pct_rest": 22.2
+      },
+      {
+        "reason_code": "competitor",
+        "pct_devtools": 16.7,
+        "pct_rest": 11.1
+      },
+      {
+        "reason_code": "unknown",
+        "pct_devtools": 5.6,
+        "pct_rest": 12.3
+      }
+    ],
+    "reason_code_base": "apenas eventos de contas com churn_flag=True hoje (n=135)",
+    "n_devtools_churn_events": 54,
+    "n_rest_churn_events": 81,
+    "all_industries_in_dataset": [
+      "Cybersecurity",
+      "DevTools",
+      "EdTech",
+      "FinTech",
+      "HealthTech"
+    ],
+    "n_industries": 5,
+    "interpretacao": "Melhor hipotese do dataset, nao achado confirmado. O p ingenuo (0,0128) so vale se o corte DevTools-vs-resto tivesse sido decidido ANTES de olhar o grafico. Corrigido pela busca que o encontrou: p=0,044 (so entre as 5 industrias) a p=0,144 (sobre os 21 cortes de fato exibidos no dashboard). O efeito nao desaparece por confundimento (MH por canal/plano/pais mantem OR 1,83-1,90) -- mas isso importa pouco se o motivo dele ter aparecido foi olhar o grafico primeiro. Tratar como hipotese para testar em coorte nova, nao como fato para repriorizar a vertical."
+  },
+  "feature_level": {
+    "n_features_tested": 40,
+    "bonferroni_threshold": 0.00125,
+    "n_significant_uncorrected": 3,
+    "n_significant_bonferroni": 0,
+    "error_rate_family": {
+      "n_tests": 40,
+      "n_significant_uncorrected": 3,
+      "n_significant_bonferroni": 0,
+      "nota": "Mesmo padrao do usage_count: 3 'significativos' sem correcao (esperado por acaso: ~2), 0 sobrevivem Bonferroni. O relatorio original publicava p=0,0037 e p=0,0204 desta familia sem correcao nem ressalva -- corrigido aqui."
+    },
+    "uniformity_check_ks_test": {
+      "usage_count_p_values_vs_uniform": 0.8299,
+      "error_rate_p_values_vs_uniform": 0.2515,
+      "interpretacao": "P-valores uniformes contra U[0,1] e exatamente a assinatura de 'nao ha efeito em nenhuma das 40 features' -- e uma demonstracao positiva de ausencia de sinal, nao so falta de evidencia."
+    },
+    "top_10_by_raw_p": [
+      {
+        "feature_name": "feature_34",
+        "n_churned": 76,
+        "n_retained": 275,
+        "mean_usage_churned": 21.4,
+        "mean_usage_retained": 17.9,
+        "p_value_usage": 0.0336,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0544,
+        "mean_error_rate_retained": 0.0702,
+        "p_value_error_rate": 0.1769
+      },
+      {
+        "feature_name": "feature_14",
+        "n_churned": 75,
+        "n_retained": 277,
+        "mean_usage_churned": 18.8,
+        "mean_usage_retained": 16.1,
+        "p_value_usage": 0.0387,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0475,
+        "mean_error_rate_retained": 0.0545,
+        "p_value_error_rate": 0.5224
+      },
+      {
+        "feature_name": "feature_3",
+        "n_churned": 76,
+        "n_retained": 260,
+        "mean_usage_churned": 15.4,
+        "mean_usage_retained": 18.3,
+        "p_value_usage": 0.0499,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0712,
+        "mean_error_rate_retained": 0.0569,
+        "p_value_error_rate": 0.3132
+      },
+      {
+        "feature_name": "feature_1",
+        "n_churned": 79,
+        "n_retained": 261,
+        "mean_usage_churned": 21.0,
+        "mean_usage_retained": 18.0,
+        "p_value_usage": 0.0641,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0578,
+        "mean_error_rate_retained": 0.0488,
+        "p_value_error_rate": 0.3926
+      },
+      {
+        "feature_name": "feature_23",
+        "n_churned": 68,
+        "n_retained": 261,
+        "mean_usage_churned": 15.3,
+        "mean_usage_retained": 17.5,
+        "p_value_usage": 0.0707,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0641,
+        "mean_error_rate_retained": 0.0619,
+        "p_value_error_rate": 0.8907
+      },
+      {
+        "feature_name": "feature_26",
+        "n_churned": 78,
+        "n_retained": 274,
+        "mean_usage_churned": 20.2,
+        "mean_usage_retained": 17.9,
+        "p_value_usage": 0.1234,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0746,
+        "mean_error_rate_retained": 0.0664,
+        "p_value_error_rate": 0.5408
+      },
+      {
+        "feature_name": "feature_15",
+        "n_churned": 82,
+        "n_retained": 269,
+        "mean_usage_churned": 20.7,
+        "mean_usage_retained": 18.3,
+        "p_value_usage": 0.1237,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0477,
+        "mean_error_rate_retained": 0.053,
+        "p_value_error_rate": 0.5858
+      },
+      {
+        "feature_name": "feature_20",
+        "n_churned": 77,
+        "n_retained": 257,
+        "mean_usage_churned": 21.3,
+        "mean_usage_retained": 19.1,
+        "p_value_usage": 0.1273,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0314,
+        "mean_error_rate_retained": 0.0572,
+        "p_value_error_rate": 0.0037
+      },
+      {
+        "feature_name": "feature_25",
+        "n_churned": 75,
+        "n_retained": 267,
+        "mean_usage_churned": 19.5,
+        "mean_usage_retained": 17.3,
+        "p_value_usage": 0.13,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0451,
+        "mean_error_rate_retained": 0.0692,
+        "p_value_error_rate": 0.0204
+      },
+      {
+        "feature_name": "feature_11",
+        "n_churned": 80,
+        "n_retained": 267,
+        "mean_usage_churned": 20.4,
+        "mean_usage_retained": 18.4,
+        "p_value_usage": 0.18,
+        "significant_bonferroni": false,
+        "mean_error_rate_churned": 0.0605,
+        "mean_error_rate_retained": 0.0519,
+        "p_value_error_rate": 0.4184
+      }
+    ]
+  },
+  "ticket_priority": {
+    "base_churn_rate_pct": 22.0,
+    "by_priority": [
+      {
+        "priority": "high",
+        "n_accounts_with_ticket": 322,
+        "churn_rate_with": 19.6,
+        "churn_rate_without": 26.4,
+        "chi2": 2.74,
+        "p_value": 0.0979,
+        "or_bruto": 0.68,
+        "or_ajustado_por_volume_de_tickets_mh": 0.69
+      },
+      {
+        "priority": "low",
+        "n_accounts_with_ticket": 310,
+        "churn_rate_with": 20.0,
+        "churn_rate_without": 25.3,
+        "chi2": 1.61,
+        "p_value": 0.2049,
+        "or_bruto": 0.74,
+        "or_ajustado_por_volume_de_tickets_mh": 0.76
+      },
+      {
+        "priority": "medium",
+        "n_accounts_with_ticket": 309,
+        "churn_rate_with": 23.6,
+        "churn_rate_without": 19.4,
+        "chi2": 1.01,
+        "p_value": 0.3152,
+        "or_bruto": 1.29,
+        "or_ajustado_por_volume_de_tickets_mh": 1.49
+      },
+      {
+        "priority": "urgent",
+        "n_accounts_with_ticket": 317,
+        "churn_rate_with": 19.9,
+        "churn_rate_without": 25.7,
+        "chi2": 1.96,
+        "p_value": 0.162,
+        "or_bruto": 0.72,
+        "or_ajustado_por_volume_de_tickets_mh": 0.72
+      }
+    ],
+    "escalation": {
+      "chi2": 0.48,
+      "p_value": 0.4877,
+      "churn_rate_with": 25.3,
+      "churn_rate_without": 21.3,
+      "n_accounts_with_escalation": 91
+    },
+    "nota": "As 4 prioridades nao sao 4 evidencias independentes: 309 a 322 das 500 contas tem cada uma (uma conta tem ~4 tickets em media, cobrindo quase todas as prioridades). O OR ajustado por volume de tickets (MH) muda pouco o bruto -- entao nao e confundimento por volume; e ruido puro medido de 4 formas quase iguais. Tratar como 1 indicador, nao 4."
+  },
+  "usage_growth_by_industry": {
+    "by_segment": [
+      {
+        "segment": "EdTech",
+        "n_accounts": 79,
+        "churn_rate_pct": 16.5,
+        "usage_pct_change_first_to_last_q": 9.9
+      },
+      {
+        "segment": "Cybersecurity",
+        "n_accounts": 100,
+        "churn_rate_pct": 16.0,
+        "usage_pct_change_first_to_last_q": 2.9
+      },
+      {
+        "segment": "DevTools",
+        "n_accounts": 113,
+        "churn_rate_pct": 31.0,
+        "usage_pct_change_first_to_last_q": 2.0
+      },
+      {
+        "segment": "FinTech",
+        "n_accounts": 112,
+        "churn_rate_pct": 22.3,
+        "usage_pct_change_first_to_last_q": 1.9
+      },
+      {
+        "segment": "HealthTech",
+        "n_accounts": 96,
+        "churn_rate_pct": 21.9,
+        "usage_pct_change_first_to_last_q": 1.9
+      }
+    ],
+    "growth_vs_churn_correlation_across_segments": {
+      "pearson_r": -0.533,
+      "p_value": 0.3545,
+      "n_segments": 5,
+      "ic95_r": [
+        -0.963,
+        0.659
+      ],
+      "aviso": "n=5 grupos: poder estatistico baixissimo (IC95% cobre de forte negativo a forte positivo). Nao tratar como relacao confiavel -- e correlacao ECOLOGICA (unidade = segmento), que pode inverter de sinal no nivel da conta (ver ecological_fallacy_check)."
+    }
+  },
+  "usage_growth_by_referral": {
+    "by_segment": [
+      {
+        "segment": "other",
+        "n_accounts": 103,
+        "churn_rate_pct": 24.3,
+        "usage_pct_change_first_to_last_q": 8.4
+      },
+      {
+        "segment": "partner",
+        "n_accounts": 89,
+        "churn_rate_pct": 14.6,
+        "usage_pct_change_first_to_last_q": 8.3
+      },
+      {
+        "segment": "organic",
+        "n_accounts": 114,
+        "churn_rate_pct": 17.5,
+        "usage_pct_change_first_to_last_q": 3.9
+      },
+      {
+        "segment": "event",
+        "n_accounts": 96,
+        "churn_rate_pct": 30.2,
+        "usage_pct_change_first_to_last_q": 2.6
+      },
+      {
+        "segment": "ads",
+        "n_accounts": 98,
+        "churn_rate_pct": 23.5,
+        "usage_pct_change_first_to_last_q": -5.0
+      }
+    ],
+    "growth_vs_churn_correlation_across_segments": {
+      "pearson_r": -0.344,
+      "p_value": 0.5704,
+      "n_segments": 5,
+      "ic95_r": [
+        -0.941,
+        0.773
+      ],
+      "aviso": "n=5 grupos: poder estatistico baixissimo (IC95% cobre de forte negativo a forte positivo). Nao tratar como relacao confiavel -- e correlacao ECOLOGICA (unidade = segmento), que pode inverter de sinal no nivel da conta (ver ecological_fallacy_check)."
+    }
+  },
+  "ecological_fallacy_check": {
+    "usage_growth_x_churn_no_nivel_de_segmento_industry_r": -0.533,
+    "total_usage_count_x_churn_no_nivel_de_conta_r": 0.064,
+    "nota": "Sinais opostos entre o nivel de segmento (ecologico) e o nivel de conta (individual) -- exemplo real de correlacao ecologica que se inverte ao trocar a unidade de analise (Simpson-like)."
+  },
+  "mrr_concentration": {
+    "concentration": {
+      "top_10pct_accounts": {
+        "n_accounts": 50,
+        "pct_of_total_mrr": 45.5,
+        "churn_rate_pct": 18.0,
+        "mrr_at_risk": 93331.0,
+        "top_industries": {
+          "EdTech": 15,
+          "FinTech": 12,
+          "Cybersecurity": 10
+        }
+      },
+      "top_20pct_accounts": {
+        "n_accounts": 100,
+        "pct_of_total_mrr": 66.8,
+        "churn_rate_pct": 18.0,
+        "mrr_at_risk": 143762.0,
+        "top_industries": {
+          "FinTech": 26,
+          "EdTech": 24,
+          "HealthTech": 20
+        }
+      },
+      "top_50pct_accounts": {
+        "n_accounts": 250,
+        "pct_of_total_mrr": 92.8,
+        "churn_rate_pct": 23.2,
+        "mrr_at_risk": 238121.0,
+        "top_industries": {
+          "FinTech": 60,
+          "Cybersecurity": 56,
+          "DevTools": 49
+        }
+      },
+      "bottom_90pct_accounts": {
+        "n_accounts": 450,
+        "pct_of_total_mrr": 54.5,
+        "churn_rate_pct": 22.4
+      }
+    },
+    "avg_mrr_by_plan": [
+      {
+        "plan_tier": "Basic",
+        "avg_mrr": 2287.0,
+        "n": 168,
+        "churn_rate": 22.0
+      },
+      {
+        "plan_tier": "Enterprise",
+        "avg_mrr": 2730.0,
+        "n": 154,
+        "churn_rate": 22.1
+      },
+      {
+        "plan_tier": "Pro",
+        "avg_mrr": 2325.0,
+        "n": 178,
+        "churn_rate": 21.9
+      }
+    ],
+    "avg_mrr_of_a_churned_account_by_plan": {
+      "Basic": 1889.0,
+      "Enterprise": 2740.0,
+      "Pro": 2356.0
+    },
+    "significance_check": {
+      "top10_churn_rate_pct": 18.0,
+      "top10_churn_rate_ic95": [
+        9.8,
+        30.8
+      ],
+      "chi2": 0.29,
+      "p_value_chi2": 0.5893,
+      "p_value_fisher": 0.59,
+      "odds_ratio_bruto": 0.76,
+      "or_ajustado_por_industria_mh": 0.86
+    },
+    "decile_breakdown": [
+      {
+        "decile": 1,
+        "n": 50,
+        "churn_rate": 18.0,
+        "mrr_med": 9452.0
+      },
+      {
+        "decile": 2,
+        "n": 50,
+        "churn_rate": 18.0,
+        "mrr_med": 5174.0
+      },
+      {
+        "decile": 3,
+        "n": 50,
+        "churn_rate": 38.0,
+        "mrr_med": 3184.0
+      },
+      {
+        "decile": 4,
+        "n": 50,
+        "churn_rate": 24.0,
+        "mrr_med": 1862.0
+      },
+      {
+        "decile": 5,
+        "n": 50,
+        "churn_rate": 18.0,
+        "mrr_med": 1225.0
+      },
+      {
+        "decile": 6,
+        "n": 50,
+        "churn_rate": 18.0,
+        "mrr_med": 834.0
+      },
+      {
+        "decile": 7,
+        "n": 50,
+        "churn_rate": 20.0,
+        "mrr_med": 545.0
+      },
+      {
+        "decile": 8,
+        "n": 50,
+        "churn_rate": 18.0,
+        "mrr_med": 299.0
+      },
+      {
+        "decile": 9,
+        "n": 50,
+        "churn_rate": 34.0,
+        "mrr_med": 19.0
+      },
+      {
+        "decile": 10,
+        "n": 50,
+        "churn_rate": 14.0,
+        "mrr_med": 0.0
+      }
+    ],
+    "industry_mix_top10_pct": {
+      "EdTech": 30.0,
+      "FinTech": 24.0,
+      "Cybersecurity": 20.0,
+      "HealthTech": 16.0,
+      "DevTools": 10.0
+    },
+    "industry_mix_rest_pct": {
+      "DevTools": 24.0,
+      "FinTech": 22.2,
+      "Cybersecurity": 20.0,
+      "HealthTech": 19.6,
+      "EdTech": 14.2
+    },
+    "veredito": "NAO ha efeito de tamanho: p=0,59, IC95% do churn do top-10% cobre a base (22,0%). Por decil nao e monotono -- decil 8 churna 38%, decis 9-10 churnam 18%: e ruido com um pico no meio, nao gradiente de tamanho. O top-10% super-amostra EdTech (menor churn) e sub-amostra DevTools (maior churn); ajustando por industria (MH) o OR sai de 0,76 para 0,86 -- parte da diferenca (ja nula) e composicao, nao tamanho. 'Contas grandes sao mais fieis' nao pode ser afirmado com este dado."
+  },
+  "mrr_definition_sensitivity": {
+    "mediana_assinaturas_por_conta": 10.0,
+    "n_contas_com_mais_de_1_assinatura_aberta_sem_end_date": 500,
+    "mrr_total_definicao_ultima_por_start_date": 1218555.0,
+    "mrr_total_definicao_assinaturas_ativas_sem_end_date": 1144372.0,
+    "top10pct_share_definicao_ultima": 45.5,
+    "top10pct_share_definicao_ativas": 46.2,
+    "nota": "'MRR atual' e ambiguo no dado: a mediana de assinaturas por conta e ~10 e todas as 500 contas tem mais de uma assinatura sem end_date. A escolha de definicao move a concentracao do top-10% em ~1 ponto percentual -- nao muda a conclusao, mas 'nada e estimativa' e falso: e uma escolha de modelagem."
+  },
+  "onboarding_cohort_deterioration": {
+    "n_accounts_eligible_90d_window": 422,
+    "n_accounts_excluded_too_recent": 78,
+    "by_cohort": [
+      {
+        "cohort_half": "2023-H1",
+        "n": 109,
+        "churn_90d_rate": 15.6,
+        "mrr_avg": 2570.0
+      },
+      {
+        "cohort_half": "2023-H2",
+        "n": 118,
+        "churn_90d_rate": 22.9,
+        "mrr_avg": 2552.0
+      },
+      {
+        "cohort_half": "2024-H1",
+        "n": 121,
+        "churn_90d_rate": 38.8,
+        "mrr_avg": 2572.0
+      },
+      {
+        "cohort_half": "2024-H2",
+        "n": 74,
+        "churn_90d_rate": 60.8,
+        "mrr_avg": 1840.0
+      }
+    ],
+    "chi2_omnibus": 48.63,
+    "p_omnibus": 1.565385976426403e-10,
+    "or_per_cohort_step_adjusted_industry_referral_plan": 2.08,
+    "p_adjusted_for_composition": 1.4840326305775512e-10,
+    "excess_accounts_per_semester_vs_first_cohort": 33.4,
+    "mrr_excess_lost_per_semester_usd": 61544.0,
+    "mrr_excess_lost_annualized_usd": 123089.0,
+    "origem": "Padrao inicialmente reportado publicamente no PR #117 do challenge (outro candidato). Verificado aqui de forma independente: metodologia propria, codigo proprio, e teste de confundimento por composicao que o PR original nao reportava. Ver PROCESS_LOG.md para a sequencia completa.",
+    "interpretacao": "Churn em 90 dias sobe de 15.6% (2023-H1) para 60.8% (2024-H2). p=1.57e-10 (omnibus), sobrevive ajuste por industria+canal+plano: OR=2.08 por safra, p=1.48e-10. E o achado mais forte de todo o dataset -- ordens de magnitude mais solido que qualquer corte de segmento estatico testado neste relatorio."
+  },
+  "global_null_model": {
+    "n_covariates": 28,
+    "lr_chi2": 35.59,
+    "lr_df": 28,
+    "lr_p_value": 0.1533,
+    "pseudo_r2_mcfadden": 0.0676,
+    "candidatos_p_menor_0_10": [
+      {
+        "termo": "error_rate",
+        "odds_ratio": 0.77,
+        "p_value": 0.0346,
+        "p_bonferroni_22_termos": 0.9695
+      },
+      {
+        "termo": "industry_DevTools",
+        "odds_ratio": 2.39,
+        "p_value": 0.0142,
+        "p_bonferroni_22_termos": 0.3986
+      },
+      {
+        "termo": "country_DE",
+        "odds_ratio": 5.01,
+        "p_value": 0.0294,
+        "p_bonferroni_22_termos": 0.8218
+      },
+      {
+        "termo": "country_US",
+        "odds_ratio": 2.69,
+        "p_value": 0.0884,
+        "p_bonferroni_22_termos": 1.0
+      }
+    ],
+    "interpretacao": "O modelo completo NAO rejeita a hipotese nula (p=0,19). Nenhuma covariavel isolada sobrevive a correcao por 22 termos. Nao ha o que modelar com as variaveis disponiveis neste dataset."
+  },
+  "audit_summary": {
+    "contagem_de_testes_formais": {
+      "correlacoes_pearson": 11,
+      "qui_quadrado_omnibus_de_segmento": 5,
+      "t_tests_por_feature_uso": 40,
+      "t_tests_por_feature_error_rate": 40,
+      "qui_quadrado_por_prioridade_de_ticket": 4,
+      "qui_quadrado_escalacao": 1,
+      "devtools_vs_resto_pos_hoc": 1,
+      "pearson_crescimento_x_churn_entre_segmentos": 2,
+      "comparacoes_de_concentracao_de_mrr": 3,
+      "total": 107
+    },
+    "falsos_positivos_esperados_sob_nulo_p_menor_0_05": 5.4,
+    "significativos_de_fato_encontrados_sem_correcao": 7,
+    "veredito": "7 'significativos' encontrados contra 5.4 esperados so por acaso puro. O rendimento do relatorio e indistinguivel do que o acaso produziria testando esse volume de cortes."
+  },
+  "methodology_notes": [
+    "MRR = mrr_amount da assinatura mais recente por start_date. Ambiguo: mediana de 10 assinaturas/conta, todas as 500 contas tem mais de uma assinatura aberta (sem end_date). Ver mrr_definition_sensitivity.",
+    "Tenure calculado com as_of=2024-12-31 (ultima data observada em qualquer tabela do dataset), nao 'hoje'.",
+    "A tabela feature_usage nao respeita o ciclo de vida da conta (ver usage_trend_honesty) -- qualquer metrica de 'uso total' ou 'trajetoria' aqui carrega esse limite.",
+    "reason_codes e reason_by_plan reportam separadamente a versao restrita a contas realmente churnadas (correta) e a versao com todos os eventos (como o relatorio original calculava, mantida so pra comparacao).",
+    "Este arquivo roda 106 testes formais no total (ver audit_summary). Nenhum p-valor aqui deveria ser lido isoladamente sem essa contagem.",
+    "onboarding_cohort_deterioration foi adicionado apos revisar PRs publicos de outros candidatos no mesmo repositorio do desafio (#117). A lacuna -- tenure/signup_date nunca usado como janela -- ja estava marcada nas notas de metodologia antes dessa revisao; o calculo em si foi reproduzido do zero, com metodologia e codigo proprios, e testado contra confundimento antes de ser aceito. Ver PROCESS_LOG.md para a sequencia completa e honesta."
+  ]
+}
