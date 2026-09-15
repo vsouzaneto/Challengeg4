@@ -43,7 +43,7 @@ Priorizadas, com dono e prazo, na seção 6 do `DIAGNOSTICO.md`. As duas primeir
 
 - O achado de DevTools e do canal de evento são a **melhor hipótese do dataset**, não fato provado — a amostra é pequena o suficiente para que uma seleção visual infle a confiança (testado e corrigido via permutação, ver `DIAGNOSTICO.md` seção 7).
 - Não sei se a RavenStack real atende setores fora de tecnologia — as 500 contas desta base são inteiramente de 5 verticais de tech.
-- Não confirmei com meus próprios olhos, no navegador, que o registro de ação do painel de retenção grava no banco compartilhado (a automação de teste que usei travou repetidamente numa tela específica) — testei manualmente depois de publicar. [ajustar após teste manual, se necessário]
+- Testei manualmente o registro de ação do painel após publicar — grava e persiste no banco compartilhado do artefato (dois registros de autores diferentes já salvos, em contas distintas, confirmando que o compartilhamento entre viewers funciona).
 
 ---
 
