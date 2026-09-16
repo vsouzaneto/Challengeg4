@@ -50,3 +50,30 @@ Comparei: bateram volume, texto decorativo e faixa do baseline; caíram a nota e
 Decidi: tempos, nota, descrição e resolução do arquivo 1 fora do diagnóstico; estrutura de demanda só como volume de referência; arquivo 2 inteiro, com dedup antes do split. O relatório vai dizer que "onde perdemos tempo" não tem resposta nestes dados e propor como medir. Administrative rights é instalação de software com privilégio (outlook, upgrade, install), o que muda a fronteira humana.
 
 Iterações: 1.
+
+## 16/09 17:22 gmt-3, hipótese antes do modelo de custo
+
+Hipótese: Triagem manual de 30 mil tickets a 5 minutos e R$ 35 por hora fica perto de R$ 90 mil por ano, ou 1,4 FTE; a automação absorve entre 70% e 85% disso e o retrabalho dos erros come uma parte. Acredito que o resultado por mil tickets fica abaixo de R$ 3 mil e que o número é pequeno perto do custo de resolver, não de triar.
+
+## 16/09 17:31 gmt-3, modelo de custo
+
+Pedi: modelo parametrizado com premissas nomeadas e fonte ao lado, três cenários pareados, lendo a cobertura da triagem automática de um arquivo que o protótipo vai gerar.
+Saiu: triagem manual hoje entre 1.500 e 4.000 h/ano; economia líquida entre 790 e 3.290 h/ano, ou 0,45 a 1,87 FTE; 8 premissas empilhadas, impressas pelo script. Em solution/02_modelo_custo.txt.
+
+Comparei: a aposta de 1,4 FTE bateu (base deu 1,42) e o valor por mil tickets ficou em R$ 2.088, abaixo dos R$ 3 mil que eu esperava. A absorção ficou em 100% porque ainda não há abstenção; isso muda no protótipo.
+
+Decidi: resultado prnicipal em hors e FTE, reais numa linha só, porque custo/hora é a premissa mais frágil. O número é pequeno e vai ficar pequeno no relatório: a triagem automática não paga o projeto sozinha; o que pode pgaar é tempo de fila, que estes dsdos não têm. Acurácia por classe entra no modelo depois do protótipo.
+
+Iterações: 1.
+
+## 16/09 17:40 gmt-3, fronteira humana
+
+Pedi: 30 tickets sorteados de HR Support, Administrative rights e Access, e 20 erros do modelo em cada uam das duas primeiras, com texto completo. Em solution 03_leitura_fronteira.txt.
+
+Li: 90 sorteados e 40 errados. Escolhi 42710 (contas de desligados reativadas, auditoria), 15296 (licença-maternidade) e 30478 (aprovador de férias que saiu) como casos em que a máquina classifica e a pessoa decide.
+
+Corrigi: a leitura de que Administrative rights é a "classe fraca do modelo". Nos 20 erros lidos, boa parte tem rótulo errado na origem: impressora, som de TV, Safari, portas de emergência não são direito administrativo. O recall de 0,61 é teto do rótulo, não do modelo. O piloto corrige rótulo antes de tentar modelo maior.
+
+Decidi: regra de escalonamento por conteúdo, aciam da confiança: pessoa entrando ou saindo, conta e privilégio, auditoria e incidente, segurança física, urgência marcada, custo com aprovação. Ação automática só se for no reversível e padronizado.
+
+Iterações: 1.

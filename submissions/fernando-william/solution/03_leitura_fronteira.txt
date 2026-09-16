@@ -1,0 +1,406 @@
+=== PARTE 1: 30 tickets sorteados por classe (semente 42) ===
+
+--- HR Support (30 de 10915) ---
+
+[linha 21177] rótulo: HR Support
+access to new pas friday february hi guys please rights involved level thanks discipline lead
+
+[linha 22391] rótulo: HR Support
+new starter bucharest friday pm hello va date administration officer
+
+[linha 22042] rótulo: HR Support
+set up new service sn friday pm sn hello please find attached sn form thanks regards
+
+[linha 20293] rótulo: HR Support
+access to friday february hello please assist thanks kind regards infrastructure friday february hi senior administrator
+
+[linha 16887] rótulo: HR Support
+allocation pm allocation importance high hi please make changes allocate allocate thank blvd floor
+
+[linha 30478] rótulo: HR Support
+annual leave approver for tuesday pm re annual leave approver hi fine cover says next thanks annual leave approver hello submitted leave requests few days noticed currently pending previously has left therefore approve leave move approvers other accounts assigned until gets therefore since permanent replacement appointed yet please ask approver interim approve leave requests myself anyone working also please backup approver work please let okay leave beginning next approvals by then assist next days much appreciated thanks kind regards
+
+[linha 36524] rótulo: HR Support
+problem problem hi having problem adding users only started was fine morning when go screen start type name get following error can you please help regards
+
+[linha 47345] rótulo: HR Support
+issue on create expense item oracle service sent thursday issue create expense item hi dear create expense item have got error message you cannot enter date for expense item after today date could you please help solve issue attached with filled data error message cheers software engineer st republic web we deliver transformation germany belgrade columbia
+
+[linha 165] rótulo: HR Support
+send to all bucharest staff facility blvd rd floor
+
+[linha 6300] rótulo: HR Support
+annual leave th of october annual leave october hello please add october annual leave thank
+
+[linha 15296] rótulo: HR Support
+maternity leave access card tuesday pm maternity leaver form hello please help by filling out maternity leaver form thank ext information confidential legally privileged intended solely addressee opinions expressed mine necessarily
+
+[linha 8181] rótulo: HR Support
+project access request re hello dear please make created give member removed permissions him regards discipline lead
+
+[linha 4097] rótulo: HR Support
+name change florin to starter hi guys please colleague called him thank understanding administration officer
+
+[linha 1730] rótulo: HR Support
+new starter hardware allocation colombia bogota bogota complete colombia dear please help completed form testing internship student intern joining well please complete going his where he going seated thank compliance officer colombia
+
+[linha 14427] rótulo: HR Support
+new starter wednesday pm starter hi please best regards analyst tuesday pm starter hi please pour colleague module please replicate module please replicate module please replicate thanks accounts receivable lead
+
+[linha 12576] rótulo: HR Support
+credentials mates credentials
+
+[linha 23492] rótulo: HR Support
+submit timecards for thursday please action reports hello please assist submission july thank administration officer thursday re please action reports hello until his has submitted mentioned intervals he annual leave regards administration officer wednesday pm re please action reports hi please close records he working period specified thanks wednesday pm please action reports dear part established processes each required submit his weekly basis each friday past must submitted receiving because reports haven followed process please help cascade accordingly gets possible breakdown reports please note refers has left maternity other absence leave please update person record otherwise please person directly submit country date total days
+
+[linha 26783] rótulo: HR Support
+oracle november re dear please make log her date she became thank administration officer friday november pm importance high dear writing because presenting difficulties submitting sheet join because different starting date how fix thank regards compliance officer colombia
+
+[linha 40059] rótulo: HR Support
+print screen of error po sent thursday july print screen error po hi please raise ticket for below request thank you kind regards sent thursday july print screen error po dear please find below error receive when want submit there must be something wrong but far cannot figure out what much you help best regards
+
+[linha 25273] rótulo: HR Support
+new starter sonar wednesday november pm re complete hi please find attached completed form thanks
+
+[linha 27995] rótulo: HR Support
+edit access to to tuesday october adjustments days hi please give help possible needs create reports thank officer october pm re adjustments days hi also note workdays code states instead member moment also noted privileges within forecast module regarding issue handle best regards senior engineer october re adjustments days changes made days each again regards saturday october pm re adjustments days changes regards date friday october pm re adjustments days hi days adjusted least folks costs recalculated accordingly adjustment progress regards thursday october pm adjustments days hi latest adjustments days import tomorrow morning days adjusted then regards
+
+[linha 16242] rótulo: HR Support
+access to invoicing on friday pm invoicing hello guys please give forecast calculators thank much
+
+[linha 39479] rótulo: HR Support
+error submitting expense report sent monday july error submitting expense report hi have problem while submitting expense report attached error receive can you please take look thank you senior tester master
+
+[linha 36290] rótulo: HR Support
+there is error submission of time entries from to please contact your administrator there error submission entries please contact your administrator hello have received below message after submitting for could you please give some more details why happening can resolve thank you developer en sent monday november there error submission entries please contact your administrator access task application
+
+[linha 29638] rótulo: HR Support
+new starter wednesday pm re starter form updated updated work location section she based thanks wednesday pm starter form dear please find completed attached join next wednesday apologize short notice her onboard possible kind regards
+
+[linha 19109] rótulo: HR Support
+new starter access to old wednesday march hire hello ne si la si va legate actual contract determinate va la va pot va specialist friday march hire hello va contract budget reasons va face parte si va va la si ii brief si va si va weekend head
+
+[linha 29674] rótulo: HR Support
+new starter access card enabling wednesday pm re starter form hi please find attached consulted name his best regards head re starter form hi again informed previously updated form version his pm please advise maybe his instead name faster flexible solution thanks officer wednesday starter form hi please assist completion attached thanks officer
+
+[linha 36304] rótulo: HR Support
+oracle time submission submission hello unable his right today his final created saved his sheet for week but unable submit can be done by regards
+
+[linha 22289] rótulo: HR Support
+new interns for bulk starter form for school center tuesday re bulk starter form school hi find attached document exact location floor come back updates sincerely wednesday pm bulk starter form school hello please help by filling out bulk starter form school thank ext
+
+[linha 16148] rótulo: HR Support
+new starter pm re date hello sorry mistake thank pm re date his date hi please fill enclosed starter form thanks
+
+--- Administrative rights (30 de 1760) ---
+
+[linha 38512] rótulo: Administrative rights
+set up and swap leased for new set up swap leased for
+
+[linha 37978] rótulo: Administrative rights
+windows upgrade failed upgrade failed hello please raise ticket for issue below upgrade error thank you kind regards infrastructure manager ext phone sent friday upgrade failed hello sorry bother you can anyone help with upgrade regard developer en sent wednesday upgrade failed hello updating operating machine failed please find attached file upgrade failed regards developer en
+
+[linha 46254] rótulo: Administrative rights
+outlook breaks when switching to cable sent monday november breaks when switching cable hi working using cable order connect recently whenever switch cable breaks remains try connect status could you please advise because issue receive late only after finish interrupt activities using cable kindest regards senior developer en
+
+[linha 44185] rótulo: Administrative rights
+quarantine you have new assistance needed sent monday february you have hi can setup password can how can view thanks sent monday february you have dear you have your daily update bounces newsletter kb members bounces newsletter kb members info newsletter kb newsletter kb newsletter bounce mc newsletter kb created newsletter kb weekly activity report bounce ab newsletter kb week with members yoga workshop members others info newsletter kb your daily update bounces newsletter kb newsletter bounces newsletter kb your daily update bounces newsletter kb kb newsletter kb follow up info newsletter kb week dup newsletter kb newsletter kb newsletter kb be deleted automatically after days you can change frequency these within your portal log
+
+[linha 12022] rótulo: Administrative rights
+outlook access on friday july pm hi wondering way personal phone calendar well tried search guide had luck thanks lead
+
+[linha 37966] rótulo: Administrative rights
+failure during upgrade to windows failure during upgrade hello can you please help with issue tower floor developer en
+
+[linha 43159] rótulo: Administrative rights
+set up new to swap for pc set up swap for pc
+
+[linha 10598] rótulo: Administrative rights
+for pm issues dear please log assign fixing issues also please help her installing her great she never had installed she steps file thank kind regards engineer
+
+[linha 42102] rótulo: Administrative rights
+time update outlook calendar sent friday re update calendar importance high kindly ask someone fixes thanks sent friday re update calendar for reference sent update calendar importance high please ask someone help update should update automatically but case appears need send invite there still eastern for but correct should be eastern daylight or matter hours vs would like seem incompetent when sending note with course invite them one hour earlier later than needed rather urgent thank you
+
+[linha 11302] rótulo: Administrative rights
+hardware upgrade virtual environment access request thursday july hardware upgrade virtual environment hello currently doing exercise personal studying few containers which getting more more popular industry docker deploying environments etc helpful hands tests better grasp these concepts unfortunately lack environment workload possible hardware upgrade virtual environment where run test bare minimum upgrade additional optimal hardware contain also cpu storage upgrades please let options available thank
+
+[linha 2736] rótulo: Administrative rights
+re notification windows forced upgrade re forced upgrade hi win unable run win upgrade lack preconditions enough wired enough drive run win upgrade since upgrade storage issues also wired since february cannot connect via cable please help simple solution upgrade drive cannot trim lot lot versions take client sites how proceed best head agile wednesday december pm forced upgrade importance high hello everyone upgraded workstation thanking receptive disregard months received announcements advising apply upgrade coming back announce asking understand upgrading mandatory possibility upgrade by kindly asking give action take more than minutes apply upgrade please announcement attached file after proceed upgrade forced upgrade procedure offices means upgrade process automatically workstation stop process advise press button stop process avoid loss important note please understand responsibility backup files dependency remain version please notify asap workstation having less than free how please require assistance please article kb view article kb subscription store files please make files completely synchronized unlinking subscription please kb more kb view article kb forced upgrade procedure physically connected wired experience issues during upgrade process please thank kind regards ext
+
+[linha 7166] rótulo: Administrative rights
+project management request hello october working tool please advise how installed os upgraded win yet upgrade thank
+
+[linha 16161] rótulo: Administrative rights
+upgrade en wednesday pm re how users old version left hi thank please merge users out date agent users found attached requesting help rd needs out thank re how users old version left hello please informed assets old version agent installed please attached details assets old version status assigned running contingency disposal growth off reserved undetermined best regards engineer
+
+[linha 4982] rótulo: Administrative rights
+required required hi sometimes displayed asking enter proxy credentials share details about please required never enter credentials thank
+
+[linha 37444] rótulo: Administrative rights
+windows upgrade error get following error every please below sent get following error every
+
+[linha 33537] rótulo: Administrative rights
+tools to be installed on from july pm tools installed hello please log install tools thank
+
+[linha 20138] rótulo: Administrative rights
+outlook query february pm query hello investigating how make easier experience client while suggestions integrating keen done integrations best colombia
+
+[linha 37521] rótulo: Administrative rights
+can upgrade to windows error can upgrade hi try several times upgrade but action failed after checking readiness phase following error displayed please check attached screen capture please help move forward process thank you agile manager
+
+[linha 39445] rótulo: Administrative rights
+outlook and excel issues hello excel assuming for whole package show activation error kept top can you please can still use these but probably for please assist thanks
+
+[linha 38621] rótulo: Administrative rights
+windows upgrade insufficient space on drive re upgrade started hi tried access link but looks like have access would help temporarily have already performed disk cleanup deleted temporary files etc help much memory fills back again quickly sent re upgrade started hello you can use folder under but store more than afraid check delete any unused data history temp etc export personal if there any photos movies etc any app you need or any space consuming app you use daily basis can be installed later or good moment request larger for your machine far know storing data external data forbidden but shall be able answer one if have another solution help you kind regards infrastructure manager ext phone sent monday re upgrade started hi barely can free up some space drive only drive run some applications such doubt have enough space upgrade how can get some additional until change laptop thanks sent upgrade started importance high kind regards infrastructure manager ext phone subsidiaries separate entity liability for another such entity acts or omissions
+
+[linha 3777] rótulo: Administrative rights
+access for me and re hi please action myself dom thanks november hi please arrange rights vault upgrade regards infrastructure consultant
+
+[linha 24406] rótulo: Administrative rights
+mail merge option outlook wednesday december pm related dear please help by logging merge option working please assign thanks yours knowledge
+
+[linha 44108] rótulo: Administrative rights
+credentials sent tuesday february credentials hi with last projects using client seem remember name password for could you help with thank you senior tester ext id en canton
+
+[linha 34218] rótulo: Administrative rights
+windows update failed update failed hi for couple days tried install update picture but without success after couple minutes operation failed timeout caused opinion by very speed please help
+
+[linha 21791] rótulo: Administrative rights
+update for cal wednesday february update cal hi please cal thank kind regards senior software developer
+
+[linha 37060] rótulo: Administrative rights
+outlook issues issues hello experiencing massive issues with over last month follows calendar constantly loading asking restart loading sometimes please help with thank you very much communication specialist
+
+[linha 26740] rótulo: Administrative rights
+upgrade november pm re upgrade hi during deadline safe perform upgrade thanks october upgrade hello kind reminder please make update latest version highly critical perform upgrade by tuesday starting wednesday upgrade pushed automatically order update please follow steps more detailed guide found software center by searching software center search menu best endpoint agent install selected wait installation status becomes installed reboot computer icons newly installed endpoint tools please note during update process lose approximately minutes questions encounter difficulties upgrading please hesitate thank kind regards ext hub
+
+[linha 42301] rótulo: Administrative rights
+reported her outlook work ca tot prompt si pun check remember credentials but does nothing tot si si
+
+[linha 36321] rótulo: Administrative rights
+problem with printing problem with printing hi had problem with printing floor printer asked for assistance resolved issue best regards lead
+
+[linha 5946] rótulo: Administrative rights
+notification regarding windows updates regarding updates script running tonight
+
+--- Access (30 de 7125) ---
+
+[linha 20421] rótulo: Access
+confluence access for wednesday february pm confluence please confluence thanks
+
+[linha 35245] rótulo: Access
+password reset open access dear can you please help with rights for laptop order reset password going expire few days have mention working remote location be around december st also have issues connecting open due rights restrictions you think we could fix somehow best regards
+
+[linha 21861] rótulo: Access
+access for tuesday hi please create once user created add him thank head analysis
+
+[linha 27780] rótulo: Access
+your password expire days friday october pm expire days hi please per thank friday october pm re expire days hi work around wait updates thanks commercial change street manchester mob october re expire days hi confluence ask change yourself automated reminder let good moment make regards friday october pm expire days importance high hi doing relates thanks commercial change street manchester mob october expire days importance high dear expire days change pc press ctrl alt delete choose change thanks ext originated please detailed disclaimer has automatically added by gateway comply requirement arrived via cautious about origin content replies which contain sensitive information contractual obligations particularly vulnerable these cases adequate employed questions please speak please consider environment printing proud responsible corporate responsibility registered wales st court chart way west rh by regulation authority regulated by conduct authority regulation authority protection calls recorded monitored information confidential copied by intended received error please immediately by returning please delete disclose contents anyone responsibility accepted loss damage arising viruses changes made after originated please detailed disclaimer has automatically added by gateway comply requirement arrived via cautious about origin content replies which contain sensitive information contractual obligations particularly vulnerable these cases adequate employed questions please speak please consider environment printing proud responsible corporate responsibility registered wales st court chart way west rh by regulation authority regulated by conduct authority regulation authority protection calls recorded monitored information confidential copied by intended received error please immediately by returning please delete disclose contents anyone responsibility accepted loss damage arising viruses changes made after
+
+[linha 10817] rótulo: Access
+confluence access thursday pm confluence hi please give confluence job engineer
+
+[linha 21355] rótulo: Access
+create space confluence wednesday february create confluence importance high dear please create confluence named myself also make members accounts confluence then please accounts much appreciated solve today thanks
+
+[linha 32669] rótulo: Access
+new confluence space tuesday july confluence hello please create confluence details client name key label owner users also confluence members thank senior developer
+
+[linha 17827] rótulo: Access
+ms wednesday pm program required hello help program order make diagrams help path where download license regards android developer
+
+[linha 5227] rótulo: Access
+account query dear purpose dashboard order setup forms voice controls purpose consisted members please create mailing also has note cost has approved by feel free let more details side thanks
+
+[linha 33736] rótulo: Access
+access july user dear please create user thank kind regards analyst
+
+[linha 8910] rótulo: Access
+account hello please create thank senior engineer
+
+[linha 19211] rótulo: Access
+request for access to confluence tuesday march confluence hello wide confluence more information different working thank
+
+[linha 26169] rótulo: Access
+external access to wednesday november hello possible allow networks repository clients virtual machines thanks tester
+
+[linha 2969] rótulo: Access
+ad account re install thank coming back hear evening wrong side dear please log preliminary troubleshooting ad done yesterday assign thank kind regards engineer december re install hi everything working again reason thanks help cheers november install dear please log assign upgrading his win thanks kind regards engineer
+
+[linha 18507] rótulo: Access
+blocked status fro friday march pm status fro dear please add status view detail thanks senior tester
+
+[linha 18365] rótulo: Access
+field extended to ad tuesday march re extended hi has updated kind regards march pm extended hi please note contract expire please update his thanks planning
+
+[linha 46204] rótulo: Access
+your password expire days pass reset for external sent tuesday november your password expire days importance high hi could you please action below thank you manager mobile next vacations th th sent tuesday november your password expire days importance high hi got below about password but cannot reset own can you please assist thanks sent november your password expire days importance high dear your password expire days change your password pc press ctrl alt delete choose change password thanks ext
+
+[linha 32371] rótulo: Access
+idea license idea license hi license idea please provide please let needs approve thanks kind regards developer
+
+[linha 23561] rótulo: Access
+remove users from wednesday pm reached user limit spreadsheet reached user limit hello please find attached users removed ad users part other groups also processed accordingly ad ad removal done priority running out licenses other actions related accounts afterwards take too details needed please let also please pass reference available thank
+
+[linha 1072] rótulo: Access
+access to services for and hello please part assignment shared confluence best regards engineer
+
+[linha 6152] rótulo: Access
+permissions permissions hello give permissions persons two repositories find search regards senior developer
+
+[linha 46017] rótulo: Access
+lost access card sent wednesday november access card hello please block access card have lost currently using visitor access card require one for any additional information please let know kind regards
+
+[linha 11916] rótulo: Access
+access to confluence for tuesday july pm confluence hi joining please him confluence thanks
+
+[linha 30961] rótulo: Access
+access to password reset friday re hi please kind regards ext leeds leeds hi please kind regards ext leeds leeds please consider environment printing regarded confidential received error please notify destroy immediately statements intent shall become binding confirmed hard copy by signatory contents relate dealings other companies under control details which found
+
+[linha 42710] rótulo: Access
+internal audit leavers vs active ad accounts sent tuesday leavers vs active ad accounts importance high hi according below employees left march based requests their ad accounts were disabled point but somehow these accounts were re enabled please disable their accounts immediately investigate how was possible name name last name date leaving location disabled false false false states false false looking forward results investigation thanks
+
+[linha 13080] rótulo: Access
+new projects on sonar service for repositories friday pm sonar repositories dear please add sonar key repositories thank developer
+
+[linha 23684] rótulo: Access
+git access for pm git hi please git thank senior tester
+
+[linha 445] rótulo: Access
+card related with re card hello la el va lucre la merci
+
+[linha 28749] rótulo: Access
+check activity for client account wednesday october pm undeliverable expire today has failed these groups communication failure occurred during please later problem continues diagnostic information administrators generating remote returned recipient rejected denied return path ode msg ref tower originating version banners checked by tower id wed mime version priority priority urgent importance high date wed expire today content type text content transfer encoding base id
+
+[linha 24106] rótulo: Access
+need visual studio installed december pm visual studio installed hi joiner visual studio work senior architect thanks senior architect tuesday december pm re visual studio installed hello please find visual studio install tools visual studio also please informed assigned visual studio subscription after receive benefits invite please kindly activate subscription please perform sign personal id please create activate visual studio tool option please sign personal please kindly let further assistance needed best regards analyst
+
+
+=== PARTE 2: previstos como Hardware no teste (split e baseline do script 01) ===
+
+--- real Administrative rights, previsto Hardware: 109 no teste, 20 listados ---
+
+[linha 3271] real: Administrative rights  previsto: Hardware  prob_max: 0.5038
+ms word dictionary word dictionary hello guys help regarding word install dictionary word because yet help install help regards consultant main main
+
+[linha 9880] real: Administrative rights  previsto: Hardware  prob_max: 0.4344
+virtual machine snapshot and restore request virtual machine snapshot restore hello having snapshot taken due update os backup upgrade fails way name engineering lead
+
+[linha 14774] real: Administrative rights  previsto: Hardware  prob_max: 0.3720
+software tuesday pm software hello wondering has mocking tool mockingbird sketch appreciate required once recent regards senior tester information
+
+[linha 17197] real: Administrative rights  previsto: Hardware  prob_max: 0.6144
+en replacement tuesday pm hello please person possesses has requested replacement which has approved has which suggests has upgraded recently replace please retrieve reused upgrade other devices currently production consultant
+
+[linha 20091] real: Administrative rights  previsto: Hardware  prob_max: 0.3276
+reinstall windows os tuesday february pm reinstall hello os reinstalled today order thank
+
+[linha 23758] real: Administrative rights  previsto: Hardware  prob_max: 0.7626
+outlook keeps on asking for credentials informed she recently changed her today morning she currently asking repeatedly pm hello la cam tot pass pm si merge pm pm pm pm pm la pm pm la client pm pm tot pm si intra pm si tot pm yep pm ti recent pm pm pm via pm la si pm si pm la ti pm pm ca la pm pm pm pm si file care pm pm pm pm done pm fie pm restart pm yep working pm pm great pm si pm pm la
+
+[linha 27547] real: Administrative rights  previsto: Hardware  prob_max: 0.4335
+tablet issues wednesday october pm issues hi having issues pairing help please let cheers best regards tester
+
+[linha 31042] real: Administrative rights  previsto: Hardware  prob_max: 0.5909
+neon database restore request thursday neon database restore hi please production neon circulation database restored database asap software developer mobile
+
+[linha 34455] real: Administrative rights  previsto: Hardware  prob_max: 0.6317
+meetings are not working out of frankfurt meetings working out frankfurt
+
+[linha 34892] real: Administrative rights  previsto: Hardware  prob_max: 0.3182
+scans from scans dear colleagues noticed fixed failed job related with before after was related with recently upgrade migration please log ticket for please note server already you can results testing here id best regards engineer
+
+[linha 37226] real: Administrative rights  previsto: Hardware  prob_max: 0.4144
+printing issues solved problem helped very much with printer settings issue solved thank you br manager frankfurt main frankfurt main
+
+[linha 37422] real: Administrative rights  previsto: Hardware  prob_max: 0.5188
+failed update failed update hi guys getting message anything need software architect
+
+[linha 37863] real: Administrative rights  previsto: Hardware  prob_max: 0.4075
+buzzers from some doors are not activated when doors remain open sent wednesday physical issues importance high hi today have performed review physical controls place our spaces have found following issues emergency access doors floors closing properly due some mechanical issues have found doors open please raise for work together with our facility manager landlord fix buzzers some doors activated when doors remain open moreover these configured automatically send raise ticket if left open for period please raise another make configuration also for doors intruder alarm armed ooh due some technical issues applies for offices please raise another for make issues solved possible shortly with more details with respect subject thanks
+
+[linha 37887] real: Administrative rights  previsto: Hardware  prob_max: 0.7796
+sound issues solved sound issues solved hi please note we had issues with tv sound during presentation help consider raised issue solved thank you
+
+[linha 39242] real: Administrative rights  previsto: Hardware  prob_max: 0.4374
+very urgent no to outlook and sent thursday very urgent changed password today can start started laptop several times but every same you can reach under mobile number
+
+[linha 39411] real: Administrative rights  previsto: Hardware  prob_max: 0.5212
+issue when opening safari issue when opening safari
+
+[linha 43600] real: Administrative rights  previsto: Hardware  prob_max: 0.7441
+laptop not update windows attached
+
+[linha 43644] real: Administrative rights  previsto: Hardware  prob_max: 0.6453
+id issues eel sent tuesday march id issues eel hey guys colleague tried find eel could only find by last name credentials appear car instead remember also had issue some other tool but can seem remember could you please help by tracking fixing thank you have great communication specialist
+
+[linha 45317] real: Administrative rights  previsto: Hardware  prob_max: 0.8766
+access hello seems unable access mailbox within could you please advise receive connection server lost get following error something went wrong we re having trouble getting your mailbox right please refresh or try again later if problem continues please contact your error data version date already restarted laptop pass seem be was able access other tools require same credentials also note trying connect thank you regards
+
+[linha 46459] real: Administrative rights  previsto: Hardware  prob_max: 0.4598
+wrong account details outlook sent friday november wrong details hello guys problem with details still persists could you please help again thank you very much best regards safety officer sent thursday october wrong details hello guys please note there problem with details job title location could you please correct information displayed with following details title safety officer location center thank you for help provided best regards safety officer
+
+--- real HR Support, previsto Hardware: 172 no teste, 20 listados ---
+
+[linha 3850] real: HR Support  previsto: Hardware  prob_max: 0.3771
+server free space free dear please advise room store additional location store human resources done order expand thank
+
+[linha 4463] real: HR Support  previsto: Hardware  prob_max: 0.4970
+inventory of network equipment switches routes fusion inventory inventory equipment switches routes inventory
+
+[linha 6368] real: HR Support  previsto: Hardware  prob_max: 0.4760
+new desktop hi guys please que build best regards engineer ext
+
+[linha 9602] real: HR Support  previsto: Hardware  prob_max: 0.3704
+responses to be imported from re responses imported thanks gap chart detailed satisfied satisfied also charts loading
+
+[linha 9664] real: HR Support  previsto: Hardware  prob_max: 0.5003
+the server for hi until until thank senior architect
+
+[linha 12344] real: HR Support  previsto: Hardware  prob_max: 0.5913
+pixel on live tuesday july pm pixel hello please queue thank july re pixel hello activated pages mentioned want please let best regards tuesday july pm re pixel hi please turn within these pages more locations location pages example locations central etc think forms let test thank best date tuesday july re pixel hello pages want activate pixel also forms please let which filled thank tuesday july pixel hi please enable pixel environment test active campaigns way gather much more audiences thank best
+
+[linha 17507] real: HR Support  previsto: Hardware  prob_max: 0.5963
+your is ready tuesday thread ready hello guys believe legit poses thread cheers ready hello latest currently performed arc document thank
+
+[linha 18584] real: HR Support  previsto: Hardware  prob_max: 0.4609
+oracle fusion down time notification thursday march pm down hello work requested tomorrow morning prod during application unavailable please details form attached appreciate short notice critical error which has addressed high priority thank understanding kind regards
+
+[linha 19855] real: HR Support  previsto: Hardware  prob_max: 0.6381
+access to needed for friday march re needed hello referring possibly accessing benefits content his bar accessing input grade salary review proposals attached also screen please let other input needed thank kind regards senior software tester thursday march pm re needed hello kindly asking more context information looking forward hearing kindest regards analyst ext hub thursday march pm needed importance high dear please information his thank kind regards senior software tester
+
+[linha 21682] real: HR Support  previsto: Hardware  prob_max: 0.4980
+request thursday february ideally key
+
+[linha 25497] real: HR Support  previsto: Hardware  prob_max: 0.4438
+site decommission friday november pm site decommission hi site old ready decommissioned thank officer
+
+[linha 26310] real: HR Support  previsto: Hardware  prob_max: 0.4745
+career development system provide access for november pm provide hello please provide currently displayed while accessing explorer chrome cleared cookies active please administrator more help allowed sign out thank senior tester
+
+[linha 27324] real: HR Support  previsto: Hardware  prob_max: 0.5134
+welcome day access to october dear friday colleagues since badges please help meeting rooms cafeteria during follow st departure st departure departure departure thanks help
+
+[linha 30897] real: HR Support  previsto: Hardware  prob_max: 0.8508
+access for bucharest space pm hi please help floor he leave give thanks pm re important ne care spatial alt wednesday pm re important ne spatial friday july pm re important sip si wednesday july pm re important sip el thursday pm re important screen thursday re important rug strange declarations secure fie screened shared re important la pot thursday re important thursday important si va maine la la maine se va introduce si face la va client important personal
+
+[linha 33050] real: HR Support  previsto: Hardware  prob_max: 0.4385
+access to the career map link tuesday july map link hi please help granting persons noted link forms grades job titles archives tube maps maps disciplines model view ribbon thank mob ext
+
+[linha 35669] real: HR Support  previsto: Hardware  prob_max: 0.5497
+for error for hi have got problem with for problem integrating with cannot meetings calender there for example have attached message get thank you
+
+[linha 42147] real: HR Support  previsto: Hardware  prob_max: 0.4661
+project reporting sent wednesday hi for set should start forecasting for however unable enter forecast please below how forecast screen looks like let add can normally enter forecast other projects managing date tuesday re thank you tried enter forecast but seems like have privileges fields please advise best
+
+[linha 42367] real: HR Support  previsto: Hardware  prob_max: 0.4777
+for not working cannot sing for error while signing please
+
+[linha 44766] real: HR Support  previsto: Hardware  prob_max: 0.4726
+time sheet issue sent friday sheet issue importance high hi have issue accessing sheet every try log face blank screen chrome explorer can you please assist with thanks kind regards specialist
+
+[linha 45727] real: HR Support  previsto: Hardware  prob_max: 0.6970
+from sent wednesday december importance high hello any below thanks kind regards infrastructure manager annual leave th th december sent wednesday december importance high hello was informed by send stuck queue though every other external being send without any issues could you let know if can be caused by issue reported today we haven started making any changes perspective yet where start with could happen with other clients well though can confirm receiving our clients throughout tried sending test haven received stuck outbox if you could have investigated possible would really appreciate let know if you need further information thanks kind regards infrastructure manager annual leave th th december
+
+saída gravada em solution/03_leitura_fronteira.txt
