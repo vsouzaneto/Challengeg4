@@ -1,0 +1,13 @@
+# Reproduzir a auditoria
+
+Execute a partir de `submissions/dhiego-spinillo/`. Requer Python 3 com biblioteca padrão, `curl` e acesso aos downloads públicos.
+
+```bash
+curl -L --fail 'https://www.kaggle.com/api/v1/datasets/download/suraj520/customer-support-ticket-dataset' -o /tmp/g4-support-dataset1.zip
+curl -L --fail 'https://www.kaggle.com/api/v1/datasets/download/adisongoh/it-service-ticket-classification-dataset' -o /tmp/g4-support-dataset2.zip
+python3 solution/auditar_datasets.py /tmp/g4-support-dataset1.zip /tmp/g4-support-dataset2.zip > /tmp/g4-auditoria-reproduzida.json
+```
+
+Comparar o resultado com `solution/reports/auditoria-datasets.json`. A data embutida no script identifica a auditoria de referência de 15/09/2026; não é um relógio da nova execução. Os endpoints podem mudar de versão: conferir `sha256_csv` antes de esperar números idênticos.
+
+O script não imprime nomes, emails ou mensagens individuais. Não redistribuímos os CSVs neste pacote. Ele verifica os arquivos, não treina um modelo nem mede economia operacional.
