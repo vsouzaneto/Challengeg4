@@ -13,7 +13,7 @@ Purchase                 0.0378
 Administrative rights    0.0371
 
 === 2. chamadas ===
-reutilizadas do cache: 320; chamadas feitas agora: 0; falhas definitivas: 0
+reutilizadas do cache: 320; chamadas feitas agora: 0; falhas definitivas: 0; chave de API não carregada
 cache em solution/cache/gemini-3.1-flash-lite.jsonl
 
 === 3. LLM na amostra ===

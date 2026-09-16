@@ -1,0 +1,89 @@
+=== PARTE 1: seis tickets escritos à mão (limiar 0.7) ===
+
+"My mailbox is full and I cannot receive emails anymore, could you increase the mailbox size please"
+  categoria: Storage  confiança: 0.9775  destino: fila Storage
+  regra: confiança 0.977 >= limiar 0.7
+  caminho esperado: automático; obtido: automático; confere
+
+"I forgot my password for the timecard system and cannot submit my hours, please reset it"
+  categoria: HR Support  confiança: 0.5120  destino: fila humana
+  regra: confiança 0.512 < limiar 0.7
+  caminho esperado: automático; obtido: pessoa por confiança baixa; DIFERE
+
+"New starter joining on Monday, she will need a laptop and a badge for the building"
+  categoria: HR Support  confiança: 0.5867  destino: fila humana
+  regra: conteúdo: pessoa entrando ou saindo ('new starter')
+  caminho esperado: pessoa por conteúdo; obtido: pessoa por conteúdo; confere
+
+"Urgent: the projector in the main meeting room is not working and we have a client presentation in one hour"
+  categoria: Hardware  confiança: 0.9658  destino: fila humana
+  regra: conteúdo: urgência marcada ('urgent')
+  caminho esperado: pessoa por conteúdo; obtido: pessoa por conteúdo; confere
+
+"Please approve the purchase order for 20 new monitors for the finance team"
+  categoria: Miscellaneous  confiança: 0.5807  destino: fila humana
+  regra: confiança 0.581 < limiar 0.7
+  caminho esperado: pessoa por confiança baixa; obtido: pessoa por confiança baixa; confere
+
+"hello how are you"
+  categoria: Hardware  confiança: 0.5389  destino: fila humana
+  regra: confiança 0.539 < limiar 0.7
+  caminho esperado: pessoa por confiança baixa; obtido: pessoa por confiança baixa; confere
+
+caminhos conforme o esperado: 5 de 6
+
+=== PARTE 2: 1000 tickets do teste, semente 7 ===
+para pessoa: 485 de 1000 (0.4850); por regra de conteúdo: 135 (0.1350); por confiança baixa: 350 (0.3500)
+decididos pela máquina: 515 (0.5150)
+barrados por conteúdo que teriam seguido automático pela confiança: 83
+
+acurácia sobre os decididos pela máquina: 0.9573 (n=515)
+por classe real (n = decididos daquela classe; no lote = total da classe nos 1000):
+                       no lote  n decididos  acurácia  fração automática
+real                                                                    
+Access                     144           95    0.9684             0.6597
+Administrative rights       33            8    0.7500             0.2424
+HR Support                 234           86    0.9651             0.3675
+Hardware                   282          163    0.9632             0.5780
+Internal Project            51           25    0.9600             0.4902
+Miscellaneous              150           72    0.9722             0.4800
+Purchase                    44           30    0.9667             0.6818
+Storage                     62           36    0.8889             0.5806
+
+erros automáticos: 22; pares real → previsto mais comuns:
+  Hardware → HR Support: 3
+  Access → Hardware: 2
+  HR Support → Hardware: 2
+  Storage → Hardware: 2
+  Hardware → Access: 1
+  Storage → HR Support: 1
+  HR Support → Miscellaneous: 1
+  Administrative rights → Access: 1
+  Access → Internal Project: 1
+  Storage → Miscellaneous: 1
+
+regras de conteúdo que dispararam (grupo e termo):
+regra
+urgência marcada ('importance high')         35
+pessoa entrando ou saindo ('new starter')    31
+urgência marcada ('urgent')                  27
+urgência marcada ('asap')                    18
+pessoa entrando ou saindo ('leaver')         11
+pessoa entrando ou saindo ('maternity')       4
+segurança física ('door')                     3
+segurança física ('badge')                    3
+conta e privilégio ('disable account')        1
+segurança física ('alarm')                    1
+auditoria ou incidente ('audit')              1
+
+classe real dos tickets barrados por conteúdo:
+real
+HR Support               59
+Hardware                 35
+Access                   15
+Miscellaneous            12
+Storage                   8
+Administrative rights     3
+Internal Project          3
+
+saída gravada em solution/07_avaliacao_prototipo.txt

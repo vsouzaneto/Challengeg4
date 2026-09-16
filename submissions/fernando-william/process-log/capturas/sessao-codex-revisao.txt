@@ -1,0 +1,339 @@
+(scrollback do terminal da revisão independente com o Codex)
+
+╭───────────────────────────────────────────────╮
+│ >_ OpenAI Codex (v0.154.0)                    │
+│                                               │
+│ model:       gpt-6-astra   /model to change   │
+│ directory:   ~/…/submissions/fernando-william │
+│ permissions: YOLO mode                        │
+╰───────────────────────────────────────────────╯
+
+  Tip: This is GPT-6, a new generation of intelligence. Astra is state-of-the-art in coding, computer use, science, and professional work. Give it a hard problem, a half-formed idea, or anything you've
+  been meaning to build. See where it takes you.
+
+⚠ Heads up, you have less than 10% of your weekly limit left. Run /status for a breakdown.
+
+• Model changed to gpt-5.6-sol medium
+
+
+› Revise esta submissão como um avaliador cético que vai clonar o repositório sem nenhuma credencial. Não altere nenhum arquivo. Verifique, e liste em tabela com arquivo e linha: números do README que não
+  batem com as saídas em solution/*.txt; afirmações sem teste que as sustente; instruções de setup que não funcionariam; caminhos absolutos ou referências a máquina pessoal em qualquer arquivo; arquivos
+  que não deveriam estar versionados; inconsistências entre o diário e o que os scripts mostram; e o que um Diretor de Operações não entenderia no Executive Summary. Ao fim, diga os três pontos mais
+  fracos da entrega.
+
+
+• Vou auditar a submissão somente por leitura e execução não destrutiva. Vou primeiro mapear os arquivos e as instruções locais, depois confrontar README, saídas, scripts, diário, setup e estado
+  versionado; qualquer execução será feita sem editar dados ou artefatos do projeto.
+
+• Ran pwd && rg --files -g 'AGENTS.md' -g '!**/.venv/**' -g '!**/.git/**' .. | sed -n '1,80p' && git status --short --ignored && rg --files -g '!**/.venv/**' -g '!**/.git/**' | sort
+  └ ./
+    ../fernando-william/AGENTS.md
+    … +34 lines (ctrl + t to view transcript)
+    solution/data/derived/split_treino.csv
+    solution/data/derived/triagem_lote.csv
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+• O primeiro ponto material já apareceu: o diretório está sob regras de ignore do repositório pai, então “presente no clone” precisa ser determinado por git ls-files, não pela listagem local. Também há uma
+  alteração local no diário; vou separar o que está efetivamente versionado do que existe apenas nesta máquina e não atribuir conteúdo local não rastreado ao clone.
+
+• Explored
+  └ Read README.md, requirements.txt, piloto.md, diario.md
+
+• Ran git rev-parse --show-toplevel && git ls-files --stage -- . && git check-ignore -v README.md requirements.txt solution/data/customer_support_tickets.csv solution/data/derived/modelo.joblib
+  │ process-log/capturas/sessao-agente-scrollback.txt process-log/diario.md || true
+  └ <caminho-pessoal>
+    100644 1d6a3ad6744ad2160b723a99ad443c7d6542a4eb 0    .env.example
+    … +29 lines (ctrl + t to view transcript)
+    .gitignore:16:submissions/    solution/data/derived/modelo.joblib
+    .gitignore:16:submissions/    process-log/capturas/sessao-agente-scrollback.txt
+
+• Ran for f in solution/*.txt; do nl -ba "$f"; done
+  └      1
+         2    === 1. customer_support_tickets.csv: dimensões e nulos ===
+    … +1409 lines (ctrl + t to view transcript)
+        78
+        79    saída gravada em solution/05_llm_amostra_fewshot3.txt
+
+• Ran for f in solution/*.py; do nl -ba "$f"; done
+  └      1    # Modelo escolhido para o protótipo: gemini-3.1-flash-lite.
+         2    # Motivo: mais barato disponível nesta conta em 16/09/2026 (US$ 0,25 entrada e
+    … +1304 lines (ctrl + t to view transcript)
+       127    if __name__ == "__main__":
+       128        main()
+
+• Ran for f in solution/*.txt; do echo "FILE $f"; sed -n '1,260p' "$f"; done
+  └ FILE solution/01_auditoria_dados.txt
+
+    … +894 lines (ctrl + t to view transcript)
+
+    saída gravada em solution/05_llm_amostra_fewshot3.txt
+
+• Explored
+  └ Search (<caminho-pessoal>) in HEAD
+    Search (<caminho-pessoal>) in .
+    Read diario.md, piloto.md
+
+• Ran git ls-files -z -- . | xargs -0 -r du -h | sort -h; nl -ba .gitignore; nl -ba .env.example; git log --oneline --decorate -- . | sed -n '1,80p'; git diff -- process-log/diario.md
+  └ 0    CLAUDE.md
+    0    solution/data/derived/.gitkeep
+    … +66 lines (ctrl + t to view transcript)
+
+     Primeiramente escolhi este desafio por ser parecido com algo que já lido no dia-a-dia e tambem por conter maior variedade de aspectos a serem avaliados para a vaga.
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+• A comparação já mostra duas classes de problema: alguns números do README reproduzem corretamente as saídas, mas há afirmações mais fortes que o teste permite (por exemplo, “todas as datas dentro de 27
+  horas” quando a própria saída mostra amplitudes ligeiramente diferentes e dois intervalos distintos). Mais grave para o avaliador sem credenciais: o README e o transcript anunciados não fazem parte do
+  índice Git atual. Agora estou validando a reprodução em um clone limpo e procurando falhas de execução que os artefatos locais mascaram.
+
+• Explored
+  └ Search (<caminho-pessoal>) in HEAD
+    Search <caminho-pessoal> in home
+
+• Ran git ls-files -z -- . | xargs -0 -r du -h | sort -h; nl -ba .gitignore; nl -ba .env.example; git log --oneline --decorate -- . | sed -n '1,80p'
+  └ 0    CLAUDE.md
+    0    solution/data/derived/.gitkeep
+    … +50 lines (ctrl + t to view transcript)
+    d8b61b4 Auditoria dos dois datasets: o que sobrevive e o que sai do diagnóstico
+    923248a Setup do ambiente e hipóteses iniciais antes da análise dos dados
+
+• Explored
+  └ Read 01_auditoria_dados.txt, 04_classificador.txt, 05_llm_amostra.txt, 05_llm_amostra_fewshot3.txt
+
+• Ran for f in solution/*.txt; do echo "FILE $f"; rg -n '^===|linhas:|acurácia|macro|dedup|duplic|limiar|cobertura|decide|abst|Administrative|Hardware|fora|saída gravada|McNemar|custo por mil|reutilizadas|
+  │ chamadas feitas|falhas|teste:|amostra:|PREMISSAS|RESULTADO PRINCIPAL|horas líquidas|fração de FTE|grupos|rótulo' "$f"; done
+  └ FILE solution/01_auditoria_dados.txt
+    2:=== 1. customer_support_tickets.csv: dimensões e nulos ===
+    … +305 lines (ctrl + t to view transcript)
+    77:cascata: TF-IDF decide, LLM só nos 47.2% em que abstém               0.6969              0.6179        0.9729         0.1769
+    79:saída gravada em solution/05_llm_amostra_fewshot3.txt
+
+• Ran git show HEAD:submissions/fernando-william/process-log/diario.md | nl -ba | sed -n '1,230p'; git show HEAD:submissions/fernando-william/.gitignore | nl -ba; git show HEAD:submissions/
+  │ fernando-william/AGENTS.md | nl -ba
+  └      1    # Diário Desafio AI Master 002
+         2    ## 16 de Setembro de 2026 15:21 gmt-3
+    … +203 lines (ctrl + t to view transcript)
+        32    Git: só arquivos dentro desta pasta. A raiz do repositório ignora `submissions/`, então `git add .` não adiciona nada; usar `git add -f` caminho a caminho. Não fazer commit nem push sem eu
+    pedir.
+
+• Explored
+  └ Read 05_llm_amostra.py, 04_classificador.py, 02_modelo_custo.py
+
+• Ran git ls-files -- . | while read f; do if [ -f "$f" ]; then file -b "$f"; fi; done | sort | uniq -c; git status --short; git status --short --ignored | sed -n '1,100p'
+  └ /bin/bash: line 1: file: command not found
+    /bin/bash: line 1: file: command not found
+    … +34 lines (ctrl + t to view transcript)
+    !! solution/data/customer_support_tickets.csv
+    !! solution/data/derived/modelo.joblib
+
+• Ran python3 --version; .venv/bin/python --version 2>/dev/null || true; .venv/bin/python - <<'PY'
+  │ import pandas,numpy,sklearn,scipy,matplotlib,requests,joblib
+  │ for x in [pandas,numpy,sklearn,scipy,matplotlib,requests,joblib]: print(x.__name__, x.__version__)
+  │ … +2 lines
+  └ pandas 3.0.5
+    numpy 2.5.3
+    … +9 lines (ctrl + t to view transcript)
+    {"indice": 108, "sha256_prompt": "c0e236e0936e7fb18e1b29423498a4e8b19585c1223dc026feab5f85c51f89e2", "hora_utc": "2026-09-16T22:02:40+00:00", "resposta": "Purchase", "finishReason": "STOP",
+    "promptTokenCount": 1475, "candidatesTokenCount": 1, "thoughtsTokenCount": null, "totalTokenCount": 1476}
+
+• Explored
+  └ Read 00_teste_chave_gemini.py, 03_leitura_fronteira.py, 01_auditoria_dados.py, 02_modelo_custo.py, 05_llm_amostra.py, 06_triagem.py
+
+• Ran git check-ignore -v README.md process-log/chat-exports/2026-09-16-claude-code-59e4f0d6-9046-452e-9a8b-e575b37994c6.md process-log/capturas/sessao-agente-scrollback.txt solution/data/
+  │ customer_support_tickets.csv solution/data/all_tickets_processed_improved_v3.csv solution/data/derived/modelo.joblib solution/__pycache__/* 2>/dev/null || true; git ls-files --error-unmatch README.md
+  │ >/dev/null 2>&1; echo "README_tracked=$?"; git ls-files --error-unmatch process-log/chat-exports/2026-09-16-claude-code-59e4f0d6-9046-452e-9a8b-e575b37994c6.md >/dev/null 2>&1; echo "chat_tracked=$?"
+  └ .gitignore:16:submissions/    README.md
+    .gitignore:16:submissions/    process-log/chat-exports/2026-09-16-claude-code-59e4f0d6-9046-452e-9a8b-e575b37994c6.md
+    … +6 lines (ctrl + t to view transcript)
+    README_tracked=1
+    chat_tracked=1
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+• Há um defeito de reprodução independente dos dados: 05_llm_amostra.py exige GEMINI_API_KEY antes de consultar o cache, embora o README diga que a chave só é necessária para chamadas novas. Também
+  confirmei que a regra descrita como seis grupos tem apenas cinco grupos no protótipo e omite “custo com aprovação”. Vou fechar a auditoria com um ensaio de clone no commit atual, para distinguir falhas
+  comprovadas de riscos metodológicos.
+
+• Ran set -u
+  │ AUDIT_DIR=$(mktemp -d /tmp/fernando-audit.XXXXXX)
+  │ git clone --quiet --no-local --branch submission/fernando-william "$(git rev-parse --show-toplevel)" "$AUDIT_DIR/repo"
+  │ … +22 lines
+  └ exit=1; Traceback (most recent call last):
+    02_modelo_custo.py: exit=1; Traceback (most recent call last):
+    03_leitura_fronteira.py: exit=1; Traceback (most recent call last):
+    04_classificador.py: exit=1; Traceback (most recent call last):
+    05_with_data_no_key: exit=1; erro: GEMINI_API_KEY não encontrada no ambiente nem em nenhum .env acima deste arquivo
+
+• Ran nl -ba $(git rev-parse --show-toplevel)/.gitignore | sed -n '1,60p'; readlink CLAUDE.md; nl -ba solution/data/derived/triagem_lote.csv | sed -n '1,12p'; nl -ba solution/data/derived/split_teste.csv |
+  │ sed -n '1,8p'; nl -ba solution/data/derived/split_treino.csv | sed -n '1,8p'
+  └      1    # Private scoring (never commit)
+         2    _internal/
+    … +41 lines (ctrl + t to view transcript)
+         7    35160
+         8    23301
+
+• Explored
+  └ Read 01_auditoria_dados.txt, 02_modelo_custo.txt, 04_classificador.txt
+    Search (api[_ -]?key|token|secret|password|senha|credential|bearer|AIza[0-9A-Za-z_-]{20,}) in .
+
+• Ran git diff --check; git fsck --no-reflogs --unreachable 2>/dev/null | sed -n '1,30p'; git status --porcelain=v1 --untracked-files=all | sed -n '1,120p'
+  └  M submissions/fernando-william/process-log/diario.md
+
+• Explored
+  └ Search <caminho-pessoal> in home
+    Search GEMINI_API_KEY=[^[:space:]]+ in AIza[0-9A-Za-z_-]{20,}
+    Search ./.venv in .
+
+• Ran rg -n -a -m 5 -e '<caminho-pessoal>' -e '<padrão>' .venv/bin .venv/pyvenv.cfg 2>/dev/null | sed -n '1,40p' || true
+  └ .venv/pyvenv.cfg:5:command = /usr/bin/python3 -m venv ./.venv
+    .venv/bin/pyftmerge:1:#!./.venv/bin/python3
+    … +12 lines (ctrl + t to view transcript)
+    .venv/bin/pyftsubset:1:#!./.venv/bin/python3
+    .venv/bin/pip:1:#!./.venv/bin/python3
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+• Revisei o worktree atual, o índice Git e um clone temporário do commit 5cd6f0c, sem alterar a submissão. O clone limpo não é avaliável como entregue: não contém README, dados, transcript nem modelo e os
+  quatro primeiros scripts falham imediatamente por ausência dos CSVs.
+
+  Os principais números — 8.469 linhas, 49,3%, 47.837 tickets, 4.955 removidos, 84,0%, cobertura de 59,7%, acurácia seletiva de 96,3% e 0,45–1,29 FTE — correspondem às saídas. Os problemas estão na forma
+  de descrevê-los, na reprodução e em conclusões mais fortes que os testes.
+
+   Gravidade      Categoria                          Arquivo e linha                                                              Constatação
+  ━━━━━━━━━━━━━  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Crítica        Clone/setup                        README.md:1, .gitignore do repositório (<caminho-pessoal>    O README existe localmente, mas não está versionado. Um clone do commit
+                                                     <raiz-do-clone>/.gitignore:16)                                não recebe qualquer instrução de instalação, reprodução ou leitura dos
+                                                                                                                                  resultados.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Crítica        Clone/setup                        README.md:154                                                                Os dois CSVs não estão versionados e a instrução dá apenas nomes genéricos
+                                                                                                                                  de datasets do Kaggle: faltam links, versões, hashes, nomes exatos após
+                                                                                                                                  download e alternativa sem login. No clone, scripts 01–04 terminam com
+                                                                                                                                  FileNotFoundError.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Alta           Clone/setup                        README.md:154, solution/05_llm_amostra.py:226                                “Usa o cache; a chave só é necessária para chamadas novas” é falso. O
+                                                                                                                                  script chama carregar_chave() antes de ler o cache. Com os dados presentes
+                                                                                                                                  e sem credencial, confirmei saída imediata por falta de GEMINI_API_KEY.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Alta           Evidência ausente                  README.md:103, README.md:142                                                 O transcript integral é anunciado duas vezes, mas process-log/chat-
+                                                                                                                                  exports/ não está versionado e desaparece no clone.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Alta           Evidência ausente                  README.md:146                                                                process-log/revisao-independente.md é marcado como concluído, mas o
+                                                                                                                                  arquivo não existe nem no worktree.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Média          Evidência ausente                  README.md:144                                                                “Saídas de todos os scripts” não procede: não existem saídas versionadas
+                                                                                                                                  para 00_teste_chave_gemini.py e 06_triagem.py.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Média          Entrega incompleta                 README.md:97, README.md:158                                                  Permaneceram os placeholders [preencher no fim] e [data].
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Alta           Número do README                   README.md:13, solution/04_classificador.txt:5,                               “Treinado nos 48 mil tickets” não descreve a execução final: entram
+                                                     solution/04_classificador.txt:20                                             47.837, restam 42.882 após deduplicação e apenas 34.305 compõem o treino.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Baixa          Número do README                   README.md:13, solution/01_auditoria_dados.txt:51                             “Todas as datas […] dentro de 27 horas” é arredondamento apresentado como
+                                                                                                                                  limite exato. A amplitude de resolução é 1 day 03:02:03, isto é, 27 h 02
+                                                                                                                                  min.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Média          Número/escopo                      README.md:76, solution/05_llm_amostra_fewshot3.txt:58                        p < 10⁻⁹ vale para zero-shot. No experimento com três exemplos, o McNemar
+                                                                                                                                  exato é 1,907 × 10⁻⁷. O texto fica ambíguo depois de apresentar ambos os
+                                                                                                                                  LLMs.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Alta           Afirmação sem teste                README.md:54, solution/04_classificador.py:127                               A queda de 1,8 ponto existe, mas não foi demonstrado que seja “por
+                                                                                                                                  vazamento”. Comparam-se dois conjuntos e splits diferentes; deduplicação
+                                                                                                                                  também muda tamanho, prevalência e dificuldade.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Alta           Validação                          README.md:62, solution/04_classificador.py:137                               O limiar 0,70 foi escolhido olhando a curva do próprio conjunto de teste e
+                                                                                                                                  os 96,3% são reportados nesse mesmo conjunto. Falta validação independente
+                                                                                                                                  do limiar; a estimativa está sujeita a viés de seleção.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Alta           Afirmação sem teste                README.md:44                                                                 “47.837 tickets reais” não é sustentado por teste ou documentação
+                                                                                                                                  versionada de procedência. O script comprova linhas e categorias, não que
+                                                                                                                                  sejam tickets reais nem representativos da operação descrita.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Alta           Extrapolação                       solution/02_modelo_custo.py:22, solution/02_modelo_custo.py:64               O custo combina 30 mil tickets afirmados pela área com a composição de
+                                                                                                                                  outro dataset de TI. Não há teste de que as oito categorias, sua
+                                                                                                                                  prevalência ou o desempenho do classificador representem a operação
+                                                                                                                                  multicanal.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Alta           Afirmação sem teste                README.md:50                                                                 A leitura manual sugere rótulos ruins, mas “recall de 0,61 é teto do
+                                                                                                                                  rótulo, não do modelo” exigiria reanotação independente e medição de
+                                                                                                                                  concordância. Ler vinte erros não estabelece um teto.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Média          Afirmação sem teste                README.md:27                                                                 As anomalias sustentam “provavelmente sintético”; não provam
+                                                                                                                                  categoricamente que “o arquivo é gerado”.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Alta           Regra não validada                 README.md:48, solution/06_triagem.py:31                                      As regras de conteúdo não têm teste de cobertura, falsos positivos ou
+                                                                                                                                  falsos negativos. Além disso, o README promete seis grupos, mas o código
+                                                                                                                                  implementa cinco e omite “custo com aprovação”.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Alta           Generalização                      README.md:91                                                                 “Não contratar LLM” é mais amplo que o experimento: foi testado um modelo,
+                                                                                                                                  com dois prompts, numa amostra de 320 tickets e uma taxonomia. Sustenta
+                                                                                                                                  retirar esse modelo desta arquitetura, não uma proibição geral.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Média          Premissa sem fonte                 docs/piloto.md:17                                                            “15 minutos por dia” de revisão não tem cálculo, teste ou fonte. Também
+                                                                                                                                  não entra no modelo econômico.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Alta           Piloto                             docs/piloto.md:13, docs/piloto.md:15                                         Não se explica como selecionar antecipadamente tickets de Access sem já
+                                                                                                                                  classificá-los, nem unidade de randomização, tamanho final por grupo,
+                                                                                                                                  efeito mínimo ou tratamento de contaminação entre filas.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Média          Afirmação sem teste                docs/piloto.md:5, README.md:84                                               Ausência de colunas na extração não prova que o sistema atual “guarda […]
+                                                                                                                                  nada mais” ou que os três registros não existem em outras tabelas ou logs.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Alta           Diário × README                    process-log/diario.md:4, README.md:21                                        O README diz que as hipóteses foram escritas “antes de abrir qualquer
+                                                                                                                                  arquivo”; o diário atual admite que os dois arquivos já haviam sido
+                                                                                                                                  abertos com um assistente. Essa correção do diário também está apenas no
+                                                                                                                                  worktree, não no commit clonado.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Alta           Diário × saída                     process-log/diario.md:40, solution/01_auditoria_dados.txt:555                O diário afirma que todas as datas caem em 2023-06-01; a saída mostra três
+                                                                                                                                  dias, com 175/38 respostas e 99/21 resoluções nos dias adjacentes.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Alta           Diário × protótipo                 process-log/diario.md:96, solution/06_triagem.py:74                          O diário diz que o fluxo ganhou uma trava de fora de domínio. O protótipo
+                                                                                                                                  só usa palavras-chave e confiança; não implementa detector ou trava de
+                                                                                                                                  fora de domínio.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Média          Diário × piloto                    process-log/diario.md:96, docs/piloto.md:13                                  O diário diz que o piloto mede reversão em Hardware; o plano limita o
+                                                                                                                                  piloto a Access e recomenda explicitamente não começar por Hardware.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Média          Evidência do protótipo             process-log/diario.md:147                                                    Os três testes ponta a ponta são relatados no diário, mas não há saída do
+                                                                                                                                  script 06 versionada para conferência.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Média          Arquivo versionado questionável    solution/data/derived/triagem_lote.csv:1, solution/06_triagem.py:98          triagem_lote.csv é resultado de uma execução sobre um arquivo de entrada
+                                                                                                                                  não identificado nem fornecido. Sem fixture ou instrução de reprodução,
+                                                                                                                                  parece artefato circunstancial e deveria ser removido ou ter sua origem
+                                                                                                                                  documentada.
+  ─────────────  ─────────────────────────────────  ───────────────────────────────────────────────────────────────────────────  ────────────────────────────────────────────────────────────────────────────
+   Informativa    Caminhos pessoais                  .venv/pyvenv.cfg:5                                                           A .venv local contém caminhos absolutos <caminho-pessoal> como
+                                                                                                                                  é normal em ambientes virtuais. Ela está corretamente ignorada e não
+                                                                                                                                  aparece no clone. Não encontrei caminhos absolutos ou referências à
+                                                                                                                                  máquina pessoal em arquivos versionados.
+
+  Não encontrei credencial exposta, modelo.joblib, CSV bruto, __pycache__ ou ambiente virtual indevidamente versionado. Os caches do Gemini contêm índice, hash, resposta e contagem de tokens, sem chave nem
+  prompt; sua inclusão é coerente com a regra declarada do projeto. Os splits e demais derivados são reproduzíveis, mas aceitáveis como evidência conforme a convenção adotada.
+
+  No Executive Summary, um Diretor de Operações provavelmente tropeçaria nestes pontos:
+
+   Arquivo e linha    O que não fica claro
+  ━━━━━━━━━━━━━━━━━  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   README.md:13       FTE, LLM, “classificador simples”, “decide 60%” e “96% de acerto” não são traduzidos. É preciso dizer que 96% vale apenas para os tickets aceitos pelo modelo, num dataset externo de
+                      TI.
+  ─────────────────  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   README.md:13       “0,45 a 1,29 pessoa por ano” parece redução de quadro. O cálculo representa capacidade teórica de triagem, baseada em premissas de 3–8 minutos, não pessoas elimináveis.
+  ─────────────────  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   README.md:13       Não há baseline operacional: quanto tempo a triagem representa hoje, qual fila será afetada e qual resultado do negócio se espera em 30 dias.
+  ─────────────────  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   README.md:13       “Três registros novos” não nomeia os campos, o responsável pela instrumentação nem o critério de sucesso.
+  ─────────────────  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   README.md:13       A principal limitação executiva fica escondida: a entrega não respondeu onde se perde tempo e o ganho financeiro da automação ainda não foi validado na operação.
+
+  Os três pontos mais fracos da entrega são:
+
+  1. O clone está incompleto e não reproduz a submissão. O próprio README, os dados identificáveis, o transcript e a revisão anunciada não chegam ao avaliador; mesmo com os CSVs copiados, o teste de cache
+     do LLM exige credencial indevidamente.
+
+  2. As métricas centrais têm validação insuficiente para a decisão proposta. O limiar foi escolhido e medido no mesmo teste, o custo extrapola a composição de outro dataset para a operação de 30 mil
+     tickets, e as regras humanas não foram avaliadas.
+
+  3. A narrativa promete controles que o protótipo não implementa. Faltam a trava de fora de domínio e a regra de custo/aprovação; o plano de piloto ainda não define como identificar a população de Access
+     nem como medir um efeito confiável.
+
+─ Worked for 5m 11s ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────

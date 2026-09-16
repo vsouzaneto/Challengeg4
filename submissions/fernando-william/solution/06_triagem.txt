@@ -1,0 +1,26 @@
+=== ticket 1: acesso comum, texto escrito à mão, passado por argumento ===
+entrada: Hi, I cannot log in to Confluence since this morning, my password is rejected. Could you reset it for me? Thanks
+categoria: Access
+confiança: 0.9308
+destino: fila Access
+regra: confiança 0.931 >= limiar 0.7
+
+=== ticket 2: linha 42710 de all_tickets_processed_improved_v3.csv (rótulo Access), passado por stdin ===
+entrada: internal audit leavers vs active ad accounts sent tuesday leavers vs active ad accounts importance high hi according below employees left march based requests their ad accounts were disabled point but somehow these accounts were re enabled please disable their accounts immediately investigate how was possible name name last name date leaving location disabled false false false states false false looking forward results investigation thanks
+categoria: Access
+confiança: 0.7558
+destino: fila humana
+regra: conteúdo: auditoria ou incidente ('audit')
+
+=== ticket 3: linha 0 de customer_support_tickets.csv, placeholder substituído por Product Purchased, passado por stdin ===
+entrada: I'm having an issue with the GoPro Hero. Please assist.
+
+Your billing zip code is: 71701.
+
+We appreciate that you have requested a website address.
+
+Please double check your email address. I've tried troubleshooting steps mentioned in the user manual, but the issue persists.
+categoria: Hardware
+confiança: 0.6685
+destino: fila humana
+regra: confiança 0.669 < limiar 0.7

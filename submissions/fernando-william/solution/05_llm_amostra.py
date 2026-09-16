@@ -223,7 +223,7 @@ def main():
     print(prevalencia.round(4).to_string())
 
     # ------------------------------------------------------------ chamadas
-    chave = carregar_chave()
+    chave = None  # carregada só na primeira chamada nova; com cache completo o script roda sem chave
     cache = ler_cache()
     n_cache, n_chamadas, n_erros = 0, 0, 0
     registros = {}
@@ -235,6 +235,8 @@ def main():
             n_cache += 1
             registros[indice] = reg
             continue
+        if chave is None:
+            chave = carregar_chave()
         parcial, erro = chamar(chave, prompt)
         n_chamadas += 1
         reg = {"indice": int(indice), "sha256_prompt": h,
@@ -249,7 +251,8 @@ def main():
         print(f"  chamada {n_chamadas}: índice {indice} {'ERRO ' + erro if erro else 'ok'}", file=sys.stderr)
         time.sleep(PAUSA_S)
     print(f"\n=== 2. chamadas ===")
-    print(f"reutilizadas do cache: {n_cache}; chamadas feitas agora: {n_chamadas}; falhas definitivas: {n_erros}")
+    print(f"reutilizadas do cache: {n_cache}; chamadas feitas agora: {n_chamadas}; falhas definitivas: {n_erros}; "
+          f"chave de API {'carregada' if chave else 'não carregada'}")
     print(f"cache em {CACHE.relative_to(AQUI.parent)}")
 
     # ------------------------------------------------------------ resultado
