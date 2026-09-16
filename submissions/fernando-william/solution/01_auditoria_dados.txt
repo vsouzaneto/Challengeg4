@@ -1,0 +1,635 @@
+
+=== 1. customer_support_tickets.csv: dimensões e nulos ===
+linhas: 8469  colunas: 17
+nulos por coluna:
+Ticket ID                          0
+Customer Name                      0
+Customer Email                     0
+Customer Age                       0
+Customer Gender                    0
+Product Purchased                  0
+Date of Purchase                   0
+Ticket Type                        0
+Ticket Subject                     0
+Ticket Description                 0
+Ticket Status                      0
+Resolution                      5700
+Ticket Priority                    0
+Ticket Channel                     0
+First Response Time             2819
+Time to Resolution              5700
+Customer Satisfaction Rating    5700
+
+=== 2. nulos cruzados com Ticket Status ===
+
+Customer Satisfaction Rating (True = nulo):
+Customer Satisfaction Rating  False  True   All
+Ticket Status                                  
+Closed                         2769     0  2769
+Open                              0  2819  2819
+Pending Customer Response         0  2881  2881
+All                            2769  5700  8469
+
+First Response Time (True = nulo):
+First Response Time        False  True   All
+Ticket Status                               
+Closed                      2769     0  2769
+Open                           0  2819  2819
+Pending Customer Response   2881     0  2881
+All                         5650  2819  8469
+
+Time to Resolution (True = nulo):
+Time to Resolution         False  True   All
+Ticket Status                               
+Closed                      2769     0  2769
+Open                           0  2819  2819
+Pending Customer Response      0  2881  2881
+All                         2769  5700  8469
+
+=== 3. datas ===
+Date of Purchase: não nulos 8469, falhas de parse 0, min 2020-01-01 00:00:00, max 2021-12-30 00:00:00, amplitude 729 days 00:00:00
+First Response Time: não nulos 5650, falhas de parse 0, min 2023-05-31 21:55:39, max 2023-06-02 00:54:21, amplitude 1 days 02:58:42
+Time to Resolution: não nulos 2769, falhas de parse 0, min 2023-05-31 21:53:30, max 2023-06-02 00:55:33, amplitude 1 days 03:02:03
+tickets Closed: 2769; com as duas datas: 2769; Time to Resolution anterior a First Response Time: 1365 (fração 0.4930)
+diferença (Time to Resolution - First Response Time) em horas, n=2769: {'q5': -16.22, 'q25': -6.93, 'q50': 0.17, 'q75': 6.48, 'q95': 16.06}
+
+=== 4. distribuições categóricas e qui-quadrado de uniformidade (Bonferroni) ===
+
+Ticket Type: 5 categorias, n=8469, chi2=7.43, gl=4, p=0.1149, p_bonferroni=0.8043
+Ticket Type
+Refund request          1752
+Technical issue         1747
+Cancellation request    1695
+Product inquiry         1641
+Billing inquiry         1634
+
+Ticket Priority: 4 categorias, n=8469, chi2=4.59, gl=3, p=0.2048, p_bonferroni=1
+Ticket Priority
+Medium      2192
+Critical    2129
+High        2085
+Low         2063
+
+Ticket Channel: 4 categorias, n=8469, chi2=1.35, gl=3, p=0.7179, p_bonferroni=1
+Ticket Channel
+Email           2143
+Phone           2132
+Social media    2121
+Chat            2073
+
+Ticket Status: 3 categorias, n=8469, chi2=2.23, gl=2, p=0.3279, p_bonferroni=1
+Ticket Status
+Pending Customer Response    2881
+Open                         2819
+Closed                       2769
+
+Product Purchased: 42 categorias, n=8469, chi2=40.82, gl=41, p=0.4784, p_bonferroni=1
+Product Purchased
+Canon EOS                         240
+GoPro Hero                        228
+Nest Thermostat                   225
+Philips Hue Lights                221
+Amazon Echo                       221
+LG Smart TV                       219
+Sony Xperia                       217
+Roomba Robot Vacuum               216
+LG OLED                           213
+Apple AirPods                     213
+iPhone                            212
+Sony 4K HDR TV                    210
+LG Washing Machine                208
+Garmin Forerunner                 208
+Canon DSLR Camera                 206
+Nikon D                           204
+Nintendo Switch Pro Controller    203
+Google Pixel                      203
+Sony PlayStation                  202
+Fitbit Charge                     202
+Microsoft Office                  200
+HP Pavilion                       200
+Dyson Vacuum Cleaner              198
+Amazon Kindle                     198
+Google Nest                       198
+Bose SoundLink Speaker            197
+Autodesk AutoCAD                  196
+Microsoft Xbox Controller         196
+Samsung Galaxy                    194
+PlayStation                       192
+Fitbit Versa Smartwatch           191
+Microsoft Surface                 190
+Bose QuietComfort                 190
+Samsung Soundbar                  188
+Xbox                              187
+Asus ROG                          187
+MacBook Pro                       186
+Dell XPS                          185
+GoPro Action Camera               183
+Lenovo ThinkPad                   183
+Adobe Photoshop                   181
+Nintendo Switch                   178
+
+Ticket Subject: 16 categorias, n=8469, chi2=27.86, gl=15, p=0.02248, p_bonferroni=0.1573
+Ticket Subject
+Refund request              576
+Software bug                574
+Product compatibility       567
+Delivery problem            561
+Hardware issue              547
+Battery life                542
+Network problem             539
+Installation support        530
+Product setup               529
+Payment issue               526
+Product recommendation      517
+Account access              509
+Peripheral compatibility    496
+Data loss                   491
+Cancellation request        487
+Display issue               478
+
+Customer Satisfaction Rating: 5 categorias, n=2769, chi2=1.67, gl=4, p=0.7968, p_bonferroni=1
+Customer Satisfaction Rating
+3.0    580
+1.0    553
+2.0    549
+5.0    544
+4.0    543
+
+=== 5. tempos em horas por canal, prioridade e tipo (mediana e q90) ===
+definições: resolucao_h = Time to Resolution - First Response Time; primeira_resposta_h = First Response Time - Date of Purchase (não existe coluna de abertura do ticket)
+
+por Ticket Channel:
+                n_primeira  primeira_mediana  primeira_q90  n_resolucao  resolucao_mediana  resolucao_q90
+Ticket Channel                                                                                           
+Chat                  1388          21467.72      28149.20          674               0.52          12.95
+Email                 1442          21226.54      28493.37          720               0.37          12.72
+Phone                 1396          21433.47      28312.85          691              -0.78          11.75
+Social media          1424          20951.26      28287.86          684               0.35          14.13
+
+por Ticket Priority:
+                 n_primeira  primeira_mediana  primeira_q90  n_resolucao  resolucao_mediana  resolucao_q90
+Ticket Priority                                                                                           
+Critical               1437          21307.63      28197.92          726               0.35          12.44
+High                   1381          21264.97      28558.93          705               0.07          14.07
+Low                    1367          21324.20      28096.96          644               0.35          13.36
+Medium                 1465          21186.92      28355.62          694              -0.30          11.62
+
+por Ticket Type:
+                      n_primeira  primeira_mediana  primeira_q90  n_resolucao  resolucao_mediana  resolucao_q90
+Ticket Type                                                                                                    
+Billing inquiry             1095          21103.23      28427.79          544               0.11          11.58
+Cancellation request        1113          21381.13      28177.08          516               0.39          13.11
+Product inquiry             1109          21498.08      28405.84          533              -0.48          12.15
+Refund request              1188          21230.48      28264.57          596               0.26          13.92
+Technical issue             1145          21073.36      28391.52          580               0.48          12.96
+
+=== 6. Customer Satisfaction Rating: ANOVA e correlações ===
+linhas com nota: 2769
+ANOVA nota ~ Ticket Channel: k=4, F=1.2808, p=0.2792
+ANOVA nota ~ Ticket Priority: k=4, F=0.5722, p=0.6333
+ANOVA nota ~ Ticket Type: k=5, F=0.5475, p=0.7008
+ANOVA nota ~ Ticket Subject: k=16, F=0.6766, p=0.81
+fechados com nota e resolucao_h: n=2769; Pearson r=0.0199 p=0.2958; Spearman rho=0.0217 p=0.2539
+
+=== 7. Ticket Description: placeholder e cardinalidade ===
+linhas com '{product_purchased}' literal: 8469 (fração 1.0000)
+textos distintos antes da substituição: 8077
+textos distintos depois da substituição: 8398
+primeiras frases distintas (texto até o primeiro . ! ou ?): 16
+primeiras frases distintas após substituição: 663
+
+=== 8. texto prevê o rótulo? TF-IDF + regressão logística, split 80/20 estratificado ===
+alvo Ticket Type: treino 6775, teste 1694, classes 5, acurácia teste 0.1978, classe majoritária 'Refund request' acurácia 0.2072
+alvo Ticket Subject: treino 6775, teste 1694, classes 16, acurácia teste 0.0685, classe majoritária 'Refund request' acurácia 0.0679
+
+=== 9. Resolution ===
+não nulos: 2769, valores distintos: 2769
+10 valores sorteados (semente 42):
+  - Such option result friend able director.
+  - Pick Republican offer world actually road during.
+  - Deal step team east pressure.
+  - Save operation blue call her pull.
+  - Early gas else have measure surface.
+  - Then number north mouth boy what court out.
+  - Business bit pick campaign purpose.
+  - Along around church political reveal fine.
+  - Water it seat response soon well.
+  - Value management grow whether nice.
+nulos cruzados com Ticket Status (True = nulo):
+Resolution                 False  True   All
+Ticket Status                               
+Closed                      2769     0  2769
+Open                           0  2819  2819
+Pending Customer Response      0  2881  2881
+All                         2769  5700  8469
+
+=== 10. domínios de e-mail, top 10 ===
+domínios distintos: 3
+Customer Email
+example.com    2904
+example.org    2796
+example.net    2769
+
+=== 11. duplicatas ===
+linhas duplicadas exatas (todas as colunas): 0
+linhas duplicadas exatas ignorando Ticket ID: 0
+linhas cuja Ticket Description se repete: 439; descrições repetidas distintas: 47
+idem após substituir placeholder: linhas 135, distintas 64
+
+=== 16. placeholders entre chaves em Ticket Description ===
+placeholders distintos: 289
+  {product_purchased}: 8469 linhas; coluna correspondente: Product Purchased
+  {error_message}: 472 linhas; coluna correspondente: NENHUMA
+  {product_id}: 44 linhas; coluna correspondente: NENHUMA
+  {product_name}: 31 linhas; coluna correspondente: NENHUMA
+  {Product_purchased}: 17 linhas; coluna correspondente: Product Purchased
+  {product}: 12 linhas; coluna correspondente: NENHUMA
+  {product_price}: 12 linhas; coluna correspondente: NENHUMA
+  {name}: 9 linhas; coluna correspondente: NENHUMA
+  {product_purchases}: 6 linhas; coluna correspondente: NENHUMA
+  {id}: 6 linhas; coluna correspondente: NENHUMA
+  {item_id}: 5 linhas; coluna correspondente: NENHUMA
+  {Product_id}: 4 linhas; coluna correspondente: NENHUMA
+  {Product}: 4 linhas; coluna correspondente: NENHUMA
+  {product_product}: 4 linhas; coluna correspondente: NENHUMA
+  {product_type}: 4 linhas; coluna correspondente: NENHUMA
+  {item}: 3 linhas; coluna correspondente: NENHUMA
+  {product_purchased_id}: 3 linhas; coluna correspondente: NENHUMA
+  {
+
+return false ;
+
+}: 3 linhas; coluna correspondente: NENHUMA
+  {product_purchase}: 3 linhas; coluna correspondente: NENHUMA
+  {products_purchased}: 3 linhas; coluna correspondente: NENHUMA
+  {ProductID}: 3 linhas; coluna correspondente: NENHUMA
+  {product_paid}: 3 linhas; coluna correspondente: NENHUMA
+  {product_title}: 3 linhas; coluna correspondente: NENHUMA
+  {user_id}: 2 linhas; coluna correspondente: NENHUMA
+  {app_id}: 2 linhas; coluna correspondente: NENHUMA
+  {product_product_purchased}: 2 linhas; coluna correspondente: NENHUMA
+  {Product_Purchased}: 2 linhas; coluna correspondente: Product Purchased
+  {product_purchased }: 2 linhas; coluna correspondente: Product Purchased
+  {Product Name}: 2 linhas; coluna correspondente: NENHUMA
+  {product_item}: 2 linhas; coluna correspondente: NENHUMA
+  {item_name}: 2 linhas; coluna correspondente: NENHUMA
+  {product_selected}: 2 linhas; coluna correspondente: NENHUMA
+  {ProductId}: 2 linhas; coluna correspondente: NENHUMA
+  {value}: 2 linhas; coluna correspondente: NENHUMA
+  {product_purchased_name}: 2 linhas; coluna correspondente: NENHUMA
+  {model}: 2 linhas; coluna correspondente: NENHUMA
+  {Product_name}: 2 linhas; coluna correspondente: NENHUMA
+  {0}: 2 linhas; coluna correspondente: NENHUMA
+  {1}: 2 linhas; coluna correspondente: NENHUMA
+  {product_packaged}: 2 linhas; coluna correspondente: NENHUMA
+  {ProductPurchases}: 2 linhas; coluna correspondente: NENHUMA
+  {ProductName}: 2 linhas; coluna correspondente: NENHUMA
+  {product_purchased.product}: 2 linhas; coluna correspondente: NENHUMA
+  {order_id}: 2 linhas; coluna correspondente: NENHUMA
+  {product_purchased.name}: 2 linhas; coluna correspondente: NENHUMA
+  {review_id}: 2 linhas; coluna correspondente: NENHUMA
+  {products}: 2 linhas; coluna correspondente: NENHUMA
+  {product_purchasing}: 2 linhas; coluna correspondente: NENHUMA
+  {product_product_id}: 2 linhas; coluna correspondente: NENHUMA
+  {product_updated}: 2 linhas; coluna correspondente: NENHUMA
+  { product_purchased }: 2 linhas; coluna correspondente: Product Purchased
+  { }: 2 linhas; coluna correspondente: NENHUMA
+  {product_purchased_1}: 2 linhas; coluna correspondente: NENHUMA
+  {search }: 1 linhas; coluna correspondente: NENHUMA
+  {number}: 1 linhas; coluna correspondente: NENHUMA
+  {item_category}: 1 linhas; coluna correspondente: NENHUMA
+  {user}: 1 linhas; coluna correspondente: NENHUMA
+  {source; address, ip Address}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased_subsidized}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased_at}: 1 linhas; coluna correspondente: NENHUMA
+  {product_available}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased:1,0}: 1 linhas; coluna correspondente: NENHUMA
+  {id:1}: 1 linhas; coluna correspondente: NENHUMA
+  {product_cred_id_id}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased_count}: 1 linhas; coluna correspondente: NENHUMA
+  {Product_Purchased_}: 1 linhas; coluna correspondente: NENHUMA
+  {product_paydirt}: 1 linhas; coluna correspondente: NENHUMA
+  {_product_id}: 1 linhas; coluna correspondente: NENHUMA
+  { std::shared_ptr<dtor> id; }: 1 linhas; coluna correspondente: NENHUMA
+  {Product_purchased_account_loggedIn}: 1 linhas; coluna correspondente: NENHUMA
+  {product_time}: 1 linhas; coluna correspondente: NENHUMA
+  {result[ "Product" ]. Product = product }: 1 linhas; coluna correspondente: NENHUMA
+  {product_for_all}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased_value}: 1 linhas; coluna correspondente: NENHUMA
+  {product_add}: 1 linhas; coluna correspondente: NENHUMA
+  {product_product_name}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased", "id":null}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased-product}: 1 linhas; coluna correspondente: NENHUMA
+  {product_product_changed}: 1 linhas; coluna correspondente: NENHUMA
+  {hashtag}: 1 linhas; coluna correspondente: NENHUMA
+  {user.title}: 1 linhas; coluna correspondente: NENHUMA
+  {purchase}: 1 linhas; coluna correspondente: NENHUMA
+  {product_item_name}: 1 linhas; coluna correspondente: NENHUMA
+  {device_name}: 1 linhas; coluna correspondente: NENHUMA
+  {product_ref}: 1 linhas; coluna correspondente: NENHUMA
+  {purchases}: 1 linhas; coluna correspondente: NENHUMA
+  {product_paid.category}: 1 linhas; coluna correspondente: NENHUMA
+  {product_delivered.category}: 1 linhas; coluna correspondente: NENHUMA
+  {tiddlers_id}: 1 linhas; coluna correspondente: NENHUMA
+  {product_finance_addresses}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased item_name}: 1 linhas; coluna correspondente: NENHUMA
+  {product_description}: 1 linhas; coluna correspondente: NENHUMA
+  {the box is too small}: 1 linhas; coluna correspondente: NENHUMA
+  {my_device_id}: 1 linhas; coluna correspondente: NENHUMA
+  {customer_address}: 1 linhas; coluna correspondente: NENHUMA
+  {purchase_price}: 1 linhas; coluna correspondente: NENHUMA
+  {purchase_code}: 1 linhas; coluna correspondente: NENHUMA
+  {title}: 1 linhas; coluna correspondente: NENHUMA
+  {content}: 1 linhas; coluna correspondente: NENHUMA
+  {product_sub_featured_image}: 1 linhas; coluna correspondente: NENHUMA
+  {product_name is_only}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased.id}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased_info}: 1 linhas; coluna correspondente: NENHUMA
+  {"category"}: 1 linhas; coluna correspondente: NENHUMA
+  {product_sold}: 1 linhas; coluna correspondente: NENHUMA
+  {product_.count.name.toObject}: 1 linhas; coluna correspondente: NENHUMA
+  {purchased_name}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased_number}: 1 linhas; coluna correspondente: NENHUMA
+  {Product Purchase Transaction}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased_payment}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased_product}: 1 linhas; coluna correspondente: NENHUMA
+  {product_name_format}: 1 linhas; coluna correspondente: NENHUMA
+  {i}: 1 linhas; coluna correspondente: NENHUMA
+  {product_featured_image_url}: 1 linhas; coluna correspondente: NENHUMA
+  {app_number}: 1 linhas; coluna correspondente: NENHUMA
+  {manufacturer}: 1 linhas; coluna correspondente: NENHUMA
+  {Name}: 1 linhas; coluna correspondente: NENHUMA
+  {product_not_applied}: 1 linhas; coluna correspondente: NENHUMA
+  { int i; }: 1 linhas; coluna correspondente: NENHUMA
+  {sizes_for_trucular}: 1 linhas; coluna correspondente: NENHUMA
+  {ProductKey}: 1 linhas; coluna correspondente: NENHUMA
+  {Version}: 1 linhas; coluna correspondente: NENHUMA
+  {CultureVariant}: 1 linhas; coluna correspondente: NENHUMA
+  {String}: 1 linhas; coluna correspondente: NENHUMA
+  {"product" : "NicoBike"}: 1 linhas; coluna correspondente: NENHUMA
+  {citations}: 1 linhas; coluna correspondente: NENHUMA
+  {Product bought}: 1 linhas; coluna correspondente: NENHUMA
+  {productID}: 1 linhas; coluna correspondente: NENHUMA
+  {input_order_key}: 1 linhas; coluna correspondente: NENHUMA
+  {product_size}: 1 linhas; coluna correspondente: NENHUMA
+  {Product ID}: 1 linhas; coluna correspondente: NENHUMA
+  {rpi}: 1 linhas; coluna correspondente: NENHUMA
+  {rxpi}: 1 linhas; coluna correspondente: NENHUMA
+  {ProductPrice: $true }: 1 linhas; coluna correspondente: NENHUMA
+  {Product_Purchased_1}: 1 linhas; coluna correspondente: NENHUMA
+  {Product_Purchased_0}: 1 linhas; coluna correspondente: NENHUMA
+  {Product.AddToCart}: 1 linhas; coluna correspondente: NENHUMA
+  {(product_purchased, 0))[ 1 :]}: 1 linhas; coluna correspondente: NENHUMA
+  {product_ Moto 360 (R/U)}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased_by}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchas}: 1 linhas; coluna correspondente: NENHUMA
+  {product_distributed}: 1 linhas; coluna correspondente: NENHUMA
+  {product_p word}: 1 linhas; coluna correspondente: NENHUMA
+  {product_muted}: 1 linhas; coluna correspondente: NENHUMA
+  {products_to_count}: 1 linhas; coluna correspondente: NENHUMA
+  {url}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased.brand}: 1 linhas; coluna correspondente: NENHUMA
+  {item.required_item}: 1 linhas; coluna correspondente: NENHUMA
+  {item.price}: 1 linhas; coluna correspondente: NENHUMA
+  {product_order}: 1 linhas; coluna correspondente: NENHUMA
+  {item.level}: 1 linhas; coluna correspondente: NENHUMA
+  {Id}: 1 linhas; coluna correspondente: NENHUMA
+  {product_num_purchases}: 1 linhas; coluna correspondente: NENHUMA
+  {review}: 1 linhas; coluna correspondente: NENHUMA
+  {order_item}: 1 linhas; coluna correspondente: NENHUMA
+  {product_cannot_trade}: 1 linhas; coluna correspondente: NENHUMA
+  {item_purchase}: 1 linhas; coluna correspondente: NENHUMA
+  {
+
+return ;
+
+}: 1 linhas; coluna correspondente: NENHUMA
+  {product name}: 1 linhas; coluna correspondente: NENHUMA
+  {purchase_type}: 1 linhas; coluna correspondente: NENHUMA
+  {order_name}: 1 linhas; coluna correspondente: NENHUMA
+  {product_paid_by}: 1 linhas; coluna correspondente: NENHUMA
+  {input_id}: 1 linhas; coluna correspondente: NENHUMA
+  {Product pss}: 1 linhas; coluna correspondente: NENHUMA
+  {product_url}: 1 linhas; coluna correspondente: NENHUMA
+  {product_cursed}: 1 linhas; coluna correspondente: NENHUMA
+  { [ 1] = 5 }: 1 linhas; coluna correspondente: NENHUMA
+  {sommer}: 1 linhas; coluna correspondente: NENHUMA
+  {product_request.product_method}: 1 linhas; coluna correspondente: NENHUMA
+  {* traditionalSignIn_emailAddress *}: 1 linhas; coluna correspondente: NENHUMA
+  {* #resetPasswordForm *}: 1 linhas; coluna correspondente: NENHUMA
+  {Product_Product_Price}: 1 linhas; coluna correspondente: NENHUMA
+  {product_sell}: 1 linhas; coluna correspondente: NENHUMA
+  {product_discount}: 1 linhas; coluna correspondente: NENHUMA
+  {product_product_price}: 1 linhas; coluna correspondente: NENHUMA
+  {product_request}: 1 linhas; coluna correspondente: NENHUMA
+  {product_request, password}: 1 linhas; coluna correspondente: NENHUMA
+  {name_purchased}: 1 linhas; coluna correspondente: NENHUMA
+  {Product_purchases}: 1 linhas; coluna correspondente: NENHUMA
+  {Product_Purchasing}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased_message}: 1 linhas; coluna correspondente: NENHUMA
+  {$product_purchased}: 1 linhas; coluna correspondente: NENHUMA
+  {product_value}: 1 linhas; coluna correspondente: NENHUMA
+  {product_prod}: 1 linhas; coluna correspondente: NENHUMA
+  {purchased}: 1 linhas; coluna correspondente: NENHUMA
+  {product_p Color}: 1 linhas; coluna correspondente: NENHUMA
+  {product_p Featured}: 1 linhas; coluna correspondente: NENHUMA
+  {product_p Sold}: 1 linhas; coluna correspondente: NENHUMA
+  {product_p Seller Name}: 1 linhas; coluna correspondente: NENHUMA
+  {product_brand}: 1 linhas; coluna correspondente: NENHUMA
+  {product_ AnimatedItem }: 1 linhas; coluna correspondente: NENHUMA
+  {model_name}: 1 linhas; coluna correspondente: NENHUMA
+  {product_p Erica}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased.ini}: 1 linhas; coluna correspondente: NENHUMA
+  {product_promo_item}: 1 linhas; coluna correspondente: NENHUMA
+  {product_promo}: 1 linhas; coluna correspondente: NENHUMA
+  {product_sell_code}: 1 linhas; coluna correspondente: NENHUMA
+  { name }: 1 linhas; coluna correspondente: NENHUMA
+  {product_name, product_date}: 1 linhas; coluna correspondente: NENHUMA
+  {product_price, product_sale_date}: 1 linhas; coluna correspondente: NENHUMA
+  {product_store}: 1 linhas; coluna correspondente: NENHUMA
+  {item_purchased}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased_address}: 1 linhas; coluna correspondente: NENHUMA
+  {price_tag}: 1 linhas; coluna correspondente: NENHUMA
+  {product_natures}: 1 linhas; coluna correspondente: NENHUMA
+  { Bermuda_T.purch@gmail.com}: 1 linhas; coluna correspondente: NENHUMA
+  {
+
+this. product = it ;
+
+}: 1 linhas; coluna correspondente: NENHUMA
+  {this.user}: 1 linhas; coluna correspondente: NENHUMA
+  {user_mode}: 1 linhas; coluna correspondente: NENHUMA
+  {"id":"1410353538","title":"Add new"}: 1 linhas; coluna correspondente: NENHUMA
+  { Product }: 1 linhas; coluna correspondente: NENHUMA
+  {product_ex_name}: 1 linhas; coluna correspondente: NENHUMA
+  {product_ex_status}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased-content}: 1 linhas; coluna correspondente: NENHUMA
+  {product_page}: 1 linhas; coluna correspondente: NENHUMA
+  {product_props}: 1 linhas; coluna correspondente: NENHUMA
+  {1$}: 1 linhas; coluna correspondente: NENHUMA
+  {product_pricing}: 1 linhas; coluna correspondente: NENHUMA
+  {product_amount }: 1 linhas; coluna correspondente: NENHUMA
+  {product_amount}: 1 linhas; coluna correspondente: NENHUMA
+  { "product_id" : "product_id", "value" : "25"}: 1 linhas; coluna correspondente: NENHUMA
+  {ItemID}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased.ProductName}: 1 linhas; coluna correspondente: NENHUMA
+  {Product_purchased_Id: 6}: 1 linhas; coluna correspondente: NENHUMA
+  {product_prepaid}: 1 linhas; coluna correspondente: NENHUMA
+  {Purchased Product}: 1 linhas; coluna correspondente: NENHUMA
+  {item_price}: 1 linhas; coluna correspondente: NENHUMA
+  {Product purchased: true, price: 50 }: 1 linhas; coluna correspondente: NENHUMA
+  {product_category}: 1 linhas; coluna correspondente: NENHUMA
+  {slowly}: 1 linhas; coluna correspondente: NENHUMA
+  {product_product_details}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased_device}: 1 linhas; coluna correspondente: NENHUMA
+  {product_app_id}: 1 linhas; coluna correspondente: NENHUMA
+  {products.price}: 1 linhas; coluna correspondente: NENHUMA
+  {product_payment}: 1 linhas; coluna correspondente: NENHUMA
+  {key}: 1 linhas; coluna correspondente: NENHUMA
+  {#}: 1 linhas; coluna correspondente: NENHUMA
+  {product_color}: 1 linhas; coluna correspondente: NENHUMA
+  {/product-purchased}: 1 linhas; coluna correspondente: NENHUMA
+  {product_price-count}: 1 linhas; coluna correspondente: NENHUMA
+  {
+
+this.message.set_error("Invalid Product Purchase" );
+
+}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased_keyword}: 1 linhas; coluna correspondente: NENHUMA
+  {application_id}: 1 linhas; coluna correspondente: NENHUMA
+  {project_id}: 1 linhas; coluna correspondente: NENHUMA
+  {'key_name':'Hello-World'}: 1 linhas; coluna correspondente: NENHUMA
+  {proceeds, $resource}: 1 linhas; coluna correspondente: NENHUMA
+  {proceeds, 2}: 1 linhas; coluna correspondente: NENHUMA
+  {Proceeds, $resource}: 1 linhas; coluna correspondente: NENHUMA
+  {review_total_refresh}: 1 linhas; coluna correspondente: NENHUMA
+  {product_refresh_to}: 1 linhas; coluna correspondente: NENHUMA
+  {review_created}: 1 linhas; coluna correspondente: NENHUMA
+  {result.name}: 1 linhas; coluna correspondente: NENHUMA
+  {p.name}: 1 linhas; coluna correspondente: NENHUMA
+  {this}: 1 linhas; coluna correspondente: NENHUMA
+  {product_created}: 1 linhas; coluna correspondente: NENHUMA
+  {product__label}: 1 linhas; coluna correspondente: NENHUMA
+  {$:/language}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased_last2}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased_last1}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased_last_updated_day}: 1 linhas; coluna correspondente: NENHUMA
+  { "name": "" }: 1 linhas; coluna correspondente: NENHUMA
+  {your_device_id}: 1 linhas; coluna correspondente: NENHUMA
+  {product_prompt}: 1 linhas; coluna correspondente: NENHUMA
+  {product_added}: 1 linhas; coluna correspondente: NENHUMA
+  {product_added name}: 1 linhas; coluna correspondente: NENHUMA
+  { throw e.message() > undefined; }: 1 linhas; coluna correspondente: NENHUMA
+  {Product_Price}: 1 linhas; coluna correspondente: NENHUMA
+  { product_purchased, name = " XBOOST_BLUEGRIN_1 " }: 1 linhas; coluna correspondente: NENHUMA
+  {Product_purchased::id}: 1 linhas; coluna correspondente: NENHUMA
+  {order_number}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased[name]}: 1 linhas; coluna correspondente: NENHUMA
+  {product_product_required}: 1 linhas; coluna correspondente: NENHUMA
+  {solutions_cancel}: 1 linhas; coluna correspondente: NENHUMA
+  {
+
+return results;
+
+}: 1 linhas; coluna correspondente: NENHUMA
+  {Purchased}: 1 linhas; coluna correspondente: NENHUMA
+  {$product}: 1 linhas; coluna correspondente: NENHUMA
+  {Product_Name}: 1 linhas; coluna correspondente: NENHUMA
+  {Title text: See product details of current device or manufacturer if unsure}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased_amount}: 1 linhas; coluna correspondente: NENHUMA
+  {isn't_banned}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased_2}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased_0}: 1 linhas; coluna correspondente: NENHUMA
+  {product_purchased = false}: 1 linhas; coluna correspondente: NENHUMA
+  { product }: 1 linhas; coluna correspondente: NENHUMA
+  { p, product }: 1 linhas; coluna correspondente: NENHUMA
+  {Product-Type}: 1 linhas; coluna correspondente: NENHUMA
+  {The result will be displayed in the message box.", $product_purchased, null=False, }: 1 linhas; coluna correspondente: NENHUMA
+  {product_paid_1}: 1 linhas; coluna correspondente: NENHUMA
+  {
+
+return $resource
+
+}: 1 linhas; coluna correspondente: NENHUMA
+
+=== 17. concentração das datas em 2023-06-01 ===
+First Response Time: n=5650, em 2023-06-01: 5437 (fração 0.9623), dias distintos: 3
+  contagem por dia:
+  First Response Time_dt
+  2023-05-31     175
+  2023-06-01    5437
+  2023-06-02      38
+Time to Resolution: n=2769, em 2023-06-01: 2649 (fração 0.9567), dias distintos: 3
+  contagem por dia:
+  Time to Resolution_dt
+  2023-05-31      99
+  2023-06-01    2649
+  2023-06-02      21
+
+=== 12. all_tickets_processed_improved_v3.csv: dimensões, nulos, classes ===
+linhas: 47837  colunas: 2
+nulos por coluna:
+Document       0
+Topic_group    0
+Topic_group:
+                           n    pct
+Topic_group                        
+Hardware               13617  28.47
+HR Support             10915  22.82
+Access                  7125  14.89
+Miscellaneous           7060  14.76
+Storage                 2777   5.81
+Purchase                2464   5.15
+Internal Project        2119   4.43
+Administrative rights   1760   3.68
+razão maior/menor classe: 7.74
+
+=== 13. tamanho dos textos em palavras ===
+n=47837, {'q5': 10.0, 'q25': 17.0, 'q50': 26.0, 'q75': 46.0, 'q95': 136.0}, min 2, max 981
+
+=== 14. duplicatas de Document ===
+linhas com Document repetido: 0; documentos repetidos distintos: 0; linhas duplicadas exatas (Document + Topic_group): 0
+amostra de 5000 documentos: com vizinho mais próximo de similaridade > 0,9: 304 (fração 0.0608); pares distintos: 201; desses, pares com similaridade > 0,9999: 1
+similaridade com o vizinho mais próximo, quantis: {'q5': 0.27, 'q25': 0.38, 'q50': 0.51, 'q75': 0.68, 'q95': 0.91}
+
+=== 15. baseline TF-IDF (1-2gramas, min_df 2) + regressão logística prevendo Topic_group ===
+treino 38269, teste 9568, vocabulário 144869
+documentos do teste com Document idêntico presente no treino: 0
+acurácia global: 0.8584; classe majoritária 'Hardware': 0.2847
+                       precision    recall  f1-score   support
+
+               Access     0.9199    0.8702    0.8943      1425
+Administrative rights     0.9142    0.6051    0.7282       352
+           HR Support     0.8625    0.8791    0.8707      2183
+             Hardware     0.7911    0.9093    0.8461      2724
+     Internal Project     0.9477    0.7689    0.8490       424
+        Miscellaneous     0.8393    0.8251    0.8321      1412
+             Purchase     0.9883    0.8540    0.9162       493
+              Storage     0.9556    0.8144    0.8794       555
+
+             accuracy                         0.8584      9568
+            macro avg     0.9023    0.8157    0.8520      9568
+         weighted avg     0.8649    0.8584    0.8582      9568
+
+matriz de confusão (linhas = real, colunas = previsto):
+                       Access  Administrative rights  HR Support  Hardware  Internal Project  Miscellaneous  Purchase  Storage
+Access                   1240                      4          39        97                 3             38         0        4
+Administrative rights       7                    213          12       109                 1             10         0        0
+HR Support                 26                      1        1919       172                 5             55         0        5
+Hardware                   44                     10         106      2477                 4             74         5        4
+Internal Project            5                      1          34        36               326             22         0        0
+Miscellaneous              20                      1          74       142                 4           1165         0        6
+Purchase                    3                      2           8        46                 1             10       421        2
+Storage                     3                      1          33        52                 0             14         0      452
+
+=== 18. 15 termos de maior coeficiente por classe (baseline do item 15) ===
+Access: confluence (13.76), account (11.21), user (11.17), password (10.66), card (10.35), license (10.20), git (7.99), repository (7.79), accounts (7.27), users (6.44), create (5.95), locked (5.61), cards (5.36), reset (5.18), licenses (4.61)
+Administrative rights: outlook (14.75), upgrade (11.67), issues (6.80), install (5.68), windows (4.56), software (3.99), update (3.93), version (3.40), calendar (2.98), with (2.78), assets (2.69), problems (2.57), exchange (2.56), not (2.39), up (2.35)
+HR Support: oracle (8.75), error (8.47), starter (8.06), leave (7.65), time (7.18), submit (6.31), leaver (5.72), access (5.45), access to (5.20), timecard (5.12), annual (4.81), new starter (4.73), transfer (4.44), hours (4.41), area (4.29)
+Hardware: laptop (8.75), monitor (8.32), phone (5.17), room (5.02), meeting (4.98), connection (4.71), cable (4.35), call (3.85), connect (3.85), backpack (3.64), mobile (3.63), certificate (3.41), calls (3.35), keyboard (3.21), ram (3.17)
+Internal Project: code (13.60), project (10.32), codes (8.53), pipeline (7.50), setup (7.19), pas (5.91), import (3.52), opportunity (3.38), pipelines (3.11), client (3.07), unknown (2.96), forecast (2.71), known (2.49), new project (2.46), attached (2.30)
+Miscellaneous: change (10.69), approval (9.72), approve (8.18), add (8.06), ticket (6.98), groups (6.93), name (6.31), tickets (6.28), owner (5.82), approved (5.65), contract (5.42), approver (4.94), list (4.49), mailing (4.01), members (4.00)
+Purchase: po (8.46), purchase (7.51), installation (7.00), administrator (6.22), device (5.17), log (4.07), please log (3.67), administrator phone (3.55), allocation (3.25), devices (3.06), items (3.02), order (2.94), phone (2.80), receipt (2.73), thank administrator (2.44)
+Storage: folder (13.47), mailbox (11.81), wants (7.29), storage (6.89), shared (6.88), folders (6.05), permissions (5.44), files (5.18), increase (4.74), file (4.22), full (4.09), share (4.03), size (3.97), archive (3.94), accept (3.86)
+
+saída gravada em solution/01_auditoria_dados.txt

@@ -38,3 +38,15 @@ O primeiro arquivo tem 8.469 linhas, não 30 mil. Toda descrição começa com "
 Suspeito: o primeiro arquivo é gerado, com datas sorteadas num único dia e texto montado por template; tempos e nota não devem servir para diagnóstico. No segundo, as sobras de assinatura podem estar ensinando o classificador a reconhecer quem escreveu, não o assunto, e o rótulo tem ruído na fronteira entre Access, HR Support e Administrative rights.
 
 Decidi: manter a auditoria completa e acrescentar três testes: cotnar placeholders órfãos além de {product_purchased}; verificar se 100% das datas de resposta e resolução caem no mesmo dia; e listar os termos de maior peso por classe no baseline do segundo arquivo, para ver se ele aprende assunto ou assinatura.
+
+## 16/09 16:55 gmt-3, auditoria dos dois arquivos
+
+Pedi: script de auditoria com 18 testes, saída em solution/01_auditoria_dados.txt.
+
+Saiu: 8.469 linhas; tempos de resposta e resolução em 27 h com 49,3% de reoslução antes da resposta; nota uniforme (p=0,80) e sem relação com nada (ANOVA p>0,27, r=0,02); todas as categóricas uniformes; 100% das descrições com placeholder, 289 variantes, texto prevê o tipo em 19,8% contra 20,7% do chute; Resolution é frase aleatória. Arquivo 2: 47.837 textos, baseline 85,8%, macro-F1 0,85, Administrative rights com recall 0,61 caindo em Hardware, 6% com vizinho acima de 0,9.
+
+Comparei: bateram volume, texto decorativo e faixa do baseline; caíram a nota e o par de confusão (é Administrative rights × Hardware, não acesso × armazenamento); canal e prioridade ficaram sem teste, os tempos são sorteio.
+
+Decidi: tempos, nota, descrição e resolução do arquivo 1 fora do diagnóstico; estrutura de demanda só como volume de referência; arquivo 2 inteiro, com dedup antes do split. O relatório vai dizer que "onde perdemos tempo" não tem resposta nestes dados e propor como medir. Administrative rights é instalação de software com privilégio (outlook, upgrade, install), o que muda a fronteira humana.
+
+Iterações: 1.
