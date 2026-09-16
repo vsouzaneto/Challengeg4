@@ -124,4 +124,30 @@ Decidi: antes de concluir, uma iteração com 3 exemplos reais do treino por cat
 
 Iterações: 1, com a segunda a caminho.
 
+## 16/09 19:17 gmt-3, LLM com exemplos
+
+Pedi: mesma amostra de 320, prompt com 3 exemplos reais do treino por categoria, cache separado.
+
+Saiu: balanceada de 55% para 59%, ponderada de 47% para 45%, na zona de abstenção 43% contra 56% do TF-IDF forçado; custo de R$ 0,32 para R$ 2,06 por mil. Hardware ficou em 20%. Em solution/05_llm_amostra_fewshot3.txt.
+
+Comparei: a hipótese de que faltava contexto da casa caiu; 3 exemplos não bastam e o custo sobe 6 vezes.
+
+Decidi: o LLM sai da arquitetura. Triagem é TF-IDF com abstenção em 0,70 e a segunda camada é pessoa. O enunciado sugeria embeddings e zero-shot; medi e não vale nesta taxonomia. Vai para o relatório com os números.
+Iterações: 2.
+
+
+## 16/09 19:22 gmt-3, protótipo ponta a ponta
+
+Pedi: script que recebe um ticket e devolve categoria, confiança, destino e a regra que decidiu; regra de conteúdo antes da confiança; modo lote.
+
+Saiu: os três tickets de teste caíram em regras diferentes: Storage a 0,98 seguiu automático; a auditoria de contas de desligados foi para pessoa por conteúdo apesar de 0,87; a descrição sem sentido foi para pessoa por confiança 0,47. Em solution/06_triagem.py.
+
+Decidi: regra de conteúdo por termos, simples e legível, em vez de outro modelo; quem lê o código entende o que manda para pessoa e pode mudar sem retreinar.
+
+Iterações: 1.
+
+
+
+
+
 
