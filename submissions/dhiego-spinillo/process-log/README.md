@@ -88,3 +88,7 @@ Verificação: navegação e cinco filtros de qualidade, seleção dos cinco exe
 Dhiego encerrou a sessão antes de conseguir consumir a análise visual e pediu registro e commit do ponto de parada. A v1 está entregue no commit local `746f9fb`, mas sua leitura e discussão pelo candidato permanecem pendentes. Não houve aprovação do diagnóstico completo nem escolha final de protótipo, stack ou integração de IA.
 
 Codex atualizou o estado e o roadmap para retomar pela análise, apresentar um problema por vez e registrar as provocações antes da implementação. A construção continua prevista para 16/09, com meta pessoal de concluir até esse dia; não há prazo oficial conhecido. Commits locais, sem push ou PR. Nenhum tempo de execução foi inventado.
+
+## Adendo à pausa — revisão multimodelo
+
+Dhiego propôs usar Oráculo Flow com Claude, Grok e Codex para julgar dados, análises e alternativas. Codex consultou o README e a seção de confronto do workflow no repositório local do Oráculo Flow e registrou um [protocolo proposto](../docs/revisao-multimodelo.md): mesmo material, pareceres sem acesso prévio aos demais, divergências verificadas nos dados e decisão com o candidato. Grok é uma extensão solicitada por Dhiego; integração e acesso ainda não foram verificados. Nenhuma revisão externa foi executada e a pausa permanece vigente.

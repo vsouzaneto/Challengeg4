@@ -8,6 +8,7 @@
 - [x] Preparar análise visual v1 com fontes, exemplos e identidade do G4.
 - [ ] Dhiego revisar a análise visual — pendente na pausa de 15/09.
 - [ ] Discutir os problemas com Dhiego e registrar dúvidas/conclusões.
+- [ ] Realizar revisão focada com Claude, Grok e Codex, inspirada no Oráculo Flow, antes da escolha final; [protocolo proposto](docs/revisao-multimodelo.md).
 - [ ] Escolher intervenção, critérios de avaliação e escopo.
 - [ ] Definir stack e plano de implementação.
 

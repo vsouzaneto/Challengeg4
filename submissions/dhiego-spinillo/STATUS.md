@@ -24,6 +24,7 @@ Dhiego definiu que hoje é dedicado a entender o problema, tirar dúvidas e prov
 ## Aberto
 
 - Entendimento do diagnóstico pelo candidato e escolha final da intervenção.
+- Revisão com Claude, Grok e Codex solicitada por Dhiego: [protocolo proposto](docs/revisao-multimodelo.md). Prevista após discussão inicial e antes de fechar o escopo; acesso aos modelos ainda a verificar, sem execução nesta pausa.
 - Stack: FastAPI/Jinja/HTMX/Docker em discussão; Streamlit foi a proposta inicial. Banco e publicação ainda não definidos.
 - Se existe tarefa útil que justifique LLM/OpenRouter; nenhuma chave foi configurada.
 - Critérios de sucesso e política de encaminhamento.
