@@ -27,3 +27,11 @@ python3 solution/auditar_coortes.py /tmp/g4-support-dataset1.zip /tmp/g4-support
 ```
 
 Comparar com `solution/reports/coortes-qualidade.json`. Executar mantendo `explorar_cx.py` no mesmo diretório do script, pois ele fornece o leitor de ZIPs. Não altera os arquivos de origem nem exporta dados pessoais; produz contagens de filtros independentes e comparações de sensibilidade. Interpretação em `solution/qualidade-por-pergunta.md`.
+
+## Exemplos para compreensão e recap
+
+```bash
+python3 solution/inspecionar_contexto.py /tmp/g4-support-dataset1.zip /tmp/g4-support-dataset2.zip > /tmp/g4-contexto-e-recap.json
+```
+
+Comparar com `solution/reports/contexto-e-recap.json`. Mantém o leitor `explorar_cx.py` no mesmo diretório. Inclui textos de cinco exemplos selecionados das bases públicas, sem campos de nome/email de cliente. A seleção é intencional; não é benchmark. Não chama LLM nem implementa recap. Interpretação em `solution/contexto-e-recap.md`.

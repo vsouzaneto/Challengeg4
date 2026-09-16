@@ -51,3 +51,13 @@
 ## Confirmação pelo cliente
 
 > E aí depende do cliente fazer uma confirmação de que a solução que foi apresentada realmente resolve o problema que eu tinha pontuado.
+
+## Exemplos da experiência e exemplos da base
+
+> Só se atente que o exemplo que eu dei de guias não tem nada a ver com esse dataset. É exemplo real de experiências passadas.
+
+## Recap e revisão humana
+
+> Eu acho que uma autorresposta é arriscada, né? Mas talvez uma sugestão de sei lá, uma ou duas sugestões de resposta, eventualmente.
+
+> Ajuda demais pra que ele saiba ali qual a linha que ele tem que seguir, o que ele já respondeu, o que falta responder, ou qual que é o próximo passo.

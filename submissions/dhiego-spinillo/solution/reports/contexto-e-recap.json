@@ -1,0 +1,86 @@
+{
+  "reference_date": "2026-09-15",
+  "sha256_csv": {
+    "dataset_1": "b06a9cde84da65db388bd964d75f88ee1eed96607cf75d0c35f09c3f11bf8bea",
+    "dataset_2": "044fdace33fa564e1e60453f2941dafc95539c99878b0d32746950394b9dd4d4"
+  },
+  "selection": "Exemplos intencionais encontrados na exploração de termos; não são amostra aleatória nem validação de recap. Nenhuma chamada à API de modelo.",
+  "dataset_1": {
+    "n": 8469,
+    "columns": [
+      "Ticket ID",
+      "Customer Name",
+      "Customer Email",
+      "Customer Age",
+      "Customer Gender",
+      "Product Purchased",
+      "Date of Purchase",
+      "Ticket Type",
+      "Ticket Subject",
+      "Ticket Description",
+      "Ticket Status",
+      "Resolution",
+      "Ticket Priority",
+      "Ticket Channel",
+      "First Response Time",
+      "Time to Resolution",
+      "Customer Satisfaction Rating"
+    ],
+    "word_count_min": 21,
+    "word_count_median": 49,
+    "word_count_p95_lower_order_statistic": 57,
+    "word_count_max": 63,
+    "at_least_100_words": 0,
+    "at_least_200_words": 0,
+    "at_least_500_words": 0,
+    "interpretation": "Comprimento não comprova múltiplas interações ou uma conversa completa."
+  },
+  "dataset_2": {
+    "n": 47837,
+    "columns": [
+      "Document",
+      "Topic_group"
+    ],
+    "word_count_min": 2,
+    "word_count_median": 26,
+    "word_count_p95_lower_order_statistic": 136,
+    "word_count_max": 981,
+    "at_least_100_words": 4133,
+    "at_least_200_words": 1104,
+    "at_least_500_words": 99,
+    "interpretation": "Comprimento não comprova múltiplas interações ou uma conversa completa."
+  },
+  "d1_examples": [
+    {
+      "Ticket ID": "7",
+      "Ticket Type": "Product inquiry",
+      "Ticket Subject": "Refund request",
+      "Ticket Description": "I'm unable to access my {product_purchased} account. It keeps displaying an 'Invalid Credentials' error, even though I'm using the correct login information. How can I regain access to my account?\n\nSolution 1 I'm unable to find the option to perform the desired action in the {product_purchased}. Could you please guide me through the steps?",
+      "Ticket Priority": "Critical"
+    },
+    {
+      "Ticket ID": "68",
+      "Ticket Type": "Cancellation request",
+      "Ticket Subject": "Peripheral compatibility",
+      "Ticket Description": "I've accidentally deleted important data from my {product_purchased}. Is there any way to recover the deleted files? I need them urgently. What can I do to recover them?\n\nProduct purchases are never recoverable from the database. I'm worried that the issue might be hardware-related and might require repair or replacement.",
+      "Ticket Priority": "Low"
+    }
+  ],
+  "d2_examples": [
+    {
+      "row_position_1_based_without_header": 2982,
+      "topic_group": "Miscellaneous",
+      "document": "account extension ad re contract due hi everyone how update supposed done morning had speaking seems his expiration date updated please confirmation thread tag ad extension thank kind regards november re contract due hi thank confirming updated information kind regards november pm re contract due hi please note extension until december has approved please ensure updated accordingly thanks mobility officer november re contract due hi extend till december thank kind regards november re contract due hi believe around anymore cheers november re contract due hi please asap extended kind regards mobility officer november contract due dear contract due please contract extended date note by disabled contract ended thank"
+    },
+    {
+      "row_position_1_based_without_header": 8614,
+      "topic_group": "Hardware",
+      "document": "oracle edit project details re re clean call action hi thank response please find changes attached tuesday pm re clean call action hi please update excel spreadsheet please updated investigate tomorrow issue encountered regards mobile re clean call action change details class category which blank whatever select keeps popping error messages about unable change active categories cannot delete lines modify thanks tuesday clean call action importance high dear view seen perform important clean operation please carefully enclosed procedures together instructions actions please select clients spreadsheet liaise update each attributes each updated once information please updating please make added belonging clients performing updates please keep posted progress please advise by involvement order obtain due please make back by thursday information updated closed well please let regards fin floor blvd district pm re clean call action dear attached find comprising created each client status pm attributes which filled selection well available options kindly ask take which commercial linked client marked yellow add detail find helpful thanks regards pm clean call action dear couple weeks ago launched restructuring process aiming reshape structure existing order improve practices processes levels across accurate database proper classifications represents key effective analysis provides reliable decision making process therefore kindly ask initiative by cleaning updating attributes commonly referred classifications class categories available instructions proceed included guideline attached existing closed pending close database other tools historical analysis ensure comparability cycles provide statistics existing database were created generic options other number attributes detailed leads impossibility building effective reports hence immediate action please carefully procedure attached lines novelties ones attributes removed nature attributes added sector option lists updated pm basically update options previously needed option attributes make attributes properly filled generic option deadline activity friday periodically update regarding progress link updated setup form days kindly ask forward anyone concerned missed questions please hesitate best regards"
+    },
+    {
+      "row_position_1_based_without_header": 9766,
+      "topic_group": "Hardware",
+      "document": "laptop memory request memory hi ran out memory thus encounter various issues unexpected error messages shut down please advise matter please note archived deleted obsolete other enough cleared make work properly thank"
+    }
+  ]
+}

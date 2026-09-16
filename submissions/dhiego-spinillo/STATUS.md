@@ -24,6 +24,7 @@ Dhiego definiu que hoje é dedicado a entender o problema, tirar dúvidas e prov
 - Stack: FastAPI/Jinja/HTMX/Docker em discussão; Streamlit foi a proposta inicial. Banco e publicação ainda não definidos.
 - Se existe tarefa útil que justifique LLM/OpenRouter; nenhuma chave foi configurada.
 - Critérios de sucesso e política de encaminhamento.
+- Se o recap assistido merece entrar no recorte: há indícios de cadeias de email em alguns textos do D2, mas não mensagens estruturadas. Ver `solution/contexto-e-recap.md`. Sugestões de resposta exigem revisão; sem envio automático.
 
 ## Ainda não realizado
 

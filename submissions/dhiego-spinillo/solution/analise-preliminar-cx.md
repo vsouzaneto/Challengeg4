@@ -75,6 +75,8 @@ Para verificar o caso “perguntou três coisas, recebeu duas respostas”, prec
 
 Os 47.837 registros têm apenas `Document` e `Topic_group`, com oito categorias. Há base para testar classificação; não para validar prazo, prioridade, percurso de atendimento, sentimento ou risco de churn. Os exemplos inspecionados têm texto processado, com perda de contexto e forma original.
 
+**Aprofundamento posterior:** foram encontrados indícios de cadeias de email concatenadas dentro de alguns documentos. Isso permite investigar uma síntese limitada ao texto disponível, sem tratar cronologia e autoria como conhecidas. Ver [exemplos para recap](contexto-e-recap.md).
+
 O maior grupo, Hardware, contém 13.617 registros (28,47%); prever sempre essa classe é uma referência mínima. Access e Administrative rights são grupos distintos, úteis para discutir que identificar um pedido de acesso não autoriza sua execução. Nenhum classificador foi treinado nesta fase.
 
 ## O que podemos dizer ao diretor neste momento

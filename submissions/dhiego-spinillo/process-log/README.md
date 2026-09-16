@@ -64,3 +64,11 @@ Dhiego pediu separação entre sujeira do dataset e sinais operacionais, sugeriu
 Codex implementou [auditoria por universos](../solution/auditar_coortes.py), verificou as descrições originais no Kaggle e produziu [relatório](../solution/qualidade-por-pergunta.md). A exclusão de identidade ambígua deixa 8.181 emails sem repetição; 1.404 pares temporais não invertidos continuam sem abertura. Notas 1–5 podem ser descritas entre 2.769 avaliados; não há atendente nem NPS. Surgiram rótulos diferentes em grupos de texto normalizado idêntico. A análise de sensibilidade preservou aproximadamente a média de satisfação e a proporção de prioridades baixas/médias nos textos com `urgently`.
 
 O [ADR 0003](../docs/decisions/0003-universos-analiticos-e-qualidade.md) registra a regra: limpeza por finalidade, preservação da origem, sem inventar correções ou tratar formato válido como prova de realidade. Solicitação urgente com prioridade baixa permanece uma suspeita para revisão, não uma exclusão automática.
+
+## Continuação — exemplos do dataset e recap assistido
+
+Dhiego reforçou que guias fiscais eram analogias de sua experiência, não fatos do dataset. Propôs recap para orientar o atendente sobre pedido, tentativas, respostas e próximos passos, e eventualmente uma ou duas sugestões de resposta revisadas, sem autorresposta.
+
+Codex voltou aos arquivos e encontrou exemplos concretos: erro de acesso já informado no D1; tentativa de liberar espaço no D2; trechos de cadeias de email sobre extensão de conta e atualização de atributos. A análise anterior foi refinada: o D2 não tem eventos estruturados, mas alguns documentos contêm indícios de múltiplas interações. O perfil contou 4.133 documentos com pelo menos 100 palavras, sem confundir comprimento com número de mensagens.
+
+Foram criados [extrator](../solution/inspecionar_contexto.py), [evidências selecionadas](../solution/reports/contexto-e-recap.json) e [discussão de recap](../solution/contexto-e-recap.md). As sínteses e perguntas de exemplo foram redigidas por Codex para análise, não por uma funcionalidade implementada nem por uma avaliação independente. O escopo final permanece aberto.
