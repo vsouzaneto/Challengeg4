@@ -72,3 +72,13 @@ Dhiego reforçou que guias fiscais eram analogias de sua experiência, não fato
 Codex voltou aos arquivos e encontrou exemplos concretos: erro de acesso já informado no D1; tentativa de liberar espaço no D2; trechos de cadeias de email sobre extensão de conta e atualização de atributos. A análise anterior foi refinada: o D2 não tem eventos estruturados, mas alguns documentos contêm indícios de múltiplas interações. O perfil contou 4.133 documentos com pelo menos 100 palavras, sem confundir comprimento com número de mensagens.
 
 Foram criados [extrator](../solution/inspecionar_contexto.py), [evidências selecionadas](../solution/reports/contexto-e-recap.json) e [discussão de recap](../solution/contexto-e-recap.md). As sínteses e perguntas de exemplo foram redigidas por Codex para análise, não por uma funcionalidade implementada nem por uma avaliação independente. O escopo final permanece aberto.
+
+## Continuação — análise visual, branding e fronteira do recap
+
+Dhiego pediu uma v1 visual para explorar os dados, questionou se o recap ficaria fixo e indicou o artigo e o vídeo do rebranding do G4 como referências obrigatórias. Codex consultou o artigo, estilos e logo públicos do site, além da descrição e transcrição disponível do vídeo. As fontes e decisões estão em [identidade visual](../docs/identidade-visual.md).
+
+Foi criada uma [análise interativa](../solution/visual/index.html), gerada a partir dos quatro relatórios JSON, com cinco perguntas sobre qualidade, comparação descritiva por canal, hipóteses sobre pendência e cinco exemplos de tickets com trechos de origem destacáveis. As analogias contábeis não foram transformadas em evidência do dataset. A leitura de contexto preparada por Codex aparece explicitamente como exemplo fixo; não há chamada de modelo ou medição de qualidade de recap.
+
+O ADR 0001 foi esclarecido: cálculos podem ser pré-computados e versionados; se recap for escolhido para o protótipo, a inferência deve operar sobre a entrada selecionada. Apoio à compreensão e sugestão de resposta são tarefas distintas. A análise visual não fecha esse escopo.
+
+Verificação: navegação e cinco filtros de qualidade, seleção dos cinco exemplos, destaque de fonte e abertura do rascunho; inspeção visual em 1440×1000 e 390×844, sem transbordamento horizontal nas verificações. [Capturas e limites da verificação](evidencias/visual-v1/README.md). Nenhum total de esforço foi reconstruído ou atribuído artificialmente às 4–6 horas sugeridas no desafio.

@@ -20,6 +20,7 @@ Entender o problema → auditar os dados → discutir conclusões e limites → 
 
 ### Resultados / Findings
 
+- [Análise visual interativa v1](solution/visual/index.html) — abrir o HTML no navegador; cinco perguntas analíticas e cinco exemplos de tickets. Os recaps são leituras preparadas, sem geração ao vivo.
 - [Diagnóstico inicial](solution/diagnostico-inicial.md).
 - [Exploração preliminar de CX: urgência, atrito, canais e qualidade da resposta](solution/analise-preliminar-cx.md).
 - [Qualidade por pergunta: universos utilizáveis, satisfação e limites de análise por atendente](solution/qualidade-por-pergunta.md).
@@ -65,6 +66,6 @@ Contribuições efetivamente registradas: exigir distinção entre regras e IA, 
 - [Trechos selecionados das intervenções do candidato](process-log/evidencias/trechos-da-conversa.md).
 - [Trechos do plano inicial revisado](process-log/evidencias/plano-inicial.md).
 - [ADRs](docs/decisions/0001-fronteira-entre-regras-e-ia.md), [roadmap](ROADMAP.md) e [estado atual](STATUS.md).
-- Capturas do aplicativo e resultados do modelo: pendentes de implementação.
+- [Capturas da análise visual](process-log/evidencias/visual-v1/README.md). Aplicativo com inferência e resultados do modelo: pendentes de implementação.
 
 **Submissão enviada em:** ainda não enviada.

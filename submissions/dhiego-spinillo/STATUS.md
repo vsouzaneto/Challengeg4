@@ -6,10 +6,11 @@
 
 Dhiego definiu que hoje é dedicado a entender o problema, tirar dúvidas e provocar a análise. Amanhã será dedicado à construção, depois de fechar o plano de solução.
 
-**Próxima ação:** discutir a [análise preliminar de CX](solution/analise-preliminar-cx.md) com Dhiego: urgência versus criticidade, repetição de contato, pendência e qualidade da resposta. Apresentar um problema de cada vez e registrar suas perguntas e decisões antes de escolher solução.
+**Próxima ação:** percorrer a [análise visual v1](solution/visual/index.html) com Dhiego: qualidade por pergunta, urgência, repetição de contato, pendência e exemplos de recap. Registrar suas perguntas e decisões antes de escolher solução.
 
 ## Concluído
 
+- Análise visual interativa gerada dos quatro relatórios, com fontes e limites explícitos. Identidade baseada nas referências oficiais do G4; navegação conferida em desktop e celular. Recaps preparados para discussão, sem inferência ao vivo.
 - Auditoria integral dos dois CSVs e registro dos hashes.
 - Exploração orientada às provocações de CX: cruzamentos descritivos, sinais textuais, identidade e inspeção de resoluções. Nenhuma inferência de causalidade ou churn.
 - Qualidade separada por pergunta e sensibilidade à exclusão de identidade ambígua; ADR 0003. Motivos distintos de espera pelo cliente documentados como dado necessário, sem inferir sua frequência.

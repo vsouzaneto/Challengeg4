@@ -35,3 +35,13 @@ python3 solution/inspecionar_contexto.py /tmp/g4-support-dataset1.zip /tmp/g4-su
 ```
 
 Comparar com `solution/reports/contexto-e-recap.json`. Mantém o leitor `explorar_cx.py` no mesmo diretório. Inclui textos de cinco exemplos selecionados das bases públicas, sem campos de nome/email de cliente. A seleção é intencional; não é benchmark. Não chama LLM nem implementa recap. Interpretação em `solution/contexto-e-recap.md`.
+
+## Análise visual v1
+
+```bash
+python3 solution/renderizar_analise_visual.py
+```
+
+Abrir `solution/visual/index.html` no navegador. A geração incorpora os quatro relatórios versionados, o template e o logo local. Não baixa os datasets nem chama IA. Para refletir uma nova auditoria, revisar e atualizar primeiro os relatórios em `solution/reports/`. As interpretações e os recaps de exemplo estão no template e exigem revisão se os dados mudarem.
+
+O HTML contém dados, estilos, scripts e logo; fontes remotas têm alternativas locais. Os links de evidência dependem da estrutura de arquivos do pacote. A página no GitHub exibe código: baixar o pacote e abrir o HTML, ou servir localmente com `python3 -m http.server 8765 --bind 127.0.0.1` e acessar `http://127.0.0.1:8765/solution/visual/index.html`.

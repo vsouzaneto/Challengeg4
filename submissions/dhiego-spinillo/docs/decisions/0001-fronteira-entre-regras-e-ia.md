@@ -39,3 +39,9 @@ O domínio suportado deve ser declarado; se houver detector de domínio, sua efi
 - Avaliar categoria e encaminhamento final separadamente: uma regra estável ainda pode operar sobre uma previsão errada.
 - LLM permanece uma extensão proposta. Só incluir com tarefa, benefício esperado e avaliação definidos; falha da API não deve impedir consulta, regras ou revisão manual.
 - Autoria: Dhiego definiu o princípio de produto nesta conversa; Codex organizou esta proposta de divisão de responsabilidades. Nenhuma implementação é afirmada como concluída.
+
+## Esclarecimento — análise pronta e recap dinâmico
+
+Na análise visual v1, os números vêm de relatórios reproduzíveis e os recaps são exemplos preparados por Codex, identificados como leitura exploratória. Se recap entrar no protótipo, a inferência deverá receber o texto selecionado e produzir uma saída vinculada à entrada. Exemplos fixos não demonstram essa capacidade.
+
+A IA pode apoiar compreensão antes da redação: pedido, tentativas já relatadas, dúvidas e próximo passo sugerido. Sugestões de resposta são uma função separada, dependente de contexto suficiente e revisão humana; não haverá envio automático. Fidelidade ao texto, cobertura dos pedidos e preservação de incertezas precisam de avaliação própria. A escolha de implementar essas funções permanece aberta.
