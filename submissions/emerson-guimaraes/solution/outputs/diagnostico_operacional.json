@@ -1,0 +1,276 @@
+{
+  "a_onde_o_fluxo_trava": {
+    "n_tickets_com_tempo": 2769,
+    "tempo_medio_geral_horas": -0.06,
+    "por_canal": {
+      "Chat": {
+        "n": 674,
+        "media": 0.2,
+        "mediana": 0.52,
+        "desvio": 9.53
+      },
+      "Social media": {
+        "n": 684,
+        "media": 0.12,
+        "mediana": 0.35,
+        "desvio": 9.83
+      },
+      "Email": {
+        "n": 720,
+        "media": 0.01,
+        "mediana": 0.37,
+        "desvio": 9.72
+      },
+      "Phone": {
+        "n": 691,
+        "media": -0.56,
+        "mediana": -0.78,
+        "desvio": 9.16
+      }
+    },
+    "por_prioridade": {
+      "Low": {
+        "n": 644,
+        "media": 0.39,
+        "mediana": 0.35,
+        "desvio": 9.71
+      },
+      "High": {
+        "n": 705,
+        "media": -0.07,
+        "mediana": 0.07,
+        "desvio": 10.05
+      },
+      "Critical": {
+        "n": 726,
+        "media": -0.2,
+        "mediana": 0.35,
+        "desvio": 9.32
+      },
+      "Medium": {
+        "n": 694,
+        "media": -0.31,
+        "mediana": -0.3,
+        "desvio": 9.17
+      }
+    },
+    "por_tipo": {
+      "Refund request": {
+        "n": 596,
+        "media": 0.22,
+        "mediana": 0.26,
+        "desvio": 9.89
+      },
+      "Technical issue": {
+        "n": 580,
+        "media": 0.07,
+        "mediana": 0.48,
+        "desvio": 9.48
+      },
+      "Cancellation request": {
+        "n": 516,
+        "media": -0.17,
+        "mediana": 0.39,
+        "desvio": 9.86
+      },
+      "Billing inquiry": {
+        "n": 544,
+        "media": -0.21,
+        "mediana": 0.11,
+        "desvio": 9.16
+      },
+      "Product inquiry": {
+        "n": 533,
+        "media": -0.24,
+        "mediana": -0.48,
+        "desvio": 9.43
+      }
+    },
+    "piores_5_combinacoes": {
+      "Email | Medium | Product inquiry": {
+        "n": 21.0,
+        "media": 3.42,
+        "mediana": 5.65,
+        "desvio": 9.5
+      },
+      "Chat | Low | Billing inquiry": {
+        "n": 35.0,
+        "media": 3.26,
+        "mediana": 3.25,
+        "desvio": 6.5
+      },
+      "Chat | High | Refund request": {
+        "n": 41.0,
+        "media": 2.98,
+        "mediana": 0.77,
+        "desvio": 10.69
+      },
+      "Email | Low | Cancellation request": {
+        "n": 33.0,
+        "media": 2.97,
+        "mediana": 3.42,
+        "desvio": 10.6
+      },
+      "Social media | Critical | Billing inquiry": {
+        "n": 35.0,
+        "media": 2.81,
+        "mediana": 3.0,
+        "desvio": 8.97
+      }
+    },
+    "anova_por_dimensao": {
+      "Ticket Channel": {
+        "F": 0.8797,
+        "p": 0.4508,
+        "diferenca_significativa": false
+      },
+      "Ticket Priority": {
+        "F": 0.6728,
+        "p": 0.5687,
+        "diferenca_significativa": false
+      },
+      "Ticket Type": {
+        "F": 0.2482,
+        "p": 0.9109,
+        "diferenca_significativa": false
+      }
+    },
+    "leitura": "Nenhuma dimensão (canal, prioridade ou tipo) apresenta diferença estatisticamente significativa de tempo de resolução. O ranking acima existe, mas as diferenças estão dentro da flutuação amostral: não há gargalo identificável neste dataset. Priorizar o 'pior canal' seria agir sobre ruído."
+  },
+  "b_o_que_impacta_satisfacao": {
+    "r2_treino": 0.4447,
+    "r2_teste": -0.0525,
+    "mse_modelo": 2.0438,
+    "mse_baseline_media": 1.9458,
+    "ganho_sobre_baseline_pct": -5.03,
+    "top_10_variaveis": {
+      "Customer Age": 0.008416,
+      "Ticket Type_Technical issue": 0.005169,
+      "horas_resolucao": 0.00421,
+      "Ticket Type_Refund request": 0.002711,
+      "Ticket Type_Product inquiry": 0.002679,
+      "Ticket Priority_Critical": 0.001722,
+      "Ticket Channel_Social media": 0.001586,
+      "Ticket Priority_High": 8.5e-05,
+      "Ticket Channel_Phone": -5.9e-05,
+      "Ticket Type_Billing inquiry": -0.000159
+    },
+    "correlacoes_diretas": {
+      "horas_resolucao": {
+        "r": 0.0199,
+        "p": 0.2958,
+        "significativa": false
+      },
+      "Customer Age": {
+        "r": -0.0037,
+        "p": 0.8457,
+        "significativa": false
+      }
+    },
+    "leitura": "R² de teste = −0,0525 (negativo ou zero): o modelo prevê o CSAT PIOR do que simplesmente chutar a média. Nenhuma variável operacional disponível — canal, prioridade, tipo, tempo de resolução, idade ou gênero — tem poder preditivo sobre a satisfação neste dataset. A resposta honesta à pergunta 'o que impacta satisfação?' é: nada que esteja medido aqui. Ver laudo de auditoria."
+  },
+  "c_quanto_desperdicamos": {
+    "premissas": {
+      "custo_hora_agente_brl": 45.0,
+      "minutos_triagem_manual": 4.0,
+      "minutos_por_ticket_retrabalho": 12.0,
+      "minutos_economia_sugestao_humano": 1.5,
+      "jornada_horas_mes": 168,
+      "fonte_premissas": "Benchmarks de mercado para suporte N1 no Brasil. Devem ser substituídos pelos números reais da operação antes de qualquer decisão de investimento."
+    },
+    "volume_tickets": 8469,
+    "horas_triagem_manual_ano": 564.6,
+    "custo_triagem_manual_ano_brl": 25407.0,
+    "cenarios_de_recuperacao": {
+      "conservador": {
+        "limiar_confianca": 0.9,
+        "cobertura_medida_pct": 47.51,
+        "acuracia_no_automatizado_pct": 98.77,
+        "horas_brutas_liberadas_ano": 268.2,
+        "horas_perdidas_em_retrabalho_ano": 9.9,
+        "horas_liquidas_automacao_ano": 258.3,
+        "horas_assistidas_ano": 111.1,
+        "horas_liquidas_ano": 369.5,
+        "horas_liquidas_mes": 30.8,
+        "economia_liquida_brl_ano": 16626.5,
+        "equivalente_fte": 0.18
+      },
+      "recomendado": {
+        "limiar_confianca": 0.8,
+        "cobertura_medida_pct": 60.11,
+        "acuracia_no_automatizado_pct": 97.48,
+        "horas_brutas_liberadas_ano": 339.4,
+        "horas_perdidas_em_retrabalho_ano": 25.7,
+        "horas_liquidas_automacao_ano": 313.7,
+        "horas_assistidas_ano": 84.5,
+        "horas_liquidas_ano": 398.2,
+        "horas_liquidas_mes": 33.2,
+        "economia_liquida_brl_ano": 17918.14,
+        "equivalente_fte": 0.2
+      },
+      "agressivo": {
+        "limiar_confianca": 0.7,
+        "cobertura_medida_pct": 69.67,
+        "acuracia_no_automatizado_pct": 95.91,
+        "horas_brutas_liberadas_ano": 393.4,
+        "horas_perdidas_em_retrabalho_ano": 48.3,
+        "horas_liquidas_automacao_ano": 345.1,
+        "horas_assistidas_ano": 64.2,
+        "horas_liquidas_ano": 409.3,
+        "horas_liquidas_mes": 34.1,
+        "economia_liquida_brl_ano": 18418.87,
+        "equivalente_fte": 0.2
+      }
+    },
+    "projecao_30k_tickets_ano": {
+      "conservador": {
+        "horas_liquidas_ano": 1308.9,
+        "economia_liquida_brl_ano": 58896.56,
+        "equivalente_fte": 0.64
+      },
+      "recomendado": {
+        "horas_liquidas_ano": 1410.6,
+        "economia_liquida_brl_ano": 63471.98,
+        "equivalente_fte": 0.71
+      },
+      "agressivo": {
+        "horas_liquidas_ano": 1449.9,
+        "economia_liquida_brl_ano": 65245.73,
+        "equivalente_fte": 0.71
+      }
+    },
+    "nota_metodologica": "Volume (fato) × tempo por tarefa (premissa) × cobertura MEDIDA do classificador do script 03. Não usa os campos de tempo do Dataset 1, que falharam na auditoria. O ganho é líquido: desconta o retrabalho gerado pelos próprios erros do modelo. Inclui também o ganho parcial nos tickets NÃO automatizados (chegam ao humano com categoria sugerida, não do zero) — 1.5 min/ticket, uma fração pequena e conservadora dos 4 min de triagem manual. A projeção para 30.000 tickets/ano usa o fator 3,54."
+  },
+  "d_sensibilidade_custo_hora": {
+    "premissa_base_brl_hora": 45.0,
+    "economia_recomendada_por_valor_hora": {
+      "R$ 30/h": {
+        "conservador": 39264.37,
+        "recomendado": 42314.65,
+        "agressivo": 43497.15
+      },
+      "R$ 45/h": {
+        "conservador": 58896.56,
+        "recomendado": 63471.98,
+        "agressivo": 65245.73
+      },
+      "R$ 60/h": {
+        "conservador": 78528.75,
+        "recomendado": 84629.31,
+        "agressivo": 86994.31
+      }
+    },
+    "nota": "Escala linear: dobrar o custo/hora dobra a economia. Use o número real da operação, não o benchmark, antes de decidir investimento."
+  },
+  "e_custo_implantacao_e_payback": {
+    "custos_estimados": {
+      "fase_sombra_brl": 0.0,
+      "integracao_e_deploy_brl": 12000.0,
+      "retreino_mensal_recorrente_brl_mes": 600.0
+    },
+    "nota_metodologica": "Estimativas de esforço de engenharia, não orçamento medido. Ajustar ao custo real de TI/dados da operação antes de aprovar.",
+    "economia_liquida_mensal_apos_manutencao_brl": 4689.33,
+    "payback_meses": 2.6,
+    "leitura": "Com integração estimada em R$ 12.000 e manutenção de R$ 600/mês, o investimento se paga em ~2,6 meses no cenário recomendado. A fase de sombra (2 a 4 semanas) não tem custo de integração, porque valida a acurácia antes de qualquer investimento em deploy."
+  }
+}

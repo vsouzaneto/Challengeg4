@@ -1,0 +1,228 @@
+{
+  "dataset_1": {
+    "arquivo": "customer_support_tickets.csv",
+    "testes": [
+      {
+        "nome": "Placeholders não substituídos no texto",
+        "pct_descricoes_com_placeholder": 100.0,
+        "n_descricoes": 8469,
+        "templates_unicos_apos_normalizar": 8077,
+        "esperado_se_real": "0% de placeholders",
+        "veredito": "SINTÉTICO"
+      },
+      {
+        "nome": "Janela temporal de todos os timestamps",
+        "inicio": "2023-05-31 21:53:30",
+        "fim": "2023-06-02 00:55:33",
+        "amplitude_horas": 27.03,
+        "n_tickets": 8469,
+        "esperado_se_real": "meses ou anos de amplitude",
+        "veredito": "SINTÉTICO"
+      },
+      {
+        "nome": "Resolução anterior à primeira resposta (impossível)",
+        "n_pares_validos": 2769,
+        "n_negativos": 1365,
+        "pct_negativos": 49.3,
+        "delta_medio_horas": -0.0577,
+        "esperado_se_real": "0% negativos e delta médio positivo",
+        "veredito": "SINTÉTICO"
+      },
+      {
+        "nome": "Uniformidade da distribuição de CSAT",
+        "contagem_por_nota": {
+          "1.0": 553,
+          "2.0": 549,
+          "3.0": 580,
+          "4.0": 543,
+          "5.0": 544
+        },
+        "chi2_vs_uniforme": 1.6663,
+        "p_valor": 0.7968,
+        "interpretacao": "p alto = indistinguível de sorteio uniforme",
+        "esperado_se_real": "p < 0,05 (distribuição enviesada)",
+        "veredito": "SINTÉTICO"
+      },
+      {
+        "nome": "Ausência de sinal entre variáveis operacionais e CSAT",
+        "pearson_csat_x_tempo_resolucao": {
+          "r": 0.0199,
+          "p": 0.2958,
+          "n": 2769
+        },
+        "anova_csat_por_canal": {
+          "F": 1.2808,
+          "p": 0.2792
+        },
+        "qui_quadrado_independencia": {
+          "Ticket Channel x Ticket Priority": {
+            "chi2": 15.48,
+            "p": 0.0785
+          },
+          "Ticket Type x Ticket Priority": {
+            "chi2": 10.63,
+            "p": 0.5613
+          },
+          "Ticket Channel x Ticket Type": {
+            "chi2": 11.85,
+            "p": 0.4578
+          }
+        },
+        "csat_medio_por_canal": {
+          "Chat": 3.0831,
+          "Email": 2.9639,
+          "Phone": 2.9522,
+          "Social media": 2.9693
+        },
+        "amplitude_csat_medio": 0.1308,
+        "esperado_se_real": "ao menos uma associação significativa (p < 0,05)",
+        "veredito": "SINTÉTICO"
+      },
+      {
+        "nome": "Domínios de e-mail reservados (assinatura do Faker)",
+        "distribuicao_dominios": {
+          "example.com": 2904,
+          "example.org": 2796,
+          "example.net": 2769
+        },
+        "pct_dominios_reservados_rfc2606": 100.0,
+        "esperado_se_real": "domínios variados de provedores reais",
+        "veredito": "SINTÉTICO"
+      },
+      {
+        "nome": "Vocabulário do campo Resolution",
+        "n_resolucoes": 2769,
+        "palavras_unicas": 971,
+        "top_10_palavras": {
+          "evidence": 30,
+          "piece": 29,
+          "as": 27,
+          "because": 26,
+          "bit": 25,
+          "available": 25,
+          "billion": 25,
+          "time": 25,
+          "leg": 25,
+          "common": 25
+        },
+        "ocorrencias_termos_de_suporte": {
+          "refund": 0,
+          "replace": 0,
+          "ticket": 0,
+          "resolved": 0,
+          "reset": 0,
+          "support": 16,
+          "customer": 17,
+          "issue": 21,
+          "account": 11
+        },
+        "termos_com_zero_ocorrencias": [
+          "refund",
+          "replace",
+          "ticket",
+          "resolved",
+          "reset"
+        ],
+        "amostras": [
+          "Case maybe show recently my computer follow.",
+          "Try capital clearly never color toward story.",
+          "West decision evidence bit."
+        ],
+        "esperado_se_real": "vocabulário dominado por termos de atendimento",
+        "veredito": "SINTÉTICO"
+      },
+      {
+        "nome": "Uniformidade de TODAS as categóricas (chi2 vs. uniforme)",
+        "alfa_bonferroni": 0.00833,
+        "resultados": {
+          "Ticket Channel": {
+            "k_categorias": 4,
+            "chi2": 1.35,
+            "p": 0.7179,
+            "uniforme": true
+          },
+          "Ticket Priority": {
+            "k_categorias": 4,
+            "chi2": 4.59,
+            "p": 0.2048,
+            "uniforme": true
+          },
+          "Ticket Type": {
+            "k_categorias": 5,
+            "chi2": 7.43,
+            "p": 0.1149,
+            "uniforme": true
+          },
+          "Ticket Status": {
+            "k_categorias": 3,
+            "chi2": 2.23,
+            "p": 0.3279,
+            "uniforme": true
+          },
+          "Product Purchased": {
+            "k_categorias": 42,
+            "chi2": 40.82,
+            "p": 0.4784,
+            "uniforme": true
+          },
+          "Ticket Subject": {
+            "k_categorias": 16,
+            "chi2": 27.86,
+            "p": 0.0225,
+            "uniforme": true
+          }
+        },
+        "n_colunas_uniformes": 6,
+        "n_colunas_testadas": 6,
+        "implicacao": "Categóricas uniformes = nem a composição de volume por canal/tipo/produto carrega informação. O dataset não sustenta sequer análise descritiva de mix.",
+        "esperado_se_real": "mix desbalanceado (lei de Pareto no suporte)",
+        "veredito": "SINTÉTICO"
+      },
+      {
+        "nome": "Completude e composição do backlog",
+        "n_registros": 8469,
+        "n_registros_prometido_no_brief": 30000,
+        "divergencia_vs_brief": 21531,
+        "campos_com_nulos": {
+          "Resolution": 5700,
+          "First Response Time": 2819,
+          "Time to Resolution": 5700,
+          "Customer Satisfaction Rating": 5700
+        },
+        "tickets_fechados": 2769,
+        "pct_nunca_fechados": 67.3,
+        "observacao": "Resolution, Time to Resolution e CSAT têm exatamente o mesmo número de nulos: só existem para tickets Closed. ATENÇÃO: como Ticket Status também é uniforme (teste 8), os 67,3% 'nunca fechados' NÃO representam um backlog real — é 1/3 por status atribuído aleatoriamente.",
+        "veredito": "CONTEXTO"
+      }
+    ],
+    "n_testes_condenatorios": 8,
+    "conclusao": "Dataset integralmente gerado por biblioteca de dados falsos (assinatura do Faker confirmada). Não apenas as métricas: TODAS as categóricas são uniformes, então nem a composição de volume por canal/tipo/produto carrega informação. Nenhum KPI operacional pode ser derivado deste arquivo."
+  },
+  "dataset_2": {
+    "nome": "Perfil de qualidade do Dataset 2",
+    "n_registros": 47837,
+    "n_registros_prometido_no_brief": 48000,
+    "n_classes": 8,
+    "distribuicao_classes": {
+      "Hardware": 13617,
+      "HR Support": 10915,
+      "Access": 7125,
+      "Miscellaneous": 7060,
+      "Storage": 2777,
+      "Purchase": 2464,
+      "Internal Project": 2119,
+      "Administrative rights": 1760
+    },
+    "razao_desbalanceamento": 7.74,
+    "pct_com_placeholder": 0.0,
+    "duplicatas_exatas": 0,
+    "palavras_por_ticket": {
+      "media": 43.6,
+      "mediana": 26.0,
+      "p25": 17.0,
+      "p75": 46.0,
+      "max": 981
+    },
+    "veredito": "REAL_UTILIZÁVEL"
+  }
+}
