@@ -25,3 +25,17 @@
 ## Separar análise de implementação
 
 > Em resumo, hj é apenas a fase de análise, quero q vc vá me apresentando problemas identificados e vou tirando dúvidas e trazendo provocações.
+
+## Urgência e criticidade
+
+> Demora em assunto urgente (e não necessariamente assunto crítico), não precisa ser algo grande pra ser urgente.
+
+## Continuidade e completude do atendimento
+
+> Cliente que sempre é "penalizado", sempre demoram, sempre passa por mta gente, volta sempre com as mesmas dúvidas, esse aí uma hr pode sair se não for cuidado de perto, orientado.
+
+> cliente perguntou 3 coisas, atendente respondeu 2
+
+## Versionamento autorizado
+
+> e pode commitar oq fizer sentido para demonstrar nosso progresso

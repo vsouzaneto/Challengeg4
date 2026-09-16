@@ -6,11 +6,12 @@
 
 Dhiego definiu que hoje é dedicado a entender o problema, tirar dúvidas e provocar a análise. Amanhã será dedicado à construção, depois de fechar o plano de solução.
 
-**Próxima ação:** discutir o primeiro problema: o que realmente é possível afirmar sobre perda de tempo usando o Dataset 1? Apresentar evidência, consequência e dúvidas; registrar as decisões que surgirem.
+**Próxima ação:** discutir a [análise preliminar de CX](solution/analise-preliminar-cx.md) com Dhiego: urgência versus criticidade, repetição de contato, pendência e qualidade da resposta. Apresentar um problema de cada vez e registrar suas perguntas e decisões antes de escolher solução.
 
 ## Concluído
 
 - Auditoria integral dos dois CSVs e registro dos hashes.
+- Exploração orientada às provocações de CX: cruzamentos descritivos, sinais textuais, identidade e inspeção de resoluções. Nenhuma inferência de causalidade ou churn.
 - Revisão crítica do plano inicial.
 - Princípio de separar regras determinísticas de inferência por IA.
 - Decisão de deixar flags avançadas, priorização e acompanhamento como propostas futuras.

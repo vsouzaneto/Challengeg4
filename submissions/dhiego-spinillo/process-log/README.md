@@ -48,3 +48,11 @@ Escolheu conduzir entendimento antes da implementação; exigiu fronteira determ
 A consulta anterior a avaliações públicas serviu para entender expectativas de entrega; os aplicativos dos candidatos não foram reproduzidos. A auditoria dos nossos CSVs ocorreu antes dessa comparação. Não há captura de aplicativo funcionando, modelo treinado ou resultado de integração a apresentar nesta etapa.
 
 O primeiro registro Git reúne o trabalho de análise já ocorrido. Não foi reconstruída uma sequência fictícia de commits anteriores. O cronômetro das atividades anteriores não foi registrado; duração permanece não apurada, incluindo preparação e pesquisa.
+
+## Continuação — perguntas de CX e exploração preliminar
+
+Dhiego pediu exploração dos números à luz de sua experiência em atendimento e distinguiu urgência de criticidade. Acrescentou hipóteses de penalização recorrente do cliente, repetição de informação, respostas parciais e dificuldade de compreensão pelo atendente. Também autorizou commits que demonstrem progresso. O primeiro commit local registra o pacote de análise inicial; esta continuação corresponde ao aprofundamento posterior.
+
+Codex executou nova exploração integral: distribuição por canal/tipo/prioridade, notas baixas entre avaliados, busca literal de sinais, consistência de identidade para emails repetidos e tamanho das resoluções. Inspecionou uma amostra de 20 resoluções (seed 42), exemplos de termos de urgência e trechos que revelaram falsos positivos de palavra-chave. Produziu [script](../solution/explorar_cx.py), [resultados](../solution/reports/exploracao-cx.json) e [análise para discussão](../solution/analise-preliminar-cx.md).
+
+Achados adicionais incluem 78 de 165 textos com `urgently` marcados Low/Medium, identidade não reconciliada em emails repetidos, 2.881 casos aguardando cliente e resoluções de 3–8 palavras. A interpretação separa contagens do arquivo de hipóteses sobre a operação: não conclui que houve violação de SLA, reincidência real, atendimento inadequado ou churn. Não houve implementação de produto nem mudança automática do escopo.

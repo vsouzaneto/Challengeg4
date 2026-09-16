@@ -21,6 +21,7 @@ Entender o problema → auditar os dados → discutir conclusões e limites → 
 ### Resultados / Findings
 
 - [Diagnóstico inicial](solution/diagnostico-inicial.md).
+- [Exploração preliminar de CX: urgência, atrito, canais e qualidade da resposta](solution/analise-preliminar-cx.md).
 - [Auditoria reproduzível e downloads](solution/REPRODUZIR.md).
 - [Resultado da auditoria](solution/reports/auditoria-datasets.json).
 

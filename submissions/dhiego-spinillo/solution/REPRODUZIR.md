@@ -11,3 +11,11 @@ python3 solution/auditar_datasets.py /tmp/g4-support-dataset1.zip /tmp/g4-suppor
 Comparar o resultado com `solution/reports/auditoria-datasets.json`. A data embutida no script identifica a auditoria de referência de 15/09/2026; não é um relógio da nova execução. Os endpoints podem mudar de versão: conferir `sha256_csv` antes de esperar números idênticos.
 
 O script não imprime nomes, emails ou mensagens individuais. Não redistribuímos os CSVs neste pacote. Ele verifica os arquivos, não treina um modelo nem mede economia operacional.
+
+## Exploração orientada às perguntas de CX
+
+```bash
+python3 solution/explorar_cx.py /tmp/g4-support-dataset1.zip /tmp/g4-support-dataset2.zip > /tmp/g4-exploracao-cx.json
+```
+
+Comparar com `solution/reports/exploracao-cx.json`. Este segundo script inclui uma amostra reprodutível de 20 resoluções para inspeção, sem nomes, emails ou descrições completas. Os rótulos de busca literal não são classificações de sentimento/urgência. A leitura interpretativa está em `solution/analise-preliminar-cx.md`.
