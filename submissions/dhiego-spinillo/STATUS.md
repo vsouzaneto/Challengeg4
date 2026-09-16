@@ -6,6 +6,8 @@
 
 Dhiego definiu que hoje é dedicado a entender o problema, tirar dúvidas e provocar a análise. Amanhã será dedicado à construção, depois de fechar o plano de solução.
 
+**Pausa em 15/09:** análise visual v1 entregue, mas Dhiego ainda não teve oportunidade de lê-la. Não registrar como revisada ou aprovada, nem considerar F0 concluída. Retomar pela discussão dos dados antes de implementar. Meta pessoal de conclusão até 16/09; prazo oficial de entrega desconhecido.
+
 **Próxima ação:** percorrer a [análise visual v1](solution/visual/index.html) com Dhiego: qualidade por pergunta, urgência, repetição de contato, pendência e exemplos de recap. Registrar suas perguntas e decisões antes de escolher solução.
 
 ## Concluído
@@ -34,3 +36,10 @@ Treinamento, avaliação de classificador, protótipo de produto, integração, 
 ## Retomada
 
 Ler este arquivo → roadmap → process log → ADRs. Atualizar o estado após as decisões reais. Não tratar proposta como implementada.
+
+1. Abrir `solution/visual/index.html` no navegador. O arquivo está versionado e não depende de o servidor local da sessão anterior continuar rodando. Instruções em `solution/REPRODUZIR.md`.
+2. Apresentar qualidade por pergunta, depois canais/pendências e exemplos de tickets; discutir um problema por vez com Dhiego.
+3. Registrar dúvidas e conclusões. Separar evidência do dataset, hipótese e experiência anterior do candidato.
+4. Escolher intervenção e como medir se funciona; só então definir stack e iniciar construção.
+
+Análise visual registrada no commit `746f9fb`. Até esta pausa, os commits são locais; não houve push nem submissão de PR. Não retomar pesquisa de outros candidatos. Nenhuma tarefa de implementação foi deixada em execução autônoma.

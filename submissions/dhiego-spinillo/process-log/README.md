@@ -82,3 +82,9 @@ Foi criada uma [análise interativa](../solution/visual/index.html), gerada a pa
 O ADR 0001 foi esclarecido: cálculos podem ser pré-computados e versionados; se recap for escolhido para o protótipo, a inferência deve operar sobre a entrada selecionada. Apoio à compreensão e sugestão de resposta são tarefas distintas. A análise visual não fecha esse escopo.
 
 Verificação: navegação e cinco filtros de qualidade, seleção dos cinco exemplos, destaque de fonte e abertura do rascunho; inspeção visual em 1440×1000 e 390×844, sem transbordamento horizontal nas verificações. [Capturas e limites da verificação](evidencias/visual-v1/README.md). Nenhum total de esforço foi reconstruído ou atribuído artificialmente às 4–6 horas sugeridas no desafio.
+
+## Pausa — 15/09/2026
+
+Dhiego encerrou a sessão antes de conseguir consumir a análise visual e pediu registro e commit do ponto de parada. A v1 está entregue no commit local `746f9fb`, mas sua leitura e discussão pelo candidato permanecem pendentes. Não houve aprovação do diagnóstico completo nem escolha final de protótipo, stack ou integração de IA.
+
+Codex atualizou o estado e o roadmap para retomar pela análise, apresentar um problema por vez e registrar as provocações antes da implementação. A construção continua prevista para 16/09, com meta pessoal de concluir até esse dia; não há prazo oficial conhecido. Commits locais, sem push ou PR. Nenhum tempo de execução foi inventado.

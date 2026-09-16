@@ -5,6 +5,8 @@
 - [x] Conferir o enunciado e os arquivos.
 - [x] Auditar os dados e documentar limites.
 - [x] Registrar princípios e propostas futuras.
+- [x] Preparar análise visual v1 com fontes, exemplos e identidade do G4.
+- [ ] Dhiego revisar a análise visual — pendente na pausa de 15/09.
 - [ ] Discutir os problemas com Dhiego e registrar dúvidas/conclusões.
 - [ ] Escolher intervenção, critérios de avaliação e escopo.
 - [ ] Definir stack e plano de implementação.
@@ -13,7 +15,7 @@
 
 ## F1 — Construção · 16/09 · planejada
 
-Implementar o recorte escolhido: avaliação de classificação, política de encaminhamento, interface e revisão humana. Detalhar tarefas depois de concluir F0.
+Implementar o recorte escolhido após F0. Classificação com política de encaminhamento e recap assistido são possibilidades em discussão; a combinação final ainda não foi decidida. Detalhar tarefas e avaliação depois dessa escolha.
 
 **Critério de conclusão:** fluxo funcional, resultados reproduzíveis, motivos visíveis e correção registrada.
 
