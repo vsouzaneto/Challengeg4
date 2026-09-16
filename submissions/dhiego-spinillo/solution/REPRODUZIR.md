@@ -19,3 +19,11 @@ python3 solution/explorar_cx.py /tmp/g4-support-dataset1.zip /tmp/g4-support-dat
 ```
 
 Comparar com `solution/reports/exploracao-cx.json`. Este segundo script inclui uma amostra reprodutível de 20 resoluções para inspeção, sem nomes, emails ou descrições completas. Os rótulos de busca literal não são classificações de sentimento/urgência. A leitura interpretativa está em `solution/analise-preliminar-cx.md`.
+
+## Universos utilizáveis por pergunta
+
+```bash
+python3 solution/auditar_coortes.py /tmp/g4-support-dataset1.zip /tmp/g4-support-dataset2.zip > /tmp/g4-coortes-qualidade.json
+```
+
+Comparar com `solution/reports/coortes-qualidade.json`. Executar mantendo `explorar_cx.py` no mesmo diretório do script, pois ele fornece o leitor de ZIPs. Não altera os arquivos de origem nem exporta dados pessoais; produz contagens de filtros independentes e comparações de sensibilidade. Interpretação em `solution/qualidade-por-pergunta.md`.

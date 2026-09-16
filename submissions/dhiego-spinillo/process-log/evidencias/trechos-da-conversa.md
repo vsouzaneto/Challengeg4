@@ -39,3 +39,15 @@
 ## Versionamento autorizado
 
 > e pode commitar oq fizer sentido para demonstrar nosso progresso
+
+## Qualidade dos dados
+
+> Tentar entender qual é o universo, vamos chamar limpo. E qualquer universo ali com sujeira. E aí não tirar a conclusão em cima de sujeira.
+
+## Qualidade por atendente
+
+> será que tem alguém que atende mais ticket ou menos ticket? Será que tem alguém que atende com mais ou menos qualidade
+
+## Confirmação pelo cliente
+
+> E aí depende do cliente fazer uma confirmação de que a solução que foi apresentada realmente resolve o problema que eu tinha pontuado.

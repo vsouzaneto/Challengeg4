@@ -22,6 +22,7 @@ Entender o problema → auditar os dados → discutir conclusões e limites → 
 
 - [Diagnóstico inicial](solution/diagnostico-inicial.md).
 - [Exploração preliminar de CX: urgência, atrito, canais e qualidade da resposta](solution/analise-preliminar-cx.md).
+- [Qualidade por pergunta: universos utilizáveis, satisfação e limites de análise por atendente](solution/qualidade-por-pergunta.md).
 - [Auditoria reproduzível e downloads](solution/REPRODUZIR.md).
 - [Resultado da auditoria](solution/reports/auditoria-datasets.json).
 

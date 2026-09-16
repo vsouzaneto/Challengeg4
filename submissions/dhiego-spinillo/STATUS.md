@@ -12,6 +12,7 @@ Dhiego definiu que hoje é dedicado a entender o problema, tirar dúvidas e prov
 
 - Auditoria integral dos dois CSVs e registro dos hashes.
 - Exploração orientada às provocações de CX: cruzamentos descritivos, sinais textuais, identidade e inspeção de resoluções. Nenhuma inferência de causalidade ou churn.
+- Qualidade separada por pergunta e sensibilidade à exclusão de identidade ambígua; ADR 0003. Motivos distintos de espera pelo cliente documentados como dado necessário, sem inferir sua frequência.
 - Revisão crítica do plano inicial.
 - Princípio de separar regras determinísticas de inferência por IA.
 - Decisão de deixar flags avançadas, priorização e acompanhamento como propostas futuras.
