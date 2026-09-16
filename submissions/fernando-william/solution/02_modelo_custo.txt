@@ -3,8 +3,8 @@ PREMISSAS USADAS
   composição por categoria: 8 categorias de Topic_group  [dataset: solution/data/all_tickets_processed_improved_v3.csv]
   minutos de triagem manual por ticket: {'conservador': 3, 'base': 5, 'otimista': 8}  [premissa minha]
   custo por hora de agente (R$): {'conservador': 25.0, 'base': 35.0, 'otimista': 50.0}  [premissa minha]
-  acurácia da triagem automática: 0.858  [dataset: baseline do script 01 (01_auditoria_dados.txt, item 15); cobertura.json ausente]
-  cobertura da triagem automática: 1.0  [dataset: baseline do script 01 (01_auditoria_dados.txt, item 15); cobertura.json ausente]
+  acurácia da triagem automática: 0.9626953125  [dataset: solution/data/derived/cobertura.json]
+  cobertura da triagem automática: 0.596945318876064  [dataset: solution/data/derived/cobertura.json]
   minutos de retrabalho por triagem errada: 10  [premissa minha]
   horas por FTE por ano: 1760  [premissa minha]
 resultado depende de 8 premissas empilhadas
@@ -21,58 +21,58 @@ Purchase               0.0515         1545
 Internal Project       0.0443         1329
 Administrative rights  0.0368         1104
 
-CENÁRIO CONSERVADOR: 3 min/ticket, R$ 25.00/h, acurácia 0.858, cobertura 1.00
+CENÁRIO CONSERVADOR: 3 min/ticket, R$ 25.00/h, acurácia 0.963, cobertura 0.60
                        tickets/ano  h manual hoje  h absorvidas  erros/ano  h retrabalho  h líquidas
 categoria                                                                                           
-Hardware                    8539.6          427.0         427.0     1212.6         202.1       224.9
-HR Support                  6845.1          342.3         342.3      972.0         162.0       180.3
-Access                      4468.3          223.4         223.4      634.5         105.7       117.7
-Miscellaneous               4427.5          221.4         221.4      628.7         104.8       116.6
-Storage                     1741.5           87.1          87.1      247.3          41.2        45.9
-Purchase                    1545.2           77.3          77.3      219.4          36.6        40.7
-Internal Project            1328.9           66.4          66.4      188.7          31.5        35.0
-Administrative rights       1103.7           55.2          55.2      156.7          26.1        29.1
-TOTAL                      30000.0         1500.0        1500.0     4260.0         710.0       790.0
-por mil tickets: h manual hoje 50.0, h absorvidas 50.0, h retrabalho 23.7, h líquidas 26.3
-horas líquidas economizadas por ano: 790 h = 0.45 FTE
-valor anual em reais: R$ 19,750
+Hardware                    8539.6          427.0         254.9      190.2          31.7       223.2
+HR Support                  6845.1          342.3         204.3      152.4          25.4       178.9
+Access                      4468.3          223.4         133.4       99.5          16.6       116.8
+Miscellaneous               4427.5          221.4         132.1       98.6          16.4       115.7
+Storage                     1741.5           87.1          52.0       38.8           6.5        45.5
+Purchase                    1545.2           77.3          46.1       34.4           5.7        40.4
+Internal Project            1328.9           66.4          39.7       29.6           4.9        34.7
+Administrative rights       1103.7           55.2          32.9       24.6           4.1        28.8
+TOTAL                      30000.0         1500.0         895.4      668.1         111.3       784.1
+por mil tickets: h manual hoje 50.0, h absorvidas 29.8, h retrabalho 3.7, h líquidas 26.1
+horas líquidas economizadas por ano: 784 h = 0.45 FTE
+valor anual em reais: R$ 19,602
 
-CENÁRIO BASE: 5 min/ticket, R$ 35.00/h, acurácia 0.858, cobertura 1.00
+CENÁRIO BASE: 5 min/ticket, R$ 35.00/h, acurácia 0.963, cobertura 0.60
                        tickets/ano  h manual hoje  h absorvidas  erros/ano  h retrabalho  h líquidas
 categoria                                                                                           
-Hardware                    8539.6          711.6         711.6     1212.6         202.1       509.5
-HR Support                  6845.1          570.4         570.4      972.0         162.0       408.4
-Access                      4468.3          372.4         372.4      634.5         105.7       266.6
-Miscellaneous               4427.5          369.0         369.0      628.7         104.8       264.2
-Storage                     1741.5          145.1         145.1      247.3          41.2       103.9
-Purchase                    1545.2          128.8         128.8      219.4          36.6        92.2
-Internal Project            1328.9          110.7         110.7      188.7          31.5        79.3
-Administrative rights       1103.7           92.0          92.0      156.7          26.1        65.9
-TOTAL                      30000.0         2500.0        2500.0     4260.0         710.0      1790.0
-por mil tickets: h manual hoje 83.3, h absorvidas 83.3, h retrabalho 23.7, h líquidas 59.7
-horas líquidas economizadas por ano: 1790 h = 1.02 FTE
-valor anual em reais: R$ 62,650
+Hardware                    8539.6          711.6         424.8      190.2          31.7       393.1
+HR Support                  6845.1          570.4         340.5      152.4          25.4       315.1
+Access                      4468.3          372.4         222.3       99.5          16.6       205.7
+Miscellaneous               4427.5          369.0         220.2       98.6          16.4       203.8
+Storage                     1741.5          145.1          86.6       38.8           6.5        80.2
+Purchase                    1545.2          128.8          76.9       34.4           5.7        71.1
+Internal Project            1328.9          110.7          66.1       29.6           4.9        61.2
+Administrative rights       1103.7           92.0          54.9       24.6           4.1        50.8
+TOTAL                      30000.0         2500.0        1492.4      668.1         111.3      1381.0
+por mil tickets: h manual hoje 83.3, h absorvidas 49.7, h retrabalho 3.7, h líquidas 46.0
+horas líquidas economizadas por ano: 1381 h = 0.78 FTE
+valor anual em reais: R$ 48,336
 
-CENÁRIO OTIMISTA: 8 min/ticket, R$ 50.00/h, acurácia 0.858, cobertura 1.00
+CENÁRIO OTIMISTA: 8 min/ticket, R$ 50.00/h, acurácia 0.963, cobertura 0.60
                        tickets/ano  h manual hoje  h absorvidas  erros/ano  h retrabalho  h líquidas
 categoria                                                                                           
-Hardware                    8539.6         1138.6        1138.6     1212.6         202.1       936.5
-HR Support                  6845.1          912.7         912.7      972.0         162.0       750.7
-Access                      4468.3          595.8         595.8      634.5         105.7       490.0
-Miscellaneous               4427.5          590.3         590.3      628.7         104.8       485.6
-Storage                     1741.5          232.2         232.2      247.3          41.2       191.0
-Purchase                    1545.2          206.0         206.0      219.4          36.6       169.5
-Internal Project            1328.9          177.2         177.2      188.7          31.5       145.7
-Administrative rights       1103.7          147.2         147.2      156.7          26.1       121.0
-TOTAL                      30000.0         4000.0        4000.0     4260.0         710.0      3290.0
-por mil tickets: h manual hoje 133.3, h absorvidas 133.3, h retrabalho 23.7, h líquidas 109.7
-horas líquidas economizadas por ano: 3290 h = 1.87 FTE
-valor anual em reais: R$ 164,500
+Hardware                    8539.6         1138.6         679.7      190.2          31.7       648.0
+HR Support                  6845.1          912.7         544.8      152.4          25.4       519.4
+Access                      4468.3          595.8         355.6       99.5          16.6       339.1
+Miscellaneous               4427.5          590.3         352.4       98.6          16.4       336.0
+Storage                     1741.5          232.2         138.6       38.8           6.5       132.2
+Purchase                    1545.2          206.0         123.0       34.4           5.7       117.3
+Internal Project            1328.9          177.2         105.8       29.6           4.9       100.8
+Administrative rights       1103.7          147.2          87.9       24.6           4.1        83.8
+TOTAL                      30000.0         4000.0        2387.8      668.1         111.3      2276.4
+por mil tickets: h manual hoje 133.3, h absorvidas 79.6, h retrabalho 3.7, h líquidas 75.9
+horas líquidas economizadas por ano: 2276 h = 1.29 FTE
+valor anual em reais: R$ 113,822
 
 RESULTADO PRINCIPAL (faixa conservador a otimista)
 horas de triagem manual hoje: 1500 a 4000 h/ano
-horas líquidas economizadas: 790 a 3290 h/ano
-fração de FTE: 0.45 a 1.87 FTE
-por mil tickets: 26.3 a 109.7 h líquidas
+horas líquidas economizadas: 784 a 2276 h/ano
+fração de FTE: 0.45 a 1.29 FTE
+por mil tickets: 26.1 a 75.9 h líquidas
 
 saída gravada em solution/02_modelo_custo.txt

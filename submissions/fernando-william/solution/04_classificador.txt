@@ -1,0 +1,137 @@
+
+=== 1. deduplicação por similaridade (cosseno TF-IDF > 0.9, vizinho mais próximo) ===
+linhas originais: 47837; documentos com vizinho > 0.9: 7209
+grupos (componentes conexos): 42882; grupos com mais de 1 documento: 2254; maior grupo: 48
+linhas removidas: 4955; linhas mantidas: 42882
+grupos com mais de um rótulo: 201
+classes após dedup:
+                       antes  depois
+Topic_group                         
+Access                  7125    6560
+Administrative rights   1760    1592
+HR Support             10915    9487
+Hardware               13617   12723
+Internal Project        2119    1922
+Miscellaneous           7060    6574
+Purchase                2464    1620
+Storage                 2777    2404
+
+=== 2. split estratificado 80/20 sobre o que sobrou ===
+treino: 34305; teste: 8577; índices em solution/data/derived/split_teste.csv e solution/data/derived/split_treino.csv
+
+=== 3. TF-IDF (1-2gramas, min_df 2) + regressão logística ===
+vocabulário: 132736
+acurácia global: 0.8403; classe majoritária 'Hardware': 0.2967
+                       precision    recall  f1-score   support
+
+               Access     0.9169    0.8498    0.8821      1312
+Administrative rights     0.9023    0.4937    0.6382       318
+           HR Support     0.8393    0.8504    0.8448      1898
+             Hardware     0.7721    0.9077    0.8344      2545
+     Internal Project     0.9443    0.7057    0.8077       384
+        Miscellaneous     0.8314    0.8175    0.8244      1315
+             Purchase     0.9676    0.8302    0.8937       324
+              Storage     0.9565    0.8233    0.8849       481
+
+             accuracy                         0.8403      8577
+            macro avg     0.8913    0.7848    0.8263      8577
+         weighted avg     0.8485    0.8403    0.8391      8577
+
+matriz de confusão (linhas = real, colunas = previsto):
+                       Access  Administrative rights  HR Support  Hardware  Internal Project  Miscellaneous  Purchase  Storage
+Access                   1115                      4          64        88                 3             35         1        2
+Administrative rights       9                    157          10       125                 1             13         3        0
+HR Support                 27                      2        1614       190                 3             61         0        1
+Hardware                   37                      8         103      2310                 4             67         4       12
+Internal Project            8                      0          38        39               271             28         0        0
+Miscellaneous              15                      1          67       150                 5           1075         1        1
+Purchase                    1                      0           8        40                 0              4       269        2
+Storage                     4                      2          19        50                 0             10         0      396
+acurácia do script 01 sem dedup: 0.8584; com dedup: 0.8403; diferença: -0.0181
+
+=== 4. abstenção por limiar de probabilidade máxima ===
+cobertura e acurácia sobre os decididos:
+ limiar  cobertura  acuracia_decididos
+   0.50     0.8045              0.9174
+   0.55     0.7527              0.9326
+   0.60     0.7013              0.9423
+   0.65     0.6459              0.9542
+   0.70     0.5969              0.9627
+   0.75     0.5453              0.9686
+   0.80     0.4865              0.9777
+   0.85     0.4253              0.9822
+   0.90     0.3486              0.9906
+   0.95     0.2509              0.9944
+
+acurácia por classe sobre os decididos:
+ limiar  Access  Administrative rights  HR Support  Hardware  Internal Project  Miscellaneous  Purchase  Storage
+   0.50  0.9122                 0.6566      0.9230    0.9519            0.8704         0.9117    0.8968   0.9112
+   0.55  0.9261                 0.6818      0.9394    0.9600            0.9061         0.9316    0.9145   0.9258
+   0.60  0.9364                 0.7081      0.9499    0.9662            0.9134         0.9459    0.9167   0.9393
+   0.65  0.9507                 0.7299      0.9656    0.9723            0.9286         0.9522    0.9357   0.9548
+   0.70  0.9637                 0.7647      0.9723    0.9746            0.9433         0.9604    0.9540   0.9647
+   0.75  0.9673                 0.7766      0.9756    0.9779            0.9516         0.9677    0.9697   0.9763
+   0.80  0.9775                 0.8312      0.9805    0.9858            0.9706         0.9726    0.9865   0.9815
+   0.85  0.9799                 0.8333      0.9865    0.9876            0.9873         0.9814    0.9907   0.9837
+   0.90  0.9890                 0.8889      0.9958    0.9928            0.9855         0.9913    0.9900   0.9954
+   0.95  0.9980                 0.9630      0.9982    0.9902            1.0000         0.9910    0.9882   0.9940
+
+fração de cada classe que vai para fila humana:
+ limiar  Access  Administrative rights  HR Support  Hardware  Internal Project  Miscellaneous  Purchase  Storage
+   0.50  0.1494                 0.3774      0.2129    0.1418            0.2969         0.2593    0.1327   0.2037
+   0.55  0.1959                 0.4465      0.2608    0.1937            0.3620         0.3217    0.1698   0.2432
+   0.60  0.2332                 0.4937      0.3161    0.2550            0.3984         0.3817    0.1852   0.2807
+   0.65  0.2736                 0.5692      0.3714    0.3187            0.4531         0.4433    0.2315   0.3098
+   0.70  0.3079                 0.6258      0.4104    0.3823            0.4948         0.5004    0.2623   0.3514
+   0.75  0.3483                 0.7044      0.4600    0.4491            0.5156         0.5521    0.2870   0.3867
+   0.80  0.3902                 0.7579      0.5142    0.5289            0.5573         0.6114    0.3117   0.4366
+   0.85  0.4314                 0.7925      0.5701    0.6189            0.5885         0.6730    0.3333   0.4886
+   0.90  0.5130                 0.8585      0.6264    0.7269            0.6406         0.7369    0.3827   0.5468
+   0.95  0.6265                 0.9151      0.7107    0.8389            0.6979         0.8304    0.4784   0.6507
+curva salva em solution/data/derived/curva_abstencao.csv
+
+=== 5. fora de domínio: Ticket Description do primeiro arquivo com placeholder substituído ===
+n=8469; probabilidade máxima: média 0.5861, q5 0.3560, q25 0.4787, q50 0.5780, q75 0.6834, q95 0.8477
+comparação, probabilidade máxima no teste em domínio: média 0.7405, q5 0.3560, q25 0.5529, q50 0.7907, q75 0.9503, q95 0.9964
+fração abaixo de cada limiar (fora de domínio vs. teste em domínio):
+ limiar  fora_dominio  teste_dominio
+   0.50        0.2989         0.1955
+   0.55        0.4250         0.2473
+   0.60        0.5589         0.2987
+   0.65        0.6797         0.3541
+   0.70        0.7825         0.4031
+   0.75        0.8642         0.4547
+   0.80        0.9163         0.5135
+   0.85        0.9514         0.5747
+   0.90        0.9705         0.6514
+   0.95        0.9804         0.7491
+classe prevista fora de domínio:
+Hardware                 7645
+Access                    532
+Miscellaneous             241
+Administrative rights      27
+HR Support                 20
+Storage                     2
+Internal Project            2
+
+=== 6. limiar escolhido: 0.7 ===
+{
+  "limiar": 0.7,
+  "cobertura": 0.596945318876064,
+  "acuracia": 0.9626953125,
+  "acuracia_por_classe": {
+    "Access": 0.9636563876651982,
+    "Administrative rights": 0.7647058823529411,
+    "HR Support": 0.9722966934763181,
+    "Hardware": 0.9745547073791349,
+    "Internal Project": 0.9432989690721649,
+    "Miscellaneous": 0.9604261796042618,
+    "Purchase": 0.9539748953974896,
+    "Storage": 0.9647435897435898
+  },
+  "n_teste": 8577,
+  "n_decididos": 5120
+}
+gravados solution/data/derived/cobertura.json e solution/data/derived/modelo.joblib
+
+saída gravada em solution/04_classificador.txt

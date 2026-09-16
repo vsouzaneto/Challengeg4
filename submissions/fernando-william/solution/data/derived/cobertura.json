@@ -1,0 +1,17 @@
+{
+  "limiar": 0.7,
+  "cobertura": 0.596945318876064,
+  "acuracia": 0.9626953125,
+  "acuracia_por_classe": {
+    "Access": 0.9636563876651982,
+    "Administrative rights": 0.7647058823529411,
+    "HR Support": 0.9722966934763181,
+    "Hardware": 0.9745547073791349,
+    "Internal Project": 0.9432989690721649,
+    "Miscellaneous": 0.9604261796042618,
+    "Purchase": 0.9539748953974896,
+    "Storage": 0.9647435897435898
+  },
+  "n_teste": 8577,
+  "n_decididos": 5120
+}

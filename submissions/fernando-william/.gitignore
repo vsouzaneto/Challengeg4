@@ -15,3 +15,6 @@ solution/data/*.zip
 .venv/
 __pycache__/
 .ipynb_checkpoints/
+
+# Modelo treinado: reproduzível pelo script 04, não versionar
+solution/data/derived/modelo.joblib
