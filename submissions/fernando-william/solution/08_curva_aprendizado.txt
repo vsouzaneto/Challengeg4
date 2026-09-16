@@ -1,0 +1,19 @@
+AVISO: exemplo sorteado do treino não equivale a correção de erro em produção. Reversão humana chega concentrada nos casos em que o modelo errou ou absteve, e rótulo de fila operacional tem ruído que o dataset de treino não tem. A conversão em semanas supõe que toda reversão vira rótulo e que rótulo novo vale o mesmo que exemplo sorteado; a estimativa é piso, não previsão.
+
+treino completo: 34305; teste: 8577; Administrative rights no treino completo: 1274, no teste: 318
+
+curva de aprendizado (fatias estratificadas independentes do treino, semente 42; métricas no teste):
+ fração  n treino  n Administrative rights  acurácia  F1 macro  recall Administrative rights  F1 Administrative rights
+    0.1      3430                      127    0.7650    0.7124                        0.2013                    0.3333
+    0.2      6861                      255    0.7931    0.7565                        0.2893                    0.4455
+    0.4     13722                      510    0.8170    0.7908                        0.3836                    0.5410
+    0.6     20583                      764    0.8258    0.8077                        0.4465                    0.5954
+    0.8     27444                     1019    0.8349    0.8181                        0.4780                    0.6242
+    1.0     34305                     1274    0.8403    0.8263                        0.4937                    0.6382
+
+estimativa a partir dos dois últimos pontos (80% e 100%):
+exemplos adicionais de Administrative rights: 255.0; variação de recall: +1.57 pontos
+volume da classe: fração 0.0368 no dataset × 30000 tickets/ano (enunciado) = 1104/ano = 21.2/semana
+exemplos por ponto de recall: 162; semanas por ponto de recall se toda reversão humana virar rótulo: 7.6 (piso)
+
+saída gravada em solution/08_curva_aprendizado.txt

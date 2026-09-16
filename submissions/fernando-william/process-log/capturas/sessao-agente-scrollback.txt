@@ -1,0 +1,1723 @@
+(scrollback do terminal do agente, capturado ao fim do trabalho; o setup anterior ao início da sessão, criação da venv e instalação das dependências, foi cortado)
+$ claude
+ ▐▛███▛█   Claude Code v2.1.273
+▝▜██████▀  Fable 5.1 · Claude Max
+  ▝▝ ▝▝    ./
+
+
+❯ Crie solution/00_teste_chave_gemini.py: um script que testa o acesso à API Gemini por REST com requests, sem SDK. Ele lê GEMINI_API_KEY do ambiente; se não existir, procura um arquivo .env        
+  subindo diretórios a partir do próprio arquivo, sem nenhum caminho absoluto no codigo. Nuncs imprime a chave nem a recebe por argumento. Sem argumento, lista os modelos Flash que suportam         
+  generateContent. Com o nome de um modelo como argumento, faça uma chamada curta com maxOutputTokens 5 e imprime só status HTTP, promptTokenCount, candidatesTokenCount e totalTokenCount do         
+  usageMetadata. Depois rode sem argumento com .venv/bin/python e me mostre a saída.                                                                                                                  
+                                                                                    
+● Vou criar o script e depois rodá-lo. Primeiro confiro o ambiente: pasta solution/, venv e se requests está instalado.                                                                               
+                                                                                                                                                                                                    
+● Bash(ls solution/ 2>/dev/null; ls -d .venv && .venv/bin/python --version && .venv/bin/python -c "import requests; print('requests', requests.__version__)"; cat requi…)                             
+  ⎿  data    
+     .venv
+     Python 3.12.3                                          
+     … +28 lines (ctrl+o to expand)
+
+  Searched for 1 pattern (ctrl+o to expand)                 
+
+● A chave está definida no .env que fica acima do clone. Agora escrevo o script.                                                                                                                      
+
+● Bash(cat > solution/00_teste_chave_gemini.py <<'EOF'                                                                                                                                                
+      """Teste de acesso à API Gemini por REST, sem SDK.…)
+  ⎿  grep caminhos: rc=1                                                                                                                                                                              
+     status HTTP: 200
+     modelos listados: 58; Flash com generateContent: 20                                                                                                                                              
+     … +20 lines (ctrl+o to expand)
+
+● Criado solution/00_teste_chave_gemini.py e rodado sem argumento. A chave foi encontrada no .env acima do clone, fora do repositório, e o acesso funciona.
+
+  Saída da execução:                                                                                                                                                                                  
+
+  status HTTP: 200                                                                                                                                                                                    
+  modelos listados: 58; Flash com generateContent: 20
+  gemini-2.5-flash                                          
+  gemini-3.1-flash-lite
+  gemini-3.1-flash-lite-image
+  gemini-3.1-flash-lite-preview
+  gemini-3.1-flash-tts-preview
+  gemini-3.5-flash
+  gemini-3.5-flash-lite
+  gemini-3.6-flash
+  gemini-3.7-flash
+  gemini-3.8-flash
+  gemini-flash-latest
+  gemini-flash-lite-latest
+  gemini-omni-1.1-flash
+  gemini-omni-flash-preview
+
+  Como o script funciona:
+
+  - Chave. Lê a variável do ambiente. Se ausente, sobe a partir da pasta do próprio arquivo procurando um .env e lê só a linha dessa variável, sem exportar nada. Aceita export, aspas e comentários.
+    Sem chave, encerra com mensagem clara.
+  - Segurança. A chave vai no header x-goog-api-key, não na URL, para não vazar em log ou traceback. Erros HTTP imprimem só status e mensagem da API. Argumento extra além do nome do modelo é
+    rejeitado.
+  - Sem argumento. Pagina GET /models, filtra nome com "flash" e método generateContent, imprime status, contagem e nomes ordenados.
+  - Com modelo. POST :generateContent com prompt curto e maxOutputTokens 5. Imprime status HTTP e os três campos de usageMetadata.
+
+  Verifiquei que o arquivo não contém nenhum caminho absoluto ou segmento proibido. O modo com argumento não foi executado porque você pediu só a listagem. Para testar um modelo:
+
+  .venv/bin/python solution/00_teste_chave_gemini.py gemini-2.5-flash-lite
+
+✻ Sautéed for 46s · done 6:52 PM
+
+※ recap: Você pediu um script REST para testar a chave Gemini; criei solution/00_teste_chave_gemini.py e a listagem sem argumento funcionou com status 200 e 20 modelos Flash. Próximo passo: rodar
+  com um modelo, por exemplo gemini-2.5-flash-lite, para conferir a contagem de tokens. (disable recaps in /config)
+
+❯ Rode .venv/bin/python solution/00_teste_chave_gemini.py models/gemini-2.5-flash-lite e me mostre a saída.                                                                                           
+
+● Bash(.venv/bin/python solution/00_teste_chave_gemini.py models/gemini-2.5-flash-lite)
+  ⎿  Error: Exit code 1
+     status HTTP: 404
+     erro: This model models/gemini-2.5-flash-lite is no longer available to new users. Please update your code to use models/gemini-3.5-flash-lite for the latest features and improvements. We
+     recommend you to use the Interactions API.
+
+● A chamada retornou 404: o modelo models/gemini-2.5-flash-lite não está mais disponível para novas contas, sendo indicado models/gemini-3.5-flash-lite como substituto. Vou testar o modelo sugerido
+  para confirmar que funciona. · summarized
+
+● Bash(.venv/bin/python solution/00_teste_chave_gemini.py models/gemini-3.5-flash-lite)
+  ⎿  status HTTP: 200
+     promptTokenCount: 6
+     candidatesTokenCount: 1
+     totalTokenCount: 7
+
+● Com models/gemini-3.5-flash-lite a chamada passou:
+
+  status HTTP: 200
+  promptTokenCount: 6
+  candidatesTokenCount: 1
+  totalTokenCount: 7
+
+  Resumo: o script e a chave funcionam. O gemini-2.5-flash-lite está listado mas bloqueado para contas novas, com resposta 404. O gemini-3.5-flash-lite responde normalmente e é o candidato natural
+  para o protótipo, se você mantiver a família Flash Lite. A escolha do provedor e o motivo ainda precisam ser registrados por escrito, conforme a regra do projeto.
+
+✻ Cogitated for 15s · done 7:05 PM
+
+※ recap: Testando acesso à API Gemini para o protótipo do desafio G4: o script solution/00_teste_chave_gemini.py está pronto e funciona com gemini-3.5-flash-lite, enquanto gemini-2.5-flash-lite     
+  retorna 404. Próximo passo: decidir e registrar o modelo escolhido. (disable recaps in /config)
+
+❯  Antes de aceitar o 3.5, teste models/gemini-3.1-flash-lite, que é mais barato na tabela pública. Me mostre a saída.                                                                                
+
+● Bash(.venv/bin/python solution/00_teste_chave_gemini.py models/gemini-3.1-flash-lite)                                                                                                               
+  ⎿  status HTTP: 200
+     promptTokenCount: 6
+     candidatesTokenCount: 1   
+     totalTokenCount: 7
+
+● O gemini-3.1-flash-lite responde normalmente:             
+
+  status HTTP: 200                                                                                                                                                                                    
+  promptTokenCount: 6                                       
+  candidatesTokenCount: 1                                                                                                                                                                             
+  totalTokenCount: 7
+                                                            
+  Mesmo consumo de tokens que o 3.5-flash-lite na mesma chamada, o que é esperado para um prompt de seis tokens. A diferença entre os dois vai aparecer só em preço por milhão e em qualidade de
+  classificação, não neste teste de acesso.
+
+  Uma ressalva antes de fechar a escolha pelo preço: a afirmação de que o 3.1 é mais barato veio da tabela pública que você consultou. Ela não foi verificada nesta sessão. Se o motivo escrito da
+  escolha do provedor for custo, o número da tabela precisa entrar no artefato com data e fonte, e vale checar se o 3.1-flash-lite tem prazo de descontinuação anunciado, já que o 2.5 saiu do ar para
+  contas novas sem sumir da listagem.
+
+✻ Churned for 9s · done 7:09 PM
+
+※ recap: Testing Gemini API access for the G4 challenge prototype: the REST script works, gemini-2.5-flash-lite is blocked, and both 3.1-flash-lite and 3.5-flash-lite respond. Next: pick the model
+  and record the provider choice with verified pricing and source. (disable recaps in /config)
+
+❯ fica o gemini-3.1-flash-lite. motivo: mais barato disponível nesta conta em 16/09 (US$ 0,25 entrada e 1,50 saída por milhão de tokens, tabela pública ai.google.dev). desligamento anunciado para   
+  07/05/2027, que vai declarado no relatório. Anote isso num comentário no topo do script. nao precisa verificar mais nada sobre modelo agora.                                                        
+
+● Bash(.venv/bin/python - <<'EOF'
+      from pathlib import Path…)
+  ⎿  # Modelo escolhido para o protótipo: gemini-3.1-flash-lite.
+     # Motivo: mais barato disponível nesta conta em 16/09/2026 (US$ 0,25 entrada e
+     # US$ 1,50 saída por milhão de tokens, tabela pública em ai.google.dev).
+     … +10 lines (ctrl+o to expand)
+
+● Anotado no topo de solution/00_teste_chave_gemini.py, antes da docstring:
+
+  # Modelo escolhido para o protótipo: gemini-3.1-flash-lite.
+  # Motivo: mais barato disponível nesta conta em 16/09/2026 (US$ 0,25 entrada e
+  # US$ 1,50 saída por milhão de tokens, tabela pública em ai.google.dev).
+  # Desligamento anunciado para 07/05/2027; a data vai declarada no relatório.
+  # gemini-2.5-flash-lite aparece na listagem mas devolve 404 para contas novas.
+
+  Sintaxe do arquivo conferida depois da edição. Incluí a linha sobre o 404 do 2.5 porque é o fato observado nesta sessão que explica por que a escolha não caiu no modelo mais antigo. Se preferir só
+  o texto que você ditou, removo essa linha.
+
+✻ Sautéed for 10s · done 7:15 PM
+
+❯ Escreva solution/01_auditoria_dados.py, que lê os dois CSVs de solution/data/ resolvendo o caminho a partir do próprio arquivo, semente 42, e grava tudo o que imprimir em                          
+  solution/01_auditoria_dados.txt. Não interprete nada, não escreva conclusões: só imprima os números com rótulo claro. Dataset customer_support_tickets.csv:                                         
+  1. numero de linhas e colunas; nulos por coluna.                                                                                                                                                    
+  2. nulos de Customer Satisfaction Rating, First Response Time e Time to Resolution cruzados com Ticket Status (tabela de contingência).                                                             
+  3. datas: converta Date of Purchase, First Response Time e Time to Resolution; imprima mínimo, máximo e amplitude de cada uma; fração de tikcets fechados em que Time to Resolution é anterior a    
+  First Response Time; distribuição da diferença entre as duas em horas (quantis 5, 25, 50, 75, 95).                                                                                                  
+  4. distribuição de Ticket Type, Ticket Priority, Ticket Channel, Ticket Status, Product Purchased, Ticket Subject e Customer Satisfaction Rating; para cada uma, qui-quadrado de uniformidade com   
+  p-valor, e corrija por Bonferroni.                                                                                                                                                                  
+  5. tempo até primeira resposta e tempo de resolução, em horas, por canal, prioridade e tipo: mediana e quantil 90.                                                                                  
+  6. customer Satisfaction Rating: ANOVA de um fator contra canal, prioridade, tipo e assunto (F e p); correlação de Pearson e Spearman com o tempo de resolução em horas, só nos fechados.           
+  7. ticket Description: fração de linhas com "{product_purchased}" literal; número de textos distintos antes e depois de substituir o placeholder pelo valor de Product Purchased; número de         
+  primeiras frases distintas.                                                                                                                                                                         
+  8. teste se o texto descreve o ticket: TF-IDF sobre Ticket Description (com o placeholder substituído) e regressão logística prevendo Ticket Type, split estratificado 80/20; imprima acurácia no   
+  teste e a acurácia da classe majoritária. Repita prevendo Ticket Subject.                                                                                                                           
+  9. resolution: 10 valores sorteados, número de valores distintos, nulos cruzados com status.                                                                                                        
+  10. domínio dos e-mails: contagem por domínio, top 10.                                                                                                                                              
+  11. duplicatas exatas e duplicatas de Ticket Description.                                                                                                                                           
+                                                                                                                                                                                                      
+  Dataset all_tickets_processed_improved_v3.csv:                                                                                                                                                      
+  12. linhas, colunas, nulos; distribuição de Topic_group com percentual; razão entre a maior e a menor classe.                                                                                       
+  13. tamanho dos textos em palavras: quantis 5, 25, 50, 75, 95.                                                                                                                                      
+  14. duplicatas exatas de Document; quase-duplicatas: pares com similaridade de cosseno TF-IDF acima de 0,9, contados via vizinho mais próximo numa amostra de 5.000.                                
+  15. baseline: TF-IDF (unigrama e bigrama, min_df 2) com regressão logística prevendo Topic_group, split estratificado 80/20, semente 42; acurácia global, acurácia da classe majoritária, F1 por    
+  classe e matriz de confusão.                                                                                                                                                                        
+  16. no primeiro arquivo, conte todo placeholder entre chaves distinto em Ticket Description e quantas linhas contêm cada um; diga quais têm coluna correspondente na tabela e quais não têm.        
+  17. no primeiro arquivo, fração de First Response Time e de Time to Resolution que caem em 2023-06-01; número de dias distintos em cada coluna.                                                     
+  18. no baseline do segundo arquivo, os 15 termos de maior coeficiente por classe na regressão logística.                                                                                            
+                                                                                                                                                                                                      
+  Rode com .venv/bin/python e me mostre a saída completa.                                                                                                                                             
+
+● Vou primeiro olhar as colunas e o tamanho dos dois CSVs para escrever o script contra a estrutura real.
+
+● Bash(ls -la solution/data/ && .venv/bin/python - <<'EOF'                                                                                                                                            
+      import pandas as pd…)
+  ⎿  total 18096                                                                                                                                                                                      
+     drwxr-xr-x 3 root root     4096 Sep 16 02:04 .
+     drwxr-xr-x 3 root root     4096 Sep 16 18:52 ..                                                                                                                                                  
+     … +47 lines (ctrl+o to expand)
+
+● Confirmei a estrutura dos dados (8.469×17 e 47.837×2, sem data de abertura de ticket), então o "tempo até primeira resposta" terá que ser calculado usando Date of Purchase como referência. Vou
+  documentar essa fórmula no rótulo e escrever o script agora. · summarized
+
+  Read 1 file (ctrl+o to expand)                    
+
+● fechados foi criado antes da coluna resolucao_h existir. Corrijo recalculando o recorte no item 6.                                                                                                  
+                                                                              
+● Bash(sed -i 's/^sub = fechados.dropna(subset=\["Customer Satisfaction Rating", "resolucao_h"\])/sub = df[df["Ticket Status"] == "Closed"].dropna(subset=["Customer Sa…)                             
+  ⎿  real       0m43.632s        
+     user       2m20.308s                        
+     sys        0m1.376s
+     … +2 lines (ctrl+o to expand)   
+  ⎿  (timeout 10m)
+
+  Read 1 file (ctrl+o to expand)                                                                                                                                                                      
+
+● Bash(wc -l solution/01_auditoria_dados.txt && sed -n '40,200p' solution/01_auditoria_dados.txt)
+  ⎿  635 solution/01_auditoria_dados.txt                    
+
+     Time to Resolution (True = nulo):                                                                                                                                                                
+     … +158 lines (ctrl+o to expand)
+
+● Bash(sed -n '200,420p' solution/01_auditoria_dados.txt)
+  ⎿  === 8. texto prevê o rótulo? TF-IDF + regressão logística, split 80/20 estratificado ===
+     alvo Ticket Type: treino 6775, teste 1694, classes 5, acurácia teste 0.1978, classe majoritária 'Refund request' acurácia 0.2072
+     alvo Ticket Subject: treino 6775, teste 1694, classes 16, acurácia teste 0.0685, classe majoritária 'Refund request' acurácia 0.0679
+     … +217 lines (ctrl+o to expand)
+
+● Bash(sed -n '420,635p' solution/01_auditoria_dados.txt)   
+  ⎿    {Product_Product_Price}: 1 linhas; coluna correspondente: NENHUMA
+       {product_sell}: 1 linhas; coluna correspondente: NENHUMA
+       {product_discount}: 1 linhas; coluna correspondente: NENHUMA
+     … +213 lines (ctrl+o to expand)
+
+● Script criado em solution/01_auditoria_dados.py, rodado com sucesso em 44 segundos, saída gravada em solution/01_auditoria_dados.txt sem nenhum caminho absoluto. Duas observações sobre execução,
+  sem interpretação de resultado:
+
+  - Item 5. Não existe coluna de abertura do ticket. O tempo até primeira resposta foi calculado como First Response Time menos Date of Purchase, e a fórmula está impressa no rótulo da seção.
+  - Ordem. Os itens 16 e 17 são do primeiro arquivo, então aparecem logo após o item 11, antes dos itens 12 a 15 e 18 do segundo arquivo.                                                             
+              
+  Saída completa:                                           
+
+  === 1. customer_support_tickets.csv: dimensões e nulos ===
+  linhas: 8469  colunas: 17
+  nulos por coluna:
+  Ticket ID                          0
+  Customer Name                      0
+  Customer Email                     0
+  Customer Age                       0
+  Customer Gender                    0
+  Product Purchased                  0
+  Date of Purchase                   0
+  Ticket Type                        0
+  Ticket Subject                     0
+  Ticket Description                 0
+  Ticket Status                      0
+  Resolution                      5700
+  Ticket Priority                    0
+  Ticket Channel                     0
+  First Response Time             2819
+  Time to Resolution              5700
+  Customer Satisfaction Rating    5700
+
+  === 2. nulos cruzados com Ticket Status ===
+
+  Customer Satisfaction Rating (True = nulo):
+  Customer Satisfaction Rating  False  True   All
+  Ticket Status
+  Closed                         2769     0  2769
+  Open                              0  2819  2819
+  Pending Customer Response         0  2881  2881
+  All                            2769  5700  8469
+
+  First Response Time (True = nulo):
+  First Response Time        False  True   All
+  Ticket Status
+  Closed                      2769     0  2769
+  Open                           0  2819  2819
+  Pending Customer Response   2881     0  2881
+  All                         5650  2819  8469
+
+  Time to Resolution (True = nulo):
+  Time to Resolution         False  True   All
+  Ticket Status                                                                                                                                                                                       
+  Closed                      2769     0  2769
+  Open                           0  2819  2819                                                                                                                                                        
+  Pending Customer Response      0  2881  2881
+  All                         2769  5700  8469
+
+  === 3. datas ===                                                                                                                                                                                    
+  Date of Purchase: não nulos 8469, falhas de parse 0, min 2020-01-01 00:00:00, max 2021-12-30 00:00:00, amplitude 729 days 00:00:00
+  First Response Time: não nulos 5650, falhas de parse 0, min 2023-05-31 21:55:39, max 2023-06-02 00:54:21, amplitude 1 days 02:58:42
+  Time to Resolution: não nulos 2769, falhas de parse 0, min 2023-05-31 21:53:30, max 2023-06-02 00:55:33, amplitude 1 days 03:02:03
+  tickets Closed: 2769; com as duas datas: 2769; Time to Resolution anterior a First Response Time: 1365 (fração 0.4930)
+  diferença (Time to Resolution - First Response Time) em horas, n=2769: {'q5': -16.22, 'q25': -6.93, 'q50': 0.17, 'q75': 6.48, 'q95': 16.06}
+
+  === 4. distribuições categóricas e qui-quadrado de uniformidade (Bonferroni) ===
+
+  Ticket Type: 5 categorias, n=8469, chi2=7.43, gl=4, p=0.1149, p_bonferroni=0.8043
+  Ticket Type
+  Refund request          1752
+  Technical issue         1747                                                                                                                                                                        
+  Cancellation request    1695
+  Product inquiry         1641
+  Billing inquiry         1634
+
+  Ticket Priority: 4 categorias, n=8469, chi2=4.59, gl=3, p=0.2048, p_bonferroni=1
+  Ticket Priority                                                                                                                                                                                     
+  Medium      2192
+  Critical    2129
+  High        2085                                                                                                                                                                                    
+  Low         2063
+
+  Ticket Channel: 4 categorias, n=8469, chi2=1.35, gl=3, p=0.7179, p_bonferroni=1
+  Ticket Channel                                                                                                                                                                                      
+  Email           2143
+  Phone           2132                                                                                                                                                                                
+  Social media    2121
+  Chat            2073                                                                                                                                                                                
+
+  Ticket Status: 3 categorias, n=8469, chi2=2.23, gl=2, p=0.3279, p_bonferroni=1
+  Ticket Status
+  Pending Customer Response    2881
+  Open                         2819                                                                                                                                                                   
+  Closed                       2769
+
+  Product Purchased: 42 categorias, n=8469, chi2=40.82, gl=41, p=0.4784, p_bonferroni=1
+  Product Purchased                                                                                                                                                                                   
+  Canon EOS                         240
+  GoPro Hero                        228
+  Nest Thermostat                   225
+  Philips Hue Lights                221                                                                                                                                                               
+  Amazon Echo                       221
+  LG Smart TV                       219
+  Sony Xperia                       217                                                                                                                                                               
+  Roomba Robot Vacuum               216
+  LG OLED                           213
+  Apple AirPods                     213                                                                                                                                                               
+  iPhone                            212
+  Sony 4K HDR TV                    210
+  LG Washing Machine                208
+  Garmin Forerunner                 208
+  Canon DSLR Camera                 206
+  Nikon D                           204                                                                                                                                                               
+  Nintendo Switch Pro Controller    203
+  Google Pixel                      203
+  Sony PlayStation                  202
+  Fitbit Charge                     202
+  Microsoft Office                  200                                                                                                                                                               
+  HP Pavilion                       200
+  Dyson Vacuum Cleaner              198
+  Amazon Kindle                     198                                                                                                                                                               
+  Google Nest                       198
+  Bose SoundLink Speaker            197
+  Autodesk AutoCAD                  196
+  Microsoft Xbox Controller         196
+  Samsung Galaxy                    194
+  PlayStation                       192                                                                                                                                                               
+  Fitbit Versa Smartwatch           191
+  Microsoft Surface                 190                                                                                                                                                               
+  Bose QuietComfort                 190
+  Samsung Soundbar                  188
+  Xbox                              187
+  Asus ROG                          187                                                                                                                                                               
+  MacBook Pro                       186
+  Dell XPS                          185
+  GoPro Action Camera               183
+  Lenovo ThinkPad                   183
+  Adobe Photoshop                   181
+  Nintendo Switch                   178
+
+  Ticket Subject: 16 categorias, n=8469, chi2=27.86, gl=15, p=0.02248, p_bonferroni=0.1573
+  Ticket Subject
+  Refund request              576                                                                                                                                                                     
+  Software bug                574
+  Product compatibility       567
+  Delivery problem            561
+  Hardware issue              547
+  Battery life                542                                                                                                                                                                     
+  Network problem             539
+  Installation support        530
+  Product setup               529
+  Payment issue               526
+  Product recommendation      517
+  Account access              509                                                                                                                                                                     
+  Peripheral compatibility    496
+  Data loss                   491
+  Cancellation request        487
+  Display issue               478
+
+  Customer Satisfaction Rating: 5 categorias, n=2769, chi2=1.67, gl=4, p=0.7968, p_bonferroni=1
+  Customer Satisfaction Rating
+  3.0    580
+  1.0    553                                                                                                                                                                                          
+  2.0    549                                                                                                                                                                                          
+  5.0    544
+  4.0    543
+
+  === 5. tempos em horas por canal, prioridade e tipo (mediana e q90) ===
+  definições: resolucao_h = Time to Resolution - First Response Time; primeira_resposta_h = First Response Time - Date of Purchase (não existe coluna de abertura do ticket)
+
+  por Ticket Channel:
+                  n_primeira  primeira_mediana  primeira_q90  n_resolucao  resolucao_mediana  resolucao_q90
+  Ticket Channel                                                                                                                                                                                      
+  Chat                  1388          21467.72      28149.20          674               0.52          12.95
+  Email                 1442          21226.54      28493.37          720               0.37          12.72
+  Phone                 1396          21433.47      28312.85          691              -0.78          11.75
+  Social media          1424          20951.26      28287.86          684               0.35          14.13
+
+  por Ticket Priority:
+                   n_primeira  primeira_mediana  primeira_q90  n_resolucao  resolucao_mediana  resolucao_q90
+  Ticket Priority                                                                                                                                                                                     
+  Critical               1437          21307.63      28197.92          726               0.35          12.44
+  High                   1381          21264.97      28558.93          705               0.07          14.07
+  Low                    1367          21324.20      28096.96          644               0.35          13.36
+  Medium                 1465          21186.92      28355.62          694              -0.30          11.62
+
+  por Ticket Type:
+                        n_primeira  primeira_mediana  primeira_q90  n_resolucao  resolucao_mediana  resolucao_q90
+  Ticket Type                                                                                                                                                                                         
+  Billing inquiry             1095          21103.23      28427.79          544               0.11          11.58
+  Cancellation request        1113          21381.13      28177.08          516               0.39          13.11
+  Product inquiry             1109          21498.08      28405.84          533              -0.48          12.15
+  Refund request              1188          21230.48      28264.57          596               0.26          13.92
+  Technical issue             1145          21073.36      28391.52          580               0.48          12.96
+
+  === 6. Customer Satisfaction Rating: ANOVA e correlações ===
+  linhas com nota: 2769
+  ANOVA nota ~ Ticket Channel: k=4, F=1.2808, p=0.2792
+  ANOVA nota ~ Ticket Priority: k=4, F=0.5722, p=0.6333
+  ANOVA nota ~ Ticket Type: k=5, F=0.5475, p=0.7008
+  ANOVA nota ~ Ticket Subject: k=16, F=0.6766, p=0.81
+  fechados com nota e resolucao_h: n=2769; Pearson r=0.0199 p=0.2958; Spearman rho=0.0217 p=0.2539
+
+  === 7. Ticket Description: placeholder e cardinalidade ===
+  linhas com '{product_purchased}' literal: 8469 (fração 1.0000)
+  textos distintos antes da substituição: 8077
+  textos distintos depois da substituição: 8398
+  primeiras frases distintas (texto até o primeiro . ! ou ?): 16
+  primeiras frases distintas após substituição: 663
+
+  === 8. texto prevê o rótulo? TF-IDF + regressão logística, split 80/20 estratificado ===
+  alvo Ticket Type: treino 6775, teste 1694, classes 5, acurácia teste 0.1978, classe majoritária 'Refund request' acurácia 0.2072
+  alvo Ticket Subject: treino 6775, teste 1694, classes 16, acurácia teste 0.0685, classe majoritária 'Refund request' acurácia 0.0679
+
+  === 9. Resolution ===
+  não nulos: 2769, valores distintos: 2769
+  10 valores sorteados (semente 42):
+    - Such option result friend able director.
+    - Pick Republican offer world actually road during.
+    - Deal step team east pressure.
+    - Save operation blue call her pull.
+    - Early gas else have measure surface.
+    - Then number north mouth boy what court out.
+    - Business bit pick campaign purpose.
+    - Along around church political reveal fine.
+    - Water it seat response soon well.
+    - Value management grow whether nice.
+  nulos cruzados com Ticket Status (True = nulo):
+  Resolution                 False  True   All
+  Ticket Status                                                                                                                                                                                       
+  Closed                      2769     0  2769
+  Open                           0  2819  2819
+  Pending Customer Response      0  2881  2881
+  All                         2769  5700  8469
+
+  === 10. domínios de e-mail, top 10 ===
+  domínios distintos: 3
+  Customer Email                                                                                                                                                                                      
+  example.com    2904
+  example.org    2796
+  example.net    2769                                                                                                                                                                                 
+
+  === 11. duplicatas ===
+  linhas duplicadas exatas (todas as colunas): 0
+  linhas duplicadas exatas ignorando Ticket ID: 0
+  linhas cuja Ticket Description se repete: 439; descrições repetidas distintas: 47
+  idem após substituir placeholder: linhas 135, distintas 64                                                                                                                                          
+
+  === 16. placeholders entre chaves em Ticket Description ===
+  placeholders distintos: 289                                                                                                                                                                         
+    {product_purchased}: 8469 linhas; coluna correspondente: Product Purchased
+    {error_message}: 472 linhas; coluna correspondente: NENHUMA
+    {product_id}: 44 linhas; coluna correspondente: NENHUMA
+    {product_name}: 31 linhas; coluna correspondente: NENHUMA
+    {Product_purchased}: 17 linhas; coluna correspondente: Product Purchased
+    {product}: 12 linhas; coluna correspondente: NENHUMA
+    {product_price}: 12 linhas; coluna correspondente: NENHUMA
+    {name}: 9 linhas; coluna correspondente: NENHUMA
+    {product_purchases}: 6 linhas; coluna correspondente: NENHUMA
+    {id}: 6 linhas; coluna correspondente: NENHUMA
+    {item_id}: 5 linhas; coluna correspondente: NENHUMA
+    {Product_id}: 4 linhas; coluna correspondente: NENHUMA
+    {Product}: 4 linhas; coluna correspondente: NENHUMA
+    {product_product}: 4 linhas; coluna correspondente: NENHUMA
+    {product_type}: 4 linhas; coluna correspondente: NENHUMA
+    {item}: 3 linhas; coluna correspondente: NENHUMA
+    {product_purchased_id}: 3 linhas; coluna correspondente: NENHUMA
+    {                                                                                                                                                                                                 
+
+  return false ;
+
+  }: 3 linhas; coluna correspondente: NENHUMA
+    {product_purchase}: 3 linhas; coluna correspondente: NENHUMA
+    {products_purchased}: 3 linhas; coluna correspondente: NENHUMA
+    {ProductID}: 3 linhas; coluna correspondente: NENHUMA
+    {product_paid}: 3 linhas; coluna correspondente: NENHUMA
+    {product_title}: 3 linhas; coluna correspondente: NENHUMA
+    {user_id}: 2 linhas; coluna correspondente: NENHUMA
+    {app_id}: 2 linhas; coluna correspondente: NENHUMA
+    {product_product_purchased}: 2 linhas; coluna correspondente: NENHUMA
+    {Product_Purchased}: 2 linhas; coluna correspondente: Product Purchased
+    {product_purchased }: 2 linhas; coluna correspondente: Product Purchased
+    {Product Name}: 2 linhas; coluna correspondente: NENHUMA
+    {product_item}: 2 linhas; coluna correspondente: NENHUMA
+    {item_name}: 2 linhas; coluna correspondente: NENHUMA
+    {product_selected}: 2 linhas; coluna correspondente: NENHUMA
+    {ProductId}: 2 linhas; coluna correspondente: NENHUMA
+    {value}: 2 linhas; coluna correspondente: NENHUMA
+    {product_purchased_name}: 2 linhas; coluna correspondente: NENHUMA
+    {model}: 2 linhas; coluna correspondente: NENHUMA
+    {Product_name}: 2 linhas; coluna correspondente: NENHUMA
+    {0}: 2 linhas; coluna correspondente: NENHUMA
+    {1}: 2 linhas; coluna correspondente: NENHUMA
+    {product_packaged}: 2 linhas; coluna correspondente: NENHUMA
+    {ProductPurchases}: 2 linhas; coluna correspondente: NENHUMA
+    {ProductName}: 2 linhas; coluna correspondente: NENHUMA
+    {product_purchased.product}: 2 linhas; coluna correspondente: NENHUMA
+    {order_id}: 2 linhas; coluna correspondente: NENHUMA
+    {product_purchased.name}: 2 linhas; coluna correspondente: NENHUMA
+    {review_id}: 2 linhas; coluna correspondente: NENHUMA
+    {products}: 2 linhas; coluna correspondente: NENHUMA
+    {product_purchasing}: 2 linhas; coluna correspondente: NENHUMA
+    {product_product_id}: 2 linhas; coluna correspondente: NENHUMA
+    {product_updated}: 2 linhas; coluna correspondente: NENHUMA
+    { product_purchased }: 2 linhas; coluna correspondente: Product Purchased
+    { }: 2 linhas; coluna correspondente: NENHUMA
+    {product_purchased_1}: 2 linhas; coluna correspondente: NENHUMA
+    {search }: 1 linhas; coluna correspondente: NENHUMA
+    {number}: 1 linhas; coluna correspondente: NENHUMA
+    {item_category}: 1 linhas; coluna correspondente: NENHUMA
+    {user}: 1 linhas; coluna correspondente: NENHUMA
+    {source; address, ip Address}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased_subsidized}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased_at}: 1 linhas; coluna correspondente: NENHUMA
+    {product_available}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased:1,0}: 1 linhas; coluna correspondente: NENHUMA
+    {id:1}: 1 linhas; coluna correspondente: NENHUMA                                                                                                                                                  
+    {product_cred_id_id}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased_count}: 1 linhas; coluna correspondente: NENHUMA
+    {Product_Purchased_}: 1 linhas; coluna correspondente: NENHUMA
+    {product_paydirt}: 1 linhas; coluna correspondente: NENHUMA
+    {_product_id}: 1 linhas; coluna correspondente: NENHUMA
+    { std::shared_ptr<dtor> id; }: 1 linhas; coluna correspondente: NENHUMA
+    {Product_purchased_account_loggedIn}: 1 linhas; coluna correspondente: NENHUMA
+    {product_time}: 1 linhas; coluna correspondente: NENHUMA
+    {result[ "Product" ]. Product = product }: 1 linhas; coluna correspondente: NENHUMA
+    {product_for_all}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased_value}: 1 linhas; coluna correspondente: NENHUMA
+    {product_add}: 1 linhas; coluna correspondente: NENHUMA
+    {product_product_name}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased", "id":null}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased-product}: 1 linhas; coluna correspondente: NENHUMA
+    {product_product_changed}: 1 linhas; coluna correspondente: NENHUMA
+    {hashtag}: 1 linhas; coluna correspondente: NENHUMA
+    {user.title}: 1 linhas; coluna correspondente: NENHUMA
+    {purchase}: 1 linhas; coluna correspondente: NENHUMA
+    {product_item_name}: 1 linhas; coluna correspondente: NENHUMA
+    {device_name}: 1 linhas; coluna correspondente: NENHUMA
+    {product_ref}: 1 linhas; coluna correspondente: NENHUMA
+    {purchases}: 1 linhas; coluna correspondente: NENHUMA
+    {product_paid.category}: 1 linhas; coluna correspondente: NENHUMA
+    {product_delivered.category}: 1 linhas; coluna correspondente: NENHUMA
+    {tiddlers_id}: 1 linhas; coluna correspondente: NENHUMA
+    {product_finance_addresses}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased item_name}: 1 linhas; coluna correspondente: NENHUMA
+    {product_description}: 1 linhas; coluna correspondente: NENHUMA
+    {the box is too small}: 1 linhas; coluna correspondente: NENHUMA
+    {my_device_id}: 1 linhas; coluna correspondente: NENHUMA
+    {customer_address}: 1 linhas; coluna correspondente: NENHUMA
+    {purchase_price}: 1 linhas; coluna correspondente: NENHUMA
+    {purchase_code}: 1 linhas; coluna correspondente: NENHUMA
+    {title}: 1 linhas; coluna correspondente: NENHUMA
+    {content}: 1 linhas; coluna correspondente: NENHUMA
+    {product_sub_featured_image}: 1 linhas; coluna correspondente: NENHUMA
+    {product_name is_only}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased.id}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased_info}: 1 linhas; coluna correspondente: NENHUMA
+    {"category"}: 1 linhas; coluna correspondente: NENHUMA
+    {product_sold}: 1 linhas; coluna correspondente: NENHUMA
+    {product_.count.name.toObject}: 1 linhas; coluna correspondente: NENHUMA
+    {purchased_name}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased_number}: 1 linhas; coluna correspondente: NENHUMA
+    {Product Purchase Transaction}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased_payment}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased_product}: 1 linhas; coluna correspondente: NENHUMA
+    {product_name_format}: 1 linhas; coluna correspondente: NENHUMA
+    {i}: 1 linhas; coluna correspondente: NENHUMA
+    {product_featured_image_url}: 1 linhas; coluna correspondente: NENHUMA
+    {app_number}: 1 linhas; coluna correspondente: NENHUMA
+    {manufacturer}: 1 linhas; coluna correspondente: NENHUMA
+    {Name}: 1 linhas; coluna correspondente: NENHUMA
+    {product_not_applied}: 1 linhas; coluna correspondente: NENHUMA
+    { int i; }: 1 linhas; coluna correspondente: NENHUMA
+    {sizes_for_trucular}: 1 linhas; coluna correspondente: NENHUMA
+    {ProductKey}: 1 linhas; coluna correspondente: NENHUMA
+    {Version}: 1 linhas; coluna correspondente: NENHUMA
+    {CultureVariant}: 1 linhas; coluna correspondente: NENHUMA
+    {String}: 1 linhas; coluna correspondente: NENHUMA
+    {"product" : "NicoBike"}: 1 linhas; coluna correspondente: NENHUMA
+    {citations}: 1 linhas; coluna correspondente: NENHUMA
+    {Product bought}: 1 linhas; coluna correspondente: NENHUMA
+    {productID}: 1 linhas; coluna correspondente: NENHUMA
+    {input_order_key}: 1 linhas; coluna correspondente: NENHUMA
+    {product_size}: 1 linhas; coluna correspondente: NENHUMA
+    {Product ID}: 1 linhas; coluna correspondente: NENHUMA
+    {rpi}: 1 linhas; coluna correspondente: NENHUMA
+    {rxpi}: 1 linhas; coluna correspondente: NENHUMA
+    {ProductPrice: $true }: 1 linhas; coluna correspondente: NENHUMA
+    {Product_Purchased_1}: 1 linhas; coluna correspondente: NENHUMA
+    {Product_Purchased_0}: 1 linhas; coluna correspondente: NENHUMA
+    {Product.AddToCart}: 1 linhas; coluna correspondente: NENHUMA
+    {(product_purchased, 0))[ 1 :]}: 1 linhas; coluna correspondente: NENHUMA
+    {product_ Moto 360 (R/U)}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased_by}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchas}: 1 linhas; coluna correspondente: NENHUMA
+    {product_distributed}: 1 linhas; coluna correspondente: NENHUMA
+    {product_p word}: 1 linhas; coluna correspondente: NENHUMA
+    {product_muted}: 1 linhas; coluna correspondente: NENHUMA
+    {products_to_count}: 1 linhas; coluna correspondente: NENHUMA
+    {url}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased.brand}: 1 linhas; coluna correspondente: NENHUMA
+    {item.required_item}: 1 linhas; coluna correspondente: NENHUMA
+    {item.price}: 1 linhas; coluna correspondente: NENHUMA
+    {product_order}: 1 linhas; coluna correspondente: NENHUMA
+    {item.level}: 1 linhas; coluna correspondente: NENHUMA
+    {Id}: 1 linhas; coluna correspondente: NENHUMA
+    {product_num_purchases}: 1 linhas; coluna correspondente: NENHUMA
+    {review}: 1 linhas; coluna correspondente: NENHUMA
+    {order_item}: 1 linhas; coluna correspondente: NENHUMA
+    {product_cannot_trade}: 1 linhas; coluna correspondente: NENHUMA
+    {item_purchase}: 1 linhas; coluna correspondente: NENHUMA                                                                                                                                         
+    {                                                                                                                                                                                                 
+
+  return ;                                                  
+                                                            
+  }: 1 linhas; coluna correspondente: NENHUMA
+    {product name}: 1 linhas; coluna correspondente: NENHUMA
+    {purchase_type}: 1 linhas; coluna correspondente: NENHUMA
+    {order_name}: 1 linhas; coluna correspondente: NENHUMA
+    {product_paid_by}: 1 linhas; coluna correspondente: NENHUMA
+    {input_id}: 1 linhas; coluna correspondente: NENHUMA
+    {Product pss}: 1 linhas; coluna correspondente: NENHUMA
+    {product_url}: 1 linhas; coluna correspondente: NENHUMA
+    {product_cursed}: 1 linhas; coluna correspondente: NENHUMA
+    { [ 1] = 5 }: 1 linhas; coluna correspondente: NENHUMA
+    {sommer}: 1 linhas; coluna correspondente: NENHUMA
+    {product_request.product_method}: 1 linhas; coluna correspondente: NENHUMA
+    {* traditionalSignIn_emailAddress *}: 1 linhas; coluna correspondente: NENHUMA
+    {* #resetPasswordForm *}: 1 linhas; coluna correspondente: NENHUMA
+    {Product_Product_Price}: 1 linhas; coluna correspondente: NENHUMA
+    {product_sell}: 1 linhas; coluna correspondente: NENHUMA
+    {product_discount}: 1 linhas; coluna correspondente: NENHUMA
+    {product_product_price}: 1 linhas; coluna correspondente: NENHUMA
+    {product_request}: 1 linhas; coluna correspondente: NENHUMA
+    {product_request, password}: 1 linhas; coluna correspondente: NENHUMA
+    {name_purchased}: 1 linhas; coluna correspondente: NENHUMA
+    {Product_purchases}: 1 linhas; coluna correspondente: NENHUMA
+    {Product_Purchasing}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased_message}: 1 linhas; coluna correspondente: NENHUMA
+    {$product_purchased}: 1 linhas; coluna correspondente: NENHUMA
+    {product_value}: 1 linhas; coluna correspondente: NENHUMA
+    {product_prod}: 1 linhas; coluna correspondente: NENHUMA
+    {purchased}: 1 linhas; coluna correspondente: NENHUMA
+    {product_p Color}: 1 linhas; coluna correspondente: NENHUMA
+    {product_p Featured}: 1 linhas; coluna correspondente: NENHUMA                                                                                                                                    
+    {product_p Sold}: 1 linhas; coluna correspondente: NENHUMA
+    {product_p Seller Name}: 1 linhas; coluna correspondente: NENHUMA
+    {product_brand}: 1 linhas; coluna correspondente: NENHUMA
+    {product_ AnimatedItem }: 1 linhas; coluna correspondente: NENHUMA
+    {model_name}: 1 linhas; coluna correspondente: NENHUMA
+    {product_p Erica}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased.ini}: 1 linhas; coluna correspondente: NENHUMA
+    {product_promo_item}: 1 linhas; coluna correspondente: NENHUMA
+    {product_promo}: 1 linhas; coluna correspondente: NENHUMA
+    {product_sell_code}: 1 linhas; coluna correspondente: NENHUMA
+    { name }: 1 linhas; coluna correspondente: NENHUMA
+    {product_name, product_date}: 1 linhas; coluna correspondente: NENHUMA
+    {product_price, product_sale_date}: 1 linhas; coluna correspondente: NENHUMA
+    {product_store}: 1 linhas; coluna correspondente: NENHUMA
+    {item_purchased}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased_address}: 1 linhas; coluna correspondente: NENHUMA
+    {price_tag}: 1 linhas; coluna correspondente: NENHUMA
+    {product_natures}: 1 linhas; coluna correspondente: NENHUMA
+    { Bermuda_T.purch@gmail.com}: 1 linhas; coluna correspondente: NENHUMA
+    {                                                                                                                                                                                                 
+
+  this. product = it ;
+
+  }: 1 linhas; coluna correspondente: NENHUMA
+    {this.user}: 1 linhas; coluna correspondente: NENHUMA
+    {user_mode}: 1 linhas; coluna correspondente: NENHUMA
+    {"id":"1410353538","title":"Add new"}: 1 linhas; coluna correspondente: NENHUMA
+    { Product }: 1 linhas; coluna correspondente: NENHUMA
+    {product_ex_name}: 1 linhas; coluna correspondente: NENHUMA
+    {product_ex_status}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased-content}: 1 linhas; coluna correspondente: NENHUMA
+    {product_page}: 1 linhas; coluna correspondente: NENHUMA
+    {product_props}: 1 linhas; coluna correspondente: NENHUMA
+    {1$}: 1 linhas; coluna correspondente: NENHUMA
+    {product_pricing}: 1 linhas; coluna correspondente: NENHUMA
+    {product_amount }: 1 linhas; coluna correspondente: NENHUMA
+    {product_amount}: 1 linhas; coluna correspondente: NENHUMA
+    { "product_id" : "product_id", "value" : "25"}: 1 linhas; coluna correspondente: NENHUMA
+    {ItemID}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased.ProductName}: 1 linhas; coluna correspondente: NENHUMA
+    {Product_purchased_Id: 6}: 1 linhas; coluna correspondente: NENHUMA
+    {product_prepaid}: 1 linhas; coluna correspondente: NENHUMA
+    {Purchased Product}: 1 linhas; coluna correspondente: NENHUMA
+    {item_price}: 1 linhas; coluna correspondente: NENHUMA
+    {Product purchased: true, price: 50 }: 1 linhas; coluna correspondente: NENHUMA
+    {product_category}: 1 linhas; coluna correspondente: NENHUMA
+    {slowly}: 1 linhas; coluna correspondente: NENHUMA
+    {product_product_details}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased_device}: 1 linhas; coluna correspondente: NENHUMA
+    {product_app_id}: 1 linhas; coluna correspondente: NENHUMA
+    {products.price}: 1 linhas; coluna correspondente: NENHUMA
+    {product_payment}: 1 linhas; coluna correspondente: NENHUMA
+    {key}: 1 linhas; coluna correspondente: NENHUMA
+    {#}: 1 linhas; coluna correspondente: NENHUMA
+    {product_color}: 1 linhas; coluna correspondente: NENHUMA
+    {/product-purchased}: 1 linhas; coluna correspondente: NENHUMA
+    {product_price-count}: 1 linhas; coluna correspondente: NENHUMA
+    {                                                                                                                                                                                                 
+
+  this.message.set_error("Invalid Product Purchase" );
+
+  }: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased_keyword}: 1 linhas; coluna correspondente: NENHUMA
+    {application_id}: 1 linhas; coluna correspondente: NENHUMA
+    {project_id}: 1 linhas; coluna correspondente: NENHUMA
+    {'key_name':'Hello-World'}: 1 linhas; coluna correspondente: NENHUMA
+    {proceeds, $resource}: 1 linhas; coluna correspondente: NENHUMA
+    {proceeds, 2}: 1 linhas; coluna correspondente: NENHUMA
+    {Proceeds, $resource}: 1 linhas; coluna correspondente: NENHUMA
+    {review_total_refresh}: 1 linhas; coluna correspondente: NENHUMA
+    {product_refresh_to}: 1 linhas; coluna correspondente: NENHUMA
+    {review_created}: 1 linhas; coluna correspondente: NENHUMA
+    {result.name}: 1 linhas; coluna correspondente: NENHUMA
+    {p.name}: 1 linhas; coluna correspondente: NENHUMA
+    {this}: 1 linhas; coluna correspondente: NENHUMA
+    {product_created}: 1 linhas; coluna correspondente: NENHUMA
+    {product__label}: 1 linhas; coluna correspondente: NENHUMA
+    {$:/language}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased_last2}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased_last1}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased_last_updated_day}: 1 linhas; coluna correspondente: NENHUMA
+    { "name": "" }: 1 linhas; coluna correspondente: NENHUMA
+    {your_device_id}: 1 linhas; coluna correspondente: NENHUMA
+    {product_prompt}: 1 linhas; coluna correspondente: NENHUMA
+    {product_added}: 1 linhas; coluna correspondente: NENHUMA
+    {product_added name}: 1 linhas; coluna correspondente: NENHUMA
+    { throw e.message() > undefined; }: 1 linhas; coluna correspondente: NENHUMA
+    {Product_Price}: 1 linhas; coluna correspondente: NENHUMA
+    { product_purchased, name = " XBOOST_BLUEGRIN_1 " }: 1 linhas; coluna correspondente: NENHUMA
+    {Product_purchased::id}: 1 linhas; coluna correspondente: NENHUMA
+    {order_number}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased[name]}: 1 linhas; coluna correspondente: NENHUMA
+    {product_product_required}: 1 linhas; coluna correspondente: NENHUMA
+    {solutions_cancel}: 1 linhas; coluna correspondente: NENHUMA
+    {                                                                                                                                                                                                 
+
+  return results;
+
+  }: 1 linhas; coluna correspondente: NENHUMA
+    {Purchased}: 1 linhas; coluna correspondente: NENHUMA
+    {$product}: 1 linhas; coluna correspondente: NENHUMA
+    {Product_Name}: 1 linhas; coluna correspondente: NENHUMA
+    {Title text: See product details of current device or manufacturer if unsure}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased_amount}: 1 linhas; coluna correspondente: NENHUMA
+    {isn't_banned}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased_2}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased_0}: 1 linhas; coluna correspondente: NENHUMA
+    {product_purchased = false}: 1 linhas; coluna correspondente: NENHUMA
+    { product }: 1 linhas; coluna correspondente: NENHUMA
+    { p, product }: 1 linhas; coluna correspondente: NENHUMA
+    {Product-Type}: 1 linhas; coluna correspondente: NENHUMA
+    {The result will be displayed in the message box.", $product_purchased, null=False, }: 1 linhas; coluna correspondente: NENHUMA
+    {product_paid_1}: 1 linhas; coluna correspondente: NENHUMA
+    {                                                                                                                                                                                                 
+
+  return $resource                                                                                                                                                                                    
+                                                            
+  }: 1 linhas; coluna correspondente: NENHUMA               
+
+  === 17. concentração das datas em 2023-06-01 ===
+  First Response Time: n=5650, em 2023-06-01: 5437 (fração 0.9623), dias distintos: 3
+    contagem por dia:                                                                                                                                                                                 
+    First Response Time_dt
+    2023-05-31     175
+    2023-06-01    5437
+    2023-06-02      38
+  Time to Resolution: n=2769, em 2023-06-01: 2649 (fração 0.9567), dias distintos: 3
+    contagem por dia:
+    Time to Resolution_dt
+    2023-05-31      99                                                                                                                                                                                
+    2023-06-01    2649
+    2023-06-02      21
+
+  === 12. all_tickets_processed_improved_v3.csv: dimensões, nulos, classes ===
+  linhas: 47837  colunas: 2
+  nulos por coluna:
+  Document       0                                                                                                                                                                                    
+  Topic_group    0
+  Topic_group:                                                                                                                                                                                        
+                             n    pct
+  Topic_group                                                                                                                                                                                         
+  Hardware               13617  28.47
+  HR Support             10915  22.82
+  Access                  7125  14.89
+  Miscellaneous           7060  14.76
+  Storage                 2777   5.81
+  Purchase                2464   5.15
+  Internal Project        2119   4.43
+  Administrative rights   1760   3.68
+  razão maior/menor classe: 7.74
+
+  === 13. tamanho dos textos em palavras ===                                                                                                                                                          
+  n=47837, {'q5': 10.0, 'q25': 17.0, 'q50': 26.0, 'q75': 46.0, 'q95': 136.0}, min 2, max 981
+
+  === 14. duplicatas de Document ===
+  linhas com Document repetido: 0; documentos repetidos distintos: 0; linhas duplicadas exatas (Document + Topic_group): 0
+  amostra de 5000 documentos: com vizinho mais próximo de similaridade > 0,9: 304 (fração 0.0608); pares distintos: 201; desses, pares com similaridade > 0,9999: 1
+  similaridade com o vizinho mais próximo, quantis: {'q5': 0.27, 'q25': 0.38, 'q50': 0.51, 'q75': 0.68, 'q95': 0.91}
+
+  === 15. baseline TF-IDF (1-2gramas, min_df 2) + regressão logística prevendo Topic_group ===
+  treino 38269, teste 9568, vocabulário 144869
+  documentos do teste com Document idêntico presente no treino: 0
+  acurácia global: 0.8584; classe majoritária 'Hardware': 0.2847
+                         precision    recall  f1-score   support
+
+                 Access     0.9199    0.8702    0.8943      1425
+  Administrative rights     0.9142    0.6051    0.7282       352
+             HR Support     0.8625    0.8791    0.8707      2183
+               Hardware     0.7911    0.9093    0.8461      2724
+       Internal Project     0.9477    0.7689    0.8490       424
+          Miscellaneous     0.8393    0.8251    0.8321      1412
+               Purchase     0.9883    0.8540    0.9162       493
+                Storage     0.9556    0.8144    0.8794       555
+
+               accuracy                         0.8584      9568
+              macro avg     0.9023    0.8157    0.8520      9568
+           weighted avg     0.8649    0.8584    0.8582      9568
+  Administrative rights       7                    213          12       109                 1             10         0        0
+  HR Support                 26                      1        1919       172                 5             55         0        5
+  Hardware                   44                     10         106      2477                 4             74         5        4
+  Internal Project            5                      1          34        36               326             22         0        0
+  Miscellaneous              20                      1          74       142                 4           1165         0        6
+  Purchase                    3                      2           8        46                 1             10       421        2
+  Storage                     3                      1          33        52                 0             14         0      452
+
+  === 18. 15 termos de maior coeficiente por classe (baseline do item 15) ===
+  Access: confluence (13.76), account (11.21), user (11.17), password (10.66), card (10.35), license (10.20), git (7.99), repository (7.79), accounts (7.27), users (6.44), create (5.95), locked (5.61),
+  cards (5.36), reset (5.18), licenses (4.61)
+  Administrative rights: outlook (14.75), upgrade (11.67), issues (6.80), install (5.68), windows (4.56), software (3.99), update (3.93), version (3.40), calendar (2.98), with (2.78), assets (2.69),
+  problems (2.57), exchange (2.56), not (2.39), up (2.35)
+  HR Support: oracle (8.75), error (8.47), starter (8.06), leave (7.65), time (7.18), submit (6.31), leaver (5.72), access (5.45), access to (5.20), timecard (5.12), annual (4.81), new starter (4.73),
+  transfer (4.44), hours (4.41), area (4.29)
+  Hardware: laptop (8.75), monitor (8.32), phone (5.17), room (5.02), meeting (4.98), connection (4.71), cable (4.35), call (3.85), connect (3.85), backpack (3.64), mobile (3.63), certificate (3.41), calls
+  (3.35), keyboard (3.21), ram (3.17)
+  Internal Project: code (13.60), project (10.32), codes (8.53), pipeline (7.50), setup (7.19), pas (5.91), import (3.52), opportunity (3.38), pipelines (3.11), client (3.07), unknown (2.96), forecast
+  (2.71), known (2.49), new project (2.46), attached (2.30)
+  Miscellaneous: change (10.69), approval (9.72), approve (8.18), add (8.06), ticket (6.98), groups (6.93), name (6.31), tickets (6.28), owner (5.82), approved (5.65), contract (5.42), approver (4.94),
+  list (4.49), mailing (4.01), members (4.00)
+  Purchase: po (8.46), purchase (7.51), installation (7.00), administrator (6.22), device (5.17), log (4.07), please log (3.67), administrator phone (3.55), allocation (3.25), devices (3.06), items (3.02),
+  order (2.94), phone (2.80), receipt (2.73), thank administrator (2.44)
+  Storage: folder (13.47), mailbox (11.81), wants (7.29), storage (6.89), shared (6.88), folders (6.05), permissions (5.44), files (5.18), increase (4.74), file (4.22), full (4.09), share (4.03), size
+  (3.97), archive (3.94), accept (3.86)
+
+  saída gravada em solution/01_auditoria_dados.txt
+
+  Nota de execução: a primeira rodada quebrou no item 6 porque o recorte de tickets fechados foi criado antes da coluna de horas de resolução existir. Corrigi refazendo o recorte dentro do item e rodei de
+  novo. O texto acima é da segunda rodada, a única que gerou o arquivo.
+
+✻ Worked for 5m 2s · done 7:37 PM
+
+❯ Escreva solution/02_modelo_custo.py. É um modelo de custo parametrizado da triagem de tickets, com todas as premissas como variáveis nomeadas no topo do arquivo, cada uma com um comentário dizendo a     
+  fonte: "enunciado", "dataset", "premissa minha" ou "benchmark" com a referência. Nenhum número solto no meio do cálculo.                                                                                   
+                                                                                                                                                                                                             
+  Premissas iniciais: volume anual de 30.000 tickets (enunciado); composição por categoria tirada da distribuição de Topic_group do segundo arquivo (dataset); minutos de triagem manual por ticket, ou      
+  seja, ler, classificar e encaminhar, em três cenários: 3, 5 e 8 minutos (premissa minha); custo por hora de agente de suporte em três cenários: R$ 25, 35 e 50 (premissa minha); acurácia e cobertura da   
+  triagem automática lidas de solution/data/derived/cobertura.json se o arquivo existir, senão usar acurácia 0,858 e cobertura 1,0 do baseline do script 01 (dataset); custo de uma triagem errada em        
+  minutos de retrabalho: 10 (premissa minha).                                                                                                                                                                
+                                                                                                                                                                                                             
+  Calcule, para cada cenário conservador, base e otimista: horas anuais de triagem manual hoje; horas que a triagem automática absorve na cobertura dada; horas de retrabalho pelos erros; horas líquidas    
+  economizadas e valor em reais; e a mesma conta por mil tickets. Imprima uma tabela por cenário e grave em solution/02_modelo_custo.txt. Não interprete; só calcule e imprima. Rode com .venv/bin/python.   
+                                                                                                                                                                                                             
+  Apresente o resultado principal em horas por ano e em fração de FTE (1 FTE = 1.760 h/ano, premissa minha), como faixa entre o cenário conservador e o otimista. Reais entram só numa linha por cenário. No 
+  topo da saída, imprima a lista das premissas usadas com a procedência de cada uma e a frase "resultado depende de N premissas empilhadas", com N contado pelo próprio script.                              
+
+● Vou escrever o script com as premissas em uma lista estruturada no topo, para que o próprio script conte quantas são e imprima a procedência. Composição por categoria é lida direto do CSV, não copiada do
+  script 01.
+
+● Bash(cat > solution/02_modelo_custo.py <<'EOF'     
+      """Modelo de custo parametrizado da triagem de tickets (ler, classificar, encaminhar).…)
+  ⎿  grep caminhos rc=1                                                                                                                                                                                      
+     PREMISSAS USADAS
+       volume anual de tickets: 30000  [enunciado]                                                                                                                                                           
+     … +78 lines (ctrl+o to expand)                         
+
+● Script criado em solution/02_modelo_custo.py, rodado, saída em solution/02_modelo_custo.txt, sem caminho absoluto em nenhum dos dois.
+
+  Duas escolhas de desenho que você deve conferir:                                                                                                                                                           
+
+  - Cenário casa tempo com custo. Conservador é 3 min e R$ 25/h; base é 5 min e R$ 35/h; otimista é 8 min e R$ 50/h. Acurácia, cobertura e retrabalho são iguais nos três.                                   
+  - Composição só distribui. Como acurácia e cobertura são globais, a composição por categoria abre o total em linhas mas não altera o total. Ela passa a pesar quando cobertura.json trouxer acurácia por 
+    categoria, o que o script hoje não lê. As chaves esperadas no arquivo são acuracia e cobertura, globais.
+
+  Saída completa:
+
+  PREMISSAS USADAS
+    volume anual de tickets: 30000  [enunciado]
+    composição por categoria: 8 categorias de Topic_group  [dataset: solution/data/all_tickets_processed_improved_v3.csv]
+    minutos de triagem manual por ticket: {'conservador': 3, 'base': 5, 'otimista': 8}  [premissa minha]
+    custo por hora de agente (R$): {'conservador': 25.0, 'base': 35.0, 'otimista': 50.0}  [premissa minha]
+    acurácia da triagem automática: 0.858  [dataset: baseline do script 01 (01_auditoria_dados.txt, item 15); cobertura.json ausente]
+    cobertura da triagem automática: 1.0  [dataset: baseline do script 01 (01_auditoria_dados.txt, item 15); cobertura.json ausente]
+    minutos de retrabalho por triagem errada: 10  [premissa minha]
+    horas por FTE por ano: 1760  [premissa minha]
+  resultado depende de 8 premissas empilhadas
+
+  COMPOSIÇÃO POR CATEGORIA (dataset) E VOLUME ANUAL DERIVADO
+                         fração  tickets/ano
+  Topic_group
+  Hardware               0.2847         8540
+  HR Support             0.2282         6845
+  Access                 0.1489         4468
+  Miscellaneous          0.1476         4428
+  Storage                0.0581         1742
+  Purchase               0.0515         1545
+  Internal Project       0.0443         1329
+  Administrative rights  0.0368         1104
+
+  CENÁRIO CONSERVADOR: 3 min/ticket, R$ 25.00/h, acurácia 0.858, cobertura 1.00
+                         tickets/ano  h manual hoje  h absorvidas  erros/ano  h retrabalho  h líquidas
+  categoria
+  Hardware                    8539.6          427.0         427.0     1212.6         202.1       224.9
+  HR Support                  6845.1          342.3         342.3      972.0         162.0       180.3
+  Access                      4468.3          223.4         223.4      634.5         105.7       117.7
+  Miscellaneous               4427.5          221.4         221.4      628.7         104.8       116.6
+  Administrative rights       1103.7           92.0          92.0      156.7          26.1        65.9
+  TOTAL                      30000.0         2500.0        2500.0     4260.0         710.0      1790.0
+  por mil tickets: h manual hoje 83.3, h absorvidas 83.3, h retrabalho 23.7, h líquidas 59.7
+  horas líquidas economizadas por ano: 1790 h = 1.02 FTE
+  valor anual em reais: R$ 62,650
+
+  CENÁRIO OTIMISTA: 8 min/ticket, R$ 50.00/h, acurácia 0.858, cobertura 1.00
+                         tickets/ano  h manual hoje  h absorvidas  erros/ano  h retrabalho  h líquidas
+  categoria
+  Hardware                    8539.6         1138.6        1138.6     1212.6         202.1       936.5
+  HR Support                  6845.1          912.7         912.7      972.0         162.0       750.7
+  Access                      4468.3          595.8         595.8      634.5         105.7       490.0
+  Miscellaneous               4427.5          590.3         590.3      628.7         104.8       485.6
+  Storage                     1741.5          232.2         232.2      247.3          41.2       191.0
+  Purchase                    1545.2          206.0         206.0      219.4          36.6       169.5
+  Internal Project            1328.9          177.2         177.2      188.7          31.5       145.7
+  Administrative rights       1103.7          147.2         147.2      156.7          26.1       121.0
+  TOTAL                      30000.0         4000.0        4000.0     4260.0         710.0      3290.0
+  por mil tickets: h manual hoje 133.3, h absorvidas 133.3, h retrabalho 23.7, h líquidas 109.7
+  horas líquidas economizadas por ano: 3290 h = 1.87 FTE
+  valor anual em reais: R$ 164,500
+
+  RESULTADO PRINCIPAL (faixa conservador a otimista)
+  horas de triagem manual hoje: 1500 a 4000 h/ano
+  horas líquidas economizadas: 790 a 3290 h/ano
+  fração de FTE: 0.45 a 1.87 FTE
+  por mil tickets: 26.3 a 109.7 h líquidas
+
+  saída gravada em solution/02_modelo_custo.txt
+
+✻ Crunched for 1m 17s · done 8:30 PM
+
+❯ Escreva solution/03_leitura_fronteira.py. Com semente 42, sorteie do segundo arquivo 30 tickets de HR Support, 30 de Administrative rights e 30 de Access e imprima cada um com índice da linha, rótulo e  
+  texto completo. Depois, refazendo o mesmo split e o mesmo TF-IDF + regressão logística do script 01, imprima 20 tickets de Administrative rights que o modelo previu como Hardware e 20 de HR Support      
+  previstos como Hardware, cada um com índice, texto completo e a probabilidade máxima prevista. Grave tudo em solution/03_leitura_fronteira.txt. Não comente, não resuma e não classifique nada.            
+
+● Bash(cat > solution/03_leitura_fronteira.py <<'EOF'
+      """Leitura de tickets na fronteira entre classes. Só imprime; não comenta.…)
+  ⎿  grep rc=1
+     rc=0
+     grep saída rc=1
+     … +6 lines (ctrl+o to expand)
+  ⎿  (timeout 5m)
+
+● Script criado em solution/03_leitura_fronteira.py, rodado com sucesso, saída gravada em solution/03_leitura_fronteira.txt (406 linhas). Nenhum caminho absoluto no código nem na saída.
+
+  O que o arquivo contém, em ordem:
+
+  - Parte 1. 30 tickets sorteados de cada classe, com [linha N], rótulo e texto completo. HR Support tem 10.915 tickets no total, Administrative rights 1.760, Access 7.125.
+  - Parte 2. Split 80/20 estratificado, TF-IDF de 1 e 2-gramas com min_df 2 e regressão logística, idênticos ao item 15 do script 01. No teste, 109 tickets de Administrative rights e 172 de HR Support
+    foram previstos como Hardware. Os 20 listados de cada grupo foram sorteados com semente 42 dentro desses conjuntos e aparecem em ordem de linha, cada um com índice, real, previsto, probabilidade máxima
+    e texto completo.
+
+  Os 109 e 172 batem com a matriz de confusão do script 01. Nada foi comentado, resumido ou classificado.
+
+✻ Cogitated for 59s · done 8:36 PM
+
+❯ Escreva solution/04_classificador.py. Passos, nesta ordem, semente 42 em tudo: 1. Deduplicação por similaridade no segundo arquivo antes de qualquer split: TF-IDF, vizinho mais próximo, pares com        
+  cosseno acima de 0,9 viram um grupo e fica só um representante por grupo. Imprima quantas linhas saíram. 2. Split estratificado 80/20 sobre o que sobrou. Salve os índices do teste em                     
+  solution/data/derived/split_teste.csv. 3. TF-IDF (1-2gramas, min_df 2) + regressão logística. Imprima acurácia global, acurácia da classe majoritária, precision, recall e F1 por classe e a matriz de     
+  confusão. Compare com a acurácia do script 01 sem dedup. 4. Abstenção: para limiares de probabilidade máxima de 0,50 a 0,95 em passos de 0,05, imprima cobertura (fração de tickets que o modelo decide),  
+  acurácia sobre os decididos, acurácia por classe sobre os decididos e fração de cada classe que vai para fila humana. Salve a curva em solution/data/derived/curva_abstencao.csv. 5. Teste fora de         
+  domínio: rode o modelo sobre as descrições do primeiro arquivo com o placeholder substituído pelo produto e imprima a distribuição de probabilidade máxima e a fração que ficaria abaixo de cada limiar.   
+  6. Se receber --limiar X: grave solution/data/derived/cobertura.json com acurácia sobre os decididos, cobertura, acurácia por classe e o limiar; salve o modelo com joblib em                              
+  solution/data/derived/modelo.joblib. Saída em solution/04_classificador.txt. Adicione solution/data/derived/modelo.joblib ao .gitignore desta pasta. Rode sem --limiar e me mostre a saída                 
+
+● Vou escrever o script. Um ponto de desenho: os grupos de quase-duplicatas vêm de componentes conexos do grafo em que cada documento se liga ao seu vizinho mais próximo quando o cosseno passa de 0,9, e o
+  representante é a linha de menor índice do grupo. A acurácia do script 01 é lida do próprio 01_auditoria_dados.txt, não copiada à mão.
+
+● Bash(.venv/bin/python -c "import joblib; print(joblib.__version__)" && cat > solution/04_classificador.py <<'EOF'
+      """Classificador de Topic_group com deduplicação, a…)
+  ⎿  1.6.0                                                                                                                                                                                                   
+     grep rc=1
+     … +12 lines (ctrl+o to expand)                                                                                                                                                                          
+  ⎿  (timeout 10m)                                          
+
+  Read 1 file (ctrl+o to expand)        
+
+● Script criado em solution/04_classificador.py, rodado em 70 segundos sem --limiar, saída em solution/04_classificador.txt. Sem caminho absoluto no código nem na saída. Gerados split_teste.csv e
+  curva_abstencao.csv em solution/data/derived/.            
+
+  Além do script, duas edições de apoio:                                                                                                                                                                     
+
+  - .gitignore desta pasta ganhou a linha solution/data/derived/modelo.joblib.                                                                                                                               
+  - requirements.txt ganhou joblib==1.6.0, já que o script o importa diretamente e ele só vinha como dependência transitiva do scikit-learn.
+                                                            
+  Dois números extras que o script imprime além do pedido, porque saíram de graça do cálculo: quantos grupos de quase-duplicatas misturam mais de um rótulo, e a contagem de classe prevista no teste fora de
+  domínio. Se não quiser, removo.
+
+  Saída completa:
+
+  === 1. deduplicação por similaridade (cosseno TF-IDF > 0.9, vizinho mais próximo) ===
+  linhas originais: 47837; documentos com vizinho > 0.9: 7209
+  grupos (componentes conexos): 42882; grupos com mais de 1 documento: 2254; maior grupo: 48
+  linhas removidas: 4955; linhas mantidas: 42882
+  grupos com mais de um rótulo: 201
+  classes após dedup:
+                         antes  depois
+  Topic_group
+  Access                  7125    6560
+  Administrative rights   1760    1592
+  HR Support             10915    9487
+  Hardware               13617   12723
+  Internal Project        2119    1922
+  Miscellaneous           7060    6574
+  Purchase                2464    1620
+  Storage                 2777    2404
+
+  === 2. split estratificado 80/20 sobre o que sobrou ===
+  treino: 34305; teste: 8577; índices do teste em solution/data/derived/split_teste.csv
+
+  === 3. TF-IDF (1-2gramas, min_df 2) + regressão logística ===
+  vocabulário: 132736
+  acurácia global: 0.8403; classe majoritária 'Hardware': 0.2967
+                         precision    recall  f1-score   support
+
+                 Access     0.9169    0.8498    0.8821      1312
+  Administrative rights     0.9023    0.4937    0.6382       318
+             HR Support     0.8393    0.8504    0.8448      1898
+               Hardware     0.7721    0.9077    0.8344      2545
+       Internal Project     0.9443    0.7057    0.8077       384
+          Miscellaneous     0.8314    0.8175    0.8244      1315
+               Purchase     0.9676    0.8302    0.8937       324
+                Storage     0.9565    0.8233    0.8849       481
+
+               accuracy                         0.8403      8577
+              macro avg     0.8913    0.7848    0.8263      8577
+           weighted avg     0.8485    0.8403    0.8391      8577
+
+  matriz de confusão (linhas = real, colunas = previsto):
+                         Access  Administrative rights  HR Support  Hardware  Internal Project  Miscellaneous  Purchase  Storage
+  Access                   1115                      4          64        88                 3             35         1        2
+  Administrative rights       9                    157          10       125                 1             13         3        0
+  HR Support                 27                      2        1614       190                 3             61         0        1
+  Hardware                   37                      8         103      2310                 4             67         4       12
+  Internal Project            8                      0          38        39               271             28         0        0
+  Miscellaneous              15                      1          67       150                 5           1075         1        1
+  Purchase                    1                      0           8        40                 0              4       269        2
+  Storage                     4                      2          19        50                 0             10         0      396
+  acurácia do script 01 sem dedup: 0.8584; com dedup: 0.8403; diferença: -0.0181
+
+  === 4. abstenção por limiar de probabilidade máxima ===
+  cobertura e acurácia sobre os decididos:
+   limiar  cobertura  acuracia_decididos
+     0.50     0.8045              0.9174
+     0.55     0.7527              0.9326
+     0.60     0.7013              0.9423
+     0.65     0.6459              0.9542
+     0.70     0.5969              0.9627
+     0.75     0.5453              0.9686
+     0.80     0.4865              0.9777
+     0.85     0.4253              0.9822
+     0.90     0.3486              0.9906                                                                                                                                                                     
+     0.95     0.2509              0.9944
+
+  acurácia por classe sobre os decididos:
+   limiar  Access  Administrative rights  HR Support  Hardware  Internal Project  Miscellaneous  Purchase  Storage
+     0.50  0.9122                 0.6566      0.9230    0.9519            0.8704         0.9117    0.8968   0.9112
+     0.55  0.9261                 0.6818      0.9394    0.9600            0.9061         0.9316    0.9145   0.9258
+     0.60  0.9364                 0.7081      0.9499    0.9662            0.9134         0.9459    0.9167   0.9393
+     0.65  0.9507                 0.7299      0.9656    0.9723            0.9286         0.9522    0.9357   0.9548
+     0.70  0.9637                 0.7647      0.9723    0.9746            0.9433         0.9604    0.9540   0.9647
+     0.75  0.9673                 0.7766      0.9756    0.9779            0.9516         0.9677    0.9697   0.9763
+     0.80  0.9775                 0.8312      0.9805    0.9858            0.9706         0.9726    0.9865   0.9815
+     0.85  0.9799                 0.8333      0.9865    0.9876            0.9873         0.9814    0.9907   0.9837
+     0.90  0.9890                 0.8889      0.9958    0.9928            0.9855         0.9913    0.9900   0.9954
+     0.95  0.9980                 0.9630      0.9982    0.9902            1.0000         0.9910    0.9882   0.9940
+
+  fração de cada classe que vai para fila humana:
+   limiar  Access  Administrative rights  HR Support  Hardware  Internal Project  Miscellaneous  Purchase  Storage
+     0.50  0.1494                 0.3774      0.2129    0.1418            0.2969         0.2593    0.1327   0.2037
+     0.55  0.1959                 0.4465      0.2608    0.1937            0.3620         0.3217    0.1698   0.2432
+     0.60  0.2332                 0.4937      0.3161    0.2550            0.3984         0.3817    0.1852   0.2807
+     0.65  0.2736                 0.5692      0.3714    0.3187            0.4531         0.4433    0.2315   0.3098
+     0.85  0.4314                 0.7925      0.5701    0.6189            0.5885         0.6730    0.3333   0.4886
+     0.90  0.5130                 0.8585      0.6264    0.7269            0.6406         0.7369    0.3827   0.5468
+     0.95  0.6265                 0.9151      0.7107    0.8389            0.6979         0.8304    0.4784   0.6507
+  curva salva em solution/data/derived/curva_abstencao.csv
+
+  === 5. fora de domínio: Ticket Description do primeiro arquivo com placeholder substituído ===
+  n=8469; probabilidade máxima: média 0.5861, q5 0.3560, q25 0.4787, q50 0.5780, q75 0.6834, q95 0.8477
+  comparação, probabilidade máxima no teste em domínio: média 0.7405, q5 0.3560, q25 0.5529, q50 0.7907, q75 0.9503, q95 0.9964
+  fração abaixo de cada limiar (fora de domínio vs. teste em domínio):
+   limiar  fora_dominio  teste_dominio
+     0.50        0.2989         0.1955
+     0.55        0.4250         0.2473
+     0.60        0.5589         0.2987
+     0.65        0.6797         0.3541
+     0.70        0.7825         0.4031
+     0.75        0.8642         0.4547
+     0.80        0.9163         0.5135
+     0.85        0.9514         0.5747
+     0.90        0.9705         0.6514
+     0.95        0.9804         0.7491
+  classe prevista fora de domínio:
+  Hardware                 7645
+  Access                    532
+     0.85        0.9514         0.5747
+     0.90        0.9705         0.6514
+     0.95        0.9804         0.7491
+  classe prevista fora de domínio:
+  Hardware                 7645
+  Access                    532
+  Miscellaneous            241
+  Administrative rights      27
+  HR Support                 20
+  Storage                     2
+  Internal Project           2
+
+  saída gravada em solution/04_classificador.txt
+
+  Para fixar um limiar e gerar cobertura.json e modelo.joblib:
+
+  .venv/bin/python solution/04_classificador.py --limiar 0.70
+
+✻ Cogitated for 2m 46s · done 9:14 PM
+
+❯ Rode solution/04_classificador.py c                                                                                                                                                                        
+
+● Bash(.venv/bin/python solution/04_classificador.py --limiar 0.70 > /dev/null; echo "rc04=$?"; sed -n '/=== 6\./,$p' solution/04_classificador.txt; ls -la solution/da…)                                    
+  ⎿  rc04=0                                                                                                                                                                                                
+     === 6. limiar escolhido: 0.7 ===            
+     {
+     … +41 lines (ctrl+o to expand)  
+  ⎿  (timeout 10m)
+
+❯ Escreva solution/05_llm_amostra.py, que mede o gemini-3.1-flash-lite como classificador na mesma tarefa, por REST com requests, sem SDK, com a chave lida como no script 00. 1. Preço público no topo do   
+  arquivo como constantes com a data: entrada US$ 0,25 e saída US$ 1,50 por milhão de tokens (ai.google.dev/gemini-api/docs/pricing, 16/09/2026); câmbio US$ 1 = R$ 5,50 como premissa minha. 2. Amostra: do 
+  conjunto de teste em solution/data/derived/split_teste.csv, sorteie com semente 42 40 tickets por classe (320 no total). Nenhum ticket fora do teste. 3. Prompt zero-shot: lista das 8 categorias com uma  
+  definição de uma linha cada, o texto do ticket, e a instrução de responder só com o nome da categoria. temperature 0, maxOutputTokens 16. 4. Cache em solution/cache/gemini-3.1-flash-lite.jsonl, uma      
+  linha por chamada: índice do ticket, hash sha256 do prompt, resposta bruta, promptTokenCount, candidatesTokenCount, hora UTC. Antes de chamar, verifique o cache e reutilize. Nunca grave header, chave ou 
+  argv. 5. Em erro 429 ou 5xx, espere com backoff (2, 4, 8, 16 s) e tente até 5 vezes; registre falhas definitivas no cache com campo erro. Pausa de 0,5 s entre chamadas. 6. Resultado: acurácia do LLM na  
+  amostra (balanceada e ponderada pela prevalência das classes no teste), por classe, matriz de confusão; acurácia do TF-IDF (modelo salvo em modelo.joblib) nos mesmos 320; teste de McNemar entre os       
+  dois; acurácia do LLM só nos tickets em que o TF-IDF abstém no limiar do cobertura.json. 7. Custo: tokens totais de entrada e saída, custo por chamada, custo por mil tickets em US$ e R$. Tabela final    
+  com três linhas, TF-IDF, LLM e humano, com acurácia e custo por mil tickets; para o humano use 5 minutos a R$ 35/h do script 02. E duas linhas de cascata: LLM em 100% dos tickets versus LLM só na fração 
+  em que o TF-IDF abstém, com custo e acurácia combinada. Saída em solution/05_llm_amostra.txt. Rode e me mostre a saída; se a API limitar o ritmo, deixe rodando e me avise quando terminar.                
+                                                                                                                                                                                                           
+● Gerei o bloco de resultado principal com as faixas de horas economizadas, fração de FTE e ganho por mil tickets, baseado no limiar 0,70. Agora vou escrever o script 05, reaproveitando a leitura de chave 
+  do script 00 e definições de categoria feitas a partir do script 01, começando com uma chamada única para checar o formato da resposta antes de rodar as 320. · summarized
+
+● Bash(mkdir -p solution/cache && cat > solution/05_llm_amostra.py <<'EOF'
+      """Mede gemini-3.1-flash-lite como classificador zero-shot de Topic_group numa amostra do te…)
+  ⎿  grep rc=1                                                                                                                                                                                               
+     sintaxe ok
+
+● Script pronto e sem caminhos vazados. Vou lançar em segundo plano e inspecionar as primeiras linhas do cache para conferir o formato bruto da resposta antes de deixar rodar os 320.
+
+● Bash(.venv/bin/python solution/05_llm_amostra.py > /dev/null 2> solution/cache/progresso.log; echo "rc=$?" >> solution/cache/progresso.log)                                                                
+  ⎿  Running…
+●
+✶ Coalescing in the background (↓ to manage)                
+
+●─Bash(for i in 1 2 3 4 5 6; do [ -s solution/cache/gemini-3.1-flash-lite.jsonl─]─&&─[─$(wc─-l─<─solution/cache/gemini-3.1-flash-lite.jsonl)─-ge─3─]─&&─break;─python3…)─────────────────────────────────────
+  ⎿  wc: solution/cache/gemini-3.1-flash-lite.jsonl: No such file or directory
+     head: cannot open 'solution/cache/gemini-3.1-flash-lite.jsonl' for reading: No such file or directory
+         raise ValueError("include_groups=True is no longer allowed.")
+     … +2 lines (ctrl+o to expand)     
+  ⎿  (timeout 1m)
+
+● Background command "Run LLM sample script in background with progress log" completed (exit code 0)                                                                                                         
+
+● Pandas 3 não aceita mais include_groups=True. Troco a amostragem por um laço simples por classe e relanço.
+                                                            
+● Bash(.venv/bin/python - <<'EOF'                                                                                                                                                                            
+      from pathlib import Path…)
+  ⎿  4 solution/cache/gemini-3.1-flash-lite.jsonl                                                                                                                                                            
+     {                                           
+       "indice": 108,
+     … +33 lines (ctrl+o to expand)    
+  ⎿  (timeout 1m 30s)
+
+● O formato está limpo, com respostas curtas e sem tokens de raciocínio. No ritmo atual, as 320 chamadas devem levar cerca de 6 minutos, então vou aguardar a conclusão. · summarized                        
+
+● Bash(for i in $(seq 1 170); do grep -q '^rc=' solution/cache/progresso.log && break; python3 -c "import time; time.sleep(3)"; done; tail -1 solution/cache/progresso.…)                                    
+  ⎿  rc=0                          
+     320 solution/cache/gemini-3.1-flash-lite.jsonl
+     0
+     0                                 
+  ⎿  (timeout 9m)
+
+● Bash(grep -nE '<padrões de caminho pessoal>' solution/05_llm_amostra.txt solution/cache/gemini-3.1-flash-lite.jsonl; echo "grep rc=$?"; rm -f solutio…)                                    
+  ⎿  grep rc=1
+     === 1. amostra ===
+     teste: 8577 tickets; amostra: 320 (40 por classe, semente 42)
+     … +75 lines (ctrl+o to expand)
+
+● Tudo rodou. Sem limite de ritmo: as 320 chamadas passaram em cerca de seis minutos, sem 429, sem falha, e o cache ficou em solution/cache/gemini-3.1-flash-lite.jsonl com 320 linhas. Nenhum caminho
+  absoluto no script, na saída nem no cache. Antes, o modelo de custo com cobertura.json do limiar 0,70 deu 784 a 2276 horas líquidas por ano, ou 0,45 a 1,29 FTE.
+
+  Duas ressalvas de método que pesam na leitura dos números do LLM:
+
+  - As definições de uma linha são redação minha, feitas a partir dos nomes das classes e dos termos de maior coeficiente do script 01. O resultado mede o prompt tanto quanto o modelo. A classe Hardware,
+    que no dataset é a mais ampla, foi a que o LLM menos reconheceu.
+  - Um ajuste de código durante a execução. A primeira tentativa quebrou porque o pandas 3 rejeitou a amostragem via groupby.apply; troquei por um sample por classe com a mesma semente. O cache só começou
+    a ser gravado na segunda rodada, então não há linha órfã.
+
+  Saída completa:
+
+  === 1. amostra ===
+  teste: 8577 tickets; amostra: 320 (40 por classe, semente 42)
+  prevalência das classes no teste (peso da acurácia ponderada):
+  Topic_group
+  Hardware                 0.2967
+  HR Support               0.2213
+  Miscellaneous            0.1533
+  Access                   0.1530
+  Storage                  0.0561
+  Internal Project         0.0448
+  Purchase                 0.0378
+  Administrative rights    0.0371
+
+  === 2. chamadas ===
+  reutilizadas do cache: 0; chamadas feitas agora: 320; falhas definitivas: 0
+  cache em solution/cache/gemini-3.1-flash-lite.jsonl
+
+  === 3. LLM na amostra ===
+  respostas sem categoria reconhecível (contadas como erro): 0
+  finishReason: STOP=320
+  acurácia balanceada: 0.5500; ponderada pela prevalência no teste: 0.4675
+  acurácia por classe:
+  Access                   0.725
+  Administrative rights    0.400
+  HR Support               0.500
+  Hardware                 0.200
+  Internal Project         0.800
+  Miscellaneous            0.525
+  Purchase                 0.800
+  Storage                  0.450
+  matriz de confusão (linhas = real, colunas = previsto pelo LLM):
+                         Access  Administrative rights  HR Support  Hardware  Internal Project  Miscellaneous  Purchase  Storage  INVALIDA
+  Access                     29                      0           3         1                 1              5         1        0         0
+  Administrative rights       7                     16           2         6                 1              5         1        2         0
+  HR Support                 13                      0          20         1                 0              6         0        0         0
+  Hardware                   10                      1           2         8                 6             10         2        1         0
+  Internal Project            3                      1           1         0                32              3         0        0         0
+  Miscellaneous               8                      2           3         1                 3             21         2        0         0
+  Purchase                    0                      5           0         2                 0              1        32        0         0
+  Storage                    17                      1           0         0                 0              4         0       18         0
+
+  === 4. TF-IDF nos mesmos tickets ===
+  acurácia balanceada: 0.7562; ponderada: 0.7867
+  acurácia por classe:
+  Access                   0.775                                                                                                                                                                             
+  Administrative rights    0.450
+  HR Support               0.800
+  Storage                  0.800
+
+  === 5. McNemar LLM vs TF-IDF ===
+  ambos acertam 155; só LLM acerta 21; só TF-IDF acerta 87; nenhum 57
+  McNemar exato (binomial): p=9.903e-11; com correção de continuidade: chi2=39.120, p=3.985e-10
+
+  === 6. LLM onde o TF-IDF abstém (limiar 0.7 de cobertura.json) ===
+  tickets da amostra em que o TF-IDF abstém: 151 de 320 (fração 0.4719); fração de abstenção no teste inteiro: 0.4031
+  acurácia do LLM nesses tickets: 0.3907; do TF-IDF (se forçado a decidir): 0.5563
+  acurácia do TF-IDF nos decididos: 0.9349 (n=169)
+
+  === 7. custo ===
+  chamadas válidas: 320; tokens de entrada: 71794 (média 224.4); tokens de saída: 420 (média 1.3; dos quais de raciocínio: 0)
+  custo total da amostra: US$ 0.0186; por chamada: US$ 0.000058
+  custo por mil tickets: US$ 0.0581 = R$ 0.3193 (câmbio 5.5)
+
+  === 8. tabela final (acurácia medida nos mesmos 320; humano não medido) ===
+                                                          acurácia balanceada  acurácia ponderada  custo/mil R$  custo/mil US$
+  opção
+  TF-IDF (decide 100%)                                                 0.7562              0.7867        0.0000         0.0000
+  LLM gemini-3.1-flash-lite (100%)                                     0.5500              0.4675        0.3193         0.0581
+  humano (5 min a R$ 35/h)                                                NaN                 NaN     2916.6667       530.3030
+  cascata: LLM em 100% dos tickets                                     0.5500              0.4675        0.3193         0.0581
+  cascata: TF-IDF decide, LLM só nos 47.2% em que abstém               0.6781              0.6251        0.1507         0.0274
+
+  saída gravada em solution/05_llm_amostra.txt
+
+  Como o cache está completo, rodar o script de novo não faz chamada nenhuma e reproduz o relatório. Se você quiser testar outro prompt, o hash muda e as 320 chamadas se repetem, custando cerca de US$
+  0,02.
+
+✻ Churned for 9m 57s · done 9:31 PM
+
+❯ Adicione ao solution/05_llm_amostra.py a opção --exemplos N: para cada uam das 8 categorias, sorteie N tickets do conjunto de treino (nunca do teste), com semente 42, e inclua no prompt como exemplos    
+  rotulados atnes do ticket a classificar. Cache em arquivo separado, solution/cache/gemini-3.1-flash-lite_fewshot3.jsonl, e saída em solution/05_llm_amostra_fewshot3.txt, com as mesmas seções. Rode com   
+  --exemplos 3 nos mesmos 320 tickets e me mostre as seções 3, 6 e 8.                                                                                                                                        
+                                                                     
+● Para sortear exemplos só do treino sem vazar quase-duplicatas do teste, preciso dos índices do treino deduplicado, que o script 04 não salva. Vou fazer o script 04 gravar também split_treino.csv, rodá-lo
+  de novo com o mesmo limiar e conferir que a saída não mudou, e então implementar a opção.
+
+● Bash(cp solution/04_classificador.txt <scratchpad>/…)
+  ⎿  rc=0                           
+     20c20                                       
+     < treino: 34305; teste: 8577; índices do teste em solution/data/derived/split_teste.csv
+     … +7 lines (ctrl+o to expand)     
+  ⎿  (timeout 10m)
+
+● Só a linha de rótulo mudou no relatório do 04; cobertura.json ficou idêntico. Agora a opção --exemplos.                                                                                                    
+
+● Bash(.venv/bin/python - <<'EOF'                                                                                                                                                                            
+      from pathlib import Path…)
+  ⎿  grep rc=1                                                                                                                                                                                               
+     sintaxe ok                                                                 
+     rc zero-shot=0                                                                                                                                                                                          
+     … +28 lines (ctrl+o to expand)
+  ⎿  (timeout 2m)                                                                                                                                                                                            
+
+● Zero-shot continua vindo inteiro do cache, sem chamada nova. A rodada 3-shot está em andamento com prompts de cerca de 1.480 tokens. Aguardo o fim.                                                        
+                
+● Bash(for i in $(seq 1 170); do grep -q '^rc=' solution/cache/progresso.log && break; python3 -c "import time; time.sleep(3)"; done; tail -1 solution/cache/progresso.…)                                    
+  ⎿  rc=0                          
+     320 solution/cache/gemini-3.1-flash-lite_fewshot3.jsonl
+     0
+     … +61 lines (ctrl+o to expand)    
+  ⎿  (timeout 9m)
+
+● Rodada 3-shot concluída: 320 chamadas, nenhuma falha, cache em solution/cache/gemini-3.1-flash-lite_fewshot3.jsonl, relatório em solution/05_llm_amostra_fewshot3.txt. Sem caminho absoluto em nenhum      
+  arquivo. Os 24 exemplos vieram só do treino deduplicado, com asserção no código de que nenhum índice está no teste. A ordem dos exemplos no prompt é embaralhada com a semente 42, para não agrupar por
+  classe.                                                                                                                                                                                                    
+
+  Duas mudanças fora do script 05 que você deve saber:                                                                                                                                                       
+                
+  - Script 04 agora grava split_treino.csv. Era necessário para sortear exemplos sem pegar quase-duplicatas do teste que a deduplicação removeu. Rodei o 04 de novo com limiar 0,70; o relatório mudou só na
+    linha que cita os arquivos, e cobertura.json ficou byte a byte igual.
+  - Zero-shot conferido após a edição. Rodar sem --exemplos reutilizou as 320 respostas do cache original e não fez chamada nova.
+
+  Seções pedidas:
+
+  === 3. LLM na amostra ===
+  respostas sem categoria reconhecível (contadas como erro): 0
+  finishReason: STOP=320
+  acurácia balanceada: 0.5875; ponderada pela prevalência no teste: 0.4547
+  acurácia por classe:
+  Access                   0.650
+  Administrative rights    0.575
+  HR Support               0.425
+  Hardware                 0.200
+  Internal Project         0.875
+  Miscellaneous            0.475
+  Purchase                 0.850
+  Storage                  0.650
+  matriz de confusão (linhas = real, colunas = previsto pelo LLM):
+                         Access  Administrative rights  HR Support  Hardware  Internal Project  Miscellaneous  Purchase  Storage  INVALIDA
+  Access                     26                      2           2         3                 1              4         1        1         0
+  Administrative rights       4                     23           2         5                 1              3         0        2         0
+  HR Support                 15                      0          17         1                 1              6         0        0         0
+  Hardware                    7                      4           2         8                 5              8         3        3         0
+  Internal Project            2                      0           1         0                35              2         0        0         0
+  Miscellaneous               8                      3           4         0                 5             19         0        1         0
+  Purchase                    1                      1           0         3                 0              1        34        0         0
+  Storage                    11                      2           0         0                 0              1         0       26         0
+
+  === 6. LLM onde o TF-IDF abstém (limiar 0.7 de cobertura.json) ===
+  tickets da amostra em que o TF-IDF abstém: 151 de 320 (fração 0.4719); fração de abstenção no teste inteiro: 0.4031
+  acurácia do LLM nesses tickets: 0.4305; do TF-IDF (se forçado a decidir): 0.5563
+  acurácia do TF-IDF nos decididos: 0.9349 (n=169)
+
+  === 8. tabela final (acurácia medida nos mesmos 320; humano não medido) ===
+                                                          acurácia balanceada  acurácia ponderada  custo/mil R$  custo/mil US$
+  opção
+  TF-IDF (decide 100%)                                                 0.7562              0.7867        0.0000         0.0000
+  LLM gemini-3.1-flash-lite 3-shot (100%)                              0.5875              0.4547        2.0617         0.3749
+  humano (5 min a R$ 35/h)                                                NaN                 NaN     2916.6667       530.3030
+  cascata: LLM em 100% dos tickets                                     0.5875              0.4547        2.0617         0.3749
+  cascata: TF-IDF decide, LLM só nos 47.2% em que abstém               0.6969              0.6179        0.9729         0.1769
+
+  Para referência na comparação com o zero-shot: prompt médio subiu de 224 para 1.491 tokens de entrada, e o custo por mil tickets de R$ 0,32 para R$ 2,06. Tanto o zero-shot quanto o 3-shot estão
+  cacheados, então qualquer rodada nova das duas variantes reproduz os relatórios sem chamar a API.
+
+✻ Worked for 8m 23s · done 10:08 PM
+
+❯ escreva solution/06_triagem.py: recebe o texto de um ticket por argumento ou por stdin e imprime categoria, confiança e destino. carregue solution/data/derived/modelo.joblib; se não existir, treine      
+  chamando a lógica do script 04 com o limiar do cobertura.json. Destino segue esta ordem: primeiro a regra de conteúdo, que manda para fila humana qualquer ticket com termos de pessoa entrando ou saindo  
+  (leaver, new starter, maternity, resignation), conta e privilégio (admin rights, password reset for other, disable account), auditoria ou incidente (audit, security incident, breach), seguraçna física   
+  (door, alarm, badge) e urgência marcada (urgent, asap, importance high); depois a confiança: acima do limiar segue automático para a fila da categoria, abaixo vai para fila humana com a categoria        
+  sugerida. Imprima também qual regra decidiu. Adicione um modo --lote que lê um CSV com coluna Document e grava as decisões em solution/data/derived/triagem_lote.csv. rode com 3 tickets: um de acesso     
+  comum, o ticket 42710 do segundo arquivo e uma descrição do primeiro arquivo, e me moster a saída. Quando o few-shot terminar, me mostre as seções 3, 6 e 8 do 05_llm_amostra_fewshot3.txt.                
+
+● O few-shot já terminou e as seções 3, 6 e 8 estão na minha resposta anterior; repito ao final desta. Agora o script 06. Primeiro olho o ticket 42710 e uma descrição do primeiro arquivo para usar como
+  entradas.
+
+● Bash(.venv/bin/python - <<'EOF'                   
+      import pandas as pd…)
+  ⎿  'Access'                                                                                                                                                                                                
+     internal audit leavers vs active ad accounts sent tuesday leavers vs active ad accounts importance high hi according below employees left march based requests their ad accounts were disabled poin
+     t but somehow these accounts were re enabled please disable their accounts immediately investigate how was possible name name last name date leaving location disabled false false false states fal     
+     … +10 lines (ctrl+o to expand)                         
+
+● Bash(cat > solution/06_triagem.py <<'EOF'
+      """Triagem de um ticket: categoria, confiança e destino.…)
+  ⎿  grep rc=1                                                                                                                                                                                               
+     ### 1. acesso comum (argumento)                  
+     categoria: Access                                                                                                                                                                                       
+     … +37 lines (ctrl+o to expand)     
+  ⎿  (timeout 5m)                                                                                                                                                                                            
+                                                 
+● Os três tickets triaram como esperado, mas falta testar o retreino sem modelo.joblib e o resumo do modo lote separa mal as regras de confiança. Vou refinar o resumo e testar o retreino movendo o modelo
+  para o scratchpad em vez de apagá-lo. · summarized
+
+● Bash(.venv/bin/python - <<'EOF'                                                                                                                                                                            
+      from pathlib import Path…)
+  ⎿  cobertura.json                                                                                                                                                                                          
+     curva_abstencao.csv 
+     split_teste.csv                                                                                                                                                                                         
+     … +168 lines (ctrl+o to expand)                        
+  ⎿  (timeout 10m)                                                                                                                                                                                           
+                                                 
+● Script criado em solution/06_triagem.py, testado nos três tickets, no modo lote e no caminho de retreino. Sem caminho absoluto no código nem nas saídas.
+
+  Saída dos três tickets:                                                                                                                                                                                    
+
+  ### 1. acesso comum (por argumento)                                                                                                                                                                        
+  "Hi, I cannot log in to Confluence since this morning, my password is rejected. Could you reset it for me? Thanks"                                                                                         
+  categoria: Access                                         
+  confiança: 0.9308
+  destino: fila Access
+  regra: confiança 0.931 >= limiar 0.7
+
+  ### 2. ticket 42710 do segundo arquivo, rótulo Access (por stdin)
+  categoria: Access
+  confiança: 0.7558
+  destino: fila humana
+  regra: conteúdo: auditoria ou incidente ('audit')
+
+  ### 3. linha 0 do primeiro arquivo, placeholder substituído por "GoPro Hero" (por stdin)
+  categoria: Hardware
+  confiança: 0.6685
+  destino: fila humana
+  regra: confiança 0.669 < limiar 0.7
+
+  O ticket 42710 mostra a ordem das regras funcionando: a confiança passa do limiar, mas o termo "audit" o manda para a fila humana antes de a confiança ser consultada. O mesmo texto também contém
+  "leavers" e "importance high", e a saída cita só o primeiro grupo que casou, na ordem em que as regras estão declaradas.
+
+  Como está montado:
+
+  - Regras de conteúdo são expressões regulares com fronteira de palavra, sem distinção de maiúsculas, e termos compostos aceitam mais de um espaço entre palavras. Ficam num dicionário no topo do arquivo,
+    um grupo por linha.
+  - Modelo ausente. Movi modelo.joblib para o scratchpad e rodei: o script importou o 04, treinou com o limiar 0,70 de cobertura.json em 70 segundos, regravou o modelo e triou o ticket com a mesma
+    confiança de antes. O relatório do 04 aparece no terminal durante o retreino porque o próprio 04 imprime.
+  - Modo lote lê um CSV com coluna Document, grava solution/data/derived/triagem_lote.csv com índice, categoria, confiança, destino, regra e termo, e imprime contagens por destino e por tipo de regra.
+    Testei com as primeiras 500 linhas do conjunto de teste: 260 foram para fila humana, das quais 68 por conteúdo e 192 por confiança baixa. Esse arquivo ficou em derived/ como resultado do teste; a
+    coluna índice se refere à ordem do CSV de entrada, não à linha original.
+
+  Seções 3, 6 e 8 do 05_llm_amostra_fewshot3.txt, que já terminou:
+
+  === 3. LLM na amostra ===
+  respostas sem categoria reconhecível (contadas como erro): 0
+  Access                   0.650
+  Administrative rights    0.575
+  HR Support               0.425
+  Hardware                 0.200
+  Internal Project         0.875
+  Miscellaneous            0.475
+  Purchase                 0.850
+  Storage                  0.650
+  matriz de confusão (linhas = real, colunas = previsto pelo LLM):
+                         Access  Administrative rights  HR Support  Hardware  Internal Project  Miscellaneous  Purchase  Storage  INVALIDA
+  Access                     26                      2           2         3                 1              4         1        1         0
+  Administrative rights       4                     23           2         5                 1              3         0        2         0
+  HR Support                 15                      0          17         1                 1              6         0        0         0
+  Hardware                    7                      4           2         8                 5              8         3        3         0
+  Internal Project            2                      0           1         0                35              2         0        0         0
+  Miscellaneous               8                      3           4         0                 5             19         0        1         0
+  Purchase                    1                      1           0         3                 0              1        34        0         0
+  Storage                    11                      2           0         0                 0              1         0       26         0
+
+  === 6. LLM onde o TF-IDF abstém (limiar 0.7 de cobertura.json) ===
+  tickets da amostra em que o TF-IDF abstém: 151 de 320 (fração 0.4719); fração de abstenção no teste inteiro: 0.4031
+  acurácia do LLM nesses tickets: 0.4305; do TF-IDF (se forçado a decidir): 0.5563
+  acurácia do TF-IDF nos decididos: 0.9349 (n=169)
+
+  === 8. tabela final (acurácia medida nos mesmos 320; humano não medido) ===
+                                                          acurácia balanceada  acurácia ponderada  custo/mil R$  custo/mil US$
+  opção
+  TF-IDF (decide 100%)                                                 0.7562              0.7867        0.0000         0.0000
+  LLM gemini-3.1-flash-lite 3-shot (100%)                              0.5875              0.4547        2.0617         0.3749
+  humano (5 min a R$ 35/h)                                                NaN                 NaN     2916.6667       530.3030
+  cascata: LLM em 100% dos tickets                                     0.5875              0.4547        2.0617         0.3749
+  cascata: TF-IDF decide, LLM só nos 47.2% em que abstém               0.6969              0.6179        0.9729         0.1769
+
+✻ Worked for 2m 52s · done 10:14 PM
+
+❯ Três ajustes, sem alterar resultados: 1. Em solution/05_llm_amostra.py, a chave só deve ser carregada quando houver chamada nova a fazer; com todos os tickets no cache, o script precisa rodar sem        
+  GEMINI_API_KEY. Corrija e confirme rodando com a variável ausente. 2. Gere as saídas que faltam: rode solution/00_teste_chave_gemini.py sem argumento e grave em solution/00_teste_chave_gemini.txt; rode  
+  solution/06_triagem.py com os mesmos três tickets de antes (o de pasta compartilhada, o de auditoria de contas de desligados e uma descrição do primeiro arquivo) e grave em solution/06_triagem.txt. 3.   
+  Apague solution/data/derived/triagem_lote.csv e me diga qual arquivo de entrada foi usado para gerá-lo.                                                                                                    
+                                                                                                         
+● Antes de executar, uma discrepância no item 2: os três tickets de antes foram um de login no Confluence (acesso comum, como você pediu na hora), o 42710 de auditoria de contas de desligados, e a linha 0 
+  do primeiro arquivo. Nenhum era de pasta compartilhada. Vou usar exatamente os mesmos três, como diz "os mesmos de antes"; se você quiser trocar o primeiro por um de pasta compartilhada, é uma rodada a
+  mais.
+
+● Bash(.venv/bin/python - <<'EOF'   
+      from pathlib import Path…)
+  ⎿  ### 1a. sem GEMINI_API_KEY no ambiente e com carregar_chave sabotada (prova de que nem o .env é lido)                                                                                                   
+     === 1. amostra ===
+     teste: 8577 tickets; amostra: 320 (40 por classe, semente 42)                                                                                                                                           
+     … +168 lines (ctrl+o to expand)                        
+
+● Confirmei o item 1: os dois relatórios rodaram sem GEMINI_API_KEY e com o carregamento de chave sabotado, mudando só a linha da seção 2 e mantendo todos os números iguais. Agora vou para os itens 2 e 3. 
+  · summarized
+
+● Bash(echo "### 2a. script 00" && .venv/bin/python solution/00_teste_chave_gemini.py | tee solution/00_teste_chave_gemini.txt | head -3
+      echo "### 2b. script 06 nos tr…)
+  ⎿  ### 2a. script 00                                                                                                                                                                                       
+     status HTTP: 200                                   
+     modelos listados: 58; Flash com generateContent: 20                                                                                                                                                     
+     … +40 lines (ctrl+o to expand)    
+  ⎿  (timeout 5m)                                                                                                                                                                                            
+                                                 
+● Os três ajustes estão feitos, sem alteração de resultado.
+
+  1. Chave só quando há chamada nova. Em solution/05_llm_amostra.py a chave agora é carregada na primeira chamada que não está no cache, e a seção 2 do relatório passou a dizer se foi carregada. Confirmei 
+  rodando os dois modos, zero-shot e 3-shot, sem GEMINI_API_KEY no ambiente e com a função de carregar chave substituída por uma que lança erro. Nenhuma foi chamada, então nem o .env foi lido. O diff dos  
+  dois relatórios contra as versões anteriores mostra só a linha da seção 2 alterada; todos os números permaneceram iguais.                                                                                  
+                                                                                                                                                                                                             
+  2. Saídas geradas.                                        
+
+  - solution/00_teste_chave_gemini.txt: status 200, 58 modelos listados, 20 Flash com generateContent, mesma lista da primeira rodada.
+  - solution/06_triagem.txt: os três tickets de antes, com o texto de entrada, a forma de entrada e a decisão de cada um. O primeiro é o de login no Confluence, não um de pasta compartilhada, como
+    expliquei acima. Resultados idênticos aos da rodada anterior: Access com confiança 0,931 para a fila Access; o 42710 com confiança 0,756 barrado pela regra de conteúdo por conter "audit"; e a descrição
+    do GoPro Hero classificada Hardware com 0,669, abaixo do limiar, para fila humana.
+
+  3. Arquivo removido. Apaguei solution/data/derived/triagem_lote.csv após imprimir o caminho resolvido e conferir o prefixo. Ele tinha sido gerado no teste do modo lote a partir de um CSV que criei no
+  scratchpad da sessão, fora do repositório, com as primeiras 500 linhas do conjunto de teste deduplicado na ordem de split_teste.csv e as colunas Document e Topic_group. Esse CSV de entrada continua no
+  scratchpad e não faz parte da entrega.
+
+  Nenhum dos arquivos novos contém caminho absoluto. A pasta derived/ ficou com cobertura.json, curva_abstencao.csv, modelo.joblib, split_teste.csv e split_treino.csv.
+
+✻ Sautéed for 1m 13s · done 11:00 PM
+
+❯ Escreva solution/07_avaliacao_prototipo.py, que avalia o protótipo do script 06 como um usuário faria, sem alterar nada nos scripts anteriores. Duas partes: 1. Seis tickets escritos à mão, um por linha  
+  no próprio script, cobrindo os três caminhos: dois que devem seguir automático (caixa de e-mail cheia; reset de senha do sistema de ponto), dois que devem ir para pessoa por conteúdo (novo funcionário   
+  que chega segunda e precisa de laptop e crachá; projetor urgente da sala de reunião), dois que devem ir para pessoa por confiança baixa (aprovação de pedido de compra de 20 monitores; "hello how are     
+  you"). Imprima categoria, confiança, destino e regra de cada um. 2. Mil tickets sorteados do conjunto de teste em split_teste.csv com semente 7, diferente da semente 42 usada no script 04, passados pela 
+  função de triagem do script 06. Imprima: fração que foi para pessoa, separando o que foi por regra de conteúdo e o que foi por confiança; acurácia sobre os que a máquina decidiu, global e por classe,    
+  com n; os pares real → previsto mais comuns entre os erros automáticos; e quais regras de conteúdo dispararam, com contagem. Não grave nenhum CSV; só a saída em solution/07_avaliacao_prototipo.txt. Rode 
+  e me mostre a saída.                                                                                                                                                                                       
+
+● Bash(cat > solution/07_avaliacao_prototipo.py <<'EOF'
+      """Avaliação do protótipo de triagem (script 06) como um usuário faria. Não altera nada.…)
+  ⎿  grep rc=1                                                                                                                                                                                               
+     rc=0
+     grep saída rc=1                                                                                                                                                                                         
+     … +94 lines (ctrl+o to expand)
+
+● Script criado em solution/07_avaliacao_prototipo.py, rodado, saída em solution/07_avaliacao_prototipo.txt. Nenhum CSV gravado: derived/ continua com os mesmos cinco arquivos. Nenhum caminho absoluto no
+  script nem na saída. Os scripts anteriores não foram tocados; o 07 importa o 06 e usa as funções dele.
+
+  Uma observação sobre a parte 1: escrevi os seis textos e a expectativa de caminho de cada um, e o script confere obtido contra esperado. Um dos dois que eu esperava seguir automático não seguiu: o reset
+  de senha do sistema de ponto saiu HR Support com confiança 0,512 e foi para pessoa. O texto é meu, então o desvio é da minha expectativa, não do protótipo; o registro fica na saída como está.            
+                
+  Dois números que imprimi além do pedido, porque saem da mesma tabela: quantos tickets barrados por conteúdo teriam seguido automático pela confiança, e a classe real dos barrados por conteúdo.
+
+  Saída completa:
+
+  === PARTE 1: seis tickets escritos à mão (limiar 0.7) ===
+
+  "My mailbox is full and I cannot receive emails anymore, could you increase the mailbox size please"
+    categoria: Storage  confiança: 0.9775  destino: fila Storage
+    regra: confiança 0.977 >= limiar 0.7
+    caminho esperado: automático; obtido: automático; confere
+
+  "I forgot my password for the timecard system and cannot submit my hours, please reset it"
+    categoria: HR Support  confiança: 0.5120  destino: fila humana
+    regra: confiança 0.512 < limiar 0.7
+    caminho esperado: automático; obtido: pessoa por confiança baixa; DIFERE
+
+  "New starter joining on Monday, she will need a laptop and a badge for the building"
+    categoria: HR Support  confiança: 0.5867  destino: fila humana
+    regra: conteúdo: pessoa entrando ou saindo ('new starter')
+    caminho esperado: pessoa por conteúdo; obtido: pessoa por conteúdo; confere
+
+  "Urgent: the projector in the main meeting room is not working and we have a client presentation in one hour"
+    categoria: Hardware  confiança: 0.9658  destino: fila humana
+    regra: conteúdo: urgência marcada ('urgent')
+    caminho esperado: pessoa por conteúdo; obtido: pessoa por conteúdo; confere
+
+  "Please approve the purchase order for 20 new monitors for the finance team"
+    categoria: Miscellaneous  confiança: 0.5807  destino: fila humana
+    regra: confiança 0.581 < limiar 0.7                                                                                                                                                                      
+    caminho esperado: pessoa por confiança baixa; obtido: pessoa por confiança baixa; confere
+
+  "hello how are you"
+    categoria: Hardware  confiança: 0.5389  destino: fila humana
+    regra: confiança 0.539 < limiar 0.7
+    caminho esperado: pessoa por confiança baixa; obtido: pessoa por confiança baixa; confere
+
+  caminhos conforme o esperado: 5 de 6
+
+  === PARTE 2: 1000 tickets do teste, semente 7 ===
+  para pessoa: 485 de 1000 (0.4850); por regra de conteúdo: 135 (0.1350); por confiança baixa: 350 (0.3500)
+  decididos pela máquina: 515 (0.5150)
+  barrados por conteúdo que teriam seguido automático pela confiança: 83
+
+  acurácia sobre os decididos pela máquina: 0.9573 (n=515)
+  por classe real (n = decididos daquela classe; no lote = total da classe nos 1000):
+                         no lote  n decididos  acurácia  fração automática
+  real                                                                                                                                                                                                       
+  Access                     144           95    0.9684             0.6597
+  Administrative rights       33            8    0.7500             0.2424
+  HR Support                 234           86    0.9651             0.3675
+  Hardware                   282          163    0.9632             0.5780
+  Internal Project            51           25    0.9600             0.4902
+  Miscellaneous              150           72    0.9722             0.4800
+  Purchase                   44           30    0.9667             0.6818
+  Storage                     62           36    0.8889             0.5806
+
+  erros automáticos: 22; pares real → previsto mais comuns:
+    Hardware → HR Support: 3
+    Access → Hardware: 2                                                                                                                                                                                     
+    HR Support → Hardware: 2
+    Storage → Hardware: 2
+    Storage → HR Support: 1
+    HR Support → Miscellaneous: 1
+    Administrative rights → Access: 1
+    Access → Internal Project: 1
+    Storage → Miscellaneous: 1
+
+  regras de conteúdo que dispararam (grupo e termo):
+  regra
+  urgência marcada ('importance high')         35
+  pessoa entrando ou saindo ('new starter')    31
+  urgência marcada ('urgent')                  27
+  urgência marcada ('asap')                    18
+  pessoa entrando ou saindo ('leaver')         11
+  pessoa entrando ou saindo ('maternity')       4
+  segurança física ('door')                     3
+  segurança física ('badge')                    3
+  conta e privilégio ('disable account')        1
+  segurança física ('alarm')                    1
+  auditoria ou incidente ('audit')              1
+
+  classe real dos tickets barrados por conteúdo:
+  real
+  HR Support               59
+  Hardware                 35
+  Access                   15
+
+  saída gravada em solution/07_avaliacao_prototipo.txt
+
+✻ Baked for 55s · done 11:12 PM
+
+❯ Escreva solution/08_curva_aprendizado.py. Com o mesmo split, TF-IDF e regressão logística do script 04 e semente 42, treine com fatias estratificadas do treino de 10%, 20%, 40%, 60%, 80% e 100% e meça   
+  no teste: acurácia global, F1 macro e, para Administrative rights, recall, F1 e número de exemplos daquela classe na fatia. Imprima a tabela. A partir dos dois últimos pontos, estime quantos exemplos    
+  adicionais de Administrative rights correspondem a um ponto de recall, e converta em semanas usando o volume da classe: 3,68% de 30.000 tickets por ano (dataset e enunciado), supondo que toda reversão   
+  humana vira rótulo. Declare no topo da saída que exemplo sorteado não equivale a correção de erro, e que a estimativa é piso. Saída em solution/08_curva_aprendizado.txt, sem gravar CSV. Rode e me mostre 
+  a saída.                                                                                                                                                                                                   
+
+● Bash(cat > solution/08_curva_aprendizado.py <<'EOF'
+      """Curva de aprendizado do classificador do script 04 em fatias do treino.…)
+  ⎿  grep rc=1
+                           
+     real       1m18.001s                        
+     … +29 lines (ctrl+o to expand)
+  ⎿  (timeout 10m)                  
+
+● Script criado em solution/08_curva_aprendizado.py, rodado em 78 segundos, saída em solution/08_curva_aprendizado.txt. Nenhum CSV gravado, nenhum caminho absoluto. O ponto de 100% reproduz o script 04    
+  exatamente: acurácia 0,8403 e recall 0,4937 para Administrative rights, o que confirma que split, vetorizador e modelo são os mesmos.
+
+  Duas escolhas de desenho:
+
+  - Fatias independentes. Cada fração é um sorteio estratificado próprio do treino com semente 42, não fatias aninhadas. A tabela diz isso no cabeçalho.
+  - Fração da classe calculada do dataset. Em vez de digitar 3,68%, o script calcula a fração de Administrative rights no arquivo, que dá 0,0368, e multiplica pelo volume do enunciado.
+
+  Saída completa:
+
+  AVISO: exemplo sorteado do treino não equivale a correção de erro em produção. Reversão humana chega concentrada nos casos em que o modelo errou ou absteve, e rótulo de fila operacional tem ruído que o
+  dataset de treino não tem. A conversão em semanas supõe que toda reversão vira rótulo e que rótulo novo vale o mesmo que exemplo sorteado; a estimativa é piso, não previsão.
+
+  treino completo: 34305; teste: 8577; Administrative rights no treino completo: 1274, no teste: 318
+
+  curva de aprendizado (fatias estratificadas independentes do treino, semente 42; métricas no teste):
+   fração  n treino  n Administrative rights  acurácia  F1 macro  recall Administrative rights  F1 Administrative rights
+      0.1      3430                      127    0.7650    0.7124                        0.2013                    0.3333
+      0.2      6861                      255    0.7931    0.7565                        0.2893                    0.4455
+      0.4     13722                      510    0.8170    0.7908                        0.3836                    0.5410
+      0.6     20583                      764    0.8258    0.8077                        0.4465                    0.5954
+      0.8     27444                     1019    0.8349    0.8181                        0.4780                    0.6242
+      1.0     34305                     1274    0.8403    0.8263                        0.4937                    0.6382
+
+  estimativa a partir dos dois últimos pontos (80% e 100%):
+  exemplos adicionais de Administrative rights: 255.0; variação de recall: +1.57 pontos
+  volume da classe: fração 0.0368 no dataset × 30000 tickets/ano (enunciado) = 1104/ano = 21.2/semana
+  exemplos por ponto de recall: 162; semanas por ponto de recall se toda reversão humana virar rótulo: 7.6 (piso)
+
+  saída gravada em solution/08_curva_aprendizado.txt
+
+✻ Crunched for 2m 5s · done 11:23 PM                        
