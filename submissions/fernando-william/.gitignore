@@ -1,0 +1,17 @@
+# Segredos: nunca versionar. Chaves vivem em .env fora desta árvore.
+.env
+*.env
+.secrets/
+access_token
+*.pem
+*_creds.json
+
+# Dados brutos entregues pela área: ficam fora do repositório, entram por cópia manual.
+# Derivados (solution/data/derived/) e caches de modelo são versionados: são evidência.
+solution/data/*.csv
+solution/data/*.zip
+
+# Artefatos de execução
+.venv/
+__pycache__/
+.ipynb_checkpoints/
