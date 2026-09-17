@@ -1,0 +1,10 @@
+.venv/
+runtime/
+artifacts/
+frontend/node_modules/
+frontend/dist/
+__pycache__/
+*.pyc
+.env
+docs/evidencias/
+.cache/

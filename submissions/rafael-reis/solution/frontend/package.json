@@ -1,0 +1,10 @@
+{
+  "name": "support-intelligence",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.2",
+  "scripts": {"dev": "vite --host 127.0.0.1", "build": "tsc --noEmit && vite build", "check": "tsc --noEmit", "test": "node --experimental-strip-types src/roi.test.ts && node --experimental-strip-types src/session.test.ts"},
+  "dependencies": {"graphology": "^0.26.0", "sigma": "^3.0.2"},
+  "devDependencies": {"typescript": "^5.9.2", "vite": "^7.1.3"}
+}
