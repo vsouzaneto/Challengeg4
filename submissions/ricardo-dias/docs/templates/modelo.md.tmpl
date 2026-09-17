@@ -1,0 +1,91 @@
+# Classificador e roteamento: como foi construído e avaliado
+
+## Resumo
+
+| | Resultado no teste (IC 95%) |
+|---|---|
+| Acurácia do classificador | **{{test_acc}}** ({{test_acc_ci}}), contra {{test_baseline}} da classe mais comum |
+| F1 macro | **{{test_f1}}** ({{test_f1_ci}}) |
+| Tickets roteados automaticamente (política completa da API) | **{{rt_auto}}** ({{rt_auto_ci}}) |
+| Acerto nos roteados automaticamente | **{{rt_auto_acc}}** ({{rt_auto_acc_ci}}) |
+| Pedidos de privilégio que foram automaticamente para outra fila | **{{ar_leak_n}} de {{ar_total}}** ({{ar_leak}}) |
+
+## Dados e partições
+
+Dataset 2: {{d2_rows}} tickets de TI interna rotulados em 8 categorias. Partição estratificada com semente fixa:
+
+| Partição | Tickets | Para que serve |
+|---|---|---|
+| Treino | {{n_train}} | Ajuste do TF-IDF e dos modelos |
+| Validação | {{n_val}} | **Todas** as escolhas: modelo, regularização, poda, limiares |
+| Teste | {{n_test}} | Avaliação final, feita **uma vez** depois de congelar as escolhas |
+
+### Por que refizemos a avaliação
+
+A primeira versão usou um único conjunto de 20% para comparar modelos, escolher poda e limiares **e** reportar resultado: {{exp_acc}} de acurácia, F1 {{exp_f1}}, {{exp_auto}} automáticos com {{exp_auto_acc}} de acerto. Esses números ficam registrados como **exploratórios**. A revisão cruzada (Codex) apontou o problema e refizemos com treino, validação e teste.
+
+**Ressalva honesta:** decisões de *desenho* foram tomadas olhando aquele primeiro conjunto: usar regressão logística, criar o guarda de domínio, ignorar stopwords no guarda, podar coeficientes. O teste atual não é "virgem" em sentido estrito. Os *valores* (C, poda, limiares) foram re-selecionados só na validação.
+
+## Seleção (somente validação)
+
+{{table_candidates}}
+
+Critérios, definidos antes de olhar o teste:
+
+{{sel_criteria}}
+
+Escolhas congeladas: C = {{sel_C}}, poda ε = {{sel_eps}}, limiar de confiança = {{sel_conf}}, guarda de domínio = {{sel_ood}}, limiar de probabilidade de privilégio = {{sel_admin}}.
+
+O SVM linear tem desempenho equivalente, mas não fornece probabilidade. Sem probabilidade não há limiar de confiança nem fila humana, por isso escolhemos a regressão logística.
+
+## Desempenho do classificador no teste
+
+{{table_per_class}}
+
+A classe mais difícil é **Administrative rights** (recall {{ar_recall}}): pedidos de privilégio se confundem com Access e Hardware. Por isso a política de roteamento trata essa categoria à parte (abaixo).
+
+## Roteamento: o que o app realmente faz
+
+Os números abaixo vêm de `scripts/evaluate-routing.ts`, que roda **as mesmas funções da API** (`predict` e `decideRoute`) sobre os {{rt_n}} tickets do teste. A ordem da política é:
+
+1. **Escalação:** termo de risco ou urgência no texto → atendente sênior, sem rascunho de IA.
+2. **Guarda de domínio:** vocabulário pouco conhecido pelo modelo → revisão humana.
+3. **Confiança:** abaixo do limiar → revisão humana.
+4. **Privilégio administrativo:** previsto como tal → revisão humana (aprovação obrigatória).
+5. **Risco de privilégio:** probabilidade de privilégio acima do limiar, mesmo prevendo outra categoria → revisão humana.
+6. Caso contrário → **roteamento automático** para a fila prevista.
+
+{{table_routes}}
+
+{{table_reasons}}
+
+**Por categoria real:**
+
+{{table_by_category}}
+
+**Vazamento de pedidos de privilégio:** dos {{ar_total}} tickets cujo rótulo real é Administrative rights, {{ar_leak_n}} ({{ar_leak}}) foram previstos como outra categoria e roteados automaticamente: {{ar_leak_queues}}. Na validação foram {{ar_leak_val}}. A regra de risco de privilégio mandou {{reason_admin_n}} tickets para aprovação humana, além dos {{reason_always_n}} previstos diretamente como privilégio.
+
+**Leitura:** o acerto nos automáticos ficou em {{rt_auto_acc}} no teste, contra {{rv_auto_acc}} na validação. O critério de seleção pedia 95% na validação, e o teste fica no limite inferior dessa meta. Recomendamos operar primeiro em modo sombra e reajustar o limiar com dados da operação.
+
+A política TypeScript concorda {{py_agreement}} com a réplica Python usada na seleção, verificado em todos os tickets de validação e teste.
+
+## Guarda de domínio: confiança alta não é garantia
+
+Aplicado aos tickets do Dataset 1 (e-commerce), o modelo passa do limiar de confiança em {{cd_confident}} dos casos, e {{cd_hw}} desses viram "Hardware", inclusive pedidos de pagamento. **O modelo erra com convicção fora do domínio em que foi treinado.** O guarda (fração de palavras de conteúdo conhecidas pelo modelo) barra {{cd_ood}} desses tickets, contra {{cd_ood_in}} do teste do próprio domínio. Com a política completa, o Dataset 1 ficaria {{cd_auto}} automático, {{cd_human}} revisão humana e {{cd_escal}} escalação.
+
+**Implicação:** em produção o classificador precisa ser re-treinado com o histórico rotulado da própria operação. Um modelo "pronto" de outro contexto não serve.
+
+## Limitações do modelo
+
+- **Correlação espúria visível na explicação:** num ticket de novo funcionário, o termo "belgrade" (nome de escritório) é um dos que mais puxam para HR Support. O modelo aprendeu localização como sinal. Mostrar os termos que explicam cada decisão foi o que revelou isso, e é um motivo para manter a explicação visível ao agente.
+- **Texto pré-processado:** o Dataset 2 vem em minúsculas, sem dígitos e anonimizado. Texto cru de outra empresa tende a ter desempenho menor.
+- **Termos de escalação** são heurística escrita à mão. O Dataset 2 não tem rótulo de prioridade para validá-los.
+- **Probabilidades** não foram recalibradas. O limiar foi escolhido empiricamente na validação.
+
+## Reprodução
+
+```bash
+bash solution/pipeline.sh   # 01 → 03 → evaluate-routing → 02 → 05 → testes
+```
+
+Sem Kaggle, o próprio repositório tem o necessário para os testes: `analysis/artifacts/` guarda as partições de validação e teste e as predições do Python (`npm test` roda paridade, política e APIs).

@@ -1,0 +1,681 @@
+{
+  "generatedAt": "2026-09-17T01:34:07+00:00",
+  "nTickets": 8469,
+  "observations": [
+    {
+      "id": "volume",
+      "label": "Tickets no arquivo",
+      "value": "8.469",
+      "detail": "O enunciado fala em ~30.000/ano; valores anuais abaixo são projeção para esse volume."
+    },
+    {
+      "id": "not_closed",
+      "label": "Registros não fechados",
+      "value": "67,3%",
+      "detail": "33,3% abertos e 34,0% aguardando o cliente. Contagem descritiva: sem datas de abertura não dá para medir envelhecimento da fila."
+    },
+    {
+      "id": "open_no_frt",
+      "label": "Abertos sem registro de 1ª resposta",
+      "value": "100%",
+      "detail": "Pode ser só a definição de 'Open' no gerador do dataset. Primeira métrica a medir com dados reais."
+    },
+    {
+      "id": "pending",
+      "label": "Aguardando resposta do cliente",
+      "value": "34,0%",
+      "detail": "Fatia que depende do cliente, não do time. Base do cenário de follow-up automático."
+    }
+  ],
+  "segments": [
+    {
+      "channel": "Chat",
+      "priority": "Critical",
+      "n": 504,
+      "backlogShare": 0.6726,
+      "backlogCI": {
+        "low": 0.6305,
+        "high": 0.7121
+      },
+      "pendingCustomerShare": 0.3274,
+      "csatMean": 3.13
+    },
+    {
+      "channel": "Chat",
+      "priority": "High",
+      "n": 517,
+      "backlogShare": 0.6344,
+      "backlogCI": {
+        "low": 0.5921,
+        "high": 0.6748
+      },
+      "pendingCustomerShare": 0.323,
+      "csatMean": 3.06
+    },
+    {
+      "channel": "Chat",
+      "priority": "Low",
+      "n": 501,
+      "backlogShare": 0.6866,
+      "backlogCI": {
+        "low": 0.6447,
+        "high": 0.7257
+      },
+      "pendingCustomerShare": 0.3513,
+      "csatMean": 3.18
+    },
+    {
+      "channel": "Chat",
+      "priority": "Medium",
+      "n": 551,
+      "backlogShare": 0.7042,
+      "backlogCI": {
+        "low": 0.6648,
+        "high": 0.7408
+      },
+      "pendingCustomerShare": 0.3739,
+      "csatMean": 2.97
+    },
+    {
+      "channel": "Email",
+      "priority": "Critical",
+      "n": 571,
+      "backlogShare": 0.669,
+      "backlogCI": {
+        "low": 0.6294,
+        "high": 0.7064
+      },
+      "pendingCustomerShare": 0.3327,
+      "csatMean": 2.83
+    },
+    {
+      "channel": "Email",
+      "priority": "High",
+      "n": 504,
+      "backlogShare": 0.6548,
+      "backlogCI": {
+        "low": 0.6122,
+        "high": 0.695
+      },
+      "pendingCustomerShare": 0.3115,
+      "csatMean": 3.0
+    },
+    {
+      "channel": "Email",
+      "priority": "Low",
+      "n": 525,
+      "backlogShare": 0.6686,
+      "backlogCI": {
+        "low": 0.6272,
+        "high": 0.7075
+      },
+      "pendingCustomerShare": 0.3638,
+      "csatMean": 2.99
+    },
+    {
+      "channel": "Email",
+      "priority": "Medium",
+      "n": 543,
+      "backlogShare": 0.663,
+      "backlogCI": {
+        "low": 0.6222,
+        "high": 0.7015
+      },
+      "pendingCustomerShare": 0.3389,
+      "csatMean": 3.04
+    },
+    {
+      "channel": "Phone",
+      "priority": "Critical",
+      "n": 526,
+      "backlogShare": 0.6407,
+      "backlogCI": {
+        "low": 0.5988,
+        "high": 0.6805
+      },
+      "pendingCustomerShare": 0.3365,
+      "csatMean": 2.89
+    },
+    {
+      "channel": "Phone",
+      "priority": "High",
+      "n": 512,
+      "backlogShare": 0.6641,
+      "backlogCI": {
+        "low": 0.6221,
+        "high": 0.7036
+      },
+      "pendingCustomerShare": 0.3125,
+      "csatMean": 3.02
+    },
+    {
+      "channel": "Phone",
+      "priority": "Low",
+      "n": 499,
+      "backlogShare": 0.7234,
+      "backlogCI": {
+        "low": 0.6826,
+        "high": 0.7609
+      },
+      "pendingCustomerShare": 0.3347,
+      "csatMean": 3.01
+    },
+    {
+      "channel": "Phone",
+      "priority": "Medium",
+      "n": 595,
+      "backlogShare": 0.6773,
+      "backlogCI": {
+        "low": 0.6387,
+        "high": 0.7136
+      },
+      "pendingCustomerShare": 0.3378,
+      "csatMean": 2.91
+    },
+    {
+      "channel": "Social media",
+      "priority": "Critical",
+      "n": 528,
+      "backlogShare": 0.6534,
+      "backlogCI": {
+        "low": 0.6118,
+        "high": 0.6928
+      },
+      "pendingCustomerShare": 0.339,
+      "csatMean": 3.01
+    },
+    {
+      "channel": "Social media",
+      "priority": "High",
+      "n": 552,
+      "backlogShare": 0.692,
+      "backlogCI": {
+        "low": 0.6523,
+        "high": 0.7291
+      },
+      "pendingCustomerShare": 0.3478,
+      "csatMean": 2.84
+    },
+    {
+      "channel": "Social media",
+      "priority": "Low",
+      "n": 538,
+      "backlogShare": 0.6747,
+      "backlogCI": {
+        "low": 0.634,
+        "high": 0.7129
+      },
+      "pendingCustomerShare": 0.3513,
+      "csatMean": 3.03
+    },
+    {
+      "channel": "Social media",
+      "priority": "Medium",
+      "n": 503,
+      "backlogShare": 0.6899,
+      "backlogCI": {
+        "low": 0.6481,
+        "high": 0.7287
+      },
+      "pendingCustomerShare": 0.3579,
+      "csatMean": 2.99
+    }
+  ],
+  "tests": {
+    "segmentTests": [
+      {
+        "variable": "canal",
+        "test": "qui-quadrado de independência",
+        "pValue": 0.771,
+        "significant": false,
+        "conclusion": "Não detectamos associação entre status e canal (p = 0,77)."
+      },
+      {
+        "variable": "prioridade",
+        "test": "qui-quadrado de independência",
+        "pValue": 0.227,
+        "significant": false,
+        "conclusion": "Não detectamos associação entre status e prioridade (p = 0,23)."
+      },
+      {
+        "variable": "tipo",
+        "test": "qui-quadrado de independência",
+        "pValue": 0.3394,
+        "significant": false,
+        "conclusion": "Não detectamos associação entre status e tipo (p = 0,34)."
+      },
+      {
+        "variable": "canal × prioridade",
+        "test": "qui-quadrado de independência",
+        "pValue": 0.5018,
+        "significant": false,
+        "conclusion": "Não detectamos associação entre status e canal × prioridade (p = 0,50)."
+      }
+    ],
+    "csatDrivers": [
+      {
+        "variable": "canal",
+        "test": "Kruskal-Wallis",
+        "pValue": 0.2785,
+        "effectSize": 0.0014,
+        "detectableDiff": 0.148,
+        "conclusion": "Não detectamos associação nos testes realizados (p = 0,28, ε² = 0,0014). Diferenças de até ±0,15 ponto entre dois grupos não seriam distinguíveis do acaso com este volume.",
+        "groups": [
+          {
+            "label": "Phone",
+            "mean": 2.95,
+            "n": 691,
+            "ci": {
+              "low": 2.85,
+              "high": 3.06
+            }
+          },
+          {
+            "label": "Email",
+            "mean": 2.96,
+            "n": 720,
+            "ci": {
+              "low": 2.86,
+              "high": 3.07
+            }
+          },
+          {
+            "label": "Social media",
+            "mean": 2.97,
+            "n": 684,
+            "ci": {
+              "low": 2.87,
+              "high": 3.07
+            }
+          },
+          {
+            "label": "Chat",
+            "mean": 3.08,
+            "n": 674,
+            "ci": {
+              "low": 2.98,
+              "high": 3.19
+            }
+          }
+        ]
+      },
+      {
+        "variable": "prioridade",
+        "test": "Kruskal-Wallis",
+        "pValue": 0.6287,
+        "effectSize": 0.0006,
+        "detectableDiff": 0.148,
+        "conclusion": "Não detectamos associação nos testes realizados (p = 0,63, ε² = 0,0006). Diferenças de até ±0,15 ponto entre dois grupos não seriam distinguíveis do acaso com este volume.",
+        "groups": [
+          {
+            "label": "Critical",
+            "mean": 2.96,
+            "n": 726,
+            "ci": {
+              "low": 2.86,
+              "high": 3.06
+            }
+          },
+          {
+            "label": "High",
+            "mean": 2.98,
+            "n": 705,
+            "ci": {
+              "low": 2.88,
+              "high": 3.09
+            }
+          },
+          {
+            "label": "Medium",
+            "mean": 2.98,
+            "n": 694,
+            "ci": {
+              "low": 2.87,
+              "high": 3.08
+            }
+          },
+          {
+            "label": "Low",
+            "mean": 3.05,
+            "n": 644,
+            "ci": {
+              "low": 2.95,
+              "high": 3.16
+            }
+          }
+        ]
+      },
+      {
+        "variable": "tipo",
+        "test": "Kruskal-Wallis",
+        "pValue": 0.6993,
+        "effectSize": 0.0008,
+        "detectableDiff": 0.166,
+        "conclusion": "Não detectamos associação nos testes realizados (p = 0,70, ε² = 0,0008). Diferenças de até ±0,17 ponto entre dois grupos não seriam distinguíveis do acaso com este volume.",
+        "groups": [
+          {
+            "label": "Refund request",
+            "mean": 2.93,
+            "n": 596,
+            "ci": {
+              "low": 2.82,
+              "high": 3.05
+            }
+          },
+          {
+            "label": "Technical issue",
+            "mean": 2.96,
+            "n": 580,
+            "ci": {
+              "low": 2.84,
+              "high": 3.07
+            }
+          },
+          {
+            "label": "Product inquiry",
+            "mean": 3.02,
+            "n": 533,
+            "ci": {
+              "low": 2.9,
+              "high": 3.13
+            }
+          },
+          {
+            "label": "Billing inquiry",
+            "mean": 3.03,
+            "n": 544,
+            "ci": {
+              "low": 2.91,
+              "high": 3.15
+            }
+          },
+          {
+            "label": "Cancellation request",
+            "mean": 3.03,
+            "n": 516,
+            "ci": {
+              "low": 2.91,
+              "high": 3.15
+            }
+          }
+        ]
+      },
+      {
+        "variable": "gênero",
+        "test": "Kruskal-Wallis",
+        "pValue": 0.6255,
+        "effectSize": 0.0003,
+        "detectableDiff": 0.128,
+        "conclusion": "Não detectamos associação nos testes realizados (p = 0,63, ε² = 0,0003). Diferenças de até ±0,13 ponto entre dois grupos não seriam distinguíveis do acaso com este volume.",
+        "groups": [
+          {
+            "label": "Female",
+            "mean": 2.97,
+            "n": 984,
+            "ci": {
+              "low": 2.88,
+              "high": 3.06
+            }
+          },
+          {
+            "label": "Other",
+            "mean": 2.97,
+            "n": 869,
+            "ci": {
+              "low": 2.88,
+              "high": 3.07
+            }
+          },
+          {
+            "label": "Male",
+            "mean": 3.03,
+            "n": 916,
+            "ci": {
+              "low": 2.94,
+              "high": 3.12
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "limitations": [
+    {
+      "id": "synthetic",
+      "text": "O Dataset 1 tem padrão de dado sintético (distribuições uniformes, placeholders no texto, resoluções aleatórias)."
+    },
+    {
+      "id": "times",
+      "text": "Tempos de resposta/resolução não são utilizáveis (49% das resoluções antes da 1ª resposta; sem data de abertura). Não medimos gargalo de tempo por canal ou prioridade."
+    },
+    {
+      "id": "no_association",
+      "text": "Não detectar associação não prova ausência de efeito: diferenças pequenas podem não ser detectáveis com este volume."
+    },
+    {
+      "id": "domain",
+      "text": "O roteamento foi medido em tickets de TI interna (Dataset 2). Aplicado aos tickets do Dataset 1 ele quase não roteia automaticamente (o guarda de domínio barra o texto). Em produção, re-treinar com o histórico da operação."
+    },
+    {
+      "id": "assumptions",
+      "text": "Minutos por tarefa, taxa de roteamento errado, custo/hora e automação de follow-up são premissas a validar, não medições."
+    }
+  ],
+  "scenario": {
+    "note": "Estimativa para 30.000 tickets/ano. Combina referências medidas no teste do roteamento com premissas a validar; não é medição da operação. Economias já descontam conferência, revisão e erros residuais.",
+    "assumptions": [
+      {
+        "id": "annual_volume",
+        "label": "Volume anual de tickets",
+        "value": 30000,
+        "unit": "tickets/ano",
+        "kind": "premissa",
+        "source": "Enunciado do desafio (o arquivo tem 8.469 tickets).",
+        "editable": true
+      },
+      {
+        "id": "hourly_cost",
+        "label": "Custo carregado por hora de agente",
+        "value": 45,
+        "unit": "R$/h",
+        "kind": "premissa",
+        "source": "Validar com RH/financeiro.",
+        "editable": true
+      },
+      {
+        "id": "triage_minutes",
+        "label": "Triagem manual por ticket",
+        "value": 3,
+        "unit": "min",
+        "kind": "premissa",
+        "source": "Validar cronometrando ~50 triagens.",
+        "editable": true
+      },
+      {
+        "id": "auto_check_minutes",
+        "label": "Conferência residual por ticket roteado automaticamente",
+        "value": 0.5,
+        "unit": "min",
+        "kind": "premissa",
+        "source": "O agente ainda bate o olho na categoria ao abrir o ticket.",
+        "editable": true
+      },
+      {
+        "id": "auto_share",
+        "label": "Tickets roteados automaticamente",
+        "value": 0.6531,
+        "unit": "fração",
+        "kind": "referencia",
+        "source": "Medido no teste (7176 tickets de TI interna) com a política completa da API. Pressupõe re-treino com o histórico da operação.",
+        "editable": true
+      },
+      {
+        "id": "auto_accuracy",
+        "label": "Acerto nos roteados automaticamente",
+        "value": 0.9492,
+        "unit": "fração",
+        "kind": "referencia",
+        "source": "Medido no teste; IC 95% 94,3%–95,6%.",
+        "editable": true
+      },
+      {
+        "id": "misroute_rate",
+        "label": "Roteamento errado na triagem manual",
+        "value": 0.15,
+        "unit": "fração",
+        "kind": "premissa",
+        "source": "Medir por reatribuições no helpdesk.",
+        "editable": true
+      },
+      {
+        "id": "rework_minutes",
+        "label": "Retrabalho por ticket mal roteado",
+        "value": 15,
+        "unit": "min",
+        "kind": "premissa",
+        "source": "Inclui reler, reatribuir e retomar o contexto.",
+        "editable": true
+      },
+      {
+        "id": "pending_share",
+        "label": "Tickets aguardando o cliente",
+        "value": 0.3402,
+        "unit": "fração",
+        "kind": "medido",
+        "source": "Contagem do Dataset 1 (mix sintético).",
+        "editable": true
+      },
+      {
+        "id": "followups_per_pending",
+        "label": "Follow-ups manuais por ticket pendente",
+        "value": 2,
+        "unit": "follow-ups",
+        "kind": "premissa",
+        "source": "Validar no histórico do helpdesk.",
+        "editable": true
+      },
+      {
+        "id": "followup_minutes",
+        "label": "Tempo por follow-up",
+        "value": 4,
+        "unit": "min",
+        "kind": "premissa",
+        "source": "Validar no histórico do helpdesk.",
+        "editable": true
+      },
+      {
+        "id": "followup_automation",
+        "label": "Follow-ups automatizáveis (líquido)",
+        "value": 0.6,
+        "unit": "fração",
+        "kind": "premissa",
+        "source": "Sem evidência nos dados; parte dos clientes exige contato humano. Validar em piloto.",
+        "editable": true
+      },
+      {
+        "id": "draft_minutes",
+        "label": "Redação de uma resposta",
+        "value": 6,
+        "unit": "min",
+        "kind": "premissa",
+        "source": "Validar cronometrando respostas.",
+        "editable": true
+      },
+      {
+        "id": "draft_net_saving",
+        "label": "Economia líquida com rascunho (já descontada a revisão)",
+        "value": 0.25,
+        "unit": "fração",
+        "kind": "premissa",
+        "source": "Conservadora; o agente lê, ajusta e aprova. Validar em piloto A/B.",
+        "editable": true
+      },
+      {
+        "id": "human_only_share",
+        "label": "Casos só-humanos (reembolso e cancelamento)",
+        "value": 0.407,
+        "unit": "fração",
+        "kind": "medido",
+        "source": "Contagem do Dataset 1 (mix sintético).",
+        "editable": true
+      },
+      {
+        "id": "escalation_share",
+        "label": "Tickets escalados por sinal de risco",
+        "value": 0.0654,
+        "unit": "fração",
+        "kind": "referencia",
+        "source": "Medido no teste com a política da API. Pode sobrepor-se aos casos só-humanos (desconto conservador).",
+        "editable": true
+      }
+    ],
+    "waste": [
+      {
+        "id": "triage",
+        "step": "Triagem manual (ler, classificar, rotear)",
+        "hoursPerYear": 1500.0,
+        "recoverableHoursPerYear": 816.4,
+        "rationale": "Só nos tickets roteados automaticamente, descontando a conferência rápida que continua existindo."
+      },
+      {
+        "id": "rework",
+        "step": "Retrabalho por roteamento errado",
+        "hoursPerYear": 1125.0,
+        "recoverableHoursPerYear": 485.9,
+        "rationale": "Nos automáticos, a taxa de erro manual é trocada pelo erro medido do roteamento; o restante continua manual. Fica negativo se o erro automático superar o manual."
+      },
+      {
+        "id": "followup",
+        "step": "Follow-up de tickets aguardando o cliente",
+        "hoursPerYear": 1360.8,
+        "recoverableHoursPerYear": 816.5,
+        "rationale": "Lembretes e fechamento por inatividade. Cenário sem evidência nos dados: validar em piloto."
+      },
+      {
+        "id": "drafting",
+        "step": "Redação de respostas",
+        "hoursPerYear": 3000.0,
+        "recoverableHoursPerYear": 395.7,
+        "rationale": "Economia líquida (já descontada a revisão) apenas nos tickets elegíveis a rascunho: exclui casos só-humanos e escalações."
+      }
+    ],
+    "totals": {
+      "hoursPerYear": 6985.8,
+      "recoverableHoursPerYear": 2514.5,
+      "recoverableCost": 113152.0,
+      "fte": 1.43
+    },
+    "sensitivity": [
+      {
+        "autoShare": 0.3,
+        "draftSaving": 0.15,
+        "recoverableHoursPerYear": 1652.1
+      },
+      {
+        "autoShare": 0.3,
+        "draftSaving": 0.25,
+        "recoverableHoursPerYear": 1810.4
+      },
+      {
+        "autoShare": 0.5,
+        "draftSaving": 0.15,
+        "recoverableHoursPerYear": 2050.9
+      },
+      {
+        "autoShare": 0.5,
+        "draftSaving": 0.25,
+        "recoverableHoursPerYear": 2209.2
+      },
+      {
+        "autoShare": 0.6531,
+        "draftSaving": 0.15,
+        "recoverableHoursPerYear": 2356.2
+      },
+      {
+        "autoShare": 0.6531,
+        "draftSaving": 0.25,
+        "recoverableHoursPerYear": 2514.5
+      }
+    ]
+  }
+}

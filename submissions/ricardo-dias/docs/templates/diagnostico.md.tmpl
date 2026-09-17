@@ -1,0 +1,74 @@
+# Diagnóstico operacional
+
+O Diretor de Operações fez três perguntas: **onde o fluxo trava**, **o que impacta a satisfação** e **quanto estamos desperdiçando**. Este documento responde a cada uma separando três tipos de afirmação:
+
+- **Observado:** contagem feita direto no arquivo.
+- **Limitação:** o que os dados não permitem afirmar.
+- **Cenário estimado:** conta com premissas explícitas, que precisam ser validadas antes de virar decisão.
+
+## Antes dos números: o que a auditoria encontrou
+
+O Dataset 1 (métricas operacionais, {{d1_rows}} tickets) tem padrão de dado sintético. Os pontos que mais afetam o diagnóstico:
+
+- **Distribuições uniformes:** {{audit_uniform}}
+- **Tempos inválidos:** {{audit_times}}
+- **Satisfação:** {{audit_csat}}
+- **Texto:** {{audit_text}}
+
+Por isso **não apontamos um "canal gargalo" nem um "driver de satisfação"**. Com estes dados, isso seria apresentar ruído como insight. O que entregamos é o que o arquivo sustenta, somado a uma metodologia pronta para rodar sobre os dados reais da operação.
+
+## 1. Onde o fluxo trava?
+
+**Observado (descritivo):**
+- {{obs_not_closed}} dos registros não estão fechados. {{obs_not_closed_detail}}
+- {{obs_open_no_frt}} dos tickets abertos não têm registro de primeira resposta.
+- {{obs_pending}} dos tickets aguardam resposta do cliente.
+
+**Testes por segmento:**
+- {{seg_channel}}
+- {{seg_priority}}
+- {{seg_type}}
+- {{seg_combo}}
+
+**Leitura:** o status dos tickets não difere de forma detectável entre canais, prioridades ou tipos, e o painel mostra cada segmento com intervalo de confiança. O arquivo não tem data de abertura nem tempos consistentes, então **não é possível medir onde o fluxo trava em tempo**. O primeiro passo com dados reais é registrar abertura, primeira resposta e resolução por ticket e repetir estes mesmos testes.
+
+## 2. O que impacta a satisfação?
+
+**Testes realizados** (tickets fechados, que são os únicos com nota):
+
+{{table_csat}}
+
+Médias por canal com IC 95%: {{csat_channel_groups}}.
+
+**Leitura:** não detectamos associação nos testes realizados. Isso **não prova** que canal, prioridade ou tipo não importam numa operação real. Diz apenas que, com este volume, diferenças do tamanho indicado na última coluna não se distinguem do acaso.
+
+## 3. Quanto estamos desperdiçando?
+
+**Cenário estimado**, não medição. {{sc_note}}
+
+Para {{annual_volume}} tickets/ano, as etapas analisadas somam cerca de **{{sc_total_hours}} h/ano**. Delas, **{{sc_recoverable}} h/ano são recuperáveis** (≈ {{sc_fte}} agente em tempo integral; ≈ R$ {{sc_cost}}/ano a R$ {{hourly_cost}}/h).
+
+{{table_waste}}
+
+**Onde está o maior desperdício recuperável:** triagem ({{w_triage}} h) e follow-up de pendências ({{w_followup}} h). Ambos são automações baratas e mensuráveis. O rascunho de resposta com IA generativa rende menos ({{w_drafting}} h), porque a economia é líquida da revisão humana e não se aplica a casos só-humanos nem a escalações.
+
+**Sensibilidade:** mesmo com roteamento automático bem abaixo do medido e economia de rascunho menor, o cenário ainda recupera {{sens_low}} h/ano.
+
+{{table_sensitivity}}
+
+### Premissas
+
+Todas são editáveis na calculadora do protótipo. O tipo indica a origem de cada uma: **medido** no Dataset 1, **referência** medida no teste do roteamento (Dataset 2, TI interna) ou **premissa** a validar.
+
+{{table_assumptions}}
+
+## Limitações
+
+{{limitations}}
+
+## Próximos passos para transformar o cenário em medição
+
+1. Exportar do helpdesk real: abertura, primeira resposta, resolução, reatribuições e CSAT por ticket.
+2. Rodar `02_diagnostico.py` sobre esse export. Os testes e a calculadora já estão prontos.
+3. Cronometrar cerca de 50 triagens e 50 respostas para substituir as premissas de minutos.
+4. Fazer um piloto de 4 semanas com roteamento automático em modo sombra (sugere sem aplicar) para medir cobertura e acerto no domínio da operação.

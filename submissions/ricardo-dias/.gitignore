@@ -1,0 +1,33 @@
+# ATENÇÃO: o .gitignore da raiz do repo ignora `submissions/`.
+# Use scripts/git-add.sh para stagear — ele aplica ESTE arquivo como regra de exclusão.
+# Padrões sem "/" inicial porque são aplicados via --exclude-from a partir da raiz do repo.
+
+# dados brutos do Kaggle não são versionados (ver README para download)
+*.csv
+data/raw/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+build/
+coverage/
+.pnp
+.pnp.*
+*.tsbuildinfo
+next-env.d.ts
+npm-debug.log*
+.vercel
+
+# segredos
+.env*
+*.pem
+
+# SO
+.DS_Store
+Thumbs.db

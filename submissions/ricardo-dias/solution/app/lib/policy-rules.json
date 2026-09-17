@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "note": "Regras de roteamento escritas à mão (não aprendidas). Lidas por lib/classifier.ts e por analysis/policy.py; os limiares numéricos são selecionados na validação e ficam em data/model.json.",
+  "escalationTerms": [
+    "urgent", "urgently", "asap", "immediately", "critical", "outage", "breach", "hacked", "virus",
+    "malware", "phishing", "fraud", "legal", "lawsuit", "complaint", "cancel", "cancellation", "refund"
+  ],
+  "alwaysHuman": [
+    {
+      "category": "Administrative rights",
+      "reason": "Pedido de privilégio administrativo exige aprovação humana (risco de segurança)."
+    }
+  ],
+  "adminRightsCategory": "Administrative rights"
+}

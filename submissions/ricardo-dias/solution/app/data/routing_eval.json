@@ -1,0 +1,307 @@
+{
+  "generatedAt": "2026-09-17T01:34:02+00:00",
+  "note": "Medido com predict() e decideRoute(), as mesmas funções da API, com a política completa (escalação, guarda de domínio, confiança, categoria sempre-humana e risco de privilégio). Limiares escolhidos só na validação; o teste é a fonte dos números publicados.",
+  "thresholds": {
+    "confidence": 0.65,
+    "ood": 0.93,
+    "adminRights": 0.05
+  },
+  "validation": {
+    "n": 7176,
+    "modelAccuracy": 0.8652,
+    "routes": [
+      {
+        "route": "auto",
+        "n": 4692,
+        "share": 0.6538
+      },
+      {
+        "route": "revisao_humana",
+        "n": 2027,
+        "share": 0.2825
+      },
+      {
+        "route": "escalar",
+        "n": 457,
+        "share": 0.0637
+      }
+    ],
+    "reasons": [
+      {
+        "reasonCode": "auto",
+        "n": 4692,
+        "share": 0.6538
+      },
+      {
+        "reasonCode": "low_confidence",
+        "n": 1465,
+        "share": 0.2042
+      },
+      {
+        "reasonCode": "out_of_domain",
+        "n": 285,
+        "share": 0.0397
+      },
+      {
+        "reasonCode": "always_human",
+        "n": 134,
+        "share": 0.0187
+      },
+      {
+        "reasonCode": "admin_rights_risk",
+        "n": 143,
+        "share": 0.0199
+      },
+      {
+        "reasonCode": "escalation_terms",
+        "n": 457,
+        "share": 0.0637
+      }
+    ],
+    "auto": {
+      "n": 4692,
+      "share": 0.6538,
+      "shareCI": {
+        "low": 0.6419,
+        "high": 0.665
+      },
+      "accuracy": 0.9506,
+      "accuracyCI": {
+        "low": 0.9442,
+        "high": 0.9565
+      },
+      "errors": 232
+    },
+    "byTrueCategory": [
+      {
+        "label": "Hardware",
+        "n": 2043,
+        "auto": 1255,
+        "revisao_humana": 628,
+        "escalar": 160,
+        "autoAccuracy": 0.9434
+      },
+      {
+        "label": "HR Support",
+        "n": 1637,
+        "auto": 1201,
+        "revisao_humana": 362,
+        "escalar": 74,
+        "autoAccuracy": 0.9484
+      },
+      {
+        "label": "Access",
+        "n": 1069,
+        "auto": 745,
+        "revisao_humana": 240,
+        "escalar": 84,
+        "autoAccuracy": 0.9638
+      },
+      {
+        "label": "Miscellaneous",
+        "n": 1059,
+        "auto": 697,
+        "revisao_humana": 293,
+        "escalar": 69,
+        "autoAccuracy": 0.9412
+      },
+      {
+        "label": "Storage",
+        "n": 417,
+        "auto": 290,
+        "revisao_humana": 109,
+        "escalar": 18,
+        "autoAccuracy": 0.9759
+      },
+      {
+        "label": "Purchase",
+        "n": 369,
+        "auto": 302,
+        "revisao_humana": 64,
+        "escalar": 3,
+        "autoAccuracy": 0.9702
+      },
+      {
+        "label": "Internal Project",
+        "n": 318,
+        "auto": 201,
+        "revisao_humana": 87,
+        "escalar": 30,
+        "autoAccuracy": 0.9303
+      },
+      {
+        "label": "Administrative rights",
+        "n": 264,
+        "auto": 1,
+        "revisao_humana": 244,
+        "escalar": 19,
+        "autoAccuracy": 0
+      }
+    ],
+    "adminRightsLeak": {
+      "trueAdminRights": 264,
+      "autoRoutedElsewhere": 1,
+      "share": 0.0038,
+      "toQueues": [
+        {
+          "label": "Hardware",
+          "n": 1
+        }
+      ]
+    },
+    "pythonAgreement": {
+      "route": 1,
+      "label": 1,
+      "maxConfidenceDiff": 0.000001916134423463056
+    }
+  },
+  "test": {
+    "n": 7176,
+    "modelAccuracy": 0.8597,
+    "routes": [
+      {
+        "route": "auto",
+        "n": 4687,
+        "share": 0.6531
+      },
+      {
+        "route": "revisao_humana",
+        "n": 2020,
+        "share": 0.2815
+      },
+      {
+        "route": "escalar",
+        "n": 469,
+        "share": 0.0654
+      }
+    ],
+    "reasons": [
+      {
+        "reasonCode": "auto",
+        "n": 4687,
+        "share": 0.6531
+      },
+      {
+        "reasonCode": "low_confidence",
+        "n": 1468,
+        "share": 0.2046
+      },
+      {
+        "reasonCode": "out_of_domain",
+        "n": 271,
+        "share": 0.0378
+      },
+      {
+        "reasonCode": "always_human",
+        "n": 129,
+        "share": 0.018
+      },
+      {
+        "reasonCode": "admin_rights_risk",
+        "n": 152,
+        "share": 0.0212
+      },
+      {
+        "reasonCode": "escalation_terms",
+        "n": 469,
+        "share": 0.0654
+      }
+    ],
+    "auto": {
+      "n": 4687,
+      "share": 0.6531,
+      "shareCI": {
+        "low": 0.642,
+        "high": 0.6637
+      },
+      "accuracy": 0.9492,
+      "accuracyCI": {
+        "low": 0.9433,
+        "high": 0.9557
+      },
+      "errors": 238
+    },
+    "byTrueCategory": [
+      {
+        "label": "Hardware",
+        "n": 2042,
+        "auto": 1260,
+        "revisao_humana": 600,
+        "escalar": 182,
+        "autoAccuracy": 0.954
+      },
+      {
+        "label": "HR Support",
+        "n": 1638,
+        "auto": 1211,
+        "revisao_humana": 365,
+        "escalar": 62,
+        "autoAccuracy": 0.9562
+      },
+      {
+        "label": "Access",
+        "n": 1069,
+        "auto": 747,
+        "revisao_humana": 233,
+        "escalar": 89,
+        "autoAccuracy": 0.9558
+      },
+      {
+        "label": "Miscellaneous",
+        "n": 1059,
+        "auto": 666,
+        "revisao_humana": 328,
+        "escalar": 65,
+        "autoAccuracy": 0.9354
+      },
+      {
+        "label": "Storage",
+        "n": 416,
+        "auto": 288,
+        "revisao_humana": 107,
+        "escalar": 21,
+        "autoAccuracy": 0.941
+      },
+      {
+        "label": "Purchase",
+        "n": 370,
+        "auto": 308,
+        "revisao_humana": 58,
+        "escalar": 4,
+        "autoAccuracy": 0.9578
+      },
+      {
+        "label": "Internal Project",
+        "n": 318,
+        "auto": 202,
+        "revisao_humana": 96,
+        "escalar": 20,
+        "autoAccuracy": 0.9208
+      },
+      {
+        "label": "Administrative rights",
+        "n": 264,
+        "auto": 5,
+        "revisao_humana": 233,
+        "escalar": 26,
+        "autoAccuracy": 0
+      }
+    ],
+    "adminRightsLeak": {
+      "trueAdminRights": 264,
+      "autoRoutedElsewhere": 5,
+      "share": 0.0189,
+      "toQueues": [
+        {
+          "label": "Hardware",
+          "n": 5
+        }
+      ]
+    },
+    "pythonAgreement": {
+      "route": 1,
+      "label": 1,
+      "maxConfidenceDiff": 0.0000016074916725505872
+    }
+  }
+}

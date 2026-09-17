@@ -1,0 +1,264 @@
+{
+  "generatedAt": "2026-09-17T01:37:19+00:00",
+  "seed": 42,
+  "splits": [
+    {
+      "name": "treino",
+      "n": 33485,
+      "share": 0.7,
+      "purpose": "Ajuste do vetorizador TF-IDF e dos modelos."
+    },
+    {
+      "name": "validacao",
+      "n": 7176,
+      "share": 0.15,
+      "purpose": "Todas as escolhas: modelo, C, poda, limiar de confiança, guarda de domínio e regra de privilégio."
+    },
+    {
+      "name": "teste",
+      "n": 7176,
+      "share": 0.15,
+      "purpose": "Avaliação final única, depois de congelar as escolhas. Fonte dos números publicados."
+    }
+  ],
+  "selection": {
+    "model": "TF-IDF (1-2 gramas, 40k termos) + Regressão Logística",
+    "C": 4,
+    "coefEps": 0.3,
+    "confidenceThreshold": 0.65,
+    "oodThreshold": 0.93,
+    "adminRightsThreshold": 0.05,
+    "criteria": [
+      "Modelo: maior F1 macro na validação entre modelos com probabilidade (necessária para limiar e fila humana).",
+      "Poda: maior ε com queda de F1 macro de validação ≤ 0.2 ponto.",
+      "Guarda de domínio: quantil 5% da fração de palavras conhecidas na validação.",
+      "Limiares de confiança e privilégio: maior cobertura automática com a política completa, sujeita a acerto ≥ 95% nos automáticos e vazamento ≤ 2% dos pedidos de privilégio."
+    ],
+    "candidates": [
+      {
+        "name": "Baseline: sempre a classe mais comum",
+        "accuracy": 0.2847,
+        "macroF1": 0.0554
+      },
+      {
+        "name": "TF-IDF + Complement Naive Bayes",
+        "accuracy": 0.806,
+        "macroF1": 0.7933
+      },
+      {
+        "name": "TF-IDF + Linear SVM (sem probabilidade)",
+        "accuracy": 0.8654,
+        "macroF1": 0.867
+      },
+      {
+        "name": "TF-IDF + Regressão Logística (C=1)",
+        "accuracy": 0.8579,
+        "macroF1": 0.8524
+      },
+      {
+        "name": "TF-IDF + Regressão Logística (C=4)",
+        "accuracy": 0.8665,
+        "macroF1": 0.867
+      },
+      {
+        "name": "TF-IDF + Regressão Logística (C=10)",
+        "accuracy": 0.865,
+        "macroF1": 0.8667
+      }
+    ]
+  },
+  "test": {
+    "accuracy": 0.8597,
+    "macroF1": 0.8558,
+    "accuracyCI": {
+      "low": 0.8517,
+      "high": 0.8671
+    },
+    "macroF1CI": {
+      "low": 0.8458,
+      "high": 0.8644
+    },
+    "baselineAccuracy": 0.2846,
+    "perClass": [
+      {
+        "label": "Hardware",
+        "precision": 0.8097,
+        "recall": 0.8957,
+        "f1": 0.8505,
+        "support": 2042
+      },
+      {
+        "label": "HR Support",
+        "precision": 0.8634,
+        "recall": 0.884,
+        "f1": 0.8736,
+        "support": 1638
+      },
+      {
+        "label": "Access",
+        "precision": 0.9058,
+        "recall": 0.8541,
+        "f1": 0.8792,
+        "support": 1069
+      },
+      {
+        "label": "Miscellaneous",
+        "precision": 0.833,
+        "recall": 0.8338,
+        "f1": 0.8334,
+        "support": 1059
+      },
+      {
+        "label": "Storage",
+        "precision": 0.953,
+        "recall": 0.8293,
+        "f1": 0.8869,
+        "support": 416
+      },
+      {
+        "label": "Purchase",
+        "precision": 0.9645,
+        "recall": 0.8811,
+        "f1": 0.9209,
+        "support": 370
+      },
+      {
+        "label": "Internal Project",
+        "precision": 0.9225,
+        "recall": 0.7862,
+        "f1": 0.8489,
+        "support": 318
+      },
+      {
+        "label": "Administrative rights",
+        "precision": 0.8706,
+        "recall": 0.6629,
+        "f1": 0.7527,
+        "support": 264
+      }
+    ],
+    "confusion": {
+      "labels": [
+        "Hardware",
+        "HR Support",
+        "Access",
+        "Miscellaneous",
+        "Storage",
+        "Purchase",
+        "Internal Project",
+        "Administrative rights"
+      ],
+      "matrix": [
+        [
+          1829,
+          77,
+          41,
+          62,
+          3,
+          9,
+          5,
+          16
+        ],
+        [
+          108,
+          1448,
+          23,
+          45,
+          5,
+          3,
+          4,
+          2
+        ],
+        [
+          64,
+          43,
+          913,
+          38,
+          3,
+          0,
+          4,
+          4
+        ],
+        [
+          97,
+          55,
+          12,
+          883,
+          5,
+          0,
+          6,
+          1
+        ],
+        [
+          40,
+          18,
+          4,
+          9,
+          345,
+          0,
+          0,
+          0
+        ],
+        [
+          28,
+          5,
+          1,
+          5,
+          1,
+          326,
+          1,
+          3
+        ],
+        [
+          26,
+          22,
+          6,
+          14,
+          0,
+          0,
+          250,
+          0
+        ],
+        [
+          67,
+          9,
+          8,
+          4,
+          0,
+          0,
+          1,
+          175
+        ]
+      ]
+    }
+  },
+  "exploratory": {
+    "note": "Números da primeira versão: medidos no mesmo conjunto (20%) usado para escolher modelo, poda e limiares. Orientaram decisões de desenho e por isso não valem como teste. Substituídos pelo protocolo treino/validação/teste.",
+    "accuracy": 0.8638,
+    "macroF1": 0.8649,
+    "autoCoverage": 0.6967,
+    "autoAccuracy": 0.9574
+  },
+  "crossDomain": {
+    "note": "Aplicado aos 8469 tickets do Dataset 1 (e-commerce), o modelo de TI interna passa do limiar de confiança em 56,7% dos casos, e 91% deles viram 'Hardware', inclusive pedidos de pagamento. Confiança alta não protege contra outro domínio. O guarda de vocabulário barra 98,6% desses tickets e 3,9% do teste do próprio domínio.",
+    "n": 8469,
+    "confidentShare": 0.5671,
+    "confidentPredictedHardware": 0.9065,
+    "oodFlagged": 0.9861,
+    "inDomainOodFlagged": 0.0393,
+    "routes": [
+      {
+        "route": "auto",
+        "share": 0.0012
+      },
+      {
+        "route": "revisao_humana",
+        "share": 0.8359
+      },
+      {
+        "route": "escalar",
+        "share": 0.1629
+      }
+    ]
+  }
+}

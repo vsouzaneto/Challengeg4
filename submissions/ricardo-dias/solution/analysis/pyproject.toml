@@ -1,0 +1,14 @@
+[project]
+name = "support-redesign-analysis"
+version = "0.1.0"
+description = "Auditoria, diagnóstico e classificador — Challenge 002"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas>=2.2",
+    "numpy>=2.0",
+    "scipy>=1.14",
+    "scikit-learn>=1.5",
+]
+
+[tool.uv]
+package = false

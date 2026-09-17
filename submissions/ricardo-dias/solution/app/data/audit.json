@@ -1,0 +1,161 @@
+{
+  "generatedAt": "2026-09-17T01:50:40+00:00",
+  "d1": {
+    "rows": 8469,
+    "columns": 17,
+    "statusMix": [
+      {
+        "status": "Pending Customer Response",
+        "n": 2881,
+        "share": 0.3402
+      },
+      {
+        "status": "Open",
+        "n": 2819,
+        "share": 0.3329
+      },
+      {
+        "status": "Closed",
+        "n": 2769,
+        "share": 0.327
+      }
+    ]
+  },
+  "d2": {
+    "rows": 47837,
+    "classes": [
+      {
+        "label": "Hardware",
+        "n": 13617,
+        "share": 0.2847
+      },
+      {
+        "label": "HR Support",
+        "n": 10915,
+        "share": 0.2282
+      },
+      {
+        "label": "Access",
+        "n": 7125,
+        "share": 0.1489
+      },
+      {
+        "label": "Miscellaneous",
+        "n": 7060,
+        "share": 0.1476
+      },
+      {
+        "label": "Storage",
+        "n": 2777,
+        "share": 0.0581
+      },
+      {
+        "label": "Purchase",
+        "n": 2464,
+        "share": 0.0515
+      },
+      {
+        "label": "Internal Project",
+        "n": 2119,
+        "share": 0.0443
+      },
+      {
+        "label": "Administrative rights",
+        "n": 1760,
+        "share": 0.0368
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "d1-uniform",
+      "dataset": "D1",
+      "title": "Distribuições uniformes: padrão de dado sintético",
+      "evidence": "Tipo, prioridade, canal, status e nota de CSAT têm frequências estatisticamente iguais (qui-quadrado, menor p = 0,11).",
+      "metric": 0.115,
+      "implication": "É improvável que uma operação real tenha ~25% dos tickets em cada prioridade e canal. Tratamos os mixes como artefato do gerador, não como retrato de uma operação.",
+      "severity": "bloqueante"
+    },
+    {
+      "id": "d1-times",
+      "dataset": "D1",
+      "title": "Tempos de resposta e resolução não são utilizáveis",
+      "evidence": "Os campos são timestamps (não durações), todos numa janela de 27h, sem horário de abertura. Em 49,3% dos fechados (1.365 de 2.769) a resolução é anterior à 1ª resposta.",
+      "metric": 0.493,
+      "implication": "Não dá para medir gargalo de tempo por canal/prioridade com honestidade. O diagnóstico usa backlog e pendências.",
+      "severity": "bloqueante"
+    },
+    {
+      "id": "d1-csat",
+      "dataset": "D1",
+      "title": "Não detectamos associação entre CSAT e as variáveis testadas",
+      "evidence": "Kruskal-Wallis (tipo, prioridade, canal, gênero, produto) e Spearman (duração, idade) nos 2.769 tickets fechados: menor p = 0,25.",
+      "metric": 0.254,
+      "implication": "Não temos base para apontar um 'driver de satisfação' com estes dados. Isso não prova ausência de efeito numa operação real; efeitos pequenos podem não ser detectáveis (ver diagnóstico).",
+      "severity": "bloqueante"
+    },
+    {
+      "id": "d1-text",
+      "dataset": "D1",
+      "title": "Não detectamos sinal no texto para prever o tipo do ticket",
+      "evidence": "Placeholder literal {product_purchased} em 100,0% das descrições; resoluções são frases aleatórias. TF-IDF + regressão logística (validação cruzada de 5 folds, vetorizador ajustado dentro de cada fold) acerta o tipo em 18,7%, contra 20,7% chutando a classe mais comum.",
+      "metric": 0.1869,
+      "implication": "O classificador do protótipo é treinado e avaliado no Dataset 2, que tem texto real.",
+      "severity": "bloqueante"
+    },
+    {
+      "id": "d1-volume",
+      "dataset": "D1",
+      "title": "Volume menor que o descrito",
+      "evidence": "8.469 tickets no arquivo, contra ~30.000 no enunciado.",
+      "metric": 8469,
+      "implication": "Números anuais são projetados para 30 mil tickets com premissa explícita, não medidos.",
+      "severity": "alerta"
+    },
+    {
+      "id": "d1-subject",
+      "dataset": "D1",
+      "title": "Assunto e tipo do ticket são independentes",
+      "evidence": "'Refund request' aparece como assunto de tickets técnicos na mesma proporção que de reembolso (p = 0,98).",
+      "metric": 0.981,
+      "implication": "Os rótulos foram sorteados de forma independente. Não usar assunto × tipo como regra de roteamento.",
+      "severity": "alerta"
+    },
+    {
+      "id": "d1-backlog",
+      "dataset": "D1",
+      "title": "Status dos tickets no arquivo (descritivo)",
+      "evidence": "67,3% dos registros não estão fechados: 33,3% abertos (100,0% deles sem registro de 1ª resposta) e 34,0% aguardando o cliente.",
+      "metric": 0.673,
+      "implication": "Contagem do arquivo, não evidência de gargalo: o mix de status também é uniforme e não há datas de abertura para medir envelhecimento da fila.",
+      "severity": "info"
+    },
+    {
+      "id": "d2-imbalance",
+      "dataset": "D2",
+      "title": "Categorias desbalanceadas",
+      "evidence": "Hardware tem 28,5% dos tickets; Administrative rights tem 3,7%.",
+      "metric": 7.74,
+      "implication": "Avaliar por F1 macro e por classe, não só acurácia. As classes pequenas são as de maior risco.",
+      "severity": "alerta"
+    },
+    {
+      "id": "d2-preprocessed",
+      "dataset": "D2",
+      "title": "Texto já vem parcialmente pré-processado",
+      "evidence": "Tudo em minúsculas, nenhum dígito, nomes anonimizados; stopwords mantidas (21,6% dos tokens).",
+      "metric": 0.2161,
+      "implication": "Textos novos passam pela mesma normalização (minúsculas, sem dígitos/pontuação) antes de classificar. A acurácia em texto cru de outra empresa tende a ser menor.",
+      "severity": "alerta"
+    },
+    {
+      "id": "d2-quality",
+      "dataset": "D2",
+      "title": "Dataset 2 é adequado para treinar o classificador",
+      "evidence": "47.837 tickets, 8 categorias, 0 duplicatas, mediana de 26 palavras.",
+      "metric": 47837,
+      "implication": "Base do protótipo: treino e teste com holdout estratificado.",
+      "severity": "info"
+    }
+  ]
+}
