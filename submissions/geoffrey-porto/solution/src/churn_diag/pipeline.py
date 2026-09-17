@@ -1,0 +1,657 @@
+"""Orquestra o diagnóstico e grava `outputs/` de forma determinística.
+
+`metrics.json` tem duas seções:
+- `report`: chaves planas citadas no RELATORIO.md (conferidas pelo teste P-003);
+- `quality`: a auditoria completa de qualidade de dados.
+"""
+
+from __future__ import annotations
+
+import json
+from dataclasses import dataclass
+from pathlib import Path
+
+import numpy as np
+import polars as pl
+
+from churn_diag import figures
+from churn_diag.account_panel import (
+    TIMELINE_COLUMNS,
+    attach_derived,
+    attach_full_history_rates,
+    attach_timeline_features,
+    build_account_panel,
+    split_train_test,
+)
+from churn_diag.config import (
+    AGE_BUCKETS,
+    CONTROL_SIGMA,
+    SOLUTION_ROOT,
+    YOUNG_AGE_DAYS,
+    Settings,
+)
+from churn_diag.dashboards import build_payload, write_payload
+from churn_diag.dml import OverlapError, cate_quantiles, dml_effect
+from churn_diag.explainability import (
+    AUDIT_FEATURES,
+    arrays_from_tidy,
+    beeswarm,
+    cate_staircase,
+    dependence,
+    environment_heatmap,
+    run_audit,
+    score_contributions,
+    tidy_shapley,
+    waterfall,
+)
+from churn_diag.features import DERIVED_FEATURES, QUARANTINED_UNDATED, RATE_FEATURES
+from churn_diag.hypotheses import Context, findings_frame, invariance_table, run_all
+from churn_diag.impact import ab_test_design, excess_mrr, recovery_scenarios
+from churn_diag.loader import Tables, load_tables
+from churn_diag.metrics import (
+    control_flags,
+    exposure_panel,
+    hazard_table,
+    monthly_churn,
+    standardized_ratio,
+)
+from churn_diag.quality import (
+    cohort_churn_profile,
+    duration_to_window_ratio,
+    quality_report,
+)
+from churn_diag.risk import (
+    cs_priority_list,
+    monthly_hazard_by_age,
+    oot_validation,
+    subscription_risk,
+)
+from churn_diag.screening import (
+    age_signal_comparison,
+    composite_decomposition,
+    published_reference_metrics,
+    reference_replication,
+    univariate_screening,
+)
+
+AGE_ORDER = [b[0] for b in AGE_BUCKETS]
+
+
+@dataclass(frozen=True, slots=True)
+class Result:
+    report: dict[str, float | int]
+    quality: dict[str, object]
+    tables: dict[str, pl.DataFrame]
+
+
+def _pct(x: float, nd: int = 1) -> float:
+    return round(100 * float(x), nd)
+
+
+def _k(x: float) -> float:
+    return round(float(x) / 1000, 0)
+
+
+def _period_mean(monthly: pl.DataFrame, col: str, period: str) -> float:
+    return float(monthly.filter(pl.col("period") == period)[col].mean())
+
+
+def _month(monthly: pl.DataFrame, col: str, month: str) -> float:
+    return float(monthly.filter(pl.col("month") == pl.lit(month).str.to_date())[col][0])
+
+
+def _hz(hz: pl.DataFrame, period: str, bucket: str) -> float:
+    return float(
+        hz.filter(pl.col("period") == period, pl.col("age_bucket") == bucket)["hazard"][
+            0
+        ]
+    )
+
+
+DML_NUMERIC: tuple[str, ...] = (
+    "tenure_days",
+    "active_mrr",
+    "active_seats",
+    "active_subscriptions",
+    "min_sub_age_days",
+)
+DML_CATEGORICAL: tuple[str, ...] = (
+    "plan_tier",
+    "industry",
+    "country",
+    "referral_source",
+)
+
+
+def run_cate(panel: pl.DataFrame) -> pl.DataFrame:
+    """Escada de CATE do caso da cobrança anual, medida fora da amostra (AC-042)."""
+    base = panel.with_columns(anual=(pl.col("annual_share") > 0.5).cast(pl.Int8))
+    return cate_quantiles(
+        base, "anual", "y", (DML_NUMERIC, (*DML_CATEGORICAL, "regime"))
+    )
+
+
+def run_dml_use_cases(panel: pl.DataFrame) -> pl.DataFrame:
+    """Os dois casos de uso + a versão restrita ao regime pós-quebra (AC-039)."""
+    base = panel.with_columns(
+        anual=(pl.col("annual_share") > 0.5).cast(pl.Int8),
+        escalou=(pl.col("escalation_rate_90d") > 0).cast(pl.Int8),
+    )
+    com_ticket = base.filter(pl.col("tickets_90d").is_not_null())
+    pos_quebra = base.filter(pl.col("regime") == "depois")
+    casos = [
+        (
+            "cobranca_anual",
+            base,
+            "anual",
+            DML_NUMERIC,
+            (*DML_CATEGORICAL, "regime"),
+            "regime no ajuste",
+        ),
+        (
+            "escalacao_suporte",
+            com_ticket,
+            "escalou",
+            (*DML_NUMERIC, "tickets_90d"),
+            (*DML_CATEGORICAL, "regime"),
+            "regime no ajuste",
+        ),
+        (
+            "cobranca_anual_pos_quebra",
+            pos_quebra,
+            "anual",
+            DML_NUMERIC,
+            DML_CATEGORICAL,
+            "restrito ao regime depois",
+        ),
+    ]
+    linhas = []
+    for caso, dados, tratamento, num, cat, regime in casos:
+        try:
+            resultado = dml_effect(
+                dados, tratamento, "y", (num, cat), caso=caso
+            ).as_row()
+        except (
+            OverlapError
+        ) as exc:  # sem par comparável: registra, não quebra o pipeline
+            resultado = {
+                "caso": caso,
+                "tratamento": tratamento,
+                "desfecho": "y",
+                "leitura": f"não estimado — {exc}",
+            }
+        linhas.append({**resultado, "tratamento_do_regime": regime})
+    return pl.DataFrame(linhas, infer_schema_length=None)
+
+
+ACCOUNT_SCREEN_EXTRA: tuple[str, ...] = (
+    "tenure_days",
+    "min_sub_age_days",
+    "active_mrr",
+    "annual_share",
+    "usage_total_90d",
+    "tickets_90d",
+    "satisfaction_mean_90d",
+)
+
+
+def _auc(screening: pl.DataFrame, feature: str) -> float:
+    return round(float(screening.filter(pl.col("feature") == feature)["auc"][0]), 3)
+
+
+def _env(inv: pl.DataFrame, env: str, col: str, nd: int) -> float:
+    return round(float(inv.filter(pl.col("env") == env)[col][0]), nd)
+
+
+def _starts(t: Tables, start: str, end: str) -> int:
+    d = pl.col("start_date")
+    lo, hi = pl.lit(start).str.to_date(), pl.lit(end).str.to_date()
+    return t.subscriptions.filter(d.is_between(lo, hi)).height
+
+
+def analyse(t: Tables, cs_top_n: int) -> Result:
+    """Roda todo o diagnóstico em memória (sem I/O) — fácil de testar."""
+    quality = quality_report(t)
+    panel = exposure_panel(t.subscriptions)
+    monthly = monthly_churn(panel)
+    m24 = monthly.filter(pl.col("month") >= pl.date(2024, 1, 1))
+    ctrl = control_flags(
+        m24, "mrr_churn_rate", pl.col("period") == "reference", CONTROL_SIGMA
+    )
+    hz = hazard_table(panel.filter(pl.col("period") != "pre"), ["period", "age_bucket"])
+    std = standardized_ratio(panel)
+    oot = oot_validation(t)
+    findings = run_all(Context(t, panel, oot))
+    ff = findings_frame(findings)
+    inv = invariance_table(t, panel)
+    cross = inv.filter(pl.col("env_type") != "periodo")  # indústria, plano, canal
+    sub_risk = subscription_risk(t, monthly_hazard_by_age(panel))
+    cs = cs_priority_list(t, sub_risk, cs_top_n)
+    exc = excess_mrr(panel)
+    rec = recovery_scenarios(exc["excess_mrr_per_month"])
+    ab = ab_test_design(panel)
+    cohorts = cohort_churn_profile(t)
+
+    # Validação das features da referência (feature validacao-features).
+    acc_panel = attach_timeline_features(
+        t, attach_derived(attach_full_history_rates(t, build_account_panel(t)))
+    )
+    _, acc_test = split_train_test(acc_panel)
+    rate_cols = [f"{r}_90d" for r in RATE_FEATURES] + [
+        f"{r}_all" for r in RATE_FEATURES
+    ]
+    screening = univariate_screening(
+        acc_test,
+        rate_cols
+        + list(DERIVED_FEATURES)
+        + list(TIMELINE_COLUMNS)
+        + list(ACCOUNT_SCREEN_EXTRA),
+    )
+    replication = reference_replication(acc_panel)
+    published = published_reference_metrics()
+    ages = age_signal_comparison(acc_panel)
+    dml = run_dml_use_cases(acc_panel)
+    cate = run_cate(acc_panel)
+    audit = run_audit(t)
+    shapley = audit.frame.with_columns(valor_base=pl.lit(audit.base))
+    conta_exemplo = cs["account_id"][0]
+    score_conta = score_contributions(sub_risk, conta_exemplo)
+    decomposition = composite_decomposition(
+        acc_test, "usage_per_active_seat_90d", "usage_total_90d", "active_seats"
+    )
+
+    young_mask = pl.col("age_days") < YOUNG_AGE_DAYS
+    tgt = panel.filter(pl.col("period") == "target")
+    ref = panel.filter(pl.col("period") == "reference")
+
+    def hz_mask(p: pl.DataFrame, mask: pl.Expr) -> float:
+        return float(p.filter(mask)["ended"].mean())
+
+    usage = (
+        t.feature_usage.filter(pl.col("usage_date").dt.year() == 2024)
+        .group_by(pl.col("usage_date").dt.truncate("1mo").alias("month"))
+        .agg(usage=pl.col("usage_count").sum())
+        .join(m24.select("month", "active_subs"), on="month")
+        .sort("month")
+    )
+    usage_idx = usage.with_columns(
+        usage_idx=(100 * pl.col("usage") / pl.col("usage").first()).round(1),
+        active_idx=(100 * pl.col("active_subs") / pl.col("active_subs").first()).round(
+            1
+        ),
+    )
+    f = {r["id"]: r for r in ff.iter_rows(named=True)}
+    o = {r["scorer"]: r for r in oot.iter_rows(named=True)}
+    cq = {r["cohort"].isoformat(): r for r in cohorts.iter_rows(named=True)}
+    tl, cd = quality["timeline"], quality["churn_definitions"]
+    csat_2024 = t.support_tickets.filter(pl.col("submitted_at").dt.year() == 2024)
+
+    report: dict[str, float | int] = {
+        # dados e qualidade
+        "n_accounts": t.accounts.height,
+        "n_subscriptions": t.subscriptions.height,
+        "n_usage_events": t.feature_usage.height,
+        "n_tickets": t.support_tickets.height,
+        "n_churn_events": t.churn_events.height,
+        "usage_before_sub_start_pct": tl["usage_before_sub_start_pct"],
+        "usage_before_signup_pct": tl["usage_before_signup_pct"],
+        "tickets_before_signup_pct": tl["tickets_before_signup_pct"],
+        "churn_events_before_first_sub": tl["churn_events_before_first_sub"],
+        "churn_def_flag_account": cd["flag_account"],
+        "churn_def_events": cd["has_churn_event"],
+        "churn_def_sub_ended": cd["has_ended_subscription"],
+        "churn_def_disagree": cd["disagree"],
+        "churn_def_disagree_pct": _pct(cd["disagree"] / cd["accounts"]),
+        "churn_def_event_but_flag_false": cd["event_but_flag_false"],
+        "usage_id_collisions": quality["usage_id_collisions"],
+        "reason_feedback_cramers_v": quality["reason_vs_feedback"]["cramers_v"],
+        "reason_share_min_pct": quality["reason_vs_feedback"]["reason_share_min_pct"],
+        "reason_share_max_pct": quality["reason_vs_feedback"]["reason_share_max_pct"],
+        "csat_missing_pct": quality["satisfaction_missing_pct"],
+        "cohort_2023q4_ever_ended_pct": cq["2023-10-01"]["ever_ended_pct"],
+        "cohort_2023q4_days_observed": int(cq["2023-10-01"]["days_observed"]),
+        "cohort_2024q4_ever_ended_pct": cq["2024-10-01"]["ever_ended_pct"],
+        "cohort_2024q4_days_observed": int(cq["2024-10-01"]["days_observed"]),
+        "duration_ratio_median": duration_to_window_ratio(t),
+        # tendência
+        "active_subs_jan24": int(_month(monthly, "active_subs", "2024-01-01")),
+        "active_subs_dec24": int(_month(monthly, "active_subs", "2024-12-01")),
+        "active_subs_growth_x": round(
+            _month(monthly, "active_subs", "2024-12-01")
+            / _month(monthly, "active_subs", "2024-01-01"),
+            1,
+        ),
+        "ended_subs_dec24": int(_month(monthly, "ended_all", "2024-12-01")),
+        "starts_q3_24": _starts(t, "2024-07-01", "2024-09-30"),
+        "starts_q4_24": _starts(t, "2024-10-01", "2024-12-31"),
+        "ended_subs_ref_avg": round(_period_mean(monthly, "ended_all", "reference"), 1),
+        "mrr_churn_ref_avg_pct": _pct(
+            _period_mean(monthly, "mrr_churn_rate", "reference"), 2
+        ),
+        "mrr_churn_oct24_pct": _pct(_month(monthly, "mrr_churn_rate", "2024-10-01"), 2),
+        "mrr_churn_nov24_pct": _pct(_month(monthly, "mrr_churn_rate", "2024-11-01"), 2),
+        "mrr_churn_dec24_pct": _pct(_month(monthly, "mrr_churn_rate", "2024-12-01"), 2),
+        "sub_churn_ref_avg_pct": _pct(
+            _period_mean(monthly, "sub_churn_rate", "reference"), 2
+        ),
+        "sub_churn_dec24_pct": _pct(_month(monthly, "sub_churn_rate", "2024-12-01"), 2),
+        "control_ucl_pct": _pct(float(ctrl["ucl"][0]), 2),
+        "control_breaks": int(ctrl["is_break"].sum()),
+        "q4_observed_ended": std["observed"],
+        "q4_expected_ended": std["expected"],
+        "q4_ratio_x": std["ratio"],
+        "q4_mrr_lost_k": _k(std["mrr_observed"]),
+        "q4_mrr_expected_k": _k(std["mrr_expected"]),
+        "q4_mrr_ratio_x": std["mrr_ratio"],
+        "hz_0_30_ref_pct": _pct(_hz(hz, "reference", "0-30d"), 2),
+        "hz_0_30_target_pct": _pct(_hz(hz, "target", "0-30d"), 2),
+        "hz_0_30_mult_x": round(
+            _hz(hz, "target", "0-30d") / _hz(hz, "reference", "0-30d"), 1
+        ),
+        "hz_30_90_ref_pct": _pct(_hz(hz, "reference", "30-90d"), 2),
+        "hz_30_90_target_pct": _pct(_hz(hz, "target", "30-90d"), 2),
+        "hz_mature_ref_pct": _pct(hz_mask(ref, ~young_mask), 2),
+        "hz_mature_target_pct": _pct(hz_mask(tgt, ~young_mask), 2),
+        "young_share_q4_events_pct": _pct(
+            tgt.filter(young_mask)["ended"].sum() / tgt["ended"].sum()
+        ),
+        # contradições do CEO
+        "csat_mean_2024": round(float(csat_2024["satisfaction_score"].mean()), 2),
+        "csat_auc": round(f["H3"]["effect"], 2),
+        "usage_change_per_sub_pct": _pct(f["H4"]["effect"]),
+        "usage_monthly_min": int(usage["usage"].min()),
+        "usage_monthly_max": int(usage["usage"].max()),
+        "usage_trend_p": round(f["H4"]["p_value"], 2),
+        "support_reason_auc": round(f["H6"]["effect"], 2),
+        "rr_young_x": round(
+            float(f["H2"]["detail"].split("RR jovem ")[1].split("×")[0]), 2
+        ),
+        "rr_mature_x": round(
+            float(f["H2"]["detail"].split("RR madura ")[1].split("×")[0]), 2
+        ),
+        "h8_rho": round(f["H8"]["effect"], 2),
+        "h8_p": round(f["H8"]["p_value"], 3),
+        "h8_p_holm": round(f["H8"]["p_holm"], 2),
+        "segments_min_p_holm": round(
+            min(f[h]["p_holm"] for h in ("H9", "H10", "H11", "H12")), 2
+        ),
+        "n_hypotheses": len(findings),
+        "n_significant": int(ff["significant"].sum()),
+        # previsão
+        "oot_base_rate_pct": _pct(o["gbm_todas_tabelas"]["base_rate"]),
+        "oot_n_test": int(o["gbm_todas_tabelas"]["n_test"]),
+        "oot_positives": round(
+            o["gbm_todas_tabelas"]["n_test"] * o["gbm_todas_tabelas"]["base_rate"]
+        ),
+        "oot_age_roc": round(o["idade_da_assinatura"]["roc_auc"], 2),
+        "oot_age_p": round(o["idade_da_assinatura"]["p_value"], 3),
+        "oot_gbm_roc": round(o["gbm_todas_tabelas"]["roc_auc"], 2),
+        "oot_gbm_insample_roc": round(o["gbm_todas_tabelas"]["roc_auc_in_sample"], 2),
+        "oot_logit_roc": round(o["logistica_todas_tabelas"]["roc_auc"], 2),
+        "oot_mrr_only_roc": round(o["so_mrr"]["roc_auc"], 2),
+        "oot_expected_loss_mrr_recall_pct": _pct(
+            o["perda_esperada_mrr"]["mrr_recall_at_10"]
+        ),
+        "oot_mrr_only_mrr_recall_pct": _pct(o["so_mrr"]["mrr_recall_at_10"]),
+        "oot_gbm_mrr_recall_pct": _pct(o["gbm_todas_tabelas"]["mrr_recall_at_10"]),
+        "invariance_envs": cross.height,
+        "invariance_positive": int((cross["direction"] == "+").sum()),
+        "invariance_ci_excludes_1": int(cross["ci_excludes_1"].sum()),
+        "invariance_hr_min_x": round(float(cross["hr"].min()), 1),
+        "invariance_hr_max_x": round(float(cross["hr"].max()), 1),
+        "hr_before_break_x": _env(inv, "antes (jan-set/24)", "hr", 1),
+        "hr_before_ci_low": _env(inv, "antes (jan-set/24)", "ci_low", 2),
+        "hr_before_ci_high": _env(inv, "antes (jan-set/24)", "ci_high", 2),
+        "hr_after_break_x": _env(inv, "depois (out-dez/24)", "hr", 1),
+        "hr_after_ci_low": _env(inv, "depois (out-dez/24)", "ci_low", 2),
+        "hr_after_ci_high": _env(inv, "depois (out-dez/24)", "ci_high", 2),
+        # risco e impacto
+        "paid_mrr_active_k": _k(sub_risk["paid_mrr"].sum()),
+        "expected_loss_90d_k": _k(sub_risk["expected_loss"].sum()),
+        "expected_loss_90d_pct": _pct(
+            sub_risk["expected_loss"].sum() / sub_risk["paid_mrr"].sum()
+        ),
+        "cs_top_n": cs.height,
+        "cs_top_expected_loss_k": _k(cs["expected_loss_90d"].sum()),
+        "cs_top_share_of_loss_pct": _pct(
+            cs["expected_loss_90d"].sum() / sub_risk["expected_loss"].sum()
+        ),
+        "cs_top_active_mrr_k": _k(cs["active_paid_mrr"].sum()),
+        "excess_mrr_q4_k": _k(exc["excess_mrr_target"]),
+        "excess_mrr_per_month_k": _k(exc["excess_mrr_per_month"]),
+        "recovery_25_mrr_month_k": _k(rec["25pct"]["mrr_per_month"]),
+        "recovery_50_mrr_month_k": _k(rec["50pct"]["mrr_per_month"]),
+        "recovery_75_mrr_month_k": _k(rec["75pct"]["mrr_per_month"]),
+        "recovery_50_arr_equiv_k": _k(rec["50pct"]["arr_equivalent"]),
+        "ab_p0_pct": _pct(ab["p0_first_30d"], 2),
+        "ab_p1_pct": _pct(ab["p1_target"], 2),
+        "ab_n_per_arm": ab["n_per_arm"],
+        "ab_new_paid_subs_month": int(ab["new_paid_subs_per_month"]),
+        "ab_weeks_to_enroll": ab["weeks_to_enroll"],
+        # validação das features da referência
+        "quarantined_features_n": len(QUARANTINED_UNDATED),
+        "repl_train_rows": replication["train_rows"],
+        "repl_test_rows": replication["test_rows"],
+        "repl_test_positive_rate_pct": _pct(replication["test_positive_rate"]),
+        "repl_test_roc": round(replication["test_roc_auc"], 2),
+        "repl_test_ap": round(replication["test_average_precision"], 3),
+        "ref_published_roc": published["test_roc_auc"],
+        "ref_published_ap": published["test_average_precision"],
+        "rates_significant_n": int(
+            screening.filter(pl.col("feature").is_in(rate_cols))["significant"].sum()
+        ),
+        "rate_errors_auc_90d": _auc(screening, "errors_per_100_uses_90d"),
+        "rate_errors_auc_all": _auc(screening, "errors_per_100_uses_all"),
+        "rate_escalation_auc_90d": _auc(screening, "escalation_rate_90d"),
+        "rate_escalation_auc_all": _auc(screening, "escalation_rate_all"),
+        "rate_satisfaction_missing_auc_90d": _auc(
+            screening, "satisfaction_missing_share_90d"
+        ),
+        "rate_satisfaction_missing_auc_all": _auc(
+            screening, "satisfaction_missing_share_all"
+        ),
+        "derived_usage_per_seat_auc": _auc(screening, "usage_per_active_seat_90d"),
+        "derived_usage_per_seat_inv_seats_auc": round(
+            float(
+                decomposition.filter(pl.col("papel") == "inverso do denominador")[
+                    "auc"
+                ][0]
+            ),
+            3,
+        ),
+        "derived_usage_per_seat_numerator_auc": round(
+            float(decomposition.filter(pl.col("papel") == "numerador")["auc"][0]), 3
+        ),
+        "derived_usage_per_seat_rho_denominador": float(
+            decomposition["spearman_composta_x_denominador"][0]
+        ),
+        "derived_friction_index_auc": _auc(screening, "support_friction_index"),
+        "timeline_trend_auc_bruto": _auc(screening, "usage_trend_ratio_90d_bruto"),
+        "timeline_trend_auc_consistente": _auc(
+            screening, "usage_trend_ratio_90d_consistente"
+        ),
+        "timeline_recency_auc_bruto": _auc(screening, "days_since_last_usage_bruto"),
+        "timeline_recency_auc_consistente": _auc(
+            screening, "days_since_last_usage_consistente"
+        ),
+        "timeline_significant_n": int(
+            screening.filter(pl.col("feature").is_in(list(TIMELINE_COLUMNS)))[
+                "significant"
+            ].sum()
+        ),
+        "dml_cobranca_anual_theta": float(
+            dml.filter(pl.col("caso") == "cobranca_anual")["theta_pp"][0]
+        ),
+        "dml_cobranca_anual_ci_low": float(
+            dml.filter(pl.col("caso") == "cobranca_anual")["ci_low_pp"][0]
+        ),
+        "dml_cobranca_anual_ci_high": float(
+            dml.filter(pl.col("caso") == "cobranca_anual")["ci_high_pp"][0]
+        ),
+        "dml_cobranca_anual_mde": float(
+            dml.filter(pl.col("caso") == "cobranca_anual")["mde_pp"][0]
+        ),
+        "dml_escalacao_suporte_theta": float(
+            dml.filter(pl.col("caso") == "escalacao_suporte")["theta_pp"][0]
+        ),
+        "dml_escalacao_suporte_ci_low": float(
+            dml.filter(pl.col("caso") == "escalacao_suporte")["ci_low_pp"][0]
+        ),
+        "dml_escalacao_suporte_ci_high": float(
+            dml.filter(pl.col("caso") == "escalacao_suporte")["ci_high_pp"][0]
+        ),
+        "dml_escalacao_suporte_mde": float(
+            dml.filter(pl.col("caso") == "escalacao_suporte")["mde_pp"][0]
+        ),
+        "dml_significant_n": int(dml["significativo"].sum()),
+        "dml_escalacao_aparados": int(
+            dml.filter(pl.col("caso") == "escalacao_suporte")["aparados"][0]
+        ),
+        "dml_anual_pos_quebra_theta_pp": float(
+            dml.filter(pl.col("caso") == "cobranca_anual_pos_quebra")["theta_pp"][0]
+        ),
+        "derived_significant_n": int(
+            screening.filter(pl.col("feature").is_in(list(DERIVED_FEATURES)))[
+                "significant"
+            ].sum()
+        ),
+        "age_spearman": float(ages["spearman_tenure_vs_sub_age"][0]),
+        "age_auc_tenure": float(ages["auc_tenure_days"][0]),
+        "age_auc_min_sub": float(ages["auc_min_sub_age_days"][0]),
+        "age_roc_tenure_only": float(
+            ages.filter(pl.col("modelo") == "só idade da conta")["roc_auc"][0]
+        ),
+        "age_roc_sub_only": float(
+            ages.filter(pl.col("modelo") == "só idade da assinatura")["roc_auc"][0]
+        ),
+        "age_roc_both": float(ages.filter(pl.col("modelo") == "as duas")["roc_auc"][0]),
+        "age_gain_both": float(ages["ganho_ao_juntar"][0]),
+        "xai_features_n": len(AUDIT_FEATURES),
+        "xai_audit_roc": audit.audit_roc,
+        "xai_efficiency_error": float(audit.efficiency_error),
+        "xai_top_feature_abs_shapley": float(shapley["mean_abs_shapley"][0]),
+        "xai_top_feature_pp": round(100 * float(shapley["mean_abs_shapley"][0]), 2),
+        "xai_sign_flip_n": int(shapley["troca_de_sinal"].sum()),
+        "cate_spread_pp": round(100 * float(cate["spread"][0]), 2),
+        "cate_max_se_pp": round(100 * float(cate["erro_padrao"].max()), 2),
+        "cate_heterogeneidade": int(bool(cate["heterogeneidade"][0])),
+        "xai_score_subs_n": int(score_conta.height),
+    }
+    report = {
+        k: (v.item() if isinstance(v, np.generic) else v) for k, v in report.items()
+    }
+    out_tables = {
+        "monthly_churn": monthly,
+        "control_chart_2024": ctrl,
+        "hazard_by_age": hz,
+        "findings": ff,
+        "invariance": inv,
+        "oot_validation": oot,
+        "cs_priority_accounts": cs,
+        "cohort_churn_profile": cohorts,
+        "usage_vs_base_2024": usage_idx,
+        "feature_screening": screening,
+        "age_comparison": ages,
+        "dml_use_cases": dml,
+        "cate_quantiles": cate,
+        "shapley_summary": shapley,
+        "shapley_values": tidy_shapley(audit),
+        "score_explicado": score_conta,
+        "derived_decomposition": decomposition,
+        "account_panel_metrics": pl.DataFrame(
+            [
+                {"fonte": "replicação (este projeto)", **replication},
+                {"fonte": "referência publicada", **published},
+            ]
+        ),
+    }
+    return Result(report=report, quality=quality, tables=out_tables)
+
+
+def write_outputs(result: Result, out_dir: Path) -> list[Path]:
+    """Grava JSON/CSVs (determinísticos) e figuras."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    fig_dir = out_dir / "figures"
+    fig_dir.mkdir(exist_ok=True)
+    payload = {"report": result.report, "quality": result.quality}
+    metrics = out_dir / "metrics.json"
+    metrics.write_text(
+        json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=False, default=str)
+        + "\n",
+        encoding="utf-8",
+    )
+    written = [metrics]
+    for name, df in result.tables.items():
+        path = out_dir / f"{name}.csv"
+        df.write_csv(path, float_precision=6)
+        written.append(path)
+    tb = result.tables
+    q = result.quality["timeline"]
+    written += [
+        figures.churn_count_vs_rate(
+            tb["monthly_churn"],
+            float(tb["control_chart_2024"]["ucl"][0]),
+            fig_dir / "01_contagem_vs_taxa.png",
+        ),
+        figures.hazard_by_age(
+            tb["hazard_by_age"], AGE_ORDER, fig_dir / "02_risco_por_idade.png"
+        ),
+        figures.usage_vs_base(tb["usage_vs_base_2024"], fig_dir / "03_uso_vs_base.png"),
+        figures.data_quality(
+            [
+                ("uso antes da assinatura existir", q["usage_before_sub_start_pct"]),
+                ("tickets antes do cadastro da conta", q["tickets_before_signup_pct"]),
+                (
+                    "contas com definições de churn em conflito",
+                    result.report["churn_def_disagree_pct"],
+                ),
+                ("tickets sem nota de satisfação", result.report["csat_missing_pct"]),
+            ],
+            fig_dir / "04_qualidade_dos_dados.png",
+        ),
+        figures.oot_models(
+            tb["oot_validation"], fig_dir / "05_validacao_fora_do_tempo.png"
+        ),
+    ]
+    written += _explainability_figures(tb, fig_dir)
+    return written
+
+
+def _explainability_figures(tb: dict[str, pl.DataFrame], fig_dir: Path) -> list[Path]:
+    """Figuras 06–10: as cinco de explicabilidade, reconstruídas do CSV longo."""
+    phi, x, nomes, _ = arrays_from_tidy(tb["shapley_values"])
+    base = float(tb["shapley_summary"]["valor_base"][0])
+    top = int(np.argmax(np.abs(phi).sum(axis=1)))
+    return [
+        beeswarm(phi, x, nomes, fig_dir / "06_contribuicao_por_variavel.png"),
+        dependence(
+            phi,
+            x,
+            nomes,
+            feature="tenure_days",
+            interaction="mrr_amount",
+            path=fig_dir / "07_dependencia_tempo_de_casa.png",
+        ),
+        waterfall(
+            phi[top],
+            x[top],
+            nomes,
+            base=base,
+            path=fig_dir / "08_conta_explicada.png",
+        ),
+        environment_heatmap(
+            tb["shapley_summary"], fig_dir / "09_contribuicao_por_ambiente.png"
+        ),
+        cate_staircase(tb["cate_quantiles"], fig_dir / "10_escada_de_cate.png"),
+    ]
+
+
+def run(settings: Settings) -> Result:
+    tables = load_tables(settings.data_dir)
+    result = analyse(tables, settings.cs_top_n)
+    write_outputs(result, settings.out_dir)
+    write_payload(
+        build_payload(tables, result.report, result.tables),
+        SOLUTION_ROOT / "dashboard" / "data.js",
+    )
+    return result

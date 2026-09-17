@@ -1,0 +1,58 @@
+{
+  "feature": "efeito-causal-dml",
+  "timestamp": "2026-09-16T16:43:55.299Z",
+  "gitRev": "49cc82e",
+  "command": "uv run --frozen pytest -q -p no:cacheprovider --tap",
+  "reporter": "tap",
+  "exitCode": 0,
+  "testsParsed": 86,
+  "results": {
+    "AC-035": {
+      "status": "pass",
+      "testName": "tests/test_dml.py::test_cross_fitting_keeps_each_account_in_one_fold @spec:AC-035",
+      "method": "tap"
+    },
+    "AC-036": {
+      "status": "pass",
+      "testName": "tests/test_dml.py::test_overlap_is_always_reported @spec:AC-036",
+      "method": "tap"
+    },
+    "AC-037": {
+      "status": "pass",
+      "testName": "tests/test_dml.py::test_clustered_se_is_larger_when_rows_repeat_the_account @spec:AC-037",
+      "method": "tap"
+    },
+    "AC-038": {
+      "status": "pass",
+      "testName": "tests/test_dml.py::test_use_cases_publish_effect_and_power @spec:AC-038",
+      "method": "tap"
+    },
+    "AC-039": {
+      "status": "pass",
+      "testName": "tests/test_dml.py::test_every_use_case_declares_how_it_handled_the_regime @spec:AC-039",
+      "method": "tap"
+    }
+  },
+  "principles": {
+    "P-009": {
+      "status": "pass",
+      "testName": "tests/test_account_panel.py::test_quarantined_flags_are_absent @spec:AC-024 @principle:P-009"
+    },
+    "P-003": {
+      "status": "pass",
+      "testName": "tests/test_dashboards.py::test_todo_kpi_com_chave_bate_com_o_pipeline @spec:AC-045 @principle:P-003"
+    },
+    "P-004": {
+      "status": "pass",
+      "testName": "tests/test_hypotheses.py::test_every_finding_has_one_claim_label @spec:AC-010 @principle:P-004"
+    },
+    "P-006": {
+      "status": "pass",
+      "testName": "tests/test_pipeline.py::test_two_runs_are_byte_identical @spec:AC-017 @principle:P-006"
+    },
+    "P-002": {
+      "status": "pass",
+      "testName": "tests/test_risk.py::test_oot_panel_never_sees_the_future @spec:AC-014 @principle:P-002"
+    }
+  }
+}
