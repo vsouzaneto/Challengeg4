@@ -1,0 +1,1253 @@
+{
+  "generated_at": "2026-09-17T01:51:00+00:00",
+  "config": {
+    "language": "pt-BR (tradução automática offline do Dataset 2)",
+    "data_file": "ds2_pt.csv.gz",
+    "dataset": {
+      "file": "ds2_pt.csv.gz",
+      "sha256": "2e66ef4095070fcd077779ea63678db1d9dfc0a69e55b2f0da24d66d0af83684",
+      "text_column": "Document",
+      "label_column": "Topic_group"
+    },
+    "text_normalization": "none: dataset text is pre-processed; app.normalize applies to free text in the API",
+    "dedup_key": "first 20 words, keep first occurrence",
+    "split": {
+      "test_size": 0.2,
+      "stratify": true,
+      "random_state": 42
+    },
+    "tfidf": {
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 2,
+      "sublinear_tf": true,
+      "max_features": 300000,
+      "dtype": "float32"
+    },
+    "logreg": {
+      "C": 5,
+      "max_iter": 2000
+    },
+    "similarity": {
+      "metric": "cosine on TF-IDF (rows L2-normalized)",
+      "k": 3,
+      "block_rows": 2000
+    },
+    "ids": "0-based row index of the CSV before dedup; nn_ids are values of train_ids, not positions in X_train",
+    "default_threshold": 0.9,
+    "auto_classes": [
+      "Access",
+      "Hardware",
+      "Storage"
+    ],
+    "ece_bins": 10,
+    "seed": 42
+  },
+  "n_total": 47837,
+  "n_dedup_removed": 436,
+  "n_train": 37920,
+  "n_holdout": 9481,
+  "n_features": 154859,
+  "class_counts": {
+    "Access": 7098,
+    "Administrative rights": 1756,
+    "HR Support": 10797,
+    "Hardware": 13573,
+    "Internal Project": 2106,
+    "Miscellaneous": 7024,
+    "Purchase": 2275,
+    "Storage": 2772
+  },
+  "accuracy": 0.8453,
+  "macro_f1": 0.8493,
+  "ece": 0.0352,
+  "per_class": {
+    "Access": {
+      "precision": 0.9102,
+      "recall": 0.8493,
+      "f1": 0.8787,
+      "support": 1420
+    },
+    "Administrative rights": {
+      "precision": 0.8769,
+      "recall": 0.6695,
+      "f1": 0.7593,
+      "support": 351
+    },
+    "HR Support": {
+      "precision": 0.8356,
+      "recall": 0.8449,
+      "f1": 0.8402,
+      "support": 2160
+    },
+    "Hardware": {
+      "precision": 0.7879,
+      "recall": 0.8891,
+      "f1": 0.8354,
+      "support": 2715
+    },
+    "Internal Project": {
+      "precision": 0.9337,
+      "recall": 0.8029,
+      "f1": 0.8633,
+      "support": 421
+    },
+    "Miscellaneous": {
+      "precision": 0.832,
+      "recall": 0.8071,
+      "f1": 0.8194,
+      "support": 1405
+    },
+    "Purchase": {
+      "precision": 0.9734,
+      "recall": 0.8857,
+      "f1": 0.9275,
+      "support": 455
+    },
+    "Storage": {
+      "precision": 0.9162,
+      "recall": 0.8285,
+      "f1": 0.8701,
+      "support": 554
+    }
+  },
+  "confusion": {
+    "labels": [
+      "Access",
+      "Administrative rights",
+      "HR Support",
+      "Hardware",
+      "Internal Project",
+      "Miscellaneous",
+      "Purchase",
+      "Storage"
+    ],
+    "matrix": [
+      [
+        1206,
+        6,
+        60,
+        108,
+        2,
+        34,
+        1,
+        3
+      ],
+      [
+        8,
+        235,
+        10,
+        85,
+        2,
+        6,
+        0,
+        5
+      ],
+      [
+        34,
+        2,
+        1825,
+        207,
+        6,
+        73,
+        1,
+        12
+      ],
+      [
+        48,
+        14,
+        143,
+        2414,
+        10,
+        69,
+        7,
+        10
+      ],
+      [
+        10,
+        0,
+        34,
+        19,
+        338,
+        19,
+        1,
+        0
+      ],
+      [
+        13,
+        5,
+        88,
+        150,
+        3,
+        1134,
+        1,
+        11
+      ],
+      [
+        1,
+        2,
+        8,
+        34,
+        1,
+        5,
+        403,
+        1
+      ],
+      [
+        5,
+        4,
+        16,
+        47,
+        0,
+        23,
+        0,
+        459
+      ]
+    ]
+  },
+  "thresholds": [
+    {
+      "t": 0.5,
+      "coverage": 0.8836,
+      "n_covered": 8377,
+      "acc_covered": 0.8915,
+      "n_errors_covered": 909,
+      "acc_rest": 0.4946,
+      "n_rest": 1104,
+      "useful_coverage": 0.4519,
+      "n_useful": 4284,
+      "useful_acc": 0.8777,
+      "n_errors_useful": 524
+    },
+    {
+      "t": 0.51,
+      "coverage": 0.874,
+      "n_covered": 8286,
+      "acc_covered": 0.8952,
+      "n_errors_covered": 868,
+      "acc_rest": 0.4987,
+      "n_rest": 1195,
+      "useful_coverage": 0.4465,
+      "n_useful": 4233,
+      "useful_acc": 0.8831,
+      "n_errors_useful": 495
+    },
+    {
+      "t": 0.52,
+      "coverage": 0.8669,
+      "n_covered": 8219,
+      "acc_covered": 0.8978,
+      "n_errors_covered": 840,
+      "acc_rest": 0.5032,
+      "n_rest": 1262,
+      "useful_coverage": 0.4434,
+      "n_useful": 4204,
+      "useful_acc": 0.8856,
+      "n_errors_useful": 481
+    },
+    {
+      "t": 0.53,
+      "coverage": 0.8583,
+      "n_covered": 8138,
+      "acc_covered": 0.9006,
+      "n_errors_covered": 809,
+      "acc_rest": 0.5101,
+      "n_rest": 1343,
+      "useful_coverage": 0.4398,
+      "n_useful": 4170,
+      "useful_acc": 0.889,
+      "n_errors_useful": 463
+    },
+    {
+      "t": 0.54,
+      "coverage": 0.8508,
+      "n_covered": 8066,
+      "acc_covered": 0.9039,
+      "n_errors_covered": 775,
+      "acc_rest": 0.511,
+      "n_rest": 1415,
+      "useful_coverage": 0.4356,
+      "n_useful": 4130,
+      "useful_acc": 0.8932,
+      "n_errors_useful": 441
+    },
+    {
+      "t": 0.55,
+      "coverage": 0.8419,
+      "n_covered": 7982,
+      "acc_covered": 0.9059,
+      "n_errors_covered": 751,
+      "acc_rest": 0.5223,
+      "n_rest": 1499,
+      "useful_coverage": 0.4322,
+      "n_useful": 4098,
+      "useful_acc": 0.8956,
+      "n_errors_useful": 428
+    },
+    {
+      "t": 0.56,
+      "coverage": 0.8328,
+      "n_covered": 7896,
+      "acc_covered": 0.9097,
+      "n_errors_covered": 713,
+      "acc_rest": 0.5243,
+      "n_rest": 1585,
+      "useful_coverage": 0.4279,
+      "n_useful": 4057,
+      "useful_acc": 0.8992,
+      "n_errors_useful": 409
+    },
+    {
+      "t": 0.57,
+      "coverage": 0.8226,
+      "n_covered": 7799,
+      "acc_covered": 0.9127,
+      "n_errors_covered": 681,
+      "acc_rest": 0.5327,
+      "n_rest": 1682,
+      "useful_coverage": 0.422,
+      "n_useful": 4001,
+      "useful_acc": 0.9033,
+      "n_errors_useful": 387
+    },
+    {
+      "t": 0.58,
+      "coverage": 0.8135,
+      "n_covered": 7713,
+      "acc_covered": 0.9157,
+      "n_errors_covered": 650,
+      "acc_rest": 0.5379,
+      "n_rest": 1768,
+      "useful_coverage": 0.4174,
+      "n_useful": 3957,
+      "useful_acc": 0.9065,
+      "n_errors_useful": 370
+    },
+    {
+      "t": 0.59,
+      "coverage": 0.8041,
+      "n_covered": 7624,
+      "acc_covered": 0.9192,
+      "n_errors_covered": 616,
+      "acc_rest": 0.5417,
+      "n_rest": 1857,
+      "useful_coverage": 0.4126,
+      "n_useful": 3912,
+      "useful_acc": 0.909,
+      "n_errors_useful": 356
+    },
+    {
+      "t": 0.6,
+      "coverage": 0.7971,
+      "n_covered": 7557,
+      "acc_covered": 0.9207,
+      "n_errors_covered": 599,
+      "acc_rest": 0.5489,
+      "n_rest": 1924,
+      "useful_coverage": 0.4087,
+      "n_useful": 3875,
+      "useful_acc": 0.9112,
+      "n_errors_useful": 344
+    },
+    {
+      "t": 0.61,
+      "coverage": 0.7902,
+      "n_covered": 7492,
+      "acc_covered": 0.9225,
+      "n_errors_covered": 581,
+      "acc_rest": 0.5546,
+      "n_rest": 1989,
+      "useful_coverage": 0.4051,
+      "n_useful": 3841,
+      "useful_acc": 0.913,
+      "n_errors_useful": 334
+    },
+    {
+      "t": 0.62,
+      "coverage": 0.783,
+      "n_covered": 7424,
+      "acc_covered": 0.924,
+      "n_errors_covered": 564,
+      "acc_rest": 0.561,
+      "n_rest": 2057,
+      "useful_coverage": 0.4014,
+      "n_useful": 3806,
+      "useful_acc": 0.9159,
+      "n_errors_useful": 320
+    },
+    {
+      "t": 0.63,
+      "coverage": 0.7738,
+      "n_covered": 7336,
+      "acc_covered": 0.9265,
+      "n_errors_covered": 539,
+      "acc_rest": 0.5674,
+      "n_rest": 2145,
+      "useful_coverage": 0.3958,
+      "n_useful": 3753,
+      "useful_acc": 0.9198,
+      "n_errors_useful": 301
+    },
+    {
+      "t": 0.64,
+      "coverage": 0.7635,
+      "n_covered": 7239,
+      "acc_covered": 0.9297,
+      "n_errors_covered": 509,
+      "acc_rest": 0.5727,
+      "n_rest": 2242,
+      "useful_coverage": 0.3909,
+      "n_useful": 3706,
+      "useful_acc": 0.9228,
+      "n_errors_useful": 286
+    },
+    {
+      "t": 0.65,
+      "coverage": 0.7549,
+      "n_covered": 7157,
+      "acc_covered": 0.9321,
+      "n_errors_covered": 486,
+      "acc_rest": 0.5779,
+      "n_rest": 2324,
+      "useful_coverage": 0.3867,
+      "n_useful": 3666,
+      "useful_acc": 0.9247,
+      "n_errors_useful": 276
+    },
+    {
+      "t": 0.66,
+      "coverage": 0.7473,
+      "n_covered": 7085,
+      "acc_covered": 0.9341,
+      "n_errors_covered": 467,
+      "acc_rest": 0.5826,
+      "n_rest": 2396,
+      "useful_coverage": 0.3823,
+      "n_useful": 3625,
+      "useful_acc": 0.9266,
+      "n_errors_useful": 266
+    },
+    {
+      "t": 0.67,
+      "coverage": 0.7392,
+      "n_covered": 7008,
+      "acc_covered": 0.9375,
+      "n_errors_covered": 438,
+      "acc_rest": 0.5839,
+      "n_rest": 2473,
+      "useful_coverage": 0.3779,
+      "n_useful": 3583,
+      "useful_acc": 0.9305,
+      "n_errors_useful": 249
+    },
+    {
+      "t": 0.68,
+      "coverage": 0.7309,
+      "n_covered": 6930,
+      "acc_covered": 0.9392,
+      "n_errors_covered": 421,
+      "acc_rest": 0.59,
+      "n_rest": 2551,
+      "useful_coverage": 0.373,
+      "n_useful": 3536,
+      "useful_acc": 0.9333,
+      "n_errors_useful": 236
+    },
+    {
+      "t": 0.69,
+      "coverage": 0.7223,
+      "n_covered": 6848,
+      "acc_covered": 0.9409,
+      "n_errors_covered": 405,
+      "acc_rest": 0.5967,
+      "n_rest": 2633,
+      "useful_coverage": 0.3687,
+      "n_useful": 3496,
+      "useful_acc": 0.9348,
+      "n_errors_useful": 228
+    },
+    {
+      "t": 0.7,
+      "coverage": 0.7144,
+      "n_covered": 6773,
+      "acc_covered": 0.9432,
+      "n_errors_covered": 385,
+      "acc_rest": 0.6004,
+      "n_rest": 2708,
+      "useful_coverage": 0.3644,
+      "n_useful": 3455,
+      "useful_acc": 0.9366,
+      "n_errors_useful": 219
+    },
+    {
+      "t": 0.71,
+      "coverage": 0.7048,
+      "n_covered": 6682,
+      "acc_covered": 0.9457,
+      "n_errors_covered": 363,
+      "acc_rest": 0.6056,
+      "n_rest": 2799,
+      "useful_coverage": 0.3592,
+      "n_useful": 3406,
+      "useful_acc": 0.9389,
+      "n_errors_useful": 208
+    },
+    {
+      "t": 0.72,
+      "coverage": 0.6961,
+      "n_covered": 6600,
+      "acc_covered": 0.948,
+      "n_errors_covered": 343,
+      "acc_rest": 0.6099,
+      "n_rest": 2881,
+      "useful_coverage": 0.3533,
+      "n_useful": 3350,
+      "useful_acc": 0.9418,
+      "n_errors_useful": 195
+    },
+    {
+      "t": 0.73,
+      "coverage": 0.6886,
+      "n_covered": 6529,
+      "acc_covered": 0.9495,
+      "n_errors_covered": 330,
+      "acc_rest": 0.6148,
+      "n_rest": 2952,
+      "useful_coverage": 0.3505,
+      "n_useful": 3323,
+      "useful_acc": 0.9428,
+      "n_errors_useful": 190
+    },
+    {
+      "t": 0.74,
+      "coverage": 0.6782,
+      "n_covered": 6430,
+      "acc_covered": 0.9516,
+      "n_errors_covered": 311,
+      "acc_rest": 0.6211,
+      "n_rest": 3051,
+      "useful_coverage": 0.3451,
+      "n_useful": 3272,
+      "useful_acc": 0.945,
+      "n_errors_useful": 180
+    },
+    {
+      "t": 0.75,
+      "coverage": 0.67,
+      "n_covered": 6352,
+      "acc_covered": 0.9534,
+      "n_errors_covered": 296,
+      "acc_rest": 0.6258,
+      "n_rest": 3129,
+      "useful_coverage": 0.3406,
+      "n_useful": 3229,
+      "useful_acc": 0.9474,
+      "n_errors_useful": 170
+    },
+    {
+      "t": 0.76,
+      "coverage": 0.6614,
+      "n_covered": 6271,
+      "acc_covered": 0.9555,
+      "n_errors_covered": 279,
+      "acc_rest": 0.6299,
+      "n_rest": 3210,
+      "useful_coverage": 0.3358,
+      "n_useful": 3184,
+      "useful_acc": 0.9501,
+      "n_errors_useful": 159
+    },
+    {
+      "t": 0.77,
+      "coverage": 0.6524,
+      "n_covered": 6185,
+      "acc_covered": 0.9583,
+      "n_errors_covered": 258,
+      "acc_rest": 0.6332,
+      "n_rest": 3296,
+      "useful_coverage": 0.3319,
+      "n_useful": 3147,
+      "useful_acc": 0.9533,
+      "n_errors_useful": 147
+    },
+    {
+      "t": 0.78,
+      "coverage": 0.6436,
+      "n_covered": 6102,
+      "acc_covered": 0.9602,
+      "n_errors_covered": 243,
+      "acc_rest": 0.6378,
+      "n_rest": 3379,
+      "useful_coverage": 0.3269,
+      "n_useful": 3099,
+      "useful_acc": 0.9555,
+      "n_errors_useful": 138
+    },
+    {
+      "t": 0.79,
+      "coverage": 0.6324,
+      "n_covered": 5996,
+      "acc_covered": 0.9618,
+      "n_errors_covered": 229,
+      "acc_rest": 0.6448,
+      "n_rest": 3485,
+      "useful_coverage": 0.3207,
+      "n_useful": 3041,
+      "useful_acc": 0.9576,
+      "n_errors_useful": 129
+    },
+    {
+      "t": 0.8,
+      "coverage": 0.6222,
+      "n_covered": 5899,
+      "acc_covered": 0.9641,
+      "n_errors_covered": 212,
+      "acc_rest": 0.6496,
+      "n_rest": 3582,
+      "useful_coverage": 0.3154,
+      "n_useful": 2990,
+      "useful_acc": 0.9609,
+      "n_errors_useful": 117
+    },
+    {
+      "t": 0.81,
+      "coverage": 0.6111,
+      "n_covered": 5794,
+      "acc_covered": 0.9663,
+      "n_errors_covered": 195,
+      "acc_rest": 0.655,
+      "n_rest": 3687,
+      "useful_coverage": 0.3091,
+      "n_useful": 2931,
+      "useful_acc": 0.9638,
+      "n_errors_useful": 106
+    },
+    {
+      "t": 0.82,
+      "coverage": 0.6,
+      "n_covered": 5689,
+      "acc_covered": 0.9671,
+      "n_errors_covered": 187,
+      "acc_rest": 0.6624,
+      "n_rest": 3792,
+      "useful_coverage": 0.3029,
+      "n_useful": 2872,
+      "useful_acc": 0.9652,
+      "n_errors_useful": 100
+    },
+    {
+      "t": 0.83,
+      "coverage": 0.5884,
+      "n_covered": 5579,
+      "acc_covered": 0.9683,
+      "n_errors_covered": 177,
+      "acc_rest": 0.6694,
+      "n_rest": 3902,
+      "useful_coverage": 0.2972,
+      "n_useful": 2818,
+      "useful_acc": 0.967,
+      "n_errors_useful": 93
+    },
+    {
+      "t": 0.84,
+      "coverage": 0.5759,
+      "n_covered": 5460,
+      "acc_covered": 0.9703,
+      "n_errors_covered": 162,
+      "acc_rest": 0.6755,
+      "n_rest": 4021,
+      "useful_coverage": 0.2915,
+      "n_useful": 2764,
+      "useful_acc": 0.9685,
+      "n_errors_useful": 87
+    },
+    {
+      "t": 0.85,
+      "coverage": 0.5629,
+      "n_covered": 5337,
+      "acc_covered": 0.9726,
+      "n_errors_covered": 146,
+      "acc_rest": 0.6812,
+      "n_rest": 4144,
+      "useful_coverage": 0.2845,
+      "n_useful": 2697,
+      "useful_acc": 0.9714,
+      "n_errors_useful": 77
+    },
+    {
+      "t": 0.86,
+      "coverage": 0.5506,
+      "n_covered": 5220,
+      "acc_covered": 0.9738,
+      "n_errors_covered": 137,
+      "acc_rest": 0.6879,
+      "n_rest": 4261,
+      "useful_coverage": 0.2772,
+      "n_useful": 2628,
+      "useful_acc": 0.9726,
+      "n_errors_useful": 72
+    },
+    {
+      "t": 0.87,
+      "coverage": 0.5364,
+      "n_covered": 5086,
+      "acc_covered": 0.9754,
+      "n_errors_covered": 125,
+      "acc_rest": 0.6947,
+      "n_rest": 4395,
+      "useful_coverage": 0.2695,
+      "n_useful": 2555,
+      "useful_acc": 0.9742,
+      "n_errors_useful": 66
+    },
+    {
+      "t": 0.88,
+      "coverage": 0.5227,
+      "n_covered": 4956,
+      "acc_covered": 0.977,
+      "n_errors_covered": 114,
+      "acc_rest": 0.701,
+      "n_rest": 4525,
+      "useful_coverage": 0.2625,
+      "n_useful": 2489,
+      "useful_acc": 0.9755,
+      "n_errors_useful": 61
+    },
+    {
+      "t": 0.89,
+      "coverage": 0.5068,
+      "n_covered": 4805,
+      "acc_covered": 0.9798,
+      "n_errors_covered": 97,
+      "acc_rest": 0.707,
+      "n_rest": 4676,
+      "useful_coverage": 0.2542,
+      "n_useful": 2410,
+      "useful_acc": 0.9788,
+      "n_errors_useful": 51
+    },
+    {
+      "t": 0.9,
+      "coverage": 0.4931,
+      "n_covered": 4675,
+      "acc_covered": 0.9814,
+      "n_errors_covered": 87,
+      "acc_rest": 0.7129,
+      "n_rest": 4806,
+      "useful_coverage": 0.2481,
+      "n_useful": 2352,
+      "useful_acc": 0.98,
+      "n_errors_useful": 47
+    },
+    {
+      "t": 0.91,
+      "coverage": 0.48,
+      "n_covered": 4551,
+      "acc_covered": 0.982,
+      "n_errors_covered": 82,
+      "acc_rest": 0.7191,
+      "n_rest": 4930,
+      "useful_coverage": 0.2415,
+      "n_useful": 2290,
+      "useful_acc": 0.9803,
+      "n_errors_useful": 45
+    },
+    {
+      "t": 0.92,
+      "coverage": 0.4608,
+      "n_covered": 4369,
+      "acc_covered": 0.9847,
+      "n_errors_covered": 67,
+      "acc_rest": 0.7261,
+      "n_rest": 5112,
+      "useful_coverage": 0.2305,
+      "n_useful": 2185,
+      "useful_acc": 0.9826,
+      "n_errors_useful": 38
+    },
+    {
+      "t": 0.93,
+      "coverage": 0.4399,
+      "n_covered": 4171,
+      "acc_covered": 0.9863,
+      "n_errors_covered": 57,
+      "acc_rest": 0.7345,
+      "n_rest": 5310,
+      "useful_coverage": 0.2192,
+      "n_useful": 2078,
+      "useful_acc": 0.9846,
+      "n_errors_useful": 32
+    },
+    {
+      "t": 0.94,
+      "coverage": 0.4219,
+      "n_covered": 4000,
+      "acc_covered": 0.9875,
+      "n_errors_covered": 50,
+      "acc_rest": 0.7415,
+      "n_rest": 5481,
+      "useful_coverage": 0.2095,
+      "n_useful": 1986,
+      "useful_acc": 0.9859,
+      "n_errors_useful": 28
+    },
+    {
+      "t": 0.95,
+      "coverage": 0.3989,
+      "n_covered": 3782,
+      "acc_covered": 0.9894,
+      "n_errors_covered": 40,
+      "acc_rest": 0.7496,
+      "n_rest": 5699,
+      "useful_coverage": 0.1967,
+      "n_useful": 1865,
+      "useful_acc": 0.9887,
+      "n_errors_useful": 21
+    },
+    {
+      "t": 0.96,
+      "coverage": 0.3707,
+      "n_covered": 3515,
+      "acc_covered": 0.9909,
+      "n_errors_covered": 32,
+      "acc_rest": 0.7595,
+      "n_rest": 5966,
+      "useful_coverage": 0.1807,
+      "n_useful": 1713,
+      "useful_acc": 0.9901,
+      "n_errors_useful": 17
+    },
+    {
+      "t": 0.97,
+      "coverage": 0.3342,
+      "n_covered": 3169,
+      "acc_covered": 0.9931,
+      "n_errors_covered": 22,
+      "acc_rest": 0.7711,
+      "n_rest": 6312,
+      "useful_coverage": 0.1589,
+      "n_useful": 1507,
+      "useful_acc": 0.9947,
+      "n_errors_useful": 8
+    },
+    {
+      "t": 0.98,
+      "coverage": 0.2904,
+      "n_covered": 2753,
+      "acc_covered": 0.9946,
+      "n_errors_covered": 15,
+      "acc_rest": 0.7842,
+      "n_rest": 6728,
+      "useful_coverage": 0.136,
+      "n_useful": 1289,
+      "useful_acc": 0.9969,
+      "n_errors_useful": 4
+    },
+    {
+      "t": 0.99,
+      "coverage": 0.2263,
+      "n_covered": 2146,
+      "acc_covered": 0.9972,
+      "n_errors_covered": 6,
+      "acc_rest": 0.8008,
+      "n_rest": 7335,
+      "useful_coverage": 0.1023,
+      "n_useful": 970,
+      "useful_acc": 0.999,
+      "n_errors_useful": 1
+    }
+  ],
+  "per_class_at": {
+    "0.80": {
+      "Access": {
+        "coverage": 0.7057,
+        "acc": 0.9786,
+        "n": 935,
+        "n_pred": 1325,
+        "support": 1420,
+        "n_errors": 20,
+        "share_of_all": 0.0986
+      },
+      "Administrative rights": {
+        "coverage": 0.541,
+        "acc": 0.9586,
+        "n": 145,
+        "n_pred": 268,
+        "support": 351,
+        "n_errors": 6,
+        "share_of_all": 0.0153
+      },
+      "HR Support": {
+        "coverage": 0.6012,
+        "acc": 0.9711,
+        "n": 1313,
+        "n_pred": 2184,
+        "support": 2160,
+        "n_errors": 38,
+        "share_of_all": 0.1385
+      },
+      "Hardware": {
+        "coverage": 0.5627,
+        "acc": 0.9461,
+        "n": 1724,
+        "n_pred": 3064,
+        "support": 2715,
+        "n_errors": 93,
+        "share_of_all": 0.1818
+      },
+      "Internal Project": {
+        "coverage": 0.7072,
+        "acc": 0.9609,
+        "n": 256,
+        "n_pred": 362,
+        "support": 421,
+        "n_errors": 10,
+        "share_of_all": 0.027
+      },
+      "Miscellaneous": {
+        "coverage": 0.5679,
+        "acc": 0.9548,
+        "n": 774,
+        "n_pred": 1363,
+        "support": 1405,
+        "n_errors": 35,
+        "share_of_all": 0.0816
+      },
+      "Purchase": {
+        "coverage": 0.9058,
+        "acc": 0.984,
+        "n": 375,
+        "n_pred": 414,
+        "support": 455,
+        "n_errors": 6,
+        "share_of_all": 0.0396
+      },
+      "Storage": {
+        "coverage": 0.7525,
+        "acc": 0.9894,
+        "n": 377,
+        "n_pred": 501,
+        "support": 554,
+        "n_errors": 4,
+        "share_of_all": 0.0398
+      }
+    },
+    "0.90": {
+      "Access": {
+        "coverage": 0.597,
+        "acc": 0.9874,
+        "n": 791,
+        "n_pred": 1325,
+        "support": 1420,
+        "n_errors": 10,
+        "share_of_all": 0.0834
+      },
+      "Administrative rights": {
+        "coverage": 0.3955,
+        "acc": 0.9811,
+        "n": 106,
+        "n_pred": 268,
+        "support": 351,
+        "n_errors": 2,
+        "share_of_all": 0.0112
+      },
+      "HR Support": {
+        "coverage": 0.4812,
+        "acc": 0.9857,
+        "n": 1051,
+        "n_pred": 2184,
+        "support": 2160,
+        "n_errors": 15,
+        "share_of_all": 0.1109
+      },
+      "Hardware": {
+        "coverage": 0.4099,
+        "acc": 0.9721,
+        "n": 1256,
+        "n_pred": 3064,
+        "support": 2715,
+        "n_errors": 35,
+        "share_of_all": 0.1325
+      },
+      "Internal Project": {
+        "coverage": 0.6077,
+        "acc": 0.9773,
+        "n": 220,
+        "n_pred": 362,
+        "support": 421,
+        "n_errors": 5,
+        "share_of_all": 0.0232
+      },
+      "Miscellaneous": {
+        "coverage": 0.4072,
+        "acc": 0.9712,
+        "n": 555,
+        "n_pred": 1363,
+        "support": 1405,
+        "n_errors": 16,
+        "share_of_all": 0.0585
+      },
+      "Purchase": {
+        "coverage": 0.8599,
+        "acc": 0.9944,
+        "n": 356,
+        "n_pred": 414,
+        "support": 455,
+        "n_errors": 2,
+        "share_of_all": 0.0375
+      },
+      "Storage": {
+        "coverage": 0.6786,
+        "acc": 0.9941,
+        "n": 340,
+        "n_pred": 501,
+        "support": 554,
+        "n_errors": 2,
+        "share_of_all": 0.0359
+      }
+    },
+    "0.95": {
+      "Access": {
+        "coverage": 0.5155,
+        "acc": 0.9912,
+        "n": 683,
+        "n_pred": 1325,
+        "support": 1420,
+        "n_errors": 6,
+        "share_of_all": 0.072
+      },
+      "Administrative rights": {
+        "coverage": 0.2836,
+        "acc": 0.9868,
+        "n": 76,
+        "n_pred": 268,
+        "support": 351,
+        "n_errors": 1,
+        "share_of_all": 0.008
+      },
+      "HR Support": {
+        "coverage": 0.4029,
+        "acc": 0.992,
+        "n": 880,
+        "n_pred": 2184,
+        "support": 2160,
+        "n_errors": 7,
+        "share_of_all": 0.0928
+      },
+      "Hardware": {
+        "coverage": 0.2947,
+        "acc": 0.9845,
+        "n": 903,
+        "n_pred": 3064,
+        "support": 2715,
+        "n_errors": 14,
+        "share_of_all": 0.0952
+      },
+      "Internal Project": {
+        "coverage": 0.5028,
+        "acc": 0.989,
+        "n": 182,
+        "n_pred": 362,
+        "support": 421,
+        "n_errors": 2,
+        "share_of_all": 0.0192
+      },
+      "Miscellaneous": {
+        "coverage": 0.3059,
+        "acc": 0.9784,
+        "n": 417,
+        "n_pred": 1363,
+        "support": 1405,
+        "n_errors": 9,
+        "share_of_all": 0.044
+      },
+      "Purchase": {
+        "coverage": 0.8188,
+        "acc": 1.0,
+        "n": 339,
+        "n_pred": 414,
+        "support": 455,
+        "n_errors": 0,
+        "share_of_all": 0.0358
+      },
+      "Storage": {
+        "coverage": 0.6028,
+        "acc": 0.9967,
+        "n": 302,
+        "n_pred": 501,
+        "support": 554,
+        "n_errors": 1,
+        "share_of_all": 0.0319
+      }
+    }
+  },
+  "similarity": {
+    "k": 3,
+    "nn_accuracy": 0.6827,
+    "sim1_mean": 0.3805,
+    "sim1_median": 0.3232,
+    "bins": [
+      {
+        "min_sim": 0.3,
+        "coverage": 0.5556,
+        "n": 5268,
+        "nn_agreement": 0.7933
+      },
+      {
+        "min_sim": 0.4,
+        "coverage": 0.3529,
+        "n": 3346,
+        "nn_agreement": 0.8464
+      },
+      {
+        "min_sim": 0.5,
+        "coverage": 0.237,
+        "n": 2247,
+        "nn_agreement": 0.8852
+      },
+      {
+        "min_sim": 0.6,
+        "coverage": 0.1586,
+        "n": 1504,
+        "nn_agreement": 0.9096
+      },
+      {
+        "min_sim": 0.7,
+        "coverage": 0.0939,
+        "n": 890,
+        "nn_agreement": 0.9225
+      },
+      {
+        "min_sim": 0.8,
+        "coverage": 0.0418,
+        "n": 396,
+        "nn_agreement": 0.9242
+      },
+      {
+        "min_sim": 0.9,
+        "coverage": 0.012,
+        "n": 114,
+        "nn_agreement": 0.9386
+      },
+      {
+        "min_sim": 0.95,
+        "coverage": 0.005,
+        "n": 47,
+        "nn_agreement": 1.0
+      },
+      {
+        "min_sim": 0.99,
+        "coverage": 0.0006,
+        "n": 6,
+        "nn_agreement": 1.0
+      }
+    ]
+  },
+  "calibration": {
+    "n_bins": 10,
+    "bins": [
+      {
+        "lo": 0.0,
+        "hi": 0.1,
+        "n": 0,
+        "confidence": null,
+        "accuracy": null
+      },
+      {
+        "lo": 0.1,
+        "hi": 0.2,
+        "n": 0,
+        "confidence": null,
+        "accuracy": null
+      },
+      {
+        "lo": 0.2,
+        "hi": 0.3,
+        "n": 54,
+        "confidence": 0.2728,
+        "accuracy": 0.2963
+      },
+      {
+        "lo": 0.3,
+        "hi": 0.4,
+        "n": 336,
+        "confidence": 0.3577,
+        "accuracy": 0.4196
+      },
+      {
+        "lo": 0.4,
+        "hi": 0.5,
+        "n": 714,
+        "confidence": 0.4523,
+        "accuracy": 0.5448
+      },
+      {
+        "lo": 0.5,
+        "hi": 0.6,
+        "n": 820,
+        "confidence": 0.5502,
+        "accuracy": 0.622
+      },
+      {
+        "lo": 0.6,
+        "hi": 0.7,
+        "n": 784,
+        "confidence": 0.6505,
+        "accuracy": 0.727
+      },
+      {
+        "lo": 0.7,
+        "hi": 0.8,
+        "n": 874,
+        "confidence": 0.7513,
+        "accuracy": 0.8021
+      },
+      {
+        "lo": 0.8,
+        "hi": 0.9,
+        "n": 1224,
+        "confidence": 0.8527,
+        "accuracy": 0.8979
+      },
+      {
+        "lo": 0.9,
+        "hi": 1.0,
+        "n": 4675,
+        "confidence": 0.9755,
+        "accuracy": 0.9814
+      }
+    ]
+  },
+  "risk_flag_share_holdout": 0.0123,
+  "runtime": {
+    "fit_seconds": 14.0325,
+    "similarity_seconds": 7.402,
+    "cv5_seconds": 83.7726,
+    "train_seconds_total": 108.6991,
+    "peak_rss_mb": 1386.1,
+    "pickle_bytes": 24679564
+  },
+  "figures": {
+    "confusion": "artifacts/figures/confusion.png",
+    "coverage_accuracy": "artifacts/figures/coverage_accuracy.png",
+    "reliability": "artifacts/figures/reliability.png",
+    "similarity_curve": "artifacts/figures/similarity_curve.png"
+  },
+  "cv5": {
+    "folds": 5,
+    "accuracy": 0.8435,
+    "accuracy_std": 0.0037,
+    "macro_f1": 0.8413,
+    "macro_f1_std": 0.0039,
+    "fold_accuracies": [
+      0.8419,
+      0.8437,
+      0.8395,
+      0.8503,
+      0.8422
+    ],
+    "seconds": 83.7726
+  }
+}
