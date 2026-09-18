@@ -1,0 +1,149 @@
+{
+  "sesoi_pp": 1.0,
+  "n_total": 52214,
+  "n_escopo": 31214,
+  "er_media_escopo": 19.902985215051316,
+  "fatores": {
+    "comparacoes": 50,
+    "vereditos": {
+      "EQUIVALENTE": 50
+    },
+    "maior_diferenca_abs_pp": 0.014474198183080489,
+    "maior_ic95_abs_pp": 0.0634137921601345,
+    "mde_mediano_pp": 0.01938649494449156,
+    "mde_max_pp": 0.08908479268001476
+  },
+  "patrocinio_ajustado": [
+    {
+      "desfecho": "taxa de engajamento (p.p.)",
+      "efeito_ajustado": -0.00336,
+      "se_cluster_creator": 0.00562,
+      "ic95_inf": -0.01439,
+      "ic95_sup": 0.00766,
+      "p": 0.55008,
+      "mde": 0.01576,
+      "media_organico": 19.90448,
+      "r2_modelo": 0.00062,
+      "n": 31214,
+      "efeito_relativo_%": -0.01689,
+      "ic95_relativo_%": "-0.072 a +0.038",
+      "veredito_er": "EQUIVALENTE"
+    },
+    {
+      "desfecho": "share rate (p.p.)",
+      "efeito_ajustado": -0.00351,
+      "se_cluster_creator": 0.00198,
+      "ic95_inf": -0.0074,
+      "ic95_sup": 0.00037,
+      "p": 0.07633,
+      "mde": 0.00556,
+      "media_organico": 2.97265,
+      "r2_modelo": 0.00054,
+      "n": 31214,
+      "efeito_relativo_%": -0.11822,
+      "ic95_relativo_%": "-0.249 a +0.013",
+      "veredito_er": ""
+    },
+    {
+      "desfecho": "comment rate (p.p.)",
+      "efeito_ajustado": -0.00139,
+      "se_cluster_creator": 0.00161,
+      "ic95_inf": -0.00455,
+      "ic95_sup": 0.00176,
+      "p": 0.38766,
+      "mde": 0.00451,
+      "media_organico": 1.98036,
+      "r2_modelo": 0.00079,
+      "n": 31214,
+      "efeito_relativo_%": -0.07022,
+      "ic95_relativo_%": "-0.230 a +0.089",
+      "veredito_er": ""
+    },
+    {
+      "desfecho": "views (guardrail)",
+      "efeito_ajustado": 0.6937,
+      "se_cluster_creator": 1.16493,
+      "ic95_inf": -1.58952,
+      "ic95_sup": 2.97691,
+      "p": 0.55152,
+      "mde": 3.26365,
+      "media_organico": 10099.93499,
+      "r2_modelo": 0.00096,
+      "n": 31214,
+      "efeito_relativo_%": 0.00687,
+      "ic95_relativo_%": "-0.016 a +0.029",
+      "veredito_er": ""
+    }
+  ],
+  "patrocinio_condicoes": {
+    "comparacoes": 23,
+    "vereditos": {
+      "EQUIVALENTE": 23
+    },
+    "maior_diferenca_abs_pp": 0.04041825301599644
+  },
+  "patrocinio_celulas": {
+    "celulas_n30_por_braco": 81,
+    "vereditos": {
+      "EQUIVALENTE": 81
+    },
+    "diferenca_min_pp": -0.2415678822597549,
+    "diferenca_max_pp": 0.16683194971999527,
+    "mde_mediano_pp": 0.19314052123189662,
+    "p_bruto_menor_005": 6,
+    "p_bh_menor_005": 0
+  },
+  "seguidores": {
+    "efeito_de_0_a_1M_pp": -0.0011728191147220984,
+    "ic95": [
+      -0.020150799014291062,
+      0.017805160784846865
+    ],
+    "equivalente": true
+  },
+  "hashtags": {
+    "hashtags_individuais_testadas": 16,
+    "individuais_sig_sem_correcao": 1,
+    "individuais_falsos_positivos_esperados": 0.8,
+    "individuais_sig_com_bh": 0,
+    "individuais_vereditos": {
+      "EQUIVALENTE": 16
+    },
+    "top3_sem_correcao": [
+      "#religious +0.117 p.p. (p=0.015, p_bh=0.23)",
+      "#brother +0.067 p.p. (p=0.189, p_bh=0.59)",
+      "#different +0.061 p.p. (p=0.208, p_bh=0.59)"
+    ],
+    "posts_com_hashtag": 26020,
+    "pares_distintos": 93284,
+    "pares_com_n_min": 0,
+    "n_min": 100,
+    "max_n_de_um_par": 5,
+    "significativos_sem_correcao": 0,
+    "significativos_com_bh": 0
+  },
+  "audiencia": {
+    "celulas": 160,
+    "n_mediano": 124,
+    "significativas_sem_correcao": 6,
+    "falsos_positivos_esperados": 8.0,
+    "significativas_com_bh": 0,
+    "maior_diferenca_absoluta_pp": 0.21551618622443058,
+    "vereditos": {
+      "EQUIVALENTE": 160
+    }
+  },
+  "modelo_preditivo": {
+    "modelo": "HistGradientBoosting, 5 folds agrupados por creator",
+    "r2_medio": -0.0011653405447063392,
+    "r2_por_fold": [
+      -0.0009,
+      -0.0009,
+      -0.0019,
+      -0.0007,
+      -0.0014
+    ],
+    "decisao": "NO-GO"
+  },
+  "frequencia": "não testável: cada creator tem 10–11 posts em 2 anos (DQ-09)"
+}

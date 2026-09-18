@@ -1,0 +1,30 @@
+coluna,tipo,nulos,distintos,exemplo
+id,int64,0,52214,1
+platform,str,0,5,RedNote
+content_id,str,0,52214,content_20586
+creator_id,str,0,5000,creator_586
+creator_name,str,0,42213,nicole85
+content_url,str,0,28037,http://www.hill-montgomery.com/
+content_type,str,0,4,video
+content_category,str,0,3,beauty
+post_date,datetime64[us],0,50905,2023-05-29 00:15:00
+language,str,0,5,Hindi
+content_length,int64,0,590,56
+content_description,str,0,52214,Professional radio usually something letter half pattern lea
+hashtags,str,8743,35637,"or,according"
+views,int64,0,691,9996
+likes,int64,0,284,1469
+shares,int64,0,138,284
+comments_count,int64,0,112,197
+comments_text,str,8688,43526,Treat fast car bit hit blood. Recent hour situation really g
+follower_count,int64,0,50882,216818
+is_sponsored,bool,0,2,False
+disclosure_type,str,0,3,none
+sponsor_name,str,0,18006,Not sponsors
+sponsor_category,str,0,7,Not sponsors
+disclosure_location,str,0,4,none
+audience_age_distribution,str,0,5,19-25
+audience_gender_distribution,str,0,4,unknown
+audience_location,str,0,8,UK
+interactions,int64,0,324,1950
+er_pp,float64,0,35066,19.5078031212485

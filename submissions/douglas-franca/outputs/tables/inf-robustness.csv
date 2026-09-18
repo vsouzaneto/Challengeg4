@@ -1,0 +1,20 @@
+checagem,valor
+creators no escopo,5000
+posts por creator (média),6.24
+ICC da taxa de engajamento por creator,-0.00105
+efeito de desenho (1 = agrupamento não muda o erro-padrão),0.9945
+comparações da taxa de engajamento com veredito,332
+z do TOST com Bonferroni,3.614
+fatores: maior limite TOST 90% (p.p.),0.053
+fatores: maior limite com Bonferroni (p.p.),0.116
+patrocinio_condicoes: maior limite TOST 90% (p.p.),0.144
+patrocinio_condicoes: maior limite com Bonferroni (p.p.),0.271
+patrocinio_celulas: maior limite TOST 90% (p.p.),0.42
+patrocinio_celulas: maior limite com Bonferroni (p.p.),0.634
+hashtags: maior limite TOST 90% (p.p.),0.196
+hashtags: maior limite com Bonferroni (p.p.),0.29
+audiencia: maior limite TOST 90% (p.p.),0.454
+audiencia: maior limite com Bonferroni (p.p.),0.781
+todas: maior limite TOST 90% = menor régua que mantém tudo equivalente (p.p.),0.454
+todas: maior limite com Bonferroni (p.p.),0.781
+todas continuam equivalentes a ±1 p.p. com Bonferroni,True
