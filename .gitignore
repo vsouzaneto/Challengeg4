@@ -12,5 +12,6 @@ datasets/
 .vscode/
 .idea/
 
-# Submissions (if candidates fork)
-submissions/
+# Submissions (if candidates fork). This fork's submission is tracked:
+submissions/*
+!submissions/leandro-ruel/
