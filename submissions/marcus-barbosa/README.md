@@ -3,7 +3,7 @@
 ## Sobre mim
 
 - **Nome:** Marcus Barbosa
-- **LinkedIn:** [[a confirmar pelo Marcus antes do PR]]
+- **LinkedIn:** https://www.linkedin.com/in/mvb22
 - **Challenge escolhido:** 003 — Lead Scorer (Vendas / RevOps)
 
 ---

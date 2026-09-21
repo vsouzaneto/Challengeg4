@@ -60,7 +60,7 @@ Legenda de fonte: `C003` = README do challenge · `GUIA` = submission-guide.md �
 |---|---|---|---|---|
 | E1 | Fork + branch `submission/marcus-barbosa` | CONTRIB | existe em `marcusbarbosa92/ai-master-challenge` | [x] |
 | E2 | Pasta `submissions/marcus-barbosa/` (plural) com `solution/`, `process-log/`, `docs/` | CONTRIB, REV | estrutura presente | [x] |
-| E3 | README segue o template oficial, todas as seções preenchidas | CONTRIB, TPL, REV | falta só o LinkedIn | [ ] |
+| E3 | README segue o template oficial, todas as seções preenchidas | CONTRIB, TPL, REV | todas as seções preenchidas, LinkedIn incluído | [x] |
 | E4 | Nenhum arquivo fora da pasta modificado | CONTRIB, REV | `05_check_repo.py` confere `git diff upstream/main` | [x] |
 | E5 | Sem node_modules / venv / dados brutos / .pkl no PR | REV | `05_check_repo.py` confere `git ls-files` | [x] |
 | E6 | Título do PR `[Submission] Marcus Barbosa — Challenge 003` | CONTRIB | ao abrir o PR | [ ] |
