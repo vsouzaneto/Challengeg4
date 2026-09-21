@@ -20,3 +20,9 @@
 ## Iteração 2 — 2026-09-21 — Dados reais e auditoria
 14. Download do zip (archive.zip, 145.926 bytes) pela sessão do Marcus no Kaggle; extração com `download_data.py --zip`; 4 CSVs + `metadata.csv`; hashes registrados no relatório.
 15. `01_audit.py` sobre os dados reais → `docs/data_health_report.md`. Achados que mudam o desenho: (a) 1.425 deals abertos sem conta = 68,2% dos abertos, nenhum fechado sem conta; (b) win rate por produto, setor, região e manager varia de 1,4 a 4,8 pp, por vendedor 15,4 pp; (c) data de referência 2017-12-31, ciclo mediano 45 dias, mas Engaging tem idade mediana de 165 dias (1.558 de 1.589 acima do ciclo mediano); (d) 0 datas inconsistentes, 0 chaves órfãs após normalizar GTXPro; (e) preço de catálogo varia 487x.
+
+## Iteração 3 — 2026-09-21 — Hipóteses contra os dados
+16. `02_explore.py` com 25 hipóteses registradas por decorator, cada uma com métrica, número e veredito automático; saída em `docs/exploration_results.*`.
+17. Primeira rodada (19 hipóteses): vendedor × produto confirmada, sazonalidade confirmada, conta recorrente com sinal invertido.
+18. Revisão humana dos números levantou duas suspeitas: ruído binomial em grupos pequenos e bordas temporais da base. Rodada de robustez (H2b, H8b, H12b, H13b, H20) e depois (H21, H12c, H10b).
+19. Resultado: sinal real só em idade do deal (quem morre, morre cedo), valor e estrutura do pipeline (81% além do suporte histórico, 68% sem conta). Erros da IA #2 e #3 registrados.
