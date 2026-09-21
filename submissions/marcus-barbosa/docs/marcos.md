@@ -73,3 +73,5 @@ Legenda de fonte: `C003` = README do challenge · `GUIA` = submission-guide.md �
 | F1 | Banca de agentes revisores com a rubrica real dá 100/100 em cada entregável (A–E) | MB, REV | Workflow de revisão executado; nenhum item abaixo de 100; achados corrigidos e re-avaliados | [ ] |
 | F2 | Revisor final independente declara-se impressionado | MB | Parecer final registrado em `docs/banca-final.md` | [ ] |
 | F3 | Supera substancialmente os baselines | ROOT | Cada diferenciador da rubrica C7 comprovado com evidência | [ ] |
+| F4 | Tudo explicável: metodologia documentada de ponta a ponta | MB, VAGA | `docs/methodology.md` explica como cada número, fator, peso e decisão foi produzido, com link para o script ou célula que o gerou; qualquer leitor reproduz o caminho do dado bruto ao score | [ ] |
+| F5 | Papel do Marcus vs. papel da IA explícito | VAGA, TPL | Seção dedicada no README, com contagem do ledger de decisões e exemplos concretos | [ ] |
