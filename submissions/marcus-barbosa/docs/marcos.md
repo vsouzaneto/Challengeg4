@@ -50,7 +50,7 @@ Legenda de fonte: `C003` = README do challenge · `GUIA` = submission-guide.md �
 |---|---|---|---|---|
 | D1 | Screenshots das sessões com a IA | GUIA, REV | `process-log/screenshots/sessoes/` (capturas da janela do Claude Code, barra lateral recortada) | [x] |
 | D2 | Screenshots do app rodando | REV | 6 capturas em `process-log/screenshots/app/` | [x] |
-| D3 | Chat export em texto dentro do repo | GUIA, REV | `process-log/chat-exports/` | [ ] |
+| D3 | Chat export em texto dentro do repo | GUIA, REV | `process-log/chat-exports/transcript-sessao.md` (1.028 mensagens, token e e-mail removidos) | [x] |
 | D4 | Git history incremental com autoria do candidato | GUIA, REV | commits semânticos, author Marcus Barbosa, trailer Co-Authored-By declarando a IA | [x] |
 | D5 | Screen recording (opcional) | GUIA | não feito | [ ] |
 
