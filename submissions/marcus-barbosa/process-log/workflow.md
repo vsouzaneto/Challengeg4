@@ -32,3 +32,9 @@
 21. Motor v1: chance condicionada a fechar × preço; 15 testes verdes. Backtest revelou superestimativa (erro da IA #4).
 22. Diagnóstico por snapshot: sem conta = 0% de fechamento (n=2.531 linhas); com conta, chance de fechar cai com a idade (86% até 90 dias, 14% entre 121 e 138). Conta tratada como higiene (decisão 13).
 23. Motor v2: painel de snapshots com horizonte de 90 dias, faixas fixas, IC de Wilson, fusão de faixas pequenas, fallback declarado; 18 testes; backtest walk-forward com comparador 'só preço no pipeline inteiro'.
+
+## Iteração 5 — 2026-09-21 — App, capturas e validação
+24. App Streamlit em três papéis (vendedor, gerente, RevOps) com data de referência, filtros e presets por URL; identidade visual a partir do CSS público do G4.
+25. Capturas do app com Playwright (`04_screenshots.py`); capturas da janela do Claude Code por PrintWindow sem ativar a janela, com a barra lateral (outras sessões do usuário) recortada por privacidade.
+26. Validação em ambiente limpo (`99_clean_env_check.ps1`): venv novo, 21 testes, auditoria, exploração, backtest e health check do app, tudo verde.
+27. README no template oficial e `docs/methodology.md` número-a-script. Auditoria adversarial por agentes lançada.
