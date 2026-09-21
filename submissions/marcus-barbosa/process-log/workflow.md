@@ -26,3 +26,9 @@
 17. Primeira rodada (19 hipóteses): vendedor × produto confirmada, sazonalidade confirmada, conta recorrente com sinal invertido.
 18. Revisão humana dos números levantou duas suspeitas: ruído binomial em grupos pequenos e bordas temporais da base. Rodada de robustez (H2b, H8b, H12b, H13b, H20) e depois (H21, H12c, H10b).
 19. Resultado: sinal real só em idade do deal (quem morre, morre cedo), valor e estrutura do pipeline (81% além do suporte histórico, 68% sem conta). Erros da IA #2 e #3 registrados.
+
+## Iteração 4 — 2026-09-21 — Motor de scoring e backtest
+20. Painel de arquitetura (3 designs, 3 juízes, síntese) concluído; salvo em `docs/design-panel.md`. Adotado: calibração por painel de snapshots, backtest walk-forward, testes de invariância, brief em camadas. Descartado: fatores de vendedor×produto e conta (refutados pelos dados).
+21. Motor v1: chance condicionada a fechar × preço; 15 testes verdes. Backtest revelou superestimativa (erro da IA #4).
+22. Diagnóstico por snapshot: sem conta = 0% de fechamento (n=2.531 linhas); com conta, chance de fechar cai com a idade (86% até 90 dias, 14% entre 121 e 138). Conta tratada como higiene (decisão 13).
+23. Motor v2: painel de snapshots com horizonte de 90 dias, faixas fixas, IC de Wilson, fusão de faixas pequenas, fallback declarado; 18 testes; backtest walk-forward com comparador 'só preço no pipeline inteiro'.
