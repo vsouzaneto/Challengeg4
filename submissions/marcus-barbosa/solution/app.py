@@ -43,9 +43,15 @@ h1{font-size:31px} h2{font-size:24px} h3{font-size:18px}
 [data-testid="stSidebar"] { background:var(--g4-navy); }
 [data-testid="stSidebar"] * { color:var(--g4-cream); }
 [data-testid="stSidebar"] h1,[data-testid="stSidebar"] h2,[data-testid="stSidebar"] h3 { color:var(--g4-gold); }
+[data-testid="stSidebar"] [data-baseweb="select"] > div, [data-testid="stSidebar"] [data-baseweb="input"] > div, [data-testid="stSidebar"] input {
+  background:#0A2C47 !important; color:var(--g4-cream) !important; border-color:rgba(245,244,243,0.35) !important; }
+[data-testid="stSidebar"] [data-baseweb="select"] span, [data-testid="stSidebar"] [data-baseweb="select"] div { color:var(--g4-cream) !important; }
+[data-testid="stSidebar"] svg { fill:var(--g4-cream) !important; }
+[data-testid="stSidebar"] [role="radiogroup"] label p { color:var(--g4-cream) !important; }
 [data-testid="stMetric"] { background:var(--g4-white); border:1px solid var(--g4-border); border-radius:10px; padding:14px 18px; }
 [data-testid="stMetricLabel"] { font-size:12px; color:var(--g4-muted); text-transform:uppercase; letter-spacing:0.06em; }
-[data-testid="stMetricValue"] { font-weight:800; font-size:28px; color:var(--g4-navy); }
+[data-testid="stMetricValue"] { font-weight:800; font-size:24px; color:var(--g4-navy); }
+[data-testid="stMetricValue"] > div { overflow:visible; white-space:nowrap; }
 [data-testid="stDataFrame"] { border:1px solid var(--g4-border); border-radius:10px; overflow:hidden; }
 .g4-card { background:var(--g4-white); border:1px solid var(--g4-border); border-radius:10px; padding:16px 20px; margin-bottom:12px; }
 .g4-badge { display:inline-block; font-size:12px; font-weight:700; letter-spacing:0.04em; padding:3px 10px; border-radius:8px; margin-right:8px; }
@@ -80,6 +86,11 @@ def _score(as_of: str):
     return scored, cal
 
 
+def md(text: str) -> str:
+    """Escapa cifrões para o Markdown do Streamlit não ler 'US$ 1 ... US$ 2' como fórmula."""
+    return text.replace("$", "\\$")
+
+
 def badge(cat: str) -> str:
     return f'<span class="g4-badge g4-badge--{BADGE.get(cat, "manter")}">{cat}</span>'
 
@@ -101,25 +112,37 @@ if not (RAW / "sales_pipeline.csv").exists():
 enriched, ref_date = _load()
 
 # ----------------------------------------------------------------------------- sidebar
+# Presets por URL para links e capturas reproduzíveis: ?papel=Gerente&regiao=Central&gerente=...&vendedor=...&data=2017-09-30
+qp = st.query_params
+
+
+def _idx(options: list, key: str, default: int = 0) -> int:
+    v = qp.get(key)
+    return options.index(v) if v in options else default
+
+
 with st.sidebar:
     st.markdown("### Lead Scorer")
     st.caption("Priorização do pipeline com o que a história dos 8.800 deals sustenta. Nada de vendedor, produto ou setor no score: nos dados, nenhum separa ganho de perda além do acaso.")
-    papel = st.radio("Quem está olhando", ["Vendedor", "Gerente", "RevOps"], index=0)
-    as_of = st.date_input("Segunda-feira de referência", value=ref_date.date(), min_value=pd.Timestamp("2017-06-30").date(), max_value=ref_date.date(),
+    papeis = ["Vendedor", "Gerente", "RevOps"]
+    papel = st.radio("Quem está olhando", papeis, index=_idx(papeis, "papel"))
+    data_default = pd.Timestamp(qp.get("data")).date() if qp.get("data") else ref_date.date()
+    as_of = st.date_input("Segunda-feira de referência", value=data_default, min_value=pd.Timestamp("2017-06-30").date(), max_value=ref_date.date(),
                           help="O pipeline é reconstruído como estava nessa data e a chance é calibrada só com o que já tinha fechado até ela.")
     scored_all, cal = _score(str(as_of))
     agents_all = agent_table(scored_all, enriched, pd.Timestamp(as_of))
-    regioes = sorted(agents_all["regional_office"].dropna().unique())
-    regiao = st.selectbox("Região", ["Todas"] + regioes)
-    managers = sorted(agents_all.loc[agents_all["regional_office"] == regiao, "manager"].dropna().unique()) if regiao != "Todas" else sorted(agents_all["manager"].dropna().unique())
-    manager = st.selectbox("Gerente", ["Todos"] + managers)
+    regioes = ["Todas"] + sorted(agents_all["regional_office"].dropna().unique())
+    regiao = st.selectbox("Região", regioes, index=_idx(regioes, "regiao"))
+    managers = ["Todos"] + (sorted(agents_all.loc[agents_all["regional_office"] == regiao, "manager"].dropna().unique()) if regiao != "Todas" else sorted(agents_all["manager"].dropna().unique()))
+    manager = st.selectbox("Gerente", managers, index=_idx(managers, "gerente"))
     pool = agents_all
     if regiao != "Todas":
         pool = pool[pool["regional_office"] == regiao]
     if manager != "Todos":
         pool = pool[pool["manager"] == manager]
     vendedores = sorted(pool.index)
-    vendedor = st.selectbox("Vendedor", (["Todos"] if papel != "Vendedor" else []) + vendedores)
+    opcoes_vendedor = (["Todos"] if papel != "Vendedor" else []) + vendedores
+    vendedor = st.selectbox("Vendedor", opcoes_vendedor, index=_idx(opcoes_vendedor, "vendedor"))
     st.markdown(f'<p class="g4-label">calibração: {cal.mode} · {len(cal.snapshots)} datas · horizonte {HORIZON_DAYS} d</p>', unsafe_allow_html=True)
 
 scored = scored_all[scored_all["sales_agent"].isin(vendedores)]
@@ -136,12 +159,12 @@ st.markdown(f'<p class="g4-eyebrow">Lead Scorer · {pd.Timestamp(as_of).strftime
 if papel == "Vendedor":
     b = seller_brief(scored)
     c1, c2, c3, c4, c5 = st.columns(5)
-    c1.metric("Deals abertos", b["resumo"]["abertos"])
-    c2.metric("Com chance estimável", b["resumo"]["acionaveis"])
+    c1.metric("Abertos", b["resumo"]["abertos"])
+    c2.metric("Com chance", b["resumo"]["acionaveis"])
     c3.metric("Focar agora", b["resumo"]["focar"])
-    c4.metric("Confirmar se está vivo", b["resumo"]["confirmar_vivo"])
-    c5.metric("Valor esperado 90 d", money(b["resumo"]["valor_esperado"]))
-    st.write(b["abertura"])
+    c4.metric("Confirmar vivo", b["resumo"]["confirmar_vivo"])
+    c5.metric("Esperado 90 d", money(b["resumo"]["valor_esperado"]))
+    st.write(md(b["abertura"]))
     st.markdown("### A pauta de hoje")
     for item in b["itens"]:
         st.markdown(card(item), unsafe_allow_html=True)
@@ -173,10 +196,10 @@ elif papel == "Gerente":
     f = revops_findings(scored, agents)
     c1, c2, c3, c4, c5 = st.columns(5)
     c1.metric("Vendedores", len(agents))
-    c2.metric("Deals abertos", f["deals_abertos"])
-    c3.metric("Focar agora no time", int((scored["category"] == CAT_FOCUS).sum()))
-    c4.metric("Além de 138 dias", f["deals_alem_138"], help="Nenhum deal na história fechou depois de 138 dias.")
-    c5.metric("Valor esperado 90 d", money(f["valor_esperado_acionavel"]))
+    c2.metric("Abertos", f["deals_abertos"])
+    c3.metric("Focar agora", int((scored["category"] == CAT_FOCUS).sum()))
+    c4.metric("Além de 138 d", f["deals_alem_138"], help="Nenhum deal na história fechou depois de 138 dias.")
+    c5.metric("Esperado 90 d", money(f["valor_esperado_acionavel"]))
     st.markdown("### O que fazer na segunda")
     for a in manager_must_acts(agents, scored):
         st.markdown(f'<div class="g4-card"><span class="g4-badge g4-badge--focar">{a["tipo"]}</span><b>{a["quem"]}</b><div class="g4-why">{a["porque"]}</div><div class="g4-next">{a["acao"]}</div></div>', unsafe_allow_html=True)
@@ -195,16 +218,22 @@ else:
     f = revops_findings(scored, agents)
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Pipeline nominal", money(f["valor_lista_total"]), help="Soma do preço de lista de todos os deals abertos.")
-    c2.metric("Além de 138 dias", f"{f['pct_valor_alem_138']}%", help=f"{f['deals_alem_138']} deals, {money(f['valor_alem_138'])}. Nenhum deal na história fechou depois de 138 dias.")
-    c3.metric("Pipeline acionável", money(f["valor_lista_acionavel"]), help=f"{f['deals_acionaveis']} deals em Engaging até 138 dias.")
-    c4.metric("Valor esperado 90 d", money(f["valor_esperado_acionavel"]))
+    c2.metric("Além de 138 d", f"{f['pct_valor_alem_138']}%", help=f"{f['deals_alem_138']} deals, {money(f['valor_alem_138'])}. Nenhum deal na história fechou depois de 138 dias.")
+    c3.metric("Acionável", money(f["valor_lista_acionavel"]), help=f"{f['deals_acionaveis']} deals em Engaging até 138 dias.")
+    c4.metric("Esperado 90 d", money(f["valor_esperado_acionavel"]))
     st.markdown("### O que os dados sustentam")
-    st.write(f"Dos {f['deals_abertos']} deals abertos, {f['deals_alem_138']} ({f['pct_valor_alem_138']}% do valor nominal) estão além do maior ciclo já concluído. "
-             f"{f['deals_sem_conta']} ({f['pct_sem_conta']}%) não têm conta cadastrada, e nos dados nenhum deal fechou sem conta. "
-             f"{f['prospecting']} estão em prospecção sem data de engajamento. O que sobra para trabalhar com chance estimável vale {money(f['valor_lista_acionavel'])} de lista e {money(f['valor_esperado_acionavel'])} esperados em 90 dias.")
+    st.write(md(f"Dos {f['deals_abertos']} deals abertos, {f['deals_alem_138']} ({f['pct_valor_alem_138']}% do valor nominal) estão além do maior ciclo já concluído. "
+                f"{f['deals_sem_conta']} ({f['pct_sem_conta']}%) não têm conta cadastrada, e nos dados nenhum deal fechou sem conta. "
+                f"{f['prospecting']} estão em prospecção sem data de engajamento. O que sobra para trabalhar com chance estimável vale {money(f['valor_lista_acionavel'])} de lista e {money(f['valor_esperado_acionavel'])} esperados em 90 dias."))
+    por_regiao = scored.groupby("regional_office")["category"].value_counts().unstack(fill_value=0).reindex(columns=[c for c in CATEGORY_ORDER if c in scored["category"].unique()], fill_value=0)
     st.markdown("### Blocos de ação")
     summ = summarize_categories(scored).rename(columns={"valor_lista": "valor de lista", "valor_esperado": "valor esperado", "sem_conta": "sem conta"})
+    summ.index.name = "bloco"
     st.dataframe(summ, use_container_width=True, column_config={"valor de lista": st.column_config.NumberColumn(format="US$ %d"), "valor esperado": st.column_config.NumberColumn(format="US$ %d")})
+    st.markdown("### Por região")
+    st.caption("Os blocos não se distribuem por igual: toda a prospecção sem data de engajamento está concentrada em uma região.")
+    por_regiao.index.name = "região"
+    st.dataframe(por_regiao, use_container_width=True)
     st.markdown("### Chance de ganhar em 90 dias, por idade do deal")
     st.caption(f"Calibração por painel de snapshots ({', '.join(cal.snapshots) or cal.mode}), só deals com conta cadastrada, só com o passado. Intervalo de confiança de 95% (Wilson).")
     calib = pd.DataFrame({"faixa (dias)": [b for _, _, b in AGE_BANDS], "chance": [cal.p_by_band[b] for _, _, b in AGE_BANDS],
