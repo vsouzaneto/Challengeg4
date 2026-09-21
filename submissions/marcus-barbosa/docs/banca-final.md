@@ -29,4 +29,21 @@ O revisor final, sobre o que impressiona: "a entrega diz contra si mesma antes q
 
 ## Rodada 2 (revisor final, após as correções)
 
-Registrada abaixo quando executada.
+| Revisor | Veredito | Nota /100 | Impressionado |
+|---|---|---:|---|
+| Final, independente | APPROVED | 87 | sim |
+
+Parecer, na íntegra: "Os dois bloqueadores da rodada 1 foram resolvidos de fato: o transcript (707 KB) e a síntese da auditoria existem no caminho citado, e o §6 da metodologia agora quantifica o erro da chance calibrada (média de 10 pp, sentido sistemático em 8 de 11 células, células das datas principais) em vez de dizer que 'acompanha'. O executive summary foi reposicionado para pauta por bloco de idade mais diagnóstico, com o score rebaixado a desempate por valor, e o README passou a declarar o win rate plano por faixa de score, os 8 erros da IA e a origem 100% IA das hipóteses sem maquiagem. As limitações (deploy ausente, look-ahead da coluna 'com conta', score empata com preço) estão no lugar certo e com o mesmo teor da metodologia. O que impressiona segue sendo a entrega dizer contra si mesma com número e denominador antes que o avaliador precise dizer. Sobrou uma contradição factual nova entre os dois textos: o README localiza o erro máximo de 24 pontos em 31/08 na faixa 15-90, e o §6 o localiza em 31/07 na faixa 0-14; um dos dois está errado e é exatamente o tipo de deslize que a rodada 1 penalizou. A seção 'Rodada 2' de banca-final.md está vazia e precisa receber este parecer antes do PR. Deploy público e inscrição no ATS continuam fora do repositório, como declarado. Aprovo com essas pendências, que são de acabamento e não de método."
+
+Pendências apontadas e o que foi feito:
+
+| Pendência | Correção |
+|---|---|
+| Contradição sobre o erro máximo (README dizia 31/08 faixa 15-90; a tabela de `backtest.md` mostra 31/07 faixa 0-14, 40% prevista contra 16% observada) | README corrigido; a metodologia já estava certa |
+| Seção "Rodada 2" vazia | preenchida acima |
+| Deploy público (A10) | não feito; declarado em Limitações |
+| Inscrição no ATS (E7) | ação do candidato |
+
+## Leitura do resultado contra a definição de pronto
+
+A meta declarada era 100/100 por bloco. O resultado é 87/100 no revisor final após correções, com aprovação e "impressionado", e notas por bloco entre 55 e 88 na rodada 1 (as mais baixas, D e F, vinham dos artefatos que ainda não existiam e foram entregues depois). Fica registrado como está: a meta não foi atingida em número, e as pendências que restam (deploy público e hipóteses de domínio de origem humana) são declaradas, não escondidas.

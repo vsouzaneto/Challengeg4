@@ -70,8 +70,8 @@ Legenda de fonte: `C003` = README do challenge · `GUIA` = submission-guide.md �
 
 | ID | Marco | Fonte | Critério de aceite | Status |
 |---|---|---|---|---|
-| F1 | Banca de agentes revisores com a rubrica real dá 100/100 em cada entregável (A–E) | MB, REV | `docs/banca-final.md` | [ ] |
-| F2 | Revisor final independente declara-se impressionado | MB | parecer em `docs/banca-final.md` | [ ] |
+| F1 | Banca de agentes revisores com a rubrica real dá 100/100 em cada entregável (A–E) | MB, REV | `docs/banca-final.md`: rodada 1 com notas por bloco de 55 a 88 e 7,5 / 8,3 de 10; rodada 2 após correções: 87/100, APPROVED. Meta de 100 não atingida; registrado como está | [ ] |
+| F2 | Revisor final independente declara-se impressionado | MB | `docs/banca-final.md`: "impressionado: sim" nas duas rodadas (82 e 87/100) | [x] |
 | F3 | Supera substancialmente os baselines | ROOT | status por item em `differentiation-rubric.md` | [x] |
 | F4 | Tudo explicável: metodologia documentada de ponta a ponta | MB, VAGA | `docs/methodology.md` | [x] |
 | F5 | Papel do Marcus vs. papel da IA explícito | VAGA, TPL | seção no README com ledger contado | [x] |
