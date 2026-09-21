@@ -41,7 +41,7 @@ Legenda de fonte: `C003` = README do challenge · `GUIA` = submission-guide.md �
 | C5 | Quantas iterações foram necessárias | GUIA | `workflow.md` com 6 iterações numeradas | [x] |
 | C6 | Baselines "brief colado na IA" documentados | ROOT, REV | `baselines/` com 3 variantes e síntese | [x] |
 | C7 | Rubrica de diferenciação escrita antes de codar | REV | `differentiation-rubric.md` com status final por item | [x] |
-| C8 | Auditoria adversarial por agente independente | REV | `critique-synthesis.md` com achados verificados sobre o código corrigido | [ ] |
+| C8 | Auditoria adversarial por agente independente | REV | `critique-synthesis.md`: 46 achados, 45 verificados sobre o código corrigido, estado e correção por item | [x] |
 | C9 | Setup do Claude Code com humano no loop | REV | registrado no README e no process-log/README | [x] |
 
 ## D. Evidências

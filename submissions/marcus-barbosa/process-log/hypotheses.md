@@ -37,7 +37,7 @@ Dados: 8.800 oportunidades; 6.711 fechadas; data de referência 2017-12-31. Núm
 ## Leitura consolidada (2026-09-21)
 
 1. **Quem morre, morre cedo.** Metade das derrotas acontece em até 14 dias. Entre deals que fecharam, passar de duas semanas eleva a taxa de ganho de 61% para 67%; entre todos os deals abertos, a chance de ganhar em 90 dias é 37% até 14 dias, 40% de 15 a 90, 18% de 91 a 120 e 1% de 121 a 138 (painel, seção 4 da metodologia).
-2. **Não há sinal em vendedor, vendedor × produto, produto, setor, porte ou subsidiária** quando se testa contra o acaso. O gap que outros candidatos chamaram de fit vendedor × produto é o que amostras de 20 a 30 deals produzem por sorte.
+2. **Não há sinal em vendedor, vendedor × produto, produto, setor, porte ou subsidiária** quando se testa contra o acaso. O gap que parece fit vendedor × produto é o que amostras de 20 a 30 deals produzem por sorte.
 3. **A base tem duas bordas que enganam.** Só há fechamentos a partir de 2017-03-01 (truncamento à esquerda: derrotas rápidas de 2016 não existem na base) e nada além de 138 dias. O painel de calibração só usa deals engajados a partir de 2017-03-01 (regra implementada após a auditoria adversarial; ver erro da IA #5).
 4. **O pipeline aberto está fora do suporte do histórico.** 81% dos Engaging têm idade maior que qualquer ciclo já concluído. Isso é um achado de RevOps (higiene de pipeline), não um input para momentum.
 5. **68% dos deals abertos não têm conta, em ambos os estágios, e nenhum fechado fica sem conta.** A conta é preenchida no fechamento: ausência é processo, não sinal.

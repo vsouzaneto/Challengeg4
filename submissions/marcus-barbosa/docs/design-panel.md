@@ -31,7 +31,7 @@ O produto é uma pauta de segunda-feira em Streamlit que classifica cada deal ab
 
 | Achado (fonte: `02_explore.py`, preliminar) | Consequência no design |
 |---|---|
-| Vendedor: spread 15,4 pp mas χ² p=0,26; vendedor×produto: gap interquartil 8,7 pp **vs. 9,9 pp esperado por ruído binomial** (permutação p=0,886) | D16 decidido com dado: histórico do vendedor **fora do score** e fora da camada de "fit" do manager. O que #86 chamou de "54 pp de fit" é o tamanho do ruído em células pequenas; a UI diz isso. |
+| Vendedor: spread 15,4 pp mas χ² p=0,26; vendedor×produto: gap interquartil 8,7 pp **vs. 9,9 pp esperado por ruído binomial** (Monte Carlo sob nulo binomial, p=0,886) | D16 decidido com dado: histórico do vendedor **fora do score** e fora da camada de "fit" do manager. O que #86 chamou de "54 pp de fit" é o tamanho do ruído em células pequenas; a UI diz isso. |
 | Produto 4,8 pp (p=0,37), setor 3,7 pp (p=0,97), porte p=0,50, subsidiária p=0,74, preço de lista ρ=−0,01 | Entram só como candidatos; expectativa: "testado e descartado". Nenhum peso manual para eles. |
 | Ciclo máximo = 138 dias **para Won e para Lost** (0 Lost além do máximo Won) | A "linha dos 138" é regra de encerramento do CRM/dataset, não sinal comercial. Frase da categoria: "nenhum deal, ganho ou perdido, fechou depois de 138 dias" (não "nunca fecha"). T_max = 138 derivado, não hardcoded. |
 | 1.291 de 1.589 Engaging (81,2%) têm idade > 138 d na data de referência; mediana 165 d | O pipeline acionável hoje tem ~300 Engaging + 500 Prospecting. "Qualificar ou descartar" será a maior categoria; isso é achado de RevOps ("pipeline inflado em USD X"), não defeito do produto. |
@@ -343,7 +343,7 @@ Já existentes: scaffold + requirements + fixture; data.py + testes; audit → d
 | D13 Critério de sucesso | Seção "Como saber se funcionou" (seção 14) |
 | D14 Metodologia rastreável | Marcadores `{{artefato.chave}}` + link para o script; `test_docs` |
 | D15 Explicação honesta | `explain.py` com três estados, "k em 10", contribuições que fecham, 3 breakdowns reais |
-| D16 Vendedor decidido com dado | H1/H2b (permutação) em `decisions.md`; `test_agent_history_not_in_score`; UI explica |
+| D16 Vendedor decidido com dado | H1/H2b (Monte Carlo sob nulo binomial) em `decisions.md`; `test_agent_history_not_in_score`; UI explica |
 
 ---
 
