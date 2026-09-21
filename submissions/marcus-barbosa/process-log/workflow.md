@@ -10,3 +10,8 @@
 7. Síntese dos baselines: 16 lacunas comuns (ninguém abre o CSV, ninguém executa o backtest, leakage nas win rates, faixas fixas sem ver a distribuição, empates em Prospecting).
 8. Rubrica de diferenciação D1–D16 escrita antes de qualquer código (`differentiation-rubric.md`).
 9. Download do dataset pela sessão do Marcus no Kaggle (Chrome), após fila de uso da interface da máquina.
+
+## Iteração 1 — 2026-09-21 — Base de código antes dos dados
+10. Painel de arquitetura (3 designs independentes + 3 juízes + síntese) e varredura sobre o G4 (produtos, liderança, design system, tom de voz) lançados em paralelo.
+11. Código de base escrito sem os CSVs, a partir do schema publicado no Kaggle: `requirements.txt` com versões fixas, `download_data.py`, `leadscorer/data.py` (validação de schema, normalização GTXPro→GTX Pro, data de referência = max(close_date) dos fechados, joins que preservam linhas), `leadscorer/audit.py` (relatório de saúde dos dados) e `01_audit.py`.
+12. Fixture sintética pequena só para testes unitários (`tests/conftest.py`), com casos de borda deliberados; 5 testes verdes.
