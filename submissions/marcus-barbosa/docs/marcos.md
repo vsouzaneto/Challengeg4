@@ -63,7 +63,7 @@ Legenda de fonte: `C003` = README do challenge · `GUIA` = submission-guide.md �
 | E3 | README segue o template oficial, todas as seções preenchidas | CONTRIB, TPL, REV | todas as seções preenchidas, LinkedIn incluído | [x] |
 | E4 | Nenhum arquivo fora da pasta modificado | CONTRIB, REV | `05_check_repo.py` confere `git diff upstream/main` | [x] |
 | E5 | Sem node_modules / venv / dados brutos / .pkl no PR | REV | `05_check_repo.py` confere `git ls-files` | [x] |
-| E6 | Título do PR `[Submission] Marcus Barbosa — Challenge 003` | CONTRIB | ao abrir o PR | [ ] |
+| E6 | Título do PR `[Submission] Marcus Barbosa — Challenge 003` | CONTRIB | PR #137 aberto em 2026-09-21 com o título exato | [x] |
 | E7 | Inscrição na vaga no ATS feita pelo Marcus | VAGA, REV | confirmação do Marcus | [ ] |
 
 ## F. Qualidade final (definição de pronto do Marcus)
