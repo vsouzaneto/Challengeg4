@@ -77,7 +77,8 @@ Datas principais 30/06 e 30/09 de 2017, espaçadas pelo horizonte para que os de
 
 O que o backtest sustenta:
 
-- A chance calibrada com o passado acompanha a observada nas faixas com amostra (tabela "prevista vs. observada" em `backtest.md`). Em 30/06 só o snapshot de março estava disponível e as faixas de 91 a 138 dias ficaram sem chance; em 30/09, 91-120 já tinha amostra (7,3% prevista).
+- A chance calibrada com o passado erra, em média, 10 pontos percentuais contra a observada (erro absoluto médio nas 11 células da tabela "prevista vs. observada" de `backtest.md`; máximo de 24 pontos em 31/07 na faixa 0-14). O sentido do erro é sistemático: superestima em 8 das 11 células, porque a taxa de ganho da base cai ao longo de 2017 (H12c) e o painel só enxerga o passado. Nas datas principais: 30/06, faixa 0-14 prevista 46% contra 49% observada e 15-90 prevista 53% contra 43%; 30/09, 0-14 prevista 44% contra 47%, 15-90 prevista 46% contra 28%, 91-120 prevista 7% contra 0%. Em 30/06 só o snapshot de março estava disponível e as faixas de 91 a 138 dias ficaram sem chance.
+- O win rate em 90 dias por faixa de score é plano: em 30/06, 48%, 44%, 49%, 42% e 41% da faixa 0-20 à 81-100; em 30/09, 30%, 30%, 25%, 37% e 29%. O score ordena valor esperado, não probabilidade, e o backtest mostra isso.
 - O bloco Última janela fecha pouco: em cada data, a tabela de categorias mostra o win rate e a taxa de fechamento em 90 dias dos deals entre 91 e 138 dias.
 - O bloco Confirmar se está vivo é descrito, não validado: nesta base nenhum ciclo concluído passa de 138 dias, então um deal aberto há mais de 138 dias não pode ter fechado depois. A tabela mostra só o tamanho do bloco em cada data (149 a 530 deals).
 

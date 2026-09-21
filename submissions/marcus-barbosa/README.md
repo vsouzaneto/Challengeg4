@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-Construí um Lead Scorer em Python e Streamlit que o vendedor abre na segunda-feira e vê o que fazer com cada deal, com o motivo e o número por trás. Antes de qualquer fator, testei 27 hipóteses nos 8.800 deals do CRM: vendedor, vendedor × produto, produto como taxa, setor e porte da conta não separam ganho de perda além do acaso, e a base tem duas bordas que enganam (só há fechamentos a partir de março de 2017 e nenhum ciclo concluído passa de 138 dias). O que sobrevive é a idade do deal e o valor. A chance de ganhar em 90 dias é calibrada por um painel de 7 snapshots de 2017, só com o passado e sem filtro que olhe o futuro: 37% até 14 dias, 40% de 15 a 90, 18% de 91 a 120 e 1% de 121 a 138. O achado mais caro para a Head de RevOps: 1.291 deals em Engaging, 64% do valor nominal do pipeline, estão além de qualquer ciclo que esta base já concluiu, e 1.425 deals abertos não têm conta no CRM. A recomendação principal é limpar esse pipeline e cadastrar as contas antes de cobrar priorização de alguém.
+Construí, em Python e Streamlit, uma pauta de segunda-feira por bloco de idade do deal com um diagnóstico do pipeline, e um score de valor esperado que ordena dentro de cada bloco. O vendedor abre e vê o que fazer com cada deal, com o motivo e o número por trás. Antes de qualquer fator, testei 27 hipóteses nos 8.800 deals do CRM: vendedor, vendedor × produto, produto como taxa, setor e porte da conta não separam ganho de perda além do acaso, e a base tem duas bordas que enganam (só há fechamentos a partir de março de 2017 e nenhum ciclo concluído passa de 138 dias). O que sobrevive é a idade do deal e o valor. A chance de ganhar em 90 dias é calibrada por um painel de 7 snapshots de 2017, só com o passado e sem filtro que olhe o futuro: 37% até 14 dias, 40% de 15 a 90, 18% de 91 a 120 e 1% de 121 a 138. O backtest é claro sobre o limite: dentro de cada faixa de idade o score ordena como o preço e o win rate por faixa de score é plano; o valor da ferramenta está nos blocos e no diagnóstico. O achado mais caro para a Head de RevOps: 1.291 deals em Engaging, 64% do valor nominal do pipeline, estão além de qualquer ciclo que esta base já concluiu, e 1.425 deals abertos não têm conta no CRM. A recomendação principal é limpar esse pipeline e cadastrar as contas antes de cobrar priorização de alguém.
 
 ---
 
@@ -31,7 +31,7 @@ Com os dados: auditoria de saúde com número e SHA-256 dos arquivos (`solution/
 5. Valor concentrado. 20% dos deals abertos carregam 50% do valor de lista; o valor fechado é 0,998 do preço de lista, então o preço de lista é o ticket. Dentro de cada faixa de idade, o score ordena como o preço.
 6. Toda a prospecção sem data (500 deals) está na região Central, e um vendedor tem 194 deals abertos sem nenhum acionável.
 
-O que o backtest diz contra a solução, sem rodeio: na captura de valor ganho pelo top-N, o score empata com ordenar por preço de lista (top-100 em 30/06: 23% do valor ganho, igual ao preço, contra 6% do aleatório). O que o método faz que ordenar por preço não faz é tirar do topo o que a história diz que não fecha, separar a última janela do follow-up, dizer o que fazer com cada bloco e não inventar chance onde não há histórico (`docs/backtest.md`).
+O que o backtest diz contra a solução, sem rodeio: na captura de valor ganho pelo top-N, o score empata com ordenar por preço de lista (top-100 em 30/06: 23% do valor ganho, igual ao preço, contra 6% do aleatório), e o win rate em 90 dias por faixa de score é plano (30/06: 48%, 44%, 49%, 42%, 41% da faixa mais baixa à mais alta). A chance calibrada com o passado também superestima a observada nas datas de estabilidade (até 24 pontos em 31/08 na faixa 15-90), porque a taxa de ganho da base cai ao longo de 2017. O que o método faz que ordenar por preço não faz é tirar do topo o que a história diz que não fecha, separar a última janela do follow-up, dizer o que fazer com cada bloco e não inventar chance onde não há histórico (`docs/backtest.md`).
 
 ### Recomendações
 
@@ -112,7 +112,7 @@ Detalhes iteração a iteração em `process-log/workflow.md`; decisões com ori
 
 ### Onde a IA errou e como corrigi
 
-Sete erros registrados em `process-log/ai-errors.md`, cada um com detecção, causa raiz e correção:
+Oito erros registrados em `process-log/ai-errors.md`, cada um com detecção, causa raiz e correção:
 
 1. `git add -f` arrastou caches do pytest para um commit; corrigido e regra de add alterada.
 2. O veredito automático marcou sazonalidade como confirmada (p=10⁻¹⁹) ignorando que a base não tem fechamentos antes de março de 2017; criada a janela limpa.
@@ -121,17 +121,18 @@ Sete erros registrados em `process-log/ai-errors.md`, cada um com detecção, ca
 5. A janela limpa estava no ledger, mas não no painel: deals de 2016 entravam no snapshot de março. Detectado pela auditoria adversarial; corrigido com teste.
 6. A calibração filtrava por "tem conta" usando o estado final do campo, o que é olhar o futuro e inflava a chance em cerca de 1,6×; a chance principal passou a usar todos os deals.
 7. Faixas pequenas herdavam a taxa da faixa mais jovem, e o backtest chamava de validação o que é consequência da definição; agrupamento só com faixas mais velhas e texto reescrito.
+8. Ao corrigir o script de validação em ambiente limpo, a IA nomeou um parâmetro de `$args`, variável automática do PowerShell; cada passo abriu um Python vazio e "passou" sem rodar nada. Detectado no log; corrigido e validado de novo.
 
 ### O que eu adicionei que a IA sozinha não faria
 
-Meu papel foi de direção, e o ledger registra exatamente isso, sem atribuir a mim hipóteses que não formulei. O que veio de mim: começar pela auditoria do processo e das reviews públicas, em vez de pelos dados; a regra de que nenhum fator entra sem hipótese testada e nenhum número sem denominador; a definição de pronto com banca de revisores e nota 100; a escolha do 003 contra o consenso do painel; a exigência de que o produto tivesse a cara do G4 e o texto não tivesse cara de IA; a exigência de uma auditoria adversarial antes de qualquer publicação; e a recusa a qualquer atribuição falsa no process log. As hipóteses, o código e os textos são da IA sob essa direção; as decisões 9 a 24 foram delegadas à análise com a condição de vir com o porquê, e endossadas.
+Meu papel foi de direção, e o ledger registra exatamente isso, sem atribuir a mim hipóteses que não formulei. Quando a IA pediu hipóteses de domínio antes de abrir os dados, não as formulei e deleguei a formulação, mantendo como controle a regra do método (hipótese antes de fator, número com denominador) e a auditoria adversarial. Isso custa no eixo de uso de IA e fica declarado em vez de maquiado. O que veio de mim: começar pela auditoria do processo e das reviews públicas, em vez de pelos dados; a regra de que nenhum fator entra sem hipótese testada e nenhum número sem denominador; a definição de pronto com banca de revisores e nota 100; a escolha do 003 contra o consenso do painel; a exigência de que o produto tivesse a cara do G4 e o texto não tivesse cara de IA; a exigência de uma auditoria adversarial antes de qualquer publicação; e a recusa a qualquer atribuição falsa no process log. As hipóteses, o código e os textos são da IA sob essa direção; as decisões 9 a 24 foram delegadas à análise com a condição de vir com o porquê, e endossadas.
 
 ---
 
 ## Evidências
 
 - [x] Screenshots do app rodando: `process-log/screenshots/app/`
-- [x] Screenshots das sessões com IA: `process-log/screenshots/sessoes/`
+- [x] Screenshots das sessões com IA: `process-log/screenshots/sessoes/` (2 capturas da janela do Claude Code em momentos de revisão de código, barra lateral recortada por privacidade)
 - [x] Chat export: `process-log/chat-exports/` (transcript da sessão, com o token de API que colei por engano removido)
 - [x] Git history: commits incrementais nesta branch, autoria Marcus Barbosa, com o trailer Co-Authored-By declarando a IA
 - [x] Outro: baselines cegos (`process-log/baselines/`), painel de arquitetura (`docs/design-panel.md`), auditoria adversarial (`process-log/critique-synthesis.md`), banca final (`docs/banca-final.md`)

@@ -15,7 +15,7 @@ Dados: 8.800 oportunidades; 6.711 fechadas; data de referência 2017-12-31. Núm
 | H7 | Desconto: o valor fechado (close_value) fica abaixo do preço de lista, e o desconto varia por vendedor | IA | **refutada** | sim: preço de lista como ticket | close_value/preço mediana 0,998 (P10 0,87, P90 1,12); spread entre vendedores 0,04 |
 | H8 | Deal parado há muito tempo não fecha: quanto maior o ciclo, menor a taxa de ganho | IA | **refutada** | não | ciclo 0–14 d: 55% de ganho (n=2.806); 15–30 d: 73%; 121–138 d: 76%: o inverso da hipótese |
 | H9 | Existe um teto de ciclo acima do qual ninguém ganha (linha dos 138 dias) | IA | **refutada** | sim: limite de 138 dias | ciclo máximo é 138 d tanto para Won quanto para Lost; 0 Lost além disso |
-| H10 | Sobreviver às primeiras semanas aumenta a chance: P(ganhar | ciclo >= a) sobe antes de cair | IA | **confirmada** | não | ciclo ≥ 14 d) = 68,6% vs 63,2% na base; 71% a partir de 90 d |
+| H10 | Sobreviver às primeiras semanas aumenta a chance: P(ganhar | ciclo >= a) sobe antes de cair | IA | **confirmada** | não | P(ganhar dado ciclo ≥ 14 d) = 68,6% vs 63,2% na base; 71% a partir de 90 d |
 | H11 | Os deals em Engaging hoje estão, em sua maioria, além de qualquer ciclo histórico de vitória | IA | **confirmada** | sim: bloco Confirmar se está vivo | 1.291 de 1.589 Engaging (81%) com idade > 138 d; idade mediana 165 d |
 | H12 | Sazonalidade: o mês de engajamento muda a taxa de ganho | IA | **confirmada, depois derrubada** | não: derrubada por H12c | spread 44,6 pp, p=10⁻¹⁹, mas inclui meses truncados e censurados |
 | H13 | Quem já comprou compra de novo: conta com vitórias anteriores converte melhor | IA | **refutada** | não | 0 vitórias anteriores: 72% (n=1.098); >10: 61% (n=4.233): sinal invertido |

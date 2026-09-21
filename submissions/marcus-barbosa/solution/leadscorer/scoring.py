@@ -75,7 +75,7 @@ def score_pipeline(enriched: pd.DataFrame, as_of: pd.Timestamp, calibration: Cal
     op = open_pipeline_at(enriched, as_of, include_prospecting)
     op["list_value"] = op["sales_price"].astype(float)
     op["age_band"] = op["age_days"].map(cal.band_for)
-    op["p_win"] = op["age_days"].map(lambda a: cal.p_win(a) if cal.p_win(a) is not None else np.nan)
+    op["p_win"] = op["age_days"].map(lambda a: np.nan if cal.p_win(a) is None else cal.p_win(a))
     op.loc[op["stage_at_asof"] == "Prospecting", "p_win"] = np.nan
     in_range = (op["stage_at_asof"] == "Engaging") & (op["age_days"] <= cal.max_support_days)
     op["support"] = np.select(
@@ -114,7 +114,9 @@ def explain(r: dict, cal: Calibration) -> str:
         parts.append("Em prospecção, sem data de engajamento. O histórico não registra quantas prospecções viram engajamento, então não há chance estimável.")
         parts.append(f"Valor de lista {money(r['list_value'])}, acima de {int(r['value_rank'])}% dos deals abertos.")
     elif r["support"] == SUPPORT_BEYOND:
-        parts.append(f"Engajado há {idade} dias. Nesta base nenhum deal fechou, ganho ou perdido, depois de {cal.max_support_days} dias; entre 121 e 138 dias, a chance de fechar em 90 dias já é de {_pct(cal.p_close_by_band.get('121-138') or 0)}.")
+        p_close_last = cal.p_close_by_band.get("121-138") if cal.mode == "painel" else None
+        extra = f"; entre 121 e 138 dias, a chance de fechar em 90 dias já é de {_pct(p_close_last)}" if p_close_last is not None else ""
+        parts.append(f"Engajado há {idade} dias. Nesta base nenhum deal fechou, ganho ou perdido, depois de {cal.max_support_days} dias{extra}.")
         parts.append(f"Valor de lista {money(r['list_value'])}, acima de {int(r['value_rank'])}% dos deals abertos: confirmar antes de investir tempo.")
     elif r["support"] == SUPPORT_THIN:
         parts.append(f"Engajado há {idade} dias. Nesta data ainda não há amostra suficiente de deals com essa idade para estimar a chance; sem score.")
