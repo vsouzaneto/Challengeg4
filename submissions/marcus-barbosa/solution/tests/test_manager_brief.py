@@ -17,11 +17,13 @@ def test_seller_brief_budget_and_order():
     b = seller_brief(scored[scored["sales_agent"] == "A"])
     assert 0 < len(b["itens"]) <= MAX_ITEMS
     tipos = [i["tipo"] for i in b["itens"]]
-    ordem = ["Focar agora", "Primeiras duas semanas", "Confirmar se está vivo", "Cadastrar conta", "Qualificar ou descartar", "Manter follow-up"]
+    ordem = ["Focar agora", "Primeiras duas semanas", "Última janela", "Confirmar se está vivo", "Cadastrar conta", "Qualificar ou descartar", "Manter follow-up"]
     primeiros = [t for t in tipos if t != "Qualificar ou descartar"]
     assert [ordem.index(t) for t in primeiros] == sorted(ordem.index(t) for t in primeiros)
     assert len({i["deal"] for i in b["itens"]}) == len(b["itens"])
     assert all("porque" in i and i["acao"] for i in b["itens"])
+    cadastro = [i for i in b["itens"] if i["tipo"] == "Cadastrar conta"]
+    assert all(i["acao"].startswith("Cadastrar a conta") for i in cadastro)
 
 
 def test_agent_table_and_findings():

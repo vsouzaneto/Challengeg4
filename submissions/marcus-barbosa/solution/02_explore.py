@@ -11,6 +11,7 @@ Uso:
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -50,7 +51,7 @@ def spread(g: pd.DataFrame) -> float:
 
 # ----------------------------------------------------------------------------- vendedor
 
-@hypothesis("H1", "Vendedores diferem de verdade na taxa de conversão (não é ruído)", "MB?")
+@hypothesis("H1", "Vendedores diferem de verdade na taxa de conversão (não é ruído)", "IA")
 def h_agent(ctx):
     closed = ctx["closed"]
     g = wr_table(closed, "sales_agent", 20)
@@ -78,7 +79,7 @@ def h_agent_product(ctx):
             "verdict": "confirmada" if (q3 - q1) > (qa3 - qa1) * 1.2 else "refutada"}
 
 
-@hypothesis("H3", "Vendedor com muitos deals abertos (sobrecarga) converte pior", "MB?")
+@hypothesis("H3", "Vendedor com muitos deals abertos (sobrecarga) converte pior", "IA")
 def h_workload(ctx):
     open_by_agent = ctx["open"].groupby("sales_agent").size().rename("open_deals")
     g = wr_table(ctx["closed"], "sales_agent", 20).join(open_by_agent, how="inner")
@@ -99,7 +100,7 @@ def h_product(ctx):
             "verdict": "confirmada" if p < 0.01 and spread(g) > 0.08 else "refutada"}
 
 
-@hypothesis("H5", "Deal mais caro (preço de lista) tem menor chance de fechar", "MB?")
+@hypothesis("H5", "Deal mais caro (preço de lista) tem menor chance de fechar", "IA")
 def h_price(ctx):
     closed = ctx["closed"]
     g = closed.groupby("sales_price")["won"].agg(n="size", win_rate="mean").sort_index()
@@ -128,7 +129,7 @@ def h_discount(ctx):
 
 # ----------------------------------------------------------------------------- tempo
 
-@hypothesis("H8", "Deal parado há muito tempo não fecha: quanto maior o ciclo, menor a taxa de ganho", "MB?")
+@hypothesis("H8", "Deal parado há muito tempo não fecha: quanto maior o ciclo, menor a taxa de ganho", "IA")
 def h_cycle_buckets(ctx):
     closed = ctx["closed"]
     bins = [-1, 14, 30, 45, 60, 90, 120, 138, 10_000]
@@ -179,7 +180,7 @@ def h_season(ctx):
 
 # ----------------------------------------------------------------------------- conta
 
-@hypothesis("H13", "Quem já comprou compra de novo: conta com vitórias anteriores converte melhor", "MB?")
+@hypothesis("H13", "Quem já comprou compra de novo: conta com vitórias anteriores converte melhor", "IA")
 def h_repeat(ctx):
     closed = ctx["closed"].sort_values("engage_date").copy()
     prior = []
@@ -198,7 +199,7 @@ def h_repeat(ctx):
             "verdict": "confirmada" if (g["win_rate"].iloc[-1] - g["win_rate"].iloc[0]) > 0.05 or (p < 0.01 and rho > 0.05) else "refutada"}
 
 
-@hypothesis("H14", "Conta grande (receita/funcionários) fecha menos, mas paga mais", "MB?")
+@hypothesis("H14", "Conta grande (receita/funcionários) fecha menos, mas paga mais", "IA")
 def h_size(ctx):
     closed = ctx["closed"].dropna(subset=["revenue"])
     t = pd.qcut(closed["revenue"], 3, labels=["pequena", "média", "grande"])
@@ -275,7 +276,7 @@ def _null_iqr_gap(closed: pd.DataFrame, keys: list[str], min_n: int, n_sim: int 
     return obs, float(sims.mean()), float((sims >= obs).mean())
 
 
-@hypothesis("H2b", "O gap vendedor × produto é maior do que o acaso produziria com esses tamanhos de amostra (teste de permutação binomial)", "MB?")
+@hypothesis("H2b", "O gap vendedor × produto é maior do que o acaso produziria com esses tamanhos de amostra (Monte Carlo sob nulo binomial)", "IA")
 def h_agent_product_null(ctx):
     obs, null_mean, p = _null_iqr_gap(ctx["closed"], ["sales_agent", "product"], 20)
     obs_a, null_a, p_a = _null_iqr_gap(ctx["closed"], ["sales_agent"], 20)
@@ -285,7 +286,7 @@ def h_agent_product_null(ctx):
             "verdict": "confirmada" if p < 0.05 else "refutada"}
 
 
-@hypothesis("H12b", "A sazonalidade sobrevive quando se remove a censura (só meses em que todo deal teve 138 dias para fechar)", "MB?")
+@hypothesis("H12b", "A sazonalidade sobrevive quando se remove a censura (só meses em que todo deal teve 138 dias para fechar)", "IA")
 def h_season_uncensored(ctx):
     closed = ctx["closed"]
     cutoff = ctx["ref"] - pd.Timedelta(days=138)
@@ -295,13 +296,13 @@ def h_season_uncensored(ctx):
     g_all = closed.groupby(m_all)["won"].agg(n="size", win_rate="mean")
     g_full = full.groupby(m_full)["won"].agg(n="size", win_rate="mean")
     p = chi2_pvalue(pd.crosstab(m_full, full["won"]))
-    return {"metric": "win rate por mês com e sem os meses censurados (engage após ref − 138 d)",
+    return {"metric": "win rate por mês com e sem os meses censurados (engage após ref - 138 d)",
             "value": {"cutoff": str(cutoff.date()), "all_months": {k: {"n": int(r["n"]), "wr": round(100 * r["win_rate"], 1)} for k, r in g_all.iterrows()},
                       "uncensored_spread_pp": round(100 * spread(g_full), 1), "uncensored_p_value": p, "uncensored_months": int(len(g_full))},
             "verdict": "confirmada" if p < 0.01 and spread(g_full) > 0.08 else "refutada"}
 
 
-@hypothesis("H8b", "Ciclo curto = derrota rápida: a relação ciclo × ganho não é 'parado não fecha', é 'quem morre, morre cedo'", "MB?")
+@hypothesis("H8b", "Ciclo curto = derrota rápida: a relação ciclo × ganho não é 'parado não fecha', é 'quem morre, morre cedo'", "IA")
 def h_die_early(ctx):
     closed = ctx["closed"]
     won_cycle = closed.loc[closed["won"], "cycle_days"]; lost_cycle = closed.loc[~closed["won"], "cycle_days"]
@@ -313,7 +314,7 @@ def h_die_early(ctx):
             "verdict": "confirmada" if lost_cycle.median() < won_cycle.median() else "refutada"}
 
 
-@hypothesis("H13b", "O efeito negativo de 'muitas vitórias anteriores' desaparece quando se controla o período (é confusão com o tempo)", "MB?")
+@hypothesis("H13b", "O efeito negativo de 'muitas vitórias anteriores' desaparece quando se controla o período (é confusão com o tempo)", "IA")
 def h_repeat_controlled(ctx):
     closed = ctx.get("closed_prior")
     if closed is None:
@@ -334,7 +335,7 @@ def h_repeat_controlled(ctx):
             "verdict": "confirmada" if diffs and abs(np.mean(diffs)) < 3 else "refutada"}
 
 
-@hypothesis("H20", "O valor esperado (preço × probabilidade) concentra o pipeline: poucos deals carregam a maior parte do valor", "MB?")
+@hypothesis("H20", "O valor esperado (preço × probabilidade) concentra o pipeline: poucos deals carregam a maior parte do valor", "IA")
 def h_value_concentration(ctx):
     op = ctx["open"].dropna(subset=["sales_price"]).sort_values("sales_price", ascending=False)
     total = float(op["sales_price"].sum())
@@ -345,7 +346,7 @@ def h_value_concentration(ctx):
             "verdict": "confirmada" if top20pct > 0.5 else "refutada"}
 
 
-@hypothesis("H21", "A base é truncada à esquerda: só há fechamentos a partir de 2017-03-01, então derrotas rápidas de deals engajados antes disso estão ausentes e inflam a win rate dos primeiros meses", "MB?")
+@hypothesis("H21", "A base é truncada à esquerda: só há fechamentos a partir de 2017-03-01, então derrotas rápidas de deals engajados antes disso estão ausentes e inflam a win rate dos primeiros meses", "IA")
 def h_left_truncation(ctx):
     closed = ctx["closed"]
     close_min = closed["close_date"].min(); engage_min = closed["engage_date"].min()
@@ -358,7 +359,7 @@ def h_left_truncation(ctx):
             "verdict": "confirmada" if len(early) and early["won"].mean() > closed["won"].mean() + 0.05 else "refutada"}
 
 
-@hypothesis("H12c", "Na janela limpa (engajados entre 2017-03-01 e ref − 138 d, sem truncamento nem censura) ainda há variação mensal relevante", "MB?")
+@hypothesis("H12c", "Na janela limpa (engajados entre 2017-03-01 e ref - 138 d, sem truncamento nem censura) ainda há variação mensal relevante", "IA")
 def h_season_clean(ctx):
     closed = ctx["closed"]
     lo = closed["close_date"].min(); hi = ctx["ref"] - pd.Timedelta(days=138)
@@ -371,7 +372,7 @@ def h_season_clean(ctx):
             "verdict": "confirmada" if p < 0.01 and spread(g) > 0.08 else "refutada"}
 
 
-@hypothesis("H10b", "Na janela limpa, P(ganhar | ciclo >= a) continua subindo com a idade do deal", "MB?")
+@hypothesis("H10b", "Na janela limpa, P(ganhar | ciclo >= a) continua subindo com a idade do deal", "IA")
 def h_survival_clean(ctx):
     closed = ctx["closed"]
     lo = closed["close_date"].min(); hi = ctx["ref"] - pd.Timedelta(days=138)
@@ -406,6 +407,7 @@ def run() -> tuple[str, dict]:
 
 
 def main() -> int:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     md, data = run()
     DOCS.mkdir(exist_ok=True)
     (DOCS / "exploration_results.md").write_text(md, encoding="utf-8")

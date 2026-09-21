@@ -14,7 +14,7 @@
       "verdict": "refutada",
       "id": "H1",
       "statement": "Vendedores diferem de verdade na taxa de conversão (não é ruído)",
-      "origin": "MB?"
+      "origin": "IA"
     },
     {
       "metric": "gap entre quartis de win rate: vendedor×produto vs vendedor; cobertura dos deals abertos",
@@ -42,7 +42,7 @@
       "verdict": "confirmada",
       "id": "H3",
       "statement": "Vendedor com muitos deals abertos (sobrecarga) converte pior",
-      "origin": "MB?"
+      "origin": "IA"
     },
     {
       "metric": "spread de win rate entre produtos e p-valor",
@@ -82,7 +82,7 @@
       "verdict": "refutada",
       "id": "H5",
       "statement": "Deal mais caro (preço de lista) tem menor chance de fechar",
-      "origin": "MB?"
+      "origin": "IA"
     },
     {
       "metric": "mediana do ciclo por produto e teste de Kruskal-Wallis",
@@ -180,7 +180,7 @@
       "verdict": "refutada",
       "id": "H8",
       "statement": "Deal parado há muito tempo não fecha: quanto maior o ciclo, menor a taxa de ganho",
-      "origin": "MB?"
+      "origin": "IA"
     },
     {
       "metric": "ciclo máximo entre Won vs Lost e quantos Lost passaram do teto",
@@ -301,7 +301,7 @@
       "verdict": "refutada",
       "id": "H13",
       "statement": "Quem já comprou compra de novo: conta com vitórias anteriores converte melhor",
-      "origin": "MB?"
+      "origin": "IA"
     },
     {
       "metric": "win rate e valor mediano dos Won por tercil de receita da conta",
@@ -326,7 +326,7 @@
       "verdict": "refutada",
       "id": "H14",
       "statement": "Conta grande (receita/funcionários) fecha menos, mas paga mais",
-      "origin": "MB?"
+      "origin": "IA"
     },
     {
       "metric": "spread de win rate por setor e p-valor",
@@ -434,11 +434,11 @@
       },
       "verdict": "refutada",
       "id": "H2b",
-      "statement": "O gap vendedor × produto é maior do que o acaso produziria com esses tamanhos de amostra (teste de permutação binomial)",
-      "origin": "MB?"
+      "statement": "O gap vendedor × produto é maior do que o acaso produziria com esses tamanhos de amostra (Monte Carlo sob nulo binomial)",
+      "origin": "IA"
     },
     {
-      "metric": "win rate por mês com e sem os meses censurados (engage após ref − 138 d)",
+      "metric": "win rate por mês com e sem os meses censurados (engage após ref - 138 d)",
       "value": {
         "cutoff": "2017-08-15",
         "all_months": {
@@ -510,7 +510,7 @@
       "verdict": "confirmada",
       "id": "H12b",
       "statement": "A sazonalidade sobrevive quando se remove a censura (só meses em que todo deal teve 138 dias para fechar)",
-      "origin": "MB?"
+      "origin": "IA"
     },
     {
       "metric": "distribuição do ciclo de Won vs Lost",
@@ -532,7 +532,7 @@
       "verdict": "confirmada",
       "id": "H8b",
       "statement": "Ciclo curto = derrota rápida: a relação ciclo × ganho não é 'parado não fecha', é 'quem morre, morre cedo'",
-      "origin": "MB?"
+      "origin": "IA"
     },
     {
       "metric": "win rate de contas sem vitórias anteriores vs. com >5, dentro de cada trimestre (sem meses censurados)",
@@ -556,7 +556,7 @@
       "verdict": "refutada",
       "id": "H13b",
       "statement": "O efeito negativo de 'muitas vitórias anteriores' desaparece quando se controla o período (é confusão com o tempo)",
-      "origin": "MB?"
+      "origin": "IA"
     },
     {
       "metric": "concentração do valor de lista no pipeline aberto",
@@ -569,7 +569,7 @@
       "verdict": "confirmada",
       "id": "H20",
       "statement": "O valor esperado (preço × probabilidade) concentra o pipeline: poucos deals carregam a maior parte do valor",
-      "origin": "MB?"
+      "origin": "IA"
     },
     {
       "metric": "janela de close_date vs engage_date; deals engajados antes do primeiro fechamento possível; ciclo mínimo desses deals",
@@ -584,7 +584,7 @@
       "verdict": "confirmada",
       "id": "H21",
       "statement": "A base é truncada à esquerda: só há fechamentos a partir de 2017-03-01, então derrotas rápidas de deals engajados antes disso estão ausentes e inflam a win rate dos primeiros meses",
-      "origin": "MB?"
+      "origin": "IA"
     },
     {
       "metric": "win rate por mês de engajamento na janela limpa",
@@ -625,8 +625,8 @@
       },
       "verdict": "confirmada",
       "id": "H12c",
-      "statement": "Na janela limpa (engajados entre 2017-03-01 e ref − 138 d, sem truncamento nem censura) ainda há variação mensal relevante",
-      "origin": "MB?"
+      "statement": "Na janela limpa (engajados entre 2017-03-01 e ref - 138 d, sem truncamento nem censura) ainda há variação mensal relevante",
+      "origin": "IA"
     },
     {
       "metric": "P(ganhar | ciclo >= a) na janela limpa",
@@ -671,7 +671,7 @@
       "verdict": "confirmada",
       "id": "H10b",
       "statement": "Na janela limpa, P(ganhar | ciclo >= a) continua subindo com a idade do deal",
-      "origin": "MB?"
+      "origin": "IA"
     }
   ]
 }

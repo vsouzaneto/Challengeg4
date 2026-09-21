@@ -6,6 +6,7 @@ relatório existir.
 """
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 
 import pandas as pd
@@ -17,11 +18,29 @@ def _pct(n: int, d: int) -> str:
     return f"{(100.0 * n / d):.1f}%" if d else "n/a"
 
 
-def audit(tables: Tables) -> tuple[str, dict]:
+def file_manifest(raw_dir: Path) -> list[dict]:
+    """Nome, bytes, linhas e SHA-256 de cada CSV usado: a procedência dos dados fica no relatório."""
+    out = []
+    for name in ("accounts.csv", "products.csv", "sales_teams.csv", "sales_pipeline.csv"):
+        path = Path(raw_dir) / name
+        if not path.exists():
+            continue
+        h = hashlib.sha256(path.read_bytes()).hexdigest()
+        lines = sum(1 for _ in path.open("rb")) - 1
+        out.append({"file": name, "bytes": path.stat().st_size, "rows": lines, "sha256": h})
+    return out
+
+
+def audit(tables: Tables, raw_dir: Path | None = None) -> tuple[str, dict]:
     """Retorna (markdown, métricas) para que testes e docs usem os mesmos números."""
     p = tables.pipeline
     m: dict = {}
     lines: list[str] = ["# Relatório de saúde dos dados", ""]
+    if raw_dir is not None:
+        m["manifest"] = file_manifest(raw_dir)
+        lines += ["## Arquivos usados (procedência)", "", "| Arquivo | Bytes | Linhas | SHA-256 |", "|---|---:|---:|---|"]
+        lines += [f"| {f['file']} | {f['bytes']:,} | {f['rows']:,} | `{f['sha256']}` |" for f in m["manifest"]]
+        lines.append("")
 
     lines += ["## Tamanho das tabelas", "", "| Tabela | Linhas | Colunas |", "|---|---:|---:|"]
     for name, df in (("accounts", tables.accounts), ("products", tables.products),
@@ -129,7 +148,7 @@ def audit(tables: Tables) -> tuple[str, dict]:
     return "\n".join(lines) + "\n", m
 
 
-def write_report(tables: Tables, out_path: Path | str) -> dict:
-    md, metrics = audit(tables)
+def write_report(tables: Tables, out_path: Path | str, raw_dir: Path | None = None) -> dict:
+    md, metrics = audit(tables, raw_dir)
     Path(out_path).write_text(md, encoding="utf-8")
     return metrics

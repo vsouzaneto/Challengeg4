@@ -6,6 +6,7 @@ Uso:
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 from leadscorer.audit import write_report
@@ -17,9 +18,10 @@ DOCS = HERE.parent / "docs"
 
 
 def main() -> int:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     tables = load_tables(RAW)
     DOCS.mkdir(exist_ok=True)
-    metrics = write_report(tables, DOCS / "data_health_report.md")
+    metrics = write_report(tables, DOCS / "data_health_report.md", RAW)
     (DOCS / "data_health_metrics.json").write_text(json.dumps(metrics, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
     print(f"relatório: {DOCS / 'data_health_report.md'}")
     for k in ("rows_sales_pipeline", "reference_date", "rows_without_account", "open_rows_without_account",

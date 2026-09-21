@@ -1,5 +1,14 @@
 # Relatório de saúde dos dados
 
+## Arquivos usados (procedência)
+
+| Arquivo | Bytes | Linhas | SHA-256 |
+|---|---:|---:|---|
+| accounts.csv | 4,670 | 85 | `e5242324768a563fc632cddfed49a29acbbf2892b8a3c6453cc9650de9ae0358` |
+| products.csv | 171 | 7 | `7c1c8cbbdb6d4c286902e1985eeb529a36366d6a43f43cd4a93c4b1da2a6eb84` |
+| sales_teams.csv | 1,284 | 35 | `aeff1272ebe196f5a27e3fc0578aa27abf48ed9ae461aa344fb95990e5ad8bd1` |
+| sales_pipeline.csv | 637,773 | 8,800 | `825ce8f6c32d4009548b468df3173d55a46fd73f2531f532c5459371dc52adf2` |
+
 ## Tamanho das tabelas
 
 | Tabela | Linhas | Colunas |

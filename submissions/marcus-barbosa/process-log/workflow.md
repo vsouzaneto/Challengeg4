@@ -38,3 +38,11 @@
 25. Capturas do app com Playwright (`04_screenshots.py`); capturas da janela do Claude Code por PrintWindow sem ativar a janela, com a barra lateral (outras sessões do usuário) recortada por privacidade.
 26. Validação em ambiente limpo (`99_clean_env_check.ps1`): venv novo, 21 testes, auditoria, exploração, backtest e health check do app, tudo verde.
 27. README no template oficial e `docs/methodology.md` número-a-script. Auditoria adversarial por agentes lançada.
+
+## Iteração 6 — 2026-09-21 — Auditoria adversarial e correção do método
+28. Cinco auditores independentes (leakage temporal, estatística, produto, reprodutibilidade, avaliador do G4) produziram 46 achados; a verificação foi interrompida pelo limite de uso da sessão e refeita sobre o código corrigido.
+29. Correções de método: janela limpa aplicada no painel (erro #5), chance sem filtro de conta (erro #6), agrupamento de faixas só com as mais velhas e faixa sem amostra sem score (erro #7), backtest só com Engaging e datas principais sem sobreposição, bloco além de 138 dias descrito como consequência da base.
+30. Correções de produto: categoria Última janela, próximo passo com cadastro de conta prefixado, ações do gerente só com alvo concreto, rótulos e formatação unificados, data de referência, sem frase repetida em todos os cards.
+31. Correções de higiene: UTF-8 forçado nos scripts, SHA-256 no relatório de dados, `requirements-dev.txt`, `99_clean_env_check.ps1` abortando em erro, `05_check_repo.py` conferindo caminhos citados e arquivos ignorados pelo `.gitignore` da raiz, rubrica de diferenciação com status, `docs/rubrica-do-avaliador.md` dentro da submissão.
+32. Números finais: chance de 37% / 40% / 18% / 1% por faixa de idade; 298 acionáveis, 37 em Focar agora, 188 na última janela; correlação score × preço 0,74.
+

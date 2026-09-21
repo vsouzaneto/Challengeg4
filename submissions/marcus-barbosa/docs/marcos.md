@@ -1,77 +1,77 @@
 # Marcos do projeto — Challenge 003 Lead Scorer
 
-Definição de pronto: **todos os marcos abaixo em `[x]`**, banca de agentes revisores com nota 100/100 em cada entregável, e revisor final "impressionado". Cada marco tem critério de aceite verificável e a fonte de onde a exigência veio.
+Definição de pronto: **todos os marcos abaixo em `[x]`**, banca de agentes revisores com nota 100/100 em cada entregável, e revisor final "impressionado". Cada marco tem critério de aceite verificável e a fonte de onde a exigência veio. Estado em 2026-09-21, após a auditoria adversarial.
 
-Legenda de fonte: `C003` = README do challenge · `GUIA` = submission-guide.md · `TPL` = template de submissão · `CONTRIB` = CONTRIBUTING.md · `ROOT` = README raiz · `REV` = rubrica real extraída das 176 reviews públicas · `VAGA` = descrição oficial da vaga · `MB` = exigência do Marcus.
+Legenda de fonte: `C003` = README do challenge · `GUIA` = submission-guide.md · `TPL` = template de submissão · `CONTRIB` = CONTRIBUTING.md · `ROOT` = README raiz · `REV` = rubrica real extraída das reviews públicas (`docs/rubrica-do-avaliador.md`) · `VAGA` = descrição oficial da vaga · `MB` = exigência do Marcus.
 
 ## A. Solução funcional (obrigatório)
 
 | ID | Marco | Fonte | Critério de aceite | Status |
 |---|---|---|---|---|
-| A1 | Roda seguindo as instruções, sem chave de API | C003, REV | `pip install -r requirements.txt && streamlit run app.py` em máquina limpa; LLM opcional com saída pré-gerada em cache | [ ] |
-| A2 | Usa os 4 CSVs reais do Kaggle | C003, REV | Script de download + hash/contagem de linhas (8.800 oportunidades, 85 contas, 7 produtos, 35 vendedores) registrados | [ ] |
-| A3 | Lógica de scoring que não é "ordenar por valor" | C003 | Score 0–100 com ≥4 fatores nomeados, cada um derivado de evidência do dataset | [ ] |
-| A4 | Vendedor entende por quê | C003, REV | Breakdown por fator em português, com frase por fator e ação recomendada por deal | [ ] |
-| A5 | Interface ajuda a decidir, não só mostra dados | C003 | Categorias de ação (Focar agora / Follow-up / Reengajar / Qualificar ou descartar) e "brief de segunda-feira" por vendedor | [ ] |
-| A6 | Filtro por vendedor / manager / região (bonus) | C003 | Três filtros funcionais + visão de manager | [ ] |
-| A7 | Código limpo para manutenção | C003 | Módulos separados (dados / scoring / app), funções puras testadas, docstrings | [ ] |
-| A8 | Testes automatizados de invariantes | REV | `pytest` verde: score ∈ [0,100], determinístico, deal sem conta recebe score, alterar `close_value`/`close_date` de deal aberto não muda score, GTXPro normalizado, ref_date = max(close_date), win rate = Won/(Won+Lost) | [ ] |
-| A9 | Backtest do score contra Won/Lost histórico | REV | Win rate monotônico por faixa de score, com corte temporal, tabela no README | [ ] |
-| A10 | Deploy público (não bloqueador, diferencial) | REV | URL no Streamlit Cloud respondendo, screenshot | [ ] |
+| A1 | Roda seguindo as instruções, sem chave de API | C003, REV | `99_clean_env_check.ps1` em venv novo: instalação, 24 testes, scripts e health check do app; log em `docs/clean_env_check.log` | [x] |
+| A2 | Usa os 4 CSVs reais do Kaggle | C003, REV | SHA-256, bytes e linhas de cada arquivo em `docs/data_health_report.md` (8.800 oportunidades, 85 contas, 7 produtos, 35 vendedores) | [x] |
+| A3 | Lógica de scoring que não é "ordenar por valor" | C003 | chance por faixa de idade (37% / 40% / 18% / 1%) × preço; correlação score × preço 0,74; o mesmo preço recebe scores diferentes conforme a idade (teste) | [x] |
+| A4 | Vendedor entende por quê | C003, REV | explicação por deal com chance, intervalo, n, valor, percentil e próximo passo | [x] |
+| A5 | Interface ajuda a decidir, não só mostra dados | C003 | seis blocos de ação com regra de precedência e pauta de segunda-feira com no máximo 7 itens | [x] |
+| A6 | Filtro por vendedor / manager / região (bonus) | C003 | três filtros e presets por URL; visão de gerente e de RevOps | [x] |
+| A7 | Código limpo para manutenção | C003 | `leadscorer/` com módulos data, audit, calibration, scoring, backtest, brief, manager; funções puras; docstrings com a hipótese por regra | [x] |
+| A8 | Testes automatizados de invariantes | REV | 24 testes: faixa, determinismo, vendedor/setor/conta não mudam o score, anti-leakage, base truncada = base completa, janela limpa, agrupamento de faixas, intervalo por deal, categorias, brief, gerente | [x] |
+| A9 | Backtest do score contra o histórico | REV | `docs/backtest.md`: walk-forward em 4 datas (2 principais sem sobreposição), prevista vs. observada por faixa, captura de valor com três comparadores, com o que não sustenta dito | [x] |
+| A10 | Deploy público (não bloqueador, diferencial) | REV | não feito; app local com um comando, capturas em `process-log/screenshots/app/` | [ ] |
 
 ## B. Documentação mínima (obrigatório)
 
 | ID | Marco | Fonte | Critério de aceite | Status |
 |---|---|---|---|---|
-| B1 | Setup: como rodar | C003, CONTRIB | Seção no README com dependências, comandos, URL; testada em ambiente limpo | [ ] |
-| B2 | Lógica: critérios e por quê | C003 | Tabela fator → peso → evidência no dado → por que esse peso | [ ] |
-| B3 | Limitações: o que não faz e o que precisa para escalar | C003, GUIA | Seção explícita com limites do dado, do modelo e do produto | [ ] |
-| B4 | 2–3 sanity checks visíveis | REV | Distribuição do score, exemplos por faixa, top deals com breakdown | [ ] |
-| B5 | Executive summary de 1 parágrafo, achados com número | GUIA, TPL, VAGA | Um C-level lê e decide em 5 minutos | [ ] |
-| B6 | Recomendações priorizadas para a Head de RevOps | GUIA, TPL | Lista ordenada com impacto estimado e premissas declaradas | [ ] |
+| B1 | Setup: como rodar | C003, CONTRIB | README "Como rodar", comandos multiplataforma, validado em ambiente limpo | [x] |
+| B2 | Lógica: critérios e por quê | C003 | tabela no README e `docs/methodology.md` §4-5 | [x] |
+| B3 | Limitações: o que não faz e o que precisa para escalar | C003, GUIA | README "Limitações" e `methodology.md` §9 | [x] |
+| B4 | 2–3 sanity checks visíveis | REV | contagem por bloco, calibração com intervalo e n, backtest no app (RevOps) e nos docs | [x] |
+| B5 | Executive summary de 1 parágrafo, achados com número | GUIA, TPL, VAGA | README | [x] |
+| B6 | Recomendações priorizadas para a Head de RevOps | GUIA, TPL | seis recomendações ordenadas com número, mais piloto com gate | [x] |
 
 ## C. Process log (obrigatório, eliminatório)
 
 | ID | Marco | Fonte | Critério de aceite | Status |
 |---|---|---|---|---|
-| C1 | Ferramentas de IA usadas e para quê | GUIA, TPL | Tabela preenchida no README | [ ] |
-| C2 | Decomposição do problema antes de promptar | GUIA, REV | `hypotheses.md` com hipóteses do Marcus escritas antes de olhar os dados, e resultado (confirmada / refutada, com número) | [ ] |
-| C3 | Onde a IA errou e como foi corrigido | GUIA, TPL, REV | `ai-errors.md` com ≥5 erros reais, cada um com detecção, causa raiz e correção | [ ] |
-| C4 | O que o humano adicionou que a IA sozinha não faria | GUIA, TPL, VAGA | `decisions.md` com ledger "decisão do Marcus / consenso / sugestão da IA" e contagem | [ ] |
-| C5 | Quantas iterações foram necessárias | GUIA | `workflow.md` cronológico com iterações numeradas | [ ] |
-| C6 | Baselines "brief colado na IA" documentados | ROOT, REV | `baselines/` com prompt usado + saída bruta de 3 variantes + síntese do que é comum | [ ] |
-| C7 | Rubrica de diferenciação escrita antes de codar | REV | `differentiation-rubric.md` com diferenciadores mensuráveis vs. baselines | [ ] |
-| C8 | Auditoria adversarial por agente independente | REV | `critique-synthesis.md` com o que caiu e o que foi corrigido | [ ] |
-| C9 | Setup do Claude Code com humano no loop | REV | Registro de que a edição automática ficou desligada e de que cada mudança foi revisada | [ ] |
+| C1 | Ferramentas de IA usadas e para quê | GUIA, TPL | tabela no README | [x] |
+| C2 | Decomposição do problema antes de promptar | GUIA, REV | 27 hipóteses com veredito e número em `hypotheses.md`; origem IA declarada, regra do método do Marcus | [x] |
+| C3 | Onde a IA errou e como foi corrigido | GUIA, TPL, REV | 7 erros em `ai-errors.md`, cada um com detecção, causa raiz e correção | [x] |
+| C4 | O que o humano adicionou que a IA sozinha não faria | GUIA, TPL, VAGA | seção no README e ledger com 24 decisões e origem | [x] |
+| C5 | Quantas iterações foram necessárias | GUIA | `workflow.md` com 6 iterações numeradas | [x] |
+| C6 | Baselines "brief colado na IA" documentados | ROOT, REV | `baselines/` com 3 variantes e síntese | [x] |
+| C7 | Rubrica de diferenciação escrita antes de codar | REV | `differentiation-rubric.md` com status final por item | [x] |
+| C8 | Auditoria adversarial por agente independente | REV | `critique-synthesis.md` com achados verificados sobre o código corrigido | [ ] |
+| C9 | Setup do Claude Code com humano no loop | REV | registrado no README e no process-log/README | [x] |
 
 ## D. Evidências
 
 | ID | Marco | Fonte | Critério de aceite | Status |
 |---|---|---|---|---|
-| D1 | Screenshots das sessões com a IA (não só do app) | GUIA, REV | ≥10 capturas em `process-log/screenshots/` cobrindo o arco do trabalho | [ ] |
-| D2 | Screenshots do app rodando | REV | ≥5 capturas (brief, pipeline, breakdown, manager, filtros) | [ ] |
-| D3 | Chat export em texto dentro do repo | GUIA, REV | Transcript exportado em Markdown/JSONL em `process-log/chat-exports/` | [ ] |
-| D4 | Git history incremental com autoria do candidato | GUIA, REV | ≥10 commits semânticos, author "Marcus Barbosa", ordem real do trabalho | [ ] |
-| D5 | Screen recording (opcional) | GUIA | Link ou arquivo curto do app em uso | [ ] |
+| D1 | Screenshots das sessões com a IA | GUIA, REV | `process-log/screenshots/sessoes/` (capturas da janela do Claude Code, barra lateral recortada) | [x] |
+| D2 | Screenshots do app rodando | REV | 6 capturas em `process-log/screenshots/app/` | [x] |
+| D3 | Chat export em texto dentro do repo | GUIA, REV | `process-log/chat-exports/` | [ ] |
+| D4 | Git history incremental com autoria do candidato | GUIA, REV | commits semânticos, author Marcus Barbosa, trailer Co-Authored-By declarando a IA | [x] |
+| D5 | Screen recording (opcional) | GUIA | não feito | [ ] |
 
 ## E. Estrutura e regras do PR
 
 | ID | Marco | Fonte | Critério de aceite | Status |
 |---|---|---|---|---|
-| E1 | Fork + branch `submission/marcus-barbosa` | CONTRIB | Existe em `marcusbarbosa92/ai-master-challenge` | [x] |
-| E2 | Pasta `submissions/marcus-barbosa/` (plural) com `solution/`, `process-log/`, `docs/` | CONTRIB, REV | Estrutura presente | [x] |
-| E3 | README segue o template oficial, todas as seções preenchidas | CONTRIB, TPL, REV | Nenhum placeholder do template sobrando | [ ] |
-| E4 | Nenhum arquivo fora da pasta modificado | CONTRIB, REV | `git diff upstream/main --stat` só lista `submissions/marcus-barbosa/` | [ ] |
-| E5 | Sem node_modules / venv / dados brutos / .pkl no PR | REV | `git ls-files` da pasta inspecionado antes do push | [ ] |
-| E6 | Título do PR `[Submission] Marcus Barbosa — Challenge 003` | CONTRIB | Conferido no PR | [ ] |
-| E7 | Inscrição na vaga no ATS feita pelo Marcus | VAGA, REV | Confirmação do Marcus | [ ] |
+| E1 | Fork + branch `submission/marcus-barbosa` | CONTRIB | existe em `marcusbarbosa92/ai-master-challenge` | [x] |
+| E2 | Pasta `submissions/marcus-barbosa/` (plural) com `solution/`, `process-log/`, `docs/` | CONTRIB, REV | estrutura presente | [x] |
+| E3 | README segue o template oficial, todas as seções preenchidas | CONTRIB, TPL, REV | falta só o LinkedIn | [ ] |
+| E4 | Nenhum arquivo fora da pasta modificado | CONTRIB, REV | `05_check_repo.py` confere `git diff upstream/main` | [x] |
+| E5 | Sem node_modules / venv / dados brutos / .pkl no PR | REV | `05_check_repo.py` confere `git ls-files` | [x] |
+| E6 | Título do PR `[Submission] Marcus Barbosa — Challenge 003` | CONTRIB | ao abrir o PR | [ ] |
+| E7 | Inscrição na vaga no ATS feita pelo Marcus | VAGA, REV | confirmação do Marcus | [ ] |
 
 ## F. Qualidade final (definição de pronto do Marcus)
 
 | ID | Marco | Fonte | Critério de aceite | Status |
 |---|---|---|---|---|
-| F1 | Banca de agentes revisores com a rubrica real dá 100/100 em cada entregável (A–E) | MB, REV | Workflow de revisão executado; nenhum item abaixo de 100; achados corrigidos e re-avaliados | [ ] |
-| F2 | Revisor final independente declara-se impressionado | MB | Parecer final registrado em `docs/banca-final.md` | [ ] |
-| F3 | Supera substancialmente os baselines | ROOT | Cada diferenciador da rubrica C7 comprovado com evidência | [ ] |
-| F4 | Tudo explicável: metodologia documentada de ponta a ponta | MB, VAGA | `docs/methodology.md` explica como cada número, fator, peso e decisão foi produzido, com link para o script ou célula que o gerou; qualquer leitor reproduz o caminho do dado bruto ao score | [ ] |
-| F5 | Papel do Marcus vs. papel da IA explícito | VAGA, TPL | Seção dedicada no README, com contagem do ledger de decisões e exemplos concretos | [ ] |
+| F1 | Banca de agentes revisores com a rubrica real dá 100/100 em cada entregável (A–E) | MB, REV | `docs/banca-final.md` | [ ] |
+| F2 | Revisor final independente declara-se impressionado | MB | parecer em `docs/banca-final.md` | [ ] |
+| F3 | Supera substancialmente os baselines | ROOT | status por item em `differentiation-rubric.md` | [x] |
+| F4 | Tudo explicável: metodologia documentada de ponta a ponta | MB, VAGA | `docs/methodology.md` | [x] |
+| F5 | Papel do Marcus vs. papel da IA explícito | VAGA, TPL | seção no README com ledger contado | [x] |
