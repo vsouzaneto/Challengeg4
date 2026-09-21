@@ -1,0 +1,5 @@
+# Só para gerar capturas de tela e recortar imagens; o app e as análises não precisam disto.
+# Depois de instalar: python -m playwright install chromium
+-r requirements.txt
+playwright==1.49.1
+pillow==11.3.0
