@@ -1,0 +1,39 @@
+﻿**********************
+Início da transcrição do Windows PowerShell
+Hora de início: 20260921184918
+Nome de Usuário: SYNTHRAI\marcu
+Executar como Usuário: SYNTHRAI\marcu
+Nome da Configuração: 
+Computador: SYNTHRAI (Microsoft Windows NT 10.0.26200.0)
+Aplicativo Host: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\marcu\OneDrive - Iguatemi S.A\COMPARTILHADA\G4 CH\ai-master-challenge\submissions\marcus-barbosa\solution\99_clean_env_check.ps1
+ID do Processo: 31276
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+venv: C:\Users\marcu\AppData\Local\Temp\leadscorer-clean-20260921-184918 | 2026-09-21 18:49
+
+--- instalacao
+
+--- versoes
+
+--- testes
+
+--- auditoria
+
+--- exploracao
+
+--- backtest
+
+--- smoke test do app (12 s)
+app health: 200 ok
+ok: ambiente limpo validado em C:\Users\marcu\AppData\Local\Temp\leadscorer-clean-20260921-184918
+**********************
+Fim da transcrição do Windows PowerShell
+Hora de término: 20260921185026
+**********************

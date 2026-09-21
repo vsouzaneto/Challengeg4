@@ -8,9 +8,10 @@ $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $here
 $log = Join-Path (Split-Path -Parent $here) "docs\clean_env_check.log"
 Start-Transcript -Path $log -Force | Out-Null
-function Run($label, $exe, $args) {
+function Run($label, $exe, $argv) {
+  # ($args é variável automática do PowerShell; por isso o parâmetro se chama $argv)
   Write-Output "--- $label"
-  & $exe @args
+  & $exe @argv
   if ($LASTEXITCODE -ne 0) { Stop-Transcript | Out-Null; throw "falhou: $label (exit $LASTEXITCODE)" }
 }
 $venv = Join-Path $env:TEMP ("leadscorer-clean-" + (Get-Date -Format "yyyyMMdd-HHmmss"))
