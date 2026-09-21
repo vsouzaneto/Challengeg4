@@ -1,14 +1,14 @@
 # Estado atual
 
-**15/09/2026 — fase de análise.**
+**21/09/2026 — retomada; análise lida, solução em definição.**
 
 ## Onde paramos
 
-Dhiego definiu que hoje é dedicado a entender o problema, tirar dúvidas e provocar a análise. Amanhã será dedicado à construção, depois de fechar o plano de solução.
+Dhiego retomou e informou que leu toda a análise visual. A leitura está concluída; isso não implica concordância com todas as interpretações nem escolha de solução.
 
-**Pausa em 15/09:** análise visual v1 entregue, mas Dhiego ainda não teve oportunidade de lê-la. Não registrar como revisada ou aprovada, nem considerar F0 concluída. Retomar pela discussão dos dados antes de implementar. Meta pessoal de conclusão até 16/09; prazo oficial de entrega desconhecido.
+**Histórico:** pausa em 15/09 antes da leitura. A meta pessoal original de 16/09 passou; não houve nova data combinada. Prazo oficial de entrega continua desconhecido.
 
-**Próxima ação:** percorrer a [análise visual v1](solution/visual/index.html) com Dhiego: qualidade por pergunta, urgência, repetição de contato, pendência e exemplos de recap. Registrar suas perguntas e decisões antes de escolher solução.
+**Próxima ação:** discutir o [recorte proposto](docs/recorte-proposto.md), ouvir a interpretação de Dhiego e confrontar alternativas na revisão multimodelo antes da escolha final.
 
 ## Concluído
 
@@ -38,9 +38,9 @@ Treinamento, avaliação de classificador, protótipo de produto, integração, 
 
 Ler este arquivo → roadmap → process log → ADRs. Atualizar o estado após as decisões reais. Não tratar proposta como implementada.
 
-1. Abrir `solution/visual/index.html` no navegador. O arquivo está versionado e não depende de o servidor local da sessão anterior continuar rodando. Instruções em `solution/REPRODUZIR.md`.
-2. Apresentar qualidade por pergunta, depois canais/pendências e exemplos de tickets; discutir um problema por vez com Dhiego.
-3. Registrar dúvidas e conclusões. Separar evidência do dataset, hipótese e experiência anterior do candidato.
+1. Consultar `docs/recorte-proposto.md`; a análise visual já foi lida por Dhiego e continua disponível em `solution/visual/index.html`.
+2. Ouvir suas conclusões, dúvidas e prioridade de intervenção; executar a revisão multimodelo com o mesmo material.
+3. Registrar divergências e conclusões. Separar evidência do dataset, hipótese e experiência anterior do candidato.
 4. Escolher intervenção e como medir se funciona; só então definir stack e iniciar construção.
 
 Análise visual registrada no commit `746f9fb`. Até esta pausa, os commits são locais; não houve push nem submissão de PR. Não retomar pesquisa de outros candidatos. Nenhuma tarefa de implementação foi deixada em execução autônoma.

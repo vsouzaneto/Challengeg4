@@ -92,3 +92,9 @@ Codex atualizou o estado e o roadmap para retomar pela análise, apresentar um p
 ## Adendo à pausa — revisão multimodelo
 
 Dhiego propôs usar Oráculo Flow com Claude, Grok e Codex para julgar dados, análises e alternativas. Codex consultou o README e a seção de confronto do workflow no repositório local do Oráculo Flow e registrou um [protocolo proposto](../docs/revisao-multimodelo.md): mesmo material, pareceres sem acesso prévio aos demais, divergências verificadas nos dados e decisão com o candidato. Grok é uma extensão solicitada por Dhiego; integração e acesso ainda não foram verificados. Nenhuma revisão externa foi executada e a pausa permanece vigente.
+
+## Retomada — 21/09/2026
+
+Dhiego voltou ao case, leu toda a análise visual e perguntou pelo próximo passo. A leitura foi marcada como concluída; não foi inferida aprovação das interpretações ou do escopo. Codex releu o enunciado e preparou uma [proposta de triagem assistida](../docs/recorte-proposto.md), com classificação avaliada no D2 e recap como hipótese de apoio à compreensão. O documento explicita alternativas menores, avaliação separada e limites para alegações de ganho operacional.
+
+A conversa de 18/09 incluiu Jev/TypeSafe como possível experimento; não houve integração nem teste. A revisão multimodelo permanece pendente. As datas do roadmap foram atualizadas para deixar a meta passada de 16/09 como histórico, sem inventar nova data ou duração de esforço. Próxima etapa: discutir a prioridade do candidato e confrontar a proposta antes da construção.
