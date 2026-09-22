@@ -1,0 +1,454 @@
+{
+  "created_at_utc": "2026-09-22T17:02:03.611941+00:00",
+  "csv_sha256": "044fdace33fa564e1e60453f2941dafc95539c99878b0d32746950394b9dd4d4",
+  "model_sha256": "cadfbec330dea7b445261d5434881f7466cd46f8322a445c29fc439319cda36e",
+  "split_sha256": "b85b0ed0626f307036468cee8f231f184ffb32b8a82570665370be846b8a0c76",
+  "script_sha256": "9b60d4bac996785d23d9c2ccb0bb8bac21a9fc841957bf4d9c4c342a260ebe12",
+  "threshold_from_original_validation": 0.61,
+  "inference_seconds_local_batch": 2.472475375048816,
+  "external_api_calls": 0,
+  "retrained": false,
+  "row_numbering": "1-based data rows, excluding header",
+  "historical_reproduction": {
+    "n": 1192,
+    "predictions_identical": true,
+    "max_absolute_score_difference": 0.0
+  },
+  "population": {
+    "n": 47837,
+    "label_distribution": {
+      "Access": 7125,
+      "Administrative rights": 1760,
+      "HR Support": 10915,
+      "Hardware": 13617,
+      "Internal Project": 2119,
+      "Miscellaneous": 7060,
+      "Purchase": 2464,
+      "Storage": 2777
+    },
+    "prediction_distribution": {
+      "Access": 7080,
+      "Administrative rights": 1705,
+      "HR Support": 10940,
+      "Hardware": 13846,
+      "Internal Project": 2076,
+      "Miscellaneous": 7054,
+      "Purchase": 2405,
+      "Storage": 2731
+    },
+    "agreement_n": 46723,
+    "agreement_rate": 0.9767125864916278,
+    "disagreement_n": 1114,
+    "above_threshold_n": 43403,
+    "above_threshold_disagreement_n": 305,
+    "top_disagreements": [
+      {
+        "dataset_label": "HR Support",
+        "prediction": "Hardware",
+        "n": 122
+      },
+      {
+        "dataset_label": "Hardware",
+        "prediction": "HR Support",
+        "n": 117
+      },
+      {
+        "dataset_label": "Miscellaneous",
+        "prediction": "Hardware",
+        "n": 102
+      },
+      {
+        "dataset_label": "Access",
+        "prediction": "Hardware",
+        "n": 74
+      },
+      {
+        "dataset_label": "HR Support",
+        "prediction": "Miscellaneous",
+        "n": 68
+      },
+      {
+        "dataset_label": "Administrative rights",
+        "prediction": "Hardware",
+        "n": 63
+      },
+      {
+        "dataset_label": "Purchase",
+        "prediction": "Hardware",
+        "n": 56
+      },
+      {
+        "dataset_label": "Miscellaneous",
+        "prediction": "HR Support",
+        "n": 56
+      },
+      {
+        "dataset_label": "Hardware",
+        "prediction": "Miscellaneous",
+        "n": 50
+      },
+      {
+        "dataset_label": "Hardware",
+        "prediction": "Access",
+        "n": 43
+      }
+    ]
+  },
+  "partitions": {
+    "train": {
+      "n": 45790,
+      "label_distribution": {
+        "Access": 6933,
+        "Administrative rights": 1709,
+        "HR Support": 10320,
+        "Hardware": 13119,
+        "Internal Project": 2059,
+        "Miscellaneous": 6842,
+        "Purchase": 2120,
+        "Storage": 2688
+      },
+      "prediction_distribution": {
+        "Access": 6893,
+        "Administrative rights": 1665,
+        "HR Support": 10343,
+        "Hardware": 13303,
+        "Internal Project": 2024,
+        "Miscellaneous": 6841,
+        "Purchase": 2061,
+        "Storage": 2660
+      },
+      "agreement_n": 44885,
+      "agreement_rate": 0.9802358593579384,
+      "disagreement_n": 905,
+      "above_threshold_n": 41643,
+      "above_threshold_disagreement_n": 230,
+      "top_disagreements": [
+        {
+          "dataset_label": "HR Support",
+          "prediction": "Hardware",
+          "n": 110
+        },
+        {
+          "dataset_label": "Hardware",
+          "prediction": "HR Support",
+          "n": 100
+        },
+        {
+          "dataset_label": "Miscellaneous",
+          "prediction": "Hardware",
+          "n": 70
+        },
+        {
+          "dataset_label": "Access",
+          "prediction": "Hardware",
+          "n": 63
+        },
+        {
+          "dataset_label": "Purchase",
+          "prediction": "Hardware",
+          "n": 55
+        },
+        {
+          "dataset_label": "HR Support",
+          "prediction": "Miscellaneous",
+          "n": 54
+        },
+        {
+          "dataset_label": "Administrative rights",
+          "prediction": "Hardware",
+          "n": 51
+        },
+        {
+          "dataset_label": "Miscellaneous",
+          "prediction": "HR Support",
+          "n": 47
+        },
+        {
+          "dataset_label": "Hardware",
+          "prediction": "Miscellaneous",
+          "n": 39
+        },
+        {
+          "dataset_label": "Hardware",
+          "prediction": "Access",
+          "n": 33
+        }
+      ]
+    },
+    "validation": {
+      "n": 392,
+      "label_distribution": {
+        "Access": 59,
+        "Administrative rights": 15,
+        "HR Support": 88,
+        "Hardware": 113,
+        "Internal Project": 18,
+        "Miscellaneous": 59,
+        "Purchase": 17,
+        "Storage": 23
+      },
+      "prediction_distribution": {
+        "Access": 56,
+        "Administrative rights": 13,
+        "HR Support": 89,
+        "Hardware": 120,
+        "Internal Project": 18,
+        "Miscellaneous": 61,
+        "Purchase": 15,
+        "Storage": 20
+      },
+      "agreement_n": 342,
+      "agreement_rate": 0.8724489795918368,
+      "disagreement_n": 50,
+      "above_threshold_n": 319,
+      "above_threshold_disagreement_n": 14,
+      "top_disagreements": [
+        {
+          "dataset_label": "Access",
+          "prediction": "Hardware",
+          "n": 7
+        },
+        {
+          "dataset_label": "HR Support",
+          "prediction": "Hardware",
+          "n": 6
+        },
+        {
+          "dataset_label": "Hardware",
+          "prediction": "HR Support",
+          "n": 5
+        },
+        {
+          "dataset_label": "HR Support",
+          "prediction": "Access",
+          "n": 3
+        },
+        {
+          "dataset_label": "Hardware",
+          "prediction": "Miscellaneous",
+          "n": 3
+        },
+        {
+          "dataset_label": "Hardware",
+          "prediction": "Access",
+          "n": 3
+        },
+        {
+          "dataset_label": "Miscellaneous",
+          "prediction": "Hardware",
+          "n": 3
+        },
+        {
+          "dataset_label": "Miscellaneous",
+          "prediction": "HR Support",
+          "n": 2
+        },
+        {
+          "dataset_label": "Administrative rights",
+          "prediction": "Hardware",
+          "n": 2
+        },
+        {
+          "dataset_label": "Access",
+          "prediction": "Internal Project",
+          "n": 1
+        }
+      ]
+    },
+    "test": {
+      "n": 800,
+      "label_distribution": {
+        "Access": 119,
+        "Administrative rights": 29,
+        "HR Support": 183,
+        "Hardware": 228,
+        "Internal Project": 35,
+        "Miscellaneous": 118,
+        "Purchase": 41,
+        "Storage": 47
+      },
+      "prediction_distribution": {
+        "Access": 119,
+        "Administrative rights": 22,
+        "HR Support": 188,
+        "Hardware": 235,
+        "Internal Project": 27,
+        "Miscellaneous": 121,
+        "Purchase": 43,
+        "Storage": 45
+      },
+      "agreement_n": 688,
+      "agreement_rate": 0.86,
+      "disagreement_n": 112,
+      "above_threshold_n": 658,
+      "above_threshold_disagreement_n": 44,
+      "top_disagreements": [
+        {
+          "dataset_label": "Miscellaneous",
+          "prediction": "Hardware",
+          "n": 12
+        },
+        {
+          "dataset_label": "Hardware",
+          "prediction": "HR Support",
+          "n": 12
+        },
+        {
+          "dataset_label": "Administrative rights",
+          "prediction": "Hardware",
+          "n": 9
+        },
+        {
+          "dataset_label": "Access",
+          "prediction": "Miscellaneous",
+          "n": 8
+        },
+        {
+          "dataset_label": "HR Support",
+          "prediction": "Miscellaneous",
+          "n": 7
+        },
+        {
+          "dataset_label": "Hardware",
+          "prediction": "Access",
+          "n": 7
+        },
+        {
+          "dataset_label": "HR Support",
+          "prediction": "Hardware",
+          "n": 6
+        },
+        {
+          "dataset_label": "Hardware",
+          "prediction": "Miscellaneous",
+          "n": 6
+        },
+        {
+          "dataset_label": "Miscellaneous",
+          "prediction": "HR Support",
+          "n": 6
+        },
+        {
+          "dataset_label": "Internal Project",
+          "prediction": "Hardware",
+          "n": 4
+        }
+      ]
+    },
+    "excluded_train": {
+      "n": 847,
+      "label_distribution": {
+        "Access": 14,
+        "Administrative rights": 7,
+        "HR Support": 321,
+        "Hardware": 156,
+        "Internal Project": 7,
+        "Miscellaneous": 41,
+        "Purchase": 282,
+        "Storage": 19
+      },
+      "prediction_distribution": {
+        "Access": 12,
+        "Administrative rights": 5,
+        "HR Support": 318,
+        "Hardware": 187,
+        "Internal Project": 7,
+        "Miscellaneous": 30,
+        "Purchase": 282,
+        "Storage": 6
+      },
+      "agreement_n": 801,
+      "agreement_rate": 0.9456906729634003,
+      "disagreement_n": 46,
+      "above_threshold_n": 776,
+      "above_threshold_disagreement_n": 17,
+      "top_disagreements": [
+        {
+          "dataset_label": "Miscellaneous",
+          "prediction": "Hardware",
+          "n": 17
+        },
+        {
+          "dataset_label": "Storage",
+          "prediction": "Hardware",
+          "n": 15
+        },
+        {
+          "dataset_label": "HR Support",
+          "prediction": "Miscellaneous",
+          "n": 5
+        },
+        {
+          "dataset_label": "Hardware",
+          "prediction": "Miscellaneous",
+          "n": 2
+        },
+        {
+          "dataset_label": "Access",
+          "prediction": "Hardware",
+          "n": 1
+        },
+        {
+          "dataset_label": "Access",
+          "prediction": "Miscellaneous",
+          "n": 1
+        },
+        {
+          "dataset_label": "Hardware",
+          "prediction": "Storage",
+          "n": 1
+        },
+        {
+          "dataset_label": "Miscellaneous",
+          "prediction": "HR Support",
+          "n": 1
+        },
+        {
+          "dataset_label": "Miscellaneous",
+          "prediction": "Storage",
+          "n": 1
+        },
+        {
+          "dataset_label": "Administrative rights",
+          "prediction": "HR Support",
+          "n": 1
+        }
+      ]
+    },
+    "excluded_validation": {
+      "n": 8,
+      "label_distribution": {
+        "HR Support": 3,
+        "Hardware": 1,
+        "Purchase": 4
+      },
+      "prediction_distribution": {
+        "HR Support": 2,
+        "Hardware": 1,
+        "Miscellaneous": 1,
+        "Purchase": 4
+      },
+      "agreement_n": 7,
+      "agreement_rate": 0.875,
+      "disagreement_n": 1,
+      "above_threshold_n": 7,
+      "above_threshold_disagreement_n": 0,
+      "top_disagreements": [
+        {
+          "dataset_label": "HR Support",
+          "prediction": "Miscellaneous",
+          "n": 1
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Whole-population agreement is largely training fit, not an independent accuracy estimate.",
+    "Validation selected the threshold; excluded rows are near neighbors, not a new test.",
+    "Test reproduces the original 800 records. Some were later inspected during development.",
+    "Dataset labels may be inconsistent. Agreement does not demonstrate semantic correctness.",
+    "Scores do not authorize actions. No sentiment, LLM extraction, replies or resolution measured.",
+    "No automation eligibility, operational savings or annual-volume extrapolation inferred."
+  ],
+  "predictions_csv_gz_sha256": "42852e66bcc084f47f1371765804c1058b0c75e2da5eb73fea1b067ee58f4720"
+}
