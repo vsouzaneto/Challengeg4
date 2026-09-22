@@ -45,3 +45,15 @@ python3 solution/renderizar_analise_visual.py
 Abrir `solution/visual/index.html` no navegador. A geração incorpora os quatro relatórios versionados, o template e o logo local. Não baixa os datasets nem chama IA. Para refletir uma nova auditoria, revisar e atualizar primeiro os relatórios em `solution/reports/`. As interpretações e os recaps de exemplo estão no template e exigem revisão se os dados mudarem.
 
 O HTML contém dados, estilos, scripts e logo; fontes remotas têm alternativas locais. Os links de evidência dependem da estrutura de arquivos do pacote. A página no GitHub exibe código: baixar o pacote e abrir o HTML, ou servir localmente com `python3 -m http.server 8765 --bind 127.0.0.1` e acessar `http://127.0.0.1:8765/solution/visual/index.html`.
+
+## Verificar acesso ao Jev (opcional; uma chamada à API)
+
+Configurar `TYPESAFE_API_KEY` no ambiente ou no `.env` local da submissão, ignorado pelo Git. Não incluir a chave em comandos versionados ou relatórios. Requer acesso à API TypeSafe; a chamada pode consumir créditos.
+
+```bash
+python3 solution/verificar_jev.py
+```
+
+O script usa a biblioteca padrão, preserva validação TLS e, se o Python não localizar certificados padrão, procura o bundle do sistema em `/etc/ssl/cert.pem`. Envia um texto sintético curto com três categorias, sem ler/enviar o D2. Cada execução bem-sucedida atualiza `solution/reports/jev-conexao.json` com data, entrada, modelo retornado, resultado, tokens e tempo total de uma chamada. Não há retentativa automática nem registro de cabeçalhos de autenticação. `jev-latest` é um alias mutável; o relatório registra a versão efetivamente retornada.
+
+É uma verificação de conexão/formato. Não mede acurácia, calibração ou latência típica e não deve ser incluída como resultado de teste do dataset.

@@ -12,6 +12,7 @@ Dhiego retomou e informou que leu toda a análise visual. A leitura está conclu
 
 ## Concluído
 
+- Acesso à API TypeSafe verificado em 21/09: uma chamada sintética bem-sucedida, HTTP 200, modelo `jev-1.13.0`. Chave no `.env` local ignorado, permissão 0600. Não é avaliação de classificação no D2; ver `solution/reports/jev-conexao.json`.
 - Análise visual interativa gerada dos quatro relatórios, com fontes e limites explícitos. Identidade baseada nas referências oficiais do G4; navegação conferida em desktop e celular. Recaps preparados para discussão, sem inferência ao vivo.
 - Auditoria integral dos dois CSVs e registro dos hashes.
 - Exploração orientada às provocações de CX: cruzamentos descritivos, sinais textuais, identidade e inspeção de resoluções. Nenhuma inferência de causalidade ou churn.
@@ -26,13 +27,13 @@ Dhiego retomou e informou que leu toda a análise visual. A leitura está conclu
 - Entendimento do diagnóstico pelo candidato e escolha final da intervenção.
 - Revisão com Claude, Grok e Codex solicitada por Dhiego: [protocolo proposto](docs/revisao-multimodelo.md). Prevista após discussão inicial e antes de fechar o escopo; acesso aos modelos ainda a verificar, sem execução nesta pausa.
 - Stack: FastAPI/Jinja/HTMX/Docker em discussão; Streamlit foi a proposta inicial. Banco e publicação ainda não definidos.
-- Se existe tarefa útil que justifique LLM/OpenRouter; nenhuma chave foi configurada.
+- Utilidade e avaliação de LLM para recap/OpenRouter continuam abertas. Jev/TypeSafe já tem credencial local e conexão verificada; comparação com classificador simples permanece pendente.
 - Critérios de sucesso e política de encaminhamento.
 - Se o recap assistido merece entrar no recorte: há indícios de cadeias de email em alguns textos do D2, mas não mensagens estruturadas. Ver `solution/contexto-e-recap.md`. Sugestões de resposta exigem revisão; sem envio automático.
 
 ## Ainda não realizado
 
-Treinamento, avaliação de classificador, protótipo de produto, integração, deploy e submissão. O script de auditoria é código de análise.
+Treinamento, avaliação de classificador, protótipo de produto, integração do fluxo de atendimento, deploy e submissão. Há scripts de análise e uma verificação isolada da API TypeSafe.
 
 ## Retomada
 

@@ -29,3 +29,7 @@ Autorresposta, execução automática de ações, previsão de churn, jornada po
 ## Próximo passo
 
 Ouvir a leitura de Dhiego: qual problema considera prioritário e que conclusão contestaria? Em seguida, submeter diagnóstico e alternativas à revisão com Claude/Grok/Codex, permitindo que contestem esta proposta. Fechar escopo e critérios de aceite antes de construir. Nenhuma nova data de entrega foi combinada na retomada.
+
+## Atualização — acesso ao Jev
+
+Após esta proposta, Dhiego reforçou o interesse em Jev para classificação e forneceu acesso à API. Uma chamada sintética de verificação respondeu com HTTP 200 e modelo `jev-1.13.0`; [registro](../solution/reports/jev-conexao.json). A conexão está verificada, mas desempenho no D2, calibração e escolha do classificador continuam pendentes. A credencial não integra os artefatos versionados.

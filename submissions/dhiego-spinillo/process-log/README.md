@@ -98,3 +98,11 @@ Dhiego propôs usar Oráculo Flow com Claude, Grok e Codex para julgar dados, an
 Dhiego voltou ao case, leu toda a análise visual e perguntou pelo próximo passo. A leitura foi marcada como concluída; não foi inferida aprovação das interpretações ou do escopo. Codex releu o enunciado e preparou uma [proposta de triagem assistida](../docs/recorte-proposto.md), com classificação avaliada no D2 e recap como hipótese de apoio à compreensão. O documento explicita alternativas menores, avaliação separada e limites para alegações de ganho operacional.
 
 A conversa de 18/09 incluiu Jev/TypeSafe como possível experimento; não houve integração nem teste. A revisão multimodelo permanece pendente. As datas do roadmap foram atualizadas para deixar a meta passada de 16/09 como histórico, sem inventar nova data ou duração de esforço. Próxima etapa: discutir a prioridade do candidato e confrontar a proposta antes da construção.
+
+## Verificação de acesso ao Jev — 21/09/2026
+
+Dhiego reforçou Jev como candidato para classificação e forneceu uma credencial para o experimento. Codex a configurou em arquivo local ignorado pelo Git com permissão 0600, sem reproduzi-la neste registro. Consultou o [quickstart oficial](https://docs.typesafe.ai/introduction/quickstart) e criou uma verificação em Python com um texto sintético curto e três categorias.
+
+A tentativa no ambiente restrito falhou na conexão; uma nova tentativa com rede liberada também falhou. O diagnóstico local mostrou DNS indisponível no sandbox e ausência de arquivo padrão de certificados no Python instalado. O script passou a usar o bundle do sistema quando necessário, mantendo validação TLS. A execução seguinte com rede liberada retornou HTTP 200, categoria `hardware` e modelo `jev-1.13.0`.
+
+Evidências: [script](../solution/verificar_jev.py) e [relatório sem credenciais](../solution/reports/jev-conexao.json). Houve uma resposta de inferência bem-sucedida; tentativas anteriores não produziram resultados utilizáveis. A latência registrada inclui rede/TLS e não representa benchmark. Não foi enviada a base de tickets, não há avaliação de qualidade no D2 e o recorte de produto permanece em discussão.

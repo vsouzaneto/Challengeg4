@@ -1,0 +1,37 @@
+{
+  "executed_at_utc": "2026-09-22T00:02:34.964873+00:00",
+  "purpose": "Verificação de acesso e formato; um exemplo sintético, não benchmark do D2.",
+  "request": {
+    "model": "jev-latest",
+    "state": "My laptop will not power on. I tried another charger and it still will not start.",
+    "questions": {
+      "category": {
+        "type": "choice",
+        "instructions": "Classify the main issue described in this support request.",
+        "criteria": {
+          "hardware": "Physical computer, charger, or peripheral problems.",
+          "billing": "Invoices, payments, or charges.",
+          "access": "Login, passwords, or account permissions."
+        }
+      }
+    }
+  },
+  "http_status": 200,
+  "model_returned": "jev-1.13.0",
+  "answer": {
+    "type": "choice",
+    "choice": "hardware",
+    "confidence": 1.0,
+    "probabilities": {
+      "access": 0.0,
+      "billing": 0.0,
+      "hardware": 1.0
+    }
+  },
+  "usage": {
+    "input_tokens": 365,
+    "output_tokens": 38
+  },
+  "elapsed_ms_client_single_request": 950.5,
+  "limitations": "Inclui rede/TLS; não mede latência típica, calibração, acurácia ou economia. Não houve retentativa automática."
+}
