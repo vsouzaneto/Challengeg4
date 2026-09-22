@@ -11,6 +11,7 @@
 | 3 · Demonstração | [Três fluxos executáveis](http://127.0.0.1:8766/fluxos) · [classificador](http://127.0.0.1:8766/classificador) | Autosserviço com conclusão, tentativa frustrada com contexto e investigação; sistemas fictícios explícitos. |
 | 4 · Cenários | [Valor por processo](docs/valor-por-processo.md) · [calculadora](http://127.0.0.1:8766/valor) | Capacidade recuperada, despesa evitada e condições de retorno. |
 | 5 · Evolução | [Três caminhos de atendimento](docs/tres-velocidades.md) | Fronteira entre execução demonstrada e integrações futuras. |
+| Como decidimos | [Onde entra IA — e onde não entra](docs/onde-entra-ia.md) | Papel do LLM, modelo local, regras, fontes e revisão humana. |
 | Fechamento | [Roteiro e matriz da entrega](docs/entrega.md) · [classificação dos 47.837 tickets](solution/reports/full-population/report.md) | O que demonstrar, o que foi avaliado e quais conclusões evitar. |
 | Aprofundamento | [Comparação](solution/comparacao.md), [piloto](docs/piloto-operacional.md), [process log](process-log/README.md) | Como foi avaliado, o que falta medir e como as decisões evoluíram. |
 
@@ -23,7 +24,7 @@ Os tempos acima são sugestões de leitura/demonstração, não esforço de exec
 
 ## Executive Summary
 
-Auditei os dados antes de propor automação: o D1 não permite localizar perdas de tempo com segurança, pois não registra abertura e 49,3% dos pares temporais disponíveis estão invertidos. No D2, o classificador local acertou 86% de 800 tickets reservados, contra 45,25% do Jev na configuração testada. Após revisar casos e criticar o valor de uma ficha manual, implementei três caminhos: autosserviço com conclusão e tratamento de falha, atendimento preparado por consultas automáticas e investigação humana. IA extrai sinais com citações; regras controlam os procedimentos. Sistemas e contas são fictícios, explicitamente identificados. A principal hipótese de valor é reduzir busca e preparação, com economics por processo e validação operacional ainda necessária. A comparação e o recap experimental anteriores foram preservados.
+Auditei os dados antes de propor automação: o D1 não permite localizar perdas de tempo com segurança, pois não registra abertura e 49,3% dos pares temporais disponíveis estão invertidos. No D2, o classificador local acertou 86% de 800 tickets reservados, contra 45,25% do Jev na configuração testada. Após revisar casos e criticar o valor de uma ficha manual, implementei três caminhos: autosserviço com conclusão e tratamento de falha, atendimento preparado por consultas automáticas e investigação humana. IA interpreta texto com citações; modelo local sugere categoria; regras e fontes controlam procedimentos; humano assume exceções e aprova respostas. Sistemas e contas são fictícios, explicitamente identificados. A principal hipótese de valor é reduzir busca e preparação, com economics por processo e validação operacional ainda necessária. A comparação e o recap experimental anteriores foram preservados.
 
 ## Solução
 

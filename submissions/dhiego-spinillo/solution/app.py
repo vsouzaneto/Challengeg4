@@ -57,6 +57,7 @@ PUBLIC_FILES.update({'docs/identidade-visual.md': ROOT / 'docs/identidade-visual
                      'resumo-executivo.md': ROOT / 'docs/resumo-executivo.md',
                      'piloto-operacional.md': ROOT / 'docs/piloto-operacional.md',
                      'economics.md': ROOT / 'docs/economics.md',
+                     'onde-entra-ia.md': ROOT / 'docs/onde-entra-ia.md',
                      'tres-velocidades.md': ROOT / 'docs/tres-velocidades.md',
                      'valor-por-processo.md': ROOT / 'docs/valor-por-processo.md',
                      'process-log/README.md': ROOT / 'process-log/README.md',

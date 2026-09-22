@@ -232,3 +232,11 @@ Dhiego reforçou que o protótipo não será hospedado na VPS: executar localmen
 Nesta rodada, extração por IA e recap ficaram desativados para demonstrar a reprodução sem API; as evidências anteriores de chamadas reais e mobile foram preservadas separadamente. O conteúdo aprovado foi editado para confirmar a persistência; são interações de QA de Codex, não decisões novas de Dhiego. A inspeção visual das sete capturas confirmou os estados apresentados. A primeira captura de página completa mostrou o cabeçalho fixo sobre o conteúdo após rolagem; a página foi reposicionada no topo e recapturada, sem editar a imagem.
 
 Commits continuam locais. Sem deploy, push, fork ou PR nesta etapa. Próximo passo: revisão final do pacote com o candidato e, após esse fechamento, publicação da submissão pelo canal oficial.
+
+## Clareza sobre IA, regras e humano — 22/09/2026
+
+Dhiego pediu que a entrega explicitasse onde a IA entra em cada fluxo, por que não usar IA para tudo e onde código determinístico, classificador local e decisão humana assumem. Codex acrescentou na abertura de `/fluxos` a matriz visual: IA opcional interpreta intenção/tentativas/sinais com citações; modelo local sugere categoria; consultas e regras determinísticas decidem elegibilidade, token, transição e bloqueio; humano aprova resposta e investiga exceções.
+
+A [matriz completa](../docs/onde-entra-ia.md) registra também as escolhas negativas: não modelar sentimento, urgência, churn, SLA, ações reais de conta ou LLM sobre toda a base sem referência humana. Os motivos variam entre risco, ausência de dados/rótulos, falta de integração e custo sem avaliação válida. Não se acrescentou uma capacidade de IA apenas para demonstrar uso da tecnologia.
+
+A documentação do README, roteiro de entrega e proposta de três caminhos foi alinhada. A captura [Matriz de decisões](evidencias/entrega-local-2026-09-22/08-matriz-ia-regras-humano.png) foi feita no Docker local, sem chamada de IA, e verificada sem overflow horizontal. Os 216 testes permanecem passando. O detector visual sinalizou textos pequenos preexistentes no cabeçalho e na ajuda do checkbox; os novos marcadores foram ajustados para 11px. Nenhuma alteração externa, deploy ou chamada paga ocorreu nesta etapa.

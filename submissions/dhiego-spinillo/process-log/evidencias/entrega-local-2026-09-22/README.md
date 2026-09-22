@@ -15,6 +15,7 @@ Nesta rodada, **Interpretar com IA foi desmarcado** e recap permaneceu desligado
 | [5. Reset isolado negativo](05-reset-isolado-negativo.png) | Reduzir elegíveis à preparação a zero e recalcular. Saldo mensal −R$ 381; ROI −88,1%; sem recuperação do investimento. |
 | [6. Classificação e comparação](06-classificador-e-comparacao.png) | Mesmo texto curto no classificador, domínio confirmado e recap desligado. Sugere Access com revisão humana. Comparação arquivada mostra Local 86% × Jev 45,25%. |
 | [7. Resumo executivo](07-resumo-executivo.png) | Síntese visual do diagnóstico, intervenção, evidência e decisão de investimento. Os 204 testes citados são do aplicativo/cálculos; o lote integral acrescentou 12, totalizando 216. |
+| [8. Matriz de decisões](08-matriz-ia-regras-humano.png) | Explicita por que IA interpreta texto, modelo local sugere categoria, regras liberam procedimento e humano responde/investiga. O bloco expansível registra o que ficou fora da IA por risco, dados ausentes, escopo ou custo. |
 
 Os arquivos `.txt` ao lado das capturas 2, 3, 5 e 6 registram o conteúdo visível da página para facilitar conferência. A análise visual inicial está nas [evidências do diagnóstico](../visual-v1/README.md).
 

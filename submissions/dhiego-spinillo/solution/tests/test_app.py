@@ -144,6 +144,9 @@ def test_public_evidence_and_examples(client):
     assert summary['systems']['tfidf_logistic']['test']['accuracy_including_api_errors'] == .86
     assert client.get('/reports/comparison/summary.json').status_code == 200
     assert client.get('/diagnostico').status_code == 200
+    explanation = client.get('/onde-entra-ia.md')
+    assert explanation.status_code == 200
+    assert 'Onde entra IA' in explanation.text
     example = client.get('/api/examples').json()[0]
     assert {'text', 'dataset_label', 'disclaimer', 'row'} <= set(example)
     assert 'não é verdade revisada' in example['disclaimer']
