@@ -3,7 +3,7 @@
 ## Sobre mim
 
 - **Nome:** Robson Martello
-- **LinkedIn:** [link]
+- **LinkedIn:** [Robson Martello](https://www.linkedin.com/in/rob-martello-65974757/)
 - **Challenge escolhido:** 002 — Support Redesign
 
 ---
