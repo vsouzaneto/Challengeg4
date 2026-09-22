@@ -4,7 +4,7 @@
 
 **Participação do candidato:** avaliar um caso por vez. Codex apresenta pedido, saída real, limites e uma pergunta operacional. Respostas ficam registradas como julgamento do candidato, sem serem confundidas com medição de tempo ou referência de qualidade de toda a base.
 
-**Estado:** caso 1 discutido, com decisão do candidato registrada; caso 2 em apresentação; caso 3 preparado. Ainda sem medição de utilidade/tempo ou aprovação geral do produto.
+**Estado:** casos 1 e 2 discutidos, com decisões do candidato registradas; caso 3 em apresentação. Ainda sem medição de utilidade/tempo ou aprovação geral do produto.
 
 [Registros reunidos, com saídas completas](../solution/reports/revisao-guiada.json). As posições no CSV começam em 1, sem cabeçalho; não são IDs de tickets fornecidos pela base.
 
@@ -71,6 +71,26 @@ O documento reúne referências a mover dias de férias, erro ao adicionar licen
 **Hipótese de formato mais útil, ainda não implementada/validada:** poucos tópicos sobre problema relatado, tentativas já mencionadas e pontos a conferir internamente, cada um com fonte. Não transformar toda ausência do dataset em pergunta ao cliente.
 
 **Pergunta ao candidato:** quais informações você precisaria ver primeiro para continuar esse atendimento sem repetir trabalho, e quais dessas lacunas exigiriam consultar o sistema antes de perguntar ao cliente?
+
+### Decisão do candidato — caso 2
+
+Dhiego definiu a sequência:
+
+1. Verificar se existe mais algum ticket aberto.
+2. Consultar o sistema para confirmar se as férias estão lançadas.
+3. Consultar notas internas do atendimento.
+
+**Se as férias estiverem lançadas**, fazer a confirmação proposta por Dhiego:
+
+> Verifiquei aqui e as férias foram lançadas. Tem alguma outra solicitação que precise de ajuda?
+
+**Se não estiverem lançadas**, perguntar se houve nova tentativa, se o erro persiste e em qual etapa; solicitar evidências, como print de tela, para escalar ao time técnico.
+
+**Consequência para o fluxo proposto:** o próximo passo depende de conferências internas e do estado real, além do texto do ticket. Consulta a outros chamados pode evitar trabalho paralelo; consulta ao sistema e às notas orienta o contato. Esses benefícios são hipóteses, sem medição nesta revisão. A fala “Verifiquei aqui” só cabe após uma consulta efetivamente realizada.
+
+**Limites de implementação:** o protótipo atual não consulta outros tickets, sistema de férias ou notas internas. Não apresentar essas verificações como executadas, nem interpretar falta de acesso ao sistema como prova de que as férias não foram lançadas. Identificação confiável do solicitante e vínculo entre registros exigem dados que não podem ser reconstruídos dos emails inconsistentes do D1.
+
+**Estado da implementação:** orientação registrada; prompt e aplicativo ainda não alterados. A decisão não é aprovação integral do recap gerado nem validação de ganho de tempo.
 
 ## 3. Férias e acesso a dados de outro colega: categoria não expressa risco
 

@@ -148,3 +148,10 @@ Foram selecionados intencionalmente três registros da avaliação já executada
 Para o registro D2 45.057, Dhiego escolheu: “Conferir o registro atual; só perguntar ao cliente se faltar confirmação necessária.” A decisão prioriza a conferência interna e condiciona novo contato a uma confirmação necessária, em vez de seguir automaticamente a coleta de detalhes sugerida pelo recap. Não autoriza encerramento automático nem valida a categoria do dataset.
 
 O feedback foi registrado no roteiro e no JSON do caso, com escopo operacional explícito. Casos 2 e 3 continuam sem feedback. Nenhum ganho de tempo foi atribuído à decisão; prompt e produto permanecem inalterados até fechar o recorte da revisão.
+
+
+## Revisão guiada — decisão do candidato no caso 2
+
+Para o D2 34.887, Dhiego definiu consultar outros tickets abertos, verificar no sistema se as férias estão lançadas e consultar notas internas do atendimento. Se lançadas, propôs uma confirmação breve e abertura para outra necessidade. Se não lançadas, pediu atualização do diagnóstico: nova tentativa, persistência e etapa do erro, evidências como print e escalonamento técnico.
+
+A resposta original e os caminhos condicionais estão no [registro estruturado](../solution/reports/revisao-guiada.json). A contribuição mostra que o texto isolado não basta para escolher o próximo contato: registros relacionados, estado do sistema e notas internas precisam orientar a assistência. O protótipo não acessa essas fontes; nenhuma verificação foi simulada como real. Prompt e aplicativo permanecem inalterados enquanto concluímos o terceiro caso. Não houve medição de impacto ou aprovação integral do recap.

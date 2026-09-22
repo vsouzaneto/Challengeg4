@@ -174,8 +174,33 @@
         "recap_pt_excluding_quotes": 412
       },
       "human_review": {
-        "status": "pending",
-        "feedback": null
+        "status": "operational_feedback_received",
+        "reviewer": "Dhiego Spinillo",
+        "feedback": "primeiro verificaria se tem mais algum ticket aberto; depois verificaria no sistema se as férias estão de fato lançadas; verificaria se tem alguma nota interna do time de atendimento. Se as férias estiverem lançadas, enviaria apenas uma pergunta de confirmação \"Verifiquei aqui e as férias foram lançadas. Tem alguma outra solicitação que precise de ajuda?\"; caso as férias não estejam lançadas, é preciso entrar em contato com o cliente questionando se voltou a realizar alguma tentativa, se ainda acontece erro, em que parte, e pedir evidências como print de tela e afins, para assim escalar para o time técnico",
+        "scope": "Sequência de investigação e próximos passos condicionais para este exemplo. Não valida a fidelidade integral do recap, sua categoria nem economia de tempo. Nenhuma consulta a sistemas externos foi realizada.",
+        "workflow": {
+          "internal_checks_in_order": [
+            "Verificar se há mais algum ticket aberto.",
+            "Verificar no sistema se as férias estão de fato lançadas.",
+            "Verificar notas internas do time de atendimento."
+          ],
+          "if_leave_registered": {
+            "action": "Pergunta de confirmação após a consulta real.",
+            "suggested_reply_by_candidate": "Verifiquei aqui e as férias foram lançadas. Tem alguma outra solicitação que precise de ajuda?"
+          },
+          "if_leave_not_registered": {
+            "action": "Contatar cliente para atualizar o diagnóstico e coletar evidências para escalonamento técnico.",
+            "questions": [
+              "Voltou a realizar alguma tentativa?",
+              "O erro ainda acontece?",
+              "Em qual parte ocorre?"
+            ],
+            "evidence": [
+              "Print de tela ou outras evidências pertinentes."
+            ],
+            "handoff": "Time técnico."
+          }
+        }
       }
     },
     {
