@@ -1,4 +1,6 @@
-# Recorte para discussão — triagem assistida
+# Recorte inicial para discussão — triagem assistida
+
+> Documento histórico da proposta inicial. O estado vigente está no [ADR 0006](decisions/0006-contexto-verificado-e-investigacao-humana.md) e no [README](../README.md). Comparação, revisões e implementação descritas abaixo como pendentes já avançaram.
 
 **21/09/2026. Proposta de Codex, ainda não escolhida por Dhiego.** Leitura da análise visual concluída pelo candidato; dúvidas, revisão multimodelo e escolha final permanecem abertas.
 

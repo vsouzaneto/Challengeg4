@@ -4,8 +4,8 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Protótipo de triagem assistida: classificação, recap com origem e decisão humana. Challenge 002 — Dhiego Spinillo.">
   <title>Suporte assistido · G4 Challenge 002</title>
-  <link rel="stylesheet" href="/static/app.css?v=20260921-piloto">
-  <script src="/static/app.js?v=20260921-piloto" defer></script>
+  <link rel="stylesheet" href="/static/app.css?v=20260921-investigation-2">
+  <script src="/static/app.js?v=20260921-investigation-2" defer></script>
 </head>
 <body>
 <a class="skip" href="#atendimento">Ir para atendimento</a>
@@ -18,7 +18,7 @@
 <main>
   <section class="intro" aria-labelledby="page-title">
     <div><p class="eyebrow">Contexto para quem atende. Decisão de quem conhece.</p><h1 id="page-title">Entenda o pedido.<br><em>Confirme o próximo passo.</em></h1></div>
-    <div class="intro-note"><span class="small-label">Demonstração funcional</span><p>Classificação local com revisão humana. Recap experimental disponível para investigação.</p><a href="#evidencias">Por que escolhemos este caminho <span aria-hidden="true">↓</span></a></div>
+    <div class="intro-note"><span class="small-label">Demonstração funcional</span><p>Classifique o pedido, registre o contexto conferido e prepare o próximo passo e a resposta ao cliente.</p><a href="#evidencias">Por que escolhemos este caminho <span aria-hidden="true">↓</span></a></div>
   </section>
 
   <section id="atendimento" class="workspace" aria-label="Área de atendimento">
@@ -27,7 +27,7 @@
       <h2>O que o cliente escreveu?</h2>
       <label for="example-select">Explorar um ticket da base</label>
       <select id="example-select"><option value="">Escolha um exemplo ou escreva abaixo</option></select>
-      <p id="example-note" class="field-note">Exemplos públicos do conjunto de treino, apenas para demonstração. Os resultados medidos usam outros tickets.</p>
+      <p id="example-note" class="field-note">Os três primeiros casos foram discutidos com Dhiego após o teste; os demais vêm do treino. Usá-los aqui não mede desempenho.</p>
       <form id="analyze-form">
         <label for="ticket-text">Texto do ticket <span class="muted">· em inglês</span></label>
         <textarea id="ticket-text" name="text" minlength="10" maxlength="16000" required rows="13" spellcheck="false" placeholder="Cole aqui o pedido completo, incluindo o que já foi tentado…" aria-describedby="text-help"></textarea>
@@ -42,7 +42,7 @@
     </div>
 
     <div class="output-panel">
-      <div id="empty-state" class="empty-state panel"><span class="compass-mark" aria-hidden="true">✧</span><p class="small-label">A leitura começa pelo contexto</p><h2>O pedido inteiro.<br>Uma decisão consciente.</h2><p>Selecione um exemplo ou cole um ticket. A categoria, as tentativas relatadas e as dúvidas aparecem aqui para sua revisão.</p><div class="empty-steps"><span>Texto original</span><span aria-hidden="true">→</span><span>Interpretação</span><span aria-hidden="true">→</span><span>Sua decisão</span></div></div>
+      <div id="empty-state" class="empty-state panel"><span class="compass-mark" aria-hidden="true">✧</span><p class="small-label">A leitura começa pelo contexto</p><h2>O pedido inteiro.<br>Uma decisão consciente.</h2><p>Selecione um exemplo ou cole um ticket. Confira a categoria, registre suas verificações e prepare o encaminhamento ou uma resposta para revisão.</p><div class="empty-steps"><span>Texto original</span><span aria-hidden="true">→</span><span>Interpretação</span><span aria-hidden="true">→</span><span>Sua decisão</span></div></div>
       <div id="result" hidden>
         <section class="classification panel" aria-labelledby="classification-title">
           <div class="panel-heading"><span class="small-label">Classificação sugerida</span><span class="review-tag">Revisão humana obrigatória</span></div>
@@ -52,20 +52,41 @@
           <div class="policy"><span class="small-label">Encaminhamento demonstrativo</span><strong id="queue-text"></strong><p id="policy-reason"></p></div>
           <details><summary>Ver a distribuição entre categorias</summary><div id="probabilities" class="probabilities"></div></details>
         </section>
-        <section class="recap panel" aria-labelledby="recap-title">
+        <section id="recap-panel" class="recap panel" aria-labelledby="recap-title">
           <div class="panel-heading"><span class="small-label">Apoio à compreensão</span><span id="recap-model" class="muted"></span></div>
           <h2 id="recap-title">Recap experimental</h2>
           <p class="field-note">Síntese gerada a partir deste texto. Confira os trechos de origem; o modelo pode interpretar errado.</p>
           <div id="recap-content"></div>
         </section>
         <section class="review panel" aria-labelledby="review-title">
-          <span class="small-label">Julgamento do atendente</span><h2 id="review-title">Qual é a sua decisão?</h2>
+          <h2 id="review-title">Prepare o próximo passo</h2>
+          <p class="field-note">O aplicativo sugere a categoria. Você registra o que conferiu; as regras organizam a orientação e um rascunho de resposta.</p>
           <form id="review-form">
             <label for="review-category">Categoria confirmada ou corrigida</label><select id="review-category" required></select>
-            <label for="review-reason">Por que essa categoria?</label><textarea id="review-reason" required minlength="3" maxlength="1000" rows="3" placeholder="Registre o motivo, inclusive quando mantiver a sugestão."></textarea>
-            <button class="secondary" id="review-button" type="submit">Registrar minha decisão</button><p id="review-status" role="status" aria-live="polite" class="status"></p>
+            <fieldset class="investigation-fields">
+              <legend>Conferências registradas por você</legend>
+              <p class="field-note">Sem conexão a outros tickets, sistemas ou notas. Marque apenas o que você consultou. Nos exemplos da base, qualquer situação preenchida é uma simulação de atendimento.</p>
+              <div class="check-fields">
+              {% for name, label in [('other-tickets', 'Outros tickets abertos'), ('system', 'Situação no sistema'), ('internal-notes', 'Notas internas do atendimento')] %}
+                <div><label for="check-{{ name }}">{{ label }}</label><select id="check-{{ name }}"><option value="pending">Não verificado</option><option value="checked">Conferido pelo atendente</option><option value="unavailable">Fonte indisponível</option></select></div>
+              {% endfor %}
+              </div>
+              <label for="system-outcome">Resultado da consulta ao sistema</label>
+              <select id="system-outcome" disabled><option value="unknown">Ainda não sei</option><option value="resolved">Solicitação atendida / situação resolvida</option><option value="unresolved">Solicitação ainda pendente / situação não resolvida</option></select>
+              <label class="check-line"><input id="incident-reported" type="checkbox"><span>Identifiquei relato de possível incidente <small>Marcado por você. Não confirma a ocorrência, causa ou severidade.</small></span></label>
+              <div id="incident-evidence" hidden><label for="incident-quote">Trecho original que motivou a investigação</label><textarea id="incident-quote" maxlength="2000" rows="3" placeholder="Copie o trecho exato do ticket, sem traduzir."></textarea><p class="field-note">A categoria pode continuar RH, por exemplo. O relato orienta uma investigação própria, sem atribuir causa.</p></div>
+            </fieldset>
+            <button class="secondary" id="prepare-button" type="button">Preparar orientação e resposta</button>
+            <p id="plan-status" role="status" aria-live="polite" class="status"></p>
+            <div id="prepared-plan" hidden>
+              <h3 id="plan-title"></h3><ol id="plan-steps"></ol><p id="plan-limits" class="field-note"></p>
+              <div id="draft-section" hidden><label for="response-draft">Sugestão de resposta · revise e adapte</label><textarea id="response-draft" maxlength="3000" rows="5"></textarea><p class="field-note">Modelo de texto por regra, baseado nas conferências que você registrou. Retire perguntas já respondidas e confira cada afirmação antes de usar.</p><button id="copy-draft" class="secondary" type="button">Copiar rascunho</button><p id="copy-status" role="status" aria-live="polite" class="status"></p></div>
+              <p id="draft-unavailable" class="field-note" hidden>O contexto ainda não sustenta um rascunho de resposta. Complete a conferência ou registre a limitação.</p>
+            </div>
+            <label for="review-reason">Motivo da decisão e contexto relevante</label><textarea id="review-reason" required minlength="3" maxlength="1000" rows="3" placeholder="Registre o que sustenta a decisão, incluindo informações das consultas realizadas."></textarea>
+            <button class="primary" id="review-button" type="submit" disabled>Registrar decisão e rascunho</button><p id="review-status" role="status" aria-live="polite" class="status"></p>
           </form>
-          <p class="field-note">O registro preserva a sugestão original e sua correção. Não altera o modelo automaticamente. <a href="/api/export">Exportar decisões em CSV</a></p>
+          <p class="field-note">O registro preserva categoria, conferências, orientação e rascunho editado. Não envia mensagens nem altera outros sistemas. <a href="/api/export">Exportar decisões em CSV</a></p>
         </section>
       </div>
     </div>

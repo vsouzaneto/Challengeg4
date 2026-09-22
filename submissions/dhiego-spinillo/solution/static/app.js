@@ -3,16 +3,17 @@ const $ = id => document.getElementById(id);
 const pct = value => value == null ? 'Não atingido' : (100 * value).toLocaleString('pt-BR', {maximumFractionDigits: 2}) + '%';
 const num = value => Number(value).toLocaleString('pt-BR', {maximumFractionDigits: 2});
 const labels = ['Hardware','HR Support','Access','Miscellaneous','Storage','Purchase','Internal Project','Administrative rights'];
-let examples = [], activeAnalysis = null, revision = 0;
+let examples = [], activeAnalysis = null, revision = 0, preparationRevision = 0, readyPlan = null;
 function node(tag, text, className) { const n = document.createElement(tag); if (text != null) n.textContent = text; if (className) n.className = className; return n; }
 function status(id, text, error = false) { $(id).textContent = text; $(id).classList.toggle('error', error); }
-async function getJSON(url, options) { const response = await fetch(url, options); if (!response.ok) { if(response.status === 422) throw new Error('Confira o tamanho do texto, a categoria e o motivo informado.'); throw new Error('Não foi possível concluir ('+response.status+'). Tente novamente ou revise manualmente.'); } return response.json(); }
-function invalidate() { revision++; activeAnalysis = null; $('result').hidden = true; $('empty-state').hidden = false; $('input-count').textContent = num($('ticket-text').value.length) + ' caracteres'; status('analysis-status',''); status('review-status',''); }
+async function getJSON(url, options) { const response = await fetch(url, options); if (!response.ok) { if(response.status === 422) { const body = await response.json().catch(()=>({})); throw new Error(typeof body.detail === 'string' ? body.detail : 'Confira os campos: resultado conhecido exige consulta ao sistema e relato de incidente exige trecho do ticket.'); } throw new Error('Não foi possível concluir ('+response.status+'). Tente novamente ou revise manualmente.'); } return response.json(); }
+function invalidate() { invalidatePlan(); revision++; activeAnalysis = null; $('result').hidden = true; $('empty-state').hidden = false; $('input-count').textContent = num($('ticket-text').value.length) + ' caracteres'; status('analysis-status',''); status('review-status',''); }
 $('ticket-text').addEventListener('input', invalidate); $('domain-confirmed').addEventListener('change', invalidate); $('include-recap').addEventListener('change', invalidate);
-$('example-select').addEventListener('change', () => { const item = examples[Number($('example-select').value)]; if ($('example-select').value === '' || !item) return; $('ticket-text').value = item.text; $('domain-confirmed').checked = true; $('example-note').textContent = 'D2 · registro '+num(item.row)+' · exemplo do treino. A categoria da base fica disponível após analisar; este exemplo não mede desempenho.'; invalidate(); });
+$('example-select').addEventListener('change', () => { const item = examples[Number($('example-select').value)]; if ($('example-select').value === '' || !item) return; $('ticket-text').value = item.text; $('domain-confirmed').checked = true; $('example-note').textContent = 'D2 · registro '+num(item.row)+' · '+item.source+' A categoria da base fica disponível após analisar.'; invalidate(); });
 for (const label of labels) { const option = node('option',label); option.value = label; $('review-category').append(option); }
 
 function renderRecap(data) {
+  $('recap-panel').hidden = !data.recap && !data.recap_error;
   const target = $('recap-content'); target.replaceChildren();
   $('recap-model').textContent = data.recap?.model ? 'Gerado nesta análise' : '';
   if (!data.recap) { target.append(node('p', data.recap_error || 'Recap experimental não solicitado. A classificação e a revisão manual continuam disponíveis.', 'recap-notice')); return; }
@@ -28,13 +29,13 @@ function renderRecap(data) {
 }
 function renderResult(data) {
   const example = examples.find(item => item.text.trim() === data.text.trim());
-  if (example) $('example-note').textContent = 'D2 · registro '+num(example.row)+' · rótulo da base: '+example.dataset_label+'. Exemplo do treino; não é avaliação de desempenho.';
+  if (example) $('example-note').textContent = 'D2 · registro '+num(example.row)+' · rótulo da base: '+example.dataset_label+'. '+example.source;
   $('empty-state').hidden = true; $('result').hidden = false; $('classification-title').textContent = data.prediction;
   $('score-text').textContent = 'Score do modelo: '+pct(data.score); $('latency-text').textContent = 'Classificação local · '+num(data.elapsed_ms)+' ms';
   $('queue-text').textContent = data.policy.queue; $('policy-reason').textContent = data.policy.reason;
   const list = $('probabilities'); list.replaceChildren();
   for (const [label,value] of Object.entries(data.probabilities).sort((a,b)=>b[1]-a[1])) { const row = node('div',null,'probability-row'); const track = node('div',null,'bar-track'), fill = node('div',null,'bar-fill'); fill.style.width = (value*100)+'%'; track.append(fill); row.append(node('span',label),track,node('span',pct(value))); list.append(row); }
-  renderRecap(data); $('review-category').value = data.prediction; $('review-reason').value = ''; status('review-status',''); $('review-button').disabled = false;
+  renderRecap(data); $('review-category').value = data.prediction; $('review-reason').value = ''; status('review-status',''); resetInvestigation();
 }
 $('analyze-form').addEventListener('submit', async event => {
   event.preventDefault(); const button = $('analyze-button'); if(button.disabled)return;
@@ -47,9 +48,67 @@ $('analyze-form').addEventListener('submit', async event => {
     if(window.innerWidth < 741) $('result').scrollIntoView({block:'start',behavior:'smooth'});
   } catch(error) {status('analysis-status',error.message,true);} finally {button.disabled=false;}
 });
-$('review-form').addEventListener('submit', async event => { event.preventDefault(); if(!activeAnalysis)return; const button=$('review-button');button.disabled=true;
-  try {await getJSON('/api/review',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({analysis_id:activeAnalysis.analysis_id,category:$('review-category').value,reason:$('review-reason').value.trim()})});status('review-status','Decisão registrada com seu motivo. Nenhuma ação foi executada no atendimento.');}
-  catch(error){status('review-status',error.message,true);}finally{button.disabled=false;}
+function investigationValues() {
+  return {checks:{other_tickets:$('check-other-tickets').value,system:$('check-system').value,internal_notes:$('check-internal-notes').value},
+    system_outcome:$('system-outcome').value,incident_reported:$('incident-reported').checked,
+    incident_quote:$('incident-reported').checked ? $('incident-quote').value : ''};
+}
+function invalidatePlan() {
+  preparationRevision++; readyPlan=null; $('prepared-plan').hidden=true; $('response-draft').value='';
+  $('review-button').disabled=true; status('plan-status',''); status('copy-status',''); status('review-status','');
+}
+function resetInvestigation() {
+  for(const id of ['check-other-tickets','check-system','check-internal-notes']) $(id).value='pending';
+  $('system-outcome').value='unknown'; $('system-outcome').disabled=true;
+  $('incident-reported').checked=false; $('incident-quote').value=''; $('incident-evidence').hidden=true;
+  $('incident-quote').required=false; invalidatePlan();
+}
+for(const id of ['check-other-tickets','check-system','check-internal-notes','system-outcome','incident-reported']) {
+  $(id).addEventListener('change',()=>{
+    $('system-outcome').disabled=$('check-system').value!=='checked';
+    if($('system-outcome').disabled) $('system-outcome').value='unknown';
+    $('incident-evidence').hidden=!$('incident-reported').checked;
+    $('incident-quote').required=$('incident-reported').checked;
+    invalidatePlan();
+  });
+}
+$('incident-quote').addEventListener('input',invalidatePlan);
+function renderPlan(plan) {
+  $('prepared-plan').hidden=false; $('plan-title').textContent=plan.title;
+  const list=$('plan-steps'); list.replaceChildren(); for(const step of plan.steps) list.append(node('li',step));
+  const names={other_tickets:'outros tickets',system:'sistema',internal_notes:'notas internas'};
+  const gaps=plan.unavailable_checks.map(key=>names[key]).join(', ');
+  $('plan-limits').textContent=plan.basis+(gaps?' Fontes indisponíveis: '+gaps+'.':'');
+  $('draft-section').hidden=!plan.reply_draft; $('draft-unavailable').hidden=!!plan.reply_draft;
+  $('response-draft').value=plan.reply_draft || ''; $('review-button').disabled=false;
+}
+$('prepare-button').addEventListener('click',async()=>{
+  if(!activeAnalysis || $('prepare-button').disabled)return;
+  const analysisId=activeAnalysis.analysis_id, currentRevision=preparationRevision;
+  $('prepare-button').disabled=true; status('plan-status','Preparando orientação pelas conferências registradas…');
+  try {
+    const plan=await getJSON('/api/plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({analysis_id:analysisId,investigation:investigationValues()})});
+    if(activeAnalysis?.analysis_id!==analysisId || preparationRevision!==currentRevision)return;
+    readyPlan=plan;renderPlan(plan);status('plan-status','Orientação pronta para revisão. Nenhuma consulta externa foi realizada.');
+  } catch(error){if(activeAnalysis?.analysis_id===analysisId && preparationRevision===currentRevision)status('plan-status',error.message,true);}
+  finally{$('prepare-button').disabled=false;}
+});
+$('copy-draft').addEventListener('click',async()=>{
+  try{await navigator.clipboard.writeText($('response-draft').value);status('copy-status','Rascunho copiado. Revise no canal de atendimento antes de enviar.');}
+  catch(error){$('response-draft').focus();$('response-draft').select();status('copy-status','Cópia automática indisponível. O texto está selecionado para copiar manualmente.');}
+});
+$('review-form').addEventListener('submit', async event => {
+  event.preventDefault(); if(!activeAnalysis || !readyPlan || $('review-button').disabled)return;
+  const analysisId=activeAnalysis.analysis_id,currentRevision=preparationRevision;
+  $('review-button').disabled=true;
+  try {
+    await getJSON('/api/review',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({analysis_id:analysisId,
+      category:$('review-category').value,reason:$('review-reason').value.trim(),investigation:investigationValues(),
+      response_draft:readyPlan.reply_draft ? $('response-draft').value : null})});
+    if(activeAnalysis?.analysis_id===analysisId && preparationRevision===currentRevision)
+      status('review-status','Decisão, conferências e rascunho registrados. Nenhuma mensagem foi enviada.');
+  } catch(error){if(activeAnalysis?.analysis_id===analysisId && preparationRevision===currentRevision)status('review-status',error.message,true);}
+  finally{if(readyPlan)$('review-button').disabled=false;}
 });
 
 function renderEvidence(data) {

@@ -4,7 +4,7 @@
 
 **Participação do candidato:** avaliar um caso por vez. Codex apresenta pedido, saída real, limites e uma pergunta operacional. Respostas ficam registradas como julgamento do candidato, sem serem confundidas com medição de tempo ou referência de qualidade de toda a base.
 
-**Estado:** casos 1 e 2 discutidos, com decisões do candidato registradas; caso 3 em apresentação. Ainda sem medição de utilidade/tempo ou aprovação geral do produto.
+**Estado:** três casos discutidos; decisões do candidato registradas. Revisão qualitativa de três exemplos, sem medição de utilidade/tempo ou aprovação geral do produto.
 
 [Registros reunidos, com saídas completas](../solution/reports/revisao-guiada.json). As posições no CSV começam em 1, sem cabeçalho; não são IDs de tickets fornecidos pela base.
 
@@ -120,6 +120,14 @@ O assunto aparente é férias, mas o texto inclui `seems able access data for an
 **Hipótese de evolução, ainda não implementada/validada:** separar assunto, sinal de risco sustentado em trecho e procedimento humano. Identificação semântica pode sugerir um sinal; regra explícita define o que requer revisão especializada. Esta seleção isolada não valida detector de risco nem política completa.
 
 **Pergunta ao candidato:** qual sinal deveria ser destacado antes da categoria, e qual ação caberia ao atendente versus ao responsável pelo sistema/acessos?
+
+### Decisão do candidato — caso 3
+
+Dhiego considera o assunto RH e o atendimento como investigação de possível incidente. Propôs compreender como o cliente concluiu que via dados de outra pessoa, obter print ou outra evidência e possivelmente envolver Segurança ou Engenharia para consultar logs.
+
+Enumerou hipóteses, sem confirmar nenhuma: confusão de interpretação; problema técnico como RLS, cookie ou cache; erro de preenchimento/vínculo, por exemplo ID errado em um evento exibido no histórico. A investigação deve distinguir problema técnico de preenchimento.
+
+**Consequência:** separar assunto, relato de incidente e causa. O rótulo RH pode permanecer correto; não basta para definir a condução. A interface deve permitir registrar o relato e apoiar investigação humana, sem diagnosticar vulnerabilidade nem afirmar consulta a logs.
 
 ## Critério para a próxima decisão
 

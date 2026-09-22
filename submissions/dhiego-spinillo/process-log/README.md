@@ -155,3 +155,21 @@ O feedback foi registrado no roteiro e no JSON do caso, com escopo operacional e
 Para o D2 34.887, Dhiego definiu consultar outros tickets abertos, verificar no sistema se as férias estão lançadas e consultar notas internas do atendimento. Se lançadas, propôs uma confirmação breve e abertura para outra necessidade. Se não lançadas, pediu atualização do diagnóstico: nova tentativa, persistência e etapa do erro, evidências como print e escalonamento técnico.
 
 A resposta original e os caminhos condicionais estão no [registro estruturado](../solution/reports/revisao-guiada.json). A contribuição mostra que o texto isolado não basta para escolher o próximo contato: registros relacionados, estado do sistema e notas internas precisam orientar a assistência. O protótipo não acessa essas fontes; nenhuma verificação foi simulada como real. Prompt e aplicativo permanecem inalterados enquanto concluímos o terceiro caso. Não houve medição de impacto ou aprovação integral do recap.
+
+
+## Revisão guiada — terceiro caso e fechamento do recorte
+
+Dhiego manteve RH como assunto do D2 45.725 e reconheceu um relato de possível incidente. Propôs entender com o cliente como chegou à conclusão, obter evidências e possivelmente envolver Segurança ou Engenharia para consultar logs. RLS, cookie/cache, interpretação e ID incorreto em evento foram hipóteses levantadas pelo candidato, sem confirmação. A investigação deve distinguir falha técnica de preenchimento.
+
+Com os três casos discutidos, Codex delimitou o ajuste: ficha de conferências preenchida pelo atendente e próximo passo calculado por regras. Não serão simuladas consultas a sistemas nem alegada detecção automática de incidentes. [ADR 0006](../docs/decisions/0006-contexto-verificado-e-investigacao-humana.md). Implementação/testes em andamento; nenhum ganho operacional foi medido.
+
+
+## Implementação do fluxo e rascunhos por regra
+
+Após os três casos, Codex implementou uma ficha de conferências declaradas pelo atendente e uma política no servidor para preparar o próximo passo. Dhiego perguntou se a sugestão de resposta entraria nesta etapa; foram incluídos rascunhos editáveis por regra para confirmação, atualização de diagnóstico e esclarecimento de relato de incidente. Não foi usado LLM para esses textos, nem executada ação externa. O recap e sua avaliação permanecem preservados.
+
+O estado conhecido no sistema exige registro de consulta. Conferências pendentes impedem o rascunho rotineiro; indisponibilidade não equivale a pendência da solicitação. Relato de incidente permite orientação própria sem esperar concluir consultas rotineiras; o trecho precisa existir no ticket e a categoria é preservada. Não há detecção automática de incidentes nem diagnóstico de causa. Registros anteriores continuam exportáveis.
+
+147 testes passaram localmente e no contêiner. Verificação no navegador: caso de férias com contexto desconhecido sem rascunho; conferências simuladas liberam confirmação; registro persiste sem enviar mensagem; relato de incidente mantém RH e pede evidências sem atribuir causa. Testes adicionais verificam estado pendente, fontes indisponíveis, trecho inválido, acesso por API sem prévia visualização e exclusão de conteúdo original/rascunho na exportação.
+
+A inspeção em 1440×1000 e 390×844 motivou manter a entrada acessível no desktop com altura limitada; também corrigiu a descrição inicial dos exemplos após adicionar os três casos discutidos. Não foram realizadas consultas reais a sistemas: registros de QA identificam a simulação e não são feedback humano do candidato.

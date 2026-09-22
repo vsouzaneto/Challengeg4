@@ -23,6 +23,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from investigation import Investigation, prepare_next_step
 from recap import RecapValidationError, generate_recap
 from triage_core import LABELS, ROOT, key_from_env, route_suggestion
 
@@ -74,6 +75,9 @@ def database():
                 review_id TEXT PRIMARY KEY, analysis_id TEXT NOT NULL REFERENCES analyses(analysis_id),
                 original_category TEXT, category TEXT NOT NULL, reason TEXT NOT NULL,
                 created_at TEXT NOT NULL)''')
+            connection.execute('''CREATE TABLE IF NOT EXISTS investigations (
+                review_id TEXT PRIMARY KEY REFERENCES reviews(review_id),
+                context_json TEXT NOT NULL, plan_json TEXT NOT NULL)''')
             yield connection
     finally:
         connection.close()
@@ -125,6 +129,8 @@ class ReviewRequest(BaseModel):
     analysis_id: str = Field(min_length=1, max_length=100)
     category: str
     reason: str = Field(min_length=3, max_length=1000)
+    investigation: Investigation | None = None
+    response_draft: str | None = Field(default=None, max_length=3000)
 
     @field_validator('category')
     @classmethod
@@ -139,6 +145,19 @@ class ReviewRequest(BaseModel):
         if len(value.strip()) < 3:
             raise ValueError('Explique a confirmação ou correção em pelo menos 3 caracteres.')
         return value
+
+
+class PlanRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid', strict=True)
+    analysis_id: str = Field(min_length=1, max_length=100)
+    investigation: Investigation
+
+
+def verified_plan(context, original):
+    try:
+        return prepare_next_step(context, original)
+    except ValueError as error:
+        raise HTTPException(422, str(error)) from None
 
 
 @app.get('/')
@@ -169,7 +188,14 @@ def api_evidence():
 @app.get('/api/examples')
 def examples():
     rows = json.loads(EXAMPLES_PATH.read_text())
-    return [{**row, 'disclaimer': 'Rótulo original do dataset; não é verdade revisada por humano.'} for row in rows]
+    guided = json.loads((SOLUTION / 'reports/revisao-guiada.json').read_text())['cases']
+    selected = [{'row': case['row'], 'text': case['original'],
+                 'dataset_label': case['classification_archived']['truth'],
+                 'source': 'Caso discutido com Dhiego; veio do teste e agora orienta desenvolvimento. Não é uma nova avaliação.'}
+                for case in guided]
+    return [{**row, 'source': row.get('source', 'Exemplo do treino; não mede desempenho.'),
+             'disclaimer': 'Rótulo original do dataset; não é verdade revisada por humano.'}
+            for row in selected + rows]
 
 
 @app.post('/api/analyze')
@@ -215,17 +241,35 @@ async def analyze(body: AnalyzeRequest, classifier=Depends(get_classifier)):
             'recap': recap, 'recap_error': recap_error, 'created_at': created_at}
 
 
+@app.post('/api/plan')
+def plan(body: PlanRequest):
+    with database() as db:
+        original = db.execute('SELECT original_text FROM analyses WHERE analysis_id=?', (body.analysis_id,)).fetchone()
+        if original is None:
+            raise HTTPException(404, 'Análise não encontrada.')
+        return verified_plan(body.investigation, original['original_text'])
+
+
 @app.post('/api/review')
 def review(body: ReviewRequest):
     with database() as db:
-        original = db.execute('SELECT prediction FROM analyses WHERE analysis_id=?', (body.analysis_id,)).fetchone()
+        original = db.execute('SELECT prediction, original_text FROM analyses WHERE analysis_id=?', (body.analysis_id,)).fetchone()
         if original is None:
             raise HTTPException(404, 'Análise não encontrada.')
+        plan_result = verified_plan(body.investigation, original['original_text']) if body.investigation is not None else None
+        if body.response_draft is not None and (plan_result is None or plan_result['reply_draft'] is None):
+            raise HTTPException(422, 'As conferências registradas ainda não sustentam um rascunho de resposta.')
         result = {'review_id': str(uuid4()), 'analysis_id': body.analysis_id,
                   'original_category': original['prediction'], 'category': body.category,
                   'reason': body.reason, 'created_at': utc_now()}
         db.execute('INSERT INTO reviews VALUES (?, ?, ?, ?, ?, ?)', tuple(result.values()))
-    return {'ok': True, **result}
+        if plan_result is not None:
+            db.execute('INSERT INTO investigations VALUES (?, ?, ?)', (
+                result['review_id'], json.dumps({**body.investigation.model_dump(),
+                                                'response_draft': body.response_draft}, ensure_ascii=False),
+                json.dumps(plan_result, ensure_ascii=False),
+            ))
+    return {'ok': True, **result, 'plan': plan_result}
 
 
 def csv_safe(value):
@@ -241,13 +285,24 @@ def csv_safe(value):
 def export_reviews():
     with database() as db:
         rows = db.execute('''SELECT r.review_id, r.analysis_id, a.text_sha256,
-            r.original_category, r.category, r.reason, r.created_at
+            r.original_category, r.category, r.reason, r.created_at, i.context_json, i.plan_json
             FROM reviews r JOIN analyses a ON r.analysis_id=a.analysis_id
+            LEFT JOIN investigations i ON i.review_id=r.review_id
             ORDER BY r.created_at, r.review_id''').fetchall()
     output = io.StringIO(newline='')
     writer = csv.writer(output)
-    writer.writerow(['review_id', 'analysis_id', 'text_sha256', 'original_category', 'category', 'reason', 'created_at'])
-    writer.writerows([[csv_safe(value) for value in row] for row in rows])
+    fields = ['review_id', 'analysis_id', 'text_sha256', 'original_category', 'category', 'reason', 'created_at']
+    writer.writerow(fields + ['other_tickets_check', 'system_check', 'internal_notes_check',
+                              'system_outcome', 'incident_reported', 'next_step_code', 'rule_version'])
+    for row in rows:
+        context = json.loads(row['context_json']) if row['context_json'] else {}
+        plan_result = json.loads(row['plan_json']) if row['plan_json'] else {}
+        # O trecho do relato e o texto original permanecem somente no banco local.
+        values = [row[field] for field in fields] + [context.get('checks', {}).get(name, '')
+                   for name in ('other_tickets', 'system', 'internal_notes')]
+        values += [context.get('system_outcome', ''), context.get('incident_reported', ''),
+                   plan_result.get('code', ''), plan_result.get('rule_version', '')]
+        writer.writerow([csv_safe(value) for value in values])
     return Response(content='\ufeff' + output.getvalue(), media_type='text/csv; charset=utf-8',
                     headers={'Content-Disposition': 'attachment; filename="revisoes-suporte.csv"',
                              'Cache-Control': 'no-store'})

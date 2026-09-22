@@ -286,8 +286,25 @@
         "recap_pt_excluding_quotes": 204
       },
       "human_review": {
-        "status": "pending",
-        "feedback": null
+        "status": "operational_feedback_received",
+        "reviewer": "Dhiego Spinillo",
+        "feedback": "realmente me parece ticket de RH, mas ticket de incidente que possivelmente deve envolver sec ou engenharia para conferir logs. Precisaria tentar explorar com o cliente como ele concluiu que é possivel visualizar dados de outra pessoa, se possui print ou alguma outra evidencia. pode ser confusao do usuario ou pode realmente ser problema de rls ou qualquer outra coisa como cookie, cache e afins, ou pode ser tao simples qto alguem lancou um id de usuario errado em um evento e esse evento apareceu no historico do usuario q abriu reclamacao, fazendo ele acreditar que acessou dados de outra pessoa, ou seja, precisamos identificar se o problema e tecnico ou preenchimento.",
+        "scope": "Julgamento operacional sobre o exemplo: assunto RH, relato de possível incidente e investigação de evidências/causa. Nenhuma causa ou incidente foi confirmado, nenhum log foi consultado.",
+        "workflow": {
+          "topic": "RH",
+          "nature": "Possível incidente a investigar",
+          "customer_evidence": [
+            "Como concluiu que visualiza dados de outra pessoa?",
+            "Print ou outra evidência disponível."
+          ],
+          "specialist_support": "Possível envolvimento de Segurança ou Engenharia para conferir logs.",
+          "hypotheses_unconfirmed": [
+            "Confusão de interpretação do usuário.",
+            "Problema técnico: RLS, cookie, cache ou outra causa.",
+            "Erro de preenchimento/vínculo: ID de usuário incorreto em evento."
+          ],
+          "objective": "Distinguir interpretação, falha técnica e erro de preenchimento antes de atribuir causa."
+        }
       }
     }
   ]

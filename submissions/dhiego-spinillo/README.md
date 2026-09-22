@@ -1,6 +1,6 @@
 # Submissão — Dhiego Spinillo — Challenge 002
 
-**Protótipo em revisão com o candidato. Ainda não submetido.**
+**Protótipo implementado; pacote preparado para revisão final. Ainda não submetido.**
 
 ## Sobre mim
 
@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-Auditei os dados antes de propor automação: o D1 não permite localizar perdas de tempo com segurança, pois não registra abertura e 49,3% dos pares temporais disponíveis estão invertidos. No D2, de suporte interno de TI, um classificador local acertou 86% de 800 tickets reservados, contra 45,25% do Jev na configuração testada. O protótipo executa classificação sobre texto novo, exige confirmação humana e registra correções; o limiar de confiança não cumpriu a meta de qualidade no teste. Um recap com LLM foi integrado e avaliado, mas permanece experimental por evidência insuficiente de fidelidade. A recomendação é validar utilidade operacional e instrumentar o atendimento antes de prometer economia ou ampliar a intervenção.
+Auditei os dados antes de propor automação: o D1 não permite localizar perdas de tempo com segurança, pois não registra abertura e 49,3% dos pares temporais disponíveis estão invertidos. No D2, de suporte interno de TI, um classificador local acertou 86% de 800 tickets reservados, contra 45,25% do Jev na configuração testada. O protótipo executa classificação sobre texto novo e organiza o próximo passo e um rascunho de resposta a partir de conferências registradas pelo atendente; o limiar de confiança não cumpriu a meta de qualidade no teste. Um recap com LLM foi integrado e avaliado, mas permanece experimental por evidência insuficiente de fidelidade. A recomendação é validar utilidade operacional e instrumentar o atendimento antes de prometer economia ou ampliar a intervenção.
 
 ## Solução
 
@@ -23,7 +23,7 @@ Entender as perguntas do diretor → auditar dados por finalidade → confrontar
 |---|---|
 | Onde perdemos tempo? | Não é possível quantificar pela duração do D1. Há 2.881 pendentes e sinais textuais para investigação; espera pelo cliente não equivale automaticamente a desperdício. |
 | O que automatizar com IA? | Geração de uma sugestão de categoria no domínio avaliado. A confirmação segue humana; categoria não define urgência nem autoriza ações de acesso. |
-| Funciona? | Classificação executável com 86% de acerto no teste, registro da decisão e exportação. Isso demonstra funcionamento técnico, sem provar economia ou redução de sobrecarga. |
+| Funciona? | Classificação executável com 86% de concordância com os rótulos do teste, ficha de investigação, orientação e rascunhos por regra. Demonstra funcionamento técnico; impacto operacional não medido. |
 
 - [Diagnóstico visual](solution/visual/index.html): análise da base, fontes e limites; contém leituras de contexto preparadas durante a fase inicial.
 - [Comparação local × Jev](solution/comparacao.md): separação de treino/validação/teste, remoção de vizinhos próximos e sensibilidade. O modelo local foi treinado com rótulos; Jev recebeu definições sem treino específico.
@@ -43,10 +43,12 @@ Abra **http://127.0.0.1:8766**. O modelo está incluído; classificação e regi
 1. Escolha um ticket de demonstração ou cole texto em inglês.
 2. Indique se pertence ao domínio de suporte interno de TI.
 3. Analise, confira a categoria e a política.
-4. Confirme ou corrija a categoria, informe o motivo e registre.
-5. Exporte as decisões em CSV.
+4. Confirme ou corrija a categoria. Registre conferências de outros tickets, sistema e notas internas. O aplicativo não consulta essas fontes; os exemplos usam situações simuladas declaradas por quem demonstra.
+5. Informe o resultado da consulta ao sistema. Se houver relato de possível incidente, marque-o e copie um trecho literal de origem.
+6. Prepare a orientação. Conforme as informações registradas, revise e adapte o rascunho por regra; você pode copiá-lo, sem envio automático.
+7. Informe o motivo, registre a decisão e exporte as conferências/orientação em CSV.
 
-Os exemplos visíveis vêm do treino e não medem desempenho. A exportação omite o texto original; o banco local conserva o original para rastrear decisões. O volume Docker persiste os registros. Não há envio de resposta ou alteração em sistemas de atendimento.
+Os três primeiros exemplos vieram do teste já encerrado e foram discutidos com Dhiego; agora orientam desenvolvimento, sem constituir nova avaliação. Os demais vêm do treino. A exportação omite o texto original, o trecho do incidente e o rascunho; o banco local os conserva para rastrear decisões. O volume Docker persiste os registros. Não há envio de resposta ou alteração em sistemas de atendimento.
 
 **Recap experimental opcional:** copie `.env.example` para `.env` se ainda não existir e configure `OPENROUTER_API_KEY`. Reinicie o serviço e marque a opção na interface. Essa ação envia o texto à API e pode consumir créditos. Sem chave, o classificador permanece disponível. `TYPESAFE_API_KEY` é usada apenas nos experimentos Jev, não no aplicativo.
 
@@ -66,7 +68,7 @@ Testes, sem chamadas pagas:
 docker compose exec suporte python -m pytest solution/tests -q
 ```
 
-Resultado verificado: **122 testes passam**. Cobrem contratos, política, falhas de recap, persistência, exportação e acesso a arquivos. [Reprodução das análises](solution/REPRODUZIR.md).
+Resultado verificado: **147 testes passam**. Cobrem contratos, política, falhas de recap, caminhos condicionais, origem do relato de incidente, persistência, registros antigos, exportação e acesso a arquivos. [Reprodução das análises](solution/REPRODUZIR.md).
 
 ### Recomendações
 
@@ -79,7 +81,7 @@ Resultado verificado: **122 testes passam**. Cobrem contratos, política, falhas
 
 O D1 e o D2 têm domínios distintos; não foram unidos nem tratados como uma mesma operação. O contexto de cerca de 30 mil tickets/ano não informa elegibilidade ou minutos poupados. Não foram medidos redução de churn, recuperação de horas ou benefício financeiro. A calculadora ilustrativa foi retirada após Dhiego questionar as premissas de 500 tickets × 1 minuto: mesmo rotulada como hipótese, ela dava destaque a um ganho sem justificativa operacional.
 
-O protótipo é local e não possui autenticação para publicação externa. Recap é experimental, desligado por padrão e sujeito a interpretações erradas mesmo quando contém citações literais. A utilidade operacional do recorte permanece em revisão.
+O protótipo é local e não possui autenticação para publicação externa. Recap é experimental, desligado por padrão e sujeito a interpretações erradas mesmo quando contém citações literais. A utilidade operacional ainda precisa de medição. A ficha pode acrescentar esforço; o piloto deve verificar se o contexto e a preparação compensam esse custo.
 
 ## Process Log — Como usei IA
 
@@ -98,7 +100,7 @@ O protótipo é local e não possui autenticação para publicação externa. Re
 2. Codex auditou os arquivos e explicitou quais perguntas não podem ser respondidas com essas bases.
 3. A revisão inspirada no [Oráculo Flow](process-log/revisao-2026-09-21/decisoes.md) confrontou pareceres reais; os revisores por API não executaram os CSVs.
 4. Sistemas foram avaliados separadamente da política; resultados orientaram escolha local e confirmação humana.
-5. O protótipo foi testado e está sendo revisado pelo candidato, inclusive quanto à relevância do benefício proposto.
+5. Dhiego revisou três exemplos e definiu conferir registros antes de novo contato, investigar pendências a partir de evidências e separar categoria de possível incidente. Essas decisões orientaram a ficha e as regras de resposta.
 
 ### Onde a IA errou e como corrigi
 
@@ -114,7 +116,10 @@ Registro das intervenções reais do candidato: exigir distinção entre urgênc
 - [Intervenções selecionadas do candidato](process-log/evidencias/trechos-da-conversa.md).
 - [Pareceres e decisões multimodelo](process-log/revisao-2026-09-21/decisoes.md).
 - [Capturas da análise visual](process-log/evidencias/visual-v1/README.md).
-- [Capturas do protótipo em revisão](process-log/evidencias/prototipo-v1/README.md).
+- [Capturas iniciais do protótipo](process-log/evidencias/prototipo-v1/README.md).
+- [Fluxo vigente: investigação e rascunhos](process-log/evidencias/investigacao-v2/README.md).
+- [Revisão de três casos pelo candidato](docs/revisao-guiada-tres-tickets.md) e [decisão do fluxo](docs/decisions/0006-contexto-verificado-e-investigacao-humana.md).
+- [Plano de validação operacional](docs/piloto-operacional.md).
 - [Roadmap](ROADMAP.md) e [estado atual](STATUS.md).
 
 **Submissão enviada em:** ainda não enviada. Histórico de commits local.

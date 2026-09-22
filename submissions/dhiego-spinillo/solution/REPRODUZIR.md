@@ -57,3 +57,14 @@ python3 solution/verificar_jev.py
 O script usa a biblioteca padrão, preserva validação TLS e, se o Python não localizar certificados padrão, procura o bundle do sistema em `/etc/ssl/cert.pem`. Envia um texto sintético curto com três categorias, sem ler/enviar o D2. Cada execução bem-sucedida atualiza `solution/reports/jev-conexao.json` com data, entrada, modelo retornado, resultado, tokens e tempo total de uma chamada. Não há retentativa automática nem registro de cabeçalhos de autenticação. `jev-latest` é um alias mutável; o relatório registra a versão efetivamente retornada.
 
 É uma verificação de conexão/formato. Não mede acurácia, calibração ou latência típica e não deve ser incluída como resultado de teste do dataset.
+
+
+## Aplicativo e ficha de investigação
+
+Setup e Docker estão no [README](../README.md). A ficha usa `solution/investigation.py`: não faz chamadas de rede, não consulta fontes externas e não chama LLM. `POST /api/plan` prepara orientação a partir de conferências declaradas; `POST /api/review` recalcula a regra e registra categoria, contexto e rascunho editado. A exportação omite original, trecho do relato e rascunho.
+
+Os três casos de `reports/revisao-guiada.json` são uma seleção da avaliação de recap já executada, acompanhada das decisões do candidato. Servem ao desenvolvimento; reapresentá-los na interface não é nova avaliação independente. Os testes usam banco temporário e não chamam APIs pagas.
+
+## Experimentos já executados
+
+A comparação está documentada em [comparacao.md](comparacao.md), com scripts, artefatos e protocolo. A avaliação separada de recap está em [avaliacao-recap.md](avaliacao-recap.md). Relatórios e respostas arquivadas permitem examinar os resultados sem usar credenciais. Não apagar ou sobrescrever essas rodadas para reapresentar novos resultados como se fossem o mesmo experimento.

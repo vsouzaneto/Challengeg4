@@ -51,3 +51,8 @@ Comparação medida / limites / cenário de esforço
 ```
 
 Revisão do plano: o centro é o texto do cliente e sua interpretação; não usar métricas decorativas como painel principal. A confirmação registra apenas uma decisão demonstrativa. Novo texto invalida a análise anterior. Ausência de modelo ou recap deve oferecer próximo passo explícito. Layout em uma coluna no celular; indicadores visuais e textuais, foco visível e estados de carregamento acessíveis.
+
+
+## Ajuste após revisão guiada
+
+O fluxo vigente preserva entrada à esquerda e preparação do atendimento à direita. A ficha registra conferências humanas e relato de possível incidente, prepara orientação por regra e apresenta rascunho editável. Recap fica experimental e só ocupa a área de resultado quando solicitado ou quando falha. A calculadora de esforço foi retirada após a crítica do candidato. A coluna de entrada permanece acessível durante a leitura da ficha em desktop, com altura limitada e rolagem própria; celular usa uma coluna. Não foram adicionadas integrações simuladas.

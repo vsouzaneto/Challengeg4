@@ -15,12 +15,14 @@
 - [x] Integrar recap opcional e avaliá-lo separadamente.
 - [x] Registrar qualidade insuficiente do recap para adoção; manter experimental.
 - [x] Executar testes e empacotar em Docker.
-- [ ] Concluir revisão do candidato: utilidade do fluxo e relevância operacional.
+- [x] Revisar três casos com o candidato e registrar julgamento operacional.
+- [x] Implementar ficha de conferências, relato de incidente e rascunhos por regras; testar no Docker.
+- [ ] Revisão final da implementação e da entrega.
 
 ## Entrega
 
-- [ ] Fechar evidências e narrativa após revisão do protótipo.
-- [ ] Preparar PR na estrutura oficial.
+- [x] Atualizar evidências e narrativa após revisão guiada e implementação.
+- [x] Preparar título e descrição do PR na estrutura oficial (`docs/PR.md`).
 - [ ] Publicar submissão final.
 
 ## Futuro
