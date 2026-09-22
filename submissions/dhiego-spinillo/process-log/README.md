@@ -208,3 +208,9 @@ O economics em `/valor` agora usa volumes exclusivos, minutos anteriores/residua
 Validação: 204 testes locais e no contêiner; sintaxe JavaScript conferida. Navegador: interpretação real por IA, autosserviço concluído, falha posterior com histórico, resposta editada/aprovada e investigação sem resolução presumida. Capturas em desktop/celular no [roteiro de evidências](evidencias/fluxos-v1/README.md). Chaves e dados runtime permanecem fora do Git. Commits locais, sem publicação/push/PR.
 
 A página inicial passou a abrir os três caminhos. O classificador/ficha anterior foi preservado em `/classificador`, com APIs e resultados anteriores intactos.
+
+## Pausa e prontidão de entrega — 22/09/2026
+
+Dhiego pediu uma checagem de material suficiente para entregar e perguntou sobre processar todos os tickets. Codex releu enunciado/guia, identificou instruções antigas no README/PR/roadmap e confirmou a diferença entre classificação avaliada em 800 tickets reservados e fluxos exercitados em sete cenários conhecidos. Uma instância Docker descartável, sem chave de IA e com banco temporário, carregou o modelo e concluiu o autosserviço por regras.
+
+A rodada local dos 47.837 tickets foi anunciada, mas não chegou a ser implementada ou executada antes de Dhiego solicitar pausa para cuidar da bebê. Não houve novas chamadas pagas, push, PR ou publicação. Os ajustes de apresentação também ficaram pendentes. [Checkpoint completo](../STATUS.md).

@@ -38,3 +38,21 @@ Atualização 21/09: a nova calculadora em `/economia` inclui custos, adoção, 
 - `/valor`: contribuições por processo, sucesso/falha e antes/depois; não presume ganho na investigação.
 - Verificação com IA: sete cenários conhecidos, seis extrações aceitas e um fallback; sete rotas esperadas. Não é benchmark independente.
 - Integração real, elegibilidade e impacto operacional continuam pendentes. O reset isolado não sustenta o investimento nas premissas usadas; preparação de contexto é a principal hipótese de valor.
+
+## Pausa solicitada — 22/09/2026
+
+Dhiego encerrou a sessão para cuidar da bebê e pediu retomada amanhã. Não iniciar novos lotes ou chamadas pagas durante a pausa. Última implementação: commit `b2d92d9`, três caminhos executáveis, 204 testes passando localmente e no Docker, capturas e economics por processo. Sem push, PR ou publicação externa.
+
+### Última verificação concluída
+
+Na revisão de prontidão, uma instância Docker temporária, com chave OpenRouter vazia e banco descartável, carregou o modelo incluído e concluiu o autosserviço por regras. Os registros da demonstração existente não foram alterados por essa verificação.
+
+### Retomar daqui
+
+1. Dhiego perguntou se devemos processar todos os tickets para expor resultados. Foi anunciada a rodada local dos **47.837 textos do D2**, mas **ela ainda não foi executada nem seu script implementado**. Preservar artefato/split congelados; separar distribuição da base inteira de desempenho em treino, validação e teste. Os 800 tickets reservados continuam sendo a avaliação original, não uma avaliação nova após desenvolvimento.
+2. Não tratar classificação, palavras-chave ou contexto fictício como taxa de resolução autônoma. A avaliação dos fluxos novos ainda se limita a sete cenários conhecidos; discutir/definir amostra nova e referência semântica antes de alegar generalização. Nenhuma rodada de LLM sobre a base inteira foi iniciada.
+3. Fechar a revisão de entrega: README ainda contém o roteiro antigo da ficha manual como instrução principal; descrição do PR diz genericamente que todas as decisões são humanas; roadmap e algumas recomendações precisam refletir os três caminhos atuais. Esses ajustes foram identificados, mas ainda não realizados.
+4. Consolidar resposta às perguntas do diretor, matriz do que funciona/foi avaliado/é simulado e roteiro curto de demonstração. Comparar somente com os feedbacks de candidatos já trazidos por Dhiego, sem pesquisar outras soluções.
+5. Revisão final com Dhiego e, ao fechar a entrega, fork/push/PR conforme instruções oficiais. Manter commits locais até então. Não ampliar funcionalidades antes de resolver evidência e clareza do pacote.
+
+Nenhum resultado da rodada completa deve ser anunciado como existente. ROI continua hipótese, não saving medido. Prazo oficial desconhecido; não reconstruir esforço fictício de 4–6 horas.
