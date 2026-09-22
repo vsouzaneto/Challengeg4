@@ -17,6 +17,7 @@ Nesta rodada, **Interpretar com IA foi desmarcado** e recap permaneceu desligado
 | [7. Resumo executivo](07-resumo-executivo.png) | Síntese visual do diagnóstico, intervenção, evidência e decisão de investimento. Os 204 testes citados são do aplicativo/cálculos; o lote integral acrescentou 12, totalizando 216. |
 | [8. Matriz de decisões](08-matriz-ia-regras-humano.png) | Explicita por que IA interpreta texto, modelo local sugere categoria, regras liberam procedimento e humano responde/investiga. O bloco expansível registra o que ficou fora da IA por risco, dados ausentes, escopo ou custo. |
 | [9. Temperatura, urgência e SLA](09-temperatura-urgencia-sla.png) | Texto de demonstração com `frustrated`, `urgently` e `today`, processado somente por regras lexicais. A tela exibe cada citação, mantém o autosserviço para o pedido simples e declara que não há relógio de SLA para afirmar atraso. |
+| [10. Comparação Local × Jev](10-comparacao-local-jev.png) | Página visual independente com o mesmo teste de 800 tickets, acurácia, F1, latência, intervalo pareado, protocolo e o limite de 6,69% de erro que mantém a revisão humana. |
 
 Os arquivos `.txt` ao lado das capturas 2, 3, 5 e 6 registram o conteúdo visível da página para facilitar conferência. A análise visual inicial está nas [evidências do diagnóstico](../visual-v1/README.md).
 

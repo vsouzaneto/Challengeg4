@@ -204,6 +204,11 @@ def executive_summary():
     return FileResponse(SOLUTION / 'visual/resumo-executivo.html')
 
 
+@app.get('/comparacao-visual')
+def model_comparison_visual():
+    return FileResponse(SOLUTION / 'visual/comparacao-local-jev.html')
+
+
 @app.get('/api/health')
 def health():
     try:

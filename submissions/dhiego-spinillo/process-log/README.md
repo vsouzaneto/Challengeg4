@@ -229,7 +229,7 @@ README, PR e roadmap foram alinhados aos três caminhos atuais. O [roteiro de fe
 
 Dhiego reforçou que o protótipo não será hospedado na VPS: executar localmente, capturar telas e versionar no process log. Codex reconstruiu/iniciou o Docker local e registrou **sete screenshots**, com sequência de conclusão/falha/revisão, investigação, economics positivo/negativo, classificador e resumo. [Índice e roteiro das evidências](evidencias/entrega-local-2026-09-22/README.md).
 
-Nesta rodada, extração por IA e recap ficaram desativados para demonstrar a reprodução sem API; as evidências anteriores de chamadas reais e mobile foram preservadas separadamente. O conteúdo aprovado foi editado para confirmar a persistência; são interações de QA de Codex, não decisões novas de Dhiego. A inspeção visual das nove capturas confirmou os estados apresentados. A primeira captura de página completa mostrou o cabeçalho fixo sobre o conteúdo após rolagem; a página foi reposicionada no topo e recapturada, sem editar a imagem.
+Nesta rodada, extração por IA e recap ficaram desativados para demonstrar a reprodução sem API; as evidências anteriores de chamadas reais e mobile foram preservadas separadamente. O conteúdo aprovado foi editado para confirmar a persistência; são interações de QA de Codex, não decisões novas de Dhiego. A inspeção visual das dez capturas confirmou os estados apresentados. A primeira captura de página completa mostrou o cabeçalho fixo sobre o conteúdo após rolagem; a página foi reposicionada no topo e recapturada, sem editar a imagem.
 
 Commits continuam locais. Sem deploy, push, fork ou PR nesta etapa. Próximo passo: revisão final do pacote com o candidato e, após esse fechamento, publicação da submissão pelo canal oficial.
 

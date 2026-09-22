@@ -20,6 +20,6 @@ Na pasta `submissions/dhiego-spinillo/`, executar `docker compose up --build` e 
 - Sete cenários conhecidos exercitados com IA: seis extrações aceitas e um fallback. Isso demonstra execução, não avaliação semântica independente ou taxa de resolução autônoma.
 - Recap experimental separado, com limitações de fidelidade documentadas. Nenhuma alegação de sentimento validado ou ganho operacional medido.
 - Cenários econômicos separam capacidade e despesa evitada, revisão e falhas. Elegibilidade, tempos e custos continuam premissas, com condição de equilíbrio e piloto proposto.
-- One-pager, capturas desktop/celular e nove screenshots da execução local final, roteiro, process log, ADRs, pareceres de Claude/Grok/Codex e decisões do candidato disponíveis pelo README. Protótipo executado localmente, sem hospedagem em VPS. Credenciais e banco local não fazem parte do Git.
+- One-pager, capturas desktop/celular e dez screenshots da execução local final, roteiro, process log, ADRs, pareceres de Claude/Grok/Codex e decisões do candidato disponíveis pelo README. Protótipo executado localmente, sem hospedagem em VPS. Credenciais e banco local não fazem parte do Git.
 
 Alterações restritas à pasta da submissão. Este arquivo prepara título e descrição; não publica o PR.

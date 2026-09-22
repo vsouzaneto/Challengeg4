@@ -144,6 +144,9 @@ def test_public_evidence_and_examples(client):
     assert summary['systems']['tfidf_logistic']['test']['accuracy_including_api_errors'] == .86
     assert client.get('/reports/comparison/summary.json').status_code == 200
     assert client.get('/diagnostico').status_code == 200
+    comparison = client.get('/comparacao-visual')
+    assert comparison.status_code == 200
+    assert 'Local vence Jev' in comparison.text
     explanation = client.get('/onde-entra-ia.md')
     assert explanation.status_code == 200
     assert 'Onde entra IA' in explanation.text

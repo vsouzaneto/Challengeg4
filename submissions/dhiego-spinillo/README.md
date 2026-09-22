@@ -8,6 +8,7 @@
 |---|---|---|
 | 1 · 2 minutos | [One-pager executivo](docs/resumo-executivo.md) · [visual no aplicativo](http://127.0.0.1:8766/resumo) | Problema, achados, recomendação, limites e próximo investimento. |
 | 2 · 5 minutos | [Análise visual](solution/visual/index.html) · [abrir no aplicativo](http://127.0.0.1:8766/diagnostico) | Qualidade dos dados, urgência, espera, satisfação e contexto. |
+| Evidência do modelo | [Local × Jev em visual HTML](solution/visual/comparacao-local-jev.html) · [protocolo completo](solution/comparacao.md) | Mesmo teste de 800 tickets, ganho observado, método comparável e limite que preserva revisão humana. |
 | 3 · Demonstração | [Três fluxos executáveis](http://127.0.0.1:8766/fluxos) · [classificador](http://127.0.0.1:8766/classificador) | Autosserviço com conclusão, tentativa frustrada com contexto e investigação; sistemas fictícios explícitos. |
 | 4 · Cenários | [Valor por processo](docs/valor-por-processo.md) · [calculadora](http://127.0.0.1:8766/valor) | Capacidade recuperada, despesa evitada e condições de retorno. |
 | 5 · Evolução | [Três caminhos de atendimento](docs/tres-velocidades.md) | Fronteira entre execução demonstrada e integrações futuras. |
@@ -129,7 +130,7 @@ Registro das intervenções reais do candidato: exigir distinção entre urgênc
 
 ## Evidências
 
-- [Execução final local: nove capturas e roteiro](process-log/evidencias/entrega-local-2026-09-22/README.md). Sem hospedagem em VPS; esta rodada usa regras e classificador local. As evidências anteriores de IA real estão preservadas abaixo.
+- [Execução final local: dez capturas e roteiro](process-log/evidencias/entrega-local-2026-09-22/README.md). Sem hospedagem em VPS; esta rodada usa regras e classificador local. As evidências anteriores de IA real estão preservadas abaixo.
 - [Process log cronológico](process-log/README.md).
 - [Intervenções selecionadas do candidato](process-log/evidencias/trechos-da-conversa.md).
 - [Pareceres e decisões multimodelo](process-log/revisao-2026-09-21/decisoes.md).
