@@ -28,6 +28,8 @@ A IA extrai intenção, tentativas e sinais com citações verificadas. Regras c
 
 Comparação anterior preservada: classificador local **86%**, Jev **45,25%** em 800 tickets. O limiar não atingiu a meta de erro; segue assistido. Recap livre continua experimental, separado da execução. [Comparação](../solution/comparacao.md) · [recap](../solution/avaliacao-recap.md).
 
+A [rodada integral do D2](../solution/reports/full-population/report.md) processou os 47.837 registros e reproduziu as previsões anteriores. Localizou 1.114 divergências com rótulos, 305 acima do limiar. Isso fornece casos para revisão; a concordância global inclui treino e não é uma nova avaliação independente.
+
 ## Valor e próximo investimento
 
 O autosserviço isolado tem baixa contribuição no cenário ilustrativo. A principal hipótese é poupar busca, leitura e preparação no atendimento humano. O economics agora decompõe antes/depois, revisão, sucesso e falhas, sem contar um ticket duas vezes.

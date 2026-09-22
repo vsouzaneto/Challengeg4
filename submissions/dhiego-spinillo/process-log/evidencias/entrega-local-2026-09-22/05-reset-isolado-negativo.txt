@@ -1,0 +1,83 @@
+- link "Ir para premissas":
+  - /url: "#value-form"
+- banner:
+  - link "G4 — início":
+    - /url: /
+    - img "G4"
+  - generic: Challenge 002
+  - strong: Valor por processo
+  - navigation "Navegação":
+    - link "Experimentar fluxos":
+      - /url: /fluxos
+    - link "Resumo":
+      - /url: /resumo
+    - link "Conta agregada":
+      - /url: /economia
+- main:
+  - heading "Qual trabalho deixa de existir?" [level=1]:
+    - text: Qual trabalho
+    - emphasis: deixa de existir?
+  - paragraph: A recuperação de senha isolada tem alcance limitado. Teste a contribuição do autosserviço e da preparação de contexto, descontando revisão e falhas. A investigação humana permanece sem ganho de tempo presumido.
+  - paragraph:
+    - strong: Hipótese por processo, não previsão.
+    - text: Volumes, tempos e custos abaixo precisam de validação; não foram medidos nos datasets.
+  - link "Ver etapas que sustentam as hipóteses de tempo":
+    - /url: /valor-por-processo.md
+  - heading "Antes, depois e exceções" [level=2]
+  - heading "Volume e uso" [level=3]
+  - generic: Tickets totais/mês
+  - spinbutton "Tickets totais/mês": "2500"
+  - generic: Elegíveis ao autosserviço/mês
+  - spinbutton "Elegíveis ao autosserviço/mês": "50"
+  - generic: Elegíveis à preparação/mês
+  - spinbutton "Elegíveis à preparação/mês": "0"
+  - generic: Uso efetivo dos fluxos (%)
+  - spinbutton "Uso efetivo dos fluxos (%)": "80"
+  - heading "Autosserviço" [level=3]
+  - generic: Trabalho humano antes (min/ticket)
+  - spinbutton "Trabalho humano antes (min/ticket)": "12"
+  - generic: Trabalho residual se resolver (min)
+  - spinbutton "Trabalho residual se resolver (min)": "1"
+  - generic: Resolução sem recontato (%)
+  - spinbutton "Resolução sem recontato (%)": "80"
+  - generic: Esforço adicional se falhar (min)
+  - spinbutton "Esforço adicional se falhar (min)": "2"
+  - heading "Atendimento preparado" [level=3]
+  - generic: Trabalho humano antes (min/ticket)
+  - spinbutton "Trabalho humano antes (min/ticket)": "12"
+  - generic: Depois, incluindo revisão (min)
+  - spinbutton "Depois, incluindo revisão (min)": "7"
+  - paragraph: Os grupos são exclusivos. O volume restante vai à investigação humana, sem economia atribuída. Falha do autosserviço mantém o trabalho anterior e acrescenta o custo da tentativa; não entra novamente no volume do caminho preparado.
+  - generic "Salário e custos do projeto"
+  - button "Calcular contribuição dos processos"
+  - status: Contribuições calculadas. Nenhum ganho foi medido em operação.
+  - heading "Resultado por caminho" [level=2]
+  - term: "Autosserviço: horas líquidas/mês"
+  - definition: 5,6 h
+  - term: "Autosserviço: conclusões sem recontato/mês"
+  - definition: "32"
+  - term: "Autosserviço: falhas/mês"
+  - definition: "8"
+  - term: "Preparação: horas líquidas/mês"
+  - definition: 0 h
+  - term: Outros tickets/mês, sem ganho presumido
+  - definition: "2.450"
+  - heading "Contribuição econômica total" [level=3]
+  - term: Capacidade recuperada/mês
+  - definition: 5,6 h
+  - term: Valor dessa capacidade/mês
+  - definition: R$ 238,00
+  - term: Despesa evitada estimada/mês
+  - definition: R$ 119,00
+  - term: Saldo mensal após operação
+  - definition: "-R$ 381,00"
+  - term: Saldo no primeiro ano, com implantação
+  - definition: "-R$ 10.572,00"
+  - term: ROI financeiro em 12 meses
+  - definition: "-88,1%"
+  - term: Recuperação simples do investimento
+  - definition: Não se aplica
+  - term: Horas/mês necessárias para pagar o primeiro ano
+  - definition: 47,06 h
+  - paragraph: Horas liberadas podem reduzir fila e absorver crescimento. Despesa evitada exige um mecanismo real; se não existir, use conversão 0%.
+  - paragraph: Doze meses constantes, sem curva de adoção, inflação ou desconto financeiro. Não somar valor da capacidade e despesa evitada. Qualidade e retenção não foram monetizadas.

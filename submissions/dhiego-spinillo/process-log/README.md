@@ -214,3 +214,21 @@ A página inicial passou a abrir os três caminhos. O classificador/ficha anteri
 Dhiego pediu uma checagem de material suficiente para entregar e perguntou sobre processar todos os tickets. Codex releu enunciado/guia, identificou instruções antigas no README/PR/roadmap e confirmou a diferença entre classificação avaliada em 800 tickets reservados e fluxos exercitados em sete cenários conhecidos. Uma instância Docker descartável, sem chave de IA e com banco temporário, carregou o modelo e concluiu o autosserviço por regras.
 
 A rodada local dos 47.837 tickets foi anunciada, mas não chegou a ser implementada ou executada antes de Dhiego solicitar pausa para cuidar da bebê. Não houve novas chamadas pagas, push, PR ou publicação. Os ajustes de apresentação também ficaram pendentes. [Checkpoint completo](../STATUS.md).
+
+## Retomada e classificação integral — 22/09/2026
+
+Dhiego retomou perguntando como seguir para entregar. Codex implementou a inferência local sobre todos os **47.837 registros do D2**, preservando modelo, split e limiar. O script valida hashes, cobertura exclusiva das partições e reprodução das 1.192 previsões históricas. Não houve novo treino nem chamada de API. A inferência em lotes levou aproximadamente 2,5 segundos nesta máquina; isso não mede latência de atendimento ou trabalho humano poupado.
+
+Resultados: 1.114 divergências entre sugestão e rótulo, 305 com score ≥ 0,61. A concordância global de 97,67% inclui 45.790 exemplos de treino e não foi promovida a acurácia independente. O teste original reproduziu 688/800 (86%); continua assistido, com 44 divergências entre os 658 acima do limiar. [Relatório, JSON e predições por linha](../solution/reports/full-population/report.md). A tarefa não mede intenção, sentimento, elegibilidade ou resolução.
+
+Foram adicionados 12 testes para rejeitar sobreposição/duplicação/omissão de partições e divergência da avaliação histórica; **216 passaram localmente e no Docker**. As execuções repetidas durante a elaboração do relatório preservaram as mesmas predições. Houve um aviso de depreciação de dependência do cliente de testes, sem falha. Nenhuma implementação de atendimento foi alterada nesta retomada.
+
+README, PR e roadmap foram alinhados aos três caminhos atuais. O [roteiro de fechamento](../docs/entrega.md) reúne as respostas ao diretor, matriz do que funciona/foi medido e uma demonstração de cerca de dez minutos. A avaliação semântica em amostra nova e o piloto operacional continuam pendentes; não foram apresentados como concluídos.
+
+## Evidências finais locais, sem VPS — 22/09/2026
+
+Dhiego reforçou que o protótipo não será hospedado na VPS: executar localmente, capturar telas e versionar no process log. Codex reconstruiu/iniciou o Docker local e registrou **sete screenshots**, com sequência de conclusão/falha/revisão, investigação, economics positivo/negativo, classificador e resumo. [Índice e roteiro das evidências](evidencias/entrega-local-2026-09-22/README.md).
+
+Nesta rodada, extração por IA e recap ficaram desativados para demonstrar a reprodução sem API; as evidências anteriores de chamadas reais e mobile foram preservadas separadamente. O conteúdo aprovado foi editado para confirmar a persistência; são interações de QA de Codex, não decisões novas de Dhiego. A inspeção visual das sete capturas confirmou os estados apresentados. A primeira captura de página completa mostrou o cabeçalho fixo sobre o conteúdo após rolagem; a página foi reposicionada no topo e recapturada, sem editar a imagem.
+
+Commits continuam locais. Sem deploy, push, fork ou PR nesta etapa. Próximo passo: revisão final do pacote com o candidato e, após esse fechamento, publicação da submissão pelo canal oficial.

@@ -1,21 +1,25 @@
 # [Submission] Dhiego Spinillo — Challenge 002
 
-Auditoria de suporte, comparação de classificadores e protótipo de triagem assistida em `submissions/dhiego-spinillo/`. Os tempos do Dataset 1 não sustentam cálculo de desperdício: não há abertura e 49,3% dos pares disponíveis estão invertidos. A entrega distingue achados, hipóteses e instrumentação necessária.
+Redesign de suporte com diagnóstico dos dois datasets e três caminhos executáveis: autosserviço elegível, atendimento preparado e investigação humana. O D1 não permite medir desperdício em horas: não há abertura e 49,3% dos pares temporais disponíveis estão invertidos. A proposta prioriza reduzir busca/reconstrução de contexto, com instrumentação e piloto para verificar o ganho.
 
-No Dataset 2, o modelo local treinado acertou 86% dos 800 rótulos reservados; Jev por definições, sem treino específico, acertou 45,25%. O limiar escolhido na validação não manteve a meta de erro no teste: todas as decisões continuam humanas. Recap foi integrado e avaliado separadamente, mas permanece experimental por fidelidade insuficiente na revisão automatizada.
+No D2, o classificador local treinado concordou com 86% dos 800 rótulos reservados; Jev por definições, sem treino específico, com 45,25%. Também processei os 47.837 registros com o modelo congelado e preservei partições e resultados por linha. A concordância global inclui treino e não substitui a avaliação original. O limiar não atingiu a meta de erro no teste; a categoria permanece assistida.
 
-O protótipo FastAPI/Jinja/SQLite/Docker classifica texto novo, registra conferências declaradas pelo atendente, separa relato de possível incidente da categoria e prepara orientação/rascunho por regras. Permite revisão, registro e exportação; não consulta sistemas externos nem envia respostas. A revisão de três casos com o candidato orientou o fluxo. Não há alegação de ganho operacional medido.
+## O que rodar
 
-## Verificação
+Na pasta `submissions/dhiego-spinillo/`, executar `docker compose up --build` e abrir `http://127.0.0.1:8766`.
 
-- 204 testes passam localmente e no Docker.
-- Navegação e capturas em desktop e celular; conferências incompletas, confirmação, situação pendente e relato de incidente exercitados.
-- Modelo incluído: `docker compose up --build` na pasta da submissão e abrir `http://127.0.0.1:8766`. Classificação e preparação por regras funcionam sem chave externa.
-- One-pager executivo, análise visual, README, process log, pareceres reais de Claude/Grok/Codex, ADRs, resultados brutos e proposta de piloto incluídos.
-- Alterações restritas à pasta da submissão. Credenciais, banco local e datasets completos não fazem parte do Git.
+- IA extrai intenção, tentativas e sinais com citações; regras controlam procedimentos e estados. Sem chave, a demo identifica o uso de regras lexicais.
+- Recuperação conclui no provedor simulado com token de uso único; falha transfere histórico. Atendimento preparado admite rascunho editado/aprovado; investigação permanece aberta.
+- Consultas, contas e ações usam fontes locais fictícias explicitamente identificadas. Não há autenticação de produção, envio externo de respostas ou alteração de contas reais.
+- `/classificador` preserva classificação/ficha anterior; `/resumo`, `/diagnostico` e `/valor` apresentam síntese, análise e economics por processo.
 
-Este arquivo prepara título e descrição; sua criação não publica o PR.
+## Evidências e limites
 
-Inclui cenários econômicos editáveis (capacidade versus despesa evitada), fonte salarial, custos e resultados negativos; mapa de três caminhos de atendimento e buscas reproduzíveis de oportunidades no D2. Autosserviço e consulta automática agora executam contra adaptadores locais fictícios: conclusão com token de uso único, falha com histórico, preparação e investigação. Integrações de produção continuam fora da demonstração.
+- 216 testes passam localmente e no Docker: 204 do aplicativo/cálculos e 12 do lote integral. Reprodução sem chave em instância limpa foi verificada.
+- As 1.192 previsões originais de validação/teste foram reproduzidas exatamente na rodada integral. CSV por registro, hashes, scripts e relatórios incluídos, sem redistribuir os datasets completos.
+- Sete cenários conhecidos exercitados com IA: seis extrações aceitas e um fallback. Isso demonstra execução, não avaliação semântica independente ou taxa de resolução autônoma.
+- Recap experimental separado, com limitações de fidelidade documentadas. Nenhuma alegação de sentimento validado ou ganho operacional medido.
+- Cenários econômicos separam capacidade e despesa evitada, revisão e falhas. Elegibilidade, tempos e custos continuam premissas, com condição de equilíbrio e piloto proposto.
+- One-pager, capturas desktop/celular e sete screenshots da execução local final, roteiro, process log, ADRs, pareceres de Claude/Grok/Codex e decisões do candidato disponíveis pelo README. Protótipo executado localmente, sem hospedagem em VPS. Credenciais e banco local não fazem parte do Git.
 
-A hipótese de valor foi reformulada após crítica ao ROI agregado: o economics por processo separa volume, trabalho anterior/residual, sucesso e custo de falha. O experimento com IA preserva a primeira rodada e a iteração causada por interpretação incorreta de histórico concatenado; não apresenta os cenários de desenvolvimento como acurácia de produção.
+Alterações restritas à pasta da submissão. Este arquivo prepara título e descrição; não publica o PR.

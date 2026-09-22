@@ -1,0 +1,101 @@
+- link "Ir para o pedido":
+  - /url: "#flow-input"
+- banner:
+  - link "G4 — início":
+    - /url: /
+    - img "G4"
+  - generic: Challenge 002
+  - strong: Atendimento por procedimento
+  - navigation "Navegação":
+    - link "Resumo":
+      - /url: /resumo
+    - link "Economia":
+      - /url: /valor
+    - link "Classificador":
+      - /url: /classificador
+- main:
+  - heading "Resolva o simples. Prepare o restante." [level=1]:
+    - text: Resolva o simples.
+    - emphasis: Prepare o restante.
+  - paragraph: O pedido encontra um procedimento, o contexto vem dos sistemas e as exceções chegam ao humano com o trabalho já reunido.
+  - paragraph:
+    - strong: Demonstração com sistemas fictícios.
+    - text: Textos vêm do D2; contas, notas e registros são criados para testar o fluxo. Nenhuma conta real é alterada e nenhuma mensagem é enviada.
+  - list "Três caminhos":
+    - strong: Autosserviço
+    - generic: Cliente conclui o procedimento elegível.
+    - strong: Atendimento preparado
+    - generic: Contexto e resposta chegam para revisão.
+    - strong: Investigação humana
+    - generic: Evidências reunidas; decisão com a equipe.
+  - heading "Pedido e cenário" [level=2]
+  - generic: Explorar uma situação
+  - combobox "Explorar uma situação":
+    - option "Recuperar acesso sem atendente"
+    - option "Tentativa de reset já falhou"
+    - 'option "Férias: consultar antes de perguntar"'
+    - option "Relato de dados de outra pessoa" [selected]
+    - option "Conta desativada no desligamento"
+    - 'option "Fonte indisponível: interromper ação"'
+    - 'option "Histórico concatenado: conferir interpretação"'
+  - paragraph: D2 · registro 45,725 · texto real do dataset, já usado no desenvolvimento. Contexto de sistemas é fictício, sem vínculo real com o solicitante.
+  - generic: Texto do cliente · em inglês
+  - textbox "Texto do cliente · em inglês": annual leave days sent wednesday december re annual leave days importance high dear please check restore accesses properly seems able access data for another colleague please let know when fixed thank you administration officer sent wednesday december re annual leave days hi think mistake process using credential get access you can thanks sent wednesday december re annual leave days could you please check again make another thank you sent wednesday december re annual leave days hello please note different data than you sent can be checked again if error persists please let know be investigated by thank you administration officer sent tuesday december annual leave days hi can you please check annual leave days for more details below thank you sent tuesday december bug annual leave request hi sending you for issue we found thank you
+  - paragraph: Você pode alterar o texto. A conta e o contexto continuam sendo os do cenário fictício escolhido.
+  - checkbox "Interpretar com IA Envia somente este texto ao OpenRouter. Citações são conferidas; regras controlam as ações."
+  - text: Interpretar com IA
+  - generic: Envia somente este texto ao OpenRouter. Citações são conferidas; regras controlam as ações.
+  - paragraph: IA disponível. Se a extração falhar, o atendimento segue preparado para revisão.
+  - button "Processar pedido e consultar contexto"
+  - status: Contexto consultado e caminho preparado. Registros de demonstração.
+  - generic "O que este fluxo substitui?"
+  - region "Do pedido ao próximo passo":
+    - text: Investigação humana
+    - heading "Investigar com a equipe responsável" [level=2]
+    - paragraph: Relato sensível ou restrição no cadastro. Não executar recuperação automática.
+    - paragraph: Investigação recebida; caso ainda não resolvido
+    - heading "Contexto consultado automaticamente" [level=3]
+    - paragraph: Conectores locais de demonstração. Estes fatos não vêm do dataset nem do LLM.
+    - term: Diretório de identidades · consultado
+    - definition: Conta ativa; recuperação bloqueada neste procedimento
+    - term: Outros tickets e notas · consultado
+    - definition: Nenhuma investigação concluída. Relato precisa de evidência e consulta a logs.
+    - term: Registro no sistema · consultado
+    - definition: Cadastro ativo; o sistema demonstrativo não confirma nem descarta incidente.
+    - heading "Pedido e tentativas identificados" [level=3]
+    - paragraph: Regras lexicais; IA desativada
+    - paragraph: Busca literal limitada; ausência de sinal não prova ausência de risco.
+    - list:
+      - text: Intenção
+      - blockquote: annual leave
+      - text: Tentativa ou erro
+      - blockquote: a than you sent can be checked again if error persists please let know be investigated by thank you administration offic
+      - text: Sinal para investigação
+      - blockquote: data for another colleague
+    - heading "Próximo passo" [level=3]
+    - list:
+      - listitem: Conferir o relato e as evidências listadas.
+      - listitem: Distinguir falha técnica, preenchimento ou interpretação; não presumir causa.
+      - listitem: Consultar logs e responsável pelo sistema conforme o procedimento.
+    - status: Investigação recebida; caso ainda não resolvido.
+    - generic "Trilha da execução"
+    - list:
+      - strong: sistema
+      - text: "Entrada recebida; extração: Regras lexicais; IA desativada"
+      - strong: conector local simulado
+      - text: "Diretório de identidades: consultado"
+      - strong: conector local simulado
+      - text: "Outros tickets e notas: consultado"
+      - strong: conector local simulado
+      - text: "Registro no sistema: consultado"
+      - strong: política determinística
+      - text: "Caminho escolhido: human"
+      - strong: investigador simulado
+      - text: Recebeu contexto e evidências; causa e resolução continuam em aberto
+  - heading "Valor a provar no piloto" [level=2]
+  - paragraph: Resolução sem atendente, menos busca e menos perguntas repetidas. Meça minutos humanos, falhas, recontatos e qualidade por caminho. A duração da chamada à IA não mede tempo humano economizado.
+  - link "Ver o antes e depois de cada processo":
+    - /url: /valor-por-processo.md
+  - text: ·
+  - link "Explorar retorno econômico":
+    - /url: /valor

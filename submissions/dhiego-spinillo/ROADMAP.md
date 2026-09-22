@@ -7,6 +7,7 @@
 - [x] Renderizar análise visual com identidade G4.
 - [x] Comparar classificador local e Jev em teste reservado.
 - [x] Confrontar pareceres reais de Claude, Grok e Codex.
+- [x] Processar os 47.837 tickets com modelo/split congelados e separar perfil integral de desempenho no teste original.
 
 ## Construção e avaliação
 
@@ -17,7 +18,10 @@
 - [x] Executar testes e empacotar em Docker.
 - [x] Revisar três casos com o candidato e registrar julgamento operacional.
 - [x] Implementar ficha de conferências, relato de incidente e rascunhos por regras; testar no Docker.
-- [ ] Revisão final da implementação e da entrega.
+- [x] Executar três caminhos com extração restrita por IA, contexto fictício, procedimentos e trilha.
+- [x] Decompor economics por processo, revisão e falha; documentar premissas e condição de equilíbrio.
+- [x] Alinhar README/PR ao protótipo atual e preparar roteiro/matriz da entrega.
+- [ ] Revisão final do pacote pelo candidato.
 
 ## Entrega
 
@@ -27,7 +31,7 @@
 
 ## Futuro
 
-[Propostas e dados necessários](docs/implementacoes-futuras.md). Benefício operacional exige medição de trabalho ativo, encaminhamento e qualidade; a avaliação de categoria não substitui esse piloto. A simulação de economia foi retirada após crítica de Dhiego às premissas arbitrárias.
+[Propostas e dados necessários](docs/implementacoes-futuras.md). Benefício operacional exige medição de trabalho ativo, encaminhamento e qualidade; a avaliação de categoria não substitui esse piloto. A primeira simulação foi retirada; `/valor` apresenta hipóteses por processo, ainda sem saving medido. A extração dos fluxos requer avaliação semântica em amostra nova com referência humana; os sete cenários de desenvolvimento não são um benchmark independente.
 
 ## Esforço
 

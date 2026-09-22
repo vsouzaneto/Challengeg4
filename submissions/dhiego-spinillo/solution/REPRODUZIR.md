@@ -69,6 +69,16 @@ Os três casos de `reports/revisao-guiada.json` são uma seleção da avaliaçã
 
 A comparação está documentada em [comparacao.md](comparacao.md), com scripts, artefatos e protocolo. A avaliação separada de recap está em [avaliacao-recap.md](avaliacao-recap.md). Relatórios e respostas arquivadas permitem examinar os resultados sem usar credenciais. Não apagar ou sobrescrever essas rodadas para reapresentar novos resultados como se fossem o mesmo experimento.
 
+## Classificação integral, sem novo treino
+
+Com as dependências do aplicativo instaladas e o D2 baixado como no início deste guia:
+
+```bash
+.venv/bin/python solution/classificar_base_completa.py /tmp/g4-support-dataset2.zip --output /tmp/g4-d2-integral
+```
+
+Comparar com [relatório integral](reports/full-population/report.md) e seus arquivos. O script verifica hashes do CSV/modelo, exclusividade e cobertura das partições e reprodução das 1.192 previsões históricas. Não chama API, não altera o modelo e não reescolhe o limiar. O CSV comprimido exporta somente linha, partição, rótulo, sugestão e score. Timestamp e tempo de inferência variam por execução. O número da linha começa em 1, excluindo o cabeçalho. Os 47.837 registros não são um novo teste: 45.790 participaram do treino.
+
 ## Oportunidades e cenários econômicos
 
 `python solution/mapear_oportunidades.py data/dataset2.zip > solution/reports/oportunidades.json` reproduz as buscas integrais. Contagens de menções não são elegibilidade. Acesse `/resumo` para síntese e `/economia` para calcular hipóteses sem chamada a IA. `PYTHONPATH=solution pytest -q solution/tests` inclui limites e fórmulas financeiras.

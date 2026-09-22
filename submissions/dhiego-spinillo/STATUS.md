@@ -1,5 +1,25 @@
 # Estado atual
 
+**22/09/2026 — retomada concluída: lote integral, documentação alinhada e sete novas screenshots locais. Pacote pronto para revisão final do candidato; sem publicação.**
+
+## Fechamento vigente
+
+- **47.837 tickets classificados** com o modelo local congelado. 1.114 divergências com rótulos; 305 acima do limiar. Treino, validação, teste e excluídos separados. [Relatório integral](solution/reports/full-population/report.md).
+- As 1.192 previsões históricas foram reproduzidas exatamente. Desempenho original: **Local 86% × Jev 45,25% em 800 tickets**. A concordância global inclui treino e não mede generalização.
+- **216 testes passaram localmente e no Docker.** As 12 verificações adicionais cobrem integridade do lote; o aplicativo/cálculos mantém os 204 anteriores.
+- **Protótipo somente local, sem VPS**, conforme instrução reiterada por Dhiego. Sete novas capturas, com roteiro, em [evidências finais](process-log/evidencias/entrega-local-2026-09-22/README.md). Esta rodada usa regras/classificador local, sem chamadas pagas; capturas anteriores com IA real e mobile preservadas.
+- README, roteiro, PR e roadmap alinhados ao estado atual. [Respostas ao diretor, matriz e demonstração de dez minutos](docs/entrega.md).
+
+## Próximo passo vigente
+
+Revisar o pacote com Dhiego e fechar a submissão. Depois desse fechamento, fork/push/PR pelo canal oficial. Nenhuma ação pública foi realizada. Não ampliar funcionalidades para encerrar o case.
+
+**Limites mantidos:** sistemas fictícios; extração restrita exercitada somente em sete cenários conhecidos; sem avaliação semântica independente nova, sentimento validado ou ganho operacional medido. ROI continua hipótese. A evidência técnica sustenta um protótipo, não implantação de produção.
+
+---
+
+## Histórico do checkpoint anterior — superado pela retomada acima
+
 **21/09/2026 — três caminhos executáveis com adaptadores simulados; valor decomposto por processo. Commits locais; sem push ou PR.**
 
 ## O que está pronto
