@@ -132,3 +132,12 @@ A primeira avaliação de recap aceitou 2/16 saídas. Um diagnóstico separado n
 Decisão: recap experimental e desligado por padrão, inclusive na API. Citação literal não garante interpretação correta. Não houve avaliação humana de referência nem medição de ganho de tempo. [Relatório completo](../solution/avaliacao-recap.md).
 
 Verificação: 122 testes passaram localmente após a alteração de padrão do recap; a versão anterior também teve 122 testes passando dentro do Docker. Testes verificam contratos, política, omissão de recap inválido, manutenção da classificação em falhas, persistência e exportação sem o texto original. A reconstrução da interface revelou cache antigo de CSS/JS no navegador; referências dos assets receberam versão explícita para manter HTML e scripts consistentes. Registros funcionais produzidos por Codex durante QA não contam como validação humana do candidato.
+
+
+## Revisão guiada de utilidade — preparação
+
+Dhiego apontou falta de clareza sobre problema, impacto, entregáveis, estado e próximos passos. Codex explicitou o mapa da entrega e propôs revisar três tickets junto com o candidato antes de fechar a intervenção. Dhiego autorizou seguir.
+
+Foram selecionados intencionalmente três registros da avaliação já executada, sem novas chamadas de IA: 45.057 (Outlook, texto curto e categoria questionável à luz do conteúdo), 34.887 (férias, tentativas e mensagens concatenadas) e 45.725 (férias com relato de possível acesso a dados de outro colega). Os três acertam o rótulo do dataset, mas expõem limitações diferentes de utilidade e interpretação. O roteiro separa saídas efetivamente registradas de leituras/hipóteses redigidas por Codex.
+
+[Roteiro](../docs/revisao-guiada-tres-tickets.md) · [Saídas reunidas](../solution/reports/revisao-guiada.json). Contagens de palavras descrevem extensão em idiomas distintos e não medem esforço. Primeiro caso apresentado com pergunta ao candidato; feedback pendente no momento deste registro. Nenhuma avaliação humana foi inventada. Casos discutidos passam a servir ao desenvolvimento; não podem ser usados como novo teste independente após ajustes.

@@ -1,0 +1,267 @@
+{
+  "purpose": "Seleção intencional para discutir utilidade e limites; não é novo benchmark. Sem novas chamadas de IA. Comparar contagens entre idiomas não mede tempo de leitura. Feedback humano ainda não recebido.",
+  "cases": [
+    {
+      "row": 45057,
+      "original": "outlook issue hi working reinstalled issue solved best regards",
+      "classification_archived": {
+        "row": 45057,
+        "partition": "test",
+        "truth": "Administrative rights",
+        "prediction": "Administrative rights",
+        "probabilities": {
+          "Access": 0.0002971707451889936,
+          "Administrative rights": 0.9961364898782722,
+          "HR Support": 0.0012787951056650417,
+          "Hardware": 0.0004662036696752028,
+          "Internal Project": 9.77844870056132e-05,
+          "Miscellaneous": 0.000963634188225706,
+          "Purchase": 0.00015072526335374665,
+          "Storage": 0.0006091966626133439
+        },
+        "score": 0.9961364898782722,
+        "elapsed_ms": 0.6587500683963299
+      },
+      "recap_archived": {
+        "items": [
+          {
+            "kind": "tentativa",
+            "text": "Relato de reinstalação do Outlook como tentativa de resolver o problema mencionado",
+            "quote": "reinstalled"
+          }
+        ],
+        "unknowns": [
+          "Não há descrição clara do problema original com o Outlook",
+          "Não é possível confirmar se o problema foi realmente resolvido, apenas há a afirmação 'issue solved' sem evidência de verificação",
+          "Não há data, autor identificado ou contexto sobre quando a reinstalação ocorreu",
+          "Não há informação sobre qual versão do Outlook ou sistema operacional estava envolvido"
+        ],
+        "next_step": "Solicitar ao usuário mais detalhes sobre o problema original do Outlook e confirmação atual de que o problema permanece resolvido antes de encerrar o chamado.",
+        "model": "anthropic/claude-sonnet-5",
+        "usage": {
+          "prompt_tokens": 625,
+          "completion_tokens": 277,
+          "total_tokens": 902,
+          "cost": 0.00402
+        }
+      },
+      "automated_judge_archived": {
+        "fidelity": true,
+        "coverage": true,
+        "attempts": true,
+        "uncertainty": true,
+        "next_step": true,
+        "notes": "Trechos 'reinstalled' e 'issue solved' sustentam a tentativa e a afirmação, sem autor/data inventados; não há pedido explícito omitido; next_step só propõe pedir detalhes."
+      },
+      "word_counts": {
+        "original_en": 9,
+        "recap_pt_excluding_quotes": 92
+      },
+      "human_review": {
+        "status": "pending",
+        "feedback": null
+      }
+    },
+    {
+      "row": 34887,
+      "original": "move vacation days time card error move vacation days dear please delete card error for thank you assistant sent wednesday december re move vacation days thanks if you one can help with next one tried add annual leave but allow submit errors out there tasks added for annual leave entries problem list for task details empty when select leave you know if common problem or thanks sent wednesday december re move vacation days hi please note your absence was only saved by you submitted per below print screen if absence only saved get deducted balance going for approval flow have submitted absence yes deducted balance but alright because if you check your balance using th balance calculation date you have below confirm everything alright further action needed your side please let know if you need further details kind regards assistant sent wednesday december re move vacation days dear have submitted absence request for days seem have decreased days balance days still remained let know if alright thanks sent friday december re move vacation days hi we have taken note days be carried over into please proceed with booking your holiday for kind regards assistant sent thursday december re move vacation days fine can you help with please regards sent december move vacation days hi planning vacation th th wondered whether you can moving annual leave days into please advice thanks lead architect",
+      "classification_archived": {
+        "row": 34887,
+        "partition": "test",
+        "truth": "HR Support",
+        "prediction": "HR Support",
+        "probabilities": {
+          "Access": 0.00010461994742787028,
+          "Administrative rights": 2.4284821385237156e-05,
+          "HR Support": 0.998777871008611,
+          "Hardware": 0.0008859132597445479,
+          "Internal Project": 4.6821672955131064e-05,
+          "Miscellaneous": 0.00010049642299647301,
+          "Purchase": 3.0691300271164e-05,
+          "Storage": 2.930156660858103e-05
+        },
+        "score": 0.998777871008611,
+        "elapsed_ms": 0.819374923594296
+      },
+      "recap_archived": {
+        "items": [
+          {
+            "kind": "pedido",
+            "text": "Pedido inicial para excluir um erro de cartão (card error) relacionado a férias.",
+            "quote": "please delete card error for thank you"
+          },
+          {
+            "kind": "pedido",
+            "text": "Pedido para mover dias de férias.",
+            "quote": "move vacation days time card error move vacation days"
+          },
+          {
+            "kind": "tentativa",
+            "text": "Usuário relata ter tentado adicionar licença anual (annual leave), mas o sistema não permitiu o envio e apresentou erro, com tarefas adicionadas e detalhes vazios ao selecionar licença.",
+            "quote": "tried add annual leave but allow submit errors out there tasks added for annual leave entries problem list for task details empty when select leave"
+          },
+          {
+            "kind": "pedido",
+            "text": "Pedido de ajuda para resolver o problema relatado (erro ao submeter licença anual).",
+            "quote": "if you one can help with next one tried add annual leave"
+          },
+          {
+            "kind": "tentativa",
+            "text": "Assistente explica que a ausência foi apenas salva pelo usuário, não submetida por completo, e que isso afeta o cálculo do saldo até entrar no fluxo de aprovação.",
+            "quote": "please note your absence was only saved by you submitted per below print screen if absence only saved get deducted balance going for approval flow"
+          },
+          {
+            "kind": "tentativa",
+            "text": "Usuário relata ter submetido a solicitação de ausência, com saldo de dias deduzido conforme indicado pelo assistente.",
+            "quote": "have submitted absence yes deducted balance but alright"
+          },
+          {
+            "kind": "pendencia",
+            "text": "Usuário questiona se está tudo certo quanto ao saldo de dias, pois após submeter a solicitação de ausência os dias diminuíram mas alguns permaneceram, sem confirmação final.",
+            "quote": "have submitted absence request for days seem have decreased days balance days still remained let know if alright"
+          },
+          {
+            "kind": "tentativa",
+            "text": "Assistente/equipe registra que os dias serão transportados (carried over) para o próximo período, mas não há confirmação de execução, apenas nota informativa seguida de instrução para prosseguir com o agendamento das férias.",
+            "quote": "we have taken note days be carried over into please proceed with booking your holiday"
+          },
+          {
+            "kind": "pedido",
+            "text": "Novo pedido de ajuda após as trocas anteriores, sem detalhamento do problema atual.",
+            "quote": "fine can you help with please regards"
+          },
+          {
+            "kind": "pedido",
+            "text": "Pedido original (aparentemente do lead architect) questionando se é possível mover dias de licença anual para o próximo período, no contexto de planejamento de férias em datas específicas.",
+            "quote": "planning vacation th th wondered whether you can moving annual leave days into please advice thanks lead architect"
+          },
+          {
+            "kind": "pendencia",
+            "text": "Não há confirmação explícita de que o erro do cartão foi de fato excluído, nem de que a transferência dos dias de férias foi efetivamente concluída.",
+            "quote": "please note your absence was only saved by you submitted per below print screen"
+          }
+        ],
+        "unknowns": [
+          "Não está claro se o erro de cartão (card error) foi efetivamente excluído/corrigido.",
+          "Não há confirmação final de que a transferência (carry over) dos dias de férias foi processada com sucesso.",
+          "As datas exatas de início e fim das férias planejadas não são legíveis no texto (aparecem como 'th th').",
+          "Não está claro se a aprovação da solicitação de ausência foi concluída no fluxo de aprovação mencionado.",
+          "Não é possível determinar a ordem cronológica exata das mensagens, pois a cadeia de e-mails parece concatenada sem datas completas.",
+          "Não está claro qual é o problema específico mencionado na última mensagem 'fine can you help with please'.",
+          "Não há confirmação de que o saldo de dias ficou definitivamente correto após a dedução relatada pelo usuário."
+        ],
+        "next_step": "Revisar manualmente a cadeia de e-mails para confirmar: (1) se o erro de cartão foi corrigido; (2) se a transferência de dias de férias foi efetivamente processada; (3) se a solicitação de ausência foi aprovada no fluxo correto; e (4) esclarecer com o usuário qual é a pendência atual mencionada na última mensagem antes de qualquer ação adicional.",
+        "model": "anthropic/claude-sonnet-5",
+        "usage": {
+          "prompt_tokens": 970,
+          "completion_tokens": 2340,
+          "total_tokens": 3310,
+          "cost": 0.02534
+        }
+      },
+      "automated_judge_archived": {
+        "fidelity": false,
+        "coverage": true,
+        "attempts": true,
+        "uncertainty": false,
+        "next_step": true,
+        "notes": "Fidelidade/incerteza falham: 'have submitted absence yes deducted balance but alright' está na mensagem que termina em 'kind regards assistant', mas o recap atribui isso ao usuário; 'próximo período' não consta em 'moving annual leave days into'. Cobertura e a tentativa explícita 'tried add annual leave...' estão preservadas; o next_step só propõe revisão humana."
+      },
+      "word_counts": {
+        "original_en": 232,
+        "recap_pt_excluding_quotes": 412
+      },
+      "human_review": {
+        "status": "pending",
+        "feedback": null
+      }
+    },
+    {
+      "row": 45725,
+      "original": "annual leave days sent wednesday december re annual leave days importance high dear please check restore accesses properly seems able access data for another colleague please let know when fixed thank you administration officer sent wednesday december re annual leave days hi think mistake process using credential get access you can thanks sent wednesday december re annual leave days could you please check again make another thank you sent wednesday december re annual leave days hello please note different data than you sent can be checked again if error persists please let know be investigated by thank you administration officer sent tuesday december annual leave days hi can you please check annual leave days for more details below thank you sent tuesday december bug annual leave request hi sending you for issue we found thank you",
+      "classification_archived": {
+        "row": 45725,
+        "partition": "test",
+        "truth": "HR Support",
+        "prediction": "HR Support",
+        "probabilities": {
+          "Access": 0.00010144921328752306,
+          "Administrative rights": 5.6726057128804405e-05,
+          "HR Support": 0.9962158709589755,
+          "Hardware": 0.003440746233302762,
+          "Internal Project": 5.783715738764048e-05,
+          "Miscellaneous": 5.469227045505342e-05,
+          "Purchase": 1.746762342195642e-05,
+          "Storage": 5.521048604069422e-05
+        },
+        "score": 0.9962158709589755,
+        "elapsed_ms": 0.7203749846667051
+      },
+      "recap_archived": {
+        "items": [
+          {
+            "kind": "pedido",
+            "text": "Solicitação para verificar e restaurar corretamente os acessos, pois parece haver acesso a dados de outro colega",
+            "quote": "please check restore accesses properly seems able access data for another colleague please let know when fixed"
+          },
+          {
+            "kind": "pedido",
+            "text": "Pedido para verificar novamente e fazer outra tentativa",
+            "quote": "could you please check again make another"
+          },
+          {
+            "kind": "pedido",
+            "text": "Solicitação para verificar dias de férias anuais, com mais detalhes anexados",
+            "quote": "hi can you please check annual leave days for more details below thank you"
+          },
+          {
+            "kind": "tentativa",
+            "text": "Relato de possível erro no processo, sugerindo uso de credencial equivocada para obter acesso",
+            "quote": "hi think mistake process using credential get access you can thanks"
+          },
+          {
+            "kind": "tentativa",
+            "text": "Comunicação informando que os dados apresentados eram diferentes dos enviados, podendo ser verificado novamente, com investigação caso o erro persista",
+            "quote": "hello please note different data than you sent can be checked again if error persists please let know be investigated by thank you"
+          },
+          {
+            "kind": "pendencia",
+            "text": "Envio de informação sobre bug relacionado à solicitação de férias anuais, sem confirmação de resolução",
+            "quote": "hi sending you for issue we found thank you"
+          }
+        ],
+        "unknowns": [
+          "Não está claro se o problema de acesso a dados de outro colega foi efetivamente corrigido.",
+          "Não há confirmação sobre quem é a 'administration officer' e qual seu papel exato nas ações.",
+          "Não é possível determinar a cronologia exata dos emails, pois podem estar concatenados fora de ordem.",
+          "Não há confirmação de que o 'bug' relatado foi corrigido ou apenas comunicado.",
+          "Não está claro qual é o conteúdo exato dos 'detalhes' mencionados nos pedidos de verificação."
+        ],
+        "next_step": "Revisar manualmente a cadeia de emails para confirmar se o acesso indevido a dados de outro colaborador foi corrigido, validar o status do bug relatado sobre férias anuais, e esclarecer a autoria e cronologia real das mensagens antes de qualquer resposta ao usuário.",
+        "model": "anthropic/claude-sonnet-5",
+        "usage": {
+          "prompt_tokens": 818,
+          "completion_tokens": 756,
+          "total_tokens": 1574,
+          "cost": 0.009196
+        }
+      },
+      "automated_judge_archived": {
+        "fidelity": false,
+        "coverage": true,
+        "attempts": true,
+        "uncertainty": true,
+        "next_step": true,
+        "notes": "Falha de fidelity: 'credencial equivocada' não tem apoio em 'think mistake process using credential get access'; 'fazer outra tentativa' extrapola 'make another'. Pedidos, trechos citados, ambiguidades e o próximo passo humano permanecem apoiados."
+      },
+      "word_counts": {
+        "original_en": 136,
+        "recap_pt_excluding_quotes": 204
+      },
+      "human_review": {
+        "status": "pending",
+        "feedback": null
+      }
+    }
+  ]
+}
