@@ -106,3 +106,11 @@ Dhiego reforçou Jev como candidato para classificação e forneceu uma credenci
 A tentativa no ambiente restrito falhou na conexão; uma nova tentativa com rede liberada também falhou. O diagnóstico local mostrou DNS indisponível no sandbox e ausência de arquivo padrão de certificados no Python instalado. O script passou a usar o bundle do sistema quando necessário, mantendo validação TLS. A execução seguinte com rede liberada retornou HTTP 200, categoria `hardware` e modelo `jev-1.13.0`.
 
 Evidências: [script](../solution/verificar_jev.py) e [relatório sem credenciais](../solution/reports/jev-conexao.json). Houve uma resposta de inferência bem-sucedida; tentativas anteriores não produziram resultados utilizáveis. A latência registrada inclui rede/TLS e não representa benchmark. Não foi enviada a base de tickets, não há avaliação de qualidade no D2 e o recorte de produto permanece em discussão.
+
+## Construção autorizada e comparação — 21/09/2026
+
+Dhiego pediu comparar os modelos e avançar para concluir o case hoje. Configurou OpenRouter no arquivo local para revisão e recap. Codex preparou ambiente isolado, baixou novamente o D2 e confirmou o hash. O primeiro ambiente escolheu Python3.14 automaticamente e começou a compilar NumPy; foi interrompido e recriado explicitamente com Python3.10, sem alterar o ambiente global.
+
+O protocolo reservou validação/teste antes de treinar, removeu vizinhos próximos do treino e da validação e congelou descrições de categorias. Executados TF-IDF + regressão logística e1.192chamadas Jev. Resultado no mesmo teste800:86,00% local e45,25% Jev. A meta de erro<=5% no grupo selecionado pela validação falhou no teste. A escolha por modelo local e confirmação humana está no [ADR0004](../docs/decisions/0004-classificador-local-e-confirmacao-humana.md).
+
+Foram obtidos pareceres reais de Claude e Grok via OpenRouter com o mesmo briefing, além de revisão Codex em agente separado. [Pareceres e confronto](revisao-2026-09-21/decisoes.md). A revisão encontrou ambiguidade na descrição do split, pediu sensibilidade e apontou fragilidades de retomada/contrato que foram corrigidas. Não foram inventadas respostas de modelos nem atribuída execução de scripts aos revisores por API.

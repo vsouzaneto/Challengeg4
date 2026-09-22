@@ -1,0 +1,32 @@
+{
+  "model": "x-ai/grok-4.7",
+  "id": "gen-1790035988-fKdWIESJtxaN3NNl1BQK",
+  "content": "Não executei os scripts nem vi os CSVs completos. Os números abaixo são os que os textos afirmam; não os recalculei nos arquivos.\n\n## 1) Veredito\n\nNão fechar o pacote classificação + recap + tela como entrega escolhida. O único núcleo defensável, com universo e protocolo de teste, é a classificação no D2 contra uma referência simples, com decisão humana e sem ação automática. O diagnóstico do D1 está bem limitado e não deve virar premissa de ganho operacional. Recap e mapa de filas são hipóteses de interface, não resultado demonstrável neste material.\n\n## 2) Objeções\n\n1. A conta do split não fecha com o texto. O protocolo diz treino 45.790, validação 392 e teste 800 “estratificados antes do filtro”, e remoção posterior de 847 vizinhos do treino e 8 da validação. A soma dos três blocos é 46.982, não 47.837; a diferença é exatamente 855. Ou os tamanhos já são pós-filtro, ou o total/filtro está mal descrito. Sem o script executado, não dá para saber qual número vale.\n\n2. O teste não está limpo o bastante para um intervalo estreito. O próprio protocolo registra 9 pares próximos ainda no teste e avisa que bootstrap por linha pode ser otimista. Em `qualidade-por-pergunta.md` §2, quase duplicatas e qualidade semântica dos rótulos do D2 continuam pendentes. Desempenho no teste pode misturar memorização de vizinhos com generalização.\n\n3. O limiar de abstenção é frágil. A validação parte de 392 e perde 8 vizinhos; o critério é erro empírico ≤5%, mínimo de 30 aceitos, grade de 0,50 a 0,99. Com esse n, “erro ≤5%” na validação não estabiliza cobertura nem risco por classe. Probabilidade de regressão logística não é acerto calibrado; o protocolo já diz que a confiança do Jev também não é. Reportar Brier não substitui um limiar que falhe no teste. O fallback correto — sem limiar viável, tudo vai para revisão — deve ser o default, não a exceção escondida.\n\n4. Recap não tem referência nem avaliador independente. `analise-preliminar-cx.md` §6 só autoriza síntese limitada: há indício de cadeias de e-mail, mas cronologia e autoria não são conhecidas. O esquema pedido (tentativas, pontos em aberto, próximo passo) sugere estrutura que o texto pode não ter. `recorte-proposto.md` admite que revisão de Codex não é validação e que os cinco exemplos não avaliam o protótipo. Incluir recap na “entrega recomendada” trata como aceite o que o mesmo arquivo chama de hipótese.\n\n5. A combinação já está empacotada antes da escolha. A entrega lista diagnóstico, classificador, recap e tela, e a atualização registra interesse em Jev após HTTP 200 e modelo `jev-1.13.0`. Conexão não é desempenho no D2. TF-IDF+logística e Jev zero-shot não são a mesma comparação: um vê treino, o outro não. Uma tela com fila, mesmo “demonstrativa”, facilita ler sugestão como encaminhamento operacional — justamente o que o D1 não sustenta (`analise-preliminar-cx.md` §§1–5; `qualidade-por-pergunta.md` §§4–7).\n\n## 3) Recorte recomendado\n\nMenor intervenção: diagnóstico já escrito, sem horas, SLA, canal-causa, churn ou culpa da pendência; mais um classificador simples no D2, com teste reservado, macro-F1, erro por classe e baseline da classe majoritária (Hardware, 28,47% no texto). Jev entra só se o protocolo rodar de fato, como outro sistema, com erro de API, latência e custo à parte — não como vencedor de arquitetura. Abstenção só se o limiar escolhido na validação se mantiver no teste; senão, toda previsão é revisão humana. Fora do aceite: recap, sentimento, sugestão de resposta, mapa de filas e qualquer ação. Se sobrar tempo, uma tela mínima pode mostrar texto, classe, incerteza e correção do atendente, sem fila e sem executar acesso ou reembolso.\n\n## 4) Como avaliar\n\nNo teste, depois de reconciliar o split e declarar os 9 pares residuais: macro-F1, métricas por classe, diferença pareada contra a referência simples, Brier, taxa de erro da API, latência e custo estimado. Se houver abstenção, cobertura e erro condicional no teste, não na validação em que o limiar foi escolhido. Não usar a categoria do dataset como prova da política de atendimento. Recap, se aparecer, fica fora do aceite: amostra separada da usada para ajustar prompt, critérios de fidelidade e de invenção, e revisor que não seja o autor do prompt. Ganho de tempo só como cenário com premissas, nunca como economia observada.\n\n## 5) O que não é demonstrável\n\nHoras recuperáveis, gargalo de canal, SLA, queda de satisfação, jornada por e-mail, desempenho de atendente, causa dos 2.881 pendentes, quantos “urgently” foram má priorização real, qualidade das resoluções de 3–8 palavras como falha de atendente, que recap reduz retrabalho, que HTTP 200 implica classificador útil, e que categoria autoriza ação. O D1 formula perguntas; não mede a operação.",
+  "usage": {
+    "prompt_tokens": 7009,
+    "completion_tokens": 3913,
+    "total_tokens": 10922,
+    "cost": 0.0286144,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 1152,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0286144,
+      "upstream_inference_prompt_cost": 0.009832,
+      "upstream_inference_completions_cost": 0.0187824
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 2688,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "requested_model": "x-ai/grok-4.7",
+  "briefing_sha256": "76bd9543cc1c1b521c6afdd51d523ae48ea98c91c96ef78d4622238476b27e58",
+  "executed_at_utc": "2026-09-22T00:14:10.206375+00:00",
+  "scope": "Revisão documental via API, sem acesso aos CSVs completos ou execução de scripts."
+}
