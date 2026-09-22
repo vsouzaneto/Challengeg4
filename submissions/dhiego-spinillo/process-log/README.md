@@ -173,3 +173,20 @@ O estado conhecido no sistema exige registro de consulta. Conferências pendente
 147 testes passaram localmente e no contêiner. Verificação no navegador: caso de férias com contexto desconhecido sem rascunho; conferências simuladas liberam confirmação; registro persiste sem enviar mensagem; relato de incidente mantém RH e pede evidências sem atribuir causa. Testes adicionais verificam estado pendente, fontes indisponíveis, trecho inválido, acesso por API sem prévia visualização e exclusão de conteúdo original/rascunho na exportação.
 
 A inspeção em 1440×1000 e 390×844 motivou manter a entrada acessível no desktop com altura limitada; também corrigiu a descrição inicial dos exemplos após adicionar os três casos discutidos. Não foram realizadas consultas reais a sistemas: registros de QA identificam a simulação e não são feedback humano do candidato.
+
+
+## Organização da entrega para o diretor
+
+Dhiego observou que o protótipo, sem sistemas/notas/tickets relacionados, demonstra uma ideia limitada e perguntou pelos demais entregáveis, incluindo análise e one-pager. Codex reuniu os resultados existentes num resumo executivo em Markdown e HTML, com acesso pelo aplicativo e caminho de leitura no README. Nenhuma nova funcionalidade de atendimento ou métrica de impacto foi criada para preencher essa lacuna.
+
+O resumo apresenta o cenário como contexto, três achados observados com limites, comparação de modelos, fronteira do protótipo e investimento proposto em instrumentação/piloto. Não atribui os 30 mil tickets anuais aos datasets, não chama espera de desperdício e não apresenta ganho operacional como medido.
+
+## Três caminhos, oportunidades e economics — 21/09/2026
+
+Dhiego pediu mais valor além de clicar e validar: pedidos resolvidos por autosserviço, trabalho praticamente pronto e casos de julgamento humano. Pediu estimativa de ROI com salário e premissas e sugeriu capturas nas evidências em vez de depender de VPS. Codex registrou a [ADR 0007](../docs/decisions/0007-autonomia-por-procedimento-e-cenarios-economicos.md) e o [mapa de evolução](../docs/tres-velocidades.md). A classificação atual continua assistida; nenhum reset, alteração cadastral ou conector foi implementado nesta etapa.
+
+Busca integral no D2 encontrou 685 menções a reset, 161 a alterações de perfil/dados e 78 a palavras de frustração. O script registra regex, hash, contagens e amostras seed 42. Inspeção de seis exemplos por busca mostrou pedidos, falhas e falsos positivos; contagem não foi tratada como elegibilidade, sentimento ou taxa automatizável.
+
+A calculadora usa referência salarial externa explicitamente como aproximação (mediana R$ 3.630; premissa editável R$ 4 mil), separa capacidade e despesa evitada, inclui custos e cenários negativos. As fórmulas foram verificadas em testes; uma asserção de ponto de equilíbrio precisou de tolerância numérica de 1e-8 para resíduos de ponto flutuante (aproximadamente 4e-12 reais). Não alterou resultados econômicos. 165 testes passaram localmente e no contêiner.
+
+No navegador, foram verificados cenário base, conservador e conversão financeira zero, invalidação do resultado ao editar e leitura responsiva. A inspeção identificou a fonte do título de Economia herdando Manrope; corrigida para PPMuseum. [Capturas e roteiro](evidencias/economia-v1/README.md). Nenhuma nova chamada paga a modelos, publicação em VPS, push ou PR nesta etapa.

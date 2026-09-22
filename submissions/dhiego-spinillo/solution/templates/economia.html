@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capacidade e retorno · G4 Challenge 002</title>
+<link rel="stylesheet" href="/static/app.css?v=20260921-investigation-2">
+<link rel="stylesheet" href="/static/economia.css">
+<script src="/static/economia.js" defer></script></head>
+<body><a class="skip" href="#premissas">Ir para premissas</a>
+<header class="topbar"><a class="brand" href="/" aria-label="G4 — início"><img src="/static/g4-logo.svg" alt="G4" width="102" height="44"></a><div class="brand-title"><span>Challenge 002</span><strong>Capacidade e retorno</strong></div><nav aria-label="Navegação"><a href="/resumo">Resumo</a><a href="/">Atendimento</a><a href="/diagnostico">Diagnóstico</a></nav></header>
+<main class="economy"><section class="economy-intro"><h1>Em que condições<br><em>a automação se paga?</em></h1><p>Compare hipóteses de trabalho poupado e despesa evitada. Os 30 mil tickets/ano vêm do contexto do desafio. As demais entradas são premissas editáveis; nenhuma economia foi medida.</p><a href="/tres-velocidades.md">Proposta: autosserviço, atendimento preparado e investigação humana</a></section>
+<div class="economy-layout"><section id="premissas"><h2>Premissas do cenário</h2><label for="scenario">Carregar hipótese de eficiência</label><select id="scenario"><option value="conservador">Conservador</option><option value="base" selected>Base</option><option value="otimista">Otimista</option></select><p class="field-note">Altera elegibilidade, adoção e minutos. Custos e salário permanecem como você definir.</p>
+<form id="economics-form">
+{% set fields = [
+('annual_tickets','Tickets por ano',0,100000000,1),
+('eligible_pct','Tickets elegíveis (%)',0,100,1),
+('adoption_pct','Uso efetivo entre elegíveis (%)',0,100,1),
+('net_minutes','Minutos líquidos poupados por ticket',-120,120,0.1),
+('salary','Salário bruto mensal (R$)',0,1000000,100),
+('loaded_factor','Multiplicador de custo total',1,10,0.1),
+('productive_hours','Horas produtivas por pessoa/mês',0.1,744,0.1),
+('realization_pct','Capacidade convertida em despesa evitada (%)',0,100,1),
+('monthly_cost','Operação e manutenção por mês (R$)',0,10000000,10),
+('setup_cost','Implantação, integração e treinamento (R$)',0,100000000,100)] %}
+<div class="economy-inputs">{% for key,label,min,max,step in fields %}<div><label for="{{ key }}">{{ label }}</label><input id="{{ key }}" name="{{ key }}" type="number" required min="{{ min }}" max="{{ max }}" step="{{ step }}" value="{{ defaults[key] }}"></div>{% endfor %}</div>
+<p class="field-note">Desconte revisão, correções, falhas e novos contatos dos minutos poupados. Valores negativos representam trabalho adicional. Distribua cada ticket em um único fluxo para evitar dupla contagem.</p>
+<button class="primary" type="submit">Calcular cenário</button><p id="economics-status" role="status" aria-live="polite"></p></form>
+<details><summary>De onde vem a referência salarial?</summary><p>Empregos.com.br informa mediana de R$ 3.630/mês para analista de Customer Success e faixa central de R$ 2.705–5.431, atualização de 24/07/2026. CS não representa todos os cargos de suporte/CX.</p><p>R$ 4 mil é uma premissa de planejamento. O fator 1,7 e as 160 horas produtivas também são premissas: substitua por custos e disponibilidade reais.</p><a href="https://www.empregos.com.br/salario/analista-de-customer-success">Consultar fonte salarial</a></details></section>
+<section class="economy-output" aria-labelledby="results-title"><h2 id="results-title">Resultado sob essas premissas</h2><div id="economics-result" hidden>
+<dl><dt>Tickets com uso efetivo por mês</dt><dd id="effective_tickets_month"></dd><dt>Capacidade recuperada por mês</dt><dd id="hours_month"></dd><dt>Equivalente em capacidade de uma pessoa</dt><dd id="fte_capacity"></dd><dt>Valor mensal da capacidade</dt><dd id="capacity_value_month"></dd></dl>
+<p>Horas liberadas podem reduzir fila ou absorver crescimento. O valor da capacidade não é, por si só, dinheiro que sai do orçamento.</p>
+<h3>Quando há despesa evitada</h3><dl><dt>Despesa evitada estimada por mês</dt><dd id="avoided_expense_month"></dd><dt>Saldo mensal após operação</dt><dd id="net_cash_month"></dd><dt>Saldo em 12 meses, incluindo implantação</dt><dd id="first_year_net_cash"></dd><dt>ROI financeiro em 12 meses</dt><dd id="roi_12m_pct"></dd><dt>Prazo estimado de recuperação do investimento</dt><dd id="payback_months"></dd><dt>Minutos por ticket para recuperar custos em 12 meses</dt><dd id="break_even_minutes_12m"></dd></dl>
+<p id="additional-work" hidden></p><p>Despesa evitada pressupõe reduzir horas extras, terceirização ou evitar contratação. Se não houver esse mecanismo, use 0% de conversão. Fração de capacidade não significa uma vaga eliminada.</p>
+<p class="economy-limit">Cenário constante por 12 meses, sem curva de adoção, desconto financeiro ou inflação. Custos incluem hipóteses de APIs, infraestrutura e manutenção; não são orçamento contratado. ROI financeiro não monetiza qualidade ou retenção.</p>
+</div><noscript>Ative JavaScript para calcular ou consulte a memória de cálculo abaixo.</noscript></section></div>
+<section class="economy-close"><h2>O piloto precisa fechar a conta</h2><p>Meça o trabalho ativo total, a taxa de resolução sem recontato e a qualidade por fluxo. Automatizar mais só melhora o resultado se o custo de revisar, corrigir e tratar exceções não consumir o ganho.</p><a href="/economics.md">Cenários, fórmulas e limites</a> · <a href="/piloto-operacional.md">Como validar em operação</a></section></main>
+<script id="economics-presets" type="application/json">{{ presets | tojson }}</script></body></html>

@@ -11,7 +11,10 @@
 - Três casos discutidos com Dhiego; [decisões registradas](docs/revisao-guiada-tres-tickets.md).
 - Ficha de contexto: outros tickets, sistema e notas internas, com estado declarado pelo atendente. Relato de possível incidente separado da categoria e apoiado em trecho literal.
 - Próximo passo e rascunho editável por regras, condicionados às conferências. Cópia disponível, sem envio automático.
-- 147 testes passam localmente e no Docker, incluindo os novos caminhos e preservação de registros antigos.
+- 165 testes passam localmente e no Docker, incluindo os novos caminhos e preservação de registros antigos.
+
+- Resumo executivo visual e em Markdown; simulação econômica editável, com fonte salarial e três cenários.
+- Mapa de oportunidades reproduzível e proposta de três caminhos: autosserviço, atendimento preparado e investigação humana.
 
 ## Limites
 
@@ -26,3 +29,5 @@ Não há integração com sistemas, outros chamados, notas ou logs. As conferên
 A calculadora arbitrária foi retirada. A hipótese de reduzir perguntas repetidas e encaminhamentos incompletos exige medir também o esforço adicional da ficha; [piloto proposto](docs/piloto-operacional.md).
 
 Meta pessoal declarada na retomada: concluir hoje. Prazo oficial desconhecido. Preparação começou em 15/09; não atribuir total fictício de 4–6 horas. Chaves permanecem locais e ignoradas pelo Git.
+
+Atualização 21/09: a nova calculadora em `/economia` inclui custos, adoção, tempo líquido e conversão em despesa evitada; não recupera a conta arbitrária anterior. [ADR 0007](docs/decisions/0007-autonomia-por-procedimento-e-cenarios-economicos.md). Autosserviço e integrações continuam propostos, sem ação externa executada. Próximo incremento recomendado: fluxo completo delimitado de recuperação de senha e tratamento de exceção.

@@ -8,10 +8,12 @@ O protótipo FastAPI/Jinja/SQLite/Docker classifica texto novo, registra confer�
 
 ## Verificação
 
-- 147 testes passam localmente e no Docker.
+- 165 testes passam localmente e no Docker.
 - Navegação e capturas em desktop e celular; conferências incompletas, confirmação, situação pendente e relato de incidente exercitados.
 - Modelo incluído: `docker compose up --build` na pasta da submissão e abrir `http://127.0.0.1:8766`. Classificação e preparação por regras funcionam sem chave externa.
-- README, process log, pareceres reais de Claude/Grok/Codex, ADRs, resultados brutos e proposta de piloto incluídos.
+- One-pager executivo, análise visual, README, process log, pareceres reais de Claude/Grok/Codex, ADRs, resultados brutos e proposta de piloto incluídos.
 - Alterações restritas à pasta da submissão. Credenciais, banco local e datasets completos não fazem parte do Git.
 
 Este arquivo prepara título e descrição; sua criação não publica o PR.
+
+Inclui cenários econômicos editáveis (capacidade versus despesa evitada), fonte salarial, custos e resultados negativos; mapa de três caminhos de atendimento e buscas reproduzíveis de oportunidades no D2. Autosserviço e consulta automática a sistemas permanecem propostas explícitas.

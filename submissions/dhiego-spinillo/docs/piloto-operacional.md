@@ -29,3 +29,9 @@ Medir qualidade por referência humana que examine o contexto, sem usar o rótul
 Ampliar somente se o ganho líquido medido atingir o mínimo acordado com a operação, com qualidade preservada e incerteza estatística explicitada. Investigar imediatamente erros relevantes nos rascunhos/encaminhamentos. Se preencher ou corrigir a ficha consumir o benefício, simplificar ou abandonar esse recorte. A automação de ações externas exigiria outra avaliação e outra autorização.
 
 Após medir: horas potenciais = volume mensal efetivamente elegível × diferença média de minutos ativos ÷ 60. Mostrar intervalo e premissas; capacidade liberada não equivale automaticamente a economia financeira.
+
+## Autonomia e retorno: extensão proposta
+
+O piloto acima descreve o fluxo assistido atual. Os [três caminhos](tres-velocidades.md) exigem grupos e critérios próprios: resolução sem atendente e sem recontato no autosserviço; trabalho ativo total e fidelidade no atendimento preparado; qualidade do encaminhamento nas exceções. Nenhum grupo deve herdar a acurácia do classificador como prova de ação correta.
+
+A [calculadora econômica](economics.md) testa premissas antes do piloto. O cenário base exige 3,53 minutos líquidos por ticket para recuperar os custos assumidos em doze meses, incluindo conversão de 50% em despesa evitada. Esse valor é uma condição da simulação, não uma meta operacional já acordada. Atualizar com custos reais, curva de adoção e mecanismo de despesa evitada antes de decidir.

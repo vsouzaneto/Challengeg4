@@ -24,6 +24,7 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from investigation import Investigation, prepare_next_step
+from economics import Assumptions, PRESETS, estimate
 from recap import RecapValidationError, generate_recap
 from triage_core import LABELS, ROOT, key_from_env, route_suggestion
 
@@ -48,8 +49,13 @@ PUBLIC_FILES = {
 PUBLIC_FILES.update({name: SOLUTION / name for name in (
     'REPRODUZIR.md', 'analise-preliminar-cx.md', 'qualidade-por-pergunta.md',
     'contexto-e-recap.md', 'diagnostico-inicial.md',
+    'comparacao.md', 'avaliacao-recap.md',
 )})
 PUBLIC_FILES.update({'docs/identidade-visual.md': ROOT / 'docs/identidade-visual.md',
+                     'resumo-executivo.md': ROOT / 'docs/resumo-executivo.md',
+                     'piloto-operacional.md': ROOT / 'docs/piloto-operacional.md',
+                     'economics.md': ROOT / 'docs/economics.md',
+                     'tres-velocidades.md': ROOT / 'docs/tres-velocidades.md',
                      'process-log/README.md': ROOT / 'process-log/README.md',
                      'visual/assets/g4-logo.svg': SOLUTION / 'visual/assets/g4-logo.svg'})
 
@@ -170,6 +176,11 @@ def diagnostic():
     return FileResponse(SOLUTION / 'visual/index.html')
 
 
+@app.get('/resumo')
+def executive_summary():
+    return FileResponse(SOLUTION / 'visual/resumo-executivo.html')
+
+
 @app.get('/api/health')
 def health():
     try:
@@ -178,6 +189,18 @@ def health():
     except Exception:
         model_available = False
     return {'model_available': model_available, 'recap_available': bool(key_from_env('OPENROUTER_API_KEY'))}
+
+
+@app.get('/economia')
+def economy(request: Request):
+    return templates.TemplateResponse(request=request, name='economia.html', context={
+        'defaults': Assumptions().model_dump(), 'presets': PRESETS,
+    })
+
+
+@app.post('/api/economics')
+def economics(body: Assumptions):
+    return {'assumptions': body.model_dump(), 'result': estimate(body)}
 
 
 @app.get('/api/evidence')

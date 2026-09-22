@@ -56,3 +56,18 @@ Revisão do plano: o centro é o texto do cliente e sua interpretação; não us
 ## Ajuste após revisão guiada
 
 O fluxo vigente preserva entrada à esquerda e preparação do atendimento à direita. A ficha registra conferências humanas e relato de possível incidente, prepara orientação por regra e apresenta rascunho editável. Recap fica experimental e só ocupa a área de resultado quando solicitado ou quando falha. A calculadora de esforço foi retirada após a crítica do candidato. A coluna de entrada permanece acessível durante a leitura da ficha em desktop, com altura limitada e rolagem própria; celular usa uma coluna. Não foram adicionadas integrações simuladas.
+
+
+## One-pager executivo
+
+Superfície de leitura para o diretor, preservando azul-marinho #001F35, dourado #B9915B, branco/prata #F5F4F3 e as famílias já usadas na aplicação. Uma folha vertical com tese de decisão, tabela de evidências/implicações, experimento e protótipo lado a lado, seguida do próximo investimento. A distinção entre dado, capacidade técnica e hipótese de impacto organiza o conteúdo. Sem gráficos decorativos; projeções ficam identificadas como cenários e detalhadas na calculadora. O primeiro plano foi reduzido para três achados centrais; detalhes permanecem nos links. CSS de impressão em A4; HTML e Markdown incluídos.
+
+## Capacidade e retorno — implementação de 21/09
+
+Registro por leitura de `solution/templates/economia.html`, `solution/static/economia.css`, `solution/static/economia.js` e `solution/visual/resumo-executivo.html`; esta seção não declara inspeção visual no navegador.
+
+A simulação ocupa uma página própria, acessível pelo resumo executivo. Herda do aplicativo o logo G4, cabeçalho marinho, fundo prata, corpo Manrope, controles de cantos discretos e foco dourado. A área de até 1200px coloca premissas à esquerda e resultado em painel marinho à direita, com números tabulares em dourado claro (`#e4c89f`). Abaixo de 800px, essas áreas ficam empilhadas; os campos mantêm duas colunas. O resumo conserva título Museum, folha de até 900px, tabela de evidências e impressão A4, acrescentando o link “Simular retorno”.
+
+Dez entradas numéricas e três hipóteses de eficiência alimentam o cálculo. Alterar uma entrada oculta o resultado anterior e pede recálculo; selecionar uma hipótese recalcula automaticamente. Mensagens anunciam cálculo, conclusão e falha. Capacidade recuperada e despesa evitada aparecem em grupos separados, com premissas, limites e aviso de trabalho adicional. A referência salarial fica em conteúdo expansível. Esses valores são cenários: o resumo continua sem alegar ROI comprovado.
+
+Correção após inspeção: o título de Economia usa explicitamente PPMuseum com ênfase em dourado escurecido (#87622f). Capturas finais do aplicativo mostram a composição em desktop e celular; a revisão da documentação acima foi feita separadamente por leitura de código.

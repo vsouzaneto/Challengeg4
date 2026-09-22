@@ -68,3 +68,7 @@ Os três casos de `reports/revisao-guiada.json` são uma seleção da avaliaçã
 ## Experimentos já executados
 
 A comparação está documentada em [comparacao.md](comparacao.md), com scripts, artefatos e protocolo. A avaliação separada de recap está em [avaliacao-recap.md](avaliacao-recap.md). Relatórios e respostas arquivadas permitem examinar os resultados sem usar credenciais. Não apagar ou sobrescrever essas rodadas para reapresentar novos resultados como se fossem o mesmo experimento.
+
+## Oportunidades e cenários econômicos
+
+`python solution/mapear_oportunidades.py data/dataset2.zip > solution/reports/oportunidades.json` reproduz as buscas integrais. Contagens de menções não são elegibilidade. Acesse `/resumo` para síntese e `/economia` para calcular hipóteses sem chamada a IA. `PYTHONPATH=solution pytest -q solution/tests` inclui limites e fórmulas financeiras.

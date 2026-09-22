@@ -2,6 +2,19 @@
 
 **Protótipo implementado; pacote preparado para revisão final. Ainda não submetido.**
 
+## Comece por aqui
+
+| Ordem | Material | O que responde |
+|---|---|---|
+| 1 · 2 minutos | [One-pager executivo](docs/resumo-executivo.md) · [visual no aplicativo](http://127.0.0.1:8766/resumo) | Problema, achados, recomendação, limites e próximo investimento. |
+| 2 · 5 minutos | [Análise visual](solution/visual/index.html) · [abrir no aplicativo](http://127.0.0.1:8766/diagnostico) | Qualidade dos dados, urgência, espera, satisfação e contexto. |
+| 3 · 3 minutos | [Protótipo local](http://127.0.0.1:8766) | Classificação e lógica de preparação do atendimento em execução. |
+| 4 · Cenários | [Economics e premissas](docs/economics.md) · [calculadora](http://127.0.0.1:8766/economia) | Capacidade recuperada, despesa evitada e condições de retorno. |
+| 5 · Evolução | [Três caminhos de atendimento](docs/tres-velocidades.md) | Autosserviço, trabalho preparado e investigação humana; implementação atual versus proposta. |
+| Aprofundamento | [Comparação](solution/comparacao.md), [piloto](docs/piloto-operacional.md), [process log](process-log/README.md) | Como foi avaliado, o que falta medir e como as decisões evoluíram. |
+
+Os tempos acima são sugestões de leitura/demonstração, não esforço de execução do case. Links em `127.0.0.1` funcionam após iniciar o aplicativo conforme o setup abaixo.
+
 ## Sobre mim
 
 - **Nome:** Dhiego Spinillo.
@@ -22,7 +35,7 @@ Entender as perguntas do diretor → auditar dados por finalidade → confrontar
 | Pergunta do diretor | O que esta entrega sustenta |
 |---|---|
 | Onde perdemos tempo? | Não é possível quantificar pela duração do D1. Há 2.881 pendentes e sinais textuais para investigação; espera pelo cliente não equivale automaticamente a desperdício. |
-| O que automatizar com IA? | Geração de uma sugestão de categoria no domínio avaliado. A confirmação segue humana; categoria não define urgência nem autoriza ações de acesso. |
+| O que automatizar com IA? | Hoje: sugestão de categoria e preparação por regras. Proposta: autosserviço de recuperação de senha, contexto consultado automaticamente e investigação humana para exceções; ver mapa dos três caminhos. |
 | Funciona? | Classificação executável com 86% de concordância com os rótulos do teste, ficha de investigação, orientação e rascunhos por regra. Demonstra funcionamento técnico; impacto operacional não medido. |
 
 - [Diagnóstico visual](solution/visual/index.html): análise da base, fontes e limites; contém leituras de contexto preparadas durante a fase inicial.
