@@ -19,7 +19,7 @@ Dhiego está explorando o aplicativo. Questionou o destaque de uma economia simu
 
 ## Próximos passos
 
-1. Concluir a [revisão guiada de três tickets](docs/revisao-guiada-tres-tickets.md): casos preparados, primeiro apresentado, feedback pendente.
+1. Concluir a [revisão guiada de três tickets](docs/revisao-guiada-tres-tickets.md): caso 1 discutido (conferir registro e perguntar ao cliente somente se faltar confirmação necessária); caso 2 em apresentação; caso 3 preparado.
 2. Delimitar a recomendação à evidência disponível; revisar o recorte se necessário.
 3. Fechar evidências visuais, pacote reproduzível e descrição do PR.
 4. Submeter somente após o fechamento da entrega. Nenhuma aprovação final do candidato foi presumida.

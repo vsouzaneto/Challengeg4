@@ -141,3 +141,10 @@ Dhiego apontou falta de clareza sobre problema, impacto, entregáveis, estado e 
 Foram selecionados intencionalmente três registros da avaliação já executada, sem novas chamadas de IA: 45.057 (Outlook, texto curto e categoria questionável à luz do conteúdo), 34.887 (férias, tentativas e mensagens concatenadas) e 45.725 (férias com relato de possível acesso a dados de outro colega). Os três acertam o rótulo do dataset, mas expõem limitações diferentes de utilidade e interpretação. O roteiro separa saídas efetivamente registradas de leituras/hipóteses redigidas por Codex.
 
 [Roteiro](../docs/revisao-guiada-tres-tickets.md) · [Saídas reunidas](../solution/reports/revisao-guiada.json). Contagens de palavras descrevem extensão em idiomas distintos e não medem esforço. Primeiro caso apresentado com pergunta ao candidato; feedback pendente no momento deste registro. Nenhuma avaliação humana foi inventada. Casos discutidos passam a servir ao desenvolvimento; não podem ser usados como novo teste independente após ajustes.
+
+
+## Revisão guiada — decisão do candidato no caso 1
+
+Para o registro D2 45.057, Dhiego escolheu: “Conferir o registro atual; só perguntar ao cliente se faltar confirmação necessária.” A decisão prioriza a conferência interna e condiciona novo contato a uma confirmação necessária, em vez de seguir automaticamente a coleta de detalhes sugerida pelo recap. Não autoriza encerramento automático nem valida a categoria do dataset.
+
+O feedback foi registrado no roteiro e no JSON do caso, com escopo operacional explícito. Casos 2 e 3 continuam sem feedback. Nenhum ganho de tempo foi atribuído à decisão; prompt e produto permanecem inalterados até fechar o recorte da revisão.

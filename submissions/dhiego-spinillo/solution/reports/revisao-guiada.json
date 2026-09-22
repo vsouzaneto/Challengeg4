@@ -1,5 +1,5 @@
 {
-  "purpose": "Seleção intencional para discutir utilidade e limites; não é novo benchmark. Sem novas chamadas de IA. Comparar contagens entre idiomas não mede tempo de leitura. Feedback humano ainda não recebido.",
+  "purpose": "Seleção intencional para discutir utilidade e limites; não é novo benchmark. Sem novas chamadas de IA. Comparar contagens entre idiomas não mede tempo de leitura. Feedback humano por caso, limitado ao julgamento operacional discutido.",
   "cases": [
     {
       "row": 45057,
@@ -58,8 +58,10 @@
         "recap_pt_excluding_quotes": 92
       },
       "human_review": {
-        "status": "pending",
-        "feedback": null
+        "status": "operational_feedback_received",
+        "reviewer": "Dhiego Spinillo",
+        "feedback": "Conferir o registro atual; só perguntar ao cliente se faltar confirmação necessária.",
+        "scope": "Decisão operacional para este exemplo: consultar registro antes de perguntar ao cliente. Não é validação de categoria, da fidelidade integral do recap, de ganho de tempo ou de outros casos."
       }
     },
     {

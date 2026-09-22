@@ -4,13 +4,13 @@
 
 **Participação do candidato:** avaliar um caso por vez. Codex apresenta pedido, saída real, limites e uma pergunta operacional. Respostas ficam registradas como julgamento do candidato, sem serem confundidas com medição de tempo ou referência de qualidade de toda a base.
 
-**Estado:** três casos preparados; primeiro apresentado. Feedback do candidato pendente.
+**Estado:** caso 1 discutido, com decisão do candidato registrada; caso 2 em apresentação; caso 3 preparado. Ainda sem medição de utilidade/tempo ou aprovação geral do produto.
 
 [Registros reunidos, com saídas completas](../solution/reports/revisao-guiada.json). As posições no CSV começam em 1, sem cabeçalho; não são IDs de tickets fornecidos pela base.
 
 ## 1. Outlook: quando a ajuda acrescenta trabalho
 
-**D2, registro 45,057; conjunto de teste já avaliado.**
+**D2, registro 45.057; conjunto de teste já avaliado.**
 
 ### Original completo
 
@@ -35,9 +35,17 @@ Há menção a problema no Outlook, reinstalação e afirmação de resolução.
 
 **Pergunta ao candidato:** conferir o registro e perguntar só se necessário, seguir a coleta de detalhes sugerida ou recuperar a conversa completa antes de escolher um próximo passo?
 
+### Decisão do candidato — caso 1
+
+> Conferir o registro atual; só perguntar ao cliente se faltar confirmação necessária.
+
+**Consequência para o fluxo proposto:** priorizar conferência do registro atual. Contato com o cliente depende de faltar confirmação necessária; menção a resolução no fragmento não autoriza encerramento automático. Essa decisão corrige o próximo passo proposto pelo recap neste exemplo. Não implica aprovação da categoria `Administrative rights` nem de toda a geração.
+
+**Estado da implementação:** feedback registrado; prompt e comportamento do aplicativo ainda não alterados. Fechar o recorte após os três casos.
+
 ## 2. Férias: preservar tentativas sem reconstruir uma história incerta
 
-**D2, registro 34,887; conjunto de teste já avaliado.**
+**D2, registro 34.887; conjunto de teste já avaliado.**
 
 ### Original completo
 
@@ -66,7 +74,7 @@ O documento reúne referências a mover dias de férias, erro ao adicionar licen
 
 ## 3. Férias e acesso a dados de outro colega: categoria não expressa risco
 
-**D2, registro 45,725; conjunto de teste já avaliado.**
+**D2, registro 45.725; conjunto de teste já avaliado.**
 
 ### Original completo
 
