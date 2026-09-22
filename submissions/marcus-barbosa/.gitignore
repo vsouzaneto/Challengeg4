@@ -1,0 +1,13 @@
+# Nunca versionar dependências, ambientes, dados brutos do challenge ou modelos derivados
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.streamlit/secrets.toml
+solution/data/raw/
+*.pkl
+*.joblib
+.DS_Store
+Thumbs.db
