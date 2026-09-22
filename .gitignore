@@ -12,5 +12,14 @@ datasets/
 .vscode/
 .idea/
 
+# Secrets — never commit
+TOKEN-60d.md
+TOKEN*.md
+.env
+.env.local
+
 # Submissions (if candidates fork)
 submissions/
+
+# Derived raster of the G4 Scale PDF (regenerate with pymupdf Matrix 2x)
+.ai/design-system/_pdf-pages/

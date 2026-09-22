@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "databricks-uc-mcp": {
+      "type": "streamable-http",
+      "url": "https://dbc-0dea39b3-be1e.cloud.databricks.com/api/2.0/mcp/functions/main/default",
+      "headers": {
+        "Authorization": "Bearer ${env:DATABRICKS_TOKEN}"
+      },
+      "note": "Unity Catalog functions — troque main/default pelo catalogo.esquema do workspace"
+    },
+    "databricks-system-ai": {
+      "type": "streamable-http",
+      "url": "https://dbc-0dea39b3-be1e.cloud.databricks.com/api/2.0/mcp/functions/system/ai",
+      "headers": {
+        "Authorization": "Bearer ${env:DATABRICKS_TOKEN}"
+      },
+      "note": "Funções gerenciadas system.ai (exemplo oficial Databricks)"
+    }
+  }
+}

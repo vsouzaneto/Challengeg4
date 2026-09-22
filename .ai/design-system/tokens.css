@@ -1,0 +1,65 @@
+/* G4 Scale — tokens. Fonte: PDF Identidade Visual (amostra 2026-09-21).
+   Copiar para o app. Não editar hex canônicos sem reamostrar o PDF. */
+
+:root {
+  --g4s-color-navy: #32445a;
+  --g4s-color-steel: #466381;
+  --g4s-color-slate: #9ca5ac;
+  --g4s-color-ice: #e3eaf2;
+  --g4s-color-mist: #eff2fb;
+  --g4s-color-canvas: #ffffff;
+
+  --g4s-fg-high: var(--g4s-color-navy);
+  --g4s-fg-medium: var(--g4s-color-steel);
+  --g4s-fg-muted: var(--g4s-color-slate);
+  --g4s-fg-on-strong: var(--g4s-color-canvas);
+
+  --g4s-bg-canvas: var(--g4s-color-canvas);
+  --g4s-bg-page: var(--g4s-color-mist);
+  --g4s-bg-subtle: var(--g4s-color-ice);
+  --g4s-bg-strong: var(--g4s-color-navy);
+  --g4s-bg-strong-alt: var(--g4s-color-steel);
+
+  --g4s-border-default: color-mix(in srgb, var(--g4s-color-slate) 40%, transparent);
+  --g4s-border-strong: var(--g4s-color-steel);
+
+  --g4s-hero-sky: #e9ecf1;
+  --g4s-feedback-ok: #3d5a4c;
+  --g4s-feedback-warn: #8a7348;
+  --g4s-feedback-danger: #7a3e44;
+  --g4s-focus-ring: var(--g4s-color-steel);
+
+  --g4s-font-sans: "Inter", "Geist", "Helvetica Neue", Arial, sans-serif;
+  --g4s-font-display-weight: 200;
+  --g4s-font-ui-weight: 400;
+  --g4s-font-ui-medium: 500;
+  --g4s-tracking-display: 0.18em;
+  --g4s-tracking-wordmark: 0.04em;
+
+  --g4s-radius-pill: 999px;
+  --g4s-radius-card: 24px;
+  --g4s-radius-control: 8px;
+
+  --g4s-shadow-card: 0 8px 32px rgba(50, 68, 90, 0.12);
+  --g4s-space-1: 4px;
+  --g4s-space-2: 8px;
+  --g4s-space-3: 12px;
+  --g4s-space-4: 16px;
+  --g4s-space-5: 24px;
+  --g4s-space-6: 32px;
+  --g4s-space-7: 48px;
+  --g4s-space-8: 64px;
+  --g4s-duration: 150ms;
+}
+
+html {
+  background: var(--g4s-bg-page);
+  color: var(--g4s-fg-high);
+  font-family: var(--g4s-font-sans);
+  font-weight: var(--g4s-font-ui-weight);
+}
+
+::selection {
+  background: var(--g4s-color-ice);
+  color: var(--g4s-color-navy);
+}
