@@ -1,0 +1,50 @@
+{
+  "row": 30799,
+  "stage": "generate",
+  "executed_at_utc": "2026-09-22T00:30:53.751288+00:00",
+  "raw_response": {
+    "model": "anthropic/claude-sonnet-5",
+    "id": "gen-1790037053-P1N4EQlZuNwk7Tx0B9PZ",
+    "content": "```json\n{\"items\":[],\"unknowns\":[\"O texto recebido não contém informações compreensíveis ou estruturadas que permitam identificar pedidos, tentativas ou pendências.\",\"Não é possível determinar o assunto, autoria, cronologia ou contexto do ticket a partir do conteúdo fornecido.\"],\"next_step\":\"Solicitar ao remetente o reenvio do conteúdo original completo e legível do ticket, pois o texto recebido está incompreensível ou corrompido, impedindo qualquer análise válida.\"}\n```",
+    "usage": {
+      "prompt_tokens": 622,
+      "completion_tokens": 185,
+      "total_tokens": 807,
+      "cost": 0.003094,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.003094,
+        "upstream_inference_prompt_cost": 0.001244,
+        "upstream_inference_completions_cost": 0.00185
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "recap": {
+    "items": [],
+    "unknowns": [
+      "O texto recebido não contém informações compreensíveis ou estruturadas que permitam identificar pedidos, tentativas ou pendências.",
+      "Não é possível determinar o assunto, autoria, cronologia ou contexto do ticket a partir do conteúdo fornecido."
+    ],
+    "next_step": "Solicitar ao remetente o reenvio do conteúdo original completo e legível do ticket, pois o texto recebido está incompreensível ou corrompido, impedindo qualquer análise válida.",
+    "model": "anthropic/claude-sonnet-5",
+    "usage": {
+      "prompt_tokens": 622,
+      "completion_tokens": 185,
+      "total_tokens": 807,
+      "cost": 0.003094
+    }
+  },
+  "literal_quotes_valid": true,
+  "elapsed_ms": 3755.103874951601
+}

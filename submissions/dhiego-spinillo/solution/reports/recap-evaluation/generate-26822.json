@@ -1,0 +1,81 @@
+{
+  "row": 26822,
+  "stage": "generate",
+  "executed_at_utc": "2026-09-22T00:31:40.913225+00:00",
+  "raw_response": {
+    "model": "anthropic/claude-sonnet-5",
+    "id": "gen-1790037100-AfF0aq6ui0z9lzieWDDw",
+    "content": "```json\n{\n  \"items\": [\n    {\n      \"kind\": \"pedido\",\n      \"text\": \"Solicitação para que o envio de surveys e reminders ocorra somente em dias de semana (weekdays).\",\n      \"quote\": \"send surveys and reminders only on weekdays\"\n    },\n    {\n      \"kind\": \"pedido\",\n      \"text\": \"Reiteração do pedido de restringir surveys e reminders aos dias de semana.\",\n      \"quote\": \"please surveys reminders weekdays\"\n    },\n    {\n      \"kind\": \"tentativa\",\n      \"text\": \"Menção a uma resolução ou encerramento anterior de algo (possivelmente um caso ou solicitação), sem confirmação de que o estado atual reflita essa resolução.\",\n      \"quote\": \"dear because has resolved close resolution\"\n    },\n    {\n      \"kind\": \"pendencia\",\n      \"text\": \"Aviso de que a sessão da survey expira e solicitação para que o feedback seja submetido dentro de um prazo não especificado claramente no texto.\",\n      \"quote\": \"please bear mind survey session expires kindly advise submit feedback responses within\"\n    },\n    {\n      \"kind\": \"pendencia\",\n      \"text\": \"Referência ambígua a uma intenção de fornecer feedback associada a algo descrito como 'closed', sem clareza se a survey já foi encerrada ou se é uma condição futura.\",\n      \"quote\": \"want provide feedback closed drop feedback\"\n    }\n  ],\n  \"unknowns\": [\n    \"Não há identificação clara de quem solicitou o envio de surveys/reminders apenas em dias de semana, nem data do pedido.\",\n    \"Não está confirmado se a restrição de envio a dias de semana foi efetivamente implementada.\",\n    \"Não está claro o que exatamente foi 'resolved' ou 'closed' — falta contexto sobre o caso, ticket ou solicitação referida.\",\n    \"Não há prazo exato especificado para a expiração da sessão da survey.\",\n    \"Não está claro se o feedback do usuário foi de fato submetido ou permanece pendente.\",\n    \"Referências como 'sn ref', 'notify assessment user ref msg' aparecem sem contexto suficiente para identificar sistema, número ou processo associado.\",\n    \"Não é possível determinar a cronologia dos eventos, pois o texto parece ser uma concatenação de trechos de e-mails sem ordem clara.\"\n  ],\n  \"next_step\": \"Confirmar com o solicitante original se a configuração de envio de surveys/reminders restrita a dias de semana já foi aplicada, verificar o status real do processo mencionado como 'resolved/closed', e esclarecer o prazo de expiração da sessão de survey para garantir que o feedback pendente seja submetido a tempo.\"\n}\n```",
+    "usage": {
+      "prompt_tokens": 791,
+      "completion_tokens": 1733,
+      "total_tokens": 2524,
+      "cost": 0.018912,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.018912,
+        "upstream_inference_prompt_cost": 0.001582,
+        "upstream_inference_completions_cost": 0.01733
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 799,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "recap": {
+    "items": [
+      {
+        "kind": "pedido",
+        "text": "Solicitação para que o envio de surveys e reminders ocorra somente em dias de semana (weekdays).",
+        "quote": "send surveys and reminders only on weekdays"
+      },
+      {
+        "kind": "pedido",
+        "text": "Reiteração do pedido de restringir surveys e reminders aos dias de semana.",
+        "quote": "please surveys reminders weekdays"
+      },
+      {
+        "kind": "tentativa",
+        "text": "Menção a uma resolução ou encerramento anterior de algo (possivelmente um caso ou solicitação), sem confirmação de que o estado atual reflita essa resolução.",
+        "quote": "dear because has resolved close resolution"
+      },
+      {
+        "kind": "pendencia",
+        "text": "Aviso de que a sessão da survey expira e solicitação para que o feedback seja submetido dentro de um prazo não especificado claramente no texto.",
+        "quote": "please bear mind survey session expires kindly advise submit feedback responses within"
+      },
+      {
+        "kind": "pendencia",
+        "text": "Referência ambígua a uma intenção de fornecer feedback associada a algo descrito como 'closed', sem clareza se a survey já foi encerrada ou se é uma condição futura.",
+        "quote": "want provide feedback closed drop feedback"
+      }
+    ],
+    "unknowns": [
+      "Não há identificação clara de quem solicitou o envio de surveys/reminders apenas em dias de semana, nem data do pedido.",
+      "Não está confirmado se a restrição de envio a dias de semana foi efetivamente implementada.",
+      "Não está claro o que exatamente foi 'resolved' ou 'closed' — falta contexto sobre o caso, ticket ou solicitação referida.",
+      "Não há prazo exato especificado para a expiração da sessão da survey.",
+      "Não está claro se o feedback do usuário foi de fato submetido ou permanece pendente.",
+      "Referências como 'sn ref', 'notify assessment user ref msg' aparecem sem contexto suficiente para identificar sistema, número ou processo associado.",
+      "Não é possível determinar a cronologia dos eventos, pois o texto parece ser uma concatenação de trechos de e-mails sem ordem clara."
+    ],
+    "next_step": "Confirmar com o solicitante original se a configuração de envio de surveys/reminders restrita a dias de semana já foi aplicada, verificar o status real do processo mencionado como 'resolved/closed', e esclarecer o prazo de expiração da sessão de survey para garantir que o feedback pendente seja submetido a tempo.",
+    "model": "anthropic/claude-sonnet-5",
+    "usage": {
+      "prompt_tokens": 791,
+      "completion_tokens": 1733,
+      "total_tokens": 2524,
+      "cost": 0.018912
+    }
+  },
+  "literal_quotes_valid": true,
+  "elapsed_ms": 18224.057125044055
+}

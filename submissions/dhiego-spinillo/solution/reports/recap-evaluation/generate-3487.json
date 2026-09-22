@@ -1,0 +1,69 @@
+{
+  "row": 3487,
+  "stage": "generate",
+  "executed_at_utc": "2026-09-22T00:31:06.227703+00:00",
+  "raw_response": {
+    "model": "anthropic/claude-sonnet-5",
+    "id": "gen-1790037066-j3eCUacIKr1IxjGN2uGG",
+    "content": "```json\n{\"items\":[{\"kind\":\"pedido\",\"text\":\"Solicita-se que se registre (log) a alocação após o recebimento do item.\",\"quote\":\"please log allocation after receive item\"},{\"kind\":\"pedido\",\"text\":\"Solicita-se que se leve em consideração a seção obrigatória de recibos ao receber o item pedido.\",\"quote\":\"please take consideration mandatory receipts section order receive item ordered\"},{\"kind\":\"pedido\",\"text\":\"Menção a um link de vídeo explicando como proceder, sem contexto claro sobre o que exatamente é solicitado.\",\"quote\":\"how video link\"}],\"unknowns\":[\"Não é claro qual é o número ou identificação da 'purchase po' referenciada.\",\"Não há informação sobre quem enviou originalmente o pedido nem sobre o destinatário.\",\"Não está especificado se a alocação foi efetivamente registrada ou apenas solicitada.\",\"Não há confirmação de que os recibos obrigatórios foram anexados ou verificados.\",\"O contexto do 'video link' não é explicado, podendo ser um tutorial ou instrução externa não descrita no texto.\"],\"next_step\":\"Encaminhar ao atendente humano para confirmar com o solicitante o status atual da alocação da compra, verificar se a seção de recibos obrigatórios foi cumprida e esclarecer a referência ao link de vídeo antes de qualquer ação adicional.\"}\n```",
+    "usage": {
+      "prompt_tokens": 682,
+      "completion_tokens": 1114,
+      "total_tokens": 1796,
+      "cost": 0.012504,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.012504,
+        "upstream_inference_prompt_cost": 0.001364,
+        "upstream_inference_completions_cost": 0.01114
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 637,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "recap": {
+    "items": [
+      {
+        "kind": "pedido",
+        "text": "Solicita-se que se registre (log) a alocação após o recebimento do item.",
+        "quote": "please log allocation after receive item"
+      },
+      {
+        "kind": "pedido",
+        "text": "Solicita-se que se leve em consideração a seção obrigatória de recibos ao receber o item pedido.",
+        "quote": "please take consideration mandatory receipts section order receive item ordered"
+      },
+      {
+        "kind": "pedido",
+        "text": "Menção a um link de vídeo explicando como proceder, sem contexto claro sobre o que exatamente é solicitado.",
+        "quote": "how video link"
+      }
+    ],
+    "unknowns": [
+      "Não é claro qual é o número ou identificação da 'purchase po' referenciada.",
+      "Não há informação sobre quem enviou originalmente o pedido nem sobre o destinatário.",
+      "Não está especificado se a alocação foi efetivamente registrada ou apenas solicitada.",
+      "Não há confirmação de que os recibos obrigatórios foram anexados ou verificados.",
+      "O contexto do 'video link' não é explicado, podendo ser um tutorial ou instrução externa não descrita no texto."
+    ],
+    "next_step": "Encaminhar ao atendente humano para confirmar com o solicitante o status atual da alocação da compra, verificar se a seção de recibos obrigatórios foi cumprida e esclarecer a referência ao link de vídeo antes de qualquer ação adicional.",
+    "model": "anthropic/claude-sonnet-5",
+    "usage": {
+      "prompt_tokens": 682,
+      "completion_tokens": 1114,
+      "total_tokens": 1796,
+      "cost": 0.012504
+    }
+  },
+  "literal_quotes_valid": true,
+  "elapsed_ms": 12177.286292077042
+}

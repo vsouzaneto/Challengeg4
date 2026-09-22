@@ -1,0 +1,42 @@
+{
+  "row": 16407,
+  "stage": "judge",
+  "executed_at_utc": "2026-09-22T00:29:48.848693+00:00",
+  "response": {
+    "model": "x-ai/grok-4.7",
+    "id": "gen-1790036989-WkVpdAwtJtNpF0yUzKCB",
+    "content": "{\"fidelity\":true,\"coverage\":true,\"attempts\":true,\"uncertainty\":true,\"next_step\":true,\"notes\":\"O original é só \\\"password reset mange\\\". O recap não inventa fatos (items vazio), preserva a ausência de pedido/tentativa explícitos, não atribui autoria, prazo ou resolução e propõe pedir reenvio sem alegar execução.\"}",
+    "usage": {
+      "prompt_tokens": 1720,
+      "completion_tokens": 602,
+      "total_tokens": 2322,
+      "cost": 0.0042592,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 1152,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0042592,
+        "upstream_inference_prompt_cost": 0.0013696,
+        "upstream_inference_completions_cost": 0.0028896
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 521,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "assessment": {
+    "fidelity": true,
+    "coverage": true,
+    "attempts": true,
+    "uncertainty": true,
+    "next_step": true,
+    "notes": "O original é só \"password reset mange\". O recap não inventa fatos (items vazio), preserva a ausência de pedido/tentativa explícitos, não atribui autoria, prazo ou resolução e propõe pedir reenvio sem alegar execução."
+  },
+  "elapsed_ms": 10568.814666941762
+}

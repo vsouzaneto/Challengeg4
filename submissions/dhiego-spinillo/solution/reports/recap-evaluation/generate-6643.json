@@ -1,0 +1,75 @@
+{
+  "row": 6643,
+  "stage": "generate",
+  "executed_at_utc": "2026-09-22T00:31:27.994729+00:00",
+  "raw_response": {
+    "model": "anthropic/claude-sonnet-5",
+    "id": "gen-1790037088-EhW0pAEmVpb0xylMxu9t",
+    "content": "```json\n{\"items\":[{\"kind\":\"pedido\",\"text\":\"Solicitação para registrar ou logar uma alocação relacionada a um item comprado\",\"quote\":\"please log allocation\"},{\"kind\":\"pedido\",\"text\":\"Solicitação para considerar a seção obrigatória de recibos no pedido\",\"quote\":\"please take consideration mandatory receipts section order\"},{\"kind\":\"pedido\",\"text\":\"Menção a receber o item que foi pedido, sem clareza se é relato de pendência ou solicitação de confirmação\",\"quote\":\"receive item ordered\"},{\"kind\":\"pedido\",\"text\":\"Pedido fragmentado e de sentido incerto envolvendo o termo 'explorer'\",\"quote\":\"please explorer\"}],\"unknowns\":[\"O texto está extremamente fragmentado e sem pontuação clara, dificultando identificar o pedido real do solicitante\",\"Não é possível determinar o que significa 'dock' ou 'purchased dock' no contexto\",\"Não é possível determinar o que significa 'explorer' nem sua relação com o restante do pedido\",\"Não há identificação clara de quem é o solicitante além da assinatura genérica 'administrator'\",\"Não há evidência de que qualquer ação tenha sido executada ou concluída, apenas fragmentos de possíveis solicitações\",\"Não é possível determinar o número do pedido, data, ou item específico mencionado\"],\"next_step\":\"Solicitar ao remetente que reenvie a mensagem de forma clara e estruturada, especificando qual item foi comprado, qual alocação deve ser registrada, e qual é a dúvida ou pendência exata relacionada aos recibos e ao recebimento do item, antes de qualquer ação ser tomada.\"}\n```",
+    "usage": {
+      "prompt_tokens": 652,
+      "completion_tokens": 1112,
+      "total_tokens": 1764,
+      "cost": 0.012424,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.012424,
+        "upstream_inference_prompt_cost": 0.001304,
+        "upstream_inference_completions_cost": 0.01112
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 536,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "recap": {
+    "items": [
+      {
+        "kind": "pedido",
+        "text": "Solicitação para registrar ou logar uma alocação relacionada a um item comprado",
+        "quote": "please log allocation"
+      },
+      {
+        "kind": "pedido",
+        "text": "Solicitação para considerar a seção obrigatória de recibos no pedido",
+        "quote": "please take consideration mandatory receipts section order"
+      },
+      {
+        "kind": "pedido",
+        "text": "Menção a receber o item que foi pedido, sem clareza se é relato de pendência ou solicitação de confirmação",
+        "quote": "receive item ordered"
+      },
+      {
+        "kind": "pedido",
+        "text": "Pedido fragmentado e de sentido incerto envolvendo o termo 'explorer'",
+        "quote": "please explorer"
+      }
+    ],
+    "unknowns": [
+      "O texto está extremamente fragmentado e sem pontuação clara, dificultando identificar o pedido real do solicitante",
+      "Não é possível determinar o que significa 'dock' ou 'purchased dock' no contexto",
+      "Não é possível determinar o que significa 'explorer' nem sua relação com o restante do pedido",
+      "Não há identificação clara de quem é o solicitante além da assinatura genérica 'administrator'",
+      "Não há evidência de que qualquer ação tenha sido executada ou concluída, apenas fragmentos de possíveis solicitações",
+      "Não é possível determinar o número do pedido, data, ou item específico mencionado"
+    ],
+    "next_step": "Solicitar ao remetente que reenvie a mensagem de forma clara e estruturada, especificando qual item foi comprado, qual alocação deve ser registrada, e qual é a dúvida ou pendência exata relacionada aos recibos e ao recebimento do item, antes de qualquer ação ser tomada.",
+    "model": "anthropic/claude-sonnet-5",
+    "usage": {
+      "prompt_tokens": 652,
+      "completion_tokens": 1112,
+      "total_tokens": 1764,
+      "cost": 0.012424
+    }
+  },
+  "literal_quotes_valid": true,
+  "elapsed_ms": 12572.177832946181
+}

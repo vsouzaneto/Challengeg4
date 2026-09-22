@@ -1,0 +1,42 @@
+{
+  "row": 3487,
+  "stage": "judge",
+  "executed_at_utc": "2026-09-22T00:29:48.902026+00:00",
+  "response": {
+    "model": "x-ai/grok-4.7",
+    "id": "gen-1790036989-duEvLQvLyTvh1ci0RBcQ",
+    "content": "{\"fidelity\":true,\"coverage\":true,\"attempts\":true,\"uncertainty\":true,\"next_step\":true,\"notes\":\"Pedidos 'please log allocation after receive item' e 'mandatory receipts section' estão apoiados; 'how video link' e 'new purchase po' ficam como pendências. Não há tentativas anteriores no texto. Ambiguidades (PO, destinatário, data sem ano, recebimento) não são resolvidas. O next_step só propõe esclarecimentos ao humano.\"}",
+    "usage": {
+      "prompt_tokens": 1979,
+      "completion_tokens": 765,
+      "total_tokens": 2744,
+      "cost": 0.005456,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 1152,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.005456,
+        "upstream_inference_prompt_cost": 0.001784,
+        "upstream_inference_completions_cost": 0.003672
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 659,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "assessment": {
+    "fidelity": true,
+    "coverage": true,
+    "attempts": true,
+    "uncertainty": true,
+    "next_step": true,
+    "notes": "Pedidos 'please log allocation after receive item' e 'mandatory receipts section' estão apoiados; 'how video link' e 'new purchase po' ficam como pendências. Não há tentativas anteriores no texto. Ambiguidades (PO, destinatário, data sem ano, recebimento) não são resolvidas. O next_step só propõe esclarecimentos ao humano."
+  },
+  "elapsed_ms": 10869.92383399047
+}

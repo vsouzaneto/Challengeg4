@@ -1,0 +1,42 @@
+{
+  "row": 38505,
+  "stage": "judge",
+  "executed_at_utc": "2026-09-22T00:36:22.401550+00:00",
+  "response": {
+    "model": "x-ai/grok-4.7",
+    "id": "gen-1790037382-8HffdPjQoivKW8oiuZey",
+    "content": "{\"fidelity\":false,\"coverage\":true,\"attempts\":true,\"uncertainty\":true,\"next_step\":true,\"notes\":\"Falha de fidelity: o recap diz 'menos tempo que o esperado' e 'e-mail anexado descrevendo o cenário', mas o original só traz 'less than seconds' e 'mail attached', sem limiar 'esperado' nem conteúdo do e-mail. Não há pedidos nem tentativas explícitas omitidos; autoria, data e resolução não são inventadas; o next_step apenas propõe verificação.\"}",
+    "usage": {
+      "prompt_tokens": 1951,
+      "completion_tokens": 3046,
+      "total_tokens": 4997,
+      "cost": 0.01636,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 1152,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.01636,
+        "upstream_inference_prompt_cost": 0.0017392,
+        "upstream_inference_completions_cost": 0.0146208
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2931,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "assessment": {
+    "fidelity": false,
+    "coverage": true,
+    "attempts": true,
+    "uncertainty": true,
+    "next_step": true,
+    "notes": "Falha de fidelity: o recap diz 'menos tempo que o esperado' e 'e-mail anexado descrevendo o cenário', mas o original só traz 'less than seconds' e 'mail attached', sem limiar 'esperado' nem conteúdo do e-mail. Não há pedidos nem tentativas explícitas omitidos; autoria, data e resolução não são inventadas; o next_step apenas propõe verificação."
+  },
+  "elapsed_ms": 38749.34345809743
+}

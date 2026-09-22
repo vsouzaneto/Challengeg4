@@ -1,0 +1,130 @@
+{
+  "n": 16,
+  "generation_success_n": 15,
+  "literal_quote_contract_pass_n": 15,
+  "judged_n": 15,
+  "judge_model": "x-ai/grok-4.7",
+  "generator_model": "anthropic/claude-sonnet-5",
+  "automated_judge_pass_n": {
+    "fidelity": 6,
+    "coverage": 14,
+    "attempts": 15,
+    "uncertainty": 11,
+    "next_step": 15
+  },
+  "failed_cases": [
+    {
+      "row": 16527,
+      "assessment": {
+        "fidelity": false,
+        "coverage": true,
+        "attempts": true,
+        "uncertainty": true,
+        "next_step": true,
+        "notes": "Falha de fidelity: o item trata 'currently out' como 'sinalização de urgência', interpretação sem apoio no trecho 'enter currently out'. O pedido 'please provide tool' está coberto; não há tentativas prévias; autoria, prazo e resolução ficam nos unknowns; o next_step só pede esclarecimento."
+      }
+    },
+    {
+      "row": 3487,
+      "assessment": {
+        "fidelity": false,
+        "coverage": true,
+        "attempts": true,
+        "uncertainty": true,
+        "next_step": true,
+        "notes": "Falha concreta: o item trata 'how video link' como 'link de vídeo explicando como proceder', sentido ausente no trecho; o unknown afirma recibos 'anexados', enquanto o original só diz 'please take consideration mandatory receipts section'."
+      }
+    },
+    {
+      "row": 33178,
+      "assessment": {
+        "fidelity": false,
+        "coverage": true,
+        "attempts": true,
+        "uncertainty": true,
+        "next_step": true,
+        "notes": "Falha de fidelity: o item pedido afirma que o pedido não indica “para quê ou para quem”, mas o original contém “to be reassigned to net project”. Os demais critérios estão apoiados: “please reassign her” foi preservado; “reassigned”/“to be reassigned” aparece sem conclusão inventada; ambiguidades de autoria, data e aprovação permanecem em aberto; o next_step só pede contexto ao humano."
+      }
+    },
+    {
+      "row": 6643,
+      "assessment": {
+        "fidelity": true,
+        "coverage": false,
+        "attempts": true,
+        "uncertainty": true,
+        "next_step": true,
+        "notes": "O trecho explícito 'how video' em 'receive item ordered how video please explorer' não aparece nos itens nem nos unknowns; o item de explorer cita apenas 'please explorer'."
+      }
+    },
+    {
+      "row": 8946,
+      "assessment": {
+        "fidelity": false,
+        "coverage": true,
+        "attempts": true,
+        "uncertainty": false,
+        "next_step": true,
+        "notes": "Falha concreta: o next_step trata o autor como 'Design Lead da Zone', mas o original só tem 'thank design lead zone', sem autoria clara. O pedido de solução leve para exibir o sonar da rede do cliente na TV tem apoio ('sonar hosted on client network on a tv'; 'please help find lightweight solution'). Não há tentativas anteriores explícitas. A proposta pede esclarecimento e não alega execução."
+      }
+    },
+    {
+      "row": 26449,
+      "assessment": {
+        "fidelity": false,
+        "coverage": true,
+        "attempts": true,
+        "uncertainty": false,
+        "next_step": true,
+        "notes": "Falha concreta: o item trata 'thank tester' como 'outro usuário identificado' e 'Novo pedido', inventando autoria e ordem; o trecho só traz 'please help how cooler thank tester' e datas incompletas ('friday november')."
+      }
+    },
+    {
+      "row": 26822,
+      "assessment": {
+        "fidelity": false,
+        "coverage": true,
+        "attempts": true,
+        "uncertainty": false,
+        "next_step": true,
+        "notes": "Falha concreta: o item tentativa afirma 'resolução ou encerramento anterior' a partir de 'dear because has resolved close resolution', inventando cronologia/resolução que o texto ambíguo não sustenta. Pedidos explícitos de weekdays e submissão de feedback estão preservados; não há tentativa anterior explícita omitida; o next_step propõe confirmação sem alegar execução."
+      }
+    },
+    {
+      "row": 38505,
+      "assessment": {
+        "fidelity": false,
+        "coverage": true,
+        "attempts": true,
+        "uncertainty": true,
+        "next_step": true,
+        "notes": "Falha de fidelity: o recap diz 'menos tempo que o esperado' e 'e-mail anexado descrevendo o cenário', mas o original só traz 'less than seconds' e 'mail attached', sem limiar 'esperado' nem conteúdo do e-mail. Não há pedidos nem tentativas explícitas omitidos; autoria, data e resolução não são inventadas; o next_step apenas propõe verificação."
+      }
+    },
+    {
+      "row": 34887,
+      "assessment": {
+        "fidelity": false,
+        "coverage": true,
+        "attempts": true,
+        "uncertainty": false,
+        "next_step": true,
+        "notes": "Fidelidade/incerteza falham: 'have submitted absence yes deducted balance but alright' está na mensagem que termina em 'kind regards assistant', mas o recap atribui isso ao usuário; 'próximo período' não consta em 'moving annual leave days into'. Cobertura e a tentativa explícita 'tried add annual leave...' estão preservadas; o next_step só propõe revisão humana."
+      }
+    },
+    {
+      "row": 45725,
+      "assessment": {
+        "fidelity": false,
+        "coverage": true,
+        "attempts": true,
+        "uncertainty": true,
+        "next_step": true,
+        "notes": "Falha de fidelity: 'credencial equivocada' não tem apoio em 'think mistake process using credential get access'; 'fazer outra tentativa' extrapola 'make another'. Pedidos, trechos citados, ambiguidades e o próximo passo humano permanecem apoiados."
+      }
+    }
+  ],
+  "limits": "16 textos do teste de categoria, 4 por faixa de comprimento; amostra exploratória não proporcional. Sem rótulos humanos de recap. Sem ajuste de prompt após resultados.",
+  "operational_gain_measured": false,
+  "human_review_completed": false
+}

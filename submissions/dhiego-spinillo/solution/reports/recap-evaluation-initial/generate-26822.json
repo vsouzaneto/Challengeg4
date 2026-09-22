@@ -1,0 +1,7 @@
+{
+  "row": 26822,
+  "stage": "generate",
+  "executed_at_utc": "2026-09-22T00:27:42.407498+00:00",
+  "error": "RecapValidationError",
+  "elapsed_ms": 15852.659124997444
+}

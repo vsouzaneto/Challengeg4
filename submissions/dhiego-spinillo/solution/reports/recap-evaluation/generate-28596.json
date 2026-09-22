@@ -1,0 +1,90 @@
+{
+  "row": 28596,
+  "stage": "generate",
+  "executed_at_utc": "2026-09-22T00:31:59.139063+00:00",
+  "raw_response": {
+    "model": "anthropic/claude-sonnet-5",
+    "id": "gen-1790037119-58Mg0KUIOVKBhmjnZL7k",
+    "content": "```json\n{\"items\":[{\"kind\":\"pedido\",\"text\":\"Solicitação para fechar o site antigo após transferência, condicionada à confirmação do proprietário do site\",\"quote\":\"please close down otherwise please continue reading transfer old site\"},{\"kind\":\"pedido\",\"text\":\"Pedido relacionado a fechamento do site com referência a uma sexta-feira, sem data clara confirmada\",\"quote\":\"please advise exported then close down lead friday pm\"},{\"kind\":\"pedido\",\"text\":\"Solicitação para que o destinatário informe onde o novo site está localizado e solicite direitos de edição para transferir arquivos\",\"quote\":\"where want upload files site transfer relevant editing rights\"},{\"kind\":\"pedido\",\"text\":\"Recomendação/pedido para que o próprio usuário faça upload dos arquivos relevantes, exclua o restante e crie um arquivo de backup dentro de duas semanas\",\"quote\":\"recommend upload relevant files delete rest download create archive next two weeks files old\"},{\"kind\":\"pendencia\",\"text\":\"Prazo mencionado em outubro para conclusão da transferência de arquivos do site, sem confirmação de que foi cumprido\",\"quote\":\"kindly note deadline site file transfer october\"},{\"kind\":\"pendencia\",\"text\":\"Aviso de que, após duas semanas, o site antigo ficará bloqueado para alterações, uploads ou downloads\",\"quote\":\"afterwards old become two weeks means unable change upload files download moment\"},{\"kind\":\"pendencia\",\"text\":\"Relato de lentidão no site, com promessa não detalhada de melhoria em semanas futuras\",\"quote\":\"please note site bit slow working make better weeks\"}],\"unknowns\":[\"Não está claro quem é o remetente e quem é o destinatário reais da comunicação\",\"Não há confirmação de que o site antigo foi efetivamente fechado\",\"Não há confirmação de que a transferência de arquivos foi concluída\",\"Datas exatas (qual sexta-feira, qual dia de outubro) não estão claras devido à fragmentação do texto\",\"Não é possível confirmar se os direitos de edição foram concedidos\",\"O texto parece ser uma concatenação de múltiplos e-mails, tornando incerta a cronologia real dos eventos\"],\"next_step\":\"Encaminhar o texto original (não corrompido) para verificação humana, confirmando com o remetente as datas exatas de prazo, o status atual da migração de arquivos, se o site antigo já foi fechado e se os direitos de edição foram concedidos antes de tomar qualquer ação.\"}\n```",
+    "usage": {
+      "prompt_tokens": 917,
+      "completion_tokens": 1852,
+      "total_tokens": 2769,
+      "cost": 0.020354,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.020354,
+        "upstream_inference_prompt_cost": 0.001834,
+        "upstream_inference_completions_cost": 0.01852
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 993,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "recap": {
+    "items": [
+      {
+        "kind": "pedido",
+        "text": "Solicitação para fechar o site antigo após transferência, condicionada à confirmação do proprietário do site",
+        "quote": "please close down otherwise please continue reading transfer old site"
+      },
+      {
+        "kind": "pedido",
+        "text": "Pedido relacionado a fechamento do site com referência a uma sexta-feira, sem data clara confirmada",
+        "quote": "please advise exported then close down lead friday pm"
+      },
+      {
+        "kind": "pedido",
+        "text": "Solicitação para que o destinatário informe onde o novo site está localizado e solicite direitos de edição para transferir arquivos",
+        "quote": "where want upload files site transfer relevant editing rights"
+      },
+      {
+        "kind": "pedido",
+        "text": "Recomendação/pedido para que o próprio usuário faça upload dos arquivos relevantes, exclua o restante e crie um arquivo de backup dentro de duas semanas",
+        "quote": "recommend upload relevant files delete rest download create archive next two weeks files old"
+      },
+      {
+        "kind": "pendencia",
+        "text": "Prazo mencionado em outubro para conclusão da transferência de arquivos do site, sem confirmação de que foi cumprido",
+        "quote": "kindly note deadline site file transfer october"
+      },
+      {
+        "kind": "pendencia",
+        "text": "Aviso de que, após duas semanas, o site antigo ficará bloqueado para alterações, uploads ou downloads",
+        "quote": "afterwards old become two weeks means unable change upload files download moment"
+      },
+      {
+        "kind": "pendencia",
+        "text": "Relato de lentidão no site, com promessa não detalhada de melhoria em semanas futuras",
+        "quote": "please note site bit slow working make better weeks"
+      }
+    ],
+    "unknowns": [
+      "Não está claro quem é o remetente e quem é o destinatário reais da comunicação",
+      "Não há confirmação de que o site antigo foi efetivamente fechado",
+      "Não há confirmação de que a transferência de arquivos foi concluída",
+      "Datas exatas (qual sexta-feira, qual dia de outubro) não estão claras devido à fragmentação do texto",
+      "Não é possível confirmar se os direitos de edição foram concedidos",
+      "O texto parece ser uma concatenação de múltiplos e-mails, tornando incerta a cronologia real dos eventos"
+    ],
+    "next_step": "Encaminhar o texto original (não corrompido) para verificação humana, confirmando com o remetente as datas exatas de prazo, o status atual da migração de arquivos, se o site antigo já foi fechado e se os direitos de edição foram concedidos antes de tomar qualquer ação.",
+    "model": "anthropic/claude-sonnet-5",
+    "usage": {
+      "prompt_tokens": 917,
+      "completion_tokens": 1852,
+      "total_tokens": 2769,
+      "cost": 0.020354
+    }
+  },
+  "literal_quotes_valid": true,
+  "elapsed_ms": 19994.030500063673
+}

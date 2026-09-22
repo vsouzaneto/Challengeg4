@@ -35,3 +35,19 @@ Fontes e método
 ## Fronteira funcional
 
 Esta é uma análise visual interativa, gerada de relatórios JSON. Não é protótipo de inferência. Numa implementação futura, recap e rascunhos poderão ser gerados para a entrada selecionada; exemplos preparados servem como referências de discussão/avaliação, sem substituir geração e verificação. Regras, cálculos e envio humano permanecem separados.
+
+## Protótipo funcional — plano visual de 21/09
+
+Reutilizar os tokens oficiais e o logo, com tarefa central de atendimento: ler o texto, conferir a categoria e o contexto, registrar a decisão. Cabeçalho compacto e navegação entre atendimento, evidências e diagnóstico. A área principal coloca entrada e contexto lado a lado; os trechos que sustentam o recap têm acesso direto ao texto original. Resultados medidos ficam numa seção própria, com denominadores e limite.
+
+```text
+G4 / Suporte assistido       Atendimento · Evidências · Diagnóstico
+Entenda o pedido. Confirme o próximo passo.
+Ticket e exemplo editável  | Categoria sugerida e revisão obrigatória
+Domínio confirmado        | Recap → pedidos / tentativas / pendências
+Gerar análise             | Incertezas e próximo passo sugerido
+                          | Sua decisão + motivo → registrar
+Comparação medida / limites / cenário de esforço
+```
+
+Revisão do plano: o centro é o texto do cliente e sua interpretação; não usar métricas decorativas como painel principal. A confirmação registra apenas uma decisão demonstrativa. Novo texto invalida a análise anterior. Ausência de modelo ou recap deve oferecer próximo passo explícito. Layout em uma coluna no celular; indicadores visuais e textuais, foco visível e estados de carregamento acessíveis.

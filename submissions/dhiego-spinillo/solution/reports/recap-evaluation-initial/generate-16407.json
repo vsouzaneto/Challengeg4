@@ -1,0 +1,24 @@
+{
+  "row": 16407,
+  "stage": "generate",
+  "executed_at_utc": "2026-09-22T00:26:43.872727+00:00",
+  "recap": {
+    "items": [],
+    "unknowns": [
+      "O texto recebido é apenas \"password reset mange\", fragmento incompleto e ambíguo, sem contexto suficiente para identificar um pedido, tentativa ou resultado concreto",
+      "Não é possível determinar se \"mange\" é erro de digitação, palavra truncada ou termo em outro idioma, nem qual ação específica o solicitante deseja",
+      "Não há indicação de autoria, prazo, sistema envolvido ou histórico de tentativas anteriores relacionadas a redefinição de senha",
+      "Não é possível confirmar se algum acesso foi concedido, negado ou permanece pendente"
+    ],
+    "next_step": "Solicitar ao remetente original que reenvie a mensagem completa com mais contexto (sistema/conta envolvida, ação desejada e histórico, se houver) antes de qualquer tratamento, já que o texto recebido está incompleto e não permite identificar pedido, tentativa ou pendência concreta.",
+    "model": "anthropic/claude-sonnet-5",
+    "usage": {
+      "prompt_tokens": 610,
+      "completion_tokens": 713,
+      "total_tokens": 1323,
+      "cost": 0.00835
+    }
+  },
+  "literal_quotes_valid": true,
+  "elapsed_ms": 10211.181582999416
+}

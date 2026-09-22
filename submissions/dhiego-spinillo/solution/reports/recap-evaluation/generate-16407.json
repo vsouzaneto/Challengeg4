@@ -1,0 +1,51 @@
+{
+  "row": 16407,
+  "stage": "generate",
+  "executed_at_utc": "2026-09-22T00:30:53.704876+00:00",
+  "raw_response": {
+    "model": "anthropic/claude-sonnet-5",
+    "id": "gen-1790037053-bnx2HsOk7Pi31ZSt2WM2",
+    "content": "```json\n{\"items\":[],\"unknowns\":[\"O texto recebido é apenas o fragmento 'password reset mange', sem contexto, autor, data ou detalhamento suficiente para identificar um pedido, tentativa ou pendência concreta.\",\"Não é possível determinar se 'mange' é um erro de digitação de outra palavra (como 'manage' ou 'manager') nem a que sistema, conta ou usuário se refere.\",\"Não há indicação de status atual, prazo, autoria da solicitação ou qualquer ação já realizada.\"],\"next_step\":\"Solicitar ao remetente original o texto completo e o contexto do chamado, incluindo qual conta ou sistema está envolvido e qual ação específica está sendo solicitada, antes de qualquer tratamento.\"}\n```",
+    "usage": {
+      "prompt_tokens": 610,
+      "completion_tokens": 872,
+      "total_tokens": 1482,
+      "cost": 0.00994,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00994,
+        "upstream_inference_prompt_cost": 0.00122,
+        "upstream_inference_completions_cost": 0.00872
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 607,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "recap": {
+    "items": [],
+    "unknowns": [
+      "O texto recebido é apenas o fragmento 'password reset mange', sem contexto, autor, data ou detalhamento suficiente para identificar um pedido, tentativa ou pendência concreta.",
+      "Não é possível determinar se 'mange' é um erro de digitação de outra palavra (como 'manage' ou 'manager') nem a que sistema, conta ou usuário se refere.",
+      "Não há indicação de status atual, prazo, autoria da solicitação ou qualquer ação já realizada."
+    ],
+    "next_step": "Solicitar ao remetente original o texto completo e o contexto do chamado, incluindo qual conta ou sistema está envolvido e qual ação específica está sendo solicitada, antes de qualquer tratamento.",
+    "model": "anthropic/claude-sonnet-5",
+    "usage": {
+      "prompt_tokens": 610,
+      "completion_tokens": 872,
+      "total_tokens": 1482,
+      "cost": 0.00994
+    }
+  },
+  "literal_quotes_valid": true,
+  "elapsed_ms": 12058.637750102207
+}

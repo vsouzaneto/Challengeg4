@@ -1,37 +1,32 @@
 # Roadmap do case
 
-## F0 — Análise e definição · iniciada em 15/09, retomada em 21/09
+## Análise e comparação
 
-- [x] Conferir o enunciado e os arquivos.
-- [x] Auditar os dados e documentar limites.
-- [x] Registrar princípios e propostas futuras.
-- [x] Preparar análise visual v1 com fontes, exemplos e identidade do G4.
-- [x] Dhiego ler a análise visual — leitura confirmada em 21/09; conclusões ainda em discussão.
-- [ ] Discutir os problemas com Dhiego e registrar dúvidas/conclusões.
-- [ ] Realizar revisão focada com Claude, Grok e Codex, inspirada no Oráculo Flow, antes da escolha final; [protocolo proposto](docs/revisao-multimodelo.md).
-- [ ] Escolher intervenção, critérios de avaliação e escopo.
-- [ ] Definir stack e plano de implementação.
+- [x] Auditar dados, separar universos e registrar limites.
+- [x] Explorar perguntas de CX e discutir com Dhiego.
+- [x] Renderizar análise visual com identidade G4.
+- [x] Comparar classificador local e Jev em teste reservado.
+- [x] Confrontar pareceres reais de Claude, Grok e Codex.
 
-**Critério de conclusão:** Dhiego consegue explicar problema, evidência, limite, escolha e forma de avaliar. O plano de solução está definido; não basta existir uma proposta gerada pela IA.
+## Construção e avaliação
 
-## F1 — Construção · após definição do recorte
+- [x] Classificação local, regras explícitas e revisão humana.
+- [x] Persistir decisão e motivo; exportar registros.
+- [x] Integrar recap opcional e avaliá-lo separadamente.
+- [x] Registrar qualidade insuficiente do recap para adoção; manter experimental.
+- [x] Executar testes e empacotar em Docker.
+- [ ] Concluir revisão do candidato: utilidade do fluxo e relevância operacional.
 
-Implementar o recorte escolhido após F0. Classificação com política de encaminhamento e recap assistido são possibilidades em discussão; a combinação final ainda não foi decidida. Detalhar tarefas e avaliação depois dessa escolha.
+## Entrega
 
-**Critério de conclusão:** fluxo funcional, resultados reproduzíveis, motivos visíveis e correção registrada.
+- [ ] Fechar evidências e narrativa após revisão do protótipo.
+- [ ] Preparar PR na estrutura oficial.
+- [ ] Publicar submissão final.
 
-## F2 — Verificação e entrega · após construção
+## Futuro
 
-Reproduzir, revisar erros, documentar limites, capturar a execução e preparar o PR na estrutura oficial.
-
-**Critério de conclusão:** outra pessoa consegue executar a entrega; números e alegações correspondem a evidências; Dhiego consegue defender o trabalho.
-
-## Futuro — sem compromisso de implementação no case
-
-[Propostas de evolução e dados necessários](docs/implementacoes-futuras.md).
+[Propostas e dados necessários](docs/implementacoes-futuras.md). Benefício operacional exige medição de trabalho ativo, encaminhamento e qualidade; a avaliação de categoria não substitui esse piloto. A simulação de economia foi retirada após crítica de Dhiego às premissas arbitrárias.
 
 ## Esforço
 
-A meta original de conclusão em 16/09 não se concretizou. A retomada ocorreu em 21/09; nenhuma nova data de entrega foi acordada.
-
-A referência do desafio é 4–6 horas, sem cronômetro obrigatório. Preparação, pesquisa, análise, construção e documentação fazem parte do esforço. Durações anteriores não foram cronometradas; não atribuir um total fictício. Registrar os próximos blocos e identificar eventuais estimativas retrospectivas.
+Preparação iniciada em 15/09, retomada em 21/09 com intenção de concluir no dia. A referência do desafio é 4–6 horas; pesquisa, análise, construção e documentação integram o esforço. Blocos anteriores não foram cronometrados; nenhum total foi reconstruído como se fosse medido.

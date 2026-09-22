@@ -1,0 +1,42 @@
+{
+  "row": 30799,
+  "stage": "judge",
+  "executed_at_utc": "2026-09-22T00:33:48.707162+00:00",
+  "response": {
+    "model": "x-ai/grok-4.7",
+    "id": "gen-1790037228-5Rftzq5OiSuY2S35BGVJ",
+    "content": "{\"fidelity\":true,\"coverage\":true,\"attempts\":true,\"uncertainty\":true,\"next_step\":true,\"notes\":\"O original ('arch mail arch hello please architecture add head architecture') não traz pedido, tentativa, autoria ou cronologia identificáveis; o recap não inventa fatos, registra a ambiguidade e propõe reenvio sem alegar execução.\"}",
+    "usage": {
+      "prompt_tokens": 1642,
+      "completion_tokens": 1161,
+      "total_tokens": 2803,
+      "cost": 0.0068176,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 1152,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0068176,
+        "upstream_inference_prompt_cost": 0.0012448,
+        "upstream_inference_completions_cost": 0.0055728
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1083,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "assessment": {
+    "fidelity": true,
+    "coverage": true,
+    "attempts": true,
+    "uncertainty": true,
+    "next_step": true,
+    "notes": "O original ('arch mail arch hello please architecture add head architecture') não traz pedido, tentativa, autoria ou cronologia identificáveis; o recap não inventa fatos, registra a ambiguidade e propõe reenvio sem alegar execução."
+  },
+  "elapsed_ms": 18211.35687502101
+}

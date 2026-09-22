@@ -1,47 +1,27 @@
 # Estado atual
 
-**21/09/2026 — retomada; análise lida, solução em definição.**
-
-## Onde paramos
-
-Dhiego retomou e informou que leu toda a análise visual. A leitura está concluída; isso não implica concordância com todas as interpretações nem escolha de solução.
-
-**Histórico:** pausa em 15/09 antes da leitura. A meta pessoal original de 16/09 passou; não houve nova data combinada. Prazo oficial de entrega continua desconhecido.
-
-**Próxima ação:** discutir o [recorte proposto](docs/recorte-proposto.md), ouvir a interpretação de Dhiego e confrontar alternativas na revisão multimodelo antes da escolha final.
+**21/09/2026 — protótipo funcional em revisão com Dhiego. Commits locais; sem push ou PR.**
 
 ## Concluído
 
-- Acesso à API TypeSafe verificado em 21/09: uma chamada sintética bem-sucedida, HTTP 200, modelo `jev-1.13.0`. Chave no `.env` local ignorado, permissão 0600. Não é avaliação de classificação no D2; ver `solution/reports/jev-conexao.json`.
-- Análise visual interativa gerada dos quatro relatórios, com fontes e limites explícitos. Identidade baseada nas referências oficiais do G4; navegação conferida em desktop e celular. Recaps preparados para discussão, sem inferência ao vivo.
-- Auditoria integral dos dois CSVs e registro dos hashes.
-- Exploração orientada às provocações de CX: cruzamentos descritivos, sinais textuais, identidade e inspeção de resoluções. Nenhuma inferência de causalidade ou churn.
-- Qualidade separada por pergunta e sensibilidade à exclusão de identidade ambígua; ADR 0003. Motivos distintos de espera pelo cliente documentados como dado necessário, sem inferir sua frequência.
-- Revisão crítica do plano inicial.
-- Princípio de separar regras determinísticas de inferência por IA.
-- Decisão de deixar flags avançadas, priorização e acompanhamento como propostas futuras.
-- Organização do pacote inicial para Git, sem código ou dados empresariais privados.
+- Auditoria dos dois datasets e análise visual lida pelo candidato.
+- Comparação no mesmo teste reservado: classificador local 86%, Jev 45,25% (800 tickets). Sensibilidade e revisão de protocolo registradas.
+- Revisões reais de Claude, Grok e Codex; [confronto](process-log/revisao-2026-09-21/decisoes.md).
+- FastAPI/Jinja/JavaScript/SQLite/Docker funcionando localmente: classificação, política de confirmação humana, registro do motivo e exportação.
+- Recap integrado e avaliado: 15/16 saídas estruturalmente válidas; fidelidade aprovada pelo revisor automatizado em 6/15. Experimental, desligado por padrão na interface e na API.
+- 122 testes passam; Docker construído e executado localmente.
 
-## Aberto
+## Revisão em andamento
 
-- Entendimento do diagnóstico pelo candidato e escolha final da intervenção.
-- Revisão com Claude, Grok e Codex solicitada por Dhiego: [protocolo proposto](docs/revisao-multimodelo.md). Prevista após discussão inicial e antes de fechar o escopo; acesso aos modelos ainda a verificar, sem execução nesta pausa.
-- Stack: FastAPI/Jinja/HTMX/Docker em discussão; Streamlit foi a proposta inicial. Banco e publicação ainda não definidos.
-- Utilidade e avaliação de LLM para recap/OpenRouter continuam abertas. Jev/TypeSafe já tem credencial local e conexão verificada; comparação com classificador simples permanece pendente.
-- Critérios de sucesso e política de encaminhamento.
-- Se o recap assistido merece entrar no recorte: há indícios de cadeias de email em alguns textos do D2, mas não mensagens estruturadas. Ver `solution/contexto-e-recap.md`. Sugestões de resposta exigem revisão; sem envio automático.
+Dhiego está explorando o aplicativo. Questionou o destaque de uma economia simulada de 8,33 horas/mês. A calculadora foi retirada: as premissas eram arbitrárias e o resultado não justificava a intervenção. Ganhar a comparação técnica não demonstra redução de sobrecarga.
 
-## Ainda não realizado
+**Lacuna principal:** validar relevância operacional do recorte e utilidade para o atendente. Não há ganho de tempo medido, referência humana de qualidade do recap nem piloto na operação. A substituição da calculadora por um plano de medição não resolve essa lacuna por si só.
 
-Treinamento, avaliação de classificador, protótipo de produto, integração do fluxo de atendimento, deploy e submissão. Há scripts de análise e uma verificação isolada da API TypeSafe.
+## Próximos passos
 
-## Retomada
+1. Concluir a revisão do protótipo com o candidato e registrar problemas concretos.
+2. Delimitar a recomendação à evidência disponível; revisar o recorte se necessário.
+3. Fechar evidências visuais, pacote reproduzível e descrição do PR.
+4. Submeter somente após o fechamento da entrega. Nenhuma aprovação final do candidato foi presumida.
 
-Ler este arquivo → roadmap → process log → ADRs. Atualizar o estado após as decisões reais. Não tratar proposta como implementada.
-
-1. Consultar `docs/recorte-proposto.md`; a análise visual já foi lida por Dhiego e continua disponível em `solution/visual/index.html`.
-2. Ouvir suas conclusões, dúvidas e prioridade de intervenção; executar a revisão multimodelo com o mesmo material.
-3. Registrar divergências e conclusões. Separar evidência do dataset, hipótese e experiência anterior do candidato.
-4. Escolher intervenção e como medir se funciona; só então definir stack e iniciar construção.
-
-Análise visual registrada no commit `746f9fb`. Até esta pausa, os commits são locais; não houve push nem submissão de PR. Não retomar pesquisa de outros candidatos. Nenhuma tarefa de implementação foi deixada em execução autônoma.
+Meta pessoal declarada na retomada: concluir hoje. Prazo oficial segue desconhecido. Preparação começou em 15/09; não atribuir retrospectivamente um total fictício de 4–6 horas. Chaves permanecem locais e ignoradas pelo Git.

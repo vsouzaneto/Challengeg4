@@ -1,0 +1,111 @@
+{
+  "row": 34887,
+  "stage": "generate",
+  "executed_at_utc": "2026-09-22T00:32:05.387476+00:00",
+  "raw_response": {
+    "model": "anthropic/claude-sonnet-5",
+    "id": "gen-1790037125-RQ1OZc2cKIRrPCVpSq2x",
+    "content": "```json\n{\n  \"items\": [\n    {\n      \"kind\": \"pedido\",\n      \"text\": \"Pedido inicial para excluir um erro de cartão (card error) relacionado a férias.\",\n      \"quote\": \"please delete card error for thank you\"\n    },\n    {\n      \"kind\": \"pedido\",\n      \"text\": \"Pedido para mover dias de férias.\",\n      \"quote\": \"move vacation days time card error move vacation days\"\n    },\n    {\n      \"kind\": \"tentativa\",\n      \"text\": \"Usuário relata ter tentado adicionar licença anual (annual leave), mas o sistema não permitiu o envio e apresentou erro, com tarefas adicionadas e detalhes vazios ao selecionar licença.\",\n      \"quote\": \"tried add annual leave but allow submit errors out there tasks added for annual leave entries problem list for task details empty when select leave\"\n    },\n    {\n      \"kind\": \"pedido\",\n      \"text\": \"Pedido de ajuda para resolver o problema relatado (erro ao submeter licença anual).\",\n      \"quote\": \"if you one can help with next one tried add annual leave\"\n    },\n    {\n      \"kind\": \"tentativa\",\n      \"text\": \"Assistente explica que a ausência foi apenas salva pelo usuário, não submetida por completo, e que isso afeta o cálculo do saldo até entrar no fluxo de aprovação.\",\n      \"quote\": \"please note your absence was only saved by you submitted per below print screen if absence only saved get deducted balance going for approval flow\"\n    },\n    {\n      \"kind\": \"tentativa\",\n      \"text\": \"Usuário relata ter submetido a solicitação de ausência, com saldo de dias deduzido conforme indicado pelo assistente.\",\n      \"quote\": \"have submitted absence yes deducted balance but alright\"\n    },\n    {\n      \"kind\": \"pendencia\",\n      \"text\": \"Usuário questiona se está tudo certo quanto ao saldo de dias, pois após submeter a solicitação de ausência os dias diminuíram mas alguns permaneceram, sem confirmação final.\",\n      \"quote\": \"have submitted absence request for days seem have decreased days balance days still remained let know if alright\"\n    },\n    {\n      \"kind\": \"tentativa\",\n      \"text\": \"Assistente/equipe registra que os dias serão transportados (carried over) para o próximo período, mas não há confirmação de execução, apenas nota informativa seguida de instrução para prosseguir com o agendamento das férias.\",\n      \"quote\": \"we have taken note days be carried over into please proceed with booking your holiday\"\n    },\n    {\n      \"kind\": \"pedido\",\n      \"text\": \"Novo pedido de ajuda após as trocas anteriores, sem detalhamento do problema atual.\",\n      \"quote\": \"fine can you help with please regards\"\n    },\n    {\n      \"kind\": \"pedido\",\n      \"text\": \"Pedido original (aparentemente do lead architect) questionando se é possível mover dias de licença anual para o próximo período, no contexto de planejamento de férias em datas específicas.\",\n      \"quote\": \"planning vacation th th wondered whether you can moving annual leave days into please advice thanks lead architect\"\n    },\n    {\n      \"kind\": \"pendencia\",\n      \"text\": \"Não há confirmação explícita de que o erro do cartão foi de fato excluído, nem de que a transferência dos dias de férias foi efetivamente concluída.\",\n      \"quote\": \"please note your absence was only saved by you submitted per below print screen\"\n    }\n  ],\n  \"unknowns\": [\n    \"Não está claro se o erro de cartão (card error) foi efetivamente excluído/corrigido.\",\n    \"Não há confirmação final de que a transferência (carry over) dos dias de férias foi processada com sucesso.\",\n    \"As datas exatas de início e fim das férias planejadas não são legíveis no texto (aparecem como 'th th').\",\n    \"Não está claro se a aprovação da solicitação de ausência foi concluída no fluxo de aprovação mencionado.\",\n    \"Não é possível determinar a ordem cronológica exata das mensagens, pois a cadeia de e-mails parece concatenada sem datas completas.\",\n    \"Não está claro qual é o problema específico mencionado na última mensagem 'fine can you help with please'.\",\n    \"Não há confirmação de que o saldo de dias ficou definitivamente correto após a dedução relatada pelo usuário.\"\n  ],\n  \"next_step\": \"Revisar manualmente a cadeia de e-mails para confirmar: (1) se o erro de cartão foi corrigido; (2) se a transferência de dias de férias foi efetivamente processada; (3) se a solicitação de ausência foi aprovada no fluxo correto; e (4) esclarecer com o usuário qual é a pendência atual mencionada na última mensagem antes de qualquer ação adicional.\"\n}\n```",
+    "usage": {
+      "prompt_tokens": 970,
+      "completion_tokens": 2340,
+      "total_tokens": 3310,
+      "cost": 0.02534,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.02534,
+        "upstream_inference_prompt_cost": 0.00194,
+        "upstream_inference_completions_cost": 0.0234
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 719,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "recap": {
+    "items": [
+      {
+        "kind": "pedido",
+        "text": "Pedido inicial para excluir um erro de cartão (card error) relacionado a férias.",
+        "quote": "please delete card error for thank you"
+      },
+      {
+        "kind": "pedido",
+        "text": "Pedido para mover dias de férias.",
+        "quote": "move vacation days time card error move vacation days"
+      },
+      {
+        "kind": "tentativa",
+        "text": "Usuário relata ter tentado adicionar licença anual (annual leave), mas o sistema não permitiu o envio e apresentou erro, com tarefas adicionadas e detalhes vazios ao selecionar licença.",
+        "quote": "tried add annual leave but allow submit errors out there tasks added for annual leave entries problem list for task details empty when select leave"
+      },
+      {
+        "kind": "pedido",
+        "text": "Pedido de ajuda para resolver o problema relatado (erro ao submeter licença anual).",
+        "quote": "if you one can help with next one tried add annual leave"
+      },
+      {
+        "kind": "tentativa",
+        "text": "Assistente explica que a ausência foi apenas salva pelo usuário, não submetida por completo, e que isso afeta o cálculo do saldo até entrar no fluxo de aprovação.",
+        "quote": "please note your absence was only saved by you submitted per below print screen if absence only saved get deducted balance going for approval flow"
+      },
+      {
+        "kind": "tentativa",
+        "text": "Usuário relata ter submetido a solicitação de ausência, com saldo de dias deduzido conforme indicado pelo assistente.",
+        "quote": "have submitted absence yes deducted balance but alright"
+      },
+      {
+        "kind": "pendencia",
+        "text": "Usuário questiona se está tudo certo quanto ao saldo de dias, pois após submeter a solicitação de ausência os dias diminuíram mas alguns permaneceram, sem confirmação final.",
+        "quote": "have submitted absence request for days seem have decreased days balance days still remained let know if alright"
+      },
+      {
+        "kind": "tentativa",
+        "text": "Assistente/equipe registra que os dias serão transportados (carried over) para o próximo período, mas não há confirmação de execução, apenas nota informativa seguida de instrução para prosseguir com o agendamento das férias.",
+        "quote": "we have taken note days be carried over into please proceed with booking your holiday"
+      },
+      {
+        "kind": "pedido",
+        "text": "Novo pedido de ajuda após as trocas anteriores, sem detalhamento do problema atual.",
+        "quote": "fine can you help with please regards"
+      },
+      {
+        "kind": "pedido",
+        "text": "Pedido original (aparentemente do lead architect) questionando se é possível mover dias de licença anual para o próximo período, no contexto de planejamento de férias em datas específicas.",
+        "quote": "planning vacation th th wondered whether you can moving annual leave days into please advice thanks lead architect"
+      },
+      {
+        "kind": "pendencia",
+        "text": "Não há confirmação explícita de que o erro do cartão foi de fato excluído, nem de que a transferência dos dias de férias foi efetivamente concluída.",
+        "quote": "please note your absence was only saved by you submitted per below print screen"
+      }
+    ],
+    "unknowns": [
+      "Não está claro se o erro de cartão (card error) foi efetivamente excluído/corrigido.",
+      "Não há confirmação final de que a transferência (carry over) dos dias de férias foi processada com sucesso.",
+      "As datas exatas de início e fim das férias planejadas não são legíveis no texto (aparecem como 'th th').",
+      "Não está claro se a aprovação da solicitação de ausência foi concluída no fluxo de aprovação mencionado.",
+      "Não é possível determinar a ordem cronológica exata das mensagens, pois a cadeia de e-mails parece concatenada sem datas completas.",
+      "Não está claro qual é o problema específico mencionado na última mensagem 'fine can you help with please'.",
+      "Não há confirmação de que o saldo de dias ficou definitivamente correto após a dedução relatada pelo usuário."
+    ],
+    "next_step": "Revisar manualmente a cadeia de e-mails para confirmar: (1) se o erro de cartão foi corrigido; (2) se a transferência de dias de férias foi efetivamente processada; (3) se a solicitação de ausência foi aprovada no fluxo correto; e (4) esclarecer com o usuário qual é a pendência atual mencionada na última mensagem antes de qualquer ação adicional.",
+    "model": "anthropic/claude-sonnet-5",
+    "usage": {
+      "prompt_tokens": 970,
+      "completion_tokens": 2340,
+      "total_tokens": 3310,
+      "cost": 0.02534
+    }
+  },
+  "literal_quotes_valid": true,
+  "elapsed_ms": 22810.4354160605
+}

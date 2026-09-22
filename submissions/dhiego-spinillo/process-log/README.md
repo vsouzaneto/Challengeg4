@@ -114,3 +114,21 @@ Dhiego pediu comparar os modelos e avançar para concluir o case hoje. Configuro
 O protocolo reservou validação/teste antes de treinar, removeu vizinhos próximos do treino e da validação e congelou descrições de categorias. Executados TF-IDF + regressão logística e1.192chamadas Jev. Resultado no mesmo teste800:86,00% local e45,25% Jev. A meta de erro<=5% no grupo selecionado pela validação falhou no teste. A escolha por modelo local e confirmação humana está no [ADR0004](../docs/decisions/0004-classificador-local-e-confirmacao-humana.md).
 
 Foram obtidos pareceres reais de Claude e Grok via OpenRouter com o mesmo briefing, além de revisão Codex em agente separado. [Pareceres e confronto](revisao-2026-09-21/decisoes.md). A revisão encontrou ambiguidade na descrição do split, pediu sensibilidade e apontou fragilidades de retomada/contrato que foram corrigidas. Não foram inventadas respostas de modelos nem atribuída execução de scripts aos revisores por API.
+
+
+## Revisão do protótipo pelo candidato — valor operacional
+
+Ao explorar o protótipo em 21/09, Dhiego questionou o destaque de uma simulação de 8,33 horas/mês: 500 tickets × 1 minuto eram premissas arbitrárias escolhidas por Codex e não sustentavam um argumento de valor para a operação. A objeção não foi resolvida aumentando os números. Codex retirou a calculadora e passou a explicitar o que o piloto precisa medir: fila correta, trabalho ativo incluindo revisão/correção e qualidade preservada. Os cerca de 30 mil tickets/ano pertencem ao contexto do desafio; não medem elegibilidade nem autorizam extrapolar o desempenho do D2 à operação do D1.
+
+A comparação técnica favorece o classificador local, mas não demonstra redução de sobrecarga. O ganho operacional permanece aberto. A leitura do protótipo pelo candidato não foi registrada como aprovação de qualidade dos recaps nem como validação do produto completo.
+
+
+## Evidências técnicas da construção — 21/09/2026
+
+O aplicativo FastAPI/Jinja/JavaScript executa classificação local e persiste sugestão, confirmação/correção e motivo em SQLite. O Docker inclui o modelo e monta um volume separado para o banco. A interface segue as referências visuais G4 documentadas. O ambiente está ligado apenas a 127.0.0.1:8766.
+
+A primeira avaliação de recap aceitou 2/16 saídas. Um diagnóstico separado no treino revelou JSON válido em bloco Markdown; o parser passou a aceitar somente um bloco completo, mantendo validação de esquema e citações. A primeira rodada foi preservada, e a segunda manteve seleção e prompt, com novas chamadas. Houve 15/16 saídas válidas; o revisor automatizado Grok aprovou fidelidade em 6/15. A integração passou a registrar respostas brutas disponíveis para investigação. Não se atribui a mesma causa a todas as falhas iniciais, cujos corpos não foram preservados.
+
+Decisão: recap experimental e desligado por padrão, inclusive na API. Citação literal não garante interpretação correta. Não houve avaliação humana de referência nem medição de ganho de tempo. [Relatório completo](../solution/avaliacao-recap.md).
+
+Verificação: 122 testes passaram localmente após a alteração de padrão do recap; a versão anterior também teve 122 testes passando dentro do Docker. Testes verificam contratos, política, omissão de recap inválido, manutenção da classificação em falhas, persistência e exportação sem o texto original. A reconstrução da interface revelou cache antigo de CSS/JS no navegador; referências dos assets receberam versão explícita para manter HTML e scripts consistentes. Registros funcionais produzidos por Codex durante QA não contam como validação humana do candidato.
