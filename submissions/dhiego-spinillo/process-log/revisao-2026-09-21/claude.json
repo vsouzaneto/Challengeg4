@@ -1,0 +1,32 @@
+{
+  "model": "anthropic/claude-sonnet-5",
+  "id": "gen-1790035988-kaD6YtW2grTYY9G8ft7j",
+  "content": "# Revisão independente\n\n**Declaração prévia:** não executei nenhum script (`auditar_coortes.py`, `explorar_cx.py`), não vi os CSVs originais nem os JSONs de resultados citados. Minha avaliação recai sobre a consistência interna, a coerência metodológica e as lacunas assumidas pelo próprio material. Os números apresentados nos relatórios são tratados como afirmações a verificar, não como instruções ou fatos assumidos.\n\n## 1) Veredito\n\n**Aprovável com ressalvas**, condicionado à execução real do protocolo de comparação (D2) e à separação estrita entre \"diagnóstico exploratório\" e \"entrega funcional\". O recorte é bem desenhado no papel — é raro ver tanta disciplina em declarar o que *não* pode ser afirmado —, mas isso também é seu ponto fraco: o documento é mais forte em ressalvas do que em resultados fechados. Nada no material comprova que a classificação, o recap ou o ganho operacional já funcionam; tudo está descrito como \"a fazer\" ou \"pendente\". Para um prazo de hoje, isso é aceitável *se* o recorte final for reduzido ao mínimo demonstrável (ver item 3).\n\n## 2) Objeções concretas\n\n1. **Métricas do comparativo D2 não existem ainda, só o protocolo.** O bloco final descreve seeds, splits, thresholds e métricas a reportar (macroF1, Brier, risco/cobertura), mas não há nenhum número de desempenho. Isso é honesto, mas significa que a \"Classificação mensurável\" — apontada como núcleo do recorte — ainda não tem evidência de que funciona. Risco: comprometer entrega em 4-6h com validação que ainda não rodou.\n\n2. **Teste ainda contaminado.** O próprio protocolo admite \"Teste ainda tem 9 pares próximos\" após a limpeza de quase-duplicatas, com IC por bootstrap potencialmente estreito demais. Isso é revelado, não escondido — mas é uma falha de rigor que pode inflar artificialmente a métrica de acerto do classificador simples.\n\n3. **Comparação Jev vs. TF-IDF não é comparação de arquitetura pura.** O texto reconhece: \"são sistemas com acessos distintos a treino, não comparação pura de arquiteturas.\" Jev é zero-shot com definições de classe; o baseline é supervisionado com treino completo. Qualquer conclusão de \"Jev é melhor/pior\" nesse desenho será enviesada e deve vir com essa ressalva explícita no relatório final — não apenas no protocolo interno.\n\n4. **Credencial Jev fora dos artefatos versionados, mas já influenciando decisão de escopo** (`docs/recorte-proposto.md`, \"Atualização — acesso ao Jev\"). Há um risco de dependência externa não testada (desempenho, calibração, custo) ser adotada por pressão de prazo/interesse do Dhiego, mesmo com o documento afirmando \"candidato opcional... não foi testado.\" A prova de conexão (HTTP 200) não é evidência de qualidade de classificação.\n\n5. **\"Aguardando cliente\" e \"atrito repetido\" seguem sem instrumentação e viram cenários de recap/UI sem base de validação de compreensão.** Em `qualidade-por-pergunta.md` (seção 7) e `analise-preliminar-cx.md` (seção 4), o próprio autor afirma que \"o D1 atual não sustenta essa validação\" para separar pedido/fatos/ambiguidades. Ainda assim, o recorte de entrega inclui \"Recap assistido\" com \"pedido, tentativas relatadas, pontos em aberto\" — funcionalidade que se apoia exatamente na dimensão não validável. Se entrar no protótipo, precisa ficar claramente rotulado como não avaliado quanto à cobertura real, apenas quanto à fidelidade textual.\n\n## 3) Recorte recomendado (menor intervenção defensável)\n\nPara hoje, com o tempo declarado:\n\n- **Entregar apenas a Classificação mensurável** (item 2 do documento), com protocolo já definido, rodando de fato o TF-IDF+LogReg vs. majoritária, com holdout limpo e reporte de macroF1 + erro por classe. Isso é o único componente com desenho metodológico completo e testável em poucas horas.\n- **Adiar Jev** para uma rodada separada, claramente rotulada como exploratória e não comparável em pé de igualdade (conforme já reconhecido no protocolo).\n- **Recap assistido**: entregar como protótipo de UI com 3-5 exemplos manualmente revisados, sem métrica de cobertura, apenas para discussão qualitativa — não apresentar como \"avaliado\".\n- **Excluir a tela de atendimento integrada** por ora, ou entregá-la como mockup estático (sem fluxo real de correção), dado o tempo.\n- Manter fora: autorresposta, execução automática, SLA inferido, uso de Resolution como base de resposta — já corretamente excluídos.\n\n## 4) Como avaliar\n\n- Rodar o script do comparativo D2 e verificar que os números reportados (macroF1, cobertura, Brier) batem com o protocolo declarado (seed, splits, limiar).\n- Confirmar que o teste, mesmo com os 9 pares residuais, não infla a métrica de forma decisiva (sensibilidade: recalcular removendo-os).\n- Verificar que qualquer menção a Jev no relatório final carrega a ressalva de comparação assimétrica.\n- Checar se o recap, se entregue, vem rotulado como não avaliado em cobertura/compreensão.\n- Confirmar que nenhuma tela sugere execução de ação (reembolso, acesso) a partir da categoria prevista.\n\n## 5) O que não é demonstrável\n\n- Desempenho real do classificador (não executei, não vi números).\n- Qualidade e fidelidade do recap em escala (apenas protocolo de avaliação existe).\n- Qualquer ganho de tempo/produtividade — o próprio documento afirma que isso é hipótese até medição comparativa humana com/sem auxílio, que não ocorreu.\n- Desempenho, custo ou calibração do Jev no D2.\n- Autenticidade dos dados do D1 (o próprio material assume fortes indícios de geração artificial).",
+  "usage": {
+    "prompt_tokens": 9878,
+    "completion_tokens": 2212,
+    "total_tokens": 12090,
+    "cost": 0.041876,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.041876,
+      "upstream_inference_prompt_cost": 0.019756,
+      "upstream_inference_completions_cost": 0.02212
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "requested_model": "anthropic/claude-sonnet-5",
+  "briefing_sha256": "76bd9543cc1c1b521c6afdd51d523ae48ea98c91c96ef78d4622238476b27e58",
+  "executed_at_utc": "2026-09-22T00:13:39.643892+00:00",
+  "scope": "Revisão documental via API, sem acesso aos CSVs completos ou execução de scripts."
+}

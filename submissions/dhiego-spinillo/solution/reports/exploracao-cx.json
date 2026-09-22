@@ -1,0 +1,537 @@
+{
+  "reference_date": "2026-09-15",
+  "sha256_csv": {
+    "dataset_1": "b06a9cde84da65db388bd964d75f88ee1eed96607cf75d0c35f09c3f11bf8bea",
+    "dataset_2": "044fdace33fa564e1e60453f2941dafc95539c99878b0d32746950394b9dd4d4"
+  },
+  "method": "Contagens integrais, busca literal sem distinção de caixa, amostra de resoluções com seed 42. Resultados descritivos; não são inferência de urgência, sentimento, reincidência ou causalidade.",
+  "rating_convention": "Notas 1–2 agrupadas como baixas e 4–5 como altas apenas para leitura exploratória; não é definição oficial de CSAT.",
+  "overall": {
+    "n": 8469,
+    "status": {
+      "Closed": 2769,
+      "Open": 2819,
+      "Pending Customer Response": 2881
+    },
+    "priority": {
+      "Critical": 2129,
+      "High": 2085,
+      "Low": 2063,
+      "Medium": 2192
+    },
+    "rated_n": 2769,
+    "rating_mean": 2.991332611050921,
+    "low_1_2_n": 1102,
+    "high_4_5_n": 1087,
+    "low_1_2_pct_among_rated": 39.79776092452149
+  },
+  "groups": {
+    "Ticket Channel": {
+      "Chat": {
+        "n": 2073,
+        "status": {
+          "Closed": 674,
+          "Open": 685,
+          "Pending Customer Response": 714
+        },
+        "priority": {
+          "Critical": 504,
+          "High": 517,
+          "Low": 501,
+          "Medium": 551
+        },
+        "rated_n": 674,
+        "rating_mean": 3.083086053412463,
+        "low_1_2_n": 245,
+        "high_4_5_n": 280,
+        "low_1_2_pct_among_rated": 36.35014836795252
+      },
+      "Email": {
+        "n": 2143,
+        "status": {
+          "Closed": 720,
+          "Open": 701,
+          "Pending Customer Response": 722
+        },
+        "priority": {
+          "Critical": 571,
+          "High": 504,
+          "Low": 525,
+          "Medium": 543
+        },
+        "rated_n": 720,
+        "rating_mean": 2.963888888888889,
+        "low_1_2_n": 303,
+        "high_4_5_n": 285,
+        "low_1_2_pct_among_rated": 42.083333333333336
+      },
+      "Phone": {
+        "n": 2132,
+        "status": {
+          "Closed": 691,
+          "Open": 736,
+          "Pending Customer Response": 705
+        },
+        "priority": {
+          "Critical": 526,
+          "High": 512,
+          "Low": 499,
+          "Medium": 595
+        },
+        "rated_n": 691,
+        "rating_mean": 2.952243125904486,
+        "low_1_2_n": 285,
+        "high_4_5_n": 266,
+        "low_1_2_pct_among_rated": 41.24457308248915
+      },
+      "Social media": {
+        "n": 2121,
+        "status": {
+          "Closed": 684,
+          "Open": 697,
+          "Pending Customer Response": 740
+        },
+        "priority": {
+          "Critical": 528,
+          "High": 552,
+          "Low": 538,
+          "Medium": 503
+        },
+        "rated_n": 684,
+        "rating_mean": 2.969298245614035,
+        "low_1_2_n": 269,
+        "high_4_5_n": 256,
+        "low_1_2_pct_among_rated": 39.32748538011696
+      }
+    },
+    "Ticket Priority": {
+      "Critical": {
+        "n": 2129,
+        "status": {
+          "Closed": 726,
+          "Open": 692,
+          "Pending Customer Response": 711
+        },
+        "priority": {
+          "Critical": 2129
+        },
+        "rated_n": 726,
+        "rating_mean": 2.958677685950413,
+        "low_1_2_n": 298,
+        "high_4_5_n": 279,
+        "low_1_2_pct_among_rated": 41.04683195592286
+      },
+      "High": {
+        "n": 2085,
+        "status": {
+          "Closed": 705,
+          "Open": 704,
+          "Pending Customer Response": 676
+        },
+        "priority": {
+          "High": 2085
+        },
+        "rated_n": 705,
+        "rating_mean": 2.9829787234042553,
+        "low_1_2_n": 289,
+        "high_4_5_n": 276,
+        "low_1_2_pct_among_rated": 40.99290780141844
+      },
+      "Low": {
+        "n": 2063,
+        "status": {
+          "Closed": 644,
+          "Open": 696,
+          "Pending Customer Response": 723
+        },
+        "priority": {
+          "Low": 2063
+        },
+        "rated_n": 644,
+        "rating_mean": 3.0527950310559007,
+        "low_1_2_n": 246,
+        "high_4_5_n": 274,
+        "low_1_2_pct_among_rated": 38.19875776397515
+      },
+      "Medium": {
+        "n": 2192,
+        "status": {
+          "Closed": 694,
+          "Open": 727,
+          "Pending Customer Response": 771
+        },
+        "priority": {
+          "Medium": 2192
+        },
+        "rated_n": 694,
+        "rating_mean": 2.9769452449567724,
+        "low_1_2_n": 269,
+        "high_4_5_n": 258,
+        "low_1_2_pct_among_rated": 38.76080691642651
+      }
+    },
+    "Ticket Type": {
+      "Billing inquiry": {
+        "n": 1634,
+        "status": {
+          "Closed": 544,
+          "Open": 539,
+          "Pending Customer Response": 551
+        },
+        "priority": {
+          "Critical": 420,
+          "High": 382,
+          "Low": 398,
+          "Medium": 434
+        },
+        "rated_n": 544,
+        "rating_mean": 3.0275735294117645,
+        "low_1_2_n": 223,
+        "high_4_5_n": 227,
+        "low_1_2_pct_among_rated": 40.99264705882353
+      },
+      "Cancellation request": {
+        "n": 1695,
+        "status": {
+          "Closed": 516,
+          "Open": 582,
+          "Pending Customer Response": 597
+        },
+        "priority": {
+          "Critical": 423,
+          "High": 398,
+          "Low": 414,
+          "Medium": 460
+        },
+        "rated_n": 516,
+        "rating_mean": 3.0290697674418605,
+        "low_1_2_n": 198,
+        "high_4_5_n": 207,
+        "low_1_2_pct_among_rated": 38.372093023255815
+      },
+      "Product inquiry": {
+        "n": 1641,
+        "status": {
+          "Closed": 533,
+          "Open": 532,
+          "Pending Customer Response": 576
+        },
+        "priority": {
+          "Critical": 403,
+          "High": 399,
+          "Low": 398,
+          "Medium": 441
+        },
+        "rated_n": 533,
+        "rating_mean": 3.016885553470919,
+        "low_1_2_n": 199,
+        "high_4_5_n": 212,
+        "low_1_2_pct_among_rated": 37.3358348968105
+      },
+      "Refund request": {
+        "n": 1752,
+        "status": {
+          "Closed": 596,
+          "Open": 564,
+          "Pending Customer Response": 592
+        },
+        "priority": {
+          "Critical": 444,
+          "High": 448,
+          "Low": 440,
+          "Medium": 420
+        },
+        "rated_n": 596,
+        "rating_mean": 2.934563758389262,
+        "low_1_2_n": 248,
+        "high_4_5_n": 226,
+        "low_1_2_pct_among_rated": 41.61073825503356
+      },
+      "Technical issue": {
+        "n": 1747,
+        "status": {
+          "Closed": 580,
+          "Open": 602,
+          "Pending Customer Response": 565
+        },
+        "priority": {
+          "Critical": 439,
+          "High": 458,
+          "Low": 413,
+          "Medium": 437
+        },
+        "rated_n": 580,
+        "rating_mean": 2.9586206896551723,
+        "low_1_2_n": 234,
+        "high_4_5_n": 215,
+        "low_1_2_pct_among_rated": 40.3448275862069
+      }
+    }
+  },
+  "phrase_matches": {
+    "explicit_urgently": {
+      "literal": "urgently",
+      "n": 165,
+      "status": {
+        "Closed": 53,
+        "Open": 52,
+        "Pending Customer Response": 60
+      },
+      "priority": {
+        "Critical": 40,
+        "High": 47,
+        "Low": 39,
+        "Medium": 39
+      },
+      "rated_n": 53,
+      "rating_mean": 3.0943396226415096,
+      "low_1_2_n": 20,
+      "high_4_5_n": 23,
+      "low_1_2_pct_among_rated": 37.735849056603776
+    },
+    "repeat_contact_statement": {
+      "literal": "already contacted customer support multiple times",
+      "n": 460,
+      "status": {
+        "Closed": 152,
+        "Open": 152,
+        "Pending Customer Response": 156
+      },
+      "priority": {
+        "Critical": 109,
+        "High": 106,
+        "Low": 122,
+        "Medium": 123
+      },
+      "rated_n": 152,
+      "rating_mean": 2.8289473684210527,
+      "low_1_2_n": 70,
+      "high_4_5_n": 55,
+      "low_1_2_pct_among_rated": 46.05263157894737
+    },
+    "as_soon_as_possible": {
+      "literal": "as soon as possible",
+      "n": 509,
+      "status": {
+        "Closed": 152,
+        "Open": 176,
+        "Pending Customer Response": 181
+      },
+      "priority": {
+        "Critical": 123,
+        "High": 145,
+        "Low": 101,
+        "Medium": 140
+      },
+      "rated_n": 152,
+      "rating_mean": 3.125,
+      "low_1_2_n": 57,
+      "high_4_5_n": 68,
+      "low_1_2_pct_among_rated": 37.5
+    },
+    "today": {
+      "literal": "today",
+      "n": 18,
+      "status": {
+        "Closed": 4,
+        "Open": 7,
+        "Pending Customer Response": 7
+      },
+      "priority": {
+        "Critical": 7,
+        "High": 3,
+        "Low": 6,
+        "Medium": 2
+      },
+      "rated_n": 4,
+      "rating_mean": 3.5,
+      "low_1_2_n": 1,
+      "high_4_5_n": 3,
+      "low_1_2_pct_among_rated": 25.0
+    },
+    "deadline": {
+      "literal": "deadline",
+      "n": 4,
+      "status": {
+        "Closed": 3,
+        "Pending Customer Response": 1
+      },
+      "priority": {
+        "Critical": 1,
+        "Low": 1,
+        "Medium": 2
+      },
+      "rated_n": 3,
+      "rating_mean": 2.0,
+      "low_1_2_n": 2,
+      "high_4_5_n": 1,
+      "low_1_2_pct_among_rated": 66.66666666666667
+    },
+    "frustrat_stem": {
+      "literal": "frustrat",
+      "n": 8,
+      "status": {
+        "Closed": 2,
+        "Open": 1,
+        "Pending Customer Response": 5
+      },
+      "priority": {
+        "Critical": 2,
+        "Low": 2,
+        "Medium": 4
+      },
+      "rated_n": 2,
+      "rating_mean": 4.5,
+      "low_1_2_n": 0,
+      "high_4_5_n": 2,
+      "low_1_2_pct_among_rated": 0.0
+    }
+  },
+  "repeated_email": {
+    "unique_emails": 8320,
+    "repeated_groups": 139,
+    "rows_in_repeated_groups": 288,
+    "groups_with_multiple_names": 139,
+    "groups_with_multiple_ages": 134,
+    "groups_with_multiple_genders": 95,
+    "interpretation": "Email repetido não é identidade de cliente validada; diferenças podem refletir inconsistência ou conta compartilhada. Não calcular reincidência individual com essa chave sem reconciliação."
+  },
+  "resolutions": {
+    "nonempty": 2769,
+    "word_count": {
+      "min": 3,
+      "median": 5,
+      "max": 8
+    },
+    "word_count_distribution": {
+      "3": 245,
+      "4": 604,
+      "5": 555,
+      "6": 539,
+      "7": 575,
+      "8": 251
+    },
+    "inspection_sample_seed": 42,
+    "inspection_sample": [
+      {
+        "ticket_id": "8027",
+        "subject": "Delivery problem",
+        "resolution": "Fight strategy green at."
+      },
+      {
+        "ticket_id": "1371",
+        "subject": "Data loss",
+        "resolution": "Sport forget even effect practice kitchen."
+      },
+      {
+        "ticket_id": "305",
+        "subject": "Software bug",
+        "resolution": "Arrive miss short fly."
+      },
+      {
+        "ticket_id": "3460",
+        "subject": "Battery life",
+        "resolution": "Mouth hear wonder partner compare."
+      },
+      {
+        "ticket_id": "3081",
+        "subject": "Hardware issue",
+        "resolution": "Hand culture agreement beat same."
+      },
+      {
+        "ticket_id": "2829",
+        "subject": "Battery life",
+        "resolution": "Effort occur avoid section arm professor quality matter."
+      },
+      {
+        "ticket_id": "1723",
+        "subject": "Battery life",
+        "resolution": "Cultural somebody if training."
+      },
+      {
+        "ticket_id": "1278",
+        "subject": "Delivery problem",
+        "resolution": "Remain little management truth."
+      },
+      {
+        "ticket_id": "6791",
+        "subject": "Account access",
+        "resolution": "Floor off address late."
+      },
+      {
+        "ticket_id": "1063",
+        "subject": "Network problem",
+        "resolution": "Beyond produce popular president argue education recognize."
+      },
+      {
+        "ticket_id": "7387",
+        "subject": "Refund request",
+        "resolution": "Law six example his together."
+      },
+      {
+        "ticket_id": "5305",
+        "subject": "Battery life",
+        "resolution": "Only force particular knowledge floor current."
+      },
+      {
+        "ticket_id": "372",
+        "subject": "Battery life",
+        "resolution": "Tv hope because woman center."
+      },
+      {
+        "ticket_id": "353",
+        "subject": "Installation support",
+        "resolution": "No enjoy sign case check but."
+      },
+      {
+        "ticket_id": "1166",
+        "subject": "Display issue",
+        "resolution": "Thousand policy door husband black."
+      },
+      {
+        "ticket_id": "2774",
+        "subject": "Software bug",
+        "resolution": "Similar number sea large plant upon executive."
+      },
+      {
+        "ticket_id": "2947",
+        "subject": "Network problem",
+        "resolution": "Agree and day memory chance policy ok."
+      },
+      {
+        "ticket_id": "6310",
+        "subject": "Network problem",
+        "resolution": "Several contain view PM appear exist three before."
+      },
+      {
+        "ticket_id": "7519",
+        "subject": "Data loss",
+        "resolution": "Right debate since story start."
+      },
+      {
+        "ticket_id": "318",
+        "subject": "Cancellation request",
+        "resolution": "Look include her majority real partner operation create."
+      }
+    ],
+    "interpretation": "Comprimento não mede qualidade. A amostra permite inspecionar plausibilidade; não oferece diálogo agente-cliente para medir cobertura de perguntas."
+  },
+  "dataset_2": {
+    "n": 47837,
+    "columns": [
+      "Document",
+      "Topic_group"
+    ],
+    "classes": {
+      "Access": 7125,
+      "Administrative rights": 1760,
+      "HR Support": 10915,
+      "Hardware": 13617,
+      "Internal Project": 2119,
+      "Miscellaneous": 7060,
+      "Purchase": 2464,
+      "Storage": 2777
+    },
+    "interpretation": "Permite avaliar categoria; não traz cliente, sequência de atendimento, prioridade, sentimento, prazos ou desfecho de churn."
+  }
+}

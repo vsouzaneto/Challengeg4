@@ -1,0 +1,121 @@
+[
+  {
+    "id": "reset",
+    "title": "Recuperar acesso sem atendente",
+    "text": "password reset greetings please thank respectfully",
+    "row": 1083,
+    "source": "D2 · registro 1.083 · pedido curto real, selecionado para desenvolvimento. Conta e contexto fictícios; não são dados do solicitante.",
+    "context": {
+      "active": true,
+      "reset_allowed": true,
+      "leave_registered": false,
+      "unavailable": false,
+      "notes": "Nenhum outro ticket aberto nesta conta fictícia.",
+      "system_fact": "Provedor local disponível; canal de recuperação cadastrado.",
+      "account": "demo-001",
+      "recovery_issue_open": false
+    }
+  },
+  {
+    "id": "failed",
+    "title": "Tentativa de reset já falhou",
+    "text": "password reset request july pm re expire today hello tried change got configuration information controller because machine unavailable has denied working today change thank kind regards july expire today importance high dear expire today change pc press ctrl alt delete choose change thanks ext",
+    "row": 12423,
+    "source": "D2 · registro 12,423 · texto real do dataset, já usado no desenvolvimento. Contexto de sistemas é fictício, sem vínculo real com o solicitante.",
+    "context": {
+      "active": true,
+      "reset_allowed": true,
+      "leave_registered": false,
+      "unavailable": false,
+      "notes": "DEMO-201 aberto: erro no controlador. Nota interna: coletar evidência técnica; não reenviar instrução genérica.",
+      "system_fact": "Conta ativa; indisponibilidade de controlador em investigação.",
+      "account": "demo-001",
+      "recovery_issue_open": true
+    }
+  },
+  {
+    "id": "leave",
+    "title": "Férias: consultar antes de perguntar",
+    "text": "move vacation days time card error move vacation days dear please delete card error for thank you assistant sent wednesday december re move vacation days thanks if you one can help with next one tried add annual leave but allow submit errors out there tasks added for annual leave entries problem list for task details empty when select leave you know if common problem or thanks sent wednesday december re move vacation days hi please note your absence was only saved by you submitted per below print screen if absence only saved get deducted balance going for approval flow have submitted absence yes deducted balance but alright because if you check your balance using th balance calculation date you have below confirm everything alright further action needed your side please let know if you need further details kind regards assistant sent wednesday december re move vacation days dear have submitted absence request for days seem have decreased days balance days still remained let know if alright thanks sent friday december re move vacation days hi we have taken note days be carried over into please proceed with booking your holiday for kind regards assistant sent thursday december re move vacation days fine can you help with please regards sent december move vacation days hi planning vacation th th wondered whether you can moving annual leave days into please advice thanks lead architect",
+    "row": 34887,
+    "source": "D2 · registro 34,887 · texto real do dataset, já usado no desenvolvimento. Contexto de sistemas é fictício, sem vínculo real com o solicitante.",
+    "context": {
+      "active": true,
+      "reset_allowed": false,
+      "leave_registered": true,
+      "unavailable": false,
+      "notes": "DEMO-202: atendimento anterior conferiu o saldo; evidência de lançamento disponível.",
+      "system_fact": "Solicitação fictícia FER-2026-018 consta lançada no sistema.",
+      "account": "demo-002",
+      "recovery_issue_open": false
+    }
+  },
+  {
+    "id": "incident",
+    "title": "Relato de dados de outra pessoa",
+    "text": "annual leave days sent wednesday december re annual leave days importance high dear please check restore accesses properly seems able access data for another colleague please let know when fixed thank you administration officer sent wednesday december re annual leave days hi think mistake process using credential get access you can thanks sent wednesday december re annual leave days could you please check again make another thank you sent wednesday december re annual leave days hello please note different data than you sent can be checked again if error persists please let know be investigated by thank you administration officer sent tuesday december annual leave days hi can you please check annual leave days for more details below thank you sent tuesday december bug annual leave request hi sending you for issue we found thank you",
+    "row": 45725,
+    "source": "D2 · registro 45,725 · texto real do dataset, já usado no desenvolvimento. Contexto de sistemas é fictício, sem vínculo real com o solicitante.",
+    "context": {
+      "active": true,
+      "reset_allowed": false,
+      "leave_registered": false,
+      "unavailable": false,
+      "notes": "Nenhuma investigação concluída. Relato precisa de evidência e consulta a logs.",
+      "system_fact": "Cadastro ativo; o sistema demonstrativo não confirma nem descarta incidente.",
+      "account": "demo-003",
+      "recovery_issue_open": false
+    }
+  },
+  {
+    "id": "disabled",
+    "title": "Conta desativada no desligamento",
+    "text": "last day of employment accounts already deactivated friday employment accounts deactivated importance high hi believe has touch please ensure her reactivated immediately has occurred frustrating say least final entered working generally working final therefore accounts deactivated pm working thanks planning officer",
+    "row": 17001,
+    "source": "D2 · registro 17,001 · texto real do dataset, já usado no desenvolvimento. Contexto de sistemas é fictício, sem vínculo real com o solicitante.",
+    "context": {
+      "active": false,
+      "reset_allowed": false,
+      "leave_registered": false,
+      "unavailable": false,
+      "notes": "DEMO-203: desligamento registrado; reativação exige responsável de identidades.",
+      "system_fact": "Conta desativada no diretório fictício.",
+      "account": "demo-004",
+      "recovery_issue_open": false
+    }
+  },
+  {
+    "id": "unavailable",
+    "title": "Fonte indisponível: interromper ação",
+    "text": "reset password sent thursday november infrastructure hi guys could you please update password likely expire thanks sent thursday november re infrastructure hey completely unrelated side note appears password going expire couple days getting effect would someone please tell where can reset thank you",
+    "row": 46304,
+    "source": "D2 · registro 46,304 · texto real do dataset, já usado no desenvolvimento. Contexto de sistemas é fictício, sem vínculo real com o solicitante.",
+    "context": {
+      "active": true,
+      "reset_allowed": true,
+      "leave_registered": false,
+      "unavailable": true,
+      "notes": "Nenhum outro ticket aberto nesta conta fictícia.",
+      "system_fact": "Consulta ao diretório indisponível; não há confirmação do estado atual.",
+      "account": "demo-001",
+      "recovery_issue_open": false
+    }
+  },
+  {
+    "id": "thread",
+    "title": "Histórico concatenado: conferir interpretação",
+    "text": "reset password sent thursday november infrastructure hi guys could you please update password likely expire thanks sent thursday november re infrastructure hey completely unrelated side note appears password going expire couple days getting effect would someone please tell where can reset thank you",
+    "row": 46304,
+    "source": "D2 · registro 46,304 · texto real do dataset, já usado no desenvolvimento. Contexto de sistemas é fictício, sem vínculo real com o solicitante.",
+    "context": {
+      "active": true,
+      "reset_allowed": true,
+      "leave_registered": false,
+      "unavailable": false,
+      "notes": "Nenhum outro ticket aberto nesta conta fictícia.",
+      "system_fact": "Provedor local disponível; canal de recuperação cadastrado.",
+      "account": "demo-001",
+      "recovery_issue_open": false
+    }
+  }
+]

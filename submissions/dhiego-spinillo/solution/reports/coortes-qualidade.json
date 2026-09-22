@@ -1,0 +1,150 @@
+{
+  "reference_date": "2026-09-15",
+  "sha256_csv": {
+    "dataset_1": "b06a9cde84da65db388bd964d75f88ee1eed96607cf75d0c35f09c3f11bf8bea",
+    "dataset_2": "044fdace33fa564e1e60453f2941dafc95539c99878b0d32746950394b9dd4d4"
+  },
+  "rule": "Filtros independentes por finalidade. Quantidades sinalizadas podem se sobrepor; não somar exclusões. Nenhuma reclassificação ou imputação aplicada.",
+  "d1": {
+    "n": 8469,
+    "columns": [
+      "Ticket ID",
+      "Customer Name",
+      "Customer Email",
+      "Customer Age",
+      "Customer Gender",
+      "Product Purchased",
+      "Date of Purchase",
+      "Ticket Type",
+      "Ticket Subject",
+      "Ticket Description",
+      "Ticket Status",
+      "Resolution",
+      "Ticket Priority",
+      "Ticket Channel",
+      "First Response Time",
+      "Time to Resolution",
+      "Customer Satisfaction Rating"
+    ],
+    "unique_ticket_ids": 8469,
+    "missing_any_field_n": 5700,
+    "identity": {
+      "ambiguous_email_groups": 139,
+      "ambiguous_rows": 288,
+      "remaining_rows": 8181,
+      "remaining_unique_emails": 8181,
+      "max_names_per_email": 4,
+      "interpretation": "Restante não tem repetição de email e não permite observar reincidência por essa chave. Identidade de origem não validada."
+    },
+    "time": {
+      "missing_pair": 5700,
+      "paired": 2769,
+      "resolution_before_response": 1365,
+      "nonnegative_order": 1404,
+      "opening_timestamp_present": false,
+      "eligible_for_opening_based_duration": 0,
+      "interpretation": "Descartar pares invertidos não cria abertura nem valida esforço/tempo de resolução nos pares restantes. Não classificar restante como SLA limpo."
+    },
+    "satisfaction": {
+      "missing_n": 5700,
+      "present_n": 2769,
+      "valid_integer_1_to_5_n": 2769,
+      "invalid_n": 0,
+      "status_of_valid": {
+        "Closed": 2769
+      },
+      "all": {
+        "n_tickets": 8469,
+        "n_ratings": 2769,
+        "mean": 2.991332611050921,
+        "distribution": {
+          "1.0": 553,
+          "2.0": 549,
+          "3.0": 580,
+          "4.0": 543,
+          "5.0": 544
+        },
+        "low_1_2_n": 1102,
+        "high_4_5_n": 1087
+      },
+      "excluding_ambiguous_identity": {
+        "n_tickets": 8181,
+        "n_ratings": 2663,
+        "mean": 2.9932407059707096,
+        "distribution": {
+          "1.0": 527,
+          "2.0": 526,
+          "3.0": 567,
+          "4.0": 524,
+          "5.0": 519
+        },
+        "low_1_2_n": 1053,
+        "high_4_5_n": 1043
+      },
+      "interpretation": "Válido no formato, não valida representatividade nem realismo. Não imputar ausência. Comparação sem emails ambíguos é sensibilidade, não filtro necessário à descrição por ticket."
+    },
+    "text": {
+      "nonempty_n": 8469,
+      "product_placeholder_n": 8469,
+      "normalized_repeated_groups": 54,
+      "rows_in_repeated_groups": 457,
+      "different_labels_for_same_normalized_text": {
+        "Ticket Type": {
+          "groups": 49,
+          "rows": 446
+        },
+        "Ticket Subject": {
+          "groups": 54,
+          "rows": 457
+        },
+        "Ticket Priority": {
+          "groups": 49,
+          "rows": 447
+        }
+      },
+      "interpretation": "Mesmo texto com rótulos diferentes limita predição baseada apenas no texto. Não prova erro em todos os casos: contexto externo pode mudar prioridade. Remover placeholder não valida semântica."
+    },
+    "urgency_sensitivity": {
+      "all_rows": {
+        "literal_urgently_n": 165,
+        "literal_urgently_low_medium_n": 78
+      },
+      "excluding_ambiguous_identity": {
+        "literal_urgently_n": 160,
+        "literal_urgently_low_medium_n": 75
+      }
+    },
+    "not_present": [
+      "agent_id",
+      "assignment_history",
+      "message_thread",
+      "pending_reason",
+      "nps",
+      "opening_timestamp",
+      "confirmed_deadline"
+    ]
+  },
+  "d2": {
+    "n": 47837,
+    "columns": [
+      "Document",
+      "Topic_group"
+    ],
+    "nonempty_text_and_label_n": 47837,
+    "distinct_labels": [
+      "Access",
+      "Administrative rights",
+      "HR Support",
+      "Hardware",
+      "Internal Project",
+      "Miscellaneous",
+      "Purchase",
+      "Storage"
+    ],
+    "normalized_duplicate_excess_rows": 0,
+    "normalized_text_conflicting_label_groups": 0,
+    "near_duplicates_checked": false,
+    "semantic_labels_validated": false,
+    "interpretation": "Candidatos à avaliação de categoria após checagem formal; não uma declaração de limpeza semântica completa."
+  }
+}

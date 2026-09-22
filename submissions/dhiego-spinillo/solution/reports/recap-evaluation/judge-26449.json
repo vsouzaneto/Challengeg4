@@ -1,0 +1,42 @@
+{
+  "row": 26449,
+  "stage": "judge",
+  "executed_at_utc": "2026-09-22T00:35:50.582664+00:00",
+  "response": {
+    "model": "x-ai/grok-4.7",
+    "id": "gen-1790037350-18OPdN4VOcbNfrdxlkvC",
+    "content": "{\"fidelity\":false,\"coverage\":true,\"attempts\":true,\"uncertainty\":false,\"next_step\":true,\"notes\":\"Falha concreta: o item trata 'thank tester' como 'outro usuário identificado' e 'Novo pedido', inventando autoria e ordem; o trecho só traz 'please help how cooler thank tester' e datas incompletas ('friday november').\"}",
+    "usage": {
+      "prompt_tokens": 2132,
+      "completion_tokens": 2362,
+      "total_tokens": 4494,
+      "cost": 0.0133664,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 1152,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0133664,
+        "upstream_inference_prompt_cost": 0.0020288,
+        "upstream_inference_completions_cost": 0.0113376
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2283,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "assessment": {
+    "fidelity": false,
+    "coverage": true,
+    "attempts": true,
+    "uncertainty": false,
+    "next_step": true,
+    "notes": "Falha concreta: o item trata 'thank tester' como 'outro usuário identificado' e 'Novo pedido', inventando autoria e ordem; o trecho só traz 'please help how cooler thank tester' e datas incompletas ('friday november')."
+  },
+  "elapsed_ms": 31731.031083967537
+}

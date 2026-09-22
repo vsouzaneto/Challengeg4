@@ -1,0 +1,64 @@
+{
+  "row": 38505,
+  "stage": "generate",
+  "executed_at_utc": "2026-09-22T00:31:53.135901+00:00",
+  "raw_response": {
+    "model": "anthropic/claude-sonnet-5",
+    "id": "gen-1790037113-AgY53acTSchjgBKS7lLx",
+    "content": "```json\n{\"items\":[{\"kind\":\"pendencia\",\"text\":\"Relato de discrepância: no cenário em que os agentes estão em make busy e o chamador permanece na linha por menos tempo que o esperado, o comportamento esperado era a chamada ser listada como abandonada, mas o resultado relatado foi que a chamada foi transferida.\",\"quote\":\"if caller stays line for less than seconds hangs up call should be listed abandoned reports actual behavior call was transferred\"},{\"kind\":\"pendencia\",\"text\":\"Issue reportado envolvendo todos os agentes em make busy com o chamador na linha por mais de determinado tempo (segundos), com um e-mail anexado descrevendo o cenário.\",\"quote\":\"issues all agents are on make busy caller is on the line for more than seconds mail attached scenario\"}],\"unknowns\":[\"Não fica claro o valor exato dos 'seconds' mencionados em cada trecho (tempos de espera, saudação, transferência).\",\"Não há indicação de quem reportou o problema nem a data do relato.\",\"Não há confirmação de que o problema foi corrigido ou de qual ação foi tomada após o relato.\",\"Não está claro se há apenas um cenário de teste ou múltiplos cenários combinados no texto.\",\"Não é possível confirmar o conteúdo do 'mail attached' mencionado, pois não foi fornecido.\"],\"next_step\":\"Solicitar ao time técnico a confirmação do comportamento atual do sistema de discagem em ambos os cenários (agentes em make busy e tempos de espera do chamador), revisar o e-mail anexado mencionado e verificar se a discrepância entre o comportamento esperado e o relatado já foi corrigida ou permanece pendente de análise.\"}\n```",
+    "usage": {
+      "prompt_tokens": 719,
+      "completion_tokens": 997,
+      "total_tokens": 1716,
+      "cost": 0.011408,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.011408,
+        "upstream_inference_prompt_cost": 0.001438,
+        "upstream_inference_completions_cost": 0.00997
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 409,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "recap": {
+    "items": [
+      {
+        "kind": "pendencia",
+        "text": "Relato de discrepância: no cenário em que os agentes estão em make busy e o chamador permanece na linha por menos tempo que o esperado, o comportamento esperado era a chamada ser listada como abandonada, mas o resultado relatado foi que a chamada foi transferida.",
+        "quote": "if caller stays line for less than seconds hangs up call should be listed abandoned reports actual behavior call was transferred"
+      },
+      {
+        "kind": "pendencia",
+        "text": "Issue reportado envolvendo todos os agentes em make busy com o chamador na linha por mais de determinado tempo (segundos), com um e-mail anexado descrevendo o cenário.",
+        "quote": "issues all agents are on make busy caller is on the line for more than seconds mail attached scenario"
+      }
+    ],
+    "unknowns": [
+      "Não fica claro o valor exato dos 'seconds' mencionados em cada trecho (tempos de espera, saudação, transferência).",
+      "Não há indicação de quem reportou o problema nem a data do relato.",
+      "Não há confirmação de que o problema foi corrigido ou de qual ação foi tomada após o relato.",
+      "Não está claro se há apenas um cenário de teste ou múltiplos cenários combinados no texto.",
+      "Não é possível confirmar o conteúdo do 'mail attached' mencionado, pois não foi fornecido."
+    ],
+    "next_step": "Solicitar ao time técnico a confirmação do comportamento atual do sistema de discagem em ambos os cenários (agentes em make busy e tempos de espera do chamador), revisar o e-mail anexado mencionado e verificar se a discrepância entre o comportamento esperado e o relatado já foi corrigida ou permanece pendente de análise.",
+    "model": "anthropic/claude-sonnet-5",
+    "usage": {
+      "prompt_tokens": 719,
+      "completion_tokens": 997,
+      "total_tokens": 1716,
+      "cost": 0.011408
+    }
+  },
+  "literal_quotes_valid": true,
+  "elapsed_ms": 12250.228042015806
+}

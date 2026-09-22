@@ -1,0 +1,48 @@
+{
+  "row": 3487,
+  "stage": "generate",
+  "executed_at_utc": "2026-09-22T00:26:58.911681+00:00",
+  "recap": {
+    "items": [
+      {
+        "kind": "pedido",
+        "text": "Pedido para registrar a alocação após o recebimento do item.",
+        "quote": "please log allocation after receive item"
+      },
+      {
+        "kind": "pedido",
+        "text": "Pedido para considerar a seção de recibos como obrigatória em relação ao pedido/item recebido.",
+        "quote": "please take consideration mandatory receipts section order receive item ordered"
+      },
+      {
+        "kind": "pendencia",
+        "text": "Menção a um link de vídeo sem contexto claro sobre sua finalidade ou se foi de fato fornecido/acessado.",
+        "quote": "how video link"
+      },
+      {
+        "kind": "pendencia",
+        "text": "Referência a uma nova purchase PO sem detalhes de número, status ou confirmação de emissão.",
+        "quote": "new purchase po re purchase po"
+      }
+    ],
+    "unknowns": [
+      "Não está claro qual é o número ou identificador específico da purchase PO mencionada.",
+      "Não está claro quem é o destinatário do email (trecho parece truncado ou corrompido: 'dear purchased').",
+      "Não está claro o que exatamente significa ou representa o 'video link' citado.",
+      "Não há confirmação de que a alocação foi efetivamente registrada, apenas o pedido para fazê-lo.",
+      "Não há confirmação de que o item foi recebido, apenas menção condicional 'after receive item'.",
+      "A data 'wednesday november' aparece sem ano, impossibilitando confirmar cronologia real.",
+      "Não está claro se há apenas um email ou uma cadeia de emails concatenados sobre POs diferentes."
+    ],
+    "next_step": "Solicitar ao remetente esclarecimentos sobre: (1) número/identificação da purchase PO em questão; (2) contexto e finalidade do link de vídeo mencionado; (3) confirmação se a alocação foi de fato registrada e se o item foi recebido; (4) verificar se há múltiplos emails concatenados que precisam ser separados para análise individual antes de qualquer ação.",
+    "model": "anthropic/claude-sonnet-5",
+    "usage": {
+      "prompt_tokens": 682,
+      "completion_tokens": 1473,
+      "total_tokens": 2155,
+      "cost": 0.016094
+    }
+  },
+  "literal_quotes_valid": true,
+  "elapsed_ms": 15389.504582970403
+}

@@ -1,0 +1,11 @@
+services:
+  suporte:
+    build: .
+    ports:
+      - "127.0.0.1:8766:8000"
+    environment:
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+    volumes:
+      - revisoes:/app/artifacts/runtime
+volumes:
+  revisoes:

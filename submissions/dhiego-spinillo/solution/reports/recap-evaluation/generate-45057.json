@@ -1,0 +1,58 @@
+{
+  "row": 45057,
+  "stage": "generate",
+  "executed_at_utc": "2026-09-22T00:31:05.764884+00:00",
+  "raw_response": {
+    "model": "anthropic/claude-sonnet-5",
+    "id": "gen-1790037065-XGiWrlmG4BK9zl9Me1w6",
+    "content": "```json\n{\"items\":[{\"kind\":\"tentativa\",\"text\":\"Relato de reinstalação do Outlook como tentativa de resolver o problema mencionado\",\"quote\":\"reinstalled\"}],\n\"unknowns\":[\"Não há descrição clara do problema original com o Outlook\",\"Não é possível confirmar se o problema foi realmente resolvido, apenas há a afirmação 'issue solved' sem evidência de verificação\",\"Não há data, autor identificado ou contexto sobre quando a reinstalação ocorreu\",\"Não há informação sobre qual versão do Outlook ou sistema operacional estava envolvido\"],\n\"next_step\":\"Solicitar ao usuário mais detalhes sobre o problema original do Outlook e confirmação atual de que o problema permanece resolvido antes de encerrar o chamado.\"}\n```",
+    "usage": {
+      "prompt_tokens": 625,
+      "completion_tokens": 277,
+      "total_tokens": 902,
+      "cost": 0.00402,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00402,
+        "upstream_inference_prompt_cost": 0.00125,
+        "upstream_inference_completions_cost": 0.00277
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "recap": {
+    "items": [
+      {
+        "kind": "tentativa",
+        "text": "Relato de reinstalação do Outlook como tentativa de resolver o problema mencionado",
+        "quote": "reinstalled"
+      }
+    ],
+    "unknowns": [
+      "Não há descrição clara do problema original com o Outlook",
+      "Não é possível confirmar se o problema foi realmente resolvido, apenas há a afirmação 'issue solved' sem evidência de verificação",
+      "Não há data, autor identificado ou contexto sobre quando a reinstalação ocorreu",
+      "Não há informação sobre qual versão do Outlook ou sistema operacional estava envolvido"
+    ],
+    "next_step": "Solicitar ao usuário mais detalhes sobre o problema original do Outlook e confirmação atual de que o problema permanece resolvido antes de encerrar o chamado.",
+    "model": "anthropic/claude-sonnet-5",
+    "usage": {
+      "prompt_tokens": 625,
+      "completion_tokens": 277,
+      "total_tokens": 902,
+      "cost": 0.00402
+    }
+  },
+  "literal_quotes_valid": true,
+  "elapsed_ms": 4233.309042057954
+}

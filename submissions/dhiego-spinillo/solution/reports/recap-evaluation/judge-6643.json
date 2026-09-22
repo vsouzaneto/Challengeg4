@@ -1,0 +1,42 @@
+{
+  "row": 6643,
+  "stage": "judge",
+  "executed_at_utc": "2026-09-22T00:35:16.754497+00:00",
+  "response": {
+    "model": "x-ai/grok-4.7",
+    "id": "gen-1790037316-2vg0uT7aCba0yRxRiaQY",
+    "content": "{\"fidelity\":true,\"coverage\":false,\"attempts\":true,\"uncertainty\":true,\"next_step\":true,\"notes\":\"O trecho explícito 'how video' em 'receive item ordered how video please explorer' não aparece nos itens nem nos unknowns; o item de explorer cita apenas 'please explorer'.\"}",
+    "usage": {
+      "prompt_tokens": 1904,
+      "completion_tokens": 1544,
+      "total_tokens": 3448,
+      "cost": 0.008768,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 1408,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.008768,
+        "upstream_inference_prompt_cost": 0.0013568,
+        "upstream_inference_completions_cost": 0.0074112
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1479,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "assessment": {
+    "fidelity": true,
+    "coverage": false,
+    "attempts": true,
+    "uncertainty": true,
+    "next_step": true,
+    "notes": "O trecho explícito 'how video' em 'receive item ordered how video please explorer' não aparece nos itens nem nos unknowns; o item de explorer cita apenas 'please explorer'."
+  },
+  "elapsed_ms": 21594.870000029914
+}

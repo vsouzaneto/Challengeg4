@@ -1,0 +1,42 @@
+{
+  "row": 16527,
+  "stage": "judge",
+  "executed_at_utc": "2026-09-22T00:34:06.919478+00:00",
+  "response": {
+    "model": "x-ai/grok-4.7",
+    "id": "gen-1790037246-EuTXWiFk9xYWSTYdEjHo",
+    "content": "{\"fidelity\":false,\"coverage\":true,\"attempts\":true,\"uncertainty\":true,\"next_step\":true,\"notes\":\"Falha de fidelity: o item trata 'currently out' como 'sinalização de urgência', interpretação sem apoio no trecho 'enter currently out'. O pedido 'please provide tool' está coberto; não há tentativas prévias; autoria, prazo e resolução ficam nos unknowns; o next_step só pede esclarecimento.\"}",
+    "usage": {
+      "prompt_tokens": 1750,
+      "completion_tokens": 1194,
+      "total_tokens": 2944,
+      "cost": 0.0071488,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 1152,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0071488,
+        "upstream_inference_prompt_cost": 0.0014176,
+        "upstream_inference_completions_cost": 0.0057312
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1095,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "assessment": {
+    "fidelity": false,
+    "coverage": true,
+    "attempts": true,
+    "uncertainty": true,
+    "next_step": true,
+    "notes": "Falha de fidelity: o item trata 'currently out' como 'sinalização de urgência', interpretação sem apoio no trecho 'enter currently out'. O pedido 'please provide tool' está coberto; não há tentativas prévias; autoria, prazo e resolução ficam nos unknowns; o next_step só pede esclarecimento."
+  },
+  "elapsed_ms": 16776.570291956887
+}

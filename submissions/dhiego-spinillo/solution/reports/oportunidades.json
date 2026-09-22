@@ -1,0 +1,75 @@
+{
+  "csv_sha256": "044fdace33fa564e1e60453f2941dafc95539c99878b0d32746950394b9dd4d4",
+  "n": 47837,
+  "row_numbering": "1-based data rows, excluding header",
+  "limitation": "Overlapping keyword searches, not labeled intentions, sentiment, or automation eligibility. Do not extrapolate to challenge annual volume.",
+  "results": {
+    "password_reset": {
+      "regex": "\\b(?:password\\s+reset\\w*|reset\\w*\\s+(?:(?:my|your|the)\\s+)?password)\\b",
+      "count": 685,
+      "pct": 1.4319459832347348,
+      "categories": {
+        "Access": 647,
+        "Hardware": 31,
+        "HR Support": 2,
+        "Administrative rights": 4,
+        "Miscellaneous": 1
+      },
+      "inspection_seed": 42,
+      "inspection_rows": [
+        46304,
+        5309,
+        1278,
+        14598,
+        13030,
+        12423
+      ]
+    },
+    "profile_update": {
+      "regex": "\\b(?:updat\\w*|chang\\w*|modif\\w*|correct\\w*)\\b.{0,55}\\b(?:profile|personal details|personal information|contact details|phone number|mobile number)\\b|\\b(?:profile|personal details|personal information|contact details|phone number|mobile number)\\b.{0,55}\\b(?:updat\\w*|chang\\w*|modif\\w*|correct\\w*)\\b",
+      "count": 161,
+      "pct": 0.33655956686247046,
+      "categories": {
+        "Hardware": 51,
+        "Miscellaneous": 53,
+        "Purchase": 5,
+        "HR Support": 19,
+        "Administrative rights": 8,
+        "Access": 15,
+        "Storage": 10
+      },
+      "inspection_seed": 42,
+      "inspection_rows": [
+        8284,
+        3128,
+        17629,
+        16212,
+        15546,
+        9374
+      ]
+    },
+    "distress_words": {
+      "regex": "\\b(?:frustrat\\w*|angry|unhappy|disappoint\\w*)\\b",
+      "count": 78,
+      "pct": 0.16305370320045154,
+      "categories": {
+        "Miscellaneous": 11,
+        "Hardware": 43,
+        "Administrative rights": 8,
+        "Purchase": 2,
+        "Storage": 3,
+        "Access": 4,
+        "HR Support": 7
+      },
+      "inspection_seed": 42,
+      "inspection_rows": [
+        17001,
+        4579,
+        35132,
+        32027,
+        31585,
+        20397
+      ]
+    }
+  }
+}

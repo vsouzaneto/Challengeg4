@@ -1,0 +1,11 @@
+.env
+.env.*
+.venv
+data
+**/__pycache__
+.pytest_cache
+artifacts/*
+!artifacts/classifier.joblib
+process-log/revisao-2026-09-21
+process-log/evidencias
+.git

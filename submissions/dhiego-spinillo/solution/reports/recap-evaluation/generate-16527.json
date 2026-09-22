@@ -1,0 +1,59 @@
+{
+  "row": 16527,
+  "stage": "generate",
+  "executed_at_utc": "2026-09-22T00:30:57.507711+00:00",
+  "raw_response": {
+    "model": "anthropic/claude-sonnet-5",
+    "id": "gen-1790037057-Na2lOJy1fiPu5Ejp9Wmc",
+    "content": "```json\n{\"items\":[{\"kind\":\"pedido\",\"text\":\"Pedido para que seja fornecida uma ferramenta ('tool'), sem especificação de qual, com apelo genérico e sinalização de urgência ('currently out').\",\"quote\":\"please provide tool\"}],\n\"unknowns\":[\"Não está claro quem é o solicitante (apenas menção a 'pm' e 'specialist', sem identificação completa).\",\"Não é possível determinar qual ferramenta está sendo solicitada.\",\"Não há contexto sobre o motivo de estar 'currently out' nem se isso se refere a estoque, acesso ou disponibilidade.\",\"Não há data, prazo ou canal de abertura do pedido especificados.\",\"Não há confirmação de que o pedido foi atendido, negado ou está em andamento.\"],\n\"next_step\":\"Solicitar ao remetente esclarecimentos sobre qual ferramenta é necessária, quem é o requisitante, o contexto da urgência mencionada e se há prazo ou processo formal de aprovação a ser seguido antes de qualquer ação.\"}\n```",
+    "usage": {
+      "prompt_tokens": 626,
+      "completion_tokens": 609,
+      "total_tokens": 1235,
+      "cost": 0.007342,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.007342,
+        "upstream_inference_prompt_cost": 0.001252,
+        "upstream_inference_completions_cost": 0.00609
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 243,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "recap": {
+    "items": [
+      {
+        "kind": "pedido",
+        "text": "Pedido para que seja fornecida uma ferramenta ('tool'), sem especificação de qual, com apelo genérico e sinalização de urgência ('currently out').",
+        "quote": "please provide tool"
+      }
+    ],
+    "unknowns": [
+      "Não está claro quem é o solicitante (apenas menção a 'pm' e 'specialist', sem identificação completa).",
+      "Não é possível determinar qual ferramenta está sendo solicitada.",
+      "Não há contexto sobre o motivo de estar 'currently out' nem se isso se refere a estoque, acesso ou disponibilidade.",
+      "Não há data, prazo ou canal de abertura do pedido especificados.",
+      "Não há confirmação de que o pedido foi atendido, negado ou está em andamento."
+    ],
+    "next_step": "Solicitar ao remetente esclarecimentos sobre qual ferramenta é necessária, quem é o requisitante, o contexto da urgência mencionada e se há prazo ou processo formal de aprovação a ser seguido antes de qualquer ação.",
+    "model": "anthropic/claude-sonnet-5",
+    "usage": {
+      "prompt_tokens": 626,
+      "completion_tokens": 609,
+      "total_tokens": 1235,
+      "cost": 0.007342
+    }
+  },
+  "literal_quotes_valid": true,
+  "elapsed_ms": 8718.638958060183
+}

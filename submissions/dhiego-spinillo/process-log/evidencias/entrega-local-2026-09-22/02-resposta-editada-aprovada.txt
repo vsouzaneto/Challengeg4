@@ -1,0 +1,108 @@
+- link "Ir para o pedido":
+  - /url: "#flow-input"
+- banner:
+  - link "G4 — início":
+    - /url: /
+    - img "G4"
+  - generic: Challenge 002
+  - strong: Atendimento por procedimento
+  - navigation "Navegação":
+    - link "Resumo":
+      - /url: /resumo
+    - link "Economia":
+      - /url: /valor
+    - link "Classificador":
+      - /url: /classificador
+- main:
+  - heading "Resolva o simples. Prepare o restante." [level=1]:
+    - text: Resolva o simples.
+    - emphasis: Prepare o restante.
+  - paragraph: O pedido encontra um procedimento, o contexto vem dos sistemas e as exceções chegam ao humano com o trabalho já reunido.
+  - paragraph:
+    - strong: Demonstração com sistemas fictícios.
+    - text: Textos vêm do D2; contas, notas e registros são criados para testar o fluxo. Nenhuma conta real é alterada e nenhuma mensagem é enviada.
+  - list "Três caminhos":
+    - strong: Autosserviço
+    - generic: Cliente conclui o procedimento elegível.
+    - strong: Atendimento preparado
+    - generic: Contexto e resposta chegam para revisão.
+    - strong: Investigação humana
+    - generic: Evidências reunidas; decisão com a equipe.
+  - heading "Pedido e cenário" [level=2]
+  - generic: Explorar uma situação
+  - combobox "Explorar uma situação":
+    - option "Recuperar acesso sem atendente" [selected]
+    - option "Tentativa de reset já falhou"
+    - 'option "Férias: consultar antes de perguntar"'
+    - option "Relato de dados de outra pessoa"
+    - option "Conta desativada no desligamento"
+    - 'option "Fonte indisponível: interromper ação"'
+    - 'option "Histórico concatenado: conferir interpretação"'
+  - paragraph: D2 · registro 1.083 · pedido curto real, selecionado para desenvolvimento. Conta e contexto fictícios; não são dados do solicitante.
+  - generic: Texto do cliente · em inglês
+  - textbox "Texto do cliente · em inglês": password reset greetings please thank respectfully
+  - paragraph: Você pode alterar o texto. A conta e o contexto continuam sendo os do cenário fictício escolhido.
+  - checkbox "Interpretar com IA Envia somente este texto ao OpenRouter. Citações são conferidas; regras controlam as ações."
+  - text: Interpretar com IA
+  - generic: Envia somente este texto ao OpenRouter. Citações são conferidas; regras controlam as ações.
+  - paragraph: IA disponível. Se a extração falhar, o atendimento segue preparado para revisão.
+  - button "Processar pedido e consultar contexto"
+  - status: Contexto consultado e caminho preparado. Registros de demonstração.
+  - generic "O que este fluxo substitui?"
+  - region "Do pedido ao próximo passo":
+    - text: Atendimento preparado
+    - heading "Falha encaminhada com histórico" [level=2]
+    - paragraph: Cliente informou que o procedimento não resolveu; não repetir a orientação.
+    - paragraph: Resposta aprovada; sem envio externo
+    - heading "Contexto consultado automaticamente" [level=3]
+    - paragraph: Conectores locais de demonstração. Estes fatos não vêm do dataset nem do LLM.
+    - term: Diretório de identidades · consultado
+    - definition: Conta ativa; recuperação habilitada
+    - term: Outros tickets e notas · consultado
+    - definition: Nenhum outro ticket aberto nesta conta fictícia.
+    - term: Registro no sistema · consultado
+    - definition: Provedor local disponível; canal de recuperação cadastrado.
+    - heading "Pedido e tentativas identificados" [level=3]
+    - paragraph: Regras lexicais; IA desativada
+    - paragraph: Busca literal limitada; ausência de sinal não prova ausência de risco.
+    - list:
+      - text: Intenção
+      - blockquote: password reset
+    - heading "Próximo passo" [level=3]
+    - list:
+      - listitem: Conferir a tentativa registrada e investigar a falha com suporte de acesso.
+    - generic: Resposta aprovada e registrada
+    - textbox "Resposta aprovada e registrada": Registramos que a recuperação não resolveu. O suporte de acesso receberá o histórico desta tentativa para investigar a falha, sem reenviar a mesma orientação.
+    - paragraph: Aprovação fica registrada. Nenhuma mensagem externa é enviada.
+    - status: Resposta aprovada; sem envio externo.
+    - generic "Trilha da execução"
+    - list:
+      - strong: sistema
+      - text: "Entrada recebida; extração: Regras lexicais; IA desativada"
+      - strong: conector local simulado
+      - text: "Diretório de identidades: consultado"
+      - strong: conector local simulado
+      - text: "Outros tickets e notas: consultado"
+      - strong: conector local simulado
+      - text: "Registro no sistema: consultado"
+      - strong: política determinística
+      - text: "Caminho escolhido: self_service"
+      - strong: cliente simulado
+      - text: Solicitou recuperação pelo procedimento explícito
+      - strong: provedor local simulado
+      - text: Token de uso único emitido; nenhum email real enviado
+      - strong: provedor local simulado
+      - text: Token consumido; versão da credencial de demonstração atualizada
+      - strong: sistema
+      - text: Conclusão confirmada pelo adaptador local; zero revisões de atendente neste caminho
+      - strong: cliente simulado
+      - text: Informou falha; transferido ao atendimento preparado com histórico preservado
+      - strong: atendente simulado
+      - text: Revisou e aprovou resposta; nenhum envio externo realizado
+  - heading "Valor a provar no piloto" [level=2]
+  - paragraph: Resolução sem atendente, menos busca e menos perguntas repetidas. Meça minutos humanos, falhas, recontatos e qualidade por caminho. A duração da chamada à IA não mede tempo humano economizado.
+  - link "Ver o antes e depois de cada processo":
+    - /url: /valor-por-processo.md
+  - text: ·
+  - link "Explorar retorno econômico":
+    - /url: /valor

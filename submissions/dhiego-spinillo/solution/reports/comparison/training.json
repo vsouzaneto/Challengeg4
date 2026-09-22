@@ -1,0 +1,22 @@
+{
+  "fit_seconds": 11.177085750037804,
+  "classes": [
+    "Access",
+    "Administrative rights",
+    "HR Support",
+    "Hardware",
+    "Internal Project",
+    "Miscellaneous",
+    "Purchase",
+    "Storage"
+  ],
+  "iterations": [
+    172
+  ],
+  "parameters": {
+    "tfidf": "word(1,2), min_df2, max_features60000, sublinear_tf",
+    "logistic": "C4, max_iter1000"
+  },
+  "class_majority": "Hardware",
+  "model_sha256": "cadfbec330dea7b445261d5434881f7466cd46f8322a445c29fc439319cda36e"
+}

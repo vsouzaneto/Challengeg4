@@ -1,0 +1,200 @@
+- link "Ir para atendimento":
+  - /url: "#atendimento"
+- banner:
+  - link "G4 — início":
+    - /url: /
+    - img "G4"
+  - generic: Challenge 002
+  - strong: Suporte assistido
+  - navigation "Navegação":
+    - link "Fluxos":
+      - /url: /fluxos
+    - link "Resumo":
+      - /url: /resumo
+    - link "Economia":
+      - /url: /economia
+    - link "Atendimento":
+      - /url: "#atendimento"
+    - link "Evidências":
+      - /url: "#evidencias"
+    - link "Diagnóstico ↗":
+      - /url: /diagnostico
+  - generic: Estudo de Dhiego Spinillo
+- main:
+  - region "Entenda o pedido. Confirme o próximo passo.":
+    - paragraph: Contexto para quem atende. Decisão de quem conhece.
+    - heading "Entenda o pedido. Confirme o próximo passo." [level=1]:
+      - text: Entenda o pedido.
+      - emphasis: Confirme o próximo passo.
+    - text: Demonstração funcional
+    - paragraph: Classifique o pedido, registre o contexto conferido e prepare o próximo passo e a resposta ao cliente.
+    - link "Por que escolhemos este caminho":
+      - /url: "#evidencias"
+      - text: Por que escolhemos este caminho ↓
+  - region "Área de atendimento":
+    - generic: Entrada do atendimento
+    - generic: 50 caracteres
+    - heading "O que o cliente escreveu?" [level=2]
+    - generic: Explorar um ticket da base
+    - combobox "Explorar um ticket da base":
+      - option "Escolha um exemplo ou escreva abaixo" [selected]
+      - option "D2 · 45.057 — outlook issue hi working reinstalled issue solved best regards…"
+      - option "D2 · 34.887 — move vacation days time card error move vacation days dear please…"
+      - option "D2 · 45.725 — annual leave days sent wednesday december re annual leave days im…"
+      - option "D2 · 23.118 — laptop charger needed wednesday charger hello log please charger …"
+      - option "D2 · 30.725 — mail forwarder for leaver mailbox thursday forwarding hello pleas…"
+      - option "D2 · 33.648 — change password information friday july re change information hel…"
+      - option "D2 · 21.543 — add to the recipients list for the automated regarding weekly tap…"
+      - option "D2 · 35.688 — unable to access storage folder re access dear issue resolved thi…"
+      - option "D2 · 23.365 — architect and or installation for and friday pm kind architect in…"
+      - option "D2 · 30.869 — setting up oracle for internal project pm setting hi attached com…"
+      - option "D2 · 29.379 — version upgrade pm re version upgrade hi running find software ce…"
+    - paragraph: Os três primeiros casos foram discutidos com Dhiego após o teste; os demais vêm do treino. Usá-los aqui não mede desempenho.
+    - generic: Texto do ticket · em inglês
+    - textbox "Texto do ticket · em inglês":
+      - /placeholder: Cole aqui o pedido completo, incluindo o que já foi tentado…
+      - text: password reset greetings please thank respectfully
+    - paragraph: "Domínio avaliado: suporte interno de TI em inglês. Mínimo de 10 e máximo de 16.000 caracteres."
+    - checkbox "Confirmo que este pedido é de suporte interno de TI, em inglês." [checked]
+    - generic: Confirmo que este pedido é de suporte interno de TI, em inglês.
+    - checkbox "Testar recap experimental Envia o texto ao OpenRouter. A revisão automatizada apontou possíveis extrapolações em 9 de 15 saídas válidas; confira cada interpretação."
+    - text: Testar recap experimental
+    - generic: Envia o texto ao OpenRouter. A revisão automatizada apontou possíveis extrapolações em 9 de 15 saídas válidas; confira cada interpretação.
+    - paragraph: Classificação local pronta · recap disponível.
+    - button "Analisar ticket":
+      - text: Analisar ticket
+      - generic: ↗
+    - status: Análise pronta. Confira o contexto e registre sua decisão.
+    - generic: ↳
+    - paragraph: Este protótipo registra decisões para revisão. Não envia respostas, não altera contas e não concede acessos.
+    - region "Access":
+      - generic: Classificação sugerida
+      - generic: Revisão humana obrigatória
+      - heading "Access" [level=2]
+      - generic: "Score do modelo: 99,9%"
+      - generic: Classificação local · 12,55 ms
+      - paragraph: O score expressa a preferência do modelo; não é uma garantia de acerto.
+      - text: Encaminhamento demonstrativo
+      - strong: Acessos · validação humana
+      - paragraph: Identificar pedido não autoriza conceder acesso
+      - generic "Ver a distribuição entre categorias"
+    - region "Prepare o próximo passo":
+      - heading "Prepare o próximo passo" [level=2]
+      - paragraph: O aplicativo sugere a categoria. Você registra o que conferiu; as regras organizam a orientação e um rascunho de resposta.
+      - generic: Categoria confirmada ou corrigida
+      - combobox "Categoria confirmada ou corrigida":
+        - option "Hardware"
+        - option "HR Support"
+        - option "Access" [selected]
+        - option "Miscellaneous"
+        - option "Storage"
+        - option "Purchase"
+        - option "Internal Project"
+        - option "Administrative rights"
+      - group "Conferências registradas por você":
+        - generic: Conferências registradas por você
+        - paragraph: Sem conexão a outros tickets, sistemas ou notas. Marque apenas o que você consultou. Nos exemplos da base, qualquer situação preenchida é uma simulação de atendimento.
+        - generic: Outros tickets abertos
+        - combobox "Outros tickets abertos":
+          - option "Não verificado" [selected]
+          - option "Conferido pelo atendente"
+          - option "Fonte indisponível"
+        - generic: Situação no sistema
+        - combobox "Situação no sistema":
+          - option "Não verificado" [selected]
+          - option "Conferido pelo atendente"
+          - option "Fonte indisponível"
+        - generic: Notas internas do atendimento
+        - combobox "Notas internas do atendimento":
+          - option "Não verificado" [selected]
+          - option "Conferido pelo atendente"
+          - option "Fonte indisponível"
+        - generic: Resultado da consulta ao sistema
+        - combobox "Resultado da consulta ao sistema" [disabled]:
+          - option "Ainda não sei" [selected]
+          - option "Solicitação atendida / situação resolvida"
+          - option "Solicitação ainda pendente / situação não resolvida"
+        - checkbox "Identifiquei relato de possível incidente Marcado por você. Não confirma a ocorrência, causa ou severidade."
+        - text: Identifiquei relato de possível incidente
+        - generic: Marcado por você. Não confirma a ocorrência, causa ou severidade.
+      - button "Preparar orientação e resposta"
+      - status
+      - generic: Motivo da decisão e contexto relevante
+      - textbox "Motivo da decisão e contexto relevante":
+        - /placeholder: Registre o que sustenta a decisão, incluindo informações das consultas realizadas.
+      - button "Registrar decisão e rascunho" [disabled]
+      - status
+      - paragraph:
+        - text: O registro preserva categoria, conferências, orientação e rascunho editado. Não envia mensagens nem altera outros sistemas.
+        - link "Exportar decisões em CSV":
+          - /url: /api/export
+  - region "A ferramenta certa para esta tarefa.":
+    - paragraph: A escolha tem evidência
+    - heading "A ferramenta certa para esta tarefa." [level=2]:
+      - text: A ferramenta certa
+      - emphasis: para esta tarefa.
+    - paragraph: Dois sistemas, os mesmos tickets reservados. O resultado orientou a escolha do classificador; a política continuou humana.
+    - table:
+      - rowgroup:
+        - row "Mesmo conjunto de teste Classificador local · escolhido Jev · comparação":
+          - columnheader "Mesmo conjunto de teste"
+          - columnheader "Classificador local · escolhido"
+          - columnheader "Jev · comparação"
+      - rowgroup:
+        - row "Acerto na categoria 86% 45,25%":
+          - cell "Acerto na categoria"
+          - cell "86%"
+          - cell "45,25%"
+        - row "F1 médio entre as oito categorias 0,85 0,42":
+          - cell "F1 médio entre as oito categorias"
+          - cell "0,85"
+          - cell "0,42"
+        - row "Tickets de teste 800 800":
+          - cell "Tickets de teste"
+          - cell "800"
+          - cell "800"
+        - row "Tempo por ticket · mediana 0,68 ms 273,15 ms":
+          - cell "Tempo por ticket · mediana"
+          - cell "0,68 ms"
+          - cell "273,15 ms"
+        - row "Limiar encontrado na validação 0,61 Nenhum":
+          - cell "Limiar encontrado na validação"
+          - cell "0,61"
+          - cell "Nenhum"
+        - row "Acerto no grupo selecionado pelo limiar 93,31% Não atingido":
+          - cell "Acerto no grupo selecionado pelo limiar"
+          - cell "93,31%"
+          - cell "Não atingido"
+    - paragraph: "Referência: prever sempre a classe mais frequente acertaria 28,5% neste teste. Custo estimado do lote Jev (validação + teste): US$ 0,03."
+    - article:
+      - heading "Comparação de sistemas" [level=3]
+      - paragraph: O modelo local aprendeu categorias com exemplos rotulados. Jev recebeu definições das oito categorias, sem treinamento específico nesta execução. Os resultados valem para essas configurações no D2.
+    - article:
+      - heading "O limiar não cumpriu a meta" [level=3]
+      - paragraph: Buscamos até 5% de erro na validação. O grupo selecionado pelo modelo local ficou abaixo de 95% de acerto no teste. Por isso, até as sugestões com score alto exigem confirmação humana.
+    - article:
+      - 'heading "Recap: hipótese em investigação" [level=3]'
+      - paragraph: Em 16 textos, 15 saídas passaram pelo contrato de citações literais. O revisor Grok aprovou fidelidade em apenas 6 dessas 15. É avaliação automatizada exploratória, sem validação humana de referência. Recap fica desligado por padrão; citações reais não garantem interpretação correta.
+    - generic "Entender a amostra, as limitações e as fontes"
+    - text: ·
+  - region "O que faria este piloto valer a pena?":
+    - heading "O que faria este piloto valer a pena?" [level=2]:
+      - text: O que faria este piloto
+      - text: valer a pena?
+    - paragraph: Classificar bem é um resultado técnico. O benefício para o suporte depende de reduzir trabalho e encaminhamentos errados, sem prejudicar o cliente.
+    - paragraph: O contexto informa cerca de 30 mil tickets por ano. Ainda não sabemos quantos seriam elegíveis nem quanto tempo esta ajuda pouparia. O D2 é de suporte interno de TI e não representa automaticamente essa operação.
+    - paragraph: Benefício operacional ainda não demonstrado.
+    - term: Chegar à equipe certa
+    - definition: Comparar acerto da triagem, transferências e tempo até a fila correta, com e sem assistência.
+    - term: Reduzir trabalho de verdade
+    - definition: "Medir tempo ativo total: leitura, classificação, revisão e correção. A sugestão pode ajudar ou acrescentar esforço."
+    - term: Preservar a qualidade
+    - definition: Conferir interpretação, retrabalho e reabertura. Acompanhar urgências com prazo real; a categoria sozinha não define prioridade.
+    - paragraph:
+      - strong: Decisão após o piloto
+      - text: Ampliar somente se o benefício medido justificar implantação e manutenção, com qualidade preservada. Se a revisão consumir o ganho, rever ou encerrar a intervenção.
+- contentinfo:
+  - generic: Dhiego Spinillo · G4 AI Master Challenge 002
+  - generic: Estudo independente · protótipo demonstrativo
+  - link "Exportar decisões":
+    - /url: /api/export

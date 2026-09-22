@@ -1,0 +1,19 @@
+{
+  "n": 16,
+  "generation_success_n": 2,
+  "literal_quote_contract_pass_n": 2,
+  "judged_n": 2,
+  "judge_model": "x-ai/grok-4.7",
+  "generator_model": "anthropic/claude-sonnet-5",
+  "automated_judge_pass_n": {
+    "fidelity": 2,
+    "coverage": 2,
+    "attempts": 2,
+    "uncertainty": 2,
+    "next_step": 2
+  },
+  "failed_cases": [],
+  "limits": "16 textos do teste de categoria, 4 por faixa de comprimento; amostra exploratória não proporcional. Sem rótulos humanos de recap. Sem ajuste de prompt após resultados.",
+  "operational_gain_measured": false,
+  "human_review_completed": false
+}
