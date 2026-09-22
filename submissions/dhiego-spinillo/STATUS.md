@@ -6,7 +6,7 @@
 
 - **47.837 tickets classificados** com o modelo local congelado. 1.114 divergências com rótulos; 305 acima do limiar. Treino, validação, teste e excluídos separados. [Relatório integral](solution/reports/full-population/report.md).
 - As 1.192 previsões históricas foram reproduzidas exatamente. Desempenho original: **Local 86% × Jev 45,25% em 800 tickets**. A concordância global inclui treino e não mede generalização.
-- **216 testes passaram localmente e no Docker.** As 12 verificações adicionais cobrem integridade do lote; o aplicativo/cálculos mantém os 204 anteriores.
+- **219 testes passaram localmente e no Docker.** As verificações cobrem integridade do lote, fluxos e sinais assistivos de temperatura/urgência.
 - **Protótipo somente local, sem VPS**, conforme instrução reiterada por Dhiego. Sete novas capturas, com roteiro, em [evidências finais](process-log/evidencias/entrega-local-2026-09-22/README.md). Esta rodada usa regras/classificador local, sem chamadas pagas; capturas anteriores com IA real e mobile preservadas.
 - README, roteiro, PR e roadmap alinhados ao estado atual. [Respostas ao diretor, matriz e demonstração de dez minutos](docs/entrega.md).
 

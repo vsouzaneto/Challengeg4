@@ -26,7 +26,7 @@
 | Temperatura, urgência e SLA | Temperatura e menção de prazo aparecem como sinais literais auditáveis para o atendente; não mudam prioridade. A demo explicita que SLA não é calculável sem eventos e política de prazo. |
 | Guardrails | Contratos/citações, regras de contexto, bloqueios e estados testados. Não garantem detectar toda ambiguidade ou incidente. |
 | ROI/saving | Calculadora editável por processo. Resultado é hipótese, não economia medida. Reset sozinho não sustenta o cenário de investimento. |
-| Processo e reprodução | 216 testes locais, Docker, fontes/hashes, ADRs, iterações, decisões do candidato e capturas. Sem necessidade de VPS para revisar. |
+| Processo e reprodução | 219 testes locais e Docker, fontes/hashes, ADRs, iterações, decisões do candidato e capturas. Sem necessidade de VPS para revisar. |
 
 ## Quem decide o quê
 

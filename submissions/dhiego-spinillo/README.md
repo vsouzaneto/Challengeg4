@@ -1,6 +1,6 @@
 # Submissão — Dhiego Spinillo — Challenge 002
 
-**Três caminhos executáveis em demonstração local: autosserviço, preparação e investigação. Ainda não submetido.**
+**Três caminhos executáveis em demonstração local: autosserviço, preparação e investigação. Pronto para submissão.**
 
 ## Comece por aqui
 
@@ -38,7 +38,7 @@ Entender as perguntas do diretor → auditar dados por finalidade → confrontar
 |---|---|
 | Onde perdemos tempo? | Não é possível quantificar pela duração do D1. Há 2.881 pendentes e sinais textuais para investigação; espera pelo cliente não equivale automaticamente a desperdício. |
 | O que automatizar com IA? | IA para extração de intenção/tentativas/sinais; regras e consultas de contexto para executar procedimentos elegíveis ou preparar atendimento. Três caminhos demonstrados com sistemas fictícios. |
-| Funciona? | Classificação avaliada; recuperação concluída em provedor simulado, falha com histórico e investigação aberta; 216 testes locais. Extração restrita exercitada em cenários conhecidos. Impacto operacional não medido. |
+| Funciona? | Classificação avaliada; recuperação concluída em provedor simulado, falha com histórico e investigação aberta; 219 testes. Extração restrita exercitada em cenários conhecidos. Impacto operacional não medido. |
 
 - [Diagnóstico visual](solution/visual/index.html): análise da base, fontes e limites; contém leituras de contexto preparadas durante a fase inicial.
 - [Comparação local × Jev](solution/comparacao.md): separação de treino/validação/teste, remoção de vizinhos próximos e sensibilidade. O modelo local foi treinado com rótulos; Jev recebeu definições sem treino específico.
@@ -84,7 +84,7 @@ Testes, sem chamadas pagas:
 docker compose exec suporte python -m pytest solution/tests -q
 ```
 
-Resultado verificado: **216 testes passam localmente e no Docker** (204 do aplicativo/cálculos e 12 do lote integral). Cobrem contratos, política, falhas de recap, caminhos condicionais, persistência, exportação, procedimentos, estados, economics, separação das partições e reprodução da avaliação histórica. [Reprodução das análises](solution/REPRODUZIR.md).
+Resultado verificado: **219 testes passam localmente e no Docker**. Cobrem contratos, política, falhas de recap, caminhos condicionais, persistência, exportação, procedimentos, estados, economics, separação das partições, reprodução da avaliação histórica e sinais assistivos de temperatura/urgência. [Reprodução das análises](solution/REPRODUZIR.md).
 
 ### Recomendações
 
@@ -129,7 +129,7 @@ Registro das intervenções reais do candidato: exigir distinção entre urgênc
 
 ## Evidências
 
-- [Execução final local: sete capturas e roteiro](process-log/evidencias/entrega-local-2026-09-22/README.md). Sem hospedagem em VPS; esta rodada usa regras e classificador local. As evidências anteriores de IA real estão preservadas abaixo.
+- [Execução final local: nove capturas e roteiro](process-log/evidencias/entrega-local-2026-09-22/README.md). Sem hospedagem em VPS; esta rodada usa regras e classificador local. As evidências anteriores de IA real estão preservadas abaixo.
 - [Process log cronológico](process-log/README.md).
 - [Intervenções selecionadas do candidato](process-log/evidencias/trechos-da-conversa.md).
 - [Pareceres e decisões multimodelo](process-log/revisao-2026-09-21/decisoes.md).
