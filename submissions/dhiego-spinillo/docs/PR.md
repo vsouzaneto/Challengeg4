@@ -4,6 +4,16 @@ Redesign de suporte com diagnóstico dos dois datasets e três caminhos executá
 
 No D2, o classificador local treinado concordou com 86% dos 800 rótulos reservados; Jev por definições, sem treino específico, com 45,25%. Também processei os 47.837 registros com o modelo congelado e preservei partições e resultados por linha. A concordância global inclui treino e não substitui a avaliação original. O limiar não atingiu a meta de erro no teste; a categoria permanece assistida.
 
+## Onde olhar
+
+| Material | Caminho | Para quê |
+|---|---|---|
+| Entrada e resumo | `submissions/dhiego-spinillo/README.md` | Respostas ao diretor, roteiro e links para a entrega. |
+| Diagnóstico | `docs/resumo-executivo.md` e `solution/visual/index.html` | Qualidade das bases, achados e limites. |
+| Comparação | `solution/visual/comparacao-local-jev.html` e `solution/comparacao.md` | Local × Jev, método, sensibilidade e guardrail de revisão. |
+| Protótipo | `solution/` | Aplicação local, fluxos, modelo, testes e instruções Docker. |
+| Processo | `process-log/` | Registro cronológico, decisões, evidências e capturas. |
+
 ## O que rodar
 
 Na pasta `submissions/dhiego-spinillo/`, executar `docker compose up --build` e abrir `http://127.0.0.1:8766`.
@@ -22,4 +32,13 @@ Na pasta `submissions/dhiego-spinillo/`, executar `docker compose up --build` e 
 - Cenários econômicos separam capacidade e despesa evitada, revisão e falhas. Elegibilidade, tempos e custos continuam premissas, com condição de equilíbrio e piloto proposto.
 - One-pager, capturas desktop/celular e dez screenshots da execução local final, roteiro, process log, ADRs, pareceres de Claude/Grok/Codex e decisões do candidato disponíveis pelo README. Protótipo executado localmente, sem hospedagem em VPS. Credenciais e banco local não fazem parte do Git.
 
-Alterações restritas à pasta da submissão. Este arquivo prepara título e descrição; não publica o PR.
+## Checklist
+
+- [x] Challenge 002 escolhido e README completo lido.
+- [x] Solução e process log em `submissions/dhiego-spinillo/`.
+- [x] README segue o template de submissão e contém instruções de setup.
+- [x] Protótipo, análise, comparativo e evidências podem ser revisados localmente.
+- [x] 219 testes passam localmente e no Docker.
+- [x] Nenhum arquivo fora da pasta da submissão foi alterado.
+
+Alterações restritas à pasta da submissão. Este arquivo versiona o título e a descrição da PR.
