@@ -6,6 +6,8 @@ O G4 está construindo um novo tipo de profissional: o **AI Master**. Uma pessoa
 
 Este repositório contém os desafios do processo seletivo.
 
+Para subir localhost (3020 / 3030 / 3010) e enviar os labs ao Databricks, veja [COMO-RODAR.md](./COMO-RODAR.md).
+
 ---
 
 ## O que é um AI Master?
