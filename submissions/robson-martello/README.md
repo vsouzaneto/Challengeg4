@@ -138,6 +138,32 @@ Essas ausências são parte da recomendação: antes de automatizar o processo, 
 
 ---
 
+### Como auditar esta decisão
+
+Os principais resultados estão documentados nesta submissão e podem ser confrontados com os dois conjuntos de dados públicos indicados no desafio. O único artefato adicional anexado é o registro de decisões; por decisão de escopo, esta entrega não inclui scripts executáveis, resultados brutos da classificação, o harness do Jev ou credenciais. Portanto, os itens abaixo descrevem uma auditoria independente dos resultados, e não uma promessa de reprodução local com os arquivos desta pasta.
+
+1. **Auditoria operacional:** verificar cobertura e consistência temporal do primeiro conjunto de dados.
+2. **Classificação:** reproduzir os baselines de classe majoritária, Naive Bayes e TF-IDF com regressão logística.
+3. **IA generativa:** comparar o modelo clássico com o modelo de linguagem nos casos de menor confiança.
+4. **Jev:** reconstituir os 18 cenários congelados e comparar suas decisões com o baseline determinístico.
+5. **Decisões:** consultar o [registro de decisões](./process-log/decisions.md) para acompanhar cada hipótese, evidência, resultado e decisão tomada.
+
+O objetivo desses registros não é demonstrar quantidade de código, mas permitir verificar a evidência que levou à recomendação de não implementar IA neste momento.
+
+### O que me faria mudar de decisão
+
+Esta recomendação é **“ainda não”**, não **“nunca”**.
+
+Eu reabriria a decisão após instrumentar de forma confiável o ciclo operacional, incluindo criação, primeira resposta, filas e transferências, tempo efetivo de trabalho, resolução, reaberturas e acordo de nível de serviço.
+
+Com dados suficientes, o próximo ciclo seria:
+
+**medir → localizar um gargalo real → estabelecer uma referência → testar uma intervenção → comparar IA com a alternativa mais simples.**
+
+Eu recomendaria IA quando ela demonstrasse ganho mensurável sobre essa referência em uma decisão relevante para a operação — considerando não apenas acurácia, mas também cobertura, custo, latência, risco e necessidade de revisão humana.
+
+---
+
 ## Registro do processo — Como usei IA
 
 ### Ferramentas usadas
