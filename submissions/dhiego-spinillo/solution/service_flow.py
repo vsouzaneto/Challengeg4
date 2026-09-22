@@ -26,14 +26,20 @@ Retorne apenas JSON: {"intent":"access_recovery|leave_record|other",
 "intent_quote":"trecho literal que sustenta intenção, ou vazio se other",
 "attempts":["até 4 trechos literais com tentativas ou erros já informados"],
 "risk_quotes":["até 4 trechos literais que sugerem dados de outra pessoa, desligamento,
-permissão privilegiada ou suspeita de incidente"],"multiple_requests":false}.
+permissão privilegiada ou suspeita de incidente"],"temperature":"attention|unknown",
+"temperature_quotes":["até 4 trechos literais de atrito explícito"],
+"urgency_quotes":["até 4 trechos literais que mencionam prazo ou urgência"],
+"multiple_requests":false}.
 Todas as citações devem ocorrer literalmente no texto, na língua original. Não traduza.
 Uma solicitação como "could you please update password" NÃO é tentativa realizada.
 "sent thursday" é cabeçalho, NÃO é tentativa nem erro. Não coloque pedidos em attempts.
 access_recovery inclui redefinição de senha; pedidos para conceder permissão não são
 recuperação. leave_record significa consulta/problema com férias. Se incerto use other.
 multiple_requests indica pedidos distintos que um único procedimento não resolve.
-Não retorne confiança, sentimento, resposta ao cliente, instrução técnica ou causa.'''
+temperature só pode ser attention se a pessoa expressar atrito literal, como frustração,
+insatisfação ou irritação. Caso contrário use unknown. urgency_quotes exige menção literal
+a prazo ou urgência, como today, urgent, deadline ou ASAP. Esses sinais NÃO definem
+prioridade, SLA, causa ou resposta. Não retorne confiança, instrução técnica ou causa.'''
 
 
 class Signals(BaseModel):
@@ -42,6 +48,9 @@ class Signals(BaseModel):
     intent_quote: str = Field(max_length=1000)
     attempts: list[str] = Field(max_length=4)
     risk_quotes: list[str] = Field(max_length=4)
+    temperature: Literal['attention', 'unknown']
+    temperature_quotes: list[str] = Field(max_length=4)
+    urgency_quotes: list[str] = Field(max_length=4)
     multiple_requests: bool
 
 
@@ -53,7 +62,12 @@ def validate_signals(content, original):
     body = Signals.model_validate(parsed)
     if body.intent != 'other' and not body.intent_quote.strip():
         raise ValueError('Intenção sem evidência')
-    quotes = body.attempts + body.risk_quotes + ([body.intent_quote] if body.intent_quote else [])
+    if body.temperature == 'attention' and not body.temperature_quotes:
+        raise ValueError('Sinal de atrito sem evidência')
+    if body.temperature == 'unknown' and body.temperature_quotes:
+        raise ValueError('Citação de atrito sem estado correspondente')
+    quotes = (body.attempts + body.risk_quotes + body.temperature_quotes + body.urgency_quotes
+              + ([body.intent_quote] if body.intent_quote else []))
     if any(not q.strip() or len(q) > 1000 or q not in original for q in quotes):
         raise ValueError('Evidência ausente no original')
     return body.model_dump()
@@ -66,9 +80,13 @@ def literal_signals(text):
     leave = match(r'vacation|annual leave')
     risks = match(r'(?:(?:another|other)\s+(?:colleague|person|user).{0,35}(?:data|account))|(?:data.{0,35}(?:another|other)\s+(?:colleague|person|user))|accounts?\s+(?:already\s+)?deactivated|last day of employment|admin(?:istrator)?\s+(?:rights|access)|desligamento|dados de outra pessoa')
     attempts = match(r'.{0,40}(?:never received|unavailable|denied|tried|error|failed).{0,75}')
+    temperature = match(r'\b(?:frustrat\w*|angry|unhappy|disappoint\w*|fed up|upset|not acceptable)\b')
+    urgency = match(r'\b(?:urgent\w*|asap|immediately|today|tomorrow|deadline|end of day|eod)\b')
     return {'intent': 'access_recovery' if password else 'leave_record' if leave else 'other',
             'intent_quote': (password or leave or [''])[0], 'attempts': attempts,
-            'risk_quotes': risks, 'multiple_requests': bool(password and leave)}
+            'risk_quotes': risks, 'temperature': 'attention' if temperature else 'unknown',
+            'temperature_quotes': temperature, 'urgency_quotes': urgency,
+            'multiple_requests': bool(password and leave)}
 
 
 def ambiguous_thread(text):
@@ -89,8 +107,10 @@ async def extract_signals(text, use_ai=True):
             model=MODEL, max_tokens=1800, json_mode=True)
         signals = validate_signals(response['content'], text)
         # O modelo nunca apaga os bloqueios lexicais encontrados.
-        for key in ('attempts', 'risk_quotes'):
+        for key in ('attempts', 'risk_quotes', 'temperature_quotes', 'urgency_quotes'):
             signals[key] = list(dict.fromkeys(signals[key] + fallback[key]))[:8]
+        if signals['temperature_quotes']:
+            signals['temperature'] = 'attention'
         signals['multiple_requests'] |= fallback['multiple_requests']
         signals['thread_ambiguous'] = fallback['thread_ambiguous']
         return {**signals, 'source': 'Extração por IA com citações verificadas + bloqueios por regras',

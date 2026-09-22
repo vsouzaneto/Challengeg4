@@ -123,17 +123,20 @@ def test_model_failure_does_not_open_self_service(client,monkeypatch):
 def test_model_cannot_suppress_security_signal(client,monkeypatch):
     async def mistaken(*args,**kwargs):
         return {'content':json.dumps({'intent':'access_recovery','intent_quote':'password reset',
-                                     'attempts':[],'risk_quotes':[],'multiple_requests':False}),'model':'test'}
+                                     'attempts':[],'risk_quotes':[],'temperature':'unknown',
+                                     'temperature_quotes':[],'urgency_quotes':[],'multiple_requests':False}),'model':'test'}
     monkeypatch.setattr(flow.openrouter_client,'chat',mistaken)
     run=start(client,text='password reset please. I can access data for another colleague.',use_ai=True)
     assert run['plan']['lane']=='human'
 
 
 @pytest.mark.parametrize('body',[
- {'intent':'access_recovery','intent_quote':'invented','attempts':[],'risk_quotes':[],'multiple_requests':False},
- {'intent':'access_recovery','intent_quote':'','attempts':[],'risk_quotes':[],'multiple_requests':False},
- {'intent':'other','intent_quote':'','attempts':[''],'risk_quotes':[],'multiple_requests':False},
- {'intent':'other','intent_quote':'','attempts':[],'risk_quotes':[],'multiple_requests':False,'command':'reset'},
+ {'intent':'access_recovery','intent_quote':'invented','attempts':[],'risk_quotes':[],'temperature':'unknown','temperature_quotes':[],'urgency_quotes':[],'multiple_requests':False},
+ {'intent':'access_recovery','intent_quote':'','attempts':[],'risk_quotes':[],'temperature':'unknown','temperature_quotes':[],'urgency_quotes':[],'multiple_requests':False},
+ {'intent':'other','intent_quote':'','attempts':[''],'risk_quotes':[],'temperature':'unknown','temperature_quotes':[],'urgency_quotes':[],'multiple_requests':False},
+ {'intent':'other','intent_quote':'','attempts':[],'risk_quotes':[],'temperature':'unknown','temperature_quotes':[],'urgency_quotes':[],'multiple_requests':False,'command':'reset'},
+ {'intent':'other','intent_quote':'','attempts':[],'risk_quotes':[],'temperature':'attention','temperature_quotes':[],'urgency_quotes':[],'multiple_requests':False},
+ {'intent':'other','intent_quote':'','attempts':[],'risk_quotes':[],'temperature':'unknown','temperature_quotes':['frustrated'],'urgency_quotes':[],'multiple_requests':False},
 ])
 def test_model_output_requires_supported_schema_and_literal_evidence(body):
     with pytest.raises(ValueError): flow.validate_signals(json.dumps(body),'password reset please')
@@ -153,7 +156,8 @@ def test_concatenated_thread_not_eligible_for_self_service(client):
 def test_uncertain_attempt_does_not_become_assertion_of_failure(client,monkeypatch):
     async def mistaken(*args,**kwargs):
         return {'content':json.dumps({'intent':'access_recovery','intent_quote':'password reset',
-                                     'attempts':['please'],'risk_quotes':[],'multiple_requests':False}),'model':'test'}
+                                     'attempts':['please'],'risk_quotes':[],'temperature':'unknown',
+                                     'temperature_quotes':[],'urgency_quotes':[],'multiple_requests':False}),'model':'test'}
     monkeypatch.setattr(flow.openrouter_client,'chat',mistaken)
     run=start(client,text='password reset please thank you',use_ai=True)
     assert run['plan']['lane']=='prepared'
@@ -166,6 +170,16 @@ def test_existing_failure_blocks_reset_even_if_customer_omits_attempt(client):
     assert run['plan']['lane']=='prepared'
     assert run['plan']['draft']
     assert action(client,run,'request_recovery').status_code==409
+
+
+def test_temperature_and_urgency_are_cited_signals_not_priority(client):
+    run=start(client,text='I am frustrated. I need a password reset urgently today.')
+    assert run['signals']['temperature']=='attention'
+    assert run['signals']['temperature_quotes']==['frustrated']
+    assert run['signals']['urgency_quotes']==['urgently', 'today']
+    # Um pedido simples com prazo explícito pode ser mais bem servido pelo autosserviço;
+    # o texto não redefine prioridade nem afirma SLA.
+    assert run['plan']['lane']=='self_service'
 
 
 def test_newly_open_failure_prevents_pending_reset_completion(client,monkeypatch):

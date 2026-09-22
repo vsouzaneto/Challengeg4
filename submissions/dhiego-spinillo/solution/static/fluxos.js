@@ -6,6 +6,7 @@ let scenarios = [], current = null, token = null, version = 0, busy = false;
 function invalidate() {version++; $('flow-action-status').textContent=''; current=null; token=null; $('flow-result').hidden=true; $('flow-empty').hidden=false; $('flow-status').textContent='Entrada alterada. Processe o pedido para consultar o cenário novamente.';}
 function choose() {const s=scenarios.find(s=>s.id===$('flow-scenario').value); $('flow-text').value=s.text; $('flow-source').textContent=s.source; invalidate();}
 function itemList(target, items) {target.replaceChildren(); for(const item of items){const li=document.createElement('li');li.textContent=item;target.append(li);}}
+function citedSignal(target,label,quotes,empty){const li=document.createElement('li');const strong=document.createElement('strong');strong.textContent=label;li.append(strong,document.createTextNode(' '));if(quotes.length){const span=document.createElement('span');span.textContent='Sinal encontrado no texto:';li.append(span);for(const quote of quotes){const block=document.createElement('blockquote');block.textContent=quote;li.append(block);}}else{li.append(document.createTextNode(empty));}target.append(li);}
 function actionButton(label, action, primary=false) {const b=document.createElement('button');b.type='button';b.textContent=label;b.className=primary?'primary':'secondary';b.addEventListener('click',()=>act(action));$('flow-actions').append(b);}
 function render(run) {
  current=run; $('flow-empty').hidden=true; $('flow-result').hidden=false;
@@ -17,6 +18,10 @@ function render(run) {
  $('flow-quotes').replaceChildren(); const quotes=[...(run.signals.intent_quote?[['Intenção',run.signals.intent_quote]]:[]),...run.signals.attempts.map(q=>['Tentativa ou erro',q]),...run.signals.risk_quotes.map(q=>['Sinal para investigação',q])];
  for(const [label,quote] of quotes){const li=document.createElement('li');li.textContent=label;const block=document.createElement('blockquote');block.textContent=quote;li.append(block);$('flow-quotes').append(li);}
  $('flow-empty-quotes').hidden=quotes.length>0;
+ $('flow-operational-signals').replaceChildren();
+ citedSignal($('flow-operational-signals'),'Temperatura:',run.signals.temperature_quotes||[],run.signals.temperature==='attention'?'sinal pendente de confirmação.':'nenhum atrito explícito identificado; isso não permite concluir que o cliente está tranquilo.');
+ citedSignal($('flow-operational-signals'),'Prazo ou urgência:',run.signals.urgency_quotes||[],'nenhuma menção literal identificada; isso não permite concluir que não há urgência.');
+ $('flow-sla-state').textContent=(run.signals.urgency_quotes||[]).length?'SLA: há uma menção temporal que o atendente deve confirmar no contexto. A demonstração não possui abertura, prazo de política, primeira resposta ou relógio de SLA para declarar atraso.':'SLA: não calculável nesta demonstração. Faltam abertura, prazo de política, primeira resposta e relógio operacional.';
  itemList($('flow-steps'),run.plan.next_steps); $('flow-actions').replaceChildren();
  $('flow-draft-section').hidden=!(run.plan.draft && run.state==='ready') && !run.approved_draft; $('flow-draft').value=run.approved_draft||run.plan.draft||''; $('flow-draft').readOnly=run.state!=='ready'; $('flow-approve').hidden=run.state!=='ready'; $('flow-draft-label').textContent=run.approved_draft?'Resposta aprovada e registrada':'Resposta preparada · texto por regra e fonte consultada';
  if(run.plan.lane==='self_service'){

@@ -23,7 +23,7 @@
 | Solução com aval | Contexto reunido, rascunho por regras, edição e aprovação persistidas. Não envia ao cliente. |
 | Humano cuidando | Relato sensível, restrição ou fonte indisponível leva à investigação. Não presume causa nem resolução. |
 | IA em mais de uma tarefa | Classificação local e extração por LLM nos fluxos. Recap separado e experimental; não é base para executar ações. |
-| Sentimento | Não entregue como modelo validado. Há busca exploratória por palavras e proposta de dados/validação futura. |
+| Temperatura, urgência e SLA | Temperatura e menção de prazo aparecem como sinais literais auditáveis para o atendente; não mudam prioridade. A demo explicita que SLA não é calculável sem eventos e política de prazo. |
 | Guardrails | Contratos/citações, regras de contexto, bloqueios e estados testados. Não garantem detectar toda ambiguidade ou incidente. |
 | ROI/saving | Calculadora editável por processo. Resultado é hipótese, não economia medida. Reset sozinho não sustenta o cenário de investimento. |
 | Processo e reprodução | 216 testes locais, Docker, fontes/hashes, ADRs, iterações, decisões do candidato e capturas. Sem necessidade de VPS para revisar. |
@@ -37,7 +37,7 @@
 | Contexto, elegibilidade, token e ação | Consultas de demonstração + regras/máquina de estados | Segurança, auditoria e comportamento reproduzível. | Não depende de score ou LLM; não altera conta real. |
 | Rascunho e investigação | Texto por regra + aprovação/investigação humana | Fato precisa de fonte e casos sensíveis não podem ser presumidos. | Não envia resposta livre automática ou encerra incidente. |
 
-[Matriz completa: IA, modelo local, regras, humano, escopo e custo](onde-entra-ia.md). Sentimento, urgência, churn, SLA e saving não foram postos em IA: faltam rótulos, histórico confiável e eventos operacionais para validar essas decisões.
+[Matriz completa: IA, modelo local, regras, humano, escopo e custo](onde-entra-ia.md). Temperatura e prazo entram como sinais citados, não como decisão. Nota de sentimento, prioridade, churn, SLA histórico e saving continuam fora de IA decisória: faltam rótulos, histórico confiável e eventos operacionais para validar essas decisões.
 
 ## Demonstração de aproximadamente 10 minutos
 
