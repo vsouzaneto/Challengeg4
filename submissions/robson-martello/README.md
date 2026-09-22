@@ -148,6 +148,14 @@ Essas ausências são parte da recomendação: antes de automatizar o processo, 
 | Modelo de linguagem | Experimento de classificação com encaminhamento alternativo |
 | Jev | Experimento de decisão probabilística de prontidão |
 
+### Escolha do desafio
+
+Antes de aprofundar o Challenge 002, fiz uma exploração inicial dos outros conjuntos de dados para evitar escolher o problema apenas pela facilidade de construir uma solução.
+
+Encontrei limitações relevantes de sinal, definição de resultado e capacidade de sustentar as decisões pedidas nos demais desafios. O 002 foi escolhido porque permitia investigar uma questão mais fundamental: antes de decidir como usar IA, havia evidência suficiente para justificar seu uso?
+
+A partir daí, encerrei a comparação entre desafios e aprofundei somente o 002.
+
 ### Fluxo de trabalho
 
 1. Comecei procurando uma oportunidade de IA que melhorasse uma decisão real, não apenas uma métrica.
@@ -161,7 +169,7 @@ Essas ausências são parte da recomendação: antes de automatizar o processo, 
 9. Congelei 18 casos antes do experimento.
 10. Regras determinísticas acertaram 18/18; Jev, 14/18.
 11. Removi também essa IA da solução.
-12. Encerrei sem construir uma aplicação porque os experimentos não justificaram uma.
+12. Decidi não construir uma aplicação. Os experimentos não demonstraram uma decisão em que adicionar IA superasse uma alternativa mais simples, e construir apenas para produzir um artefato contrariaria a conclusão da própria análise.
 
 ### Onde a IA errou e como corrigi
 
@@ -196,7 +204,6 @@ Neste caso, ainda não ganhou esse lugar.
 - [x] Narrativa escrita do processo e dos experimentos neste README
 - [x] Resultados quantitativos reproduzidos no relatório
 - [x] Histórico Git da submissão
-- [ ] Screenshots ou export adicional de conversas
 
 ---
 
