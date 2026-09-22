@@ -8,7 +8,7 @@ O protótipo FastAPI/Jinja/SQLite/Docker classifica texto novo, registra confer�
 
 ## Verificação
 
-- 165 testes passam localmente e no Docker.
+- 204 testes passam localmente e no Docker.
 - Navegação e capturas em desktop e celular; conferências incompletas, confirmação, situação pendente e relato de incidente exercitados.
 - Modelo incluído: `docker compose up --build` na pasta da submissão e abrir `http://127.0.0.1:8766`. Classificação e preparação por regras funcionam sem chave externa.
 - One-pager executivo, análise visual, README, process log, pareceres reais de Claude/Grok/Codex, ADRs, resultados brutos e proposta de piloto incluídos.
@@ -16,4 +16,6 @@ O protótipo FastAPI/Jinja/SQLite/Docker classifica texto novo, registra confer�
 
 Este arquivo prepara título e descrição; sua criação não publica o PR.
 
-Inclui cenários econômicos editáveis (capacidade versus despesa evitada), fonte salarial, custos e resultados negativos; mapa de três caminhos de atendimento e buscas reproduzíveis de oportunidades no D2. Autosserviço e consulta automática a sistemas permanecem propostas explícitas.
+Inclui cenários econômicos editáveis (capacidade versus despesa evitada), fonte salarial, custos e resultados negativos; mapa de três caminhos de atendimento e buscas reproduzíveis de oportunidades no D2. Autosserviço e consulta automática agora executam contra adaptadores locais fictícios: conclusão com token de uso único, falha com histórico, preparação e investigação. Integrações de produção continuam fora da demonstração.
+
+A hipótese de valor foi reformulada após crítica ao ROI agregado: o economics por processo separa volume, trabalho anterior/residual, sucesso e custo de falha. O experimento com IA preserva a primeira rodada e a iteração causada por interpretação incorreta de histórico concatenado; não apresenta os cenários de desenvolvimento como acurácia de produção.

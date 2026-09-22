@@ -1,0 +1,100 @@
+- link "Ir para o pedido":
+  - /url: "#flow-input"
+- banner:
+  - link "G4 — início":
+    - /url: /
+    - img "G4"
+  - generic: Challenge 002
+  - strong: Atendimento por procedimento
+  - navigation "Navegação":
+    - link "Resumo":
+      - /url: /resumo
+    - link "Economia":
+      - /url: /valor
+    - link "Classificador":
+      - /url: /
+- main:
+  - heading "Resolva o simples. Prepare o restante." [level=1]:
+    - text: Resolva o simples.
+    - emphasis: Prepare o restante.
+  - paragraph: O pedido encontra um procedimento, o contexto vem dos sistemas e as exceções chegam ao humano com o trabalho já reunido.
+  - paragraph:
+    - strong: Demonstração com sistemas fictícios.
+    - text: Textos vêm do D2; contas, notas e registros são criados para testar o fluxo. Nenhuma conta real é alterada e nenhuma mensagem é enviada.
+  - list "Três caminhos":
+    - strong: Autosserviço
+    - generic: Cliente conclui o procedimento elegível.
+    - strong: Atendimento preparado
+    - generic: Contexto e resposta chegam para revisão.
+    - strong: Investigação humana
+    - generic: Evidências reunidas; decisão com a equipe.
+  - heading "Pedido e cenário" [level=2]
+  - generic: Explorar uma situação
+  - combobox "Explorar uma situação":
+    - option "Recuperar acesso sem atendente" [selected]
+    - option "Tentativa de reset já falhou"
+    - 'option "Férias: consultar antes de perguntar"'
+    - option "Relato de dados de outra pessoa"
+    - option "Conta desativada no desligamento"
+    - 'option "Fonte indisponível: interromper ação"'
+  - paragraph: D2 · registro 46,304 · texto real do dataset, já usado no desenvolvimento. Contexto de sistemas é fictício, sem vínculo real com o solicitante.
+  - generic: Texto do cliente · em inglês
+  - textbox "Texto do cliente · em inglês": reset password sent thursday november infrastructure hi guys could you please update password likely expire thanks sent thursday november re infrastructure hey completely unrelated side note appears password going expire couple days getting effect would someone please tell where can reset thank you
+  - paragraph: Você pode alterar o texto. A conta e o contexto continuam sendo os do cenário fictício escolhido.
+  - checkbox "Interpretar com IA Envia somente este texto ao OpenRouter. Citações são conferidas; regras controlam as ações." [checked]
+  - text: Interpretar com IA
+  - generic: Envia somente este texto ao OpenRouter. Citações são conferidas; regras controlam as ações.
+  - paragraph: IA disponível. Se a extração falhar, o atendimento segue preparado para revisão.
+  - button "Processar pedido e consultar contexto"
+  - status: Contexto consultado e caminho preparado. Registros de demonstração.
+  - generic "O que este fluxo substitui?"
+  - region "Do pedido ao próximo passo":
+    - text: Atendimento preparado
+    - heading "Contexto reunido para atender" [level=2]
+    - paragraph: Já existe tentativa ou erro no texto. Preparar encaminhamento evita repetir o reset como resposta padrão.
+    - paragraph: Pronto para o próximo passo
+    - heading "Contexto consultado automaticamente" [level=3]
+    - paragraph: Conectores locais de demonstração. Estes fatos não vêm do dataset nem do LLM.
+    - term: Diretório de identidades · consultado
+    - definition: Conta ativa; recuperação habilitada
+    - term: Outros tickets e notas · consultado
+    - definition: Nenhum outro ticket aberto nesta conta fictícia.
+    - term: Registro no sistema · consultado
+    - definition: Provedor local disponível; canal de recuperação cadastrado.
+    - heading "Pedido e tentativas identificados" [level=3]
+    - paragraph: Extração por IA com citações verificadas + bloqueios por regras
+    - list:
+      - text: Intenção
+      - blockquote: would someone please tell where can reset
+      - text: Tentativa ou erro
+      - blockquote: reset password sent thursday november infrastructure
+      - text: Tentativa ou erro
+      - blockquote: could you please update password likely expire
+    - heading "Próximo passo" [level=3]
+    - list:
+      - listitem: Revisar as tentativas e notas já reunidas.
+      - listitem: Coletar apenas evidências que ainda faltam e encaminhar ao suporte de acesso.
+    - generic: Resposta preparada · texto por regra e fonte consultada
+    - textbox "Resposta preparada · texto por regra e fonte consultada": Recebemos seu relato e registramos a tentativa que não funcionou. Vamos encaminhar a análise com essas informações à equipe de suporte de acesso.
+    - button "Aprovar resposta na demonstração"
+    - paragraph: Aprovação fica registrada. Nenhuma mensagem externa é enviada.
+    - status
+    - generic "Trilha da execução"
+    - list:
+      - strong: sistema
+      - text: "Entrada recebida; extração: Extração por IA com citações verificadas + bloqueios por regras"
+      - strong: conector local simulado
+      - text: "Diretório de identidades: consultado"
+      - strong: conector local simulado
+      - text: "Outros tickets e notas: consultado"
+      - strong: conector local simulado
+      - text: "Registro no sistema: consultado"
+      - strong: política determinística
+      - text: "Caminho escolhido: prepared"
+  - heading "Valor a provar no piloto" [level=2]
+  - paragraph: Resolução sem atendente, menos busca e menos perguntas repetidas. Meça minutos humanos, falhas, recontatos e qualidade por caminho. A duração da chamada à IA não mede tempo humano economizado.
+  - link "Ver o antes e depois de cada processo":
+    - /url: /valor-por-processo.md
+  - text: ·
+  - link "Explorar retorno econômico":
+    - /url: /valor

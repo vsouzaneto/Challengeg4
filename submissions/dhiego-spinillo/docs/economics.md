@@ -1,6 +1,6 @@
 # Capacidade recuperada, despesa evitada e ROI
 
-**Simulação para decisão; nenhum saving observado.** Cenários solicitados por Dhiego em 21/09/2026. Calculadora local em `/economia`; fórmulas em [economics.py](../solution/economics.py), com testes de casos positivos, negativos e sem conversão financeira.
+**Simulação agregada inicial; nenhum saving observado.** A evolução recomendada está em [valor por processo](valor-por-processo.md), que explicita antes/depois, falhas e contribuição de cada caminho. Cenários solicitados por Dhiego em 21/09/2026. Calculadora local em `/economia`; fórmulas em [economics.py](../solution/economics.py), com testes de casos positivos, negativos e sem conversão financeira.
 
 ## Referência salarial
 

@@ -1,6 +1,6 @@
 # Três caminhos para o atendimento
 
-**Proposta de evolução, 21/09/2026.** O protótipo atual implementa classificação assistida, conferências humanas, rascunhos por regra e recap experimental. Os caminhos autônomos abaixo ainda não estão integrados nem avaliados.
+**Registro inicial da proposta, 21/09/2026. Atualização: os três caminhos foram implementados em demonstração com adaptadores fictícios; consulte a [ADR 0008](decisions/0008-fluxos-executaveis-e-valor-por-processo.md) e o [estado atual](valor-por-processo.md). O restante desta seção preserva a proposta anterior.** O protótipo atual implementa classificação assistida, conferências humanas, rascunhos por regra e recap experimental. Os caminhos autônomos abaixo ainda não estão integrados nem avaliados.
 
 ## Decisão de produto
 

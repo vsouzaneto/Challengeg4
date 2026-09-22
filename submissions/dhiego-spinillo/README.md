@@ -1,6 +1,6 @@
 # Submissão — Dhiego Spinillo — Challenge 002
 
-**Protótipo implementado; pacote preparado para revisão final. Ainda não submetido.**
+**Três caminhos executáveis em demonstração local: autosserviço, preparação e investigação. Ainda não submetido.**
 
 ## Comece por aqui
 
@@ -8,9 +8,9 @@
 |---|---|---|
 | 1 · 2 minutos | [One-pager executivo](docs/resumo-executivo.md) · [visual no aplicativo](http://127.0.0.1:8766/resumo) | Problema, achados, recomendação, limites e próximo investimento. |
 | 2 · 5 minutos | [Análise visual](solution/visual/index.html) · [abrir no aplicativo](http://127.0.0.1:8766/diagnostico) | Qualidade dos dados, urgência, espera, satisfação e contexto. |
-| 3 · 3 minutos | [Protótipo local](http://127.0.0.1:8766) | Classificação e lógica de preparação do atendimento em execução. |
-| 4 · Cenários | [Economics e premissas](docs/economics.md) · [calculadora](http://127.0.0.1:8766/economia) | Capacidade recuperada, despesa evitada e condições de retorno. |
-| 5 · Evolução | [Três caminhos de atendimento](docs/tres-velocidades.md) | Autosserviço, trabalho preparado e investigação humana; implementação atual versus proposta. |
+| 3 · Demonstração | [Três fluxos executáveis](http://127.0.0.1:8766/fluxos) · [classificador](http://127.0.0.1:8766/classificador) | Autosserviço com conclusão, tentativa frustrada com contexto e investigação; sistemas fictícios explícitos. |
+| 4 · Cenários | [Valor por processo](docs/valor-por-processo.md) · [calculadora](http://127.0.0.1:8766/valor) | Capacidade recuperada, despesa evitada e condições de retorno. |
+| 5 · Evolução | [Três caminhos de atendimento](docs/tres-velocidades.md) | Fronteira entre execução demonstrada e integrações futuras. |
 | Aprofundamento | [Comparação](solution/comparacao.md), [piloto](docs/piloto-operacional.md), [process log](process-log/README.md) | Como foi avaliado, o que falta medir e como as decisões evoluíram. |
 
 Os tempos acima são sugestões de leitura/demonstração, não esforço de execução do case. Links em `127.0.0.1` funcionam após iniciar o aplicativo conforme o setup abaixo.
@@ -22,7 +22,7 @@ Os tempos acima são sugestões de leitura/demonstração, não esforço de exec
 
 ## Executive Summary
 
-Auditei os dados antes de propor automação: o D1 não permite localizar perdas de tempo com segurança, pois não registra abertura e 49,3% dos pares temporais disponíveis estão invertidos. No D2, de suporte interno de TI, um classificador local acertou 86% de 800 tickets reservados, contra 45,25% do Jev na configuração testada. O protótipo executa classificação sobre texto novo e organiza o próximo passo e um rascunho de resposta a partir de conferências registradas pelo atendente; o limiar de confiança não cumpriu a meta de qualidade no teste. Um recap com LLM foi integrado e avaliado, mas permanece experimental por evidência insuficiente de fidelidade. A recomendação é validar utilidade operacional e instrumentar o atendimento antes de prometer economia ou ampliar a intervenção.
+Auditei os dados antes de propor automação: o D1 não permite localizar perdas de tempo com segurança, pois não registra abertura e 49,3% dos pares temporais disponíveis estão invertidos. No D2, o classificador local acertou 86% de 800 tickets reservados, contra 45,25% do Jev na configuração testada. Após revisar casos e criticar o valor de uma ficha manual, implementei três caminhos: autosserviço com conclusão e tratamento de falha, atendimento preparado por consultas automáticas e investigação humana. IA extrai sinais com citações; regras controlam os procedimentos. Sistemas e contas são fictícios, explicitamente identificados. A principal hipótese de valor é reduzir busca e preparação, com economics por processo e validação operacional ainda necessária. A comparação e o recap experimental anteriores foram preservados.
 
 ## Solução
 
@@ -35,8 +35,8 @@ Entender as perguntas do diretor → auditar dados por finalidade → confrontar
 | Pergunta do diretor | O que esta entrega sustenta |
 |---|---|
 | Onde perdemos tempo? | Não é possível quantificar pela duração do D1. Há 2.881 pendentes e sinais textuais para investigação; espera pelo cliente não equivale automaticamente a desperdício. |
-| O que automatizar com IA? | Hoje: sugestão de categoria e preparação por regras. Proposta: autosserviço de recuperação de senha, contexto consultado automaticamente e investigação humana para exceções; ver mapa dos três caminhos. |
-| Funciona? | Classificação executável com 86% de concordância com os rótulos do teste, ficha de investigação, orientação e rascunhos por regra. Demonstra funcionamento técnico; impacto operacional não medido. |
+| O que automatizar com IA? | IA para extração de intenção/tentativas/sinais; regras e consultas de contexto para executar procedimentos elegíveis ou preparar atendimento. Três caminhos demonstrados com sistemas fictícios. |
+| Funciona? | Classificação avaliada; recuperação concluída em provedor simulado, falha com histórico e investigação aberta; 204 testes. Extração restrita exercitada em cenários conhecidos. Impacto operacional não medido. |
 
 - [Diagnóstico visual](solution/visual/index.html): análise da base, fontes e limites; contém leituras de contexto preparadas durante a fase inicial.
 - [Comparação local × Jev](solution/comparacao.md): separação de treino/validação/teste, remoção de vizinhos próximos e sensibilidade. O modelo local foi treinado com rótulos; Jev recebeu definições sem treino específico.
@@ -81,7 +81,7 @@ Testes, sem chamadas pagas:
 docker compose exec suporte python -m pytest solution/tests -q
 ```
 
-Resultado verificado: **147 testes passam**. Cobrem contratos, política, falhas de recap, caminhos condicionais, origem do relato de incidente, persistência, registros antigos, exportação e acesso a arquivos. [Reprodução das análises](solution/REPRODUZIR.md).
+Resultado verificado: **204 testes passam**. Cobrem contratos, política, falhas de recap, caminhos condicionais, origem do relato de incidente, persistência, registros antigos, exportação, acesso a arquivos, procedimentos, estados e economics. [Reprodução das análises](solution/REPRODUZIR.md).
 
 ### Recomendações
 
@@ -136,3 +136,9 @@ Registro das intervenções reais do candidato: exigir distinção entre urgênc
 - [Roadmap](ROADMAP.md) e [estado atual](STATUS.md).
 
 **Submissão enviada em:** ainda não enviada. Histórico de commits local.
+
+## Evolução após a crítica de valor
+
+O protótipo agora consulta três fontes locais fictícias e executa uma máquina de estados para autosserviço, preparação e investigação. A IA extrai sinais com citações; regras controlam procedimentos, contexto e ações. [ADR 0008](docs/decisions/0008-fluxos-executaveis-e-valor-por-processo.md). O fluxo antigo e suas avaliações foram preservados. Não há autenticação/integradores de produção ou saving medido.
+
+O novo economics decompõe trabalho anterior, residual, falhas e revisão; reset isolado tem baixa contribuição no cenário. A hipótese principal de valor é retirar busca e reconstrução de contexto do atendente. [Memória e condição de equilíbrio](docs/valor-por-processo.md).

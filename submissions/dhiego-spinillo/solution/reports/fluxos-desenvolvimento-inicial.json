@@ -1,0 +1,213 @@
+{
+  "at": "2026-09-22T02:29:22.684813+00:00",
+  "model_requested": "anthropic/claude-sonnet-5",
+  "prompt_sha256": "e881e301ca78a9c79c86eb4946e12605c9ceb5044886102d3dbed6dbb048fd6f",
+  "scope": "Seis cenários conhecidos usados no desenvolvimento, com contextos fictícios. Expectativas definidas por Codex; não é avaliação independente de elegibilidade ou qualidade operacional.",
+  "results": [
+    {
+      "scenario": "reset",
+      "dataset_row": 46304,
+      "text_sha256": "a54021aa5f8d835eb9d05e965039f185fb85ef3e37c403111e210b71ed00f9a6",
+      "expected_development_lane": "self_service",
+      "signals": {
+        "intent": "access_recovery",
+        "intent_quote": "would someone please tell where can reset",
+        "attempts": [],
+        "risk_quotes": [],
+        "multiple_requests": false,
+        "source": "Extração por IA com citações verificadas + bloqueios por regras",
+        "model": "anthropic/claude-sonnet-5",
+        "warning": null,
+        "elapsed_ms": 8535.1
+      },
+      "plan": {
+        "lane": "self_service",
+        "title": "Recuperação disponível pelo autosserviço",
+        "reason": "Intenção compatível, conta de demonstração elegível e nenhuma exceção detectada. O cliente escolhe iniciar o procedimento.",
+        "queue": null,
+        "draft": null,
+        "procedure": "recover_password",
+        "next_steps": [
+          "Cliente solicita a recuperação no canal cadastrado.",
+          "Provedor valida o token e registra a conclusão.",
+          "Se não funcionar, encaminhar o histórico ao suporte sem repetir a tentativa."
+        ]
+      },
+      "matches_development_expectation": true
+    },
+    {
+      "scenario": "failed",
+      "dataset_row": 12423,
+      "text_sha256": "89b88e2909fbc388ff61df022b995b2edf623976c2364a668caaa84cc7283418",
+      "expected_development_lane": "prepared",
+      "signals": {
+        "intent": "access_recovery",
+        "intent_quote": "password reset request",
+        "attempts": [
+          "tried change got configuration information controller because machine unavailable has denied working today change",
+          "t request july pm re expire today hello tried change got configuration information controller because machine unavailabl",
+          "e has denied working today change thank kind regards july expire today importance high "
+        ],
+        "risk_quotes": [],
+        "multiple_requests": false,
+        "source": "Extração por IA com citações verificadas + bloqueios por regras",
+        "model": "anthropic/claude-sonnet-5",
+        "warning": null,
+        "elapsed_ms": 2801.25
+      },
+      "plan": {
+        "lane": "prepared",
+        "title": "Contexto reunido para atender",
+        "reason": "Já existe tentativa ou erro no texto. Preparar encaminhamento evita repetir o reset como resposta padrão.",
+        "queue": "Suporte de acesso",
+        "draft": "Recebemos seu relato e registramos a tentativa que não funcionou. Vamos encaminhar a análise com essas informações à equipe de suporte de acesso.",
+        "procedure": null,
+        "next_steps": [
+          "Revisar as tentativas e notas já reunidas.",
+          "Coletar apenas evidências que ainda faltam e encaminhar ao suporte de acesso."
+        ]
+      },
+      "matches_development_expectation": true
+    },
+    {
+      "scenario": "leave",
+      "dataset_row": 34887,
+      "text_sha256": "50873631503de244281161418a9dc067d3b7fdb48d5214c88b620ecd923a392f",
+      "expected_development_lane": "prepared",
+      "signals": {
+        "intent": "leave_record",
+        "intent_quote": "move vacation days",
+        "attempts": [
+          "tried add annual leave but allow submit errors out there",
+          "tasks added for annual leave entries problem list for task details empty when select leave",
+          "move vacation days time card error move vacation days dear please delete card error for thank you assistant s",
+          "hanks if you one can help with next one tried add annual leave but allow submit errors out there tasks added for annual "
+        ],
+        "risk_quotes": [],
+        "multiple_requests": true,
+        "source": "Extração por IA com citações verificadas + bloqueios por regras",
+        "model": "anthropic/claude-sonnet-5",
+        "warning": null,
+        "elapsed_ms": 3127.99
+      },
+      "plan": {
+        "lane": "prepared",
+        "title": "Contexto reunido para atender",
+        "reason": "Procedimento único não identificado com contexto suficiente. As fontes estão reunidas para o atendente.",
+        "queue": "Atendimento",
+        "draft": null,
+        "procedure": null,
+        "next_steps": [
+          "Revisar pedidos, tentativas e fontes; identificar a informação realmente ausente antes de responder."
+        ]
+      },
+      "matches_development_expectation": true
+    },
+    {
+      "scenario": "incident",
+      "dataset_row": 45725,
+      "text_sha256": "872d6615e432c98bcd549568aa54ca59ada80fc6ce5d9199f83663ae6a339dc2",
+      "expected_development_lane": "human",
+      "signals": {
+        "intent": "leave_record",
+        "intent_quote": "can you please check annual leave days for more details below",
+        "attempts": [
+          "think mistake process using credential get access you can",
+          "could you please check again make another",
+          "a than you sent can be checked again if error persists please let know be investigated by thank you administration offic"
+        ],
+        "risk_quotes": [
+          "seems able access data for another colleague please let know when fixed",
+          "please note different data than you sent can be checked again if error persists please let know be investigated by",
+          "data for another colleague"
+        ],
+        "multiple_requests": true,
+        "source": "Extração por IA com citações verificadas + bloqueios por regras",
+        "model": "anthropic/claude-sonnet-5",
+        "warning": null,
+        "elapsed_ms": 2920.66
+      },
+      "plan": {
+        "lane": "human",
+        "title": "Investigar com a equipe responsável",
+        "reason": "Relato sensível ou restrição no cadastro. Não executar recuperação automática.",
+        "queue": "Segurança / Engenharia",
+        "draft": null,
+        "procedure": null,
+        "next_steps": [
+          "Conferir o relato e as evidências listadas.",
+          "Distinguir falha técnica, preenchimento ou interpretação; não presumir causa.",
+          "Consultar logs e responsável pelo sistema conforme o procedimento."
+        ]
+      },
+      "matches_development_expectation": true
+    },
+    {
+      "scenario": "disabled",
+      "dataset_row": 17001,
+      "text_sha256": "fc7553a9f64b67d6940e88549f330129d4609c03cbca3880778875160f63cef4",
+      "expected_development_lane": "human",
+      "signals": {
+        "intent": "access_recovery",
+        "intent_quote": "please ensure her reactivated immediately",
+        "attempts": [],
+        "risk_quotes": [
+          "last day of employment accounts already deactivated",
+          "please ensure her reactivated immediately",
+          "accounts deactivated pm working",
+          "last day of employment",
+          "accounts already deactivated",
+          "accounts deactivated"
+        ],
+        "multiple_requests": false,
+        "source": "Extração por IA com citações verificadas + bloqueios por regras",
+        "model": "anthropic/claude-sonnet-5",
+        "warning": null,
+        "elapsed_ms": 7860.8
+      },
+      "plan": {
+        "lane": "human",
+        "title": "Investigar com a equipe responsável",
+        "reason": "Relato sensível ou restrição no cadastro. Não executar recuperação automática.",
+        "queue": "Gestão de identidades",
+        "draft": null,
+        "procedure": null,
+        "next_steps": [
+          "Conferir o relato e as evidências listadas.",
+          "Distinguir falha técnica, preenchimento ou interpretação; não presumir causa.",
+          "Consultar logs e responsável pelo sistema conforme o procedimento."
+        ]
+      },
+      "matches_development_expectation": true
+    },
+    {
+      "scenario": "unavailable",
+      "dataset_row": 46304,
+      "text_sha256": "a54021aa5f8d835eb9d05e965039f185fb85ef3e37c403111e210b71ed00f9a6",
+      "expected_development_lane": "human",
+      "signals": {
+        "intent": "access_recovery",
+        "intent_quote": "would someone please tell where can reset",
+        "attempts": [],
+        "risk_quotes": [],
+        "multiple_requests": false,
+        "source": "Extração por IA com citações verificadas + bloqueios por regras",
+        "model": "anthropic/claude-sonnet-5",
+        "warning": null,
+        "elapsed_ms": 8153.89
+      },
+      "plan": {
+        "lane": "human",
+        "title": "Recuperar a fonte indisponível",
+        "reason": "Estado do sistema desconhecido.",
+        "queue": "Suporte técnico",
+        "draft": null,
+        "procedure": null,
+        "next_steps": [
+          "Recuperar a consulta ao sistema antes de afirmar um resultado."
+        ]
+      },
+      "matches_development_expectation": true
+    }
+  ]
+}

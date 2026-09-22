@@ -1,5 +1,7 @@
 # ADR 0007 — Autonomia por procedimento e cenários econômicos
 
+Evolução implementada na [ADR 0008](0008-fluxos-executaveis-e-valor-por-processo.md); esta decisão preserva o estado anterior.
+
 Data: 21/09/2026. Status: direção proposta; calculadora implementada, autosserviço e integrações pendentes.
 
 ## Contexto

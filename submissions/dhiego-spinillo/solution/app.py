@@ -25,6 +25,8 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from investigation import Investigation, prepare_next_step
 from economics import Assumptions, PRESETS, estimate
+import service_flow
+from process_value import ProcessAssumptions, process_estimate
 from recap import RecapValidationError, generate_recap
 from triage_core import LABELS, ROOT, key_from_env, route_suggestion
 
@@ -56,6 +58,7 @@ PUBLIC_FILES.update({'docs/identidade-visual.md': ROOT / 'docs/identidade-visual
                      'piloto-operacional.md': ROOT / 'docs/piloto-operacional.md',
                      'economics.md': ROOT / 'docs/economics.md',
                      'tres-velocidades.md': ROOT / 'docs/tres-velocidades.md',
+                     'valor-por-processo.md': ROOT / 'docs/valor-por-processo.md',
                      'process-log/README.md': ROOT / 'process-log/README.md',
                      'visual/assets/g4-logo.svg': SOLUTION / 'visual/assets/g4-logo.svg'})
 
@@ -159,6 +162,20 @@ class PlanRequest(BaseModel):
     investigation: Investigation
 
 
+class FlowRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid', strict=True)
+    scenario_id: str = Field(min_length=1, max_length=40)
+    text: str | None = Field(default=None, min_length=10, max_length=8000)
+    use_ai: bool = True
+
+
+class FlowAction(BaseModel):
+    model_config = ConfigDict(extra='forbid', strict=True)
+    action: str = Field(min_length=1, max_length=40)
+    token: str | None = Field(default=None, max_length=200)
+    draft: str | None = Field(default=None, max_length=3000)
+
+
 def verified_plan(context, original):
     try:
         return prepare_next_step(context, original)
@@ -168,6 +185,11 @@ def verified_plan(context, original):
 
 @app.get('/')
 def home(request: Request):
+    return templates.TemplateResponse(request=request, name='fluxos.html', context={})
+
+
+@app.get('/classificador')
+def classifier_page(request: Request):
     return templates.TemplateResponse(request=request, name='app.html', context={'categories': list(LABELS)})
 
 
@@ -196,6 +218,61 @@ def economy(request: Request):
     return templates.TemplateResponse(request=request, name='economia.html', context={
         'defaults': Assumptions().model_dump(), 'presets': PRESETS,
     })
+
+
+@app.get('/fluxos')
+def flows(request: Request):
+    return templates.TemplateResponse(request=request, name='fluxos.html', context={})
+
+
+@app.get('/valor')
+def process_value_page(request: Request):
+    return templates.TemplateResponse(request=request, name='valor.html',
+        context={'defaults': ProcessAssumptions().model_dump()})
+
+
+@app.post('/api/process-economics')
+def process_economics(body: ProcessAssumptions):
+    return {'assumptions': body.model_dump(), 'result': process_estimate(body)}
+
+
+@app.get('/api/flows/scenarios')
+def flow_scenarios():
+    return {'scenarios': [{k: s[k] for k in ('id', 'title', 'text', 'source')} for s in service_flow.scenarios()],
+            'ai_available': bool(key_from_env('OPENROUTER_API_KEY'))}
+
+
+@app.post('/api/flows')
+async def start_flow(body: FlowRequest):
+    scenario = service_flow.scenario_for(body.scenario_id)
+    if scenario is None:
+        raise HTTPException(422, 'Cenário de demonstração desconhecido.')
+    text = body.text if body.text is not None else scenario['text']
+    if len(text.strip()) < 10:
+        raise HTTPException(422, 'Informe o pedido com pelo menos 10 caracteres.')
+    signals = await service_flow.extract_signals(text, body.use_ai)
+    with database() as connection:
+        return service_flow.create_run(connection, scenario, text, signals)
+
+
+@app.get('/api/flows/{run_id}')
+def read_flow(run_id: str):
+    try:
+        with database() as connection:
+            return service_flow.get_run(connection, run_id)
+    except LookupError:
+        raise HTTPException(404, 'Execução não encontrada.') from None
+
+
+@app.post('/api/flows/{run_id}/actions')
+def act_on_flow(run_id: str, body: FlowAction):
+    try:
+        with database() as connection:
+            return service_flow.transition(connection, run_id, body.action, body.token, body.draft)
+    except LookupError:
+        raise HTTPException(404, 'Execução não encontrada.') from None
+    except ValueError as error:
+        raise HTTPException(409, str(error)) from None
 
 
 @app.post('/api/economics')

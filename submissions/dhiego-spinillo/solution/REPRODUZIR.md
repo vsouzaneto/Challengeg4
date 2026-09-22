@@ -72,3 +72,9 @@ A comparação está documentada em [comparacao.md](comparacao.md), com scripts,
 ## Oportunidades e cenários econômicos
 
 `python solution/mapear_oportunidades.py data/dataset2.zip > solution/reports/oportunidades.json` reproduz as buscas integrais. Contagens de menções não são elegibilidade. Acesse `/resumo` para síntese e `/economia` para calcular hipóteses sem chamada a IA. `PYTHONPATH=solution pytest -q solution/tests` inclui limites e fórmulas financeiras.
+
+## Três caminhos executáveis
+
+Acesse `/fluxos`, escolha um dos sete cenários e processe. Com IA ligada, somente o texto é enviado ao OpenRouter; desligada, aparecem regras lexicais explicitamente. Os adaptadores consultam fixtures locais e não acessam clientes reais. O autosserviço permite solicitar, concluir no provedor simulado e reportar falha; respostas preparadas podem ser editadas/aprovadas; investigação permanece em aberto. Cada execução possui registros isolados no SQLite persistente. Não inserir senhas reais.
+
+`python solution/avaliar_fluxos.py` executa sete chamadas de desenvolvimento com a chave configurada e grava `solution/reports/fluxos-desenvolvimento.json`. Não é benchmark independente; reexecutar consome API e substitui o relatório. `/valor` calcula contribuições por processo sem chamadas a IA.
