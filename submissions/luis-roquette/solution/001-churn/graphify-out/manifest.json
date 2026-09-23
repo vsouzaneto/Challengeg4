@@ -1,0 +1,410 @@
+{
+  "app.py": {
+    "mtime": 1790169376.3863792,
+    "seen": 1790171519.6326752,
+    "ast_hash": "38fd5716d2d84ce67316afe885f94d97",
+    "semantic_hash": "38fd5716d2d84ce67316afe885f94d97"
+  },
+  "artifacts/ceo_answer.json": {
+    "mtime": 1790169376.389815,
+    "seen": 1790171519.632677,
+    "ast_hash": "06ea0b6421a6eda7d48a52592a56debf",
+    "semantic_hash": "06ea0b6421a6eda7d48a52592a56debf"
+  },
+  "artifacts/model_evaluation.json": {
+    "mtime": 1790169376.3901863,
+    "seen": 1790171519.6326778,
+    "ast_hash": "a2770e594e5d030f189d393bcbb39f48",
+    "semantic_hash": "a2770e594e5d030f189d393bcbb39f48"
+  },
+  "artifacts/quality_report.json": {
+    "mtime": 1790169376.3906953,
+    "seen": 1790171519.632679,
+    "ast_hash": "5ff839ecf308179f9ff22d210c2fd88c",
+    "semantic_hash": "5ff839ecf308179f9ff22d210c2fd88c"
+  },
+  "artifacts/run_manifest.json": {
+    "mtime": 1790169376.39091,
+    "seen": 1790171519.632679,
+    "ast_hash": "eb918123450394788a0b990a38f44817",
+    "semantic_hash": "eb918123450394788a0b990a38f44817"
+  },
+  "pyproject.toml": {
+    "mtime": 1790169376.6239612,
+    "seen": 1790171519.632679,
+    "ast_hash": "aa5fcb89340116e4c15e81b17fba360e",
+    "semantic_hash": "aa5fcb89340116e4c15e81b17fba360e"
+  },
+  "src/ravenstack_churn/__init__.py": {
+    "mtime": 1790169376.6241446,
+    "seen": 1790171519.63268,
+    "ast_hash": "7fa1a6893ccbe3b130905f02cd91ab99",
+    "semantic_hash": "7fa1a6893ccbe3b130905f02cd91ab99"
+  },
+  "src/ravenstack_churn/cli.py": {
+    "mtime": 1790169376.6242006,
+    "seen": 1790171519.63268,
+    "ast_hash": "f48ce28b3e4b77fec386ee51b46067e8",
+    "semantic_hash": "f48ce28b3e4b77fec386ee51b46067e8"
+  },
+  "src/ravenstack_churn/config.py": {
+    "mtime": 1790169376.624253,
+    "seen": 1790171519.63268,
+    "ast_hash": "ddd6542070d414a501953611d03d38b2",
+    "semantic_hash": "ddd6542070d414a501953611d03d38b2"
+  },
+  "src/ravenstack_churn/contracts.py": {
+    "mtime": 1790169376.6243281,
+    "seen": 1790171519.632681,
+    "ast_hash": "779f949eeca7a6a4b0461db0d5bceaa7",
+    "semantic_hash": "779f949eeca7a6a4b0461db0d5bceaa7"
+  },
+  "src/ravenstack_churn/diagnosis.py": {
+    "mtime": 1790169376.624437,
+    "seen": 1790171519.632681,
+    "ast_hash": "0e35a689ca8b86346b0abb94b09a1235",
+    "semantic_hash": "0e35a689ca8b86346b0abb94b09a1235"
+  },
+  "src/ravenstack_churn/modeling.py": {
+    "mtime": 1790169376.6245143,
+    "seen": 1790171519.632681,
+    "ast_hash": "20df25a76d4d0e39a34fee122f534709",
+    "semantic_hash": "20df25a76d4d0e39a34fee122f534709"
+  },
+  "src/ravenstack_churn/panel.py": {
+    "mtime": 1790169376.6245728,
+    "seen": 1790171519.632681,
+    "ast_hash": "79085e47185db2fbea5fcfcdb059075f",
+    "semantic_hash": "79085e47185db2fbea5fcfcdb059075f"
+  },
+  "src/ravenstack_churn/publish.py": {
+    "mtime": 1790169376.624899,
+    "seen": 1790171519.632682,
+    "ast_hash": "9a134b9b4f7956e79f0465aabb37b8c1",
+    "semantic_hash": "9a134b9b4f7956e79f0465aabb37b8c1"
+  },
+  "src/ravenstack_churn/quality.py": {
+    "mtime": 1790169376.624958,
+    "seen": 1790171519.632682,
+    "ast_hash": "f64d8b7107debf3ad44bd033cee22fdf",
+    "semantic_hash": "f64d8b7107debf3ad44bd033cee22fdf"
+  },
+  "tests/conftest.py": {
+    "mtime": 1790169376.6250424,
+    "seen": 1790171519.632682,
+    "ast_hash": "ad053321a3147d7af3700a106440d2c4",
+    "semantic_hash": "ad053321a3147d7af3700a106440d2c4"
+  },
+  "tests/test_app.py": {
+    "mtime": 1790169376.6251206,
+    "seen": 1790171519.632683,
+    "ast_hash": "c2307d5553fd9b2385750a6a4d1313d1",
+    "semantic_hash": "c2307d5553fd9b2385750a6a4d1313d1"
+  },
+  "tests/test_contracts.py": {
+    "mtime": 1790169376.625167,
+    "seen": 1790171519.632683,
+    "ast_hash": "4c61b135d13bd929185ee784ec98d824",
+    "semantic_hash": "4c61b135d13bd929185ee784ec98d824"
+  },
+  "tests/test_diagnosis.py": {
+    "mtime": 1790169376.6254668,
+    "seen": 1790171519.632683,
+    "ast_hash": "18dce27d4daaf7803e5173bba1aedb4e",
+    "semantic_hash": "18dce27d4daaf7803e5173bba1aedb4e"
+  },
+  "tests/test_modeling.py": {
+    "mtime": 1790169376.6255167,
+    "seen": 1790171519.632683,
+    "ast_hash": "1cf8c0ad4a7c364843eebc41dab709c4",
+    "semantic_hash": "1cf8c0ad4a7c364843eebc41dab709c4"
+  },
+  "tests/test_panel.py": {
+    "mtime": 1790169376.6255794,
+    "seen": 1790171519.632684,
+    "ast_hash": "0714ecd70bb7938a49cd12e75342a58e",
+    "semantic_hash": "0714ecd70bb7938a49cd12e75342a58e"
+  },
+  "tests/test_publish.py": {
+    "mtime": 1790169376.625853,
+    "seen": 1790171519.632684,
+    "ast_hash": "73b856102708e9155efd1e48444a2d66",
+    "semantic_hash": "73b856102708e9155efd1e48444a2d66"
+  },
+  "tests/test_quality.py": {
+    "mtime": 1790169376.6258976,
+    "seen": 1790171519.632684,
+    "ast_hash": "dfb4e6022c5b6ba80158c03b72ba95d1",
+    "semantic_hash": "dfb4e6022c5b6ba80158c03b72ba95d1"
+  },
+  ".claude/skills/answer-first-churn/SKILL.md": {
+    "mtime": 1790169376.3846908,
+    "seen": 1790171519.632685,
+    "ast_hash": "d9e4d9ac91384b0c6d32b3fbf029f5d5",
+    "semantic_hash": "d9e4d9ac91384b0c6d32b3fbf029f5d5"
+  },
+  ".specs/analysis/analysis-implement-ceo-answer-architecture.md": {
+    "mtime": 1790169376.3848388,
+    "seen": 1790171519.632685,
+    "ast_hash": "0d32c456d7be6c6e5960664d315ab4f8",
+    "semantic_hash": "0d32c456d7be6c6e5960664d315ab4f8"
+  },
+  ".specs/scratchpad/2026-09-22-answer-first-churn-research.md": {
+    "mtime": 1790169376.3849797,
+    "seen": 1790171519.632685,
+    "ast_hash": "1d184e8791c28de8c53cecfc890832c7",
+    "semantic_hash": "1d184e8791c28de8c53cecfc890832c7"
+  },
+  ".specs/scratchpad/ceo-architecture-20260922.md": {
+    "mtime": 1790169376.385034,
+    "seen": 1790171519.632685,
+    "ast_hash": "396a332315a15a456f6c16d476a3dd2a",
+    "semantic_hash": "396a332315a15a456f6c16d476a3dd2a"
+  },
+  ".specs/scratchpad/ceo-business-analysis-20260922.md": {
+    "mtime": 1790169376.385091,
+    "seen": 1790171519.6326861,
+    "ast_hash": "8a70b75e2ad15edbd0fd4e76c7ed5ac9",
+    "semantic_hash": "8a70b75e2ad15edbd0fd4e76c7ed5ac9"
+  },
+  ".specs/scratchpad/ceo-code-analysis-20260922.md": {
+    "mtime": 1790169376.385141,
+    "seen": 1790171519.6326861,
+    "ast_hash": "647dbade67949d20687ee3cdd45cc88c",
+    "semantic_hash": "647dbade67949d20687ee3cdd45cc88c"
+  },
+  ".specs/scratchpad/ceo-decomposition-20260922-6c9a.md": {
+    "mtime": 1790169376.3851876,
+    "seen": 1790171519.6326861,
+    "ast_hash": "dfbfaab4e833367cd1c350b31044b1be",
+    "semantic_hash": "dfbfaab4e833367cd1c350b31044b1be"
+  },
+  ".specs/sub-tasks/implement-ceo-answer-architecture/01-unify-terminal-selection.md": {
+    "mtime": 1790169376.3853016,
+    "seen": 1790171519.632687,
+    "ast_hash": "b93cf714f010345ef9e063b66ea3b2df",
+    "semantic_hash": "b93cf714f010345ef9e063b66ea3b2df"
+  },
+  ".specs/sub-tasks/implement-ceo-answer-architecture/02-build-historical-evidence.md": {
+    "mtime": 1790169376.3853662,
+    "seen": 1790171519.632687,
+    "ast_hash": "86c0d08dc1f46cd070db0563088da269",
+    "semantic_hash": "86c0d08dc1f46cd070db0563088da269"
+  },
+  ".specs/sub-tasks/implement-ceo-answer-architecture/03-build-event-aligned-panel.md": {
+    "mtime": 1790169376.3854294,
+    "seen": 1790171519.632687,
+    "ast_hash": "e47fbf08c11a0bbc7b48ae8c9116ab2e",
+    "semantic_hash": "e47fbf08c11a0bbc7b48ae8c9116ab2e"
+  },
+  ".specs/sub-tasks/implement-ceo-answer-architecture/04-integrate-evidence-gates.md": {
+    "mtime": 1790169376.385495,
+    "seen": 1790171519.632687,
+    "ast_hash": "98d54c78a4b6b4bdfe5411676256eb9b",
+    "semantic_hash": "98d54c78a4b6b4bdfe5411676256eb9b"
+  },
+  ".specs/sub-tasks/implement-ceo-answer-architecture/05-publish-canonical-ceo-answer.md": {
+    "mtime": 1790169376.3855665,
+    "seen": 1790171519.632688,
+    "ast_hash": "e646c38821843948f24a99b274a17eb4",
+    "semantic_hash": "e646c38821843948f24a99b274a17eb4"
+  },
+  ".specs/sub-tasks/implement-ceo-answer-architecture/06-render-ceo-answer.md": {
+    "mtime": 1790169376.3856297,
+    "seen": 1790171519.632688,
+    "ast_hash": "92a6b8a8289fb89932f666c9a5dbff23",
+    "semantic_hash": "92a6b8a8289fb89932f666c9a5dbff23"
+  },
+  ".specs/sub-tasks/implement-ceo-answer-architecture/07-document-and-close-reproduction-gate.md": {
+    "mtime": 1790169376.3856928,
+    "seen": 1790171519.632688,
+    "ast_hash": "4deef1e3bc052a88a8e6d0e5c0c82931",
+    "semantic_hash": "4deef1e3bc052a88a8e6d0e5c0c82931"
+  },
+  ".specs/tasks/done/raise-ceo-answer-to-9-5.feature.md": {
+    "mtime": 1790169376.3858058,
+    "seen": 1790171519.632688,
+    "ast_hash": "81a738ace21d1cb603161d5ac50a3936",
+    "semantic_hash": "81a738ace21d1cb603161d5ac50a3936"
+  },
+  ".specs/tasks/in-progress/implement-ceo-answer-architecture.feature.md": {
+    "mtime": 1790169376.3859289,
+    "seen": 1790171519.632689,
+    "ast_hash": "836e076030662a6b71c1c1efb0d0c94c",
+    "semantic_hash": "836e076030662a6b71c1c1efb0d0c94c"
+  },
+  ".specs/tasks/in-progress/implement-churn-diagnostic.feature.md": {
+    "mtime": 1790169376.3860304,
+    "seen": 1790171519.632689,
+    "ast_hash": "dc9e88d97222f48488c7d5b3069d19c7",
+    "semantic_hash": "dc9e88d97222f48488c7d5b3069d19c7"
+  },
+  ".specs/tasks/todo/package-challenge-001-deliverables.feature.md": {
+    "mtime": 1790169376.3861206,
+    "seen": 1790171519.632689,
+    "ast_hash": "c143efdaa99725ae5a7d3fc067f2aad6",
+    "semantic_hash": "c143efdaa99725ae5a7d3fc067f2aad6"
+  },
+  "README.md": {
+    "mtime": 1790169376.3862934,
+    "seen": 1790171519.632689,
+    "ast_hash": "e72ecc2569ae5d7227562c0ae57be74e",
+    "semantic_hash": "e72ecc2569ae5d7227562c0ae57be74e"
+  },
+  "artifacts/report.md": {
+    "mtime": 1790169376.3908565,
+    "seen": 1790171519.63269,
+    "ast_hash": "fc8e7c54d560bf84759bbb3aef6f2cd4",
+    "semantic_hash": "fc8e7c54d560bf84759bbb3aef6f2cd4"
+  },
+  "data/README.md": {
+    "mtime": 1790169376.3910358,
+    "seen": 1790171519.63269,
+    "ast_hash": "749851e2d49599130ac3a021fdf01e4b",
+    "semantic_hash": "749851e2d49599130ac3a021fdf01e4b"
+  },
+  "deliverables/arcade/README.md": {
+    "mtime": 1790169376.3954575,
+    "seen": 1790171519.632691,
+    "ast_hash": "ebfa137b69b69d0f0a4812c7adf95fed",
+    "semantic_hash": "ebfa137b69b69d0f0a4812c7adf95fed"
+  },
+  "deliverables/arcade/arcade-script.md": {
+    "mtime": 1790169376.3957894,
+    "seen": 1790171519.632691,
+    "ast_hash": "835ab6788b08a80cc3fd11e0631ffbc8",
+    "semantic_hash": "835ab6788b08a80cc3fd11e0631ffbc8"
+  },
+  "deliverables/delivery-brief.md": {
+    "mtime": 1790169376.3963013,
+    "seen": 1790171519.632691,
+    "ast_hash": "3715fb717650a273a02649aca865772f",
+    "semantic_hash": "3715fb717650a273a02649aca865772f"
+  },
+  "deliverables/delivery-manifest.md": {
+    "mtime": 1790174679.710767,
+    "seen": 1790196238.622411,
+    "ast_hash": "d3ed2dddee83c2a83df4f3d13d01aa55",
+    "semantic_hash": "d3ed2dddee83c2a83df4f3d13d01aa55"
+  },
+  "deliverables/infographic-philosophy.md": {
+    "mtime": 1790169376.3991454,
+    "seen": 1790171519.6326919,
+    "ast_hash": "2dbfd95dae6c85282e725b96926f166f",
+    "semantic_hash": "2dbfd95dae6c85282e725b96926f166f"
+  },
+  "deliverables/notebooklm/README.md": {
+    "mtime": 1790169376.399226,
+    "seen": 1790171519.6326919,
+    "ast_hash": "a5b28065990763cbc01c662be4220920",
+    "semantic_hash": "a5b28065990763cbc01c662be4220920"
+  },
+  "deliverables/notebooklm/generation-prompts.md": {
+    "mtime": 1790169376.3994672,
+    "seen": 1790171519.6326919,
+    "ast_hash": "d7d27d8a1b70f9006d4229a91ea7388e",
+    "semantic_hash": "d7d27d8a1b70f9006d4229a91ea7388e"
+  },
+  "deliverables/notebooklm/source-pack.md": {
+    "mtime": 1790169376.4499376,
+    "seen": 1790171519.6326919,
+    "ast_hash": "13f6019611519c4ea7600c5d3534004d",
+    "semantic_hash": "13f6019611519c4ea7600c5d3534004d"
+  },
+  "deliverables/video/README.md": {
+    "mtime": 1790169376.450036,
+    "seen": 1790171519.632693,
+    "ast_hash": "1245c71900a238885fb5544956617724",
+    "semantic_hash": "1245c71900a238885fb5544956617724"
+  },
+  "docs/executive-answer-rubric.md": {
+    "mtime": 1790169376.6227162,
+    "seen": 1790171519.632693,
+    "ast_hash": "b2e3221d6dc7db4406233715d1d84e39",
+    "semantic_hash": "b2e3221d6dc7db4406233715d1d84e39"
+  },
+  "docs/security-beta-audit.md": {
+    "mtime": 1790169376.6228244,
+    "seen": 1790171519.632693,
+    "ast_hash": "702ae0617cf37cce739f088a4e86eec5",
+    "semantic_hash": "702ae0617cf37cce739f088a4e86eec5"
+  },
+  "docs/superpowers/plans/2026-09-21-ravenstack-churn-diagnostic.md": {
+    "mtime": 1790169376.6229854,
+    "seen": 1790171519.632694,
+    "ast_hash": "458508909c5db91a77f7d996b024ebca",
+    "semantic_hash": "458508909c5db91a77f7d996b024ebca"
+  },
+  "docs/superpowers/plans/2026-09-22-ceo-answer-architecture.md": {
+    "mtime": 1790169376.6232953,
+    "seen": 1790171519.632694,
+    "ast_hash": "1e9bdd98e4c654cc017004feda5c94fa",
+    "semantic_hash": "1e9bdd98e4c654cc017004feda5c94fa"
+  },
+  "docs/superpowers/plans/2026-09-22-challenge-001-delivery-package.md": {
+    "mtime": 1790169376.6234462,
+    "seen": 1790171519.632694,
+    "ast_hash": "646b7d4710ffe68ec8eb4143030f4f7b",
+    "semantic_hash": "646b7d4710ffe68ec8eb4143030f4f7b"
+  },
+  "docs/superpowers/plans/2026-09-22-decision-grade-ceo-answer.md": {
+    "mtime": 1790169376.623706,
+    "seen": 1790171519.632694,
+    "ast_hash": "93525e8050f4b8b7c641506b4165b700",
+    "semantic_hash": "93525e8050f4b8b7c641506b4165b700"
+  },
+  "docs/superpowers/plans/2026-09-22-lean-delivery-package.md": {
+    "mtime": 1790169376.6239038,
+    "seen": 1790171519.632695,
+    "ast_hash": "47b5f9c07777e89357169ec67e1a2f38",
+    "semantic_hash": "47b5f9c07777e89357169ec67e1a2f38"
+  },
+  "requirements.txt": {
+    "mtime": 1790169376.6240163,
+    "seen": 1790171519.632695,
+    "ast_hash": "35613e8e1f3dfc86e0da0eb64e587d68",
+    "semantic_hash": "35613e8e1f3dfc86e0da0eb64e587d68"
+  },
+  "deliverables/infographic-challenge-001.pdf": {
+    "mtime": 1790169376.3967226,
+    "seen": 1790171519.6326962,
+    "ast_hash": "b94b454ed8d8f6fcd24f13a41b4f8a2a",
+    "semantic_hash": "b94b454ed8d8f6fcd24f13a41b4f8a2a"
+  },
+  "deliverables/infographic-challenge-001.png": {
+    "mtime": 1790169376.3985856,
+    "seen": 1790171519.6326962,
+    "ast_hash": "d697d251b06defe6eea0c44eb343aa0f",
+    "semantic_hash": "d697d251b06defe6eea0c44eb343aa0f"
+  },
+  "deliverables/video/poster.png": {
+    "mtime": 1790169376.6224875,
+    "seen": 1790171519.6326962,
+    "ast_hash": "e788bb85dac92b5a591063054143cb49",
+    "semantic_hash": "e788bb85dac92b5a591063054143cb49"
+  },
+  "deliverables/notebooklm/paradoxo-de-churn-do-ceo.mp4": {
+    "mtime": 1790169376.4427583,
+    "seen": 1790171519.632697,
+    "ast_hash": "ccd41c786cb296be4eecb75dfef35a4b",
+    "semantic_hash": "ccd41c786cb296be4eecb75dfef35a4b"
+  },
+  "deliverables/video/architecture-overview.mp4": {
+    "mtime": 1790169376.6161072,
+    "seen": 1790171519.632697,
+    "ast_hash": "01d03d869a834b19abd03cfaa5eddd3c",
+    "semantic_hash": "01d03d869a834b19abd03cfaa5eddd3c"
+  },
+  "SUBMISSION.md": {
+    "mtime": 1790195192.9037669,
+    "seen": 1790196238.62241,
+    "ast_hash": "d2426c5df8c6011d84e081afd1f2ad7c",
+    "semantic_hash": "d2426c5df8c6011d84e081afd1f2ad7c"
+  },
+  "deliverables/infographic-challenge-001.svg": {
+    "mtime": 1790169376.399092,
+    "seen": 1790196238.622411,
+    "ast_hash": "d7b7cdaf7fa99f9f79124dd57f430d20",
+    "semantic_hash": "d7b7cdaf7fa99f9f79124dd57f430d20"
+  }
+}

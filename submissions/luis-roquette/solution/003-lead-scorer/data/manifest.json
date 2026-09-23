@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "dataset_version": 1,
+  "acquired_on": "2026-09-21",
+  "archive_sha256": "74d535826330b616758ebb6bb393abf701a5126364a72fbe71003cb6a7a87a9c",
+  "currency": null,
+  "files": {
+    "accounts.csv": {
+      "headers": [
+        "account",
+        "sector",
+        "year_established",
+        "revenue",
+        "employees",
+        "office_location",
+        "subsidiary_of"
+      ],
+      "sha256": "e5242324768a563fc632cddfed49a29acbbf2892b8a3c6453cc9650de9ae0358",
+      "rows": 85,
+      "source_url": "https://www.kaggle.com/datasets/agungpambudi/crm-sales-predictive-analytics",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "download_url": "https://www.kaggle.com/api/v1/datasets/download/agungpambudi/crm-sales-predictive-analytics?datasetVersionNumber=1&filename=accounts.csv"
+    },
+    "products.csv": {
+      "headers": [
+        "product",
+        "series",
+        "sales_price"
+      ],
+      "sha256": "7c1c8cbbdb6d4c286902e1985eeb529a36366d6a43f43cd4a93c4b1da2a6eb84",
+      "rows": 7,
+      "source_url": "https://www.kaggle.com/datasets/agungpambudi/crm-sales-predictive-analytics",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "download_url": "https://www.kaggle.com/api/v1/datasets/download/agungpambudi/crm-sales-predictive-analytics?datasetVersionNumber=1&filename=products.csv"
+    },
+    "sales_teams.csv": {
+      "headers": [
+        "sales_agent",
+        "manager",
+        "regional_office"
+      ],
+      "sha256": "aeff1272ebe196f5a27e3fc0578aa27abf48ed9ae461aa344fb95990e5ad8bd1",
+      "rows": 35,
+      "source_url": "https://www.kaggle.com/datasets/agungpambudi/crm-sales-predictive-analytics",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "download_url": "https://www.kaggle.com/api/v1/datasets/download/agungpambudi/crm-sales-predictive-analytics?datasetVersionNumber=1&filename=sales_teams.csv"
+    },
+    "sales_pipeline.csv": {
+      "headers": [
+        "opportunity_id",
+        "sales_agent",
+        "product",
+        "account",
+        "deal_stage",
+        "engage_date",
+        "close_date",
+        "close_value"
+      ],
+      "sha256": "825ce8f6c32d4009548b468df3173d55a46fd73f2531f532c5459371dc52adf2",
+      "rows": 8800,
+      "source_url": "https://www.kaggle.com/datasets/agungpambudi/crm-sales-predictive-analytics",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "download_url": "https://www.kaggle.com/api/v1/datasets/download/agungpambudi/crm-sales-predictive-analytics?datasetVersionNumber=1&filename=sales_pipeline.csv"
+    }
+  }
+}

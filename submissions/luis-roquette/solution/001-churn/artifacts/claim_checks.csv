@@ -1,0 +1,7 @@
+claim_id,cohort,start_value,end_value,slope,status,coverage,cutoff_start,cutoff_end,limitation
+C-usage-growth,overall,0.33572854291417165,0.49333333333333335,0.03887586671015162,up,0.8840970350404312,2024-06-30,2024-11-30,Tendência descritiva; não identifica causa.
+C-satisfaction-ok,overall,3.9591836734693877,4.020833333333333,,concern,0.6332574031890661,2024-06-30,2024-11-30,Média ponderada somente entre tickets com resposta.
+C-usage-growth,retained,0.334009009009009,0.5151079136690647,0.04298928502790374,up,0.9064748201438849,2024-06-30,2024-11-30,Tendência descritiva; não identifica causa.
+C-satisfaction-ok,retained,3.8536585365853657,4.044444444444444,,concern,0.6306532663316583,2024-06-30,2024-11-30,Média ponderada somente entre tickets com resposta.
+C-usage-growth,churn_next_30d,0.3491228070175439,0.30416666666666664,0.0017029180093089812,down,0.7285714285714285,2024-06-30,2024-11-30,Tendência descritiva; não identifica causa.
+C-satisfaction-ok,churn_next_30d,4.5,3.6666666666666665,,concern,0.6585365853658537,2024-06-30,2024-11-30,Média ponderada somente entre tickets com resposta.

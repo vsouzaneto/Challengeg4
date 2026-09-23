@@ -1,0 +1,63 @@
+{
+  "analysis_id": "886cfb2bfce4ea7c32938599d7af19088b38616ed4ddbd214a2ad653c854e973",
+  "artifact_checksums": {
+    "account_panel.csv": "ca816b9f97f18d65bc93eee9d07145edf5ec0d48dc45f034050fdd4d3c5847c2",
+    "account_queue.csv": "9fd1d7b8aa462317b7146e11de82c9ccb88d1fb459b6e0fafe1b74ea72edbc32",
+    "account_watchlist.csv": "5da3d0dd1577f48c31992cf9163f41ae5a299115772193c3efe42dcddbbba769",
+    "ceo_answer.json": "c375176002f501920fe88571cb01f80ecf55227df0ee853fc84c15e49aec48f1",
+    "claim_checks.csv": "454837470b4f487baaf011966e24de1bfcdb1588d5b0e756efd9589540b16778",
+    "event_cohort_metrics.csv": "28ced41c8c113ee2d5eff3c8375cdbf6ba4c8f191813a4540c97cbc428abb42a",
+    "findings.csv": "b64eec764f9cbf53fa34c4529212005c98809bc434f9da40667d303e0f64e862",
+    "mechanism_scorecard.csv": "d8abe5511054a17c0dd8f99c39a1038e09d1732c4b2b5c8e20737eaca06749d2",
+    "model_evaluation.json": "4a2b191cfe46147fee136a8a59c0c82698801c45ecd2896f31ab23aa7dc6911d",
+    "monthly_churn.csv": "a89466cbed4c816f024bd7f1d52f40445c037571c1c604c9a5d7a38d14554331",
+    "quality_report.json": "7b689cccf0b51fd9e2b6fc40776c63de05b0a29074ddf77776565b98cb695bb9",
+    "reason_distribution.csv": "471a551feb0af34859d33ce8cc5c3742a426ba506a1d3af96f8e9244fe3143cf",
+    "report.md": "7386e7b2399770166008a5f22890982ac46e1660347529c58a94c33be9445ba4",
+    "segment_metrics.csv": "3245cae0b716b09280606f6e785b241a7285eedc6775ef5e77a06ec11a12fee9"
+  },
+  "generated_at_utc": "2026-09-22T23:30:14.117797+00:00",
+  "input_checksums": {
+    "ravenstack_accounts.csv": "348d8ba906b7776894b5236b2e7aa91a503d41670dbc9aad30c37b503c9abef5",
+    "ravenstack_churn_events.csv": "6391c41d8291b7b4845ec9a84d3837c2ed230a33a32a854ec33d4e66dc150940",
+    "ravenstack_feature_usage.csv": "c081da2be8caf987d07f0f79ceb0619aba523d819529230ed6df77984fa21d4e",
+    "ravenstack_subscriptions.csv": "dcf1d93ca9a35e0dcba0ab686d255f0e9ec26512970bbf0944cf19cbef2d751a",
+    "ravenstack_support_tickets.csv": "ba0006951479771ee9f93c98789c96bc5fec892cf11f867afb28194f0b76d220"
+  },
+  "parameters": {
+    "chronology_modes": [
+      "observed",
+      "strict"
+    ],
+    "cutoffs": [
+      "2023-04-30",
+      "2024-11-30"
+    ],
+    "label_policy": "first_valid_non_reactivation_event",
+    "min_coverage": 0.7,
+    "min_segment_accounts": 30,
+    "min_segment_churns": 10,
+    "observation_end": "2024-12-31",
+    "scoring_cutoff": "2024-12-31",
+    "windows_days": [
+      7,
+      30,
+      90
+    ]
+  },
+  "publish_model": false,
+  "runtime": {
+    "dependencies": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.6",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "statsmodels": "0.15.0",
+      "streamlit": "1.64.0"
+    },
+    "python": "3.12.3"
+  },
+  "schema_version": 1,
+  "source_git_sha": "e6cd568b96c24ffe56a9aaeb96c8d9135587af2c",
+  "test_status": "passed"
+}

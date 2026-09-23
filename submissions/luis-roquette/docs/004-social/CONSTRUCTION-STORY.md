@@ -1,0 +1,126 @@
+# Construção do Cockpit de Social Media
+
+## Resumo executivo
+
+Eu parti de uma pergunta ampla sobre 52.214 posts e construí um cockpit local que transforma dados históricos em três decisões claras para o Head de Marketing. O resultado não inventa um vencedor onde a evidência é fraca: mantém o mix de conteúdo, impede a expansão de patrocínio sem prova suficiente e propõe um programa controlado de 30 dias para validar o melhor candidato elegível.
+
+A construção seguiu uma metodologia própria de trabalho com IA. Primeiro absorvi o briefing em ciclos, depois pesquisei o problema e as alternativas. Em seguida, conduzi 24 ondas socráticas adaptativas, escrevi a SPEC, refinei o plano, implementei por feedback loops e submeti o resultado a rodadas redundantes de correção e lapidação. Cada decisão, erro, correção e limite foi registrado no momento em que ocorreu.
+
+O produto final usa Python, Pandas, Streamlit e SQLite. Ele funciona localmente, recebe o CSV manualmente, apresenta evidência rastreável, registra a decisão humana e exporta a análise. O método atual é o `2.5.0`.
+
+## As três respostas do desafio
+
+| Pergunta | Resposta executiva | Evidência principal | Decisão |
+|---|---|---|---|
+| O que gera engajamento | Não existe vencedor sustentado entre os 20 contextos avaliados | Nenhum contexto passou simultaneamente amostra, materialidade, estabilidade e força; limiar material de 0,162 ponto percentual | Manter o mix e testar contextos comparáveis antes de redistribuir esforço |
+| Vale patrocinar influenciadores | Não escalar patrocínio agora | Cobertura comparável de 1,56%; 12 estratos elegíveis; 5.216 insuficientes; força do melhor contexto de 0,280 | Coletar custo e conversão, calcular o ponto de equilíbrio e testar antes de ampliar investimento |
+| Qual deve ser a estratégia | Executar um programa controlado de 30 dias | Melhor candidato elegível: YouTube, vídeo, estilo de vida, creators de 100.000 a 499.999 seguidores; três meses elegíveis, estabilidade de 100% e força de 0,950 | Medir baseline, testar, replicar ou revisar e registrar decisão humana na quarta semana |
+
+Essas respostas vêm da [análise executiva](../../solution/004-social/analysis.md) e podem ser reconstruídas no [CSV de evidências](../../solution/004-social/evidence.csv). Elas são decisões operacionais, não alegações causais. O dataset não contém investimento, receita ou conversão; portanto, não permite calcular ROI financeiro observado.
+
+## O desafio e as premissas
+
+O briefing pedia uma estratégia baseada em dados para conteúdo orgânico e patrocinado, além de uma ferramenta que ajudasse o time no cotidiano. A entrega deveria responder a quatro frentes: drivers de engajamento, desempenho do patrocínio, audiência, estratégia priorizada e um diferencial operacional.
+
+Antes de analisar os dados, transformei o próprio entendimento do problema em um gate. O prompt central foi: reavaliar o briefing até completar duas passadas consecutivas sem novos achados. Foram necessárias seis passadas; as duas últimas foram limpas. O processo encontrou exigências que uma leitura rápida poderia perder: comparar grupos equivalentes, combinar taxa e volume, não confundir patrocínio com ROI, preservar posts sem interação, comunicar limitações e manter o output compreensível em cinco minutos.
+
+Essa decisão estabeleceu a primeira regra da metodologia: a IA não deveria construir antes de provar que havia entendido. O segundo princípio foi documental: “Ganha quem documenta”. O diário passou a ter o mesmo peso do software porque permite ver como o arquiteto decidiu e como o engenheiro corrigiu a obra.
+
+Evidência: [I01 a I04 do diário](../../process-log/004-social.md).
+
+## Pesquisa antes da arquitetura
+
+Eu determinei que a escolha tecnológica só ocorreria depois de uma pesquisa obrigatória. A inspeção confirmou 52.214 linhas, 27 colunas, cinco plataformas e um período de maio de 2023 a maio de 2025. Também mostrou duas limitações decisivas: o arquivo não possui uma coluna física de engagement rate e não contém custo, receita ou conversão.
+
+Comparei Streamlit, Dash, Panel, Superset e Metabase. Streamlit foi escolhido porque atendia upload, análise, filtros, visualização e download no mesmo processo Python, dentro do prazo de 4 a 6 horas, sem frontend separado. Pandas já resolvia o motor analítico. SQLite, disponível na biblioteca padrão, atendia a persistência local das decisões. A escolha evitou serviços externos, modelo generativo em runtime e dependências sem necessidade comprovada.
+
+A decisão técnica foi mínima, mas não simplista. O sistema mantém o CSV bruto fora do banco, usa hash para identificar a fonte, executa recomendações determinísticas e conserva o estado necessário para auditar decisões e resultados posteriores.
+
+Evidência: [pesquisa comparativa](../../research/004-social.md) e [arquitetura da SPEC](../../solution/004-social/SPEC.md#architecture-overview).
+
+## Descoberta socrática em 24 ondas
+
+Antes da SPEC, conduzi uma investigação socrática por ondas adaptativas. Cada pergunta era de múltipla escolha e dependia da resposta anterior. O mínimo inicial era cinco ondas; a descoberta continuou até 24 porque ainda havia decisões materiais em aberto.
+
+As primeiras ondas definiram o produto: um sistema operacional recorrente, usado principalmente pelo Gestor de Social Media, com Head de Marketing e Analista como consumidores das sínteses. O fluxo deveria começar pelo monitoramento, combinar desvio contextual e ranking absoluto, sugerir ações e exigir decisão humana.
+
+As ondas seguintes fecharam a arquitetura: CSV manual no MVP, dashboard web local, grupos comparáveis, comparação patrocinado versus orgânico sem alegar ROI, decisão rastreável em até cinco minutos, SQLite local, persistência mínima e motor determinístico.
+
+As últimas ondas definiram confiança, navegação e operação: overview com detalhamento progressivo, prioridade por impacto, força e atualidade, reação segura a arquivos inválidos, exportação auditável e uso conservador dos rótulos de audiência. A onda final escolheu o cockpit decisório como diferencial, em vez de um modelo preditivo sem base causal.
+
+O efeito dessas perguntas foi reduzir ambiguidades antes do código. Em vez de criar três produtos para três perfis, construí uma experiência centrada no operador principal. Em vez de conectar APIs prematuramente, mantive o MVP manual. Em vez de pedir a uma IA generativa que decidisse, implementei regras reproduzíveis e decisão humana registrada.
+
+Evidência: [ledger completo das 24 ondas](../../process-log/004-social.md#i05--ledger-da-descoberta-socrática).
+
+## SDD e especificação verificável
+
+Adotei Spec Driven Development antes da implementação. A sequência foi explícita: descoberta socrática, arquitetura aprovada, SPEC, plano técnico, revisão humana e execução. A [SPEC](../../solution/004-social/SPEC.md) converteu as decisões em critérios verificáveis sobre entrada, cálculos, suficiência, prioridade, persistência, exportação, experiência e segurança.
+
+A especificação fixou conceitos que protegiam o resultado contra respostas fáceis. Engagement rate seria calculado como interações divididas por views e sempre acompanhado por volume. Benchmark contextual preservaria plataforma, formato, categoria, faixa de creator e condição de patrocínio. Confiança seria uma força heurística de evidência, nunca probabilidade estatística. Patrocínio seria uma associação observacional; custo implícito e ROI permaneceriam indisponíveis sem os dados necessários.
+
+O plano de implementação traduziu o contrato em ciclos pequenos com teste vermelho, implementação mínima, regressão e commit. Antes de codificar, o plano foi revisado em loops até completar duas passadas consecutivas sem melhoria substancial. Uma revisão posterior para elevar a qualidade executiva exigiu 15 passadas; uma lacuna encontrada na passagem 13 reiniciou o contador, e apenas as passagens 14 e 15 encerraram o gate.
+
+Evidência: [SPEC](../../solution/004-social/SPEC.md), [plano de implementação](../../solution/004-social/IMPLEMENTATION-PLAN.md) e [I63 do diário](../../process-log/004-social.md#i63--otimização-do-plano-para-a-meta-executiva-95--2026-09-22).
+
+## Execução em feedback loops
+
+A implementação seguiu uma sequência fixa: Planejamento, Revisão, Execução e Teste. Uma etapa só avançava quando o teste confirmava o contrato. Quando a evidência contrariava a expectativa, o ciclo voltava à camada responsável.
+
+O primeiro conjunto construiu validação do CSV, métricas e evidências contextuais. O segundo publicou análise, HTML e CSV rastreáveis. O terceiro adicionou SQLite para decisões humanas, revisões e resultados observados. O quarto compôs o cockpit em Streamlit. O refinamento 2.5 acrescentou ranking multivariado estável, cenário financeiro condicional, estratégia de 30 dias e respostas executivas completas.
+
+Esse método evitou concentrar todo o julgamento no final. Um exemplo ocorreu no ranking multivariado: a fixture original tinha creators insuficientes para atingir a força definida na SPEC. A revisão corrigiu a fixture antes da implementação. Outro ocorreu no cenário financeiro: ruído de ponto flutuante apareceu no primeiro ciclo verde e foi corrigido na fronteira de apresentação. Na estratégia de 30 dias, o texto do gatilho ainda não dizia de forma inequívoca o que mudaria a decisão; a regressão exigiu a correção.
+
+Cada loop deixava três provas: teste focal, regressão proporcional ao risco e registro no diário. O Git conserva a mesma evolução em commits pequenos, da pesquisa e da SPEC até o método 2.5.
+
+Evidência: [I13 a I27](../../process-log/004-social.md), [I64 a I68](../../process-log/004-social.md#i64--feedback-looping-task-7-ranking-multivariado-estável--2026-09-22) e histórico Git.
+
+## Redundância necessária e lapidação
+
+Depois que a aplicação funcionou, iniciei duas etapas diferentes. A primeira procurou erros, falhas e lacunas. A segunda buscou melhorar o que já estava correto em técnica, interface e experiência.
+
+Na Redundância Necessária, o objetivo era obter duas passadas consecutivas sem erro ou melhoria relevante. A auditoria encontrou problemas reais: datas e inteiros nas bordas, taxas indefinidas tratadas como zero, evidência grande demais para células CSV, frequência comparada no mês errado, perda de proveniência histórica, estados humanos ambíguos, fila parcial e escopos vazios indistinguíveis. Cada achado foi corrigido na origem e reiniciou o contador. O objetivo só foi encerrado na décima passagem, após duas passadas limpas.
+
+Na lapidação, o foco mudou para desempenho e experiência. A aplicação passou a reutilizar análises idênticas na sessão, limitar rótulos externos, preservar scores pequenos e renderizar texto externo literalmente. A rodada profunda de frontend adotou a direção “mesa editorial de inteligência”, com fluxo visual Importar, Interpretar e Decidir, foco de teclado, redução de movimento e layout móvel.
+
+O refinamento executivo final confrontou novamente o produto com as três perguntas do desafio. O sistema passou a mostrar veredicto, KPI, comparação, amostra, ação, força, cobertura, estabilidade, evidência e gatilho de mudança para cada resposta. O gate técnico cobriu 15 de 15 critérios.
+
+Evidência: [I29 a I61](../../process-log/004-social.md) e [I62 a I68](../../process-log/004-social.md#i62--gate-de-99-para-responder-às-três-perguntas-do-head-de-marketing--2026-09-22).
+
+## Erros que mudaram o produto
+
+| Erro ou lacuna | Como foi encontrado | Correção | Efeito no produto |
+|---|---|---|---|
+| Taxa ausente podia parecer zero | Testes de fronteira na auditoria redundante | Estado indefinido explícito e exclusão correta dos cálculos de taxa | O cockpit não transforma falta de comparador em desempenho nulo |
+| Frequência misturava semanas fora do mês analisado | Reconciliação entre SPEC, código e evidência | Apenas semanas ISO completas dentro do mesmo mês e escopo | A cadência virou hipótese comparável, não número decorativo |
+| Histórico dependia do upload ativo | Teste de reinício e mudança de fonte | Snapshot completo de método, escopo, baseline e referências | A decisão continua auditável depois do reinício |
+| Fila exportada não preservava todas as ações | Revisão do top 3 contra a fila do motor | `all_recommendations` passou a guardar a fila integral | O resumo continua curto sem apagar alternativas decidíveis |
+| Primeiro plano de 30 dias escolheu contexto sem meses elegíveis | Geração real do método 2.5 | O motor passou a publicar `best_candidate` elegível | A estratégia usa o melhor candidato testável, não o primeiro item lexical |
+| Relatório citava evidência ausente no CSV | Reconciliação independente dos IDs | Inclusão de `driver_overview` e `strategy_30d` no export | Todas as referências publicadas podem ser encontradas no artefato |
+
+Essas correções mostram a contribuição humana mais importante: definir limites e recusar conclusões mais fortes que os dados. A IA acelerou pesquisa, implementação e revisão; o julgamento determinou o que não automatizar, quando uma evidência era insuficiente e qual erro exigia retorno à arquitetura.
+
+## Resultado e limites
+
+O método 2.5 analisou 52.214 posts, 5.000 creators, 527.376.193 visualizações e 104.966.242 interações. O `evidence.csv` final contém 6.830 registros, seis recomendações, 20 contextos de drivers, quatro semanas de estratégia e referências suficientes para reconstruir a análise com o CSV original.
+
+A execução real da CLI levou 18,01 segundos. A análise fria no AppTest levou 21,404 segundos; a repetição da mesma fonte levou 0,232 segundo. Uma segunda execução produziu CSV, Markdown e HTML idênticos byte a byte. O gate focal final aprovou 45 de 45 testes, dentro de um catálogo de 146 testes.
+
+O sistema permanece um MVP local e manual. Ele não publica conteúdo, movimenta verba ou acessa APIs sociais. O dataset termina em maio de 2025 e não representa desempenho atual em 2026. Views não equivalem a alcance único. Os rótulos agregados de audiência não provam comportamento individual. A comparação de patrocínio cobre apenas 1,56% dos posts em estratos elegíveis e não calcula ROI.
+
+O único gate humano pendente é o HR-01: um Gestor de Social Media real ainda deve executar o roteiro em até cinco minutos. A IA concluiu uma simulação operacional em 97,242 segundos, mas ela não substitui a validação humana. O preflight completo também precisa ser executado no diff final antes do Pull Request.
+
+## O que esta metodologia acrescentou
+
+Minha contribuição não foi um prompt isolado. Foi desenhar um sistema de trabalho no qual a IA precisava demonstrar compreensão, pesquisar antes de escolher, perguntar antes de especificar, testar antes de avançar e documentar antes de declarar conclusão.
+
+O resultado mais importante desse processo é a rastreabilidade. O avaliador pode sair de uma decisão executiva, encontrar a evidência que a sustenta, identificar o teste que protege o comportamento e reconstruir a sequência de escolhas que levou ao produto. O cockpit é a solução; o diário mostra como ela foi construída.
+
+## Fontes da entrega
+
+- [Solução e roteiro de uso](../../solution/004-social/README.md)
+- [Análise executiva](../../solution/004-social/analysis.md)
+- [Evidências reproduzíveis](../../solution/004-social/evidence.csv)
+- [SPEC](../../solution/004-social/SPEC.md)
+- [Plano de implementação](../../solution/004-social/IMPLEMENTATION-PLAN.md)
+- [Pesquisa de framework](../../research/004-social.md)
+- [Diário integral](../../process-log/004-social.md)

@@ -1,0 +1,514 @@
+{
+  "analysis_id": "886cfb2bfce4ea7c32938599d7af19088b38616ed4ddbd214a2ad653c854e973",
+  "blocks": [
+    {
+      "actions": [],
+      "claims": [
+        {
+          "comparator_id": null,
+          "confidence_label": "Alta confiança",
+          "counterevidence": null,
+          "denominator": 1176,
+          "evidence_ids": [
+            "churn:comparison_period:2024-06-01:2024-11-30:all:all:previous_period",
+            "churn:comparison_period:2023-07-01:2023-12-31:all:all:none"
+          ],
+          "evidence_level": "confirmed_fact",
+          "id": "C-churn-change",
+          "limitation": "Taxa de período ponderada por exposições conta-mês; não é probabilidade semestral.",
+          "numerator": 146,
+          "period_end": "2024-11-30",
+          "period_start": "2024-06-01",
+          "population": "registered_at_start",
+          "statement": "A taxa mensal ponderada de churn ficou em 12.4% no período recente, variação de +7.0 pp versus a referência.",
+          "status": "up",
+          "uncertainty": {
+            "high": 0.095452030489351,
+            "level": 0.95,
+            "low": 0.045799299142985,
+            "method": "cluster_bootstrap_account",
+            "reason": null
+          },
+          "unit": "percentage_points_fraction",
+          "value": 0.07045838469616
+        },
+        {
+          "comparator_id": null,
+          "confidence_label": "Alta confiança",
+          "counterevidence": null,
+          "denominator": null,
+          "evidence_ids": [
+            "churn:comparison_period:2024-06-01:2024-11-30:all:all:previous_period"
+          ],
+          "evidence_level": "confirmed_fact",
+          "id": "C-churn-impact",
+          "limitation": "Soma do MRR conhecido nos eventos terminais; não estima receita recuperável.",
+          "numerator": null,
+          "period_end": "2024-11-30",
+          "period_start": "2024-06-01",
+          "population": "registered_at_start",
+          "statement": "O MRR perdido observado no período recente foi US$ 1.622.337; é impacto associado aos churns, não receita automaticamente recuperável.",
+          "status": "observed",
+          "uncertainty": {
+            "high": null,
+            "level": null,
+            "low": null,
+            "method": "not_estimated",
+            "reason": null
+          },
+          "unit": "monthly_recurring_revenue",
+          "value": 1622337.0
+        },
+        {
+          "comparator_id": null,
+          "confidence_label": "Alta confiança",
+          "counterevidence": null,
+          "denominator": null,
+          "evidence_ids": [
+            "claim:C-usage-growth:overall"
+          ],
+          "evidence_level": "confirmed_fact",
+          "id": "C-usage-overall",
+          "limitation": "Tendência descritiva; não identifica causa.",
+          "numerator": null,
+          "period_end": "2024-11-30",
+          "period_start": "2024-06-30",
+          "population": "accounts_with_usage_coverage",
+          "statement": "Uso diário por conta no agregado: 0.336→0.493.",
+          "status": "up",
+          "uncertainty": {
+            "high": null,
+            "level": null,
+            "low": null,
+            "method": "not_estimated",
+            "reason": null
+          },
+          "unit": "usage_events/account/day",
+          "value": 0.157604790419162
+        },
+        {
+          "comparator_id": null,
+          "confidence_label": "Alta confiança",
+          "counterevidence": null,
+          "denominator": null,
+          "evidence_ids": [
+            "claim:C-usage-growth:churn_next_30d"
+          ],
+          "evidence_level": "confirmed_fact",
+          "id": "C-usage-churn-next-30d",
+          "limitation": "Coorte retrospectiva; descreve seleção, não causa.",
+          "numerator": null,
+          "period_end": "2024-11-30",
+          "period_start": "2024-06-30",
+          "population": "retrospective_churn_next_30d",
+          "statement": "Uso diário por conta entre futuros churners de 30 dias: 0.349→0.304.",
+          "status": "down",
+          "uncertainty": {
+            "high": null,
+            "level": null,
+            "low": null,
+            "method": "not_estimated",
+            "reason": null
+          },
+          "unit": "usage_events/account/day",
+          "value": -0.044956140350877
+        }
+      ],
+      "confidence_label": "Alta confiança",
+      "id": "what_changed",
+      "summary": "A taxa mensal ponderada de churn ficou em 12.4% no período recente, variação de +7.0 pp versus a referência. O MRR perdido observado no período recente foi US$ 1.622.337; é impacto associado aos churns, não receita automaticamente recuperável. O uso cresceu no agregado (0.336→0.493), mas caiu entre as contas que churnariam em 30 dias (0.349→0.304).",
+      "title": "O que mudou"
+    },
+    {
+      "actions": [],
+      "claims": [
+        {
+          "comparator_id": null,
+          "confidence_label": "Alta confiança",
+          "counterevidence": null,
+          "denominator": null,
+          "evidence_ids": [
+            "segment:country:US"
+          ],
+          "evidence_level": "confirmed_fact",
+          "id": "C-top-segment",
+          "limitation": "Ranking descritivo restrito aos segmentos que passaram os limiares de amostra.",
+          "numerator": null,
+          "period_end": "2024-12-30",
+          "period_start": "2024-11-30",
+          "population": "diagnostic_snapshot",
+          "statement": "country / US teve risco relativo descritivo de 1.08x.",
+          "status": "descriptive",
+          "uncertainty": {
+            "high": null,
+            "level": null,
+            "low": null,
+            "method": "not_estimated",
+            "reason": null
+          },
+          "unit": "relative_risk",
+          "value": 1.075122292103424
+        }
+      ],
+      "confidence_label": "Alta confiança",
+      "id": "where",
+      "summary": "Não há concentração material demonstrada: o maior recorte elegível tem RR 1.08×, abaixo do limiar descritivo de 1,25×.",
+      "title": "Onde está concentrado"
+    },
+    {
+      "actions": [],
+      "claims": [],
+      "confidence_label": "Baixa confiança",
+      "id": "strongest_mechanism",
+      "summary": "Nenhuma hipótese passou todos os gates; não há causa identificada.",
+      "title": "Causa ainda não demonstrada"
+    },
+    {
+      "actions": [],
+      "claims": [
+        {
+          "comparator_id": null,
+          "confidence_label": "Alta confiança",
+          "counterevidence": null,
+          "denominator": null,
+          "evidence_ids": [
+            "claim:C-satisfaction-ok:overall"
+          ],
+          "evidence_level": "confirmed_fact",
+          "id": "C-satisfaction-overall",
+          "limitation": "Média ponderada somente entre tickets com resposta.",
+          "numerator": null,
+          "period_end": "2024-11-30",
+          "period_start": "2024-06-30",
+          "population": "support_ticket_respondents",
+          "statement": "Satisfação geral entre tickets respondidos: 3.96→4.02.",
+          "status": "concern",
+          "uncertainty": {
+            "high": null,
+            "level": null,
+            "low": null,
+            "method": "not_estimated",
+            "reason": null
+          },
+          "unit": "satisfaction_points/response",
+          "value": 4.020833333333333
+        },
+        {
+          "comparator_id": null,
+          "confidence_label": "Alta confiança",
+          "counterevidence": null,
+          "denominator": null,
+          "evidence_ids": [
+            "claim:C-satisfaction-ok:churn_next_30d"
+          ],
+          "evidence_level": "confirmed_fact",
+          "id": "C-satisfaction-churn-next-30d",
+          "limitation": "Coorte retrospectiva e restrita a tickets com resposta.",
+          "numerator": null,
+          "period_end": "2024-11-30",
+          "period_start": "2024-06-30",
+          "population": "support_ticket_respondents_churn_next_30d",
+          "statement": "Satisfação entre respondentes que churnariam em 30 dias: 4.50→3.67.",
+          "status": "concern",
+          "uncertainty": {
+            "high": null,
+            "level": null,
+            "low": null,
+            "method": "not_estimated",
+            "reason": null
+          },
+          "unit": "satisfaction_points/response",
+          "value": 3.666666666666667
+        },
+        {
+          "comparator_id": null,
+          "confidence_label": "Alta confiança",
+          "counterevidence": null,
+          "denominator": null,
+          "evidence_ids": [
+            "quality:report"
+          ],
+          "evidence_level": "confirmed_fact",
+          "id": "C-data-quality-anomalies",
+          "limitation": "Contagem de ocorrências por regra, não de linhas distintas.",
+          "numerator": null,
+          "period_end": "2024-12-31",
+          "period_start": null,
+          "population": "all_input_rows",
+          "statement": "A auditoria sinalizou 34.240 ocorrências de regras de qualidade; uma mesma linha pode aparecer em mais de uma regra.",
+          "status": "concern",
+          "uncertainty": {
+            "high": null,
+            "level": null,
+            "low": null,
+            "method": "not_estimated",
+            "reason": null
+          },
+          "unit": "quality_rule_hits",
+          "value": 34240
+        }
+      ],
+      "confidence_label": "Baixa confiança",
+      "id": "unknowns",
+      "summary": "A satisfação geral dos respondentes subiu de 3.96→4.02 (cobertura 63.3%); entre futuros churners, caiu de 4.50→3.67 (cobertura 65.9%). São apenas tickets respondidos; não representam toda a base. A auditoria sinalizou 34.240 ocorrências de regras de qualidade; uma mesma linha pode aparecer em mais de uma regra.",
+      "title": "O que ainda não sabemos"
+    },
+    {
+      "actions": [
+        {
+          "advance_if": "churn e coortes permanecerem estáveis após o saneamento",
+          "deadline_days": 7,
+          "description": "Sanear eventos fora do ciclo de vida e medir novamente o churn.",
+          "evidence_ids": [
+            "quality:report"
+          ],
+          "id": "A-data-integrity",
+          "kind": "validation",
+          "limitation": "Validação interna; não autoriza intervenção em clientes.",
+          "owner_role": "Head de Dados",
+          "population": "eventos e contas sinalizados pelas regras de qualidade",
+          "stop_if": "a correção alterar materialmente denominadores ou tendências",
+          "success_metric": "zero evento inválido aceito e métricas reproduzidas"
+        },
+        {
+          "advance_if": "a queda de uso anteceder churn com comparação suficiente",
+          "deadline_days": 30,
+          "description": "Acompanhar uso e churn prospectivamente por 30 dias.",
+          "evidence_ids": [
+            "claim:C-usage-growth:churn_next_30d"
+          ],
+          "id": "A-usage-prospective",
+          "kind": "validation",
+          "limitation": "Teste observacional prospectivo; não prova causalidade sozinho.",
+          "owner_role": "Head de Produto",
+          "population": "contas ativas no início da janela prospectiva",
+          "stop_if": "o sinal desaparecer ou ocorrer apenas após o churn",
+          "success_metric": "uso prévio e churn em 30 dias com cobertura >=70%"
+        },
+        {
+          "advance_if": "a diferença persistir com cobertura representativa",
+          "deadline_days": 30,
+          "description": "Medir satisfação numa amostra representativa, fora dos tickets.",
+          "evidence_ids": [
+            "claim:C-satisfaction-ok:churn_next_30d"
+          ],
+          "id": "A-satisfaction-sample",
+          "kind": "validation",
+          "limitation": "Amostragem mede associação e representatividade, não causa.",
+          "owner_role": "Head de CS",
+          "population": "amostra estratificada de contas ativas e recém-churnadas",
+          "stop_if": "a diferença sumir fora da amostra de tickets",
+          "success_metric": "resposta >=70% por estrato e diferença entre coortes"
+        }
+      ],
+      "claims": [],
+      "confidence_label": "Baixa confiança",
+      "id": "next_actions",
+      "summary": "Validar dados, uso e satisfação antes de intervir em clientes.",
+      "title": "Próximas ações"
+    }
+  ],
+  "evidence_refs": {
+    "churn:comparison_period:2023-07-01:2023-12-31:all:all:none": {
+      "artifact": "monthly_churn.csv",
+      "calculation": "build_monthly_churn:v1",
+      "columns": [
+        "churn_rate",
+        "terminal_churns",
+        "at_risk_accounts"
+      ],
+      "period_end": "2023-12-31",
+      "period_start": "2023-07-01",
+      "population": "registered_at_start",
+      "row_key": {
+        "evidence_id": "churn:comparison_period:2023-07-01:2023-12-31:all:all:none"
+      },
+      "source_tables": [
+        "accounts",
+        "subscriptions",
+        "churn_events"
+      ],
+      "unit": "account_churn/account_month"
+    },
+    "churn:comparison_period:2024-06-01:2024-11-30:all:all:previous_period": {
+      "artifact": "monthly_churn.csv",
+      "calculation": "build_monthly_churn:v1",
+      "columns": [
+        "churn_rate",
+        "rate_difference",
+        "mrr_lost",
+        "at_risk_accounts"
+      ],
+      "period_end": "2024-11-30",
+      "period_start": "2024-06-01",
+      "population": "registered_at_start",
+      "row_key": {
+        "evidence_id": "churn:comparison_period:2024-06-01:2024-11-30:all:all:previous_period"
+      },
+      "source_tables": [
+        "accounts",
+        "subscriptions",
+        "churn_events"
+      ],
+      "unit": "account_churn/account_month"
+    },
+    "claim:C-satisfaction-ok:churn_next_30d": {
+      "artifact": "claim_checks.csv",
+      "calculation": "published_table",
+      "columns": [
+        "start_value",
+        "end_value",
+        "coverage",
+        "status"
+      ],
+      "period_end": "2024-11-30",
+      "period_start": "2024-06-30",
+      "population": "declared_population",
+      "row_key": {
+        "claim_id": "C-satisfaction-ok",
+        "cohort": "churn_next_30d"
+      },
+      "source_tables": [
+        "claim_checks.csv"
+      ],
+      "unit": "declared_unit"
+    },
+    "claim:C-satisfaction-ok:overall": {
+      "artifact": "claim_checks.csv",
+      "calculation": "published_table",
+      "columns": [
+        "start_value",
+        "end_value",
+        "coverage",
+        "status"
+      ],
+      "period_end": "2024-11-30",
+      "period_start": "2024-06-30",
+      "population": "declared_population",
+      "row_key": {
+        "claim_id": "C-satisfaction-ok",
+        "cohort": "overall"
+      },
+      "source_tables": [
+        "claim_checks.csv"
+      ],
+      "unit": "declared_unit"
+    },
+    "claim:C-usage-growth:churn_next_30d": {
+      "artifact": "claim_checks.csv",
+      "calculation": "published_table",
+      "columns": [
+        "start_value",
+        "end_value",
+        "coverage",
+        "status"
+      ],
+      "period_end": "2024-11-30",
+      "period_start": "2024-06-30",
+      "population": "declared_population",
+      "row_key": {
+        "claim_id": "C-usage-growth",
+        "cohort": "churn_next_30d"
+      },
+      "source_tables": [
+        "claim_checks.csv"
+      ],
+      "unit": "declared_unit"
+    },
+    "claim:C-usage-growth:overall": {
+      "artifact": "claim_checks.csv",
+      "calculation": "published_table",
+      "columns": [
+        "start_value",
+        "end_value",
+        "coverage",
+        "status"
+      ],
+      "period_end": "2024-11-30",
+      "period_start": "2024-06-30",
+      "population": "declared_population",
+      "row_key": {
+        "claim_id": "C-usage-growth",
+        "cohort": "overall"
+      },
+      "source_tables": [
+        "claim_checks.csv"
+      ],
+      "unit": "declared_unit"
+    },
+    "quality:report": {
+      "artifact": "quality_report.json",
+      "calculation": "build_quality_report",
+      "columns": [
+        "rows",
+        "contradictions"
+      ],
+      "period_end": "2024-12-31",
+      "period_start": null,
+      "population": "all_input_rows",
+      "row_key": {
+        "scope": "quality_report"
+      },
+      "source_tables": [
+        "accounts",
+        "churn_events",
+        "feature_usage",
+        "subscriptions",
+        "support_tickets"
+      ],
+      "unit": "data_quality_rules"
+    },
+    "segment:country:US": {
+      "artifact": "segment_metrics.csv",
+      "calculation": "published_table",
+      "columns": [
+        "churn_rate",
+        "relative_risk",
+        "mrr_lost",
+        "confidence"
+      ],
+      "period_end": null,
+      "period_start": null,
+      "population": "declared_population",
+      "row_key": {
+        "dimension": "country",
+        "segment": "US"
+      },
+      "source_tables": [
+        "segment_metrics.csv"
+      ],
+      "unit": "declared_unit"
+    }
+  },
+  "headline": "Resposta curta: A taxa mensal ponderada de churn ficou em 12.4% no período recente, variação de +7.0 pp versus a referência. O MRR perdido observado no período recente foi US$ 1.622.337; é impacto associado aos churns, não receita automaticamente recuperável. O uso cresceu no agregado (0.336→0.493), mas caiu entre as contas que churnariam em 30 dias (0.349→0.304). Nenhum mecanismo passou todos os gates. Decisão: validar dados, uso e satisfação antes de intervir.",
+  "headline_claim_ids": [
+    "C-churn-change",
+    "C-churn-impact",
+    "C-usage-overall",
+    "C-usage-churn-next-30d"
+  ],
+  "mechanism_status": "inconclusive",
+  "parameters": {
+    "chronology_modes": [
+      "observed",
+      "strict"
+    ],
+    "cutoffs": [
+      "2023-04-30",
+      "2024-11-30"
+    ],
+    "label_policy": "first_valid_non_reactivation_event",
+    "min_coverage": 0.7,
+    "min_segment_accounts": 30,
+    "min_segment_churns": 10,
+    "observation_end": "2024-12-31",
+    "scoring_cutoff": "2024-12-31",
+    "windows_days": [
+      7,
+      30,
+      90
+    ]
+  },
+  "schema_version": 1,
+  "selected_mechanism_id": null
+}

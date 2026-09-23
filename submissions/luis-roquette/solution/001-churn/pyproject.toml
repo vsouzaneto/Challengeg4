@@ -1,0 +1,29 @@
+[project]
+name = "ravenstack-churn-diagnostic"
+version = "0.1.0"
+requires-python = "==3.12.*"
+dependencies = [
+  "numpy==2.5.3",
+  "pandas==3.0.6",
+  "scikit-learn==1.9.1",
+  "scipy==1.18.1",
+  "statsmodels==0.15.0",
+  "streamlit==1.64.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest==9.1.1", "ruff==0.16.8"]
+
+[build-system]
+requires = ["setuptools==84.0.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"

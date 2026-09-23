@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="2400" viewBox="0 0 1400 2400" role="img" aria-labelledby="title desc">
+  <title id="title">De uma pergunta confusa a uma decisão confiável</title>
+  <desc id="desc">Infográfico do Challenge 001 mostrando o paradoxo do churn, oito etapas do método, evolução da qualidade, viradas humanas e resposta executiva.</desc>
+
+  <defs>
+    <style>
+      .sans { font-family: "Instrument Sans", "Helvetica Neue", Arial, sans-serif; }
+      .serif { font-family: "Instrument Serif", Georgia, serif; }
+      .mono { font-family: "Red Hat Mono", "SFMono-Regular", Consolas, monospace; }
+      .ink { fill: #17201f; }
+      .paper { fill: #f2efe7; }
+      .cream { fill: #fffaf0; }
+      .muted { fill: #53615d; }
+      .sage { fill: #557164; }
+      .signal { fill: #a63a2a; }
+      .hair { stroke: #b9b7ad; stroke-width: 1.5; }
+      .rule { stroke: #17201f; stroke-width: 2; }
+      .small { font-size: 20px; letter-spacing: 2px; }
+      .label { font-size: 22px; font-weight: 700; letter-spacing: 1px; }
+      .body { font-size: 25px; }
+      .caption { font-size: 18px; letter-spacing: .4px; }
+      .section { font-size: 52px; font-weight: 700; letter-spacing: -1px; }
+      .number { font-size: 68px; font-weight: 700; letter-spacing: -3px; }
+    </style>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#17201f" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+    <marker id="arrow-signal" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#a63a2a"/>
+    </marker>
+    <marker id="arrow-sage" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#557164"/>
+    </marker>
+  </defs>
+
+  <rect width="1400" height="2400" class="paper"/>
+  <rect width="1400" height="2400" fill="url(#grid)"/>
+  <rect x="0" y="0" width="28" height="2400" class="signal"/>
+
+  <!-- Header -->
+  <g transform="translate(92 72)">
+    <text class="mono small signal" x="0" y="0">CHALLENGE 001  /  AI MASTER</text>
+    <text class="serif ink" x="0" y="95" font-size="86" letter-spacing="-3">De uma pergunta confusa</text>
+    <text class="serif ink" x="0" y="180" font-size="86" letter-spacing="-3">a uma decisão confiável.</text>
+    <line x1="0" y1="226" x2="1216" y2="226" class="rule"/>
+    <text class="sans body muted" x="0" y="272">CHURN ↑</text>
+    <text class="sans body muted" x="188" y="272">SATISFAÇÃO “OK”</text>
+    <text class="sans body muted" x="516" y="272">USO ↑</text>
+    <text class="serif signal" x="1216" y="272" text-anchor="end" font-size="34" font-style="italic">“Algo não bate.”</text>
+  </g>
+
+  <!-- Paradox -->
+  <g transform="translate(92 430)">
+    <text class="mono small muted" x="0" y="0">01  O PARADOXO</text>
+    <text class="sans section ink" x="0" y="72">Os agregados escondiam a coorte.</text>
+
+    <rect x="0" y="110" width="584" height="288" rx="14" fill="#17201f"/>
+    <text class="mono caption" x="34" y="154" fill="#cfd5cc">VISÃO AGREGADA</text>
+    <text class="sans" x="34" y="226" font-size="30" fill="#fffaf0">uso diário por conta</text>
+    <text class="sans number" x="34" y="310" fill="#fffaf0">0,336</text>
+    <line x1="258" y1="287" x2="382" y2="287" stroke="#ef765f" stroke-width="5" marker-end="url(#arrow-signal)"/>
+    <text class="sans number" x="410" y="310" fill="#ef765f">0,493</text>
+    <text class="sans caption" x="34" y="366" fill="#cfd5cc">Produto estava certo — para a média.</text>
+
+    <rect x="616" y="110" width="600" height="288" rx="14" fill="#e8e3d8" stroke="#a63a2a" stroke-width="2"/>
+    <text class="mono caption signal" x="650" y="154">FUTUROS CHURNERS · 30 DIAS</text>
+    <text class="sans ink" x="650" y="226" font-size="30">uso diário por conta</text>
+    <text class="sans number ink" x="650" y="310">0,349</text>
+    <line x1="874" y1="287" x2="998" y2="287" stroke="#a63a2a" stroke-width="5" marker-end="url(#arrow-signal)"/>
+    <text class="sans number signal" x="1026" y="310">0,304</text>
+    <text class="sans caption muted" x="650" y="366">A coorte que sairia piorava.</text>
+
+    <circle cx="26" cy="448" r="7" class="signal"/>
+    <text class="sans body ink" x="50" y="457">Satisfação agregada: 3,96 → 4,02</text>
+    <circle cx="552" cy="448" r="7" class="signal"/>
+    <text class="sans body ink" x="576" y="457">Coorte: 4,50 → 3,67</text>
+    <text class="mono caption muted" x="1216" y="457" text-anchor="end">COBERTURA ≈ 65%</text>
+  </g>
+
+  <!-- Method -->
+  <g transform="translate(92 1010)">
+    <text class="mono small muted" x="0" y="0">02  O MÉTODO</text>
+    <text class="sans section ink" x="0" y="70">Oito gates antes da resposta.</text>
+
+    <line x1="24" y1="132" x2="938" y2="132" stroke="#b9b7ad" stroke-width="3"/>
+    <line x1="24" y1="252" x2="938" y2="252" stroke="#b9b7ad" stroke-width="3"/>
+
+    <g transform="translate(0 108)">
+      <circle cx="24" cy="24" r="24" class="ink"/><text class="mono" x="24" y="32" text-anchor="middle" font-size="20" fill="#fffaf0">01</text>
+      <text class="sans label ink" x="64" y="22">Absorver</text><text class="sans caption muted" x="64" y="50">2 passadas limpas</text>
+    </g>
+    <g transform="translate(305 108)">
+      <circle cx="24" cy="24" r="24" class="ink"/><text class="mono" x="24" y="32" text-anchor="middle" font-size="20" fill="#fffaf0">02</text>
+      <text class="sans label ink" x="64" y="22">Pesquisar</text><text class="sans caption muted" x="64" y="50">reuso primeiro</text>
+    </g>
+    <g transform="translate(610 108)">
+      <circle cx="24" cy="24" r="24" class="ink"/><text class="mono" x="24" y="32" text-anchor="middle" font-size="20" fill="#fffaf0">03</text>
+      <text class="sans label ink" x="64" y="22">Perguntar</text><text class="sans caption muted" x="64" y="50">5 ondas · 25 decisões</text>
+    </g>
+    <g transform="translate(915 108)">
+      <circle cx="24" cy="24" r="24" class="sage"/><text class="mono" x="24" y="32" text-anchor="middle" font-size="20" fill="#fffaf0">04</text>
+      <text class="sans label ink" x="64" y="22">SPEC</text><text class="sans caption muted" x="64" y="50">contrato verificável</text>
+    </g>
+    <g transform="translate(0 228)">
+      <circle cx="24" cy="24" r="24" class="sage"/><text class="mono" x="24" y="32" text-anchor="middle" font-size="20" fill="#fffaf0">05</text>
+      <text class="sans label ink" x="64" y="22">Lapidar</text><text class="sans caption muted" x="64" y="50">20 revisões</text>
+    </g>
+    <g transform="translate(305 228)">
+      <circle cx="24" cy="24" r="24" class="sage"/><text class="mono" x="24" y="32" text-anchor="middle" font-size="20" fill="#fffaf0">06</text>
+      <text class="sans label ink" x="64" y="22">Construir</text><text class="sans caption muted" x="64" y="50">feedback looping</text>
+    </g>
+    <g transform="translate(610 228)">
+      <circle cx="24" cy="24" r="24" class="signal"/><text class="mono" x="24" y="32" text-anchor="middle" font-size="20" fill="#fffaf0">07</text>
+      <text class="sans label ink" x="64" y="22">Estressar</text><text class="sans caption muted" x="64" y="50">redundância + UI</text>
+    </g>
+    <g transform="translate(915 228)">
+      <circle cx="24" cy="24" r="24" class="signal"/><text class="mono" x="24" y="32" text-anchor="middle" font-size="20" fill="#fffaf0">08</text>
+      <text class="sans label ink" x="64" y="22">Responder</text><text class="sans caption muted" x="64" y="50">CEO + evidências</text>
+    </g>
+  </g>
+
+  <!-- Quality arc -->
+  <g transform="translate(92 1360)">
+    <text class="mono small muted" x="0" y="0">03  EVOLUÇÃO DA QUALIDADE · RUBRICA INTERNA</text>
+    <rect x="0" y="42" width="1216" height="234" rx="14" fill="#fffaf0" stroke="#17201f" stroke-width="2"/>
+    <line x1="108" y1="132" x2="1108" y2="132" stroke="#557164" stroke-width="5" marker-end="url(#arrow-sage)"/>
+
+    <g transform="translate(108 0)"><circle cx="0" cy="132" r="18" class="signal"/><text class="sans number signal" x="0" y="104" text-anchor="middle">7,0</text><text class="sans caption muted" x="0" y="204" text-anchor="middle">sinais frágeis</text></g>
+    <g transform="translate(438 0)"><circle cx="0" cy="132" r="18" class="signal"/><text class="sans number signal" x="0" y="104" text-anchor="middle">8,6</text><text class="sans caption muted" x="0" y="204" text-anchor="middle">fato ≠ hipótese</text></g>
+    <g transform="translate(768 0)"><circle cx="0" cy="132" r="18" class="sage"/><text class="sans number sage" x="0" y="104" text-anchor="middle">9,5</text><text class="sans caption muted" x="0" y="204" text-anchor="middle">incerteza → ação</text></g>
+    <g transform="translate(1108 0)"><circle cx="0" cy="132" r="18" class="ink"/><text class="sans number ink" x="0" y="104" text-anchor="middle">9,9</text><text class="sans caption muted" x="0" y="204" text-anchor="middle">uma fonte canônica</text></g>
+  </g>
+
+  <!-- Human turns -->
+  <g transform="translate(92 1710)">
+    <text class="mono small muted" x="0" y="0">04  TRÊS VIRADAS HUMANAS</text>
+    <g transform="translate(0 44)">
+      <rect width="384" height="222" rx="14" fill="#e8e3d8"/>
+      <text class="serif signal" x="28" y="54" font-size="42">01</text>
+      <text class="sans label ink" x="28" y="102">Separar populações</text>
+      <text class="sans body muted" x="28" y="145">Agregado não descreve</text>
+      <text class="sans body muted" x="28" y="178">quem churnará.</text>
+    </g>
+    <g transform="translate(416 44)">
+      <rect width="384" height="222" rx="14" fill="#e8e3d8"/>
+      <text class="serif signal" x="28" y="54" font-size="42">02</text>
+      <text class="sans label ink" x="28" y="102">Recusar falsa causa</text>
+      <text class="sans body muted" x="28" y="145">Seis hipóteses ficaram</text>
+      <text class="sans body muted" x="28" y="178">inconclusivas.</text>
+    </g>
+    <g transform="translate(832 44)">
+      <rect width="384" height="222" rx="14" fill="#e8e3d8"/>
+      <text class="serif signal" x="28" y="54" font-size="42">03</text>
+      <text class="sans label ink" x="28" y="102">Converter incerteza</text>
+      <text class="sans body muted" x="28" y="145">Validações com dono,</text>
+      <text class="sans body muted" x="28" y="178">prazo e gate.</text>
+    </g>
+  </g>
+
+  <!-- Final answer -->
+  <g transform="translate(64 2070)">
+    <rect width="1272" height="270" rx="18" class="ink"/>
+    <text class="mono small" x="38" y="48" fill="#ef765f">05  RESPOSTA AO CEO</text>
+    <text class="serif" x="38" y="112" font-size="46" fill="#fffaf0">O conflito vem de populações diferentes.</text>
+    <text class="serif" x="38" y="165" font-size="46" fill="#fffaf0">A causa ainda não foi demonstrada.</text>
+    <line x1="38" y1="204" x2="1234" y2="204" stroke="#53615d" stroke-width="2"/>
+    <text class="sans label" x="38" y="244" fill="#cfd5cc">VALIDAR DADOS</text>
+    <text class="sans label" x="430" y="244" fill="#cfd5cc">MEDIR USO</text>
+    <text class="sans label" x="750" y="244" fill="#cfd5cc">AMPLIAR SATISFAÇÃO</text>
+    <text class="mono caption" x="1234" y="244" text-anchor="end" fill="#ef765f">ANTES DE INTERVIR</text>
+  </g>
+
+  <!-- Footer -->
+  <g transform="translate(92 2370)">
+    <text class="mono" x="0" y="0" font-size="16" fill="#53615d">CHURN 12,4%  ·  +7,0 p.p.  ·  MRR PERDIDO OBSERVADO US$ 1.622.337 ≠ RECEITA RECUPERÁVEL</text>
+    <text class="mono" x="1216" y="0" text-anchor="end" font-size="16" fill="#53615d">86 TESTES  ·  ARTIFACT_SETS=EQUAL</text>
+  </g>
+</svg>

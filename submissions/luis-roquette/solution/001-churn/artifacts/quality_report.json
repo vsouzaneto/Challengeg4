@@ -1,0 +1,133 @@
+{
+  "contract_warnings": [
+    {
+      "count": 21,
+      "rule": "duplicate_usage_id_groups",
+      "severity": "warning"
+    },
+    {
+      "count": 19142,
+      "rule": "usage_before_subscription",
+      "severity": "warning"
+    },
+    {
+      "count": 13198,
+      "rule": "usage_before_signup",
+      "severity": "warning"
+    },
+    {
+      "count": 290,
+      "rule": "usage_after_subscription",
+      "severity": "warning"
+    },
+    {
+      "count": 1077,
+      "rule": "tickets_before_signup",
+      "severity": "warning"
+    },
+    {
+      "count": 301,
+      "rule": "accounts_flag_vs_terminal_event",
+      "severity": "warning"
+    },
+    {
+      "count": 211,
+      "rule": "subscription_accounts_flag_vs_terminal_event",
+      "severity": "warning"
+    }
+  ],
+  "contradictions": {
+    "accounts_flag_vs_terminal_event": 301,
+    "duplicate_usage_id_groups": 21,
+    "events_before_signup": 0,
+    "subscription_accounts_flag_vs_terminal_event": 211,
+    "tickets_before_signup": 1077,
+    "tickets_closed_before_submission": 0,
+    "usage_after_subscription": 290,
+    "usage_before_signup": 13198,
+    "usage_before_subscription": 19142
+  },
+  "duplicate_ids": {
+    "accounts": 0,
+    "churn_events": 0,
+    "feature_usage": 21,
+    "subscriptions": 0,
+    "support_tickets": 0
+  },
+  "label_policy": "first_valid_non_reactivation_event",
+  "nulls": {
+    "accounts": {
+      "account_id": 0,
+      "account_name": 0,
+      "churn_flag": 0,
+      "country": 0,
+      "industry": 0,
+      "is_trial": 0,
+      "plan_tier": 0,
+      "referral_source": 0,
+      "seats": 0,
+      "signup_date": 0
+    },
+    "churn_events": {
+      "account_id": 0,
+      "churn_date": 0,
+      "churn_event_id": 0,
+      "feedback_text": 148,
+      "is_reactivation": 0,
+      "preceding_downgrade_flag": 0,
+      "preceding_upgrade_flag": 0,
+      "reason_code": 0,
+      "refund_amount_usd": 0
+    },
+    "feature_usage": {
+      "error_count": 0,
+      "feature_name": 0,
+      "is_beta_feature": 0,
+      "subscription_id": 0,
+      "usage_count": 0,
+      "usage_date": 0,
+      "usage_duration_secs": 0,
+      "usage_id": 0
+    },
+    "subscriptions": {
+      "account_id": 0,
+      "arr_amount": 0,
+      "auto_renew_flag": 0,
+      "billing_frequency": 0,
+      "churn_flag": 0,
+      "downgrade_flag": 0,
+      "end_date": 4514,
+      "is_trial": 0,
+      "mrr_amount": 0,
+      "plan_tier": 0,
+      "seats": 0,
+      "start_date": 0,
+      "subscription_id": 0,
+      "upgrade_flag": 0
+    },
+    "support_tickets": {
+      "account_id": 0,
+      "closed_at": 0,
+      "escalation_flag": 0,
+      "first_response_time_minutes": 0,
+      "priority": 0,
+      "resolution_time_hours": 0,
+      "satisfaction_score": 825,
+      "submitted_at": 0,
+      "ticket_id": 0
+    }
+  },
+  "orphan_counts": {
+    "churn_events.account_id": 0,
+    "feature_usage.subscription_id": 0,
+    "subscriptions.account_id": 0,
+    "support_tickets.account_id": 0
+  },
+  "rows": {
+    "accounts": 500,
+    "churn_events": 600,
+    "feature_usage": 25000,
+    "subscriptions": 5000,
+    "support_tickets": 2000
+  }
+}

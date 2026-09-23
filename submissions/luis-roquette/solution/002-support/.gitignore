@@ -1,0 +1,14 @@
+.specs/scratchpad/
+.streamlit/secrets.toml
+.env
+.env.*
+!.env.example
+.venv/
+artifacts/
+data/raw/
+data/runtime/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.py[cod]
+*.sqlite3

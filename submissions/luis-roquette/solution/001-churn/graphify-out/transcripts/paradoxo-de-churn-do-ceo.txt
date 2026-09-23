@@ -1,0 +1,83 @@
+E aí, pessoal, vamos direto ao ponto. Bem-vindos a este overview explicativo desenhado sob medida
+para os avaliadores do nosso processo seletivo de AI Master.
+A nossa missão aqui hoje é entregar um briefing executivo 100% focado em rigor dados e lógica.
+A gente vai distrinchar um paradoxo de negócios bem complexos usando pura e simplesmente os fatos que a base de dados sustenta.
+Sem achismo está, para otimizar o nosso tempo a pauta de hoje está mapiada exatamente assim.
+1. A pergunta do CEO. 2. O método autoral. 3. As três viradas humanos. 4. A resposta final.
+E os fatos. E 5. Os próximos passos recomendados.
+Começando pela sessão 1. A pergunta do CEO. O grande gatilho de tudo isso.
+Sabe que deixa tudo isso tão interessante? É a clareza do conflito.
+O CEO chegou com aquele paradoxo clássico.
+Porque o nosso churn, o cancelamento de clientes está subindo enquanto uso do produto e a satisfação reportada por câncer sucesso, estão estáveis ou até crescendo.
+O nosso objetivo principal aqui é desmistificar esse conflito aparente e mostrar o que os dados realmente estão dizendo nos bastidores.
+Avançando para a sessão 2. O método autoral.
+Vamos entender o rigor por trás dessa investigação.
+Olha só, o método original de 8 etapas foi condançado nessas quatro fases super rigorosas de execução.
+A gente começa com a absorção e descoberta a sua crítica.
+Depois passa para a definição de contratos verificáveis, implementa ciclos de feedback loop implacáveis e finaliza com a redundância.
+Tudo isso para garantir que a entrega executiva final seja blindada e totalmente baseada em limites testados.
+Aqui tem um ponto crucial sobre a evolução da qualidade investigativa.
+A gente saiu de uma nota 7, onde só confirmávamos o churne, até chegar num 9.9, reconcilhando perfeitamente a resposta com os artefatos.
+Mas, atenção redobrada a uma regra inquebrável.
+Essas notas formam estritamente uma rúbrica interna de qualidade do nosso processo.
+Elas não são de jeito nenhum, uma avaliação do G4 e definitivamente não indicam qualquer tipo de confiança estatística.
+É pura e simplesmente a métrica do nosso rigor interno.
+Se são três, três viradas humanas, as nossas mudanças de perspectiva.
+Essas três viradas analíticas foram verdadeiros divisores de águas na investigação.
+Primeiro, a gente separou os agregados gerais das coortes específicas.
+Segundo, recusamos categoricamente a aceitar qualquer causalidade frágil.
+Nenhuma hipótese ganhou rótulo de causa sem passar por filtros absurdamente rígidos.
+E terceiro, pegamos a incerteza residual e transformamos num plano de ação seguro e muito bem validado.
+Chegamos na acessão 4, resposta final e fatos.
+É aqui que a realidade dos dados aparece.
+E vamos aos fatos de verdade. Fato número 1.
+O turn mensal ponderado recente atingiu a marca exata de 12,4%.
+Isso é um salto de sete pontos percentuais em relação à linha de base.
+Ou seja, o problema é bem real e super material.
+Fato número 2.
+Um milhão, 622.337 dólares.
+É vital ler esse número da forma correta.
+Essa cifra imensa é única e exclusivamente o MRR perdido observado.
+Ele não é receita recuperável.
+Tratasse montante como o dinheiro garantido no caixa futuro seria um erro analítico gravíssimo.
+É apenas o que já perdemos.
+Agora, quando a gente bate o olho nessa comparação?
+Aquele paradoxo inicial simplesmente se desfaz.
+O conflito sobe por completo quando entendendo algo básico.
+Agregados e cortes são populações completamente diferentes.
+Se você olhar o lado esquerdo, a média geral de uso essa atifação realmente sobe.
+Mas, no lado direito, quando isolamos a corte específica de futuros turners, os números disábam,
+o uso cai e essa atifação de espenca de 4,5 para 3,67.
+Percebe.
+O agregado pode melhorar ao mesmo tempo em que a corte que vai cancelar piora.
+Isso não demonstra causa.
+É só uma divergência de populações.
+E se alguém suspeitar que esse cancelamento estava escondido em algum nicho, os dados provam o contrário.
+Não existe nenhuma concentração material demonstrada.
+O risco relativo do maior segmento elegível ficou em 1.08 vezes.
+Isso está bem confortável e abaixo do nosso limiar crítico de 1.25.
+Presta em muita atenção nesses fatos agora,
+porque eles refletem a total integridade da análise.
+As 6 hipóteses levantadas são estritamente inconclusivas.
+Os dados não demonstraram nenhuma causa.
+A gente jamais deve usar o termo hipóteses rejeitadas,
+porque o processo não passou por todos os testes necessários para afirmar qualquer relação de causa e efeito.
+E para mantermos a transparência, precisamos reconhecer que a cobertura da nossa pesquisa de satisfação é parcial,
+cobrindo ali cerca de 65%.
+Vamos para a última etapa, seção 5.
+Próximos passos recomendados.
+O nosso plano de validação.
+A decisão executiva mais acertada no cenário desses
+é validar tudo com o máximo rigor antes de fazer qualquer intervenção.
+O cronograma mostra exatamente o caminho.
+Nos próximos 7 dias, a equipe de dados precisa sanear os eventos.
+Em paralelo, em ciclos de 30 dias, o time de produto vai acompanhar o uso de forma pro-espectiva
+e CES vai medir a satisfação fora daquele ambiente viciado de tíquete de suporte.
+A regra é claríssima, dados limpos antes de qualquer ação.
+Pra fechar, eu deixo uma reflexão bem provocativa com vocês.
+Sem ter um histórico de intervenção testado,
+como é que a gente pode estimar causalmente o impacto financeiro futuro antes de validar as coisas?
+Não dá. Validar antes de agir não é um simples capricho técnico.
+É literalmente a única frontera segura pra proteger o negócio.
+Muito obrigado por acompanhar esse overview com a gente.
+Até a próxima análise.

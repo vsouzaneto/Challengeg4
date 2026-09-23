@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "final_demo_with_frozen_test_metrics",
+  "execution": {
+    "commit": "6ebd9e89799c8ae49f474d859b4a6d4f11c009b3",
+    "code_revision": "6ebd9e89799c8ae49f474d859b4a6d4f11c009b3+code.edb979dea31e2741fc6b4e398f26fbed8982cc9c1610540628c077ddef4be99f",
+    "configuration_sha256": "3083e01144c16519c9b8278d028e13ad8eb179676b069022129ca2e8674eb1a3",
+    "requirements_lock_sha256": "0e9db579cfac4b14d713a3b76c2dab10a11d35cc13b2f6afef65d0847eda82fd",
+    "s07_test_sha256": null,
+    "s07_status": "optional_not_executed_in_canonical_gate"
+  },
+  "sources": {
+    "customer": {
+      "input_rows": 8469,
+      "sanitized_rows": 1389,
+      "privacy_quarantine": 7080,
+      "structured_operational_rows": 8469,
+      "valid_intervals": 1404,
+      "satisfaction_ratings": 2769
+    },
+    "it": {
+      "input_rows": 47837,
+      "sanitized_rows": 26472,
+      "privacy_quarantine": 21365
+    }
+  },
+  "development_models": {
+    "customer": {
+      "status": "supported",
+      "candidate": "lr",
+      "macro_f1_cv_mean": 0.1821592298656734,
+      "dummy_macro_f1_cv_mean": 0.07206717780211755,
+      "gain": 0.11009205206355585,
+      "automation_enabled": false,
+      "threshold": null,
+      "final_test_status": "evaluated"
+    },
+    "it": {
+      "status": "supported",
+      "candidate": "svc",
+      "macro_f1_cv_mean": 0.8389670399611873,
+      "dummy_macro_f1_cv_mean": 0.054837279640073046,
+      "gain": 0.7841297603211143,
+      "automation_enabled": true,
+      "threshold": 0.55,
+      "final_test_status": "evaluated"
+    }
+  },
+  "retrieval_evaluation": {
+    "status": "insufficient_evidence",
+    "population": 224,
+    "eligible": 0,
+    "sample": 0,
+    "reviewed": 0,
+    "complete": false,
+    "packet_id": "cd43e9cb84f39265712c690bca51b8c7f1ecf4c269b3fe42c51c8e82c0411878",
+    "index_version": "d306611cfc8134b684b63f321b26bbde42cec27727e3baad19055cdf4e7337d2",
+    "policy_version": "1bb54c4c47440426636ba882ed29f3c53ac5779f42aeebec95866bddf0418265",
+    "threshold": null,
+    "reason": "Nenhuma consulta de calibração passou todos os gates; CK-12 é opcional e drafts permanecem desativados.",
+    "test_opened": true,
+    "ck_12_complete": false
+  },
+  "frozen_test_metrics": {
+    "customer": {
+      "status": "evaluated",
+      "n_total": 231,
+      "macro_f1": 0.13943791319426618,
+      "log_loss": 1.6123907406051685,
+      "ece": 0.03281043506756869
+    },
+    "it": {
+      "status": "evaluated",
+      "n_total": 5301,
+      "macro_f1": 0.8350854075814486,
+      "log_loss": 0.4577963676356069,
+      "ece": 0.04139269974100268
+    }
+  },
+  "demo_evidence": {
+    "queue_rows": 231,
+    "audit_ids": [
+      1
+    ],
+    "actions_observed": [
+      "escalate"
+    ],
+    "restart_readback": true,
+    "export_sha256": "5d832e9971a6a601b299cfa63acf2faa9a7346cb06b4091f34d37e9ef0357e5b",
+    "screenshot_sha256": "bea793bcaa8070a1bfdb40ebf411819f0f990bbbf42d9b3c797cc7a8246428cc",
+    "approval_evidence": "blocked_insufficient_retrieval_evidence",
+    "browser_observations": [
+      "queue_and_gate",
+      "restart_and_persisted_audit",
+      "csv_export",
+      "operational_scorecard",
+      "it_free_text_hardware_auto_route"
+    ]
+  },
+  "claims": {
+    "human_ratings_present": false,
+    "final_model_metrics_present": true,
+    "retrieval_validated": false,
+    "draft_assistance_enabled": false,
+    "ck_12_required_by_challenge": false
+  },
+  "operational_diagnosis": {
+    "analysis_rows": 8469,
+    "analysis_scope": "customer_structured_operational_all_rows",
+    "cost_observed": false,
+    "data_version": "0e275268d241223e4d1d956c34124b7cb2afb4b357930b8e716d66a468545519",
+    "development_rows": 8469,
+    "evidence_kind": "historical_observed",
+    "interval_exclusions": {
+      "invalid_timestamp": 0,
+      "missing": 0,
+      "negative": 1365,
+      "not_closed": 5700
+    },
+    "limitations": [
+      "post_response_hours mede somente resolução menos primeira resposta; primeira resposta e resolução total não são observáveis.",
+      "Excesso é proxy histórico não negativo, não economia realizada.",
+      "Apenas campos operacionais estruturados foram usados; avaliações ausentes ou inválidas podem introduzir viés de seleção e associações não demonstram causalidade.",
+      "O diagnóstico histórico usa todas as linhas estruturadas e permanece separado dos splits textuais de modelo e recuperação.",
+      "Custo e moeda não são observados; qualquer valor financeiro é somente cenário."
+    ],
+    "median_post_response_hours": 6.341666666666667,
+    "observed_excess_hours": 4047.8333333333335,
+    "reason": null,
+    "representative_rows": null,
+    "sanitized_rows": 8469,
+    "satisfaction_sample": 2769,
+    "satisfaction_status": "no_reliable_signal",
+    "schema_version": 1,
+    "source_lane": "structured_operational",
+    "source_rows": 8469,
+    "status": "ready",
+    "supported_waste_groups": 20,
+    "text_fields_retained": false,
+    "valid_intervals": 1404
+  }
+}

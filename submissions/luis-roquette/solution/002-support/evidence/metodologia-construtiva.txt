@@ -1,0 +1,77 @@
+Metodologia construtiva do Support Decision Copilot
+
+Resumo executivo
+
+O Support Decision Copilot foi construído para responder, com evidência verificável, a três perguntas do Diretor de Operações: onde o suporte perde tempo, o que pode ser automatizado com IA e como provar que a proposta funciona. A solução final combina diagnóstico operacional, classificação conservadora, gate de risco, intervenção humana auditável e uma aplicação executável.
+
+O diferencial do processo foi tratar documentação e validação como partes do produto. Cada fase só avançou depois de planejamento, revisão, execução e teste. Quando uma capacidade não encontrou evidência suficiente, ela foi bloqueada em vez de simulada.
+
+Etapa 1 Absorção do briefing
+
+O briefing foi relido por lentes diferentes até duas passadas consecutivas não produzirem novos achados. O ciclo terminou após cinco passadas, com saturação nas duas últimas.
+
+Prompt principal: releia o desafio em loop até completar pelo menos duas passadas consecutivas sem novas descobertas.
+
+Evolução produzida: o projeto deixou de ser uma ideia genérica de automação e passou a ter três contratos verificáveis: diagnóstico quantificado, fronteira explícita entre IA e julgamento humano e demonstração funcional.
+
+Etapa 2 Descoberta socrática
+
+A arquitetura foi discutida antes do código por meio de 24 ondas adaptativas de perguntas de múltipla escolha. Cada onda usou as respostas anteriores para aprofundar usuário, risco, métricas, experiência, dados e limites do MVP.
+
+Prompt principal: conduza pelo menos cinco ondas socráticas adaptativas, fazendo uma pergunta de múltipla escolha por vez.
+
+Evolução produzida: consolidou-se um copiloto para decisão humana, não um robô de atendimento. Comunicação externa, casos críticos, temas sensíveis, baixa confiança e artefatos inválidos permaneceram sob controle humano.
+
+Etapa 3 Spec Driven Development
+
+As decisões foram transformadas em uma SPEC com critérios de aceitação, estados de falha, evidências e limites. A SPEC separou os dois datasets por domínio e proibiu joins fictícios, causalidade não demonstrada e economia apresentada como fato.
+
+Prompt principal: escrever a especificação antes da implementação e torná-la verificável por critérios objetivos.
+
+Evolução produzida: a solução passou a preservar 8.469 linhas estruturadas para o diagnóstico e lanes textuais conservadoras para modelagem, sem misturar taxonomias Customer e IT.
+
+Etapa 4 Lapidação da SPEC e do plano
+
+O plano foi revisado em cascata até duas passadas consecutivas não apontarem melhoria substancial. Novos achados reiniciavam a contagem.
+
+Prompt principal: otimizar o plano em loop até duas rodadas consecutivas sem melhorias ou correções relevantes.
+
+Evolução produzida: o plano incorporou teste lacrado, calibração, risco seletivo, persistência auditável, export seguro e rastreabilidade por hashes.
+
+Etapa 5 Implementação em feedback loop
+
+Cada fase seguiu o ciclo Planejamento, Revisão, Execução e Teste. Uma etapa só avançava depois de validada; falha de teste devolvia o trabalho ao início do ciclo.
+
+Prompt principal: passou no teste, avance; falhou, retorne ao planejamento e repita o ciclo.
+
+Evolução produzida: foram implementados diagnóstico, modelos independentes, gate de risco, fila, SQLite, CSV, páginas executivas e aplicação Streamlit. A interface mostra o que é observado, medido e projetado.
+
+Etapa 6 Redundância necessária
+
+Depois da primeira versão funcional, o sistema foi revisto exaustivamente em busca de bugs, lacunas e requisitos esquecidos. O objetivo foi atingir duas passadas consecutivas sem novos apontamentos relevantes.
+
+Prompt principal: reavaliar toda a implementação em loop e reiniciar a contagem sempre que surgir uma correção material.
+
+Evolução produzida: foram corrigidos contratos de artefatos, normalização, dependências da fila, mensagens de falha e provas de persistência.
+
+Etapa 7 Lapidação técnica e executiva
+
+O produto funcional foi refinado em código, segurança, UI, UX e clareza executiva. A pergunta do Diretor de Operações virou a primeira tela, com números, limites e recomendação acionável.
+
+Prompt principal: lapidar gargalos, bugs, segurança, layout e comunicação até duas rodadas consecutivas sem otimizações relevantes.
+
+Evolução produzida: a entrega passou a responder diretamente onde agir, o que automatizar e por que a autonomia continua bloqueada. Customer obteve macro-F1 de 13,94% e cobertura segura de 0%; IT obteve macro-F1 de 83,51%, mas permaneceu em shadow por ultrapassar o teto de risco seletivo.
+
+Etapa 8 Segurança e fechamento
+
+O hardening priorizou somente superfícies existentes no protótipo. Mutação, leitura do banco e export operacional foram bloqueados em modo público. Controles sem superfície correspondente foram documentados como gates futuros.
+
+Prompt principal: tratar primeiro vulnerabilidades indispensáveis ao protótipo e não adicionar infraestrutura sem risco real correspondente.
+
+Evolução produzida: o sistema permaneceu público para avaliação, sanitizado e fail closed para operações sensíveis. OIDC, banco durável e backup foram mantidos como pré-condições para uso operacional.
+
+Resultado final
+
+O sistema identificou 4.047,83 horas históricas acima das medianas de 20 grupos, sem chamar esse proxy de economia realizada. Refund request com prioridade High liderou a oportunidade suportada. A aplicação demonstra diagnóstico, fila, classificação, risco, intervenção humana e export auditável sem enviar mensagens externas.
+
+A contribuição humana central foi definir a saturação por releitura, as ondas socráticas adaptativas, os loops de feedback, a redundância pós-implementação e a documentação contemporânea. A IA acelerou análise, especificação, implementação e testes; não substituiu os gates de julgamento.

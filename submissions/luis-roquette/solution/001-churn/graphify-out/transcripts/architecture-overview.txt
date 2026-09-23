@@ -1,0 +1,34 @@
+Um pessoal do V4, eu resolvi gravar esse vídeo aqui brevemente para o primeiro lugar dizer que estou super empogado e que quero fazer parte do time, principalmente de uma empresa que eu admiro tanto e que já me envolvi não só como cliente. Bom, quero mostrar para vocês aqui um pouco da minha metodologia construtiva que eu acho que é mais importante, eu vou ser breve, prometo. Então, eu sempre trabalho aqui rodando algumas instâncias dentro do terminal, o que vocês não estão vendo na internet, deixa eu tirar um pouco dos 1.
+E o Códix, dentre os porquês, acho que em primeiro lugar aqui eu ilustraria hoje o ótimo custo-benefício, eu utilisei praticamente o GPT-5.6 Sol com e Fort Miri, um todo desafio. E o custo que eu tenho oferecido com esse LLM é substancialmente menor do que o equivalente na TROPEC. Então, foi completamente feito os 4 desafios em simultâneos utilizando o Códix. Dentro do Códix, eu sempre sigo a metodologia de trabalho,
+do Active and Development, SDD, e eu pessoalmente desenvolvi, eu não posso ser preso uns suas de dizer uma metodologia, mas sim, eu adaptei a SDD para a minha realidade e para a realidade do vibe coach em depois de um bom tempo, fazendo isso aqui que vocês estão vendo. Então, em primeiro lugar eu tenho aqui meus master prompts que eu saio quase sempre utilizando e ele é quase que um guia construtivo. E aí, dentro dos materiais que eu estou trazendo para vocês aqui dentro dos planos, eu mostro isso com mais calma, com mais profundidade, mas eu quase sempre faço e sigo o mesmo caminho.
+Em primeiro lugar, está na nenhum ponto legal também para o Códix, é que eu trouxe várias skills novas para dentro deles. Então, em primeiro lugar, eu estou suponiteio, que é uma skill de clote que eu gosto muito, que é a ProDev Preguiçoso. Então, ele tenta, ao invés de construir, ele tenta já buscar se existe uma solução para aquilo. En vez de ser lá, construir um relógio, ele busca se ele consegue um relógio na internet, um código de um relógio para a imedade dentro do Códix. Então, eu sempre começo pelo poneteio, depois eu sigo colocando a SDD, dentro de um skill, eu documentei tudo isso aqui dentro, meu passo a passo, e daí depois eu começo a construir. Então, eu já começo,
+com a SDD, com a SDD, já planejando, e daí, a parte interessante é que, antes da primeira spec, eu uso o que eu chamo de método socrático, dessa vez eu escolhi o método socrático, ele mesmo socrita lá o mestre de platão, que por sua vez foi mestre de Aristóteles, que sua vez foi mestre de Alexandre, isso em 488 poucos antes de Cristo.
+E o método socrático, ele não só na filosofia, mas também dentro da inteligência artificial, ele se traduz por um método onde o interlocutor, ele vai fazendo questões para que o outro lado, ele chega à conclusão por conta própria.
+Então, como o próprio método diz, eu fiz aqui cinco ondas adaptativas, o que são essas ondas adaptativas, tá?
+O programa começa me fazendo a primeira onda, que pode ter 10, 20, 30 perguntas, eu respondi por volta de 50 perguntas para cada um desses projetos aqui, tá? Então, ao todo 200 perguntas.
+Mas a primeira onda, ela vem com 20 perguntas e conforme o respondo essas 20 perguntas, a próxima onda é adaptada, tá? Então, sem ter essa adaptação, beleza?
+Então, com essas ondas adaptativas, o próprio Codex, ele me faz uma entrevista, eu diria uma sabatina, e com aquilo ali eu consigo, cara, ter um brainstorm, pensar em coisas que, de fato, eu não pensaria se eu não fosse entrevistada e provocada, tá?
+Então, logo depois que eu termino essa entrevista, ele builda a spec e aí eu entro com o meu primeiro prompt aqui, tá?
+Que é o prompt de revisão e otimização de plans, que é justamente esse aqui, tá? Então, eu venho em otimizar plans, eu utilizo um skill de superpowers writing plans,
+então, utilizando os skills, ele repassa novamente o plano em looping, como objetivo, né? O goal, seguinte, pelo menos 2 passadas consecutivas, sem observar melhorias ou otimizações sustanciais no plano, tá?
+E daí, às vezes eu lhe mito por conta dos créditos, porque o Codex, ele tende a trabalhar por 5, 6, 7, 8 horas, eu deixei essas otimizações todas rodando uma drogada fora, e daí eu obtém um resultado muito lapidado desse plano, e logo depois que ele me dá o plano lapidado,
+e eu implemento utilizando a minha implementação de feedback looping, que também é uma metodologia que eu gosto muito, tá?
+Que é a seguinte prompt, eu entrei no prompt de errado, espera aí, é o prompt.
+Redundância aqui, a implementação de feedback looping. A metodologia de feedback looping consiste em trabalhar, seguindo um fluxo padrão que seguirá mais com reports, quase em tempo real para apropriar.
+De posse dos insights fornecidos, você mesmo deve optar por reforçar num looping o trabalho ou seguir para a próxima fase do plano utilizando o modo goal e trabalhando em cascata de looping.
+Aqui um lado em cronológica, um metapa por vez, seguindo o fluxo básico de implementação, planejamento, revisão, execução e testes.
+Passando o test, ok, senão, tudo outra vez, só saia após a etapa validada.
+E daí eu começo a implementar isso, tá? Bom, uma vez implementada, para não ficar muito longo esse vídeo, eu coloco tudo no...
+Eu começo a lapidar... Ah, não, pera aí, tendo a ter aqui.
+Isso aí, pessoal, eu depois da implementação, eu fiz o meu checklist de segurança, então eu parti pro front-end design utilizando também a skill,
+da proper and shopping, do próprio clube adaptada por codex, de front-end design, com foco em UI and UX, para dentro do nosso sistema.
+E aí eu fui para a penúltima etapa, que foi a etapa de lapidação dual output, eu basicamente joguei o seguinte, para apropriar a responder e falei o seguinte,
+a dada resposta central da nossa pergunta. Então eu fui lá no arquivo de vocês, dentro de que tinha uma verdade no meu fork, peguei a pergunta principal e falei,
+dentro do intervalo de confiança de pelo menos 99%, qual a nota de 0 a 10 você dá para o output que você entregou com a tua clareza,
+objetividade e principalmente alinhamento com as expectativas, para a pergunta ensejada, tá?
+E daí ele trabalha de novo no loop, em até de pelo menos, pelo menos 9,5 em 10, nota final, ou intervalo de confiança de 99% dentro dessa pergunta,
+e daí eu trabalhei no output e fechei o nosso sistema. Então eu participei a última etapa do plano que foi trabalhar de fato no report para você,
+avaliador, provavelmente também nesse vídeo, e se Deus quiser, vai me escolher.
+E dentro desse escolho aqui, eu optei por usar o notebook alinhamento, como aliado, por traçar mapas mentais, fluxogramas,
+e até vídeos muito, muito, muito internativos, educacionais e principalmente idáticos, tá?
+Para não ficar muito longo, encerra por aqui, espero que vocês gostem do resultado final, Lucienando Rocket, é o meu nome.
