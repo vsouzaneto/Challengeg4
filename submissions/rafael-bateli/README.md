@@ -158,7 +158,7 @@ Ver [`process-log/04-prototipo.md`](process-log/04-prototipo.md): 12 erros da En
 
 - [ ] Screenshots das conversas com IA
 - [ ] Screen recording do workflow
-- [ ] Chat exports
+- [x] Chat exports: as 9 sessões do Claude Code, da análise do desafio ao envio ([`process-log/chat-exports/`](process-log/chat-exports/)), com os meus prompts, as perguntas de 3 opções e a opção que escolhi em cada uma. Convertidas para leitura, sem raciocínio interno, saída bruta de ferramentas, e-mails ou chaves
 - [x] Git history (se construiu código): os commits desta branch, com a evolução de cada entrega
 - [x] Outro: narrativa escrita passo a passo ([`01`](process-log/01-diagnostico.md), [`02`](process-log/02-proposta-automacao.md), [`03`](process-log/03-harness-economia-aprendizado.md), [`04`](process-log/04-prototipo.md)), registro de erros corrigidos ([HARNESS.md](solution/diagnostico/HARNESS.md), [HARNESS_AUTOMACAO.md](solution/automacao/HARNESS_AUTOMACAO.md)) e screenshots do protótipo rodando ([`process-log/screenshots/`](process-log/screenshots/))
 
