@@ -47,20 +47,38 @@ def _zerar() -> dict:
             "ms": 0.0}
 
 
+def _processar(r: dict, df: pd.DataFrame, n: int) -> None:
+    """Tria os próximos n tickets com o mesmo motor da fila e acumula os contadores."""
+    t0 = time.perf_counter()
+    for t in df.iloc[r["i"]: r["i"] + n].to_dict("records"):
+        d = pipeline.triar_d1(t)
+        r["rotas"][d.rota] += 1
+        r["riscos"].update(d.gatilhos)
+        if d.prioridade in ("Critical", "High") and t["Ticket Priority"] in ("Low", "Medium"):
+            r["subpriorizados"] += 1
+    r["ms"] += (time.perf_counter() - t0) * 1000
+    r["i"] = min(len(df), r["i"] + n)
+
+
 def _replay(auto: dict) -> None:
     st.subheader("Replay: os 8.469 tickets passando pelo motor")
     st.caption("Cada atualização tria um lote de tickets reais com o mesmo motor da fila (regras + prioridade + SLA).")
     ss = st.session_state
     if "replay" not in ss:
         ss.replay = _zerar()
-    c1, c2, c3, c4 = st.columns([1, 1, 1, 3])
+    c1, c2, c3, c4, c5 = st.columns([1, 1, 1, 1.4, 3])
     if c1.button("▶ Iniciar", key="rp_play"):
         ss.replay["rodando"] = True
     if c2.button("⏸ Pausar", key="rp_pause"):
         ss.replay["rodando"] = False
     if c3.button("↺ Zerar", key="rp_reset"):
         ss.replay = _zerar()
-    ss.replay["passo"] = c4.slider("Tickets por atualização", 50, 1000, ss.replay["passo"], 50, key="rp_passo")
+    if c4.button("⏭ Processar tudo", key="rp_tudo") or (
+            st.query_params.get("replay") == "tudo" and not ss.get("replay_url_feito")):
+        ss.replay_url_feito = True
+        _processar(ss.replay, comum.d1(), len(comum.d1()))
+        ss.replay["rodando"] = False
+    ss.replay["passo"] = c5.slider("Tickets por atualização", 50, 1000, ss.replay["passo"], 50, key="rp_passo")
     total_h = horas_ano(auto)
 
     @st.fragment(run_every=0.7 if ss.replay["rodando"] else None)
@@ -68,15 +86,7 @@ def _replay(auto: dict) -> None:
         r, df = st.session_state.replay, comum.d1()
         total = len(df)
         if r["rodando"] and r["i"] < total:
-            t0 = time.perf_counter()
-            for t in df.iloc[r["i"]: r["i"] + r["passo"]].to_dict("records"):
-                d = pipeline.triar_d1(t)
-                r["rotas"][d.rota] += 1
-                r["riscos"].update(d.gatilhos)
-                if d.prioridade in ("Critical", "High") and t["Ticket Priority"] in ("Low", "Medium"):
-                    r["subpriorizados"] += 1
-            r["ms"] += (time.perf_counter() - t0) * 1000
-            r["i"] = min(total, r["i"] + r["passo"])
+            _processar(r, df, r["passo"])
             if r["i"] >= total:
                 r["rodando"] = False
                 st.rerun()

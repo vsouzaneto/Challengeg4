@@ -26,28 +26,38 @@ def _carregar(op: str, texto: str) -> None:
     st.session_state.texto_derrubar = texto
 
 
+def _triar(op: str, texto: str) -> bool:
+    if op == OPERACOES[0]:
+        st.session_state.res_derrubar = pipeline.triar_d1({"Ticket ID": "novo", "Ticket Description": texto,
+                                                           "Ticket Channel": "Email", "Ticket Priority": "Medium"})
+    else:
+        try:
+            m, _ = comum.modelo()
+        except FileNotFoundError:
+            st.error("Sem o Dataset 2 e sem modelo salvo não há como classificar.")
+            return False
+        st.session_state.res_derrubar = pipeline.triar_d2(texto, m)
+    st.session_state.texto_res = texto
+    st.session_state.pop("ras_derrubar_txt", None)
+    return True
+
+
 def render() -> None:
     st.title("Tente derrubar")
     st.caption("Cole qualquer ticket, use um caso adversário ou sorteie tickets reais. Nada aqui foi escolhido a dedo.")
     tem_dados = comum.checar_dados(parar=False)
+    adv_url = st.query_params.get("adv")  # link direto: ?adv=Prompt injection
+    auto = adv_url in ADVERSARIOS and st.session_state.get("adv_url_feito") != adv_url
+    if auto:
+        _carregar(*ADVERSARIOS[adv_url])
+        st.session_state.adv_url_feito = adv_url
     st.markdown("**Casos adversários prontos**")
     for col, (nome, (op, texto)) in zip(st.columns(len(ADVERSARIOS)), ADVERSARIOS.items()):
         col.button(nome, key=f"adv_{nome}", on_click=_carregar, args=(op, texto))
     op = st.radio("Operação", OPERACOES, horizontal=True, key="op_derrubar")
     texto = st.text_area("Texto do ticket", key="texto_derrubar", height=120)
-    if st.button("Triar", type="primary", key="triar"):
-        if op == OPERACOES[0]:
-            st.session_state.res_derrubar = pipeline.triar_d1({"Ticket ID": "novo", "Ticket Description": texto,
-                                                               "Ticket Channel": "Email", "Ticket Priority": "Medium"})
-        else:
-            try:
-                m, _ = comum.modelo()
-            except FileNotFoundError:
-                st.error("Sem o Dataset 2 e sem modelo salvo não há como classificar.")
-                return
-            st.session_state.res_derrubar = pipeline.triar_d2(texto, m)
-        st.session_state.texto_res = texto
-        st.session_state.pop("ras_derrubar_txt", None)
+    if (st.button("Triar", type="primary", key="triar") or auto) and not _triar(op, texto):
+        return
     if st.session_state.get("res_derrubar"):
         _resultado(st.session_state.res_derrubar, st.session_state.get("texto_res", ""))
     st.divider()

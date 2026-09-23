@@ -16,7 +16,8 @@ OPERACOES = ["Suporte ao cliente (D1)", "Service desk (D2)"]
 def render() -> None:
     st.title("Fila do agente")
     comum.checar_dados()
-    op = st.radio("Operação", OPERACOES, horizontal=True, key="op_fila")
+    op = st.radio("Operação", OPERACOES, horizontal=True, key="op_fila",
+                  index=1 if st.query_params.get("op") == "d2" else 0)
     if op == OPERACOES[0]:
         _fila_d1()
     else:

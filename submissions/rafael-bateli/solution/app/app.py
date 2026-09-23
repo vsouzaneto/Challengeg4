@@ -15,7 +15,9 @@ from telas import derrubar, fila, painel, qualidade  # noqa: E402
 TELAS = {"Fila do agente": fila.render, "Painel do Diretor": painel.render,
          "Tente derrubar": derrubar.render, "Qualidade da IA": qualidade.render}
 
-escolha = st.sidebar.radio("Tela", list(TELAS), key="tela")
+nomes = list(TELAS)
+pedida = st.query_params.get("tela")  # link direto: ?tela=Painel do Diretor
+escolha = st.sidebar.radio("Tela", nomes, index=nomes.index(pedida) if pedida in nomes else 0, key="tela")
 st.sidebar.divider()
 st.sidebar.markdown("**LLM**")
 st.sidebar.caption("Cadeia: " + " → ".join(llm.cadeia_padrao()))

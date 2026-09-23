@@ -23,6 +23,28 @@ def test_p12_telas_renderizam(modelo_local, tela):
     assert not at.exception, at.exception
 
 
+def test_link_direto_abre_tela_e_caso_adversario(modelo_local):
+    at = AppTest.from_file(APP, default_timeout=300)
+    at.query_params["tela"] = "Tente derrubar"
+    at.query_params["adv"] = "Prompt injection"
+    at.run()
+    assert not at.exception
+    assert at.radio(key="tela").value == "Tente derrubar"
+    assert any("1B" in s.value for s in at.subheader)
+
+
+def test_painel_processar_tudo_chega_nos_numeros_da_entrega_2(modelo_local):
+    at = AppTest.from_file(APP, default_timeout=300)
+    at.query_params["tela"] = "Painel do Diretor"
+    at.run()
+    at.button(key="rp_tudo").click().run()
+    assert not at.exception
+    valores = {m.label: m.value for m in at.metric}
+    assert valores["Humano decide (rota 1)"] == "2.798"
+    assert valores["IA sugere, humano aprova (rota 2)"] == "1.050"
+    assert valores["Coleta automática (rota 3)"] == "4.621"
+
+
 def test_p12_dataset_ausente_mostra_instrucao(tmp_path, monkeypatch):
     monkeypatch.setenv("DADOS_DIR", str(tmp_path))
     at = AppTest.from_file(APP, default_timeout=60).run()
