@@ -20,6 +20,15 @@ def d1():
     return pd.read_csv(config.csv_d1())
 
 
+@pytest.fixture(scope="session")
+def modelo_d2():
+    from motor import classificador
+    if not config.csv_d2().exists():
+        pytest.skip("Dataset 2 ausente em solution/data/")
+    m, _ = classificador.carregar_ou_treinar(caminho_pkl=config.APP / "dados_locais" / "modelo_d2.pkl")
+    return m
+
+
 @pytest.fixture(autouse=True)
 def local_isolado(tmp_path, monkeypatch):
     """Eventos e logs de cada teste vão para uma pasta temporária."""
