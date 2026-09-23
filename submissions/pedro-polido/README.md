@@ -165,7 +165,8 @@ triagem, que estes dados não permitem medir.
 
 ## Process Log — Como usei IA
 
-> O log completo, com a linha do tempo, as decisões e os erros da IA, está em [`process-log/README.md`](process-log/README.md).
+> **Process log principal:** [`PROCESS_LOG.md`](PROCESS_LOG.md) (iterações, verificações e o que eu decidi). O log técnico,
+> com os 22 erros da IA e como cada um foi pego, está em [`process-log/README.md`](process-log/README.md).
 
 ### Ferramentas usadas
 
@@ -233,10 +234,11 @@ ou nas variáveis de ambiente da Vercel.
 ## Evidências
 
 - [x] Git history: um commit por etapa, com o motivo das correções
-- [x] Narrativa escrita: [`process-log/README.md`](process-log/README.md)
+- [x] Narrativa escrita: [`PROCESS_LOG.md`](PROCESS_LOG.md) e o log técnico [`process-log/README.md`](process-log/README.md)
 - [x] Revisão humana da auditoria de rótulos: [`process-log/auditoria-rotulos/`](process-log/auditoria-rotulos/)
 - [x] Screenshots: [`process-log/screenshots/`](process-log/screenshots/)
-- [x] Chat export da sessão com o Claude Code: [`process-log/chat-export/`](process-log/chat-export/)
+- [ ] Chat export da sessão com o Claude Code: `process-log/chat-export/` (pendente: revisar dados pessoais antes de publicar)
+- [ ] Prints da validação cruzada no Claude Chat (pendente)
 
 ---
 
