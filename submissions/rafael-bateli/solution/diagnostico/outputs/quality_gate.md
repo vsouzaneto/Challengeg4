@@ -1,6 +1,6 @@
 # Quality Gate — resultado
 
-Arquivo: `customer_support_tickets.csv`  
+Arquivo: `support_tickets.csv`  
 **Veredito: REPROVADO**, 1/12 regras OK, 7 bloqueantes em falha.
 
 | Regra | Verificação | Severidade | Medido | Limite | Status | Dono | Correção |
