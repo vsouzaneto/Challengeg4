@@ -10,9 +10,10 @@ from motor import config, llm
 config.carregar_env()
 st.set_page_config(page_title="Mesa de Suporte com IA", page_icon="🎧", layout="wide")
 
-from telas import fila, painel  # noqa: E402
+from telas import derrubar, fila, painel, qualidade  # noqa: E402
 
-TELAS = {"Fila do agente": fila.render, "Painel do Diretor": painel.render}
+TELAS = {"Fila do agente": fila.render, "Painel do Diretor": painel.render,
+         "Tente derrubar": derrubar.render, "Qualidade da IA": qualidade.render}
 
 escolha = st.sidebar.radio("Tela", list(TELAS), key="tela")
 st.sidebar.divider()
