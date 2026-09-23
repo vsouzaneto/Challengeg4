@@ -3,7 +3,8 @@
 //   draft:     rascunho de resposta em PT-BR + resumo interno + perguntas, sempre para revisão humana
 // GET devolve se o Gemini está configurado (o front desliga os botões quando não está).
 
-const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+// gemini-2.5-flash (padrão da 1ª versão) devolve 404 para chaves novas; o 3.5-flash-lite responde em ~1 s.
+const MODEL = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
 const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 const MAX_CHARS = 4000;
 const QUEUES = ['Access', 'Administrative rights', 'HR Support', 'Hardware', 'Internal Project', 'Miscellaneous', 'Purchase', 'Storage'];

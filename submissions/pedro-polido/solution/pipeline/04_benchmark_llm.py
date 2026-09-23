@@ -6,7 +6,11 @@ Pergunta: vale usar um LLM para classificar os tickets? Três formas de pedir, d
   exemplos    descrições + 3 tickets de treino por fila (few-shot)
 E, à parte, o LLM como terceira opinião nos 40 casos da auditoria de rótulos.
 
-Requer GEMINI_API_KEY no .env da raiz do repositório. GEMINI_MODEL opcional.
+Modelos: gemini-3.5-flash-lite (o mesmo do app) nos três prompts; gemini-3.5-flash, sem raciocínio, no prompt mais
+informado, para checar se um modelo maior muda a conclusão. Comparação pareada com o linear: teste de McNemar.
+(gemini-2.5-flash, o padrão da 1ª versão deste script, devolve 404 para chaves novas.)
+
+Requer GEMINI_API_KEY no .env da raiz do repositório.
 Uso: python 04_benchmark_llm.py [n_amostra]      Saída: app/data/llm_benchmark.json
 """
 import json
@@ -19,6 +23,7 @@ import urllib.request
 import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
+from statsmodels.stats.contingency_tables import mcnemar
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
@@ -26,7 +31,8 @@ from common import IT_TICKETS_CSV, SEED, SUBMISSION, load_env, save_json
 
 load_env()
 KEY = os.environ.get("GEMINI_API_KEY")
-MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+MAIN_MODEL = "gemini-3.5-flash-lite"
+STRONG_MODEL = ("gemini-3.5-flash", {"thinkingBudget": 0})
 N_SAMPLE = int(sys.argv[1]) if len(sys.argv) > 1 else 240
 BATCH = 20           # tickets por requisição
 PAUSE_S = 4.0        # respeita o limite de requisições por minuto da camada gratuita
@@ -70,37 +76,40 @@ SUFFIX = ("\n\nTickets are preprocessed (lowercase, no punctuation, stopwords re
           "Answer with a JSON array with one queue name per ticket, in order.")
 
 
-def gemini(system, tickets):
+def gemini(model, thinking, system, tickets):
+    config = {"temperature": 0, "responseMimeType": "application/json",
+              "responseSchema": {"type": "ARRAY", "items": {"type": "STRING", "enum": CLASSES}}}
+    if thinking:
+        config["thinkingConfig"] = thinking
     body = {
         "systemInstruction": {"parts": [{"text": system + SUFFIX}]},
         "contents": [{"role": "user", "parts": [{"text": "\n".join(f"{i + 1}. {t}" for i, t in enumerate(tickets))}]}],
-        "generationConfig": {"temperature": 0, "responseMimeType": "application/json",
-                             "responseSchema": {"type": "ARRAY", "items": {"type": "STRING", "enum": CLASSES}}},
+        "generationConfig": config,
     }
     req = urllib.request.Request(
-        f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent",
+        f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
         data=json.dumps(body).encode(), headers={"Content-Type": "application/json", "x-goog-api-key": KEY})
-    for attempt in range(4):
+    for attempt in range(6):
         try:
             t0 = time.time()
-            with urllib.request.urlopen(req, timeout=120) as r:
+            with urllib.request.urlopen(req, timeout=180) as r:
                 data = json.load(r)
             text = "".join(p.get("text", "") for p in data["candidates"][0]["content"]["parts"])
             labels = json.loads(text)
             if len(labels) != len(tickets):
                 raise ValueError(f"{len(labels)} rótulos para {len(tickets)} tickets")
             return labels, data.get("usageMetadata", {}), time.time() - t0
-        except (urllib.error.HTTPError, ValueError, KeyError) as e:
-            wait = 20 * (attempt + 1)
-            print(f"   tentativa {attempt + 1} falhou ({e}); nova tentativa em {wait}s")
+        except (urllib.error.URLError, TimeoutError, ValueError, KeyError) as e:
+            wait = 15 * 2 ** attempt  # 503 de alta demanda e 429 de cota são transitórios
+            print(f"   {model}: tentativa {attempt + 1} falhou ({str(e)[:80]}); nova em {wait}s", flush=True)
             time.sleep(wait)
-    raise RuntimeError("Gemini falhou 4 vezes seguidas")
+    raise RuntimeError(f"{model} falhou 6 vezes seguidas")
 
 
-def run(system, docs):
+def run(model, thinking, system, docs):
     labels, tokens, seconds = [], 0, 0.0
     for i in range(0, len(docs), BATCH):
-        out, usage, dt = gemini(system, docs[i:i + BATCH])
+        out, usage, dt = gemini(model, thinking, system, docs[i:i + BATCH])
         labels += out
         tokens += usage.get("totalTokenCount", 0)
         seconds += dt
@@ -110,21 +119,29 @@ def run(system, docs):
 
 y = sample["Topic_group"].values
 docs = sample["Document"].tolist()
-results = {"modelo": MODEL, "n": len(sample), "linear": {"acerto": float((linear_pred == y).mean())}}
-print(f"{MODEL} | {len(sample)} tickets | classificador linear: {results['linear']['acerto']:.1%}")
-for name, system in PROMPTS.items():
-    pred, tokens, seconds = run(system, docs)
-    results[name] = {"acerto": float((pred == y).mean()), "tokens_por_ticket": tokens / len(docs),
-                     "segundos_por_ticket": seconds / len(docs),
-                     "por_fila": {c: float((pred[y == c] == c).mean()) for c in CLASSES},
-                     "concorda_com_linear": float((pred == linear_pred).mean())}
-    print(f"  {name:10s} acerto {results[name]['acerto']:.1%} | {results[name]['tokens_por_ticket']:.0f} tokens/ticket | "
-          f"{results[name]['segundos_por_ticket']:.2f} s/ticket | concorda com o linear em {results[name]['concorda_com_linear']:.0%}")
+linear_ok = linear_pred == y
+results = {"n": len(sample), "linear": {"acerto": float(linear_ok.mean())}, "rodadas": []}
+print(f"{len(sample)} tickets | classificador linear: {linear_ok.mean():.1%}", flush=True)
+plan = [(MAIN_MODEL, None, name) for name in PROMPTS] + [(STRONG_MODEL[0], STRONG_MODEL[1], "exemplos")]
+for model, thinking, name in plan:
+    pred, tokens, seconds = run(model, thinking, PROMPTS[name], docs)
+    ok = pred == y
+    # McNemar pareado: só importam os tickets em que um acerta e o outro erra
+    table = [[int((ok & linear_ok).sum()), int((ok & ~linear_ok).sum())],
+             [int((~ok & linear_ok).sum()), int((~ok & ~linear_ok).sum())]]
+    r = {"modelo": model, "prompt": name, "acerto": float(ok.mean()), "tokens_por_ticket": tokens / len(docs),
+         "segundos_por_ticket": seconds / len(docs), "p_mcnemar": float(mcnemar(table, exact=True).pvalue),
+         "so_llm_acerta": table[0][1], "so_linear_acerta": table[1][0],
+         "por_fila": {c: float(ok[y == c].mean()) for c in CLASSES},
+         "concorda_com_linear": float((pred == linear_pred).mean())}
+    results["rodadas"].append(r)
+    print(f"  {model:22s} {name:10s} acerto {r['acerto']:.1%} (linear {linear_ok.mean():.1%}, McNemar p = {r['p_mcnemar']:.3f}) | "
+          f"{r['tokens_por_ticket']:.0f} tokens/ticket | {r['segundos_por_ticket']:.2f} s/ticket", flush=True)
 
 # Terceira opinião nos 40 casos da auditoria de rótulos (o LLM não vê rótulo nem previsão do modelo)
 audit_path = SUBMISSION / "process-log" / "auditoria-rotulos" / "candidatos.csv"
 audit = pd.read_csv(audit_path, encoding="utf-8-sig")
-llm_audit, _, _ = run(PROMPTS["descricoes"], audit["texto"].tolist())
+llm_audit, _, _ = run(MAIN_MODEL, None, PROMPTS["descricoes"], audit["texto"].tolist())
 audit["gemini"] = llm_audit
 side = np.where(audit["gemini"] == audit["rotulo"], "rótulo", np.where(audit["gemini"] == audit["modelo"], "modelo", "outra fila"))
 definite = audit["veredito_ia"].isin(["rótulo", "modelo"]).values  # onde o veredito do Claude foi categórico
