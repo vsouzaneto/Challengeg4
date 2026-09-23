@@ -1,0 +1,456 @@
+{
+  "A_rotas_dataset1": {
+    "tickets": 8469,
+    "seguranca_ou_conta_bloqueada": 592,
+    "hardware_ou_reparo": 1005,
+    "rotas": {
+      "1. Humano decide (IA prepara o dossiê)": 2798,
+      "2. IA sugere, humano aprova": 1050,
+      "3. Automático, com saída para humano": 4621
+    },
+    "rotas_pct": {
+      "1. Humano decide (IA prepara o dossiê)": 0.3304,
+      "2. IA sugere, humano aprova": 0.124,
+      "3. Automático, com saída para humano": 0.5456
+    },
+    "problema_descrito": {
+      "perda_de_dados": 653,
+      "conta_bloqueada": 155,
+      "credencial_invalida": 189,
+      "senha_reset_quebrado": 186,
+      "hardware": 530,
+      "rede": 542,
+      "software_bug": 347
+    },
+    "generico_sem_problema": 5867,
+    "generico_pct": 0.6928,
+    "sinais": {
+      "seguranca": 445,
+      "recontato": 460,
+      "dinheiro": 346,
+      "reparo_troca": 516,
+      "urgencia": 867,
+      "incidente": 1454,
+      "ja_tentou_o_basico": 2889
+    },
+    "humano_por_motivo": {
+      "perda_de_dados": 653,
+      "seguranca": 445,
+      "conta_bloqueada": 155,
+      "recontato": 460,
+      "dinheiro": 346,
+      "hardware": 530,
+      "reparo_troca": 516
+    },
+    "ja_tentou_o_basico_pct": 0.3411,
+    "urgentes_por_rota": {
+      "1. Humano decide (IA prepara o dossiê)": 294,
+      "2. IA sugere, humano aprova": 92,
+      "3. Automático, com saída para humano": 481
+    },
+    "social_media_por_rota": {
+      "1. Humano decide (IA prepara o dossiê)": 666,
+      "2. IA sugere, humano aprova": 263,
+      "3. Automático, com saída para humano": 1192
+    },
+    "senha_reset_quebrado": 186,
+    "duplicata_por_email": {
+      "emails_repetidos": 139,
+      "tickets": 288,
+      "pct_emails_com_nomes_diferentes": 1.0,
+      "pct_emails_com_produtos_diferentes": 1.0,
+      "exemplo": [
+        {
+          "Ticket ID": 2217,
+          "Customer Name": "Brent Haynes",
+          "Product Purchased": "GoPro Hero",
+          "Ticket Subject": "Installation support"
+        },
+        {
+          "Ticket ID": 3008,
+          "Customer Name": "Tyler Foster",
+          "Product Purchased": "Xbox",
+          "Ticket Subject": "Cancellation request"
+        },
+        {
+          "Ticket ID": 3212,
+          "Customer Name": "Kathy Moore",
+          "Product Purchased": "Nikon D",
+          "Ticket Subject": "Display issue"
+        },
+        {
+          "Ticket ID": 6985,
+          "Customer Name": "David Walters",
+          "Product Purchased": "Garmin Forerunner",
+          "Ticket Subject": "Account access"
+        }
+      ]
+    },
+    "texto_medio_tokens": 72
+  },
+  "B_classificacao_dataset2": {
+    "n_teste": 9568,
+    "regras_melhor_caso": {
+      "K5": {
+        "cobertura": 0.4887,
+        "acuracia": 0.7941
+      },
+      "com_margem": [
+        {
+          "palavras": 5,
+          "margem": 2,
+          "cobertura": 0.116,
+          "acuracia": 0.9261
+        },
+        {
+          "palavras": 5,
+          "margem": 3,
+          "cobertura": 0.0513,
+          "acuracia": 0.9817
+        },
+        {
+          "palavras": 10,
+          "margem": 2,
+          "cobertura": 0.2302,
+          "acuracia": 0.9437
+        },
+        {
+          "palavras": 10,
+          "margem": 3,
+          "cobertura": 0.1028,
+          "acuracia": 0.9736
+        },
+        {
+          "palavras": 20,
+          "margem": 2,
+          "cobertura": 0.3026,
+          "acuracia": 0.9326
+        },
+        {
+          "palavras": 20,
+          "margem": 3,
+          "cobertura": 0.157,
+          "acuracia": 0.966
+        }
+      ],
+      "K10": {
+        "cobertura": 0.5711,
+        "acuracia": 0.7985
+      },
+      "palavras_K10": {
+        "Access": [
+          "confluence",
+          "license",
+          "reset",
+          "git",
+          "expire",
+          "password",
+          "repository",
+          "studio",
+          "account",
+          "alt"
+        ],
+        "Administrative rights": [
+          "outlook",
+          "upgrade",
+          "upgrading",
+          "windows",
+          "unlinking",
+          "upgraded",
+          "dependency",
+          "icons",
+          "attacks",
+          "forced"
+        ],
+        "HR Support": [
+          "starter",
+          "time",
+          "submit",
+          "timecard",
+          "forwarder",
+          "seat",
+          "fill",
+          "administration",
+          "leave",
+          "form"
+        ],
+        "Hardware": [
+          "laptop",
+          "room",
+          "monitor",
+          "connection",
+          "meeting",
+          "connect",
+          "rooms",
+          "cable",
+          "calls",
+          "connected"
+        ],
+        "Internal Project": [
+          "pipeline",
+          "codes",
+          "project",
+          "code",
+          "pas",
+          "pipelines",
+          "opportunity",
+          "setup",
+          "known",
+          "unknown"
+        ],
+        "Miscellaneous": [
+          "mailing",
+          "approval",
+          "copier",
+          "change",
+          "notifications",
+          "approve",
+          "flow",
+          "reject",
+          "approving",
+          "approvals"
+        ],
+        "Purchase": [
+          "purchased",
+          "receipts",
+          "ordered",
+          "po",
+          "consideration",
+          "mandatory",
+          "purchase",
+          "item",
+          "video",
+          "allocation"
+        ],
+        "Storage": [
+          "decline",
+          "wants",
+          "folder",
+          "accept",
+          "increase",
+          "size",
+          "mailbox",
+          "maximum",
+          "shared",
+          "folders"
+        ]
+      },
+      "K20": {
+        "cobertura": 0.6508,
+        "acuracia": 0.796
+      }
+    },
+    "modelo": {
+      "limiar": 0.71,
+      "cobertura": 0.7319,
+      "acuracia": 0.9513,
+      "ms_por_ticket": 0.069,
+      "acuracia_na_mesma_cobertura_das_regras_K10": 0.9802
+    },
+    "erros_do_modelo_acima_do_limiar": 341,
+    "para_onde_vao_os_erros": {
+      "Administrative rights → Hardware": 42,
+      "HR Support → Hardware": 41,
+      "Hardware → HR Support": 27,
+      "Access → Hardware": 24,
+      "Hardware → Miscellaneous": 23,
+      "Miscellaneous → HR Support": 22
+    },
+    "administrative_rights": {
+      "pct_automatico": 0.6193,
+      "acuracia_automatico": 0.8028,
+      "exemplos_abaixo_do_limiar": [
+        {
+          "texto": "tablet issues wednesday october pm issues hi having issues pairing help please let cheers best regards tester",
+          "previsto": "Hardware",
+          "confianca": 0.59
+        },
+        {
+          "texto": "critical alert sent critical alert following alert occurred status active tape library based tape protection weeks copy description detailed",
+          "previsto": "Miscellaneous",
+          "confianca": 0.38
+        },
+        {
+          "texto": "for crash issues after upgrade after installing for crashes when using call when downloading attachments chat window hi after installing for",
+          "previsto": "Administrative rights",
+          "confianca": 0.57
+        },
+        {
+          "texto": "outlook issue for add not working sent thursday issue for add working hi please log ticket queue for above reported issue best regards engin",
+          "previsto": "Administrative rights",
+          "confianca": 0.56
+        },
+        {
+          "texto": "workstation does not start workstation was replaced with another one",
+          "previsto": "Hardware",
+          "confianca": 0.52
+        }
+      ]
+    },
+    "duplicatas": {
+      "0.8": {
+        "pct_com_quase_duplicata": 0.114,
+        "mesma_classe_da_duplicata": 0.9395
+      },
+      "0.9": {
+        "pct_com_quase_duplicata": 0.054,
+        "mesma_classe_da_duplicata": 0.9613
+      },
+      "0.95": {
+        "pct_com_quase_duplicata": 0.0218,
+        "mesma_classe_da_duplicata": 0.9665
+      }
+    },
+    "alertas_de_maquina": {
+      "tickets": 149,
+      "classes_diferentes": 5,
+      "por_classe": {
+        "Miscellaneous": 57,
+        "Hardware": 50,
+        "HR Support": 33,
+        "Administrative rights": 5,
+        "Storage": 4
+      }
+    },
+    "hr_temas_sensiveis": {
+      "salary": 34,
+      "payroll": 11,
+      "termination": 32,
+      "resign": 17,
+      "sick": 47,
+      "maternity": 411
+    }
+  },
+  "C_custo_llm": {
+    "por_uso": {
+      "Resposta sugerida (rota 2)": {
+        "tickets": 3720,
+        "modelo": "sonnet-5",
+        "usd_ano": 26.95,
+        "usd_ano_tokens_x10": 269.48
+      },
+      "Dossiê para o humano (rota 1)": {
+        "tickets": 9912,
+        "modelo": "haiku-4.5",
+        "usd_ano": 19.05,
+        "usd_ano_tokens_x10": 190.51
+      },
+      "Gold set: rotular 3.000 tickets (uma vez)": {
+        "tickets": 3000,
+        "modelo": "sonnet-5",
+        "usd_ano": 3.43,
+        "usd_ano_tokens_x10": 34.32
+      }
+    },
+    "usd_ano": 49.43,
+    "rs_ano": 267,
+    "rs_ano_tokens_x10": 2669,
+    "equivale_a_horas_de_agente": 7.6,
+    "premissas": {
+      "usd_brl": 5.4,
+      "precos_usd_por_1M": {
+        "haiku-4.5": [
+          1.0,
+          5.0
+        ],
+        "sonnet-5": [
+          2.0,
+          10.0
+        ]
+      },
+      "cache_leitura": 0.1
+    }
+  },
+  "D_impacto_esforco": {
+    "itens": [
+      {
+        "automacao": "Política de pendentes (lembretes D+2/D+5, fecha D+7)",
+        "tipo": "Determinístico",
+        "horas_ano": 680,
+        "rs_ano": 23800,
+        "esforco_semanas": 1,
+        "depende_de": "nenhuma"
+      },
+      {
+        "automacao": "Resposta de recebimento que pede os dados que faltam",
+        "tipo": "Determinístico",
+        "horas_ano": 693,
+        "rs_ano": 24255,
+        "esforco_semanas": 1,
+        "depende_de": "nenhuma"
+      },
+      {
+        "automacao": "Prioridade por sinais de risco + SLA na fila",
+        "tipo": "Determinístico",
+        "horas_ano": null,
+        "rs_ano": null,
+        "esforco_semanas": 2,
+        "depende_de": "nenhuma"
+      },
+      {
+        "automacao": "Classificação + roteamento com limiar",
+        "tipo": "ML supervisionado",
+        "horas_ano": 1345,
+        "rs_ano": 47075,
+        "esforco_semanas": 6,
+        "depende_de": "gold set (LLM + validação humana)"
+      },
+      {
+        "automacao": "Duplicata / recontato (customer_id + similaridade)",
+        "tipo": "Determinístico + similaridade",
+        "horas_ano": 326,
+        "rs_ano": 11410,
+        "esforco_semanas": 3,
+        "depende_de": "customer_id do CRM (P8)"
+      },
+      {
+        "automacao": "Resposta sugerida ao agente (copiloto)",
+        "tipo": "LLM + base de conhecimento",
+        "horas_ano": 429,
+        "rs_ano": 15015,
+        "esforco_semanas": 8,
+        "depende_de": "base de conhecimento curada (P7)"
+      }
+    ],
+    "primeiro_toque_faixa_h": {
+      "baixo": 346,
+      "base": 693,
+      "alto": 1039
+    },
+    "total_horas_base": 3473,
+    "nota": "Prioridade por sinais não tem horas próprias: o ganho é de risco (Critical sem resposta), não de tempo."
+  },
+  "V_verificacoes": {
+    "V1_particao": {
+      "ok": true,
+      "leitura": "cada ticket tem exatamente uma rota"
+    },
+    "V2_risco_nunca_automatico": {
+      "ok": true,
+      "tickets_com_risco": 2798,
+      "leitura": "todo ticket com sinal de risco cai na rota 1"
+    },
+    "V3_regras_vs_modelo_mesma_cobertura": {
+      "ok": true,
+      "regras": {
+        "cobertura": 0.5711,
+        "acuracia": 0.7985
+      },
+      "modelo_na_mesma_cobertura": 0.9802,
+      "leitura": "comparação justa: mesma fatia de tickets decidida sozinha"
+    },
+    "V4_duplicata_estavel": {
+      "ok": true,
+      "leitura": "a classe da quase-duplicata acerta >= 90% em todos os limiares"
+    },
+    "V5_custo_llm_menor_que_o_ganho": {
+      "ok": true,
+      "rs_ano": 267,
+      "rs_ano_tokens_x10": 2669,
+      "valor_das_horas_do_copiloto_rs": 15015,
+      "pct_do_ganho": 0.018,
+      "pct_do_ganho_tokens_x10": 0.178,
+      "leitura": "mesmo com 10x os tokens estimados, a LLM custa menos que as horas que o copiloto devolve"
+    }
+  }
+}

@@ -1,0 +1,487 @@
+{
+  "B1_ciclo_de_aprendizado": {
+    "congelado": {
+      "descricao": "não aprende: fica com o gold set",
+      "caminho": [
+        {
+          "mes": 0,
+          "cobertura": 0.4982,
+          "acerto": 0.9473,
+          "rotulos": 3000
+        },
+        {
+          "mes": 1,
+          "cobertura": 0.4982,
+          "acerto": 0.9473,
+          "rotulos": 3000
+        },
+        {
+          "mes": 2,
+          "cobertura": 0.4982,
+          "acerto": 0.9473,
+          "rotulos": 3000
+        },
+        {
+          "mes": 3,
+          "cobertura": 0.4982,
+          "acerto": 0.9473,
+          "rotulos": 3000
+        },
+        {
+          "mes": 4,
+          "cobertura": 0.4982,
+          "acerto": 0.9473,
+          "rotulos": 3000
+        },
+        {
+          "mes": 5,
+          "cobertura": 0.4982,
+          "acerto": 0.9473,
+          "rotulos": 3000
+        },
+        {
+          "mes": 6,
+          "cobertura": 0.4982,
+          "acerto": 0.9473,
+          "rotulos": 3000
+        },
+        {
+          "mes": 7,
+          "cobertura": 0.4982,
+          "acerto": 0.9473,
+          "rotulos": 3000
+        },
+        {
+          "mes": 8,
+          "cobertura": 0.4982,
+          "acerto": 0.9473,
+          "rotulos": 3000
+        },
+        {
+          "mes": 9,
+          "cobertura": 0.4982,
+          "acerto": 0.9473,
+          "rotulos": 3000
+        },
+        {
+          "mes": 10,
+          "cobertura": 0.4982,
+          "acerto": 0.9473,
+          "rotulos": 3000
+        },
+        {
+          "mes": 11,
+          "cobertura": 0.4982,
+          "acerto": 0.9473,
+          "rotulos": 3000
+        }
+      ],
+      "horas_ano1": 1193,
+      "horas_regime": 1193,
+      "cobertura_final": 0.4982,
+      "rotulos_finais": 3000
+    },
+    "triagem": {
+      "descricao": "aprende com os tickets que o humano triou (abaixo do limiar)",
+      "caminho": [
+        {
+          "mes": 0,
+          "cobertura": 0.4982,
+          "acerto": 0.9473,
+          "rotulos": 3000
+        },
+        {
+          "mes": 1,
+          "cobertura": 0.5676,
+          "acerto": 0.9523,
+          "rotulos": 4286
+        },
+        {
+          "mes": 2,
+          "cobertura": 0.6025,
+          "acerto": 0.9509,
+          "rotulos": 5380
+        },
+        {
+          "mes": 3,
+          "cobertura": 0.6371,
+          "acerto": 0.9472,
+          "rotulos": 6368
+        },
+        {
+          "mes": 4,
+          "cobertura": 0.6549,
+          "acerto": 0.9473,
+          "rotulos": 7296
+        },
+        {
+          "mes": 5,
+          "cobertura": 0.6717,
+          "acerto": 0.9473,
+          "rotulos": 8162
+        },
+        {
+          "mes": 6,
+          "cobertura": 0.672,
+          "acerto": 0.9512,
+          "rotulos": 8964
+        },
+        {
+          "mes": 7,
+          "cobertura": 0.6842,
+          "acerto": 0.9511,
+          "rotulos": 9822
+        },
+        {
+          "mes": 8,
+          "cobertura": 0.6911,
+          "acerto": 0.9516,
+          "rotulos": 10626
+        },
+        {
+          "mes": 9,
+          "cobertura": 0.6973,
+          "acerto": 0.9519,
+          "rotulos": 11417
+        },
+        {
+          "mes": 10,
+          "cobertura": 0.705,
+          "acerto": 0.9511,
+          "rotulos": 12176
+        },
+        {
+          "mes": 11,
+          "cobertura": 0.7093,
+          "acerto": 0.9499,
+          "rotulos": 12378
+        }
+      ],
+      "horas_ano1": 1291,
+      "horas_regime": 1328,
+      "cobertura_final": 0.7093,
+      "rotulos_finais": 12378
+    },
+    "completo": {
+      "descricao": "triagem + tickets devolvidos pela fila errada + auditoria de 10% dos automáticos",
+      "caminho": [
+        {
+          "mes": 0,
+          "cobertura": 0.4982,
+          "acerto": 0.9473,
+          "rotulos": 3000
+        },
+        {
+          "mes": 1,
+          "cobertura": 0.5727,
+          "acerto": 0.9513,
+          "rotulos": 4461
+        },
+        {
+          "mes": 2,
+          "cobertura": 0.6191,
+          "acerto": 0.9502,
+          "rotulos": 5731
+        },
+        {
+          "mes": 3,
+          "cobertura": 0.6476,
+          "acerto": 0.949,
+          "rotulos": 6862
+        },
+        {
+          "mes": 4,
+          "cobertura": 0.6592,
+          "acerto": 0.9528,
+          "rotulos": 7979
+        },
+        {
+          "mes": 5,
+          "cobertura": 0.6717,
+          "acerto": 0.9519,
+          "rotulos": 9072
+        },
+        {
+          "mes": 6,
+          "cobertura": 0.6915,
+          "acerto": 0.9509,
+          "rotulos": 10110
+        },
+        {
+          "mes": 7,
+          "cobertura": 0.6897,
+          "acerto": 0.9524,
+          "rotulos": 11161
+        },
+        {
+          "mes": 8,
+          "cobertura": 0.7039,
+          "acerto": 0.9534,
+          "rotulos": 12202
+        },
+        {
+          "mes": 9,
+          "cobertura": 0.7047,
+          "acerto": 0.9528,
+          "rotulos": 13195
+        },
+        {
+          "mes": 10,
+          "cobertura": 0.711,
+          "acerto": 0.9537,
+          "rotulos": 14172
+        },
+        {
+          "mes": 11,
+          "cobertura": 0.7123,
+          "acerto": 0.9517,
+          "rotulos": 14419
+        }
+      ],
+      "horas_ano1": 1298,
+      "horas_regime": 1333,
+      "cobertura_final": 0.7123,
+      "rotulos_finais": 14419
+    },
+    "autotreino": {
+      "descricao": "triagem + as próprias previsões automáticas como rótulo",
+      "caminho": [
+        {
+          "mes": 0,
+          "cobertura": 0.4982,
+          "acerto": 0.9473,
+          "rotulos": 3000
+        },
+        {
+          "mes": 1,
+          "cobertura": 0.5681,
+          "acerto": 0.9505,
+          "rotulos": 5500
+        },
+        {
+          "mes": 2,
+          "cobertura": 0.6055,
+          "acerto": 0.9465,
+          "rotulos": 8000
+        },
+        {
+          "mes": 3,
+          "cobertura": 0.6176,
+          "acerto": 0.9491,
+          "rotulos": 10500
+        },
+        {
+          "mes": 4,
+          "cobertura": 0.628,
+          "acerto": 0.9519,
+          "rotulos": 13000
+        },
+        {
+          "mes": 5,
+          "cobertura": 0.6557,
+          "acerto": 0.9484,
+          "rotulos": 15500
+        },
+        {
+          "mes": 6,
+          "cobertura": 0.6621,
+          "acerto": 0.95,
+          "rotulos": 18000
+        },
+        {
+          "mes": 7,
+          "cobertura": 0.6747,
+          "acerto": 0.9492,
+          "rotulos": 20500
+        },
+        {
+          "mes": 8,
+          "cobertura": 0.6767,
+          "acerto": 0.9512,
+          "rotulos": 23000
+        },
+        {
+          "mes": 9,
+          "cobertura": 0.6873,
+          "acerto": 0.9513,
+          "rotulos": 25500
+        },
+        {
+          "mes": 10,
+          "cobertura": 0.7026,
+          "acerto": 0.9488,
+          "rotulos": 28000
+        },
+        {
+          "mes": 11,
+          "cobertura": 0.7031,
+          "acerto": 0.9486,
+          "rotulos": 28701
+        }
+      ],
+      "horas_ano1": 1284,
+      "horas_regime": 1322,
+      "cobertura_final": 0.7031,
+      "rotulos_finais": 28701
+    },
+    "horas_se_73pct_desde_o_dia_1": 1344
+  },
+  "B2_monitor_categoria_nova": {
+    "classe_nova_simulada": "Administrative rights",
+    "limiar": 0.705,
+    "novos_classificados_errado_com_confianca": 0.605,
+    "linha_de_base": {
+      "fila_de_triagem": 0.2441,
+      "devolucoes": 0.0302
+    },
+    "poder_de_deteccao_p<0,01": {
+      "0%": {
+        "1_semana": {
+          "mistura_de_classes": 0.022,
+          "fila_de_triagem": 0.005,
+          "devolucoes": 0.003
+        },
+        "4_semanas": {
+          "mistura_de_classes": 0.065,
+          "fila_de_triagem": 0.003,
+          "devolucoes": 0.0
+        }
+      },
+      "2%": {
+        "1_semana": {
+          "mistura_de_classes": 0.01,
+          "fila_de_triagem": 0.01,
+          "devolucoes": 0.085
+        },
+        "4_semanas": {
+          "mistura_de_classes": 0.037,
+          "fila_de_triagem": 0.018,
+          "devolucoes": 0.42
+        }
+      },
+      "5%": {
+        "1_semana": {
+          "mistura_de_classes": 0.015,
+          "fila_de_triagem": 0.02,
+          "devolucoes": 0.57
+        },
+        "4_semanas": {
+          "mistura_de_classes": 0.058,
+          "fila_de_triagem": 0.028,
+          "devolucoes": 1.0
+        }
+      },
+      "10%": {
+        "1_semana": {
+          "mistura_de_classes": 0.08,
+          "fila_de_triagem": 0.035,
+          "devolucoes": 0.98
+        },
+        "4_semanas": {
+          "mistura_de_classes": 0.677,
+          "fila_de_triagem": 0.168,
+          "devolucoes": 1.0
+        }
+      }
+    },
+    "leitura": "0% = taxa de alarme falso; demais = chance de o monitor disparar"
+  },
+  "B3_revisao_top3": {
+    "limiar": 0.725,
+    "fila_humana": 0.2695,
+    "classe_certa_entre_as_sugestoes": {
+      "top1": 0.6041,
+      "top2": 0.8841,
+      "top3": 0.9577
+    },
+    "horas_revisao_ano": {
+      "hoje": 135,
+      "top3": 67
+    },
+    "economia_h_ano": 68
+  },
+  "B4_protecao_permissao": {
+    "pedidos_de_permissao_decididos_sozinhos": 219,
+    "mal_roteados": 41,
+    "para_onde_vao": {
+      "Hardware": 40,
+      "Internal Project": 1
+    },
+    "acerto_quando_o_modelo_diz_permissao": 0.9674,
+    "opcao1_limiar_proprio": {
+      "limiar_global": 0.725,
+      "limiar_proprio": 0.725,
+      "muda_algo": false
+    },
+    "opcao2_gatilho_de_palavra": {
+      "estreito": {
+        "pega_os_mal_roteados": 0.098,
+        "tickets_automaticos_que_viram_humano": 0.1236
+      },
+      "amplo": {
+        "pega_os_mal_roteados": 0.415,
+        "tickets_automaticos_que_viram_humano": 0.1488
+      }
+    },
+    "leitura": "O risco não é o modelo dizer 'permissão' e errar; é um pedido de permissão ir para Hardware. Limiar próprio não muda nada e gatilho de palavra custa caro: a proteção certa é na AÇÃO (nenhuma concessão de acesso sem aprovação humana no sistema de identidade)."
+  },
+  "B5_tamanho_da_auditoria": {
+    "tickets_automaticos_mes": 1825,
+    "por_taxa": {
+      "1%": {
+        "tickets_auditados_mes": 18,
+        "poder_detectar_queda_95_para_90": 0.266,
+        "horas_mes_a_0,5_min": 0.1
+      },
+      "2%": {
+        "tickets_auditados_mes": 36,
+        "poder_detectar_queda_95_para_90": 0.491,
+        "horas_mes_a_0,5_min": 0.3
+      },
+      "5%": {
+        "tickets_auditados_mes": 91,
+        "poder_detectar_queda_95_para_90": 0.7,
+        "horas_mes_a_0,5_min": 0.8
+      },
+      "10%": {
+        "tickets_auditados_mes": 182,
+        "poder_detectar_queda_95_para_90": 0.88,
+        "horas_mes_a_0,5_min": 1.5
+      }
+    }
+  },
+  "B6_economias": {
+    "rota_1A_ia_rascunha_humano_decide": {
+      "tickets_ano": 4488,
+      "horas_ano": {
+        "baixo": 75,
+        "base": 224,
+        "alto": 374
+      }
+    },
+    "revisao_com_3_sugestoes": {
+      "horas_ano": 68
+    },
+    "rotulos_do_trabalho_normal": {
+      "rotulos_em_11_meses": 11419,
+      "horas_de_rotulagem_evitadas": 190
+    },
+    "gold_set_1000_vs_3000": {
+      "1000": {
+        "cobertura": 0.3388,
+        "horas_ano": 1095
+      },
+      "3000": {
+        "cobertura": 0.4982,
+        "horas_ano": 1193
+      },
+      "custo_extra_de_2000_rotulos_h": 33,
+      "paga_em_meses": 4.1
+    },
+    "ano_1_com_aprendizado_vs_premissa_da_proposta": {
+      "premissa_73pct_desde_o_dia_1": 1344,
+      "congelado": 1193,
+      "completo": 1298
+    }
+  }
+}

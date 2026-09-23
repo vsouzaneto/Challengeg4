@@ -17,7 +17,11 @@ O fluxo de suporte trava porque **o dado não é registrado corretamente**, e is
 
 O desperdício é de **≈ 3.400 h/ano (≈ R$ 119 mil)**, e o maior item recuperável é a **retriagem**. Uma triagem por IA validada em 48 mil tickets reais classifica **73% dos tickets sozinha com 95% de acerto** e devolve **≈ 1.345 h/ano**. Cada conclusão passou por um harness de 10 testes que tenta derrubá-la.
 
-> **Status:** Entrega 1 (diagnóstico) concluída. Entregas 2 (proposta de automação) e 3 (protótipo) em andamento.
+**Proposta de automação (Entrega 2):** o custo de token não decide nada; toda a LLM da proposta custa ≈ R$ 270/ano. Quem decide é o **custo do erro** e o **tipo de entrada**. **Três regras fixas, sem IA** (pendentes, coleta automática dos dados que faltam, prioridade por sinais) entregam **40% do ganho em 2 semanas**. A classificação usa **modelo supervisionado**, porque para acertar 95% as regras cobrem só 16% dos tickets e o modelo, 73%. A **LLM** só redige e resume, com humano aprovando. **Um terço dos tickets vai direto para humano** (perda de dados, segurança, dinheiro, recontato, hardware), com exemplos reais de cada caso. Total: **≈ 3.470 h/ano (≈ R$ 122 mil)**.
+
+**Aprofundamento (harness + economia + aprendizado):** 13 testes tentaram derrubar a proposta; **4 decisões caíram e voltaram com a solução testada**. O limiar não protege contra um tipo de ticket novo (até 60,5% sai errado com confiança), e o **monitor de devoluções da fila errada** detecta a novidade. 3.000 rótulos dão 50% de cobertura, não 73%, e o **ciclo de aprendizado** com o trabalho que o time já faz leva a 71% em 11 meses. A auditoria de 2% era cega e passou a **10%**. Economias sem perda: **≈ 480 h/ano** a mais (a IA rascunha onde o risco é a decisão, rótulos grátis, triagem com 3 sugestões). O plano de medição da LLM tem métricas com meta, motivos de rejeição em lista fechada e registro de evento.
+
+> **Status:** Entregas 1 (diagnóstico) e 2 (proposta de automação) concluídas. Entrega 3 (protótipo) em andamento.
 
 ---
 
@@ -37,6 +41,9 @@ O desperdício é de **≈ 3.400 h/ano (≈ R$ 119 mil)**, e o maior item recupe
 | [**DIAGNOSTICO.md**](solution/diagnostico/DIAGNOSTICO.md) | Onde o fluxo trava, o que impacta o CSAT, quanto se desperdiça |
 | [**CAUSA_RAIZ_E_SOLUCAO.md**](solution/diagnostico/CAUSA_RAIZ_E_SOLUCAO.md) | 9 causas (humano, ferramenta ou processo), 3 opções para cada, a solução e o plano |
 | [**HARNESS.md**](solution/diagnostico/HARNESS.md) | 10 testes de verificação, o que eles me pegaram errando e a aderência ao desafio |
+| [**PROPOSTA_AUTOMACAO.md**](solution/automacao/PROPOSTA_AUTOMACAO.md) | O que automatizar, o que NÃO automatizar e o fluxo na prática; determinístico × ML × LLM, custo e impacto × esforço |
+| [**HARNESS_AUTOMACAO.md**](solution/automacao/HARNESS_AUTOMACAO.md) | 13 testes contra a proposta, 4 decisões derrubadas com a solução, erros do próprio harness e aderência ao desafio |
+| [**ECONOMIA_E_APRENDIZADO.md**](solution/automacao/ECONOMIA_E_APRENDIZADO.md) | Onde economizar sem perder eficiência, onde não economizar, e o que medir para a IA aprender com erros e acertos |
 
 **Código que roda:**
 
@@ -46,19 +53,24 @@ O desperdício é de **≈ 3.400 h/ano (≈ R$ 119 mil)**, e o maior item recupe
 | [`harness.py`](solution/diagnostico/harness.py) | 10 testes de verificação (H1–H10) |
 | [`solucao/quality_gate.py`](solution/diagnostico/solucao/quality_gate.py) | Contrato de dados: 12 regras; reprova o export atual (exit 1) |
 | [`solucao/triagem_ia.py`](solution/diagnostico/solucao/triagem_ia.py) | Triagem por IA com limiar de confiança + ROI + fila do backlog repriorizada |
+| [`automacao/automacao.py`](solution/automacao/automacao.py) | Rota de cada ticket, regras × modelo, duplicatas, custo de LLM, impacto × esforço + 5 verificações |
+| [`automacao/aprendizado.py`](solution/automacao/aprendizado.py) | Ciclo de aprendizado (11 meses), monitor de categoria nova, tamanho da auditoria, economias |
+| [`automacao/harness_automacao.py`](solution/automacao/harness_automacao.py) | 13 testes (A1–A13) que tentam derrubar a proposta |
 
 ### Recomendações
 
-1. **Semana 1:** Quality Gate no ETL, mutirão do backlog pela fila repriorizada, política automática de pendentes, dono do dado nomeado.
+1. **Semanas 1–2:** Quality Gate no ETL, mutirão do backlog pela fila repriorizada, dono do dado nomeado e as regras fixas da Entrega 2 (política de pendentes, coleta automática dos dados que faltam, prioridade por sinais + SLA).
 2. **Semanas 2–4:** consertar a captura (horário de abertura, horários vindos do log de eventos, template, resolução estruturada, CSAT em todo ticket, `customer_id`).
-3. **Semanas 3–8:** triagem por IA (LLM sem treino → conjunto de referência → modelo supervisionado com limiar) e prioridade pelo conteúdo com SLA.
-4. **Mês 3:** rodar o diagnóstico de novo sobre o dado corrigido e decidir capacidade com números.
+3. **Semanas 3–8:** triagem por IA (LLM sem treino → conjunto de referência → modelo supervisionado com limiar) e duplicata/recontato.
+4. **Semanas 6–14:** copiloto de resposta e dossiê com LLM, sempre com humano aprovando, a partir de uma base de conhecimento curada.
+5. **Mês 3:** rodar o diagnóstico de novo sobre o dado corrigido e decidir capacidade com números.
 
 ### Limitações
 
 - O Dataset 1 é sintético; a distribuição uniforme vem da forma como foi gerado.
 - Minutos por tarefa e custo/hora são premissas explícitas (Monte Carlo em H6); só o ganho da triagem por IA é medido.
 - O Dataset 2 prova a técnica em texto real, mas em outra taxonomia. A acurácia na taxonomia desta operação exige o critério de aprovação descrito na causa raiz (P2).
+- A acurácia da LLM não foi medida na Entrega 2; por isso toda LLM da proposta começa com humano aprovando.
 
 ---
 
@@ -76,6 +88,11 @@ python diagnostico.py                 # ≈ 10 s — números e gráficos
 python harness.py                     # ≈ 30 s — 10 testes
 python solucao/quality_gate.py        # exit 1 = export reprovado
 python solucao/triagem_ia.py          # IA de triagem + fila do backlog
+
+cd ../automacao
+python automacao.py                   # ≈ 1 min — proposta de automação; exit 0 = verificações OK
+python aprendizado.py                 # ≈ 5 min — ciclo de aprendizado, monitor, economias
+python harness_automacao.py           # ≈ 4 min — 13 testes contra a proposta
 ```
 
 ---
@@ -101,6 +118,10 @@ python solucao/triagem_ia.py          # IA de triagem + fila do backlog
 
 Ver [`process-log/01-diagnostico.md`](process-log/01-diagnostico.md): teste de poder inflado, faixa de desperdício exagerada, número com denominador errado, bug no teste de desalinhamento, hipótese fraca apresentada como conclusão e duas fontes para o mesmo número.
 
+Ver [`process-log/02-proposta-automacao.md`](process-log/02-proposta-automacao.md): rota errada para tickets genéricos, verificação com corte arbitrário, título de gráfico exagerado, soma tratada como união e exemplo com prioridade que a regra não sustentava.
+
+Ver [`process-log/03-harness-economia-aprendizado.md`](process-log/03-harness-economia-aprendizado.md): 4 decisões derrubadas pelo harness, auditoria cega, risco de permissão lido ao contrário e dois erros do próprio harness (aprovação por coincidência e regex anulada por caractere de controle).
+
 ### O que eu adicionei que a IA sozinha não faria
 
 - Recusar entregar "só o erro": exigir a solução com dono e verificação.
@@ -113,7 +134,7 @@ Ver [`process-log/01-diagnostico.md`](process-log/01-diagnostico.md): teste de p
 ## Evidências
 
 - [x] Git history (commits desta branch)
-- [x] Narrativa escrita: [`process-log/01-diagnostico.md`](process-log/01-diagnostico.md)
+- [x] Narrativa escrita: [`process-log/01-diagnostico.md`](process-log/01-diagnostico.md) , [`process-log/02-proposta-automacao.md`](process-log/02-proposta-automacao.md) e [`process-log/03-harness-economia-aprendizado.md`](process-log/03-harness-economia-aprendizado.md)
 - [x] Registro de decisões (DIAGNOSTICO.md) e de erros corrigidos (HARNESS.md)
 - [ ] Chat export / screenshots das sessões _(adicionar em `process-log/chat-exports/`)_
 
