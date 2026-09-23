@@ -4,3 +4,6 @@ solution/app/*.pkl
 __pycache__/
 *.pyc
 .venv/
+solution/app/dados_locais/
+solution/app/.env
+.pytest_cache/
