@@ -38,7 +38,7 @@ pip install -r requirements.txt
 #   support_tickets.csv  ← Customer Support Ticket Dataset (suraj520)
 #   it_tickets.csv       ← IT Service Ticket Classification (adisongoh)
 streamlit run app.py          # abre em http://localhost:8501 (na 1ª vez treina o modelo, ≈ 1 min)
-python -m pytest -q           # 139 testes, ≈ 40 s, sem rede
+python -m pytest -q           # 141 testes, ≈ 40 s, sem rede
 ```
 
 - **Sem chave de LLM o protótipo funciona inteiro**: os rascunhos saem da base de conhecimento, e a tela diz isso. Para usar a LLM, copie `.env.exemplo` para `.env` e preencha `GROQ_API_KEY` e `GEMINI_API_KEY` (ou `GOOGLE_API_KEY`).
@@ -48,7 +48,7 @@ python -m pytest -q           # 139 testes, ≈ 40 s, sem rede
 
 ---
 
-## 3. Critérios de aceite (P1–P12): 139 testes passando
+## 3. Critérios de aceite (P1–P12): 141 testes passando
 
 Os critérios foram escritos na especificação **antes do código**, e cada um virou teste.
 
