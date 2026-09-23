@@ -21,7 +21,7 @@ O desperdício é de **≈ 3.400 h/ano (≈ R$ 119 mil)**, e o maior item recupe
 
 **Aprofundamento (harness + economia + aprendizado):** 13 testes tentaram derrubar a proposta; **4 decisões caíram e voltaram com a solução testada**. O limiar não protege contra um tipo de ticket novo (até 60,5% sai errado com confiança), e o **monitor de devoluções da fila errada** detecta a novidade. 3.000 rótulos dão 50% de cobertura, não 73%, e o **ciclo de aprendizado** com o trabalho que o time já faz leva a 71% em 11 meses. A auditoria de 2% era cega e passou a **10%**. Economias sem perda: **≈ 480 h/ano** a mais (a IA rascunha onde o risco é a decisão, rótulos grátis, triagem com 3 sugestões). O plano de medição da LLM tem métricas com meta, motivos de rejeição em lista fechada e registro de evento.
 
-> **Status:** Entregas 1 (diagnóstico) e 2 (proposta de automação) concluídas. Entrega 3 (protótipo) em andamento.
+> **Status:** Entregas 1 (diagnóstico) e 2 (proposta de automação) concluídas. Entrega 3 (protótipo) planejada em [`solution/app/PLANO_FASE3.md`](solution/app/PLANO_FASE3.md): o que já existe para reusar, 4 decisões em aberto, critérios de aceite e pendências do PR.
 
 ---
 
