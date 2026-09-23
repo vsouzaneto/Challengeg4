@@ -87,6 +87,22 @@ def test_checkpoint_retoma_de_onde_parou(tmp_path):
     assert novas == [10] and all(r["provedor"] == "groq" for r in res.values())
 
 
+def test_avaliar_m3_so_compara_o_mesmo_modelo():
+    r1 = {1: {"classe": "A", "provedor": "groq", "modelo": "grande"},
+          2: {"classe": "A", "provedor": "groq", "modelo": "pequeno"}}
+    r2 = {1: {"classe": "B", "provedor": "groq", "modelo": "pequeno"},
+          2: {"classe": "A", "provedor": "groq", "modelo": "pequeno"}}
+    r = ml.avaliar_m3(r1, r2)["por_modelo"]
+    assert r == {"groq · pequeno": {"n": 1, "mesma_classe": 1.0, "veredito": "ESTÁVEL"}}
+
+
+def test_resultados_do_checkpoint_sem_chamar_api(tmp_path):
+    ck = ml.Checkpoint(tmp_path / "ck.json")
+    ck.guardar("M1", {3: {"classe": "A", "confianca": 0.9, "provedor": "groq", "modelo": "m"}})
+    res = ml.do_checkpoint(ck, "M1", [3, 4])
+    assert res[3]["classe"] == "A" and res[4]["provedor"] == "nenhum"
+
+
 def test_classificar_resposta_ininteligivel_conta_como_erro():
     def chamar(prov, msgs, temperatura=0, max_tokens=0, sessao=None):
         return "não sei", 1

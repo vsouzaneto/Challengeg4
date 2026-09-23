@@ -117,7 +117,8 @@ def _tentar(ativos: list, chamada, dormir):
             return prov, chamada(prov)
         except llm.ErroLLM as e:
             falhas += 1
-            registrar("WARNING", "medicao", e.categoria, provedor=prov, detalhe=e.detalhe, falhas_seguidas=falhas)
+            registrar("WARNING", "medicao", e.categoria, provedor=prov, modelo=llm.modelo_de(prov), detalhe=e.detalhe,
+                      retry_after=e.retry_after, falhas_seguidas=falhas)
             espera = None
             if e.categoria == "rate_limit":
                 espera = e.retry_after or ESPERA_TRANSITORIO_S
@@ -219,10 +220,16 @@ def avaliar_m2(ids, res, y, prev_mod) -> dict:
     return {"por_modelo": saida, "nao_medidos": int(sum(res[i]["provedor"] == "nenhum" for i in ids))}
 
 
+def do_checkpoint(ck: Checkpoint, etapa: str, ids) -> dict[int, dict]:
+    """Resultados já medidos, sem chamar a API; o que falta aparece como não medido."""
+    feitos = ck.obter(etapa)
+    return {i: feitos.get(i, {"classe": None, "confianca": 0.0, "provedor": "nenhum", "modelo": ""}) for i in ids}
+
+
 def avaliar_m3(res1: dict, res2: dict) -> dict:
     saida = {}
     for nome, sel in _grupos(list(res2), res2).items():
-        sel = [i for i in sel if res1[i]["provedor"] == res2[i]["provedor"]]
+        sel = [i for i in sel if (res1[i]["provedor"], res1[i]["modelo"]) == (res2[i]["provedor"], res2[i]["modelo"])]
         if not sel:
             continue
         igual = float(np.mean([res1[i]["classe"] == res2[i]["classe"] for i in sel]))
@@ -315,24 +322,25 @@ def main() -> None:
     ja_usados = set(ids_m1)
     abaixo = [i for i in np.where(av["conf"] < m.limiar)[0].tolist() if i not in ja_usados]
     ids_m2 = sorted(rng.choice(abaixo, N_M2, replace=False).tolist())   # sorteio fixo, rode ou não o M2
-    res1 = None
-    if "M1" in so or "M3" in so:
+    if "M1" in so:
         print(f"M1: classificando {N_M1} tickets…", flush=True)
         res1 = classificar([(i, m.X_te[i]) for i in ids_m1], provs, etapa="M1", checkpoint=ck)
+    else:   # o que já foi medido entra no resultado sem nova chamada; o resto aparece como não medido
+        res1 = do_checkpoint(ck, "M1", ids_m1)
+    if any(r["provedor"] != "nenhum" for r in res1.values()):
         saida["M1"] = avaliar_m1(ids_m1, res1, m.y_te, av["prev"], av["cobertura"])
     if "M2" in so:
         print(f"M2: classificando {N_M2} tickets abaixo do limiar…", flush=True)
         res2 = classificar([(i, m.X_te[i]) for i in ids_m2], provs, etapa="M2", checkpoint=ck)
         saida["M2"] = avaliar_m2(ids_m2, res2, m.y_te, av["prev"])
-    if "M3" in so and res1:
-        rep = [i for i in ids_m1 if res1[i]["provedor"] != "nenhum"][:N_M3]
-        por_prov: dict[str, list] = {}
-        for i in rep:
-            por_prov.setdefault(res1[i]["provedor"], []).append(i)
-        res3 = {}
-        for prov, ids in por_prov.items():   # repete com o MESMO provedor da 1ª vez
-            res3.update(classificar([(i, m.X_te[i]) for i in ids], [prov], etapa=f"M3_{prov}", checkpoint=ck))
-        saida["M3"] = avaliar_m3(res1, res3)
+    if "M3" in so:   # duas passadas com o MESMO provedor e modelo, nos 50 primeiros tickets do M1
+        prov = provs[0]
+        itens = [(i, m.X_te[i]) for i in ids_m1[:N_M3]]
+        nome = f"{prov}_{llm.modelo_de(prov)}"
+        print(f"M3: 2 passadas de {N_M3} tickets com {nome}…", flush=True)
+        p1 = classificar(itens, [prov], etapa=f"M3a_{nome}", checkpoint=ck)
+        p2 = classificar(itens, [prov], etapa=f"M3b_{nome}", checkpoint=ck)
+        saida["M3"] = avaliar_m3(p1, p2)
     if "M4" in so:
         print("M4: rascunhos (60 sorteados + 20 adversários)…", flush=True)
         saida["M4"] = avaliar_m4(_rascunhar(_casos_m4(rng), provs, checkpoint=ck))
