@@ -8,6 +8,18 @@ if str(APP) not in sys.path:
     sys.path.insert(0, str(APP))
 
 
+import pandas as pd  # noqa: E402
+
+from motor import config  # noqa: E402
+
+
+@pytest.fixture(scope="session")
+def d1():
+    if not config.csv_d1().exists():
+        pytest.skip("Dataset 1 ausente em solution/data/")
+    return pd.read_csv(config.csv_d1())
+
+
 @pytest.fixture(autouse=True)
 def local_isolado(tmp_path, monkeypatch):
     """Eventos e logs de cada teste vão para uma pasta temporária."""
