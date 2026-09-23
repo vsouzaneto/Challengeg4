@@ -14,8 +14,8 @@ async function load(name) {
   return r.json();
 }
 
-const [audit, diag, op, sim, modelData, examples] = await Promise.all(
-  ['audit.json', 'diagnostico.json', 'operacao.json', 'simulador.json', 'model.json', 'exemplos.json'].map(load),
+const [audit, diag, op, sim, modelData, examples, rev] = await Promise.all(
+  ['audit.json', 'diagnostico.json', 'operacao.json', 'simulador.json', 'model.json', 'exemplos.json', 'revisao.json'].map(load),
 );
 const model = new TriageModel(modelData);
 const classes = sim.classes;
@@ -419,7 +419,7 @@ $('#not-automate').innerHTML = [
   `<strong>Confiança abaixo de ${pct(sim.limiar_assistido)} (${pct(lowShare, 1)} dos tickets):</strong> a 1ª sugestão acerta ${pct(lowTop1)}. Rotear sozinho seria errar quase metade.`,
   `<strong>Conceder acesso ou direito de administrador:</strong> a IA identifica e roteia (precisão de ${pct(prec.Access)} em Access e ${pct(prec['Administrative rights'])} em Administrative rights), mas a concessão é decisão humana com aprovação.`,
   '<strong>Pedidos vazios:</strong> nenhum modelo acerta o que não foi dito. Uma resposta automática pede o que falta, e a triagem vem depois.',
-  '<strong>Reclamação, cancelamento e reembolso:</strong> envolvem retenção e dinheiro. A IA redige, a pessoa envia. Os dados desses tickets são sintéticos, então esta é uma regra de política, não um número.',
+  `<strong>Reclamação, cancelamento e reembolso:</strong> envolvem retenção e dinheiro. A IA redige, a pessoa envia. No CSV, pelo rótulo, reembolso é ${pct(rev.nao_automatizar.categorias[0].pct, 1)} e cancelamento ${pct(rev.nao_automatizar.categorias[1].pct, 1)} dos tickets (<a href="revisao.html#e22">revisão, 2.2</a>); como o texto não confirma o rótulo, a regra é de política.`,
 ].map((li) => `<li>${li}</li>`).join('');
 
 // Benchmark LLM × linear (só aparece se o pipeline 04 tiver rodado)

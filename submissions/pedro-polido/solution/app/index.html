@@ -22,6 +22,7 @@
         <a href="#simulador">3 · Simulador</a>
         <a href="#triagem">4 · Triagem ao vivo</a>
         <a href="#pratica">5 · Na prática</a>
+        <a href="revisao.html" class="nav-rev">Revisão: só o CSV →</a>
       </div>
     </div>
   </nav>
@@ -33,22 +34,26 @@
         <div class="eyebrow">AI Master Challenge 002 · Redesign de Suporte</div>
         <h1>O painel de suporte não mostra onde o tempo se perde. A triagem mostra.</h1>
         <p class="lead">
-          Antes de diagnosticar, auditei os dados. As métricas operacionais são sintéticas: nenhum gargalo ou fator de
+          Antes de diagnosticar, auditei os dados. As métricas operacionais têm as marcas de dado sintético: nenhum gargalo ou fator de
           satisfação que se tire delas é real. Onde o texto é real (<span class="num" data-k="d2_total"></span> tickets),
           medi quanto da triagem a IA pode assumir, com que acerto, e o que deve continuar humano.
         </p>
+        <a class="rev-banner" href="revisao.html">
+          <b>Revisão ponto a ponto usando só o CSV</b>
+          <span>verificação do arquivo (8.469 registros, não 30 mil), o que automatizar e o que não, fluxo e ROI com premissas editáveis →</span>
+        </a>
         <div class="answers">
           <div class="answer">
             <div class="q">Onde estamos perdendo tempo?</div>
             <div class="big num" data-k="neg_pct"></div>
             <p>dos tickets fechados foram "resolvidos antes da primeira resposta". <strong>Os tempos do painel são
-              sorteados</strong>, então qualquer gargalo apontado neles é ruído. O custo evitável e medível está na
+              inválidos</strong>, então qualquer gargalo apontado neles é ruído. O custo que a IA pode reduzir está na
               <strong>triagem manual</strong>: ler, entender e rotear cada ticket.</p>
           </div>
           <div class="answer">
             <div class="q">O que automatizar?</div>
             <div class="big num" data-k="auto_share"></div>
-            <p>dos tickets roteados <strong>sem humano</strong>, com <strong><span data-k="auto_acc"></span> de acerto</strong>.
+            <p>dos tickets <strong>da base de TI</strong> (não o CSV) roteados <strong>sem humano</strong>, com <strong><span data-k="auto_acc"></span> de acerto</strong>.
               Em outros <span data-k="assist_share"></span>, o atendente escolhe entre 2 sugestões.
               <span data-k="human_share"></span> ficam <strong>inteiramente humanos</strong>, incluindo todo tema sensível.</p>
           </div>
@@ -112,7 +117,7 @@
           <strong>O que isso significa para a operação:</strong> antes de otimizar tempos, é preciso medir tempos. O painel
           precisa registrar eventos (criação, 1ª resposta, cada transferência de fila, reabertura, resolução) com
           horário e responsável, e a pesquisa de satisfação precisa registrar a taxa de resposta. Com
-          <span data-k="closed_n"></span> tickets fechados (cerca de um mês de operação), o detector acima já enxerga um
+          <span data-k="closed_n"></span> tickets fechados (cerca de um mês no volume do brief; o CSV não informa o volume), o detector acima já enxerga um
           gargalo de +3 h em canal × prioridade.
         </div>
       </div>
@@ -177,9 +182,11 @@
               <div><label for="p-assist">Triagem assistida (min)</label><input id="p-assist" type="number" min="0" step="0.5" value="1"></div>
               <div><label for="p-rework">Retrabalho por erro (min)</label><input id="p-rework" type="number" min="0" value="15"></div>
             </div>
-            <p class="tiny muted" style="margin-top:12px">Premissas iniciais: 30 mil tickets/ano (do brief) e o custo
-              carregado de um analista de suporte N1. O retrabalho cobre a fila errada lendo, devolvendo e o ticket
-              esperando de novo.</p>
+            <p class="tiny muted" style="margin-top:12px">Volume inicial: 2.500 tickets/mês, os 30 mil/ano do brief
+              (premissa). O CSV <b>não informa</b> o volume: não tem data de abertura, e os "~30.000 registros" do brief
+              batem com as linhas físicas do arquivo, não com os 8.469 registros. Com o proxy do CSV (~353/mês), o
+              resultado muda muito: veja a <a href="revisao.html#e3">revisão</a>. Custo/hora: analista de suporte N1 com encargos. O retrabalho cobre
+              a fila errada lendo, devolvendo e o ticket esperando de novo.</p>
           </div>
           <div class="stack">
             <div class="card">
@@ -262,7 +269,7 @@
         <h3 style="margin:36px 0 12px">Implantação em 4 passos, cada um com critério de avanço</h3>
         <div class="timeline">
           <div class="card"><div class="eyebrow">Semanas 1–2</div><h3>Modo sombra</h3><p class="small muted">O modelo sugere, as pessoas roteiam como hoje. Mede-se o acerto real por fila. Avança se a faixa automática acertar ≥ 97%.</p></div>
-          <div class="card"><div class="eyebrow">Semanas 3–4</div><h3>Automático nas filas fortes</h3><p class="small muted">Liga o roteamento automático onde a precisão é maior (Purchase, Storage, Access) e a faixa assistida em todas.</p></div>
+          <div class="card"><div class="eyebrow">Semanas 3–4</div><h3>Automático nas filas fortes</h3><p class="small muted">Liga o roteamento automático onde a precisão é maior (Purchase, Storage, Access) e a faixa assistida em todas. Vale para uma operação com filas como as da base de TI; com dados como os do CSV, ver a <a href="revisao.html#e23">revisão</a>.</p></div>
           <div class="card"><div class="eyebrow">Mês 2</div><h3>Todas as filas + medição</h3><p class="small muted">Painel com eventos reais (1ª resposta, transferências, reabertura) e o detector de gargalos rodando toda semana.</p></div>
           <div class="card"><div class="eyebrow">Mês 3</div><h3>Rascunhos com LLM</h3><p class="small muted">Respostas sugeridas para as intenções mais frequentes, aprovadas pelo atendente. Mede-se a taxa de edição.</p></div>
         </div>

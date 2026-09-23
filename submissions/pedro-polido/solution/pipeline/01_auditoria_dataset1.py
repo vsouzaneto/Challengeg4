@@ -40,9 +40,16 @@ def check(id_, titulo, valor, evidencia, peso="alto"):
     print(f"[{id_}] {titulo}: {valor}")
 
 
-# 1. Volume
-check("volume", "Linhas no arquivo", br(len(df), 0),
-      f"O brief fala em ~30.000 tickets; o arquivo tem {br(len(df), 0)}.", "medio")
+# 1. Volume: o "~30.000" do brief bate com as linhas físicas; as quebras de linha estão dentro das descrições
+raw_text = open(TICKETS_CSV, encoding="utf-8").read()
+physical_lines = raw_text.count("\n")
+embedded = int(df["Ticket Description"].str.count("\n").sum())
+contiguous = sorted(df["Ticket ID"]) == list(range(1, len(df) + 1))
+check("volume", "Registros no arquivo", br(len(df), 0),
+      f"O brief fala em ~30.000 tickets. O arquivo tem {br(physical_lines, 0)} linhas físicas, mas {br(len(df), 0)} "
+      f"registros: {br(embedded, 0)} quebras de linha estão dentro das descrições (1 cabeçalho + {br(len(df), 0)} + "
+      f"{br(embedded, 0)} = {br(1 + len(df) + embedded, 0)}). IDs de 1 a {br(len(df), 0)}"
+      f"{', sem buracos' if contiguous else ', com buracos'}.", "medio")
 
 # 2. Placeholders de template não preenchidos
 desc = df["Ticket Description"]
@@ -50,7 +57,7 @@ has_placeholder = desc.str.contains(r"\{[a-z_]+\}", regex=True)
 placeholder_names = desc.str.findall(r"\{[a-z_]+\}").explode().dropna()
 check("placeholders", "Descrições com variável de template não preenchida", pct(has_placeholder.mean()),
       f"Todas trazem marcadores como {{product_purchased}}. Há {placeholder_names.nunique()} nomes de variável "
-      f"diferentes (ex.: {{product_paydirt}}, {{tiddlers_id}}): texto gerado por modelo de linguagem a partir de template.")
+      f"diferentes (ex.: {{product_paydirt}}, {{tiddlers_id}}): padrão de texto montado a partir de template sem substituir as variáveis.")
 
 # 3. Texto x assunto
 first_sentence = desc.str.split(r"(?<=[.?!])\s", n=1, regex=True).str[0]
@@ -61,13 +68,14 @@ flicker = df.loc[desc.str.contains("screen is flickering", regex=False), "Ticket
 flicker_other = [s for s in flicker.index if s not in ("Display issue", "Hardware issue")][:2]
 check("texto_assunto", "Texto do ticket × assunto do ticket", f"p = {br(p_first_subject, 2)}",
       f"Só existem {top_first.size} frases de abertura ({pct(top_first.iloc[0] / len(df))} começam com "
-      f"\"{top_first.index[0]}\") e elas não têm relação com o assunto. \"The screen is flickering\" aparece em "
+      f"\"{top_first.index[0]}\") e não têm associação detectável com o assunto. \"The screen is flickering\" aparece em "
       f"tickets de '{flicker_other[0]}' e '{flicker_other[1]}'.")
 
 # 4. Janela de tempo impossível
 window_h = (max(first_response.max(), resolution.max()) - min(first_response.min(), resolution.min())).total_seconds() / 3600
 check("janela", "Todas as respostas e resoluções cabem em", f"{window_h:.0f} horas",
-      f"A primeira resposta e a resolução de todos os tickets ficam entre {first_response.min():%d/%m/%Y %H:%M} e "
+      f"A primeira resposta e a resolução de todos os tickets ficam entre "
+      f"{min(first_response.min(), resolution.min()):%d/%m/%Y %H:%M} e "
       f"{resolution.max():%d/%m/%Y %H:%M}, enquanto as compras vão de {purchase.min():%Y} a {purchase.max():%Y}.")
 
 # 5. Resolução antes da primeira resposta
@@ -103,16 +111,18 @@ csat_counts = closed["Customer Satisfaction Rating"].value_counts().sort_index()
 uniform["CSAT"] = {"counts": {str(int(k)): v for k, v in csat_counts.items()}, "p": stats.chisquare(csat_counts).pvalue}
 # Gênero fica fora da afirmação: não é uniforme ('Other' tem ~2 p.p. a menos, p = 0,007) e nem é campo operacional.
 min_p = min(u["p"] for k, u in uniform.items() if k != "Customer Gender")
-check("uniforme", "Canal, prioridade, tipo, status e nota são uniformes", f"p ≥ {br(min_p, 2)}",
+check("uniforme", "Canal, prioridade, tipo, status e nota compatíveis com distribuição uniforme", f"p ≥ {br(min_p, 2)}",
       "Telefone, chat, e-mail e redes sociais têm o mesmo volume, e as notas de 1 a 5 aparecem na mesma proporção "
-      "(qui-quadrado de aderência à uniforme: nenhum campo rejeita). Nenhuma operação real é plana assim; é o padrão "
-      "de sorteio independente por coluna.", "medio")
+      "(qui-quadrado de aderência à uniforme: nenhum campo rejeita). Operações reais raramente são planas assim; o "
+      "padrão é compatível com sorteio independente por coluna.", "medio")
 
 # 9. Tipo x assunto
-p_type_subject = stats.chi2_contingency(pd.crosstab(df["Ticket Subject"], df["Ticket Type"]))[1]
+ct_ts = pd.crosstab(df["Ticket Subject"], df["Ticket Type"])
+chi2_ts, p_type_subject, _, _ = stats.chi2_contingency(ct_ts)
+v_ts = np.sqrt(chi2_ts / (ct_ts.values.sum() * (min(ct_ts.shape) - 1)))
 refund = df[df["Ticket Subject"] == "Refund request"]["Ticket Type"].value_counts(normalize=True)
 check("tipo_assunto", "Tipo do ticket × assunto do ticket", f"p = {br(p_type_subject, 2)}",
-      f"São independentes. Tickets com assunto 'Refund request' estão classificados como 'Technical issue' em "
+      f"Sem associação detectável (V de Cramér {br(v_ts, 3)}). Tickets com assunto 'Refund request' estão classificados como 'Technical issue' em "
       f"{pct(refund['Technical issue'])} dos casos e como 'Refund request' em só {pct(refund['Refund request'])}.")
 
 # 10. CSAT: nenhuma variável explica a nota

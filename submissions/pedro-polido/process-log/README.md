@@ -11,7 +11,7 @@
 |---|---|
 | Decisões do Pedro que definiram a entrega | 4 (desafio, narrativa, LLM, formato do protótipo) + revisão dos rótulos |
 | Hipóteses da IA refutadas pelos dados | 4 |
-| Erros da IA pegos pela verificação antes de entrar na entrega | 13 ([lista](#erros-da-ia-pegos-pela-verificação)) |
+| Erros da IA pegos pela verificação | 22 ([lista](#erros-da-ia-pegos-pela-verificação)): 13 antes de entrar na entrega e 9 depois, na revisão pedida pelo Pedro |
 | Verificação automática do protótipo | 308/308 textos com a mesma fila e a mesma faixa em Python e no navegador |
 
 ---
@@ -30,10 +30,10 @@ A primeira coisa feita com os dados foi tentar *refutar* a hipótese. Ela sobrev
 
 | Teste | Resultado |
 |---|---|
-| Volume | 8.469 linhas, não ~30.000 como diz o brief |
+| Volume | 8.469 registros em 29.808 linhas físicas; os ~30.000 do brief batem com as linhas, não com os tickets |
 | Placeholders de template (`{product_purchased}`) | 100% das descrições |
 | Resolução antes da primeira resposta | 49,3% dos tickets fechados |
-| Tipo × assunto | independentes (p = 0,98) |
+| Tipo × assunto | sem associação detectável (p = 0,98) |
 | Prever CSAT com todas as variáveis | 20,9% de acerto, igual a chutar a nota mais comum |
 
 Em paralelo, um primeiro classificador no Dataset 2 (texto real, com bigramas) mostrou que 61% dos tickets podiam ser
@@ -160,6 +160,22 @@ Outras decisões desta etapa:
   cache por rodada (uma nova execução pula o que já terminou), nenhuma espera depois da última tentativa, e 3
   tentativas (não 6) para os modelos opcionais.
 
+## 11. Revisão só com o CSV, e a auditoria da revisão
+
+- **Pedido do Pedro (23/09):** revisar tudo ponto a ponto usando só o CSV de tickets, porque ele desconfiou da contagem
+  ("deveria conter cerca de 30.000 tickets"), com regras explícitas: número só de código executado, separar FATO /
+  INFERÊNCIA / PREMISSA, exemplo real com ID.
+- **Etapa 1:** o arquivo é o mesmo (SHA-256 idêntico) e tem 8.469 registros em 29.808 linhas físicas (1 cabeçalho +
+  8.469 registros + 21.338 quebras de linha dentro das descrições). Os IDs vão de 1 a 8.469, sem buracos. A contagem
+  8.469 estava certa; os "~30 mil" do brief batem com as linhas.
+- **Etapas 2–3:** 5 agentes analistas mediram cada candidata a automação com código, e 5 verificadores independentes
+  recalcularam tudo do zero: 199 fatos, 7 divergências (de formulação, não de contagem), 71 exemplos conferidos
+  literalmente no CSV.
+- **Página de revisão** (`05_revisao_csv.py` → `revisao.html`): 2 auditores leram a página e a submissão inteira e
+  acharam 35 problemas: 17 na página e 18 de inconsistência entre a revisão e o README ou a página principal. Os três
+  graves estavam também na resposta dada ao Pedro por chat (erros 18, 19 e 21). Com a elegibilidade corrigida, o ROI
+  provável das automações que o CSV sustenta passou de −39,6% para −65,0%.
+
 ---
 
 ## Erros da IA pegos pela verificação
@@ -179,3 +195,12 @@ Outras decisões desta etapa:
 | 11 | Contribuições da IA atribuídas ao Pedro no README | releitura da seção antes do commit | 9 |
 | 12 | Modelo padrão do app e do benchmark já descontinuado (`gemini-2.5-flash`) | teste de fumaça com 7 modelos antes de rodar | 10 |
 | 13 | Benchmark só gravava resultados no fim: uma falha na última rodada jogaria fora as anteriores | o modelo maior começou a devolver 503 e 429 em sequência | 10 |
+| 14 | Chamou o arquivo de "o de 30 mil tickets" antes de medir | o Pedro questionou a contagem e pediu a reanálise | 11 |
+| 15 | ROI com 2.500 tickets/mês chamado de "premissas conservadoras", sem avisar que o CSV não informa o volume | revisão pedida pelo Pedro + auditor de consistência | 11 |
+| 16 | Percentuais 60/32/8 apresentados sem dizer que vêm da outra base | revisão pedida pelo Pedro | 11 |
+| 17 | "Independentes" no README, quando o correto é "sem associação detectável" | verificador independente | 11 |
+| 18 | Na revisão por chat: 5.868 descrições tratadas como "genéricas", mas todas continuam com mais texto | auditor da página de revisão | 11 |
+| 19 | Na revisão por chat: elegibilidade do ROI fora do fluxo proposto (contou tickets que o fluxo manda para uma pessoa) | auditor da página de revisão | 11 |
+| 20 | Na revisão por chat: C6 declarado "sem falsos alarmes" sem ler os 19 casos (4 são falsos positivos) | auditor + leitura caso a caso | 11 |
+| 21 | Proxy de volume (registros ÷ meses de compra) rotulado como INFERÊNCIA, e é PREMISSA | auditor da página de revisão | 11 |
+| 22 | Duas medidas de urgência misturadas numa frase (p = 0,024 da frase e 393 Low da lista ampla) | conferência ao montar a página | 11 |

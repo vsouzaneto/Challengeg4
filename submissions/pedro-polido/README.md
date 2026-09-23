@@ -12,20 +12,26 @@
 
 ## Executive Summary
 
-O dataset de métricas de suporte é **sintético**, e dá para provar: 49,3% dos tickets fechados foram "resolvidos antes
+O dataset de métricas de suporte tem **todas as marcas de dado gerado** (a confirmar com a empresa): 49,3% dos tickets fechados foram "resolvidos antes
 da primeira resposta", 100% das descrições têm variáveis de template sem preencher, e um modelo com todas as colunas
 prevê a nota de satisfação no nível do chute (20,9%). Qualquer gargalo ou fator de satisfação tirado dali é ruído, e é
 exatamente isso que uma IA entrega quando recebe o brief sozinha. Por isso entreguei três coisas:
 
 1. um **detector de gargalos validado**, que não inventa padrão (0 gargalos nos dados atuais) e encontra quando existe
    (+3 h num segmento canal × prioridade é detectado em 82% das simulações);
-2. a **automação medida onde o texto é real** (47.837 tickets de TI): 60% dos tickets roteados sem humano com 97,2% de
-   acerto, 32% com 2 sugestões para o atendente, 8% sempre humanos;
+2. a **automação medida onde o texto é real**, na outra base (47.837 tickets de TI, não o CSV): 60% dos tickets roteados
+   sem humano com 97,2% de acerto, 32% com 2 sugestões para o atendente, 8% sempre humanos;
 3. um **protótipo rodando** com essa política, o simulador de ROI e a triagem ao vivo, com o LLM (Gemini) só onde ele
    ganha. Medido nos mesmos tickets, ele classifica pior (42–64% contra 85,9%), mas traduz e redige bem.
 
-**Recomendação principal:** instrumentar o suporte para medir tempo de verdade e começar pela triagem, em modo sombra.
-Com premissas conservadoras, são ~90 h/mês de triagem liberadas.
+**Recomendação principal:** instrumentar o suporte para medir tempo e volume de verdade. Com dados como os do CSV, começar
+pelas automações de fluxo que ele sustenta (acuse de recebimento, lembrete, pedido da mensagem de erro que faltou); a
+triagem automática, medida na base de TI, entra em modo sombra. O ganho depende do volume, que o CSV não informa: com
+2.500 tickets/mês (premissa do brief), ~91 h/mês de triagem liberadas; com o proxy do CSV (~353/mês), ~13 h/mês.
+
+**Revisão ponto a ponto usando só o CSV:** [`solution/app/revisao.html`](solution/app/revisao.html), gerada por
+[`05_revisao_csv.py`](solution/pipeline/05_revisao_csv.py): verificação do arquivo (8.469 registros; os "~30 mil" batem
+com as 29.808 linhas físicas), o que automatizar e o que não, fluxo e ROI com premissas editáveis.
 
 ---
 
@@ -40,6 +46,7 @@ Com premissas conservadoras, são ~90 h/mês de triagem liberadas.
 | 3. Triagem | Quanto da triagem a IA assume, com que acerto, e o que fica humano? | [`03_triagem_dataset2.py`](solution/pipeline/03_triagem_dataset2.py) |
 | 4. LLM | Vale usar LLM para classificar? Onde ele agrega? | [`04_benchmark_llm.py`](solution/pipeline/04_benchmark_llm.py) |
 | 5. Protótipo | Funciona com dados reais, na mão de quem usa? | [`solution/app`](solution/app) |
+| 6. Revisão | O que o CSV sozinho sustenta? | [`05_revisao_csv.py`](solution/pipeline/05_revisao_csv.py) → [`revisao.html`](solution/app/revisao.html) |
 
 Princípio em todas as etapas: tentar derrubar cada achado antes de reportá-lo. Os limiares da política foram escolhidos em
 validação cruzada **no treino**, e o conjunto de teste (9.568 tickets) só foi usado para medir.
@@ -50,13 +57,13 @@ validação cruzada **no treino**, e o conjunto de teste (9.568 tickets) só foi
 
 | Verificação | Resultado |
 |---|---|
-| Linhas no arquivo | 8.469 (o brief fala em ~30.000) |
+| Registros no arquivo | 8.469, em 29.808 linhas físicas: os ~30.000 do brief batem com as linhas (21.338 quebras ficam dentro das descrições) |
 | Descrições com `{product_purchased}` sem preencher | 100% |
 | Tickets "resolvidos antes da 1ª resposta" | 49,3%: a diferença é um triângulo simétrico em zero, a assinatura de dois horários sorteados de forma independente |
 | Janela de todas as respostas e resoluções | 27 horas, para compras de 2020 a 2021 |
 | Resoluções que descrevem alguma ação técnica | 0 de 2.769 (são frases aleatórias do Faker) |
-| Tipo do ticket × assunto | independentes (p = 0,98) |
-| Texto do ticket × assunto | independentes (p = 0,91) |
+| Tipo do ticket × assunto | sem associação detectável (p = 0,98) |
+| Texto do ticket × assunto | sem associação detectável (p = 0,91) |
 | Prever a nota de satisfação com todas as variáveis | 20,9% de acerto = chutar a nota mais comum |
 
 O que uma análise ingênua reportaria, e o teste que derruba: a "pior combinação" (Email × Medium × Product inquiry,
@@ -64,7 +71,8 @@ O que uma análise ingênua reportaria, e o teste que derruba: a "pior combinaç
 
 **2. Detector de gargalos:** 149 segmentos testados com correção para comparações múltiplas. Resultado: **0 gargalos**
 de tempo e 0 de satisfação. Em ruído puro, 8% das rodadas têm algum alarme falso; a análise por "pior média" erra em
-100%. Com um mês de volume, ele detecta +2 h num canal inteiro (92%) e +3 h em canal × prioridade (82%).
+100%. Com os 2.769 tickets fechados do CSV (cerca de um mês no volume do brief; o CSV não informa o volume), ele detecta
++2 h num canal inteiro (92%) e +3 h em canal × prioridade (82%).
 
 **3. Onde o tempo se perde, no texto real** (Dataset 2)
 
@@ -105,9 +113,13 @@ no rascunho, testados de ponta a ponta no app.
 Na auditoria de rótulos, o Gemini foi uma checagem independente: nos 15 casos em que a IA julgou o rótulo errado, ele
 (sem ver rótulo nem previsão) **nunca** escolheu o rótulo e ficou com a fila do modelo em 10.
 
-**6. ROI** (premissas editáveis no simulador: 2.500 tickets/mês, 3 min de triagem manual, 1 min assistida, 15 min de
-retrabalho por erro, R$ 40/h): **~91 h/mês liberadas, ~R$ 44 mil/ano, 42 tickets/mês na fila errada**. É um ganho
-modesto em reais. O ganho provável maior é o tempo de espera na fila de triagem, que estes dados não permitem medir.
+**6. ROI** (premissas editáveis no simulador: 3 min de triagem manual, 1 min assistida, 15 min de retrabalho por erro,
+R$ 40/h). O volume decide o resultado, e o CSV não o informa: com **2.500 tickets/mês** (30 mil/ano do brief), ~91 h/mês
+liberadas, ~R$ 44 mil/ano e 42 tickets/mês na fila errada; com o **proxy do CSV** (8.469 registros ÷ 24 meses de datas de
+compra ≈ 353/mês, também premissa), ~13 h/mês e ~R$ 6 mil/ano. Nas automações que o CSV sozinho sustenta, o ROI de 12
+meses é negativo nos cenários conservador e provável e positivo só no otimista; o provável se paga a partir de ~1.000
+tickets/mês ([revisão, Etapa 3](solution/app/revisao.html)). O ganho provável maior é o tempo de espera na fila de
+triagem, que estes dados não permitem medir.
 
 ### Recomendações (em ordem)
 
@@ -116,8 +128,9 @@ modesto em reais. O ganho provável maior é o tempo de espera na fila de triage
    possível, e o detector já está pronto para rodar.
 2. **Triagem em modo sombra (semanas 1–2):** o modelo sugere e as pessoas roteiam como hoje. Avança se a faixa
    automática acertar ≥ 97% nos tickets reais.
-3. **Roteamento automático nas filas fortes (semanas 3–4):** Purchase, Storage e Access (precisão de 89% a 95%), com a
-   faixa assistida em todas.
+3. **Roteamento automático nas filas fortes (semanas 3–4), se a operação tiver filas como as da base de TI:** Purchase,
+   Storage e Access (precisão de 89% a 95%), com a faixa assistida em todas. Com dados como os do CSV (sem coluna de
+   fila e sem rótulo confiável), a triagem segue humana até existirem rótulos novos.
 4. **Arrumar a taxonomia:** HR Support absorve pedido vazio e pedido de acesso, e Hardware é o ralo dos erros. As
    correções dos atendentes no modo sombra viram os novos rótulos.
 5. **LLM onde ele agrega:** traduzir tickets em português e redigir rascunhos que o atendente aprova. A métrica é a taxa
@@ -131,12 +144,13 @@ modesto em reais. O ganho provável maior é o tempo de espera na fila de triage
 - **Texto fora do padrão de treino:** um ticket em português saía como "Administrative rights" com **100% de
   confiança**. Hoje, se o modelo reconhece menos de 50% das palavras, o ticket vai para uma pessoa ou é traduzido antes.
 - **Conceder acesso ou direito de administrador:** a IA roteia, a pessoa aprova.
-- **Reclamação, cancelamento e reembolso:** a IA redige, a pessoa envia. Como esses dados são sintéticos, é regra de
-  política, não número.
+- **Reclamação, cancelamento e reembolso:** a IA redige, a pessoa envia. No CSV, pelo rótulo, reembolso é 26,1% e
+  cancelamento 24,5% dos tickets (revisão, 2.2); como o texto não confirma o rótulo, a regra é de política.
 
 ### Limitações
 
-- **Os tempos e o CSAT são sintéticos**, então o ROI depende de premissas (editáveis no simulador) e não de medição.
+- **Os tempos e o CSAT do CSV não são utilizáveis** (e o CSV não informa o volume), então o ROI depende de premissas
+  (editáveis no simulador e na revisão) e não de medição.
 - **O Dataset 2 é de outra operação** (TI interna, texto pré-processado, em inglês) e tem rótulos ruidosos. A política
   precisa ser recalibrada com os tickets reais no modo sombra.
 - **O sinal de urgência é uma heurística não validada:** não existe prioridade real confiável nos dados.
@@ -166,7 +180,8 @@ modesto em reais. O ganho provável maior é o tempo de espera na fila de triage
 1. Li o desafio com a IA e escolhi o 002 com uma **hipótese a verificar** (Dataset 1 sintético) antes de ter os dados.
 2. **Tentei derrubar a hipótese primeiro.** Ela sobreviveu a 9 testes, e isso definiu a entrega.
 3. Decidi abrir com a auditoria, usar o Gemini e publicar um web app (decisões minhas, registradas no log).
-4. Pipeline em 4 scripts; cada afirmação da entrega sai de um número calculado, não digitado.
+4. Pipeline em 5 scripts (o 5º, `05_revisao_csv.py`, refaz a análise usando só o CSV e alimenta `revisao.html`); cada
+   afirmação da entrega sai de um número calculado, não digitado.
 5. Protótipo com o mesmo modelo, com paridade Python × navegador verificada em 308 textos.
 6. Revisão visual por captura de tela, que pegou erros de conteúdo, não só de layout.
 7. Auditoria de rótulos: a IA deu o primeiro veredito em 40 casos; a revisão humana está na coluna `veredito_pedro`.
@@ -205,6 +220,7 @@ python -m venv .venv && .venv/Scripts/pip install -r submissions/pedro-polido/so
 cd submissions/pedro-polido/solution/pipeline
 python 01_auditoria_dataset1.py && python 02_diagnostico_gargalos.py && python 03_triagem_dataset2.py
 python 04_benchmark_llm.py        # opcional, requer GEMINI_API_KEY no .env da raiz
+python 05_revisao_csv.py          # revisão usando só o CSV (página revisao.html)
 
 # 2. Protótipo (Node 18+). Sem dependências npm.
 cd ../app && node tests/parity.mjs && node dev-server.mjs   # http://localhost:5173
