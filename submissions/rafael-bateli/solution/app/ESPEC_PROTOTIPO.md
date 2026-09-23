@@ -240,7 +240,7 @@ Os critérios estão **escritos em `medir_llm.py` antes da primeira execução**
 | Datasets | CSV ausente ou coluna faltando | Tela com o link do Kaggle e o caminho esperado; com `.pkl` presente, "Tente derrubar" continua funcionando para o D2 | `dataset_ausente` (ERROR) |
 | Modelo | `.pkl` ausente, corrompido ou de outra versão | Retreina (≈ 1 min) e salva, com aviso na tela | `modelo_invalido` (WARNING) |
 | Classificação | Exceção ao prever | Triagem humana, motivo `falha_classificador` | `falha_classificador` (ERROR) |
-| LLM | Sem chave, 429, 5xx, timeout, resposta inválida | Próximo da cadeia → template → "rascunho indisponível, responder manualmente" | `sem_chave`, `rate_limit`, `http_5xx`, `timeout`, `resposta_invalida` (WARNING por tentativa) |
+| LLM | Sem chave (ou chave recusada, HTTP 401/403), 429, 5xx, timeout, erro de rede, resposta inválida | Próximo da cadeia → template → "rascunho indisponível, responder manualmente" | `sem_chave`, `rate_limit`, `http_5xx`, `timeout`, `rede`, `resposta_invalida` (WARNING por tentativa) |
 | Guardrail | Texto viola uma regra | Template + motivo | `guardrail_reprovou` (WARNING) |
 | Base de conhecimento | Artigo ausente para o problema | Sem rascunho; o dossiê continua | `kb_ausente` (WARNING) |
 | Eventos | Falha ao gravar o JSONL | Guarda na sessão e tenta de novo; aviso na tela | `falha_eventos` (ERROR) |
