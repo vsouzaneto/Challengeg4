@@ -11,8 +11,9 @@
 |---|---|
 | Decisões do Pedro que definiram a entrega | 4 (desafio, narrativa, LLM, formato do protótipo) + revisão dos rótulos |
 | Hipóteses da IA refutadas pelos dados | 4 |
-| Erros da IA pegos pela verificação | 22 ([lista](#erros-da-ia-pegos-pela-verificação)): 13 antes de entrar na entrega e 9 depois, na revisão pedida pelo Pedro |
+| Erros da IA pegos pela verificação | 31 ([lista](#erros-da-ia-pegos-pela-verificação)): 19 antes de entrar na entrega e 12 depois (9 na revisão pedida pelo Pedro, 2 pela segunda opinião, 1 no teste do chat) |
 | Verificação automática do protótipo | 308/308 textos com a mesma fila e a mesma faixa em Python e no navegador |
+| Validação cruzada (outra IA) | 19 afirmações recalculadas: 16 confirmam, 2 divergem, 1 não verificável; 2 pontos novos entraram na revisão |
 
 ---
 
@@ -176,6 +177,46 @@ Outras decisões desta etapa:
   graves estavam também na resposta dada ao Pedro por chat (erros 18, 19 e 21). Com a elegibilidade corrigida, o ROI
   provável das automações que o CSV sustenta passou de −39,6% para −65,0%.
 
+## 12. Chat de atendimento (`solution/app/chat.html`)
+
+- **Pedido do Pedro (23/09):** "constrói o chat do diferencial". A escolha do formato foi dele, pela experiência com
+  agentes de atendimento.
+- **Política separada da tela:** `js/chat-policy.js` é uma função pura. Regras de risco em português e inglês, avaliadas
+  no texto original e na tradução (financeiro, perda de dados, invasão, insatisfação forte ou menção jurídica, tema
+  sensível), mandam para uma pessoa antes de qualquer modelo. Depois vêm pedido vago (pedir detalhes), texto fora do
+  vocabulário (pessoa) e a confiança do mesmo classificador da triagem ao vivo (automático, assistido ou pessoa).
+  `tests/chat.mjs` testa 13 cenários e a detecção de idioma em Node.
+- **Quem faz o quê na conversa:** a IA confirma o recebimento com protocolo, roteia quando a confiança passa do limiar e
+  manda o link de autoatendimento de senha (🤖). O Gemini traduz o ticket e redige rascunhos; **nada que ele escreve
+  chega ao cliente sem o clique do atendente** (🤝). No assistido, o atendente escolhe entre as 2 primeiras filas; na
+  operação, a escolha viraria rótulo de treino (na demonstração, não é gravada).
+- **Verificado no navegador, com o Gemini ativo:** os 7 cenários caíram na faixa prevista. O fluxo completo também foi
+  percorrido: pedido vago → rascunho aprovado → cliente completa → nova triagem → Equipamentos com 99%. Também foram
+  testados a escolha da 2ª fila no assistido, a mensagem do cliente depois da passagem para uma pessoa (anexada ao
+  ticket), HTML digitado pelo cliente (escapado, nenhum elemento criado) e a tela de 375 px (sem rolagem horizontal).
+  Console sem erros. Capturas 07 a 09 em `screenshots/`.
+- **Erro da IA: rascunho sem acento.** 1 em 6 rascunhos do Gemini voltou sem nenhum acento. A função passou a pedir de
+  novo quando o rascunho em português não tem acento; 8 de 8 depois da mudança.
+- **Erro da IA: nome de fila.** "Minha senha expirou e não consigo entrar no Outlook" foi para *Administrative rights*
+  com 96% a 97% (a tradução do Gemini varia entre execuções). No Dataset 2, 76% dos tickets com "outlook" estão nessa
+  fila, então o modelo está certo. O nome em português que o chat mostrava ("Instalação de software") é que era
+  estreito: virou "Software (Outlook, Windows)".
+- **Erro da IA: a mesma faixa descrita de dois jeitos.** A página principal dizia "resposta automática pede o que falta";
+  a revisão e o chat dizem que a IA redige e o atendente aprova. Ficou a versão com aprovação nos três lugares.
+
+## 13. Validação cruzada: segunda opinião de outra IA (`validacao-cruzada/`)
+
+- **O Pedro trouxe uma segunda opinião** de outra IA sobre o Dataset 1. Cada afirmação foi recalculada por
+  `06_validacao_cruzada.py`: 19 afirmações, 16 confirmam, 2 divergem ("ruído uniforme", que é triangular, e "gênero
+  uniforme", que não é), 1 não é verificável (o hash dos dois anexos).
+- **Dois pontos que a análise principal não tinha:** 392 descrições são cópia exata de outra (47 grupos, nenhum com o
+  mesmo e-mail ou assunto: é texto de template reaproveitado), e o brief lista 3 tipos de ticket enquanto o CSV tem 5.
+  Os 2 tipos que faltam no brief (reembolso e cancelamento, 40,7% dos tickets) são os que a política manda para uma
+  pessoa. Os dois entraram na revisão, Etapa 1, e o ROI não muda.
+- **Erro da IA na própria verificação:** a primeira versão do script agrupou a "pior combinação" por assunto e achou
+  outro resultado (n = 9). O n = 31 da segunda opinião só fecha agrupando por tipo (4 × 4 × 5 = 80 combinações).
+  Refeito por tipo, confirma: desvio entre combinações 0,241, contra 0,240 com a nota embaralhada.
+
 ---
 
 ## Erros da IA pegos pela verificação
@@ -204,3 +245,12 @@ Outras decisões desta etapa:
 | 20 | Na revisão por chat: C6 declarado "sem falsos alarmes" sem ler os 19 casos (4 são falsos positivos) | auditor + leitura caso a caso | 11 |
 | 21 | Proxy de volume (registros ÷ meses de compra) rotulado como INFERÊNCIA, e é PREMISSA | auditor da página de revisão | 11 |
 | 22 | Duas medidas de urgência misturadas numa frase (p = 0,024 da frase e 393 Low da lista ampla) | conferência ao montar a página | 11 |
+| 23 | Teste do chat esperava "pedir detalhes" para português sem tradução; a regra de cobertura manda para uma pessoa | `tests/chat.mjs` | 12 |
+| 24 | Rascunho do Gemini sem nenhum acento (1 em 6) | teste dos cenários no navegador + 6 chamadas repetidas | 12 |
+| 25 | Fila *Administrative rights* chamada de "Instalação de software" no chat (76% dos tickets com "outlook" estão nela) | caso de senha do Outlook roteado para ela no teste | 12 |
+| 26 | "Pedir detalhes" descrito como resposta automática na página principal, com aprovação na revisão e no chat | leitura do painel durante o teste | 12 |
+| 27 | Caixa de mensagem do chat herdando 190 px de altura; texto branco sobre roxo claro no tema escuro | captura de tela com o Edge headless | 12 |
+| 28 | "0 registros repetidos" sem conferir o texto sozinho: 392 descrições são cópia exata | segunda opinião de outra IA, recalculada | 13 |
+| 29 | Tipos do CSV não comparados com os do enunciado (3 no brief, 5 no CSV) | segunda opinião de outra IA, recalculada | 13 |
+| 30 | Script de verificação agrupando a "pior combinação" por assunto em vez de tipo | n = 9 não batia com o n = 31 afirmado | 13 |
+| 31 | Documento da validação cruzada escrito em 1ª pessoa, atribuindo ao Pedro erros que foram da IA | releitura antes do commit | 13 |

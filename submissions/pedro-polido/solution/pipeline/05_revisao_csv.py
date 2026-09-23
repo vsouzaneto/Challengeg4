@@ -21,7 +21,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold, cross_val_score
 from sklearn.pipeline import make_pipeline
 
-from common import SEED, TICKETS_CSV, br, save_json
+from common import REPO_ROOT, SEED, TICKETS_CSV, br, save_json
 
 
 def pct(x, d=1):
@@ -89,6 +89,26 @@ etapa1 = {
                          for s, g in df.groupby("Ticket Status")},
 }
 etapa1["faltam_para_30mil"] = 30000 - N
+
+# Descrições idênticas: "registros_repetidos" compara todas as colunas (zero); aqui compara só o texto.
+# Apontado pela segunda opinião (process-log/validacao-cruzada), que minha checagem original não cobria.
+dup_desc = desc[desc.duplicated(keep=False)]
+dup_groups = df.loc[dup_desc.index].groupby(dup_desc)
+etapa1["descricoes_identicas"] = {
+    "tickets": len(dup_desc), "grupos": int(dup_desc.nunique()), "copias": len(dup_desc) - int(dup_desc.nunique()),
+    "maior_grupo": int(dup_groups.size().max()),
+    "grupos_mesmo_email": int((dup_groups["Customer Email"].nunique() == 1).sum()),
+    "grupos_mesmo_assunto": int((dup_groups["Ticket Subject"].nunique() == 1).sum()),
+}
+# Tipos de ticket: o enunciado lista os tipos na tabela de colunas; o CSV tem outros
+BRIEF = REPO_ROOT / "challenges" / "process-002-support" / "README.md"
+m = re.search(r"`Ticket Type`\s*\|\s*Tipo \(([^)]*)\)", BRIEF.read_text(encoding="utf-8")) if BRIEF.exists() else None
+tipos_brief = [t.strip() for t in m.group(1).split(",")] if m else []
+fora = ~df["Ticket Type"].isin(tipos_brief)
+etapa1["tipos"] = {"brief": tipos_brief, "csv": sorted(df["Ticket Type"].unique()),
+                   "fora_do_brief": sorted(df.loc[fora, "Ticket Type"].unique()), "fora_do_brief_n": int(fora.sum()),
+                   "fora_do_brief_pct": float(fora.mean())}
+print(f"  descrições idênticas: {etapa1['descricoes_identicas']} | tipos fora do brief: {etapa1['tipos']['fora_do_brief']} ({int(fora.sum())})")
 print(f"Etapa 1: {N} registros, {etapa1['linhas_fisicas']} linhas físicas, {embedded} quebras internas, "
       f"IDs contíguos: {etapa1['ids_contiguos']}")
 

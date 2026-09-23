@@ -21,8 +21,8 @@ exatamente isso que uma IA entrega quando recebe o brief sozinha. Por isso entre
    (+3 h num segmento canal × prioridade é detectado em 82% das simulações);
 2. a **automação medida onde o texto é real**, na outra base (47.837 tickets de TI, não o CSV): 60% dos tickets roteados
    sem humano com 97,2% de acerto, 32% com 2 sugestões para o atendente, 8% sempre humanos;
-3. um **protótipo rodando** com essa política, o simulador de ROI e a triagem ao vivo, com o LLM (Gemini) só onde ele
-   ganha. Medido nos mesmos tickets, ele classifica pior (42–64% contra 85,9%), mas traduz e redige bem.
+3. um **protótipo rodando** com essa política, o simulador de ROI, a triagem ao vivo e um **chat de atendimento**, com o
+   LLM (Gemini) só onde ele ganha. Medido nos mesmos tickets, ele classifica pior (42–64% contra 85,9%), mas traduz e redige bem.
 
 **Recomendação principal:** instrumentar o suporte para medir tempo e volume de verdade. Com dados como os do CSV, começar
 pelas automações de fluxo que ele sustenta (acuse de recebimento, lembrete, pedido da mensagem de erro que faltou); a
@@ -32,6 +32,16 @@ triagem automática, medida na base de TI, entra em modo sombra. O ganho depende
 **Revisão ponto a ponto usando só o CSV:** [`solution/app/revisao.html`](solution/app/revisao.html), gerada por
 [`05_revisao_csv.py`](solution/pipeline/05_revisao_csv.py): verificação do arquivo (8.469 registros; os "~30 mil" batem
 com as 29.808 linhas físicas), o que automatizar e o que não, fluxo e ROI com premissas editáveis.
+
+**Chat de atendimento (diferencial):** [`solution/app/chat.html`](solution/app/chat.html) mostra o fluxo numa conversa,
+com o avaliador no papel do cliente e do atendente. A IA confirma o recebimento na hora e aplica as regras de risco
+(reembolso, perda de dados, invasão, tema sensível) antes de qualquer modelo. Ela também pede o que falta, roteia quando
+tem confiança e passa para uma pessoa quando não deve decidir. O Gemini traduz e redige, mas nada do que ele escreve
+chega ao cliente sem o clique do atendente. Cada um dos 7 cenários abre direto por link (`chat.html?cenario=1` a `7`).
+
+**Validação cruzada:** uma segunda IA analisou o mesmo CSV sem ver esta entrega, e cada afirmação dela foi recalculada
+por script ([`process-log/validacao-cruzada/`](process-log/validacao-cruzada/)). Das 19 afirmações, 16 se confirmam,
+2 divergem e 1 não é verificável. Duas eram novas e entraram na revisão.
 
 ---
 
@@ -47,6 +57,8 @@ com as 29.808 linhas físicas), o que automatizar e o que não, fluxo e ROI com 
 | 4. LLM | Vale usar LLM para classificar? Onde ele agrega? | [`04_benchmark_llm.py`](solution/pipeline/04_benchmark_llm.py) |
 | 5. Protótipo | Funciona com dados reais, na mão de quem usa? | [`solution/app`](solution/app) |
 | 6. Revisão | O que o CSV sozinho sustenta? | [`05_revisao_csv.py`](solution/pipeline/05_revisao_csv.py) → [`revisao.html`](solution/app/revisao.html) |
+| 7. Chat | Como o fluxo fica numa conversa, com o atendente aprovando o que a IA escreve? | [`chat.html`](solution/app/chat.html) + [`chat-policy.js`](solution/app/js/chat-policy.js) |
+| 8. Validação cruzada | Outra IA chega aos mesmos desvios? | [`06_validacao_cruzada.py`](solution/pipeline/06_validacao_cruzada.py) → [`validacao-cruzada/`](process-log/validacao-cruzada/) |
 
 Princípio em todas as etapas: tentar derrubar cada achado antes de reportá-lo. Os limiares da política foram escolhidos em
 validação cruzada **no treino**, e o conjunto de teste (9.568 tickets) só foi usado para medir.
@@ -65,6 +77,10 @@ validação cruzada **no treino**, e o conjunto de teste (9.568 tickets) só foi
 | Tipo do ticket × assunto | sem associação detectável (p = 0,98) |
 | Texto do ticket × assunto | sem associação detectável (p = 0,91) |
 | Prever a nota de satisfação com todas as variáveis | 20,9% de acerto = chutar a nota mais comum |
+
+A validação cruzada acrescentou dois pontos: **392 descrições são cópia exata de outra** (47 grupos, nenhum com o mesmo
+e-mail ou assunto: é texto de template reaproveitado), e **o brief cita 3 tipos de ticket, mas o CSV tem 5**. Os 2 que
+faltam no brief, reembolso e cancelamento, somam 40,7% dos tickets.
 
 O que uma análise ingênua reportaria, e o teste que derruba: a "pior combinação" (Email × Medium × Product inquiry,
 +3,4 h) aparece com os tempos embaralhados em 78% das simulações.
@@ -157,6 +173,8 @@ triagem, que estes dados não permitem medir.
 - **Português depende do LLM** (tradução antes do classificador). Um modelo treinado com tickets em português seria o
   passo seguinte.
 - **O limite de uso da função do Gemini é por instância** (melhor esforço). Em produção, seria preciso um gateway com cota.
+- **O chat é uma demonstração:** o protocolo e o link do portal são fictícios, a conversa não é gravada e a escolha de fila
+  no modo assistido não volta para o treino. As regras de risco são listas de palavras (preferem pegar demais).
 - **O benchmark de LLM usou o Flash-Lite.** Os modelos maiores (`gemini-3.5-flash`, `3.6-flash`, `flash-latest`) estavam
   indisponíveis por cota ou demanda (429/503) na hora do teste. Um modelo maior pode reduzir a diferença, e o script já
   tenta rodá-los sozinho.
@@ -166,7 +184,7 @@ triagem, que estes dados não permitem medir.
 ## Process Log — Como usei IA
 
 > **Process log principal:** [`PROCESS_LOG.md`](PROCESS_LOG.md) (iterações, verificações e o que eu decidi). O log técnico,
-> com os 22 erros da IA e como cada um foi pego, está em [`process-log/README.md`](process-log/README.md).
+> com os 31 erros da IA e como cada um foi pego, está em [`process-log/README.md`](process-log/README.md).
 
 ### Ferramentas usadas
 
@@ -175,17 +193,21 @@ triagem, que estes dados não permitem medir.
 | Claude Code (Claude Opus) | Agente principal: exploração dos dados, testes estatísticos, pipeline em Python, web app, revisão visual |
 | Gemini | Dentro do produto: tradução e rascunho de resposta. No benchmark: LLM × classificador linear |
 | Edge headless | Capturas de tela da página inteira para revisar o visual (o painel do navegador estava oculto) |
+| Outra IA (segunda opinião) | Análise independente do mesmo CSV; cada afirmação dela foi recalculada por script |
 
 ### Workflow
 
 1. Li o desafio com a IA e escolhi o 002 com uma **hipótese a verificar** (Dataset 1 sintético) antes de ter os dados.
 2. **Tentei derrubar a hipótese primeiro.** Ela sobreviveu a 9 testes, e isso definiu a entrega.
 3. Decidi abrir com a auditoria, usar o Gemini e publicar um web app (decisões minhas, registradas no log).
-4. Pipeline em 5 scripts (o 5º, `05_revisao_csv.py`, refaz a análise usando só o CSV e alimenta `revisao.html`); cada
-   afirmação da entrega sai de um número calculado, não digitado.
+4. Pipeline em 6 scripts (o 5º, `05_revisao_csv.py`, refaz a análise usando só o CSV e alimenta `revisao.html`; o 6º
+   recalcula as afirmações da segunda opinião); cada afirmação da entrega sai de um número calculado, não digitado.
 5. Protótipo com o mesmo modelo, com paridade Python × navegador verificada em 308 textos.
 6. Revisão visual por captura de tela, que pegou erros de conteúdo, não só de layout.
 7. Auditoria de rótulos: a IA deu o primeiro veredito em 40 casos; a revisão humana está na coluna `veredito_pedro`.
+8. Chat de atendimento: a política é uma função pura testada em 13 cenários, e a tela foi testada no navegador com o
+   Gemini ativo (7 cenários, aprovação, passagem para uma pessoa, HTML escapado, 375 px).
+9. Validação cruzada com uma segunda IA, conferida número a número.
 
 ### Onde a IA errou, e como a verificação pegou (seleção; lista completa no log)
 
@@ -207,6 +229,8 @@ triagem, que estes dados não permitem medir.
   e compensar com ferramentas validadas em vez de só apontar o problema.
 - **Um web app publicado em vez de Streamlit**, para o avaliador abrir um link e usar em 30 segundos, com o Gemini
   (chave minha, fora do chat e do git) só onde agrega.
+- **O chat como diferencial**, pela minha experiência com agentes de atendimento.
+- **Uma segunda opinião de outra IA** sobre o mesmo CSV, que trouxe dois pontos que a análise principal não tinha.
 - _[PEDRO: resultado da sua revisão da auditoria de rótulos: em quantos casos você discordou do veredito da IA e por quê]_
 - _[PEDRO: o que a sua experiência operando triagem em produção (Tria) mudou na proposta, com as suas palavras]_
 
@@ -222,9 +246,11 @@ cd submissions/pedro-polido/solution/pipeline
 python 01_auditoria_dataset1.py && python 02_diagnostico_gargalos.py && python 03_triagem_dataset2.py
 python 04_benchmark_llm.py        # opcional, requer GEMINI_API_KEY no .env da raiz
 python 05_revisao_csv.py          # revisão usando só o CSV (página revisao.html)
+python 06_validacao_cruzada.py    # recalcula as afirmações da segunda opinião
 
 # 2. Protótipo (Node 18+). Sem dependências npm.
-cd ../app && node tests/parity.mjs && node dev-server.mjs   # http://localhost:5173
+cd ../app && node tests/parity.mjs && node tests/chat.mjs && node tests/roi.mjs
+node dev-server.mjs               # http://localhost:5173 (chat em /chat.html)
 ```
 
 Os JSONs gerados pelo pipeline já estão versionados em `solution/app/data/`, então o protótipo roda sem precisar
@@ -236,9 +262,11 @@ ou nas variáveis de ambiente da Vercel.
 - [x] Git history: um commit por etapa, com o motivo das correções
 - [x] Narrativa escrita: [`PROCESS_LOG.md`](PROCESS_LOG.md) e o log técnico [`process-log/README.md`](process-log/README.md)
 - [x] Revisão humana da auditoria de rótulos: [`process-log/auditoria-rotulos/`](process-log/auditoria-rotulos/)
-- [x] Screenshots: [`process-log/screenshots/`](process-log/screenshots/)
+- [x] Screenshots: [`process-log/screenshots/`](process-log/screenshots/) (07 a 09: chat de atendimento)
+- [x] Validação cruzada: texto da segunda opinião e verificação item a item em
+  [`process-log/validacao-cruzada/`](process-log/validacao-cruzada/)
 - [ ] Chat export da sessão com o Claude Code: `process-log/chat-export/` (pendente: revisar dados pessoais antes de publicar)
-- [ ] Prints da validação cruzada no Claude Chat (pendente)
+- [ ] Print da conversa com a outra IA (pendente; o texto já está na pasta acima)
 
 ---
 

@@ -196,7 +196,7 @@ async function onCustomer(text) {
       btn.onclick = () => {
         const q = btn.dataset.q;
         state.stage = 'encaminhado';
-        logEvent('🤝', `Atendente confirmou a fila ${q}${q === d.r.top ? ' (1ª sugestão da IA)' : ' (2ª sugestão da IA)'}. A escolha vira rótulo de treino.`);
+        logEvent('🤝', `Atendente confirmou a fila ${q}${q === d.r.top ? ' (1ª sugestão da IA)' : ' (2ª sugestão da IA)'}. Na operação, essa escolha vira rótulo de treino.`);
         addMsg('bot', `Pronto: seu pedido está com a equipe de ${QUEUE_PT[q]}. Protocolo #${state.proto}.`);
         replyBox(`Resposta da equipe de ${QUEUE_PT[q]} (opcional)`, { ...base, fila: q, mode: 'draft', faixa: LANES.assistido.nome }, { onSend: attendantReply });
       };
