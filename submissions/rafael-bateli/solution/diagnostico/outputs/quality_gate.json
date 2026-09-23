@@ -1,0 +1,134 @@
+[
+  {
+    "id": "R01",
+    "nome": "Horário de abertura presente",
+    "severidade": "BLOQUEANTE",
+    "dono": "TI / sistema de tickets",
+    "metrica": "% tickets com created_at",
+    "limite": "≥ 99%",
+    "status": "FALHA",
+    "valor": "coluna inexistente",
+    "correcao": "Gravar created_at pelo sistema na entrada do ticket (não editável)."
+  },
+  {
+    "id": "R02",
+    "nome": "Resolução depois da 1ª resposta",
+    "severidade": "BLOQUEANTE",
+    "dono": "TI / ETL",
+    "metrica": "% fechados com resolvido_em < primeira_resposta",
+    "limite": "≤ 0,5%",
+    "status": "FALHA",
+    "valor": "49,3%",
+    "correcao": "Validar created_at ≤ first_response_at ≤ resolved_at na gravação; rejeitar o evento fora de ordem."
+  },
+  {
+    "id": "R03",
+    "nome": "Horários registrados por evento (não calculados)",
+    "severidade": "BLOQUEANTE",
+    "dono": "TI / ETL",
+    "metrica": "% pares com segundos idênticos",
+    "limite": "≤ 5% (acaso ≈ 1,7%)",
+    "status": "FALHA",
+    "valor": "100%",
+    "correcao": "resolved_at deve vir do evento 'ticket resolvido', não de uma fórmula sobre first_response."
+  },
+  {
+    "id": "R04",
+    "nome": "Janela dos horários compatível com o volume",
+    "severidade": "BLOQUEANTE",
+    "dono": "TI / ETL",
+    "metrica": "horas cobertas pelos horários",
+    "limite": "≥ 1.236 h (8.469 tickets a ~82/dia)",
+    "status": "FALHA",
+    "valor": "27 h",
+    "correcao": "Horários concentrados em ~1 dia indicam carimbo de exportação. Exportar o horário do evento."
+  },
+  {
+    "id": "R05",
+    "nome": "Descrição sem placeholder de template",
+    "severidade": "BLOQUEANTE",
+    "dono": "TI / integração de formulários",
+    "metrica": "% descrições com {chave}",
+    "limite": "≤ 0,5%",
+    "status": "FALHA",
+    "valor": "100,0%",
+    "correcao": "Corrigir o merge do template (product_purchased, error_message…); rejeitar texto com {…}."
+  },
+  {
+    "id": "R06",
+    "nome": "Resolução com conteúdo de suporte",
+    "severidade": "ALERTA",
+    "dono": "Operações + TI",
+    "metrica": "% resoluções com vocabulário de suporte",
+    "limite": "≥ 80%",
+    "status": "FALHA",
+    "valor": "3,0%",
+    "correcao": "Resolução estruturada: código de solução (lista) + texto livre; alimenta a base de conhecimento."
+  },
+  {
+    "id": "R07",
+    "nome": "Tipo coerente com o assunto",
+    "severidade": "BLOQUEANTE",
+    "dono": "Operações (taxonomia) + IA de triagem",
+    "metrica": "% tickets com tipo aceito para o assunto",
+    "limite": "≥ 90%",
+    "status": "FALHA",
+    "valor": "34,6%",
+    "correcao": "Taxonomia única (assunto determina o tipo) preenchida pela triagem por IA."
+  },
+  {
+    "id": "R08",
+    "nome": "Assunto bate com a descrição",
+    "severidade": "BLOQUEANTE",
+    "dono": "IA de triagem",
+    "metrica": "acerto ÷ acaso (lift)",
+    "limite": "≥ 3×",
+    "status": "FALHA",
+    "valor": "1,00× (18,3% vs acaso 18,3%)",
+    "correcao": "Assunto definido pelo conteúdo (IA), não por quem abre o ticket."
+  },
+  {
+    "id": "R09",
+    "nome": "Pedido urgente recebe prioridade alta",
+    "severidade": "ALERTA",
+    "dono": "IA de triagem + Operações (SLA)",
+    "metrica": "% tickets com linguagem de urgência em Critical/High",
+    "limite": "≥ 70%",
+    "status": "FALHA",
+    "valor": "52,5% (n=692)",
+    "correcao": "Prioridade = f(severidade do conteúdo, impacto declarado, cliente); não escolha livre."
+  },
+  {
+    "id": "R10",
+    "nome": "Status coerente com os horários",
+    "severidade": "BLOQUEANTE",
+    "dono": "TI / sistema de tickets",
+    "metrica": "Open sem resposta; Pending sem resolução; Closed completo",
+    "limite": "100%",
+    "status": "OK",
+    "valor": "100% coerente",
+    "correcao": "—"
+  },
+  {
+    "id": "R11",
+    "nome": "CSAT cobre toda a base",
+    "severidade": "ALERTA",
+    "dono": "Operações / CX",
+    "metrica": "% tickets com CSAT",
+    "limite": "≥ 60% (inclui abertos há > 7 dias)",
+    "status": "FALHA",
+    "valor": "32,7%",
+    "correcao": "Pesquisar também tickets abertos/pendentes há mais de 7 dias; incluir motivo + CES."
+  },
+  {
+    "id": "R12",
+    "nome": "Um e-mail = um cliente",
+    "severidade": "ALERTA",
+    "dono": "TI / CRM",
+    "metrica": "e-mails ligados a nomes diferentes",
+    "limite": "0",
+    "status": "FALHA",
+    "valor": "139",
+    "correcao": "customer_id do CRM em todo ticket; permite medir recontato de verdade."
+  }
+]

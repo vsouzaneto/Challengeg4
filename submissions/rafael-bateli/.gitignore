@@ -1,0 +1,6 @@
+solution/data/*.csv
+solution/data/*.zip
+solution/app/*.pkl
+__pycache__/
+*.pyc
+.venv/

@@ -1,0 +1,278 @@
+{
+  "resumo": {
+    "PASSOU": 10
+  },
+  "testes": [
+    {
+      "id": "H1",
+      "pergunta": "Os números do DIAGNOSTICO.md batem com o recálculo?",
+      "veredito": "PASSOU",
+      "conclusao": "15/15 afirmações encontradas no texto com o valor recalculado.",
+      "evidencia": {
+        "verificadas": 15,
+        "divergentes": {}
+      }
+    },
+    {
+      "id": "H2",
+      "pergunta": "A ausência de gargalo por prioridade é real ou o teste é fraco?",
+      "veredito": "PASSOU",
+      "conclusao": "Um Critical 1,5 h mais rápido seria detectado em ≥80% das vezes. O teste tem poder; o dado não mostra efeito.",
+      "evidencia": {
+        "poder_por_efeito": {
+          "0.5 h": 0.255,
+          "1.0 h": 0.79,
+          "1.5 h": 0.99,
+          "2.0 h": 1.0,
+          "3.0 h": 1.0
+        },
+        "efeito_minimo_detectavel_80pct": "1.5 h",
+        "desvio_padrao_tempo_h": 7.04
+      }
+    },
+    {
+      "id": "H3",
+      "pergunta": "\"Nada explica o CSAT\" é real ou o teste é fraco?",
+      "veredito": "PASSOU",
+      "conclusao": "Efeito de +0,24 ponto por canal seria detectado. Com sinal plantado, o mesmo Random Forest sobe de 20% para 62%. O pipeline funciona; o dado não tem sinal.",
+      "evidencia": {
+        "poder_por_efeito": {
+          "+0.08 ponto": 0.195,
+          "+0.16 ponto": 0.6,
+          "+0.24 ponto": 0.92,
+          "+0.32 ponto": 0.99,
+          "+0.40 ponto": 1.0
+        },
+        "efeito_minimo_detectavel_80pct": "+0.24 ponto",
+        "rf_acuracia_com_sinal_plantado": 0.62,
+        "rf_acuracia_dado_real": 0.2004
+      }
+    },
+    {
+      "id": "H4",
+      "pergunta": "O \"pior gargalo\" (Chat × Low × Technical) é estável?",
+      "veredito": "PASSOU",
+      "conclusao": "Em 1.000 reamostragens, 51 combinações diferentes já foram 'a pior'; a mais frequente só em 23%. Metades do dado concordam no ranking com ρ = 0,01. Rejeitar o ranking (decisão 1.1) está correto.",
+      "evidencia": {
+        "pior_combo_mais_frequente": "Chat × Low × Technical issue",
+        "frequencia": 0.232,
+        "combos_distintos_que_ja_foram_o_pior": 51,
+        "split_half_spearman_medio": 0.006
+      }
+    },
+    {
+      "id": "H5",
+      "pergunta": "A classificação é indistinguível de um sorteio?",
+      "veredito": "PASSOU",
+      "conclusao": "Incoerência real 65,4% fica dentro da faixa do sorteio (65,0%–66,5%). Se a triagem acertasse 80%, a métrica cairia para 13,1%: a régua funciona.",
+      "evidencia": {
+        "incoerencia_observada": 0.6537,
+        "incoerencia_sorteio_p5_p95": [
+          0.6505,
+          0.6649
+        ],
+        "incoerencia_se_80pct_corretos": 0.1312
+      }
+    },
+    {
+      "id": "H6",
+      "pergunta": "\"Retriagem é o maior desperdício\" sobrevive a qualquer combinação de premissas?",
+      "veredito": "PASSOU",
+      "conclusao": "Em 20.000 cenários sorteados, a retriagem é o maior item em 100%. Total: P10–P90 = 3.158–4.686 h; R$ 109–194 mil.",
+      "evidencia": {
+        "simulacoes": 20000,
+        "p_retriagem_e_o_maior": 0.995,
+        "lider_por_frequencia": {
+          "retriagem": 0.995,
+          "pendentes": 0.004,
+          "recontato": 0.001
+        },
+        "horas_p10_p50_p90": [
+          3158,
+          3854,
+          4686
+        ],
+        "custo_rs_p10_p50_p90": [
+          109220,
+          145525,
+          193802
+        ],
+        "participacao_retriagem_p50": 0.499
+      }
+    },
+    {
+      "id": "H7",
+      "pergunta": "A conclusão depende do meu mapa de coerência tipo × assunto?",
+      "veredito": "PASSOU",
+      "conclusao": "Com 300 mapas perturbados, a incoerência varia entre 57% e 73%, mas fica sempre a ≤1,5 p.p. do que um sorteio daria. O NÍVEL depende do mapa; a CONCLUSÃO (triagem = acaso) não.",
+      "evidencia": {
+        "mapas_testados": 300,
+        "incoerencia_min_max": [
+          0.575,
+          0.726
+        ],
+        "diferenca_max_para_sorteio_pp": 1.46
+      }
+    },
+    {
+      "id": "H8",
+      "pergunta": "O problema é humano ou de ferramenta?",
+      "veredito": "PASSOU",
+      "conclusao": "Nenhuma assinatura de erro humano (digitação sem segundos, troca AM/PM, expediente, variação por canal). Todas as falhas têm assinatura de sistema: campo calculado, template sem substituição, texto gerado, classificação sem relação com o conteúdo. O workflow de status funciona; o que falha é o VALOR gravado.",
+      "evidencia": {
+        "assinaturas": [
+          {
+            "sinal": "Segundos nos horários",
+            "se_fosse_humano": "digitado à mão → segundos = 00",
+            "observado": "1,8% com :00; segundos uniformes (p=0,97)",
+            "atribuicao": "FERRAMENTA"
+          },
+          {
+            "sinal": "Resolução − 1ª resposta",
+            "se_fosse_humano": "dois registros independentes → segundos diferentes",
+            "observado": "100% dos pares têm exatamente os mesmos segundos → resolução = 1ª resposta ± N minutos (campo CALCULADO)",
+            "atribuicao": "FERRAMENTA"
+          },
+          {
+            "sinal": "Troca AM/PM",
+            "se_fosse_humano": "erro de digitação → pico em ±12 h",
+            "observado": "3,9% em ±12 h (acaso: 4,2%) → sem pico",
+            "atribuicao": "NÃO É HUMANO"
+          },
+          {
+            "sinal": "Hora do dia",
+            "se_fosse_humano": "operação humana → vale de madrugada",
+            "observado": "volume/hora 0–5 h ÷ 9–17 h = 1,04 → sem expediente visível",
+            "atribuicao": "FERRAMENTA (fraco)"
+          },
+          {
+            "sinal": "Placeholders",
+            "se_fosse_humano": "agente não escreve {chaves}",
+            "observado": "100% com {product_purchased}",
+            "atribuicao": "FERRAMENTA"
+          },
+          {
+            "sinal": "Texto da resolução",
+            "se_fosse_humano": "agente usa vocabulário de suporte; lixo humano se repete ('ok', '.')",
+            "observado": "100% únicos; vocabulário de suporte 0,8% vs 18,7% nas descrições",
+            "atribuicao": "FERRAMENTA"
+          },
+          {
+            "sinal": "E-mail como identidade",
+            "se_fosse_humano": "mesmo e-mail → mesma pessoa",
+            "observado": "139 e-mails repetidos, 139 com nomes diferentes",
+            "atribuicao": "FERRAMENTA (modelagem)"
+          },
+          {
+            "sinal": "Triagem por canal",
+            "se_fosse_humano": "equipes diferentes → taxas de acerto diferentes, acima do acaso",
+            "observado": "acerto 17,0%–19,8% por canal (p=0,70); acaso 18,3%",
+            "atribuicao": "NÃO É JULGAMENTO HUMANO"
+          },
+          {
+            "sinal": "Desalinhamento de colunas",
+            "se_fosse_humano": "join deslocado → pico de acerto em algum deslocamento",
+            "observado": "melhor deslocamento k=19: 20,8% (vs 18,3%) → sem pico",
+            "atribuicao": "DESCARTADO"
+          },
+          {
+            "sinal": "Máquina de estados",
+            "se_fosse_humano": "sistema quebrado → status incoerentes",
+            "observado": "100% coerente: Open sem resposta; Pending sem resolução; Closed completo",
+            "atribuicao": "WORKFLOW FUNCIONA"
+          }
+        ]
+      }
+    },
+    {
+      "id": "H9",
+      "pergunta": "A triagem por IA (decisão 1.4) é viável com dado real?",
+      "veredito": "PASSOU",
+      "conclusao": "Treino 28.701 · validação 9.568 · teste 9.568 tickets reais. Limiar 0,71 escolhido na validação; no teste a IA decide sozinha 73,2% com 95,1% de acerto. Abaixo do limiar ela acertaria só 60,2%: esses tickets precisam de humano.",
+      "evidencia": {
+        "n_treino": 28701,
+        "n_validacao": 9568,
+        "n_teste": 9568,
+        "acuracia_geral_teste": 0.8577,
+        "limiar_escolhido_na_validacao": 0.71,
+        "teste_cobertura_automatica": 0.7319,
+        "teste_acuracia_automatica": 0.9513,
+        "teste_acuracia_fila_humana_sem_revisao": 0.6019,
+        "classe_mais_dificil": "Administrative rights",
+        "por_classe": [
+          {
+            "classe": "Administrative rights",
+            "tickets": 352,
+            "pct_automatico": 0.619,
+            "acuracia_automatico": 0.803
+          },
+          {
+            "classe": "Miscellaneous",
+            "tickets": 1412,
+            "pct_automatico": 0.657,
+            "acuracia_automatico": 0.944
+          },
+          {
+            "classe": "Internal Project",
+            "tickets": 424,
+            "pct_automatico": 0.665,
+            "acuracia_automatico": 0.95
+          },
+          {
+            "classe": "Hardware",
+            "tickets": 2724,
+            "pct_automatico": 0.731,
+            "acuracia_automatico": 0.96
+          },
+          {
+            "classe": "HR Support",
+            "tickets": 2183,
+            "pct_automatico": 0.754,
+            "acuracia_automatico": 0.959
+          },
+          {
+            "classe": "Storage",
+            "tickets": 555,
+            "pct_automatico": 0.757,
+            "acuracia_automatico": 0.945
+          },
+          {
+            "classe": "Access",
+            "tickets": 1425,
+            "pct_automatico": 0.771,
+            "acuracia_automatico": 0.959
+          },
+          {
+            "classe": "Purchase",
+            "tickets": 493,
+            "pct_automatico": 0.854,
+            "acuracia_automatico": 0.962
+          }
+        ]
+      }
+    },
+    {
+      "id": "H10",
+      "pergunta": "O Quality Gate aprova dado bom e pega cada defeito?",
+      "veredito": "PASSOU",
+      "conclusao": "Dado limpo: 12/12 regras OK. Defeitos plantados um a um: 12/12 detectados pela regra certa.",
+      "evidencia": {
+        "falsos_positivos_no_dado_limpo": [],
+        "defeitos_detectados": {
+          "R01": true,
+          "R02": true,
+          "R03": true,
+          "R04": true,
+          "R05": true,
+          "R06": true,
+          "R07": true,
+          "R08": true,
+          "R09": true,
+          "R10": true,
+          "R11": true,
+          "R12": true
+        }
+      }
+    }
+  ]
+}

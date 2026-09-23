@@ -1,0 +1,81 @@
+Ticket Channel,Ticket Priority,Ticket Type,n,tempo_medio_h,csat_medio
+Chat,Low,Technical issue,33,14.61,3.18
+Chat,High,Refund request,41,14.1,3.15
+Social media,Medium,Technical issue,30,14.09,2.67
+Social media,Critical,Product inquiry,34,13.85,2.79
+Phone,Medium,Product inquiry,49,13.84,3.06
+Phone,Medium,Cancellation request,33,13.51,2.97
+Phone,High,Refund request,31,13.44,2.29
+Chat,High,Product inquiry,30,13.37,2.9
+Email,High,Product inquiry,35,13.29,3.57
+Social media,Medium,Billing inquiry,29,13.28,2.97
+Email,High,Billing inquiry,30,13.04,3.13
+Email,High,Cancellation request,34,13.02,2.53
+Chat,Medium,Billing inquiry,28,13.01,2.79
+Social media,Medium,Cancellation request,25,12.9,2.88
+Phone,Critical,Product inquiry,41,12.89,2.98
+Phone,Critical,Refund request,40,12.88,2.85
+Social media,Low,Billing inquiry,35,12.75,3.29
+Social media,High,Refund request,40,12.63,2.72
+Social media,Low,Technical issue,40,12.61,2.82
+Phone,Low,Cancellation request,21,12.59,2.9
+Social media,Critical,Refund request,36,12.58,3.0
+Email,Critical,Refund request,39,12.52,3.08
+Phone,Critical,Billing inquiry,42,12.5,2.93
+Email,Low,Cancellation request,33,12.42,2.91
+Chat,Low,Product inquiry,28,12.41,3.07
+Phone,Critical,Cancellation request,35,12.4,2.8
+Email,Low,Billing inquiry,37,12.39,2.97
+Social media,Low,Refund request,37,12.29,2.92
+Social media,Medium,Product inquiry,41,12.28,3.2
+Chat,Critical,Cancellation request,28,12.17,2.68
+Email,Low,Refund request,44,12.16,3.11
+Social media,Medium,Refund request,31,12.13,3.16
+Phone,Medium,Technical issue,38,12.11,2.68
+Chat,Medium,Technical issue,30,11.95,2.9
+Social media,Low,Cancellation request,26,11.95,3.5
+Email,Medium,Technical issue,40,11.92,3.12
+Phone,Medium,Billing inquiry,38,11.91,2.95
+Phone,High,Product inquiry,34,11.87,3.29
+Chat,Low,Refund request,36,11.81,3.11
+Email,Critical,Billing inquiry,29,11.78,2.9
+Chat,High,Cancellation request,41,11.73,2.9
+Phone,Low,Product inquiry,23,11.73,3.09
+Chat,High,Billing inquiry,37,11.71,3.43
+Email,Medium,Billing inquiry,38,11.65,3.11
+Phone,Low,Billing inquiry,26,11.62,2.96
+Email,Low,Product inquiry,30,11.61,2.73
+Social media,Low,Product inquiry,37,11.53,2.78
+Phone,High,Billing inquiry,31,11.52,2.84
+Phone,Low,Technical issue,35,11.51,2.89
+Email,Low,Technical issue,30,11.49,3.2
+Email,High,Refund request,46,11.48,2.91
+Email,Medium,Product inquiry,21,11.42,2.67
+Chat,Medium,Refund request,34,11.35,2.76
+Social media,High,Technical issue,41,11.25,2.56
+Phone,High,Technical issue,47,11.16,3.23
+Chat,Medium,Product inquiry,29,11.14,3.1
+Phone,High,Cancellation request,29,11.1,3.34
+Social media,High,Product inquiry,32,11.07,3.03
+Chat,Critical,Refund request,32,11.02,2.88
+Email,Critical,Cancellation request,45,10.99,2.73
+Email,Critical,Product inquiry,40,10.86,2.68
+Social media,High,Cancellation request,20,10.86,3.1
+Phone,Critical,Technical issue,31,10.85,2.87
+Social media,High,Billing inquiry,37,10.84,2.97
+Phone,Low,Refund request,33,10.74,3.18
+Chat,Critical,Technical issue,39,10.52,3.56
+Phone,Medium,Refund request,34,10.52,2.85
+Social media,Critical,Billing inquiry,35,10.35,2.89
+Chat,Critical,Product inquiry,29,10.31,3.24
+Email,Critical,Technical issue,36,10.3,2.81
+Chat,Medium,Cancellation request,42,10.21,3.21
+Social media,Critical,Technical issue,41,10.13,2.98
+Chat,Low,Billing inquiry,35,10.11,3.09
+Chat,Critical,Billing inquiry,37,10.11,3.14
+Email,Medium,Cancellation request,42,10.04,3.24
+Chat,High,Technical issue,40,10.04,2.9
+Chat,Low,Cancellation request,25,9.89,3.56
+Email,Medium,Refund request,42,9.81,2.88
+Social media,Critical,Cancellation request,37,9.59,3.38
+Email,High,Technical issue,29,9.19,2.86
