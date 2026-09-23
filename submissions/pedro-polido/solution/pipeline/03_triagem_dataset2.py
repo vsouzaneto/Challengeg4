@@ -1,0 +1,223 @@
+"""Dataset 2 (IT Service Tickets, ~48 mil textos reais): onde a triagem perde tempo, classificador e política de automação.
+
+Saídas (solution/app/data/):
+  model.json      modelo exportado para rodar no navegador (vocabulário, idf, pesos) + regras da política
+  simulador.json  predições do conjunto de teste, consumidas pelo simulador de automação
+  operacao.json   diagnóstico operacional (volume, cadeias de e-mail, pedidos vazios, acerto por tipo de ticket)
+  exemplos.json   tickets de teste para os botões de exemplo da triagem ao vivo
+e process-log/auditoria-rotulos/candidatos.csv: divergências de alta confiança para revisão humana.
+
+Uso: python 03_triagem_dataset2.py
+"""
+import numpy as np
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
+from sklearn.model_selection import StratifiedKFold, cross_val_predict, train_test_split
+
+from common import IT_TICKETS_CSV, SEED, SUBMISSION, save_json
+
+TARGET_AUTO = 0.97    # acerto mínimo exigido para rotear sem humano (decisão de negócio, ajustável no simulador)
+TARGET_ASSIST = 0.90  # acerto mínimo das 2 sugestões mostradas ao atendente na faixa assistida
+C = 5.0
+
+DAYS = "monday|tuesday|wednesday|thursday|friday|saturday|sunday"
+MONTHS = "january|february|march|april|may|june|july|august|september|october|november|december"
+# Regras compartilhadas com o navegador (app/js/model.js lê daqui): uma única fonte de verdade.
+POLICY = {
+    # Cabeçalho "Sent: Tuesday, ..." preservado no pré-processamento: cada ocorrência = uma mensagem anterior na cadeia.
+    "thread": rf"\bsent (?:{DAYS})\b",
+    # Saúde, remuneração e desligamento. 'discipline' ficou de fora: no dataset é cargo ("discipline lead"), 2 mil vezes.
+    "sensitive": r"\b(?:sick|illness|medical|hospital|surgery|doctor|maternity|paternity|pregnant|pregnancy|bereavement"
+                 r"|funeral|death|died|accident|salary|salaries|payroll|termination|terminated|resignation|resigned"
+                 r"|dismissal)\b",
+    "urgent": r"\bimportance high\b|\burgent\w*|\basap\b|\bimmediately\b|\boutage\b|\bis down\b|\bnot working\b",
+    "self_service": r"\bpassword\w*|\blocked\b|\bunlock\w*",
+    # Palavras que não dizem nada sobre o pedido: saudação, cortesia, datas, assinatura.
+    "generic_words": sorted(set(
+        f"hi hello dear please pls thank thanks thx you regards kind best help possible sent re fw fwd am pm "
+        f"ok okay good morning afternoon evening team colleagues hey greetings sincerely cheers wishes great day "
+        f"can could would need needed want like let know us me my our we get also ext extension "
+        f"engineer developer analyst lead senior junior manager officer specialist tester assistant consultant "
+        f"head director coordinator administrator architect intern {DAYS.replace('|', ' ')} {MONTHS.replace('|', ' ')}"
+        .split())),
+    "min_content_words": 3,
+}
+FLAG_BITS = {"sensitive": 1, "info_poor": 2, "thread": 4, "urgent": 8, "self_service": 16}
+
+# Descrição de cada fila em linguagem de atendente, escrita a partir dos termos de maior peso do modelo.
+QUEUE_INFO = {
+    "Access": "Contas, senhas, licenças e acesso a ferramentas (Confluence, Git, cartões de acesso)",
+    "Administrative rights": "Instalar ou atualizar software que exige direito de administrador (Outlook, Windows)",
+    "HR Support": "Entrada e saída de colaboradores, férias, licenças e apontamento de horas (Oracle)",
+    "Hardware": "Notebook, monitor, telefone, salas de reunião, cabos e periféricos",
+    "Internal Project": "Códigos de projeto, pipelines e configuração de projetos internos",
+    "Miscellaneous": "Aprovações, grupos, troca de responsável (owner) e contratos",
+    "Purchase": "Pedidos de compra (PO), recebimento e alocação de equipamentos",
+    "Storage": "Pastas, mailboxes, cotas de armazenamento e permissões de compartilhamento",
+}
+
+df = pd.read_csv(IT_TICKETS_CSV)
+text = df["Document"]
+generic = set(POLICY["generic_words"])
+tokens = text.str.findall(r"\b\w\w+\b")
+df["words"] = tokens.str.len()
+df["content_words"] = tokens.apply(lambda ts: sum(t not in generic and not t.isdigit() for t in ts))
+df["msgs"] = 1 + text.str.count(POLICY["thread"])
+for flag in ["sensitive", "urgent", "self_service"]:
+    df[flag] = text.str.contains(POLICY[flag], regex=True)
+df["thread"] = df["msgs"] >= 2
+df["info_poor"] = df["content_words"] < POLICY["min_content_words"]
+
+# ---------------------------------------------------------------- classificador
+train, test = train_test_split(df, test_size=0.2, stratify=df["Topic_group"], random_state=SEED)
+vec = TfidfVectorizer(min_df=2, sublinear_tf=True)  # unigramas, token_pattern padrão \b\w\w+\b
+Xtr = vec.fit_transform(train["Document"])
+Xte = vec.transform(test["Document"])
+clf = LogisticRegression(C=C, max_iter=3000)
+
+# Limiares escolhidos com previsões fora-da-dobra do TREINO; o teste só é usado para reportar.
+cv = StratifiedKFold(5, shuffle=True, random_state=SEED)
+oof = cross_val_predict(clf, Xtr, train["Topic_group"], cv=cv, method="predict_proba")
+clf.fit(Xtr, train["Topic_group"])
+classes = list(clf.classes_)
+y_tr = train["Topic_group"].map(classes.index).values
+
+
+def lanes_curve(proba, y):
+    conf = proba.max(1)
+    order = np.argsort(-proba, 1)
+    ok1 = order[:, 0] == y
+    ok2 = ok1 | (order[:, 1] == y)
+    return conf, ok1, ok2
+
+
+conf_oof, ok1_oof, ok2_oof = lanes_curve(oof, y_tr)
+grid = np.round(np.arange(0.20, 0.996, 0.005), 3)
+tau_auto = next(t for t in grid if ok1_oof[conf_oof >= t].mean() >= TARGET_AUTO)
+# Faixa assistida: critério LOCAL (tickets com confiança em [t, t + 0,1)), não cumulativo. O cumulativo esconde a cauda:
+# a média da faixa inteira passa de 90% mesmo quando os tickets perto de 0,3 têm só ~78% de top-2.
+tau_assist = next(t for t in grid if t < tau_auto and ok2_oof[(conf_oof >= t) & (conf_oof < t + 0.1)].mean() >= TARGET_ASSIST)
+print(f"Limiares (fora-da-dobra no treino): automático >= {tau_auto} | assistido >= {tau_assist}")
+
+proba = clf.predict_proba(Xte)
+y_te = test["Topic_group"].map(classes.index).values
+conf, ok1, ok2 = lanes_curve(proba, y_te)
+pred = proba.argmax(1)
+second = np.argsort(-proba, 1)[:, 1]
+print(f"Teste: acerto {ok1.mean():.3f} | top-2 {ok2.mean():.3f}")
+
+# Faixas no teste (política completa: pedido vazio pede detalhes; sensível sempre vai para humano)
+lane = np.where(test["info_poor"].values, "pedir detalhes",
+                np.where(test["sensitive"].values, "humano",
+                         np.where(conf >= tau_auto, "auto", np.where(conf >= tau_assist, "assistido", "humano"))))
+for name in ["auto", "assistido", "humano", "pedir detalhes"]:
+    m = lane == name
+    print(f"  {name:10s} {m.mean():6.1%} dos tickets | acerto top-1 {ok1[m].mean():.1%} | top-2 {ok2[m].mean():.1%}")
+
+local = []
+for lo in np.round(np.arange(0.2, 1.0, 0.1), 1):
+    m = (conf >= lo) & (conf < lo + 0.1)
+    local.append({"faixa": f"{lo:.1f}–{lo + 0.1:.1f}", "n": int(m.sum()), "top1": ok1[m].mean(), "top2": ok2[m].mean()})
+curve = []
+for t in np.round(np.arange(0.40, 0.996, 0.01), 2):
+    m = conf >= t
+    curve.append({"limiar": t, "cobertura": m.mean(), "acerto": ok1[m].mean() if m.any() else None})
+
+# ---------------------------------------------------------------- diagnóstico operacional
+
+
+test_eval = test.assign(ok=ok1, conf=conf)
+bucket_msgs = pd.cut(test_eval["msgs"], [0, 1, 2, 99], labels=["1 mensagem", "2 mensagens", "3 ou mais"])
+bucket_len = pd.cut(test_eval["words"], [0, 15, 30, 60, 10_000], labels=["até 15 palavras", "16 a 30", "31 a 60", "mais de 60"])
+acc_by = {
+    "mensagens": test_eval.groupby(bucket_msgs, observed=True)["ok"].agg(["mean", "size"]).reset_index().to_dict("records"),
+    "tamanho": test_eval.groupby(bucket_len, observed=True)["ok"].agg(["mean", "size"]).reset_index().to_dict("records"),
+    "pedido_vazio": test_eval.groupby("info_poor")["ok"].agg(["mean", "size"]).reset_index().to_dict("records"),
+    "sensivel": test_eval.groupby("sensitive")["ok"].agg(["mean", "size"]).reset_index().to_dict("records"),
+}
+for k, v in acc_by.items():
+    print(f"  acerto por {k}: " + " | ".join(f"{list(r.values())[0]}: {r['mean']:.1%} (n={r['size']})" for r in v))
+
+prec, rec, f1, sup = precision_recall_fscore_support(y_te, pred, labels=range(len(classes)))
+vocab = np.array(vec.get_feature_names_out())
+top_terms = {c: vocab[np.argsort(clf.coef_[i])[::-1][:12]].tolist() for i, c in enumerate(classes)}
+
+extra_msgs = int((df["msgs"] - 1).sum())
+operacao = {
+    "total": len(df),
+    "filas": [{"fila": c, "descricao": QUEUE_INFO[c], "volume": int((df["Topic_group"] == c).sum()),
+               "precisao": prec[i], "recall": rec[i], "f1": f1[i], "termos": top_terms[c],
+               "cadeia": df.loc[df["Topic_group"] == c, "thread"].mean(),
+               "vazio": df.loc[df["Topic_group"] == c, "info_poor"].mean(),
+               "sensivel": df.loc[df["Topic_group"] == c, "sensitive"].mean()} for i, c in enumerate(classes)],
+    "cadeia_total": df["thread"].mean(), "mensagens_extras_por_100": 100 * extra_msgs / len(df),
+    "vazio_total": df["info_poor"].mean(), "sensivel_total": df["sensitive"].mean(),
+    "vazio_rotulos": df.loc[df["info_poor"], "Topic_group"].value_counts().to_dict(),
+    "vazio_exemplos": df.loc[df["info_poor"], "Document"].sample(4, random_state=SEED).tolist(),
+    "urgente_total": df["urgent"].mean(), "autoatendimento_total": df["self_service"].mean(),
+    "autoatendimento_access": df.loc[df["Topic_group"] == "Access", "self_service"].mean(),
+    "acerto_por": acc_by,
+    "confusao": confusion_matrix(y_te, pred, labels=range(len(classes))),
+    "curva": curve, "acerto_local": local,
+    "teste": {"n": len(test), "acerto": ok1.mean(), "top2": ok2.mean()},
+}
+print(f"Cadeias de e-mail: {df['thread'].mean():.1%} | pedidos vazios: {df['info_poor'].mean():.1%} | "
+      f"sensíveis: {df['sensitive'].mean():.1%} | urgentes: {df['urgent'].mean():.1%} | "
+      f"autoatendimento (senha/bloqueio): {df['self_service'].mean():.1%}")
+save_json("operacao.json", operacao)
+
+# ---------------------------------------------------------------- exportações para o navegador
+flags = sum(test[f].values.astype(int) * bit for f, bit in FLAG_BITS.items())
+save_json("simulador.json", {
+    "classes": classes, "limiar_auto": tau_auto, "limiar_assistido": tau_assist,
+    "meta_auto": TARGET_AUTO, "meta_assistido": TARGET_ASSIST, "flag_bits": FLAG_BITS,
+    "y": y_te, "pred": pred, "second": second, "conf": np.round(conf * 1000).astype(int), "flags": flags,
+})
+
+save_json("model.json", {
+    "classes": classes, "queue_info": QUEUE_INFO,
+    "vocab": vocab.tolist(), "idf": np.round(vec.idf_, 4),
+    "coef": np.round(clf.coef_, 4), "intercept": np.round(clf.intercept_, 4),
+    "tokenizer": {"pattern": r"[\p{L}\p{N}_]{2,}", "lowercase": True, "sublinear_tf": True, "norm": "l2"},
+    "policy": POLICY, "limiar_auto": tau_auto, "limiar_assistido": tau_assist,
+    "treino": {"n": len(train), "C": C, "min_df": 2},
+})
+
+# Paridade Python x navegador: 300 tickets de teste com as probabilidades do sklearn (checado por tests/parity.mjs)
+parity = test.sample(300, random_state=SEED)
+save_json("paridade.json", {"docs": parity["Document"].tolist(),
+                            "proba": np.round(clf.predict_proba(vec.transform(parity["Document"])), 6)})
+
+# Exemplos para a triagem ao vivo: escolhidos por critério (inclui um erro de propósito), textos curtos
+rng = np.random.default_rng(SEED)
+short = test_eval["words"].between(8, 60).values
+criteria = {
+    "Senha bloqueada": short & (test["self_service"].values) & (conf >= tau_auto),
+    "Equipamento": short & (y_te == classes.index("Hardware")) & (conf >= tau_auto) & ~test["thread"].values,
+    "Pedido de compra": short & (y_te == classes.index("Purchase")) & (conf >= tau_auto),
+    "Cadeia de e-mails": test_eval["msgs"].between(3, 4).values & test_eval["words"].between(40, 110).values,
+    "Pedido vazio": test["info_poor"].values & test_eval["words"].between(4, 20).values,
+    "Assunto sensível": short & test["sensitive"].values & (test["Topic_group"] == "HR Support").values,
+    "Ambíguo": short & (conf >= 0.35) & (conf < tau_assist),
+    "Modelo x rótulo": short & (conf >= 0.9) & ~ok1,
+}
+examples = []
+for label, mask in criteria.items():
+    assert mask.any(), f"nenhum ticket para o exemplo '{label}'"
+    i = rng.choice(np.flatnonzero(mask))
+    examples.append({"titulo": label, "texto": test["Document"].iloc[i], "rotulo": test["Topic_group"].iloc[i]})
+save_json("exemplos.json", examples)
+
+# Auditoria de rótulos: divergências em que o modelo tinha >= 90% de confiança
+disagree = test_eval[(conf >= 0.9) & ~ok1].assign(modelo=[classes[p] for p in pred[(conf >= 0.9) & ~ok1]])
+print(f"Divergências com confiança >= 0,9 no teste: {len(disagree)} ({len(disagree) / (conf >= 0.9).sum():.1%} da faixa)")
+out = SUBMISSION / "process-log" / "auditoria-rotulos"
+out.mkdir(parents=True, exist_ok=True)
+(disagree.sample(40, random_state=SEED)
+ .assign(conf=lambda d: d["conf"].round(3), veredito_ia="", justificativa_ia="", veredito_pedro="")
+ .rename(columns={"Document": "texto", "Topic_group": "rotulo"})
+ [["texto", "rotulo", "modelo", "conf", "veredito_ia", "justificativa_ia", "veredito_pedro"]]
+ .to_csv(out / "candidatos.csv", index_label="id", encoding="utf-8-sig"))
+print(f"-> process-log/auditoria-rotulos/candidatos.csv (40 de {len(disagree)})")

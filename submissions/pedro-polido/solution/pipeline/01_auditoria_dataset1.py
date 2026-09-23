@@ -5,8 +5,6 @@ Cada verificação produz um número reproduzível. Saída: app/data/audit.json
 
 Uso: python 01_auditoria_dataset1.py
 """
-import re
-
 import numpy as np
 import pandas as pd
 from scipy import stats
@@ -78,7 +76,7 @@ res = closed["Resolution"]
 support_actions = res.str.contains(SUPPORT_ACTIONS, case=False).sum()
 generic_hits = res.str.contains(GENERIC_WORDS, case=False).sum()
 check("resolucao", "Resoluções que descrevem alguma ação técnica", f"{support_actions} de {len(res):,}".replace(",", "."),
-      f"As resoluções são frases aleatórias de 3 a 8 palavras, no padrão da biblioteca Faker: "
+      "As resoluções são frases aleatórias de 3 a 8 palavras, no padrão da biblioteca Faker: "
       + " / ".join(f"\"{s}\"" for s in res.sample(3, random_state=2))
       + f". Palavras como 'order' e 'account' aparecem em {generic_hits}, sempre soltas (\"Account eat tax accept.\").")
 
