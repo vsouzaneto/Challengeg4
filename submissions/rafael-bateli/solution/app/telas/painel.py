@@ -37,8 +37,8 @@ def _gargalos(diag: dict) -> None:
     c = st.columns(4)
     c[0].metric("Tickets sem 1ª resposta", comum.pct(g["status_pct"]["Open"], 0))
     c[1].metric("Triagem que acerta o assunto", comum.pct(i0["assunto_bate_descricao"]),
-                f"acaso: {comum.pct(i0['assunto_bate_descricao_acaso'])}", delta_color="off")
-    c[2].metric("Critical sem resposta", comum.pct(pri["Critical"]), f"Low: {comum.pct(pri['Low'])}", delta_color="off")
+                f"acaso: {comum.pct(i0['assunto_bate_descricao_acaso'])}", delta_color="off", delta_arrow="off")
+    c[2].metric("Critical sem resposta", comum.pct(pri["Critical"]), f"Low: {comum.pct(pri['Low'])}", delta_color="off", delta_arrow="off")
     c[3].metric("Fechados antes da 1ª resposta", comum.pct(i0["pct_resolucao_antes_da_1a_resposta"], 0))
 
 
@@ -101,7 +101,7 @@ def _replay(auto: dict) -> None:
         if r["riscos"]:
             st.bar_chart(pd.Series(dict(r["riscos"]), name="tickets").sort_values(ascending=False))
         st.metric("Horas/ano devolvidas (proporcional ao que já passou)", comum.num(round(total_h * feitos / total)),
-                  f"de {comum.num(total_h)} h/ano no total", delta_color="off")
+                  f"de {comum.num(total_h)} h/ano no total", delta_color="off", delta_arrow="off")
 
     _passo()
 
@@ -119,12 +119,12 @@ def _roi(auto: dict, diag: dict) -> None:
     total = horas_ano(auto)
     av = comum.avaliacao_d2()
     c = st.columns(3)
-    c[0].metric("Total", f"{comum.num(total)} h/ano", f"≈ {comum.num(round(total / 12))} h/mês", delta_color="off")
+    c[0].metric("Total", f"{comum.num(total)} h/ano", f"≈ {comum.num(round(total / 12))} h/mês", delta_color="off", delta_arrow="off")
     c[1].metric("Classificação medida (D2)", f"{comum.pct(av['cobertura'])} decididos",
-                f"com {comum.pct(av['acerto'])} de acerto", delta_color="off")
+                f"com {comum.pct(av['acerto'])} de acerto", delta_color="off", delta_arrow="off")
     if diag:
         c[2].metric("Triagem de hoje (D1)", comum.pct(diag["etapa0_integridade"]["assunto_bate_descricao"]),
-                    "igual ao acaso", delta_color="off")
+                    "igual ao acaso", delta_color="off", delta_arrow="off")
     st.caption("Horas: premissas e fórmulas da Entrega 2 (automacao.json), sem recalcular. Só o ganho da "
                "classificação é medido; os demais usam o cenário base da Entrega 1.")
 
@@ -135,7 +135,7 @@ def _onde_para() -> None:
     rota1 = [d for d in decs if d.rota in ("1A", "1B")]
     c = st.columns(3)
     c[0].metric("Vão direto para humano", comum.pct(len(rota1) / len(decs)), f"{comum.num(len(rota1))} tickets",
-                delta_color="off")
+                delta_color="off", delta_arrow="off")
     c[1].metric("1A · IA rascunha, humano decide", comum.num(sum(d.rota == "1A" for d in rota1)))
     c[2].metric("1B · humano decide e escreve", comum.num(sum(d.rota == "1B" for d in rota1)))
     st.bar_chart(pd.Series(dict(Counter(g for d in rota1 for g in d.gatilhos)), name="tickets").sort_values(ascending=False))

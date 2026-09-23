@@ -27,7 +27,7 @@ def _por_classe() -> None:
     c = st.columns(4)
     c[0].metric("Decididos sozinhos", comum.pct(av["cobertura"]))
     c[1].metric("Acerto nesses", comum.pct(av["acerto"]))
-    c[2].metric("Acerto abaixo do limiar", comum.pct(av["acerto_abaixo_do_limiar"]), "vão para humano", delta_color="off")
+    c[2].metric("Acerto abaixo do limiar", comum.pct(av["acerto_abaixo_do_limiar"]), "vão para humano", delta_color="off", delta_arrow="off")
     c[3].metric("Limiar", f"{m.limiar:.2f}")
     df = pd.DataFrame({"real": m.y_te, "prev": av["prev"], "auto": av["conf"] >= m.limiar})
     df["certo"] = df["real"] == df["prev"]
@@ -67,10 +67,10 @@ def _eventos() -> None:
     c = st.columns(4)
     c[0].metric("Rascunhos revisados", mt["revisados"])
     c[1].metric("Aprovados sem edição (LLM)", "—" if mt["aprovacao_sem_edicao_llm"] is None
-                else comum.pct(mt["aprovacao_sem_edicao_llm"], 0), f"{mt['revisados_llm']} da LLM", delta_color="off")
+                else comum.pct(mt["aprovacao_sem_edicao_llm"], 0), f"{mt['revisados_llm']} da LLM", delta_color="off", delta_arrow="off")
     c[2].metric("Prioridades alteradas", mt["prioridades_alteradas"])
     c[3].metric("Auditoria: acerto", "—" if mt["auditoria_acerto"] is None else comum.pct(mt["auditoria_acerto"], 0),
-                f"{mt['auditoria_n']} conferidos", delta_color="off")
+                f"{mt['auditoria_n']} conferidos", delta_color="off", delta_arrow="off")
     if mt["devolucoes_por_classe"]:
         st.markdown("**Devoluções \"fila errada\" por classe prevista** (o monitor de categoria nova olha isto)")
         st.bar_chart(pd.Series(mt["devolucoes_por_classe"], name="devoluções"))

@@ -58,7 +58,7 @@ def _card_d1(d, row) -> None:
     st.divider()
     st.subheader(f"#{d.ticket_id} · {row['Ticket Subject']}")
     a, b, c, e = st.columns(4)
-    a.metric("Prioridade sugerida", d.prioridade, f"declarada: {row['Ticket Priority']}", delta_color="off")
+    a.metric("Prioridade sugerida", d.prioridade, f"declarada: {row['Ticket Priority']}", delta_color="off", delta_arrow="off")
     b.metric("SLA", f"{d.sla_horas:g} h")
     c.metric("Rota", d.rota)
     e.metric("Canal", row["Ticket Channel"])
