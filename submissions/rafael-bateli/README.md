@@ -3,7 +3,7 @@
 ## Sobre mim
 
 - **Nome:** Rafael Bateli
-- **LinkedIn:** _(preencher)_
+- **LinkedIn:** https://www.linkedin.com/in/rafael-bateli/
 - **Challenge escolhido:** 002 — Redesign de Suporte
 
 ---
@@ -21,7 +21,14 @@ O desperdício é de **≈ 3.400 h/ano (≈ R$ 119 mil)**, e o maior item recupe
 
 **Aprofundamento (harness + economia + aprendizado):** 13 testes tentaram derrubar a proposta; **4 decisões caíram e voltaram com a solução testada**. O limiar não protege contra um tipo de ticket novo (até 60,5% sai errado com confiança), e o **monitor de devoluções da fila errada** detecta a novidade. 3.000 rótulos dão 50% de cobertura, não 73%, e o **ciclo de aprendizado** com o trabalho que o time já faz leva a 71% em 11 meses. A auditoria de 2% era cega e passou a **10%**. Economias sem perda: **≈ 480 h/ano** a mais (a IA rascunha onde o risco é a decisão, rótulos grátis, triagem com 3 sugestões). O plano de medição da LLM tem métricas com meta, motivos de rejeição em lista fechada e registro de evento.
 
-> **Status:** Entregas 1 (diagnóstico) e 2 (proposta de automação) concluídas. Entrega 3 (protótipo) planejada em [`solution/app/PLANO_FASE3.md`](solution/app/PLANO_FASE3.md): o que já existe para reusar, 4 decisões em aberto, critérios de aceite e pendências do PR.
+**Protótipo rodando (Entrega 3):** a proposta funcionando em Streamlit **nos dados reais inteiros**, sem exemplos escolhidos a dedo:
+- **fila do agente**: os 2.819 tickets abertos do D1 em ordem de risco real, com rota, motivo e SLA, e os 9.568 tickets de teste do D2 classificados, 70% roteados sozinhos com 95,1% de acerto;
+- **painel do Diretor**: replay dos 8.469 tickets, ROI e onde a IA para;
+- **"Tente derrubar"**: casos adversários e sorteio de tickets reais.
+
+O protótipo reproduz **100%** das rotas e prioridades das Entregas 1–2, e **141 testes** cobrem os 12 critérios de aceite, incluindo fallback, logs sem segredo e guardrails. A LLM (Groq → Gemini → template) só redige, com guardrail em código. **Medida pela primeira vez**, a LLM zero-shot acertou **39%** contra **86%** do modelo supervisionado nos mesmos tickets, o que confirma a decisão da Entrega 2. Em 75 rascunhos, 15 deles adversários, **não houve violação real**; o guardrail errou uma vez, para o lado seguro.
+
+> **Status:** Entregas 1 (diagnóstico), 2 (proposta de automação) e 3 (protótipo) concluídas.
 
 ---
 
@@ -44,6 +51,7 @@ O desperdício é de **≈ 3.400 h/ano (≈ R$ 119 mil)**, e o maior item recupe
 | [**PROPOSTA_AUTOMACAO.md**](solution/automacao/PROPOSTA_AUTOMACAO.md) | O que automatizar, o que NÃO automatizar e o fluxo na prática; determinístico × ML × LLM, custo e impacto × esforço |
 | [**HARNESS_AUTOMACAO.md**](solution/automacao/HARNESS_AUTOMACAO.md) | 13 testes contra a proposta, 4 decisões derrubadas com a solução, erros do próprio harness e aderência ao desafio |
 | [**ECONOMIA_E_APRENDIZADO.md**](solution/automacao/ECONOMIA_E_APRENDIZADO.md) | Onde economizar sem perder eficiência, onde não economizar, e o que medir para a IA aprender com erros e acertos |
+| [**PROTOTIPO.md**](solution/app/PROTOTIPO.md) | **Entrega 3:** o protótipo rodando nos dados reais, os 12 critérios de aceite, a LLM medida, onde a IA para, fallbacks, logs e guardrails |
 
 **Código que roda:**
 
@@ -56,6 +64,10 @@ O desperdício é de **≈ 3.400 h/ano (≈ R$ 119 mil)**, e o maior item recupe
 | [`automacao/automacao.py`](solution/automacao/automacao.py) | Rota de cada ticket, regras × modelo, duplicatas, custo de LLM, impacto × esforço + 5 verificações |
 | [`automacao/aprendizado.py`](solution/automacao/aprendizado.py) | Ciclo de aprendizado (11 meses), monitor de categoria nova, tamanho da auditoria, economias |
 | [`automacao/harness_automacao.py`](solution/automacao/harness_automacao.py) | 13 testes (A1–A13) que tentam derrubar a proposta |
+| [`app/app.py`](solution/app/app.py) | **Protótipo (Streamlit):** fila do agente, painel do Diretor, "Tente derrubar" e qualidade da IA |
+| [`app/motor/`](solution/app/motor/) | Motor sem tela: regras e modelo importados das Entregas 1–2, LLM com fallback, guardrails, logs, eventos |
+| [`app/tests/`](solution/app/tests/) | 139 testes (P1–P12), sem rede |
+| [`app/medir_llm.py`](solution/app/medir_llm.py) | Medição da LLM (M1–M4) com critérios pré-registrados |
 
 ### Recomendações
 
@@ -70,7 +82,8 @@ O desperdício é de **≈ 3.400 h/ano (≈ R$ 119 mil)**, e o maior item recupe
 - O Dataset 1 é sintético; a distribuição uniforme vem da forma como foi gerado.
 - Minutos por tarefa e custo/hora são premissas explícitas (Monte Carlo em H6); só o ganho da triagem por IA é medido.
 - O Dataset 2 prova a técnica em texto real, mas em outra taxonomia. A acurácia na taxonomia desta operação exige o critério de aprovação descrito na causa raiz (P2).
-- A acurácia da LLM não foi medida na Entrega 2; por isso toda LLM da proposta começa com humano aprovando.
+- A acurácia da LLM foi medida na Entrega 3 com modelos gratuitos (`gpt-oss-120b` e `gpt-oss-20b`), não com o Claude da tabela de custo. Por isso toda LLM da proposta continua começando com humano aprovando.
+- O protótipo roda localmente, com estado em arquivo. A avaliação humana dos rascunhos (M5) ficou fora do escopo e será medida em produção ([PROTOTIPO.md](solution/app/PROTOTIPO.md), seção 4).
 
 ---
 
@@ -93,6 +106,13 @@ cd ../automacao
 python automacao.py                   # ≈ 1 min — proposta de automação; exit 0 = verificações OK
 python aprendizado.py                 # ≈ 5 min — ciclo de aprendizado, monitor, economias
 python harness_automacao.py           # ≈ 4 min — 13 testes contra a proposta
+
+# Protótipo (Entrega 3)
+cd ../app
+pip install -r requirements.txt
+streamlit run app.py                  # http://localhost:8501 — na 1ª vez treina o modelo (≈ 1 min)
+python -m pytest -q                   # 139 testes, ≈ 40 s, sem rede
+# Opcional: copie .env.exemplo para .env com GROQ_API_KEY e GEMINI_API_KEY; sem chave, os rascunhos vêm da base de conhecimento
 ```
 
 ---
@@ -105,7 +125,8 @@ python harness_automacao.py           # ≈ 4 min — 13 testes contra a propost
 
 | Ferramenta | Para que usou |
 |---|---|
-| Claude Code (desktop, Claude Opus) | Exploração dos dados, análise estatística, harness, scripts da solução e redação dos documentos |
+| Claude Code (desktop, Claude Opus) | Exploração dos dados, análise estatística, harness, scripts da solução, protótipo (spec → plano → TDD) e redação dos documentos |
+| Groq (`gpt-oss-120b`) e Gemini (`gemini-3.6-flash`), free tier | LLM **dentro do protótipo**: rascunho e dossiê, com fallback entre os dois, e a medição M1–M4 |
 
 ### Workflow
 
@@ -122,6 +143,8 @@ Ver [`process-log/02-proposta-automacao.md`](process-log/02-proposta-automacao.m
 
 Ver [`process-log/03-harness-economia-aprendizado.md`](process-log/03-harness-economia-aprendizado.md): 4 decisões derrubadas pelo harness, auditoria cega, risco de permissão lido ao contrário e dois erros do próprio harness (aprovação por coincidência e regex anulada por caractere de controle).
 
+Ver [`process-log/04-prototipo.md`](process-log/04-prototipo.md): 11 erros da Fase 3, entre eles 3 guardrails errados achados na revisão do plano (antes do código), um gatilho que tirava 728 tickets da automação para salvar 3, e a medição presa em 53 respostas 429 sem acionar o fallback, diagnosticada pelos logs do próprio protótipo.
+
 ### O que eu adicionei que a IA sozinha não faria
 
 - Recusar entregar "só o erro": exigir a solução com dono e verificação.
@@ -134,10 +157,11 @@ Ver [`process-log/03-harness-economia-aprendizado.md`](process-log/03-harness-ec
 ## Evidências
 
 - [x] Git history (commits desta branch)
-- [x] Narrativa escrita: [`process-log/01-diagnostico.md`](process-log/01-diagnostico.md) , [`process-log/02-proposta-automacao.md`](process-log/02-proposta-automacao.md) e [`process-log/03-harness-economia-aprendizado.md`](process-log/03-harness-economia-aprendizado.md)
+- [x] Narrativa escrita: [`process-log/01-diagnostico.md`](process-log/01-diagnostico.md), [`process-log/02-proposta-automacao.md`](process-log/02-proposta-automacao.md), [`process-log/03-harness-economia-aprendizado.md`](process-log/03-harness-economia-aprendizado.md) e [`process-log/04-prototipo.md`](process-log/04-prototipo.md)
+- [x] Screenshots do protótipo: [`process-log/screenshots/`](process-log/screenshots/)
 - [x] Registro de decisões (DIAGNOSTICO.md) e de erros corrigidos (HARNESS.md)
 - [ ] Chat export / screenshots das sessões _(adicionar em `process-log/chat-exports/`)_
 
 ---
 
-_Submissão enviada em: (em andamento)_
+_Submissão enviada em: 23/09/2026_
