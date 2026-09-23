@@ -1,0 +1,11 @@
+234 tickets | classificador linear: 85.9%
+  gemini-3.5-flash-lite  nomes      acerto 42.3% (linear 85.9%, McNemar p = 0.000) | 48 tokens/ticket | 0.10 s/ticket
+  gemini-3.5-flash-lite  descricoes acerto 58.5% (linear 85.9%, McNemar p = 0.000) | 53 tokens/ticket | 0.07 s/ticket
+  gemini-3.5-flash-lite  exemplos   acerto 64.1% (linear 85.9%, McNemar p = 0.000) | 89 tokens/ticket | 0.06 s/ticket
+   gemini-3.5-flash: tentativa 1 falhou (HTTP Error 503: Service Unavailable); nova em 15s
+   gemini-3.5-flash: tentativa 2 falhou (HTTP Error 429: Too Many Requests); nova em 30s
+   gemini-3.5-flash: tentativa 3 falhou (HTTP Error 503: Service Unavailable); nova em 60s
+   gemini-3.5-flash: tentativa 4 falhou (HTTP Error 429: Too Many Requests); nova em 120s
+   gemini-3.5-flash: tentativa 5 falhou (HTTP Error 429: Too Many Requests); nova em 240s
+   gemini-3.5-flash: tentativa 6 falhou (HTTP Error 429: Too Many Requests); nova em 480s
+exit=127

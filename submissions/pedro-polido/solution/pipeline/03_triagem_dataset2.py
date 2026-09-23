@@ -114,6 +114,12 @@ classes = list(clf.classes_)
 y_tr = train["Topic_group"].map(classes.index).values
 
 
+def expected_calibration_error(conf, ok, bins=10):
+    """Distância média entre a confiança declarada e o acerto real, em 10 faixas: 0 = calibração perfeita."""
+    idx = np.minimum((conf * bins).astype(int), bins - 1)
+    return sum((idx == b).mean() * abs(conf[idx == b].mean() - ok[idx == b].mean()) for b in range(bins) if (idx == b).any())
+
+
 def lanes_curve(proba, y):
     conf = proba.max(1)
     order = np.argsort(-proba, 1)
@@ -201,7 +207,7 @@ operacao = {
     "acerto_por": acc_by,
     "confusao": confusion_matrix(y_te, pred, labels=range(len(classes))),
     "curva": curve, "acerto_local": local,
-    "teste": {"n": len(test), "acerto": ok1.mean(), "top2": ok2.mean()},
+    "teste": {"n": len(test), "acerto": ok1.mean(), "top2": ok2.mean(), "ece": expected_calibration_error(conf, ok1)},
 }
 print(f"Cadeias de e-mail: {df['thread'].mean():.1%} | pedidos vazios: {df['info_poor'].mean():.1%} | "
       f"sensíveis: {df['sensitive'].mean():.1%} | urgentes: {df['urgent'].mean():.1%} | "
@@ -269,11 +275,15 @@ save_json("exemplos.json", examples)
 # Auditoria de rótulos: divergências em que o modelo tinha >= 90% de confiança
 disagree = test_eval[(conf >= 0.9) & ~ok1].assign(modelo=[classes[p] for p in pred[(conf >= 0.9) & ~ok1]])
 print(f"Divergências com confiança >= 0,9 no teste: {len(disagree)} ({len(disagree) / (conf >= 0.9).sum():.1%} da faixa)")
-out = SUBMISSION / "process-log" / "auditoria-rotulos"
-out.mkdir(parents=True, exist_ok=True)
-(disagree.sample(40, random_state=SEED)
- .assign(conf=lambda d: d["conf"].round(3), veredito_ia="", justificativa_ia="", veredito_pedro="")
- .rename(columns={"Document": "texto", "Topic_group": "rotulo"})
- [["texto", "rotulo", "modelo", "conf", "veredito_ia", "justificativa_ia", "veredito_pedro"]]
- .to_csv(out / "candidatos.csv", index_label="id", encoding="utf-8-sig"))
-print(f"-> process-log/auditoria-rotulos/candidatos.csv (40 de {len(disagree)})")
+audit_file = SUBMISSION / "process-log" / "auditoria-rotulos" / "candidatos.csv"
+if audit_file.exists():
+    # O arquivo guarda os vereditos da IA, do Gemini e do Pedro: nunca sobrescrever numa nova rodada.
+    print(f"   {audit_file.name} já existe, com vereditos: mantido como está")
+else:
+    audit_file.parent.mkdir(parents=True, exist_ok=True)
+    (disagree.sample(40, random_state=SEED)
+     .assign(conf=lambda d: d["conf"].round(3), veredito_ia="", justificativa_ia="", veredito_pedro="")
+     .rename(columns={"Document": "texto", "Topic_group": "rotulo"})
+     [["texto", "rotulo", "modelo", "conf", "veredito_ia", "justificativa_ia", "veredito_pedro"]]
+     .to_csv(audit_file, index_label="id", encoding="utf-8-sig"))
+    print(f"-> process-log/auditoria-rotulos/candidatos.csv (40 de {len(disagree)})")

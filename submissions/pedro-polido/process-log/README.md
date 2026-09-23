@@ -11,7 +11,7 @@
 |---|---|
 | Decisões do Pedro que definiram a entrega | 4 (desafio, narrativa, LLM, formato do protótipo) + revisão dos rótulos |
 | Hipóteses da IA refutadas pelos dados | 4 |
-| Erros da IA pegos pela verificação antes de entrar na entrega | 11 ([lista](#erros-da-ia-pegos-pela-verificação)) |
+| Erros da IA pegos pela verificação antes de entrar na entrega | 13 ([lista](#erros-da-ia-pegos-pela-verificação)) |
 | Verificação automática do protótipo | 308/308 textos com a mesma fila e a mesma faixa em Python e no navegador |
 
 ---
@@ -116,7 +116,10 @@ Outras decisões desta etapa:
   dos dois. Ou seja, cerca de 1/3 dos "erros" de alta confiança são erros do rótulo.
 - **Revisão do Pedro:** coluna `veredito_pedro` em [`candidatos.csv`](auditoria-rotulos/candidatos.csv).
   _[PEDRO: em quantos casos discordou da IA e por quê]_
-- **Terceira opinião (Gemini):** _[resultado do `04_benchmark_llm.py`]_
+- **Terceira opinião (Gemini 3.5 Flash-Lite, sem ver o rótulo nem a previsão do modelo):** nos 15 casos em que a IA
+  julgou o rótulo errado, o Gemini **nunca** escolheu o rótulo e ficou com a fila do modelo em 10. Nos 13 em que julgou
+  o rótulo certo, ficou com o rótulo em 8. Concordância nos 28 casos categóricos: 64%. Em 38% dos 40 casos ele escolheu
+  uma terceira fila, o que confirma o quanto esses tickets são ambíguos.
 
 ## 9. Honestidade na escrita
 
@@ -127,7 +130,35 @@ Outras decisões desta etapa:
 
 ## 10. LLM × classificador (`04_benchmark_llm.py`)
 
-_[resultado pendente: roda quando a chave do Gemini estiver no `.env`]_
+**Antes de rodar, dois episódios:**
+- **A chave foi salva como `.env.md`.** O script não achou a variável e o Google respondeu 403. A investigação foi feita
+  sem exibir a chave, só nomes de variáveis e tamanhos. Além de não carregar, havia um risco: a regra local do git
+  cobria `.env`, não `.env.md`, e um `git add` descuidado publicaria a chave num repositório público. O arquivo foi
+  renomeado e a regra passou a cobrir `.env*`.
+- **Erro da IA: modelo descontinuado.** O padrão do benchmark **e da função do app** era `gemini-2.5-flash`, que devolve
+  404 para chaves novas ("no longer available to new users"). O protótipo teria quebrado no deploy. Um teste rápido com
+  7 modelos pegou isso e mostrou a troca: `gemini-3.5-flash` leva ~25 s por causa do raciocínio (369 tokens de
+  "pensamento" para 3 tickets); `gemini-3.5-flash-lite` acerta os mesmos casos em ~1 s. O app ficou com o flash-lite.
+
+**Resultado** (234 tickets de teste, os mesmos para todos; logs brutos em [`benchmark-llm/`](benchmark-llm/)):
+
+| Abordagem | 1ª execução | Final | Tokens/ticket |
+|---|---|---|---|
+| Classificador linear | 85,9% | 85,9% | 0 |
+| Gemini 3.5 Flash-Lite, só nomes das filas | 44,0% | 42,3% | 48 |
+| + descrições das filas | 59,0% | 58,5% | 53 |
+| + 24 exemplos rotulados | 62,0% | 64,1% | 89 |
+
+- **Temperatura 0 não garante repetição:** as duas execuções variaram até 2,1 p.p. Por isso o README reporta faixas, e
+  o cache por rodada deixa os números finais reproduzíveis.
+- **Onde o LLM perde:** nas filas cujo significado é da casa. Hardware 47% contra 89% do linear, Miscellaneous 50%
+  contra 76%, HR Support 64% contra 87%. Nas filas autoexplicativas (Access, Storage, Internal Project), fica perto.
+- **Modelos maiores indisponíveis:** `gemini-3.5-flash`, `3.6-flash` e `flash-latest` devolveram 429/503 nas três
+  execuções. Isso ficou registrado no resultado, e não derrubou o script.
+- **Dois defeitos de engenharia pegos durante a execução** (erro 13 da lista, e um desperdício): os resultados só eram
+  gravados no fim, e o script ainda esperava 8 minutos depois da última tentativa falha antes de desistir. Correção:
+  cache por rodada (uma nova execução pula o que já terminou), nenhuma espera depois da última tentativa, e 3
+  tentativas (não 6) para os modelos opcionais.
 
 ---
 
@@ -146,3 +177,5 @@ _[resultado pendente: roda quando a chave do Gemini estiver no `.env`]_
 | 9 | Exemplo "Senha bloqueada" mostrando um caso de divergência | clique em cada exemplo, leitura do resultado | 7 |
 | 10 | Texto em português roteado sozinho com 100% de confiança | teste manual com frase em português | 7 |
 | 11 | Contribuições da IA atribuídas ao Pedro no README | releitura da seção antes do commit | 9 |
+| 12 | Modelo padrão do app e do benchmark já descontinuado (`gemini-2.5-flash`) | teste de fumaça com 7 modelos antes de rodar | 10 |
+| 13 | Benchmark só gravava resultados no fim: uma falha na última rodada jogaria fora as anteriores | o modelo maior começou a devolver 503 e 429 em sequência | 10 |

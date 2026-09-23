@@ -13,6 +13,7 @@ informado, para checar se um modelo maior muda a conclusão. Comparação paread
 Requer GEMINI_API_KEY no .env da raiz do repositório.
 Uso: python 04_benchmark_llm.py [n_amostra]      Saída: app/data/llm_benchmark.json
 """
+import hashlib
 import json
 import os
 import sys
@@ -27,12 +28,17 @@ from statsmodels.stats.contingency_tables import mcnemar
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
-from common import IT_TICKETS_CSV, SEED, SUBMISSION, load_env, save_json
+from common import IT_TICKETS_CSV, REPO_ROOT, SEED, SUBMISSION, load_env, save_json
 
 load_env()
 KEY = os.environ.get("GEMINI_API_KEY")
 MAIN_MODEL = "gemini-3.5-flash-lite"
-STRONG_MODEL = ("gemini-3.5-flash", {"thinkingBudget": 0})
+# Modelo maior para a checagem: o primeiro que responder. Os flash maiores alternam 503 (alta demanda) e 429 (cota).
+STRONG_MODELS = [("gemini-3.5-flash", {"thinkingBudget": 0}), ("gemini-3.6-flash", {"thinkingLevel": "low"}),
+                 ("gemini-flash-latest", {"thinkingBudget": 0})]
+# Cada rodada concluída fica em cache: uma falha no meio não joga fora as rodadas anteriores.
+# datasets/ já é ignorado pelo .gitignore do repositório.
+CACHE = REPO_ROOT / "datasets" / ".cache_llm"
 N_SAMPLE = int(sys.argv[1]) if len(sys.argv) > 1 else 240
 BATCH = 20           # tickets por requisição
 PAUSE_S = 4.0        # respeita o limite de requisições por minuto da camada gratuita
@@ -76,7 +82,7 @@ SUFFIX = ("\n\nTickets are preprocessed (lowercase, no punctuation, stopwords re
           "Answer with a JSON array with one queue name per ticket, in order.")
 
 
-def gemini(model, thinking, system, tickets):
+def gemini(model, thinking, system, tickets, attempts=6):
     config = {"temperature": 0, "responseMimeType": "application/json",
               "responseSchema": {"type": "ARRAY", "items": {"type": "STRING", "enum": CLASSES}}}
     if thinking:
@@ -89,7 +95,7 @@ def gemini(model, thinking, system, tickets):
     req = urllib.request.Request(
         f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
         data=json.dumps(body).encode(), headers={"Content-Type": "application/json", "x-goog-api-key": KEY})
-    for attempt in range(6):
+    for attempt in range(attempts):
         try:
             t0 = time.time()
             with urllib.request.urlopen(req, timeout=180) as r:
@@ -100,31 +106,32 @@ def gemini(model, thinking, system, tickets):
                 raise ValueError(f"{len(labels)} rótulos para {len(tickets)} tickets")
             return labels, data.get("usageMetadata", {}), time.time() - t0
         except (urllib.error.URLError, TimeoutError, ValueError, KeyError) as e:
+            if attempt == attempts - 1:
+                raise RuntimeError(f"{model} falhou {attempts} vezes seguidas: {str(e)[:80]}") from e
             wait = 15 * 2 ** attempt  # 503 de alta demanda e 429 de cota são transitórios
             print(f"   {model}: tentativa {attempt + 1} falhou ({str(e)[:80]}); nova em {wait}s", flush=True)
             time.sleep(wait)
-    raise RuntimeError(f"{model} falhou 6 vezes seguidas")
 
 
-def run(model, thinking, system, docs):
+def run(model, thinking, system, docs, attempts=6):
+    key = hashlib.sha256(json.dumps([model, thinking, system, docs]).encode()).hexdigest()[:16]
+    cache_file = CACHE / f"{model}_{key}.json"
+    if cache_file.exists():
+        c = json.loads(cache_file.read_text(encoding="utf-8"))
+        return np.array(c["labels"]), c["tokens"], c["seconds"]
     labels, tokens, seconds = [], 0, 0.0
     for i in range(0, len(docs), BATCH):
-        out, usage, dt = gemini(model, thinking, system, docs[i:i + BATCH])
+        out, usage, dt = gemini(model, thinking, system, docs[i:i + BATCH], attempts)
         labels += out
         tokens += usage.get("totalTokenCount", 0)
         seconds += dt
         time.sleep(PAUSE_S)
+    CACHE.mkdir(parents=True, exist_ok=True)
+    cache_file.write_text(json.dumps({"labels": labels, "tokens": tokens, "seconds": seconds}), encoding="utf-8")
     return np.array(labels), tokens, seconds
 
 
-y = sample["Topic_group"].values
-docs = sample["Document"].tolist()
-linear_ok = linear_pred == y
-results = {"n": len(sample), "linear": {"acerto": float(linear_ok.mean())}, "rodadas": []}
-print(f"{len(sample)} tickets | classificador linear: {linear_ok.mean():.1%}", flush=True)
-plan = [(MAIN_MODEL, None, name) for name in PROMPTS] + [(STRONG_MODEL[0], STRONG_MODEL[1], "exemplos")]
-for model, thinking, name in plan:
-    pred, tokens, seconds = run(model, thinking, PROMPTS[name], docs)
+def evaluate(model, name, pred, tokens, seconds):
     ok = pred == y
     # McNemar pareado: só importam os tickets em que um acerta e o outro erra
     table = [[int((ok & linear_ok).sum()), int((ok & ~linear_ok).sum())],
@@ -134,9 +141,30 @@ for model, thinking, name in plan:
          "so_llm_acerta": table[0][1], "so_linear_acerta": table[1][0],
          "por_fila": {c: float(ok[y == c].mean()) for c in CLASSES},
          "concorda_com_linear": float((pred == linear_pred).mean())}
-    results["rodadas"].append(r)
     print(f"  {model:22s} {name:10s} acerto {r['acerto']:.1%} (linear {linear_ok.mean():.1%}, McNemar p = {r['p_mcnemar']:.3f}) | "
           f"{r['tokens_por_ticket']:.0f} tokens/ticket | {r['segundos_por_ticket']:.2f} s/ticket", flush=True)
+    return r
+
+
+y = sample["Topic_group"].values
+docs = sample["Document"].tolist()
+linear_ok = linear_pred == y
+results = {"n": len(sample), "linear": {"acerto": float(linear_ok.mean())}, "rodadas": []}
+print(f"{len(sample)} tickets | classificador linear: {linear_ok.mean():.1%}", flush=True)
+for name in PROMPTS:
+    results["rodadas"].append(evaluate(MAIN_MODEL, name, *run(MAIN_MODEL, None, PROMPTS[name], docs)))
+
+# Checagem com modelo maior, no prompt mais informado. Indisponibilidade vira registro, não queda do script.
+failures = []
+for model, thinking in STRONG_MODELS:
+    try:
+        # Modelo opcional: 3 tentativas bastam para saber se está disponível agora
+        results["rodadas"].append(evaluate(model, "exemplos", *run(model, thinking, PROMPTS["exemplos"], docs, attempts=3)))
+        break
+    except RuntimeError as e:
+        failures.append(model)
+        print(f"  {model}: indisponível ({e}); tentando o próximo", flush=True)
+results["modelos_indisponiveis"] = failures
 
 # Terceira opinião nos 40 casos da auditoria de rótulos (o LLM não vê rótulo nem previsão do modelo)
 audit_path = SUBMISSION / "process-log" / "auditoria-rotulos" / "candidatos.csv"

@@ -21,7 +21,8 @@ exatamente isso que uma IA entrega quando recebe o brief sozinha. Por isso entre
    (+3 h num segmento canal × prioridade é detectado em 82% das simulações);
 2. a **automação medida onde o texto é real** (47.837 tickets de TI): 60% dos tickets roteados sem humano com 97,2% de
    acerto, 32% com 2 sugestões para o atendente, 8% sempre humanos;
-3. um **protótipo rodando** com essa política, o simulador de ROI e a triagem ao vivo.
+3. um **protótipo rodando** com essa política, o simulador de ROI e a triagem ao vivo, com o LLM (Gemini) só onde ele
+   ganha. Medido nos mesmos tickets, ele classifica pior (42–64% contra 85,9%), mas traduz e redige bem.
 
 **Recomendação principal:** instrumentar o suporte para medir tempo de verdade e começar pela triagem, em modo sombra.
 Com premissas conservadoras, são ~90 h/mês de triagem liberadas.
@@ -85,7 +86,24 @@ primeiras, calibrado: ECE 0,012)
 | Triagem humana | < 48%, tema sensível, ou texto fora do padrão | 7,7% | — |
 | Pedir detalhes | pedido sem conteúdo | 0,6% | — |
 
-**5. LLM:** _RESULTADO_DO_BENCHMARK_
+**5. LLM × classificador** (mesmos 234 tickets de teste, [`04_benchmark_llm.py`](solution/pipeline/04_benchmark_llm.py),
+logs brutos em [`process-log/benchmark-llm/`](process-log/benchmark-llm/))
+
+| Abordagem | Acerto | Tokens por ticket |
+|---|---|---|
+| **Classificador linear (o do app)** | **85,9%** | 0 |
+| Gemini 3.5 Flash-Lite, só os nomes das filas | 42–44% | 48 |
+| + descrição de cada fila | 58–59% | 53 |
+| + 24 exemplos rotulados (few-shot) | 62–64% | 89 |
+
+As faixas vêm de duas execuções com temperatura 0 (o LLM não é determinístico). Todas as diferenças para o linear têm
+McNemar p < 0,001. A perda se concentra nas **filas da casa**: Hardware 47% contra 89%, Miscellaneous 50% contra 76%, HR
+Support 64% contra 87%. Nas filas de nome autoexplicativo (Access, Storage, Internal Project), o LLM com exemplos fica
+perto do linear. Conclusão: classificar é trabalho do modelo treinado com os rótulos da casa; o LLM entra na tradução e
+no rascunho, testados de ponta a ponta no app.
+
+Na auditoria de rótulos, o Gemini foi uma checagem independente: nos 15 casos em que a IA julgou o rótulo errado, ele
+(sem ver rótulo nem previsão) **nunca** escolheu o rótulo e ficou com a fila do modelo em 10.
 
 **6. ROI** (premissas editáveis no simulador: 2.500 tickets/mês, 3 min de triagem manual, 1 min assistida, 15 min de
 retrabalho por erro, R$ 40/h): **~91 h/mês liberadas, ~R$ 44 mil/ano, 42 tickets/mês na fila errada**. É um ganho
@@ -125,6 +143,9 @@ modesto em reais. O ganho provável maior é o tempo de espera na fila de triage
 - **Português depende do LLM** (tradução antes do classificador). Um modelo treinado com tickets em português seria o
   passo seguinte.
 - **O limite de uso da função do Gemini é por instância** (melhor esforço). Em produção, seria preciso um gateway com cota.
+- **O benchmark de LLM usou o Flash-Lite.** Os modelos maiores (`gemini-3.5-flash`, `3.6-flash`, `flash-latest`) estavam
+  indisponíveis por cota ou demanda (429/503) na hora do teste. Um modelo maior pode reduzir a diferença, e o script já
+  tenta rodá-los sozinho.
 
 ---
 

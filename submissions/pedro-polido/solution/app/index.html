@@ -247,14 +247,15 @@
           <div class="card">
             <h3>Onde entra o LLM (e onde não)</h3>
             <ul class="clean small" style="margin-top:12px">
-              <li><strong>Classificar:</strong> modelo linear. Acerta 97% na faixa automática, custa zero por ticket, responde em
-                milissegundos e explica cada decisão. Um LLM não conhece a taxonomia da casa: "HR Support" aqui inclui pedido de
-                acesso a servidor.</li>
+              <li><strong>Classificar:</strong> modelo linear. Medido abaixo: o Gemini acerta bem menos, e perde justamente
+                nas filas da casa (Hardware, Miscellaneous, HR Support), que só os rótulos históricos ensinam. O linear custa
+                zero por ticket, responde em milissegundos e explica cada decisão.</li>
               <li><strong>Traduzir e normalizar:</strong> LLM. Tickets em português entram no mesmo classificador.</li>
               <li><strong>Redigir resposta e pedir detalhes:</strong> LLM, sempre como rascunho que o atendente aprova.</li>
               <li><strong>Responder direto ao cliente:</strong> não. Todo texto gerado passa pelo atendente, e a taxa de edição
                 dos rascunhos é a métrica que decide se o LLM está ajudando.</li>
             </ul>
+            <div id="llm-bench" hidden style="margin-top:18px"></div>
           </div>
         </div>
 

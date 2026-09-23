@@ -270,6 +270,14 @@ $('#examples').addEventListener('click', (ev) => {
   render();
 });
 
+// ?exemplo=N abre a página já com um exemplo carregado (útil para compartilhar um caso)
+const initial = examples[Number(new URLSearchParams(location.search).get('exemplo'))];
+if (initial) {
+  ticketEl.value = initial.texto;
+  ticketEl.dataset.rotulo = initial.rotulo;
+  render();
+}
+
 let timer;
 ticketEl.addEventListener('input', () => {
   delete ticketEl.dataset.rotulo;
@@ -413,6 +421,31 @@ $('#not-automate').innerHTML = [
   '<strong>Pedidos vazios:</strong> nenhum modelo acerta o que não foi dito. Uma resposta automática pede o que falta, e a triagem vem depois.',
   '<strong>Reclamação, cancelamento e reembolso:</strong> envolvem retenção e dinheiro. A IA redige, a pessoa envia. Os dados desses tickets são sintéticos, então esta é uma regra de política, não um número.',
 ].map((li) => `<li>${li}</li>`).join('');
+
+// Benchmark LLM × linear (só aparece se o pipeline 04 tiver rodado)
+const PROMPT_LABEL = { nomes: 'só os nomes das filas', descricoes: 'nomes + descrições das filas', exemplos: 'descrições + 24 exemplos' };
+fetch('data/llm_benchmark.json').then((r) => (r.ok ? r.json() : null)).then((b) => {
+  if (!b) return;
+  const pv = (p) => (p < 0.001 ? '< 0,001' : `= ${dec(p, 3)}`);
+  const rows = [
+    { label: 'Classificador linear (este app)', acerto: b.linear.acerto, sub: 'custo zero por ticket, milissegundos', color: 'var(--auto)' },
+    ...b.rodadas.map((r) => ({
+      label: `${r.modelo} · ${PROMPT_LABEL[r.prompt]}`,
+      acerto: r.acerto,
+      sub: `${int(r.tokens_por_ticket)} tokens/ticket · diferença para o linear: McNemar p ${pv(r.p_mcnemar)}`,
+      color: 'var(--accent)',
+    })),
+  ];
+  const el = $('#llm-bench');
+  el.innerHTML = `<div class="small"><strong>Medido: Gemini × classificador linear nos mesmos ${int(b.n)} tickets de teste</strong></div>
+    <div class="proba">${rows.map((r) => `
+      <div class="hbar" style="grid-template-columns:1fr 54px"><div><div class="tiny">${esc(r.label)}</div>
+        <div class="track"><div class="fill" style="width:${100 * r.acerto}%;background:${r.color}"></div></div>
+        <div class="tiny muted">${esc(r.sub)}</div></div><span class="val">${pct(r.acerto, 1)}</span></div>`).join('')}
+    </div>
+    ${b.modelos_indisponiveis?.length ? `<div class="tiny muted" style="margin-top:8px">Indisponíveis no momento do teste (503/429): ${esc(b.modelos_indisponiveis.join(', '))}.</div>` : ''}`;
+  el.hidden = false;
+}).catch(() => {});
 
 // Navegação: destaca a seção visível
 const links = [...document.querySelectorAll('.nav-links a')];
