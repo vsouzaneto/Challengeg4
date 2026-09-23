@@ -31,6 +31,62 @@ def test_classificar_troca_de_provedor_quando_a_cota_acaba():
     assert sum(r["provedor"] == "gemini" for r in res.values()) == 25
 
 
+def _resposta_ok(msgs):
+    ids = [int(x) for x in re.findall(r'"id": (\d+)', msgs[1]["content"])]
+    return '{"r": [' + ",".join(f'{{"id": {i}, "classe": "Storage", "confianca": 0.7}}' for i in ids) + "]}", 10
+
+
+def test_429_curto_repetido_troca_de_provedor_na_3a_falha():
+    esperas = []
+
+    def chamar(prov, msgs, temperatura=0, max_tokens=0, sessao=None):
+        if prov == "groq":
+            raise llm.ErroLLM("rate_limit", "429", 5)
+        return _resposta_ok(msgs)
+
+    res = ml.classificar([(i, "t") for i in range(5)], ["groq", "gemini"], chamar=chamar, dormir=esperas.append)
+    assert {r["provedor"] for r in res.values()} == {"gemini"}
+    assert esperas[:2] == [5, 5]   # 2 esperas; na 3ª falha seguida passa para o Gemini
+
+
+def test_503_transitorio_espera_e_tenta_de_novo_no_mesmo_provedor():
+    esperas, falhou = [], []
+
+    def chamar(prov, msgs, temperatura=0, max_tokens=0, sessao=None):
+        if not falhou:
+            falhou.append(1)
+            raise llm.ErroLLM("http_5xx", "HTTP 503")
+        return _resposta_ok(msgs)
+
+    res = ml.classificar([(1, "t")], ["gemini", "groq"], chamar=chamar, dormir=esperas.append)
+    assert res[1]["provedor"] == "gemini" and esperas[0] == ml.ESPERA_TRANSITORIO_S
+
+
+def test_checkpoint_retoma_de_onde_parou(tmp_path):
+    ck = ml.Checkpoint(tmp_path / "ck.json")
+    chamadas = []
+
+    def cai_depois_do_1o_lote(prov, msgs, temperatura=0, max_tokens=0, sessao=None):
+        chamadas.append(prov)
+        if len(chamadas) > 1:
+            raise llm.ErroLLM("sem_chave", "x")
+        return _resposta_ok(msgs)
+
+    itens = [(i, "t") for i in range(30)]
+    parcial = ml.classificar(itens, ["groq"], chamar=cai_depois_do_1o_lote, dormir=lambda s: None,
+                             etapa="M1", checkpoint=ck)
+    assert sum(r["provedor"] == "groq" for r in parcial.values()) == 20
+    novas = []
+
+    def funciona(prov, msgs, temperatura=0, max_tokens=0, sessao=None):
+        novas.append(len(re.findall(r'"id": ', msgs[1]["content"])))
+        return _resposta_ok(msgs)
+
+    res = ml.classificar(itens, ["groq"], chamar=funciona, dormir=lambda s: None, etapa="M1",
+                         checkpoint=ml.Checkpoint(tmp_path / "ck.json"))
+    assert novas == [10] and all(r["provedor"] == "groq" for r in res.values())
+
+
 def test_classificar_resposta_ininteligivel_conta_como_erro():
     def chamar(prov, msgs, temperatura=0, max_tokens=0, sessao=None):
         return "não sei", 1

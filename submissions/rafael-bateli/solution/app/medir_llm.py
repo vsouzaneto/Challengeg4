@@ -32,8 +32,12 @@ CRITERIOS = {
 }
 N_M1, N_M2, N_M3, N_M4 = 500, 250, 50, 60
 LOTE = 20
-PAUSA_S = {"groq": 10.0, "gemini": 4.0}   # Groq free: 8K tokens/min → ≤ 6 chamadas/min
+# Ritmo pelo orçamento de tokens (sondagem: 1 lote de 20 = 2.252 tokens no Groq; limite 8K tokens/min).
+PAUSA_S = {"groq": 20.0, "gemini": 4.0}
 ESPERA_MAX_S = 60                         # 429 com espera maior = cota do dia: passa para o próximo provedor
+ESPERA_TRANSITORIO_S = 10.0               # 503 "high demand", timeout, rede: espera e tenta de novo
+MAX_FALHAS_SEGUIDAS = 3                   # na 3ª falha seguida, o provedor sai e a cadeia segue
+TRANSITORIOS = {"http_5xx", "timeout", "rede"}
 SEED = 42
 REGRAS_RISCO = ["perda_de_dados_sem_reset", "sem_promessa_financeira", "sem_liberar_acesso", "sem_seguir_injecao"]
 ADVERSARIOS_M4 = [  # (texto do ticket, gatilhos forçados) — tentam arrancar da LLM o que ela não pode fazer
@@ -85,28 +89,82 @@ def interpretar(texto: str) -> dict[int, tuple[str | None, float]]:
     return saida
 
 
-def classificar(itens, provedores, chamar=llm.chamar, dormir=time.sleep) -> dict[int, dict]:
-    pendentes, ativos, res = list(itens), list(provedores), {}
-    while pendentes and ativos:
-        prov, lote = ativos[0], pendentes[:LOTE]
-        msgs = prompts.mensagens_classificacao(lote)
+class Checkpoint:
+    """Resultados já obtidos, por etapa, gravados a cada lote: uma queda não joga fora o que já foi medido."""
+
+    def __init__(self, caminho=None):
+        self.caminho = caminho or config.local_dir() / "medicao_checkpoint.json"
         try:
-            texto, _ = chamar(prov, msgs, temperatura=0, max_tokens=3000)
+            self.dados = json.loads(self.caminho.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            self.dados = {}
+
+    def obter(self, etapa: str) -> dict:
+        return {int(k): v for k, v in self.dados.get(etapa, {}).items()}
+
+    def guardar(self, etapa: str, novos: dict) -> None:
+        self.dados.setdefault(etapa, {}).update({str(k): v for k, v in novos.items()})
+        self.caminho.write_text(json.dumps(self.dados, ensure_ascii=False), encoding="utf-8")
+
+
+def _tentar(ativos: list, chamada, dormir):
+    """Roda chamada(prov) no 1º provedor ativo. 429 curto ou falha transitória: espera e tenta de novo;
+    na 3ª falha seguida (ou em falha definitiva) o provedor sai. Devolve (prov, resultado) ou (None, None)."""
+    falhas = 0
+    while ativos:
+        prov = ativos[0]
+        try:
+            return prov, chamada(prov)
+        except llm.ErroLLM as e:
+            falhas += 1
+            registrar("WARNING", "medicao", e.categoria, provedor=prov, detalhe=e.detalhe, falhas_seguidas=falhas)
+            espera = None
+            if e.categoria == "rate_limit":
+                espera = e.retry_after or ESPERA_TRANSITORIO_S
+                espera = espera if espera <= ESPERA_MAX_S else None   # espera longa = cota do dia acabou
+            elif e.categoria in TRANSITORIOS:
+                espera = ESPERA_TRANSITORIO_S
+            if espera is not None and falhas < MAX_FALHAS_SEGUIDAS:
+                dormir(espera)
+                continue
+            print(f"  {prov} saiu da cadeia ({e.categoria}); seguindo com {ativos[1:] or 'nenhum'}", flush=True)
+            ativos.pop(0)
+            falhas = 0
+    return None, None
+
+
+def classificar(itens, provedores, chamar=llm.chamar, dormir=time.sleep, etapa: str | None = None,
+                checkpoint: Checkpoint | None = None) -> dict[int, dict]:
+    res = checkpoint.obter(etapa) if (checkpoint and etapa) else {}
+    pendentes = [(i, t) for i, t in itens if i not in res]
+    ativos = list(provedores)
+    while pendentes and ativos:
+        lote = pendentes[:LOTE]
+        msgs = prompts.mensagens_classificacao(lote)
+
+        def chamada(prov):
+            texto, tokens = chamar(prov, msgs, temperatura=0, max_tokens=3000)
             lido = interpretar(texto)
             if len(lido) < len(lote):   # 1 nova tentativa, mais estrita
                 texto, _ = chamar(prov, msgs + [{"role": "user", "content": "Return ONLY the JSON object."}],
                                   temperatura=0, max_tokens=3000)
                 lido = {**interpretar(texto), **lido}
-        except llm.ErroLLM as e:
-            registrar("WARNING", "medicao", e.categoria, provedor=prov, detalhe=e.detalhe)
-            if e.categoria == "rate_limit" and 0 < e.retry_after <= ESPERA_MAX_S:
-                dormir(e.retry_after)
-            else:
-                ativos.pop(0)
-            continue
+            return lido, tokens
+
+        prov, saida = _tentar(ativos, chamada, dormir)
+        if prov is None:
+            break
+        lido, tokens = saida
+        novos = {}
         for i, _t in lote:   # resposta ininteligível conta como erro do modelo que respondeu
             classe, conf = lido.get(i, (None, 0.0))
-            res[i] = {"classe": classe, "confianca": conf, "provedor": prov, "modelo": llm.modelo_de(prov)}
+            novos[i] = {"classe": classe, "confianca": conf, "provedor": prov, "modelo": llm.modelo_de(prov)}
+        res.update(novos)
+        if checkpoint and etapa:
+            checkpoint.guardar(etapa, novos)
+        registrar("INFO", "medicao", provedor=prov, status="ok", etapa_medicao=etapa, tokens=tokens,
+                  feitos=len(res), total=len(itens))
+        print(f"  {etapa or ''} {len(res)}/{len(itens)} ({prov})", flush=True)
         pendentes = pendentes[LOTE:]
         dormir(PAUSA_S.get(prov, 5.0))
     for i, _t in pendentes:
@@ -193,26 +251,25 @@ def avaliar_m4(casos: list[dict]) -> dict:
     return {"por_modelo": saida}
 
 
-def _rascunhar(casos_entrada, provedores, dormir=time.sleep) -> list[dict]:
-    ativos, saida, fila = list(provedores), [], list(casos_entrada)
-    while fila and ativos:
-        prov = ativos[0]
-        texto_ticket, d, art, adversario = fila[0]
-        ja = kb.tentativas(texto_ticket)
-        try:
-            rascunho, _ = llm.chamar(prov, prompts.mensagens_rascunho(texto_ticket, art, ja), temperatura=0.3)
-        except llm.ErroLLM as e:
-            registrar("WARNING", "medicao", e.categoria, provedor=prov, detalhe=e.detalhe)
-            if e.categoria == "rate_limit" and 0 < e.retry_after <= ESPERA_MAX_S:
-                dormir(e.retry_after)
-            else:
-                ativos.pop(0)
+def _rascunhar(casos_entrada, provedores, dormir=time.sleep, checkpoint: Checkpoint | None = None) -> list[dict]:
+    feitos = checkpoint.obter("M4") if checkpoint else {}
+    ativos = list(provedores)
+    for n, (texto_ticket, d, art, adversario) in enumerate(casos_entrada):
+        if n in feitos:
             continue
-        saida.append({"modelo_nome": f"{prov} · {llm.modelo_de(prov)}", "ticket": texto_ticket, "rascunho": rascunho,
-                      "adversario": adversario, "violacoes": guardrails.checar_rascunho(rascunho, d, texto_ticket)})
-        fila.pop(0)
+        ja = kb.tentativas(texto_ticket)
+        msgs = prompts.mensagens_rascunho(texto_ticket, art, ja)
+        prov, saida = _tentar(ativos, lambda p: llm.chamar(p, msgs, temperatura=0.3), dormir)
+        if prov is None:
+            break
+        rascunho, _ = saida
+        feitos[n] = {"modelo_nome": f"{prov} · {llm.modelo_de(prov)}", "ticket": texto_ticket, "rascunho": rascunho,
+                     "adversario": adversario, "violacoes": guardrails.checar_rascunho(rascunho, d, texto_ticket)}
+        if checkpoint:
+            checkpoint.guardar("M4", {n: feitos[n]})
+        print(f"  M4 {len(feitos)}/{len(casos_entrada)} ({prov})", flush=True)
         dormir(PAUSA_S.get(prov, 5.0))
-    return saida
+    return [feitos[n] for n in sorted(feitos)]
 
 
 def _casos_m4(rng) -> list:
@@ -253,18 +310,20 @@ def main() -> None:
     saida = json.loads(saida_path.read_text(encoding="utf-8")) if saida_path.exists() else {}
     saida.update({"data": datetime.now().strftime("%Y-%m-%d %H:%M"), "criterios": CRITERIOS,
                   "supervisionado": {"limiar": m.limiar, "cobertura": round(av["cobertura"], 4), "acerto": round(av["acerto"], 4)}})
+    ck = Checkpoint()
     ids_m1 = sorted(rng.choice(len(m.X_te), N_M1, replace=False).tolist())
+    ja_usados = set(ids_m1)
+    abaixo = [i for i in np.where(av["conf"] < m.limiar)[0].tolist() if i not in ja_usados]
+    ids_m2 = sorted(rng.choice(abaixo, N_M2, replace=False).tolist())   # sorteio fixo, rode ou não o M2
     res1 = None
     if "M1" in so or "M3" in so:
         print(f"M1: classificando {N_M1} tickets…", flush=True)
-        res1 = classificar([(i, m.X_te[i]) for i in ids_m1], provs)
+        res1 = classificar([(i, m.X_te[i]) for i in ids_m1], provs, etapa="M1", checkpoint=ck)
         saida["M1"] = avaliar_m1(ids_m1, res1, m.y_te, av["prev"], av["cobertura"])
     if "M2" in so:
-        ja_usados = set(ids_m1)
-        abaixo = [i for i in np.where(av["conf"] < m.limiar)[0].tolist() if i not in ja_usados]
-        ids_m2 = sorted(rng.choice(abaixo, N_M2, replace=False).tolist())
         print(f"M2: classificando {N_M2} tickets abaixo do limiar…", flush=True)
-        saida["M2"] = avaliar_m2(ids_m2, classificar([(i, m.X_te[i]) for i in ids_m2], provs), m.y_te, av["prev"])
+        res2 = classificar([(i, m.X_te[i]) for i in ids_m2], provs, etapa="M2", checkpoint=ck)
+        saida["M2"] = avaliar_m2(ids_m2, res2, m.y_te, av["prev"])
     if "M3" in so and res1:
         rep = [i for i in ids_m1 if res1[i]["provedor"] != "nenhum"][:N_M3]
         por_prov: dict[str, list] = {}
@@ -272,11 +331,11 @@ def main() -> None:
             por_prov.setdefault(res1[i]["provedor"], []).append(i)
         res3 = {}
         for prov, ids in por_prov.items():   # repete com o MESMO provedor da 1ª vez
-            res3.update(classificar([(i, m.X_te[i]) for i in ids], [prov]))
+            res3.update(classificar([(i, m.X_te[i]) for i in ids], [prov], etapa=f"M3_{prov}", checkpoint=ck))
         saida["M3"] = avaliar_m3(res1, res3)
     if "M4" in so:
         print("M4: rascunhos (60 sorteados + 20 adversários)…", flush=True)
-        saida["M4"] = avaliar_m4(_rascunhar(_casos_m4(rng), provs))
+        saida["M4"] = avaliar_m4(_rascunhar(_casos_m4(rng), provs, checkpoint=ck))
     config.OUT_APP.mkdir(exist_ok=True)
     saida_path.write_text(json.dumps(saida, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     print(json.dumps({k: v for k, v in saida.items() if k.startswith("M")}, ensure_ascii=False, indent=2, default=str))
