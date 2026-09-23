@@ -45,6 +45,15 @@ def test_p9_sem_chave_pula_sem_chamar(monkeypatch):
     assert r.tentativas[0]["categoria"] == "sem_chave"
 
 
+def test_gemini_aceita_google_api_key(monkeypatch):
+    monkeypatch.delenv("GROQ_API_KEY", raising=False)
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    monkeypatch.setenv("GOOGLE_API_KEY", "goog-x")
+    assert llm.chaves_presentes()["gemini"] is True
+    s = SessaoFalsa({"googleapis": [RespostaFalsa(200, ok("g"))]})
+    assert llm.gerar("t", MSG, cadeia=["gemini"], sessao=s).provedor == "gemini"
+
+
 def test_p9_retry_after_curto_espera_e_tenta_de_novo(chaves):
     esperas = []
     s = SessaoFalsa({"groq": [RespostaFalsa(429, headers={"retry-after": "1"}), RespostaFalsa(200, ok("groq ok"))],
@@ -96,8 +105,8 @@ def test_rascunho_ruim_e_bloqueado_e_vira_template(chaves):
 
 
 def test_p8_llm_fora_do_ar_rascunho_cai_no_template(monkeypatch):
-    monkeypatch.delenv("GROQ_API_KEY", raising=False)
-    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    for nome in ("GROQ_API_KEY", "GEMINI_API_KEY", "GOOGLE_API_KEY"):
+        monkeypatch.delenv(nome, raising=False)
     t = assistente.rascunho(_dec_rota2(), "My phone fails to connect to any available networks.", cadeia=CADEIA)
     assert t.origem == "template" and "fallback" in t.aviso
 

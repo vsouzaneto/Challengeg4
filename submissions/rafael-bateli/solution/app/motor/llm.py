@@ -14,12 +14,17 @@ from . import config
 from .logs import registrar
 
 PROVEDORES = {
-    "groq": {"url": "https://api.groq.com/openai/v1/chat/completions", "chave": "GROQ_API_KEY",
+    "groq": {"url": "https://api.groq.com/openai/v1/chat/completions", "chave": ["GROQ_API_KEY"],
              "env_modelo": "GROQ_MODELO", "modelo": "openai/gpt-oss-120b", "extra": {"reasoning_effort": "low"}},
+    # o Google usa os dois nomes na documentação; aceitamos ambos
     "gemini": {"url": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
-               "chave": "GEMINI_API_KEY", "env_modelo": "GEMINI_MODELO", "modelo": "gemini-2.5-flash",
-               "extra": {"reasoning_effort": "low"}},
+               "chave": ["GEMINI_API_KEY", "GOOGLE_API_KEY"], "env_modelo": "GEMINI_MODELO",
+               "modelo": "gemini-2.5-flash", "extra": {"reasoning_effort": "low"}},
 }
+
+
+def _chave(prov: str) -> str | None:
+    return next((os.environ[n] for n in PROVEDORES[prov]["chave"] if os.environ.get(n)), None)
 
 
 class ErroLLM(Exception):
@@ -48,15 +53,15 @@ def modelo_de(prov: str) -> str:
 
 
 def chaves_presentes() -> dict[str, bool]:
-    return {p: bool(os.environ.get(c["chave"])) for p, c in PROVEDORES.items()}
+    return {p: bool(_chave(p)) for p in PROVEDORES}
 
 
 def chamar(prov: str, mensagens: list[dict], *, temperatura: float = 0.3, max_tokens: int = 1500,
            sessao=None) -> tuple[str, int | None]:
     c = PROVEDORES[prov]
-    chave = os.environ.get(c["chave"])
+    chave = _chave(prov)
     if not chave:
-        raise ErroLLM("sem_chave", c["chave"])
+        raise ErroLLM("sem_chave", " ou ".join(c["chave"]))
     corpo = {"model": modelo_de(prov), "messages": mensagens, "temperature": temperatura,
              "max_tokens": max_tokens, **c["extra"]}
     http = sessao or requests
