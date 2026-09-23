@@ -1,0 +1,11 @@
+﻿sinal,se_fosse_humano,observado,atribuicao
+Segundos nos horários,digitado à mão → segundos = 00,"1,8% com :00; segundos uniformes (p=0,97)",FERRAMENTA
+Resolução − 1ª resposta,dois registros independentes → segundos diferentes,100% dos pares têm exatamente os mesmos segundos → resolução = 1ª resposta ± N minutos (campo CALCULADO),FERRAMENTA
+Troca AM/PM,erro de digitação → pico em ±12 h,"3,9% em ±12 h (acaso: 4,2%) → sem pico",NÃO É HUMANO
+Hora do dia,operação humana → vale de madrugada,"volume/hora 0–5 h ÷ 9–17 h = 1,04 → sem expediente visível",FERRAMENTA (fraco)
+Placeholders,agente não escreve {chaves},100% com {product_purchased},FERRAMENTA
+Texto da resolução,"agente usa vocabulário de suporte; lixo humano se repete ('ok', '.')","100% únicos; vocabulário de suporte 0,8% vs 18,7% nas descrições",FERRAMENTA
+E-mail como identidade,mesmo e-mail → mesma pessoa,"139 e-mails repetidos, 139 com nomes diferentes",FERRAMENTA (modelagem)
+Triagem por canal,"equipes diferentes → taxas de acerto diferentes, acima do acaso","acerto 17,0%–19,8% por canal (p=0,70); acaso 18,3%",NÃO É JULGAMENTO HUMANO
+Desalinhamento de colunas,join deslocado → pico de acerto em algum deslocamento,"melhor deslocamento k=19: 20,8% (vs 18,3%) → sem pico",DESCARTADO
+Máquina de estados,sistema quebrado → status incoerentes,100% coerente: Open sem resposta; Pending sem resolução; Closed completo,WORKFLOW FUNCIONA

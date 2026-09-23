@@ -1,0 +1,200 @@
+{
+  "A_viabilidade_dataset2": {
+    "n_treino": 28701,
+    "n_validacao": 9568,
+    "n_teste": 9568,
+    "acuracia_geral_teste": 0.8577,
+    "limiar_escolhido_na_validacao": 0.71,
+    "teste_cobertura_automatica": 0.7319,
+    "teste_acuracia_automatica": 0.9513,
+    "teste_acuracia_fila_humana_sem_revisao": 0.6019,
+    "classe_mais_dificil": "Administrative rights",
+    "por_classe": [
+      {
+        "classe": "Administrative rights",
+        "tickets": 352,
+        "pct_automatico": 0.619,
+        "acuracia_automatico": 0.803
+      },
+      {
+        "classe": "Miscellaneous",
+        "tickets": 1412,
+        "pct_automatico": 0.657,
+        "acuracia_automatico": 0.944
+      },
+      {
+        "classe": "Internal Project",
+        "tickets": 424,
+        "pct_automatico": 0.665,
+        "acuracia_automatico": 0.95
+      },
+      {
+        "classe": "Hardware",
+        "tickets": 2724,
+        "pct_automatico": 0.731,
+        "acuracia_automatico": 0.96
+      },
+      {
+        "classe": "HR Support",
+        "tickets": 2183,
+        "pct_automatico": 0.754,
+        "acuracia_automatico": 0.959
+      },
+      {
+        "classe": "Storage",
+        "tickets": 555,
+        "pct_automatico": 0.757,
+        "acuracia_automatico": 0.945
+      },
+      {
+        "classe": "Access",
+        "tickets": 1425,
+        "pct_automatico": 0.771,
+        "acuracia_automatico": 0.959
+      },
+      {
+        "classe": "Purchase",
+        "tickets": 493,
+        "pct_automatico": 0.854,
+        "acuracia_automatico": 0.962
+      }
+    ],
+    "exemplos": [
+      {
+        "texto": "access to thursday november pm hi please thank senior developer",
+        "real": "HR Support",
+        "previsto": "HR Support",
+        "confianca": 1.0,
+        "rota": "IA decide"
+      },
+      {
+        "texto": "request for outlook thursday july pm dear please make interns proposed name interns kind r",
+        "real": "HR Support",
+        "previsto": "HR Support",
+        "confianca": 0.65,
+        "rota": "humano revisa"
+      },
+      {
+        "texto": "rename value rename hello please details rename title thank kind regards analyst",
+        "real": "Miscellaneous",
+        "previsto": "Miscellaneous",
+        "confianca": 0.87,
+        "rota": "IA decide"
+      },
+      {
+        "texto": "unable to access retain hello unable get retain says invalid session started happening thu",
+        "real": "Hardware",
+        "previsto": "Hardware",
+        "confianca": 0.66,
+        "rota": "humano revisa"
+      },
+      {
+        "texto": "please investigate who is using the account tuesday pm tickets raised dear ask help raisin",
+        "real": "Miscellaneous",
+        "previsto": "Miscellaneous",
+        "confianca": 0.87,
+        "rota": "IA decide"
+      },
+      {
+        "texto": "cc and expenditure types guide expenditure types guide hi please find attached latest expe",
+        "real": "Hardware",
+        "previsto": "Hardware",
+        "confianca": 0.84,
+        "rota": "IA decide"
+      }
+    ]
+  },
+  "B_roi_retriagem": {
+    "erro_de_classificacao_hoje": 0.654,
+    "erro_de_classificacao_com_ia": 0.0625,
+    "horas_retriagem_hoje": 1635,
+    "horas_retriagem_com_ia": 156,
+    "horas_revisao_humana_nova": 134,
+    "horas_liquidas_recuperadas": 1345,
+    "pct_da_retriagem_recuperada": 0.823,
+    "rs_ano": 47069,
+    "premissas": {
+      "acuracia_humano_revisando": 0.9,
+      "revisao_min": 1.0,
+      "retriagem_min": 5,
+      "custo_hora_rs": 35
+    }
+  },
+  "C_backlog_dataset1": {
+    "tickets_sem_resposta": 2819,
+    "prioridade_sugerida": {
+      "Revisão humana": 1377,
+      "Medium": 742,
+      "High": 446,
+      "Low": 169,
+      "Critical": 85
+    },
+    "cruzamento_declarada_x_sugerida": {
+      "Critical": {
+        "Critical": 18,
+        "High": 29,
+        "Low": 18,
+        "Medium": 20
+      },
+      "High": {
+        "Critical": 118,
+        "High": 107,
+        "Low": 106,
+        "Medium": 115
+      },
+      "Low": {
+        "Critical": 32,
+        "High": 41,
+        "Low": 54,
+        "Medium": 42
+      },
+      "Medium": {
+        "Critical": 177,
+        "High": 207,
+        "Low": 170,
+        "Medium": 188
+      },
+      "Revisão humana": {
+        "Critical": 347,
+        "High": 320,
+        "Low": 348,
+        "Medium": 362
+      }
+    },
+    "subpriorizados": 259,
+    "superpriorizados": 457,
+    "pct_vai_para_humano": 0.4885,
+    "top5": [
+      {
+        "Ticket ID": 216,
+        "prioridade_declarada": "Critical",
+        "prioridade_sugerida": "Critical",
+        "motivos": "perda_de_dados, urgencia"
+      },
+      {
+        "Ticket ID": 358,
+        "prioridade_declarada": "Critical",
+        "prioridade_sugerida": "Critical",
+        "motivos": "perda_de_dados, urgencia, recontato"
+      },
+      {
+        "Ticket ID": 1192,
+        "prioridade_declarada": "Critical",
+        "prioridade_sugerida": "Critical",
+        "motivos": "perda_de_dados, urgencia"
+      },
+      {
+        "Ticket ID": 1431,
+        "prioridade_declarada": "Critical",
+        "prioridade_sugerida": "Critical",
+        "motivos": "perda_de_dados, bateria, urgencia"
+      },
+      {
+        "Ticket ID": 1478,
+        "prioridade_declarada": "Critical",
+        "prioridade_sugerida": "Critical",
+        "motivos": "perda_de_dados, urgencia"
+      }
+    ]
+  }
+}

@@ -1,0 +1,317 @@
+{
+  "etapa0_integridade": {
+    "registros": 8469,
+    "linhas_fisicas_csv": 29807,
+    "status": {
+      "Pending Customer Response": 2881,
+      "Open": 2819,
+      "Closed": 2769
+    },
+    "nulos": {
+      "First Response Time": 2819,
+      "Time to Resolution": 5700,
+      "Customer Satisfaction Rating": 5700,
+      "Resolution": 5700
+    },
+    "tem_coluna_criacao_ticket": false,
+    "janela_timestamps": [
+      "2023-05-31 21:53:30",
+      "2023-06-02 00:55:33"
+    ],
+    "janela_horas": 27.0,
+    "fechados_resolucao_antes_da_1a_resposta": 1365,
+    "fechados_total": 2769,
+    "pct_resolucao_antes_da_1a_resposta": 0.493,
+    "ks_delta_mod24_vs_uniforme_p": 0.0132,
+    "csat_cobertura": 0.327,
+    "csat_distribuicao": {
+      "1.0": 553,
+      "2.0": 549,
+      "3.0": 580,
+      "4.0": 543,
+      "5.0": 544
+    },
+    "csat_uniforme_chi2_p": 0.7968,
+    "placeholder_product_purchased_pct": 1.0,
+    "outros_placeholders_tickets": 668,
+    "outros_placeholders_distintos": 155,
+    "resolution_exemplos": [
+      "Such option result friend able director.",
+      "Pick Republican offer world actually road during.",
+      "Deal step team east pressure."
+    ],
+    "tipo_x_assunto_chi2_p": 0.9807,
+    "incoerencia_tipo_assunto_generosa": 0.6537,
+    "incoerencia_tipo_assunto_estrita": 0.794,
+    "assunto_bate_descricao": 0.1831,
+    "assunto_bate_descricao_acaso": 0.1832,
+    "assunto_bate_descricao_n": 1982,
+    "compra_ate_ticket_dias_min": 518,
+    "emails_repetidos": 149
+  },
+  "etapa1_gargalos": {
+    "status_pct": {
+      "Pending Customer Response": 0.3402,
+      "Open": 0.3329,
+      "Closed": 0.327
+    },
+    "por_dimensao": {
+      "Ticket Channel": {
+        "pct_open_sem_1a_resposta": {
+          "Chat": 0.3304,
+          "Email": 0.3271,
+          "Phone": 0.3452,
+          "Social media": 0.3286
+        },
+        "status_chi2_p": 0.771,
+        "tempo_proxy_mediana_h": {
+          "Chat": 11.32,
+          "Email": 11.1,
+          "Phone": 12.33,
+          "Social media": 12.17
+        },
+        "tempo_proxy_kruskal_p": 0.4069
+      },
+      "Ticket Priority": {
+        "pct_open_sem_1a_resposta": {
+          "Critical": 0.325,
+          "High": 0.3376,
+          "Low": 0.3374,
+          "Medium": 0.3317
+        },
+        "status_chi2_p": 0.227,
+        "tempo_proxy_mediana_h": {
+          "Critical": 11.34,
+          "High": 12.05,
+          "Low": 11.73,
+          "Medium": 11.52
+        },
+        "tempo_proxy_kruskal_p": 0.4912
+      },
+      "Ticket Type": {
+        "pct_open_sem_1a_resposta": {
+          "Billing inquiry": 0.3299,
+          "Cancellation request": 0.3434,
+          "Product inquiry": 0.3242,
+          "Refund request": 0.3219,
+          "Technical issue": 0.3446
+        },
+        "status_chi2_p": 0.3394,
+        "tempo_proxy_mediana_h": {
+          "Billing inquiry": 11.7,
+          "Cancellation request": 11.38,
+          "Product inquiry": 12.17,
+          "Refund request": 11.94,
+          "Technical issue": 11.03
+        },
+        "tempo_proxy_kruskal_p": 0.3655
+      }
+    },
+    "combos_top5_proxy": [
+      {
+        "Ticket Channel": "Chat",
+        "Ticket Priority": "Low",
+        "Ticket Type": "Technical issue",
+        "n": 33,
+        "tempo_medio_h": 14.61,
+        "csat_medio": 3.18
+      },
+      {
+        "Ticket Channel": "Chat",
+        "Ticket Priority": "High",
+        "Ticket Type": "Refund request",
+        "n": 41,
+        "tempo_medio_h": 14.1,
+        "csat_medio": 3.15
+      },
+      {
+        "Ticket Channel": "Social media",
+        "Ticket Priority": "Medium",
+        "Ticket Type": "Technical issue",
+        "n": 30,
+        "tempo_medio_h": 14.09,
+        "csat_medio": 2.67
+      },
+      {
+        "Ticket Channel": "Social media",
+        "Ticket Priority": "Critical",
+        "Ticket Type": "Product inquiry",
+        "n": 34,
+        "tempo_medio_h": 13.85,
+        "csat_medio": 2.79
+      },
+      {
+        "Ticket Channel": "Phone",
+        "Ticket Priority": "Medium",
+        "Ticket Type": "Product inquiry",
+        "n": 49,
+        "tempo_medio_h": 13.84,
+        "csat_medio": 3.06
+      }
+    ],
+    "combos_n_min_max": [
+      20,
+      49
+    ],
+    "permutacao_tempo": {
+      "amplitude_observada": 5.424,
+      "amplitude_nula_p50": 5.946,
+      "amplitude_nula_p95": 7.373,
+      "p_valor": 0.745
+    }
+  },
+  "etapa2_csat": {
+    "n_com_csat": 2769,
+    "csat_medio": 2.991,
+    "univariado": {
+      "Ticket Channel": {
+        "teste": "Kruskal-Wallis",
+        "p": 0.2785,
+        "amplitude_medias": 0.131
+      },
+      "Ticket Priority": {
+        "teste": "Kruskal-Wallis",
+        "p": 0.6287,
+        "amplitude_medias": 0.094
+      },
+      "Ticket Type": {
+        "teste": "Kruskal-Wallis",
+        "p": 0.6993,
+        "amplitude_medias": 0.095
+      },
+      "Ticket Subject": {
+        "teste": "Kruskal-Wallis",
+        "p": 0.8066,
+        "amplitude_medias": 0.38
+      },
+      "Product Purchased": {
+        "teste": "Kruskal-Wallis",
+        "p": 0.6674,
+        "amplitude_medias": 0.681
+      },
+      "Customer Gender": {
+        "teste": "Kruskal-Wallis",
+        "p": 0.6255,
+        "amplitude_medias": 0.057
+      },
+      "Customer Age": {
+        "teste": "Spearman",
+        "rho": -0.004,
+        "p": 0.8315
+      },
+      "delta_mod24_h": {
+        "teste": "Spearman",
+        "rho": -0.0185,
+        "p": 0.3302
+      },
+      "contato_repetido": {
+        "teste": "Mann-Whitney",
+        "p": 0.1431,
+        "csat_com": 2.829,
+        "csat_sem": 3.001,
+        "n_com": 152
+      },
+      "l1_conta_senha": {
+        "teste": "Mann-Whitney",
+        "p": 0.7146,
+        "csat_com": 3.028,
+        "csat_sem": 2.989,
+        "n_com": 178
+      },
+      "l1_passo_a_passo": {
+        "teste": "Mann-Whitney",
+        "p": 0.2541,
+        "csat_com": 2.911,
+        "csat_sem": 3.003,
+        "n_com": 349
+      }
+    },
+    "modelo_rf": {
+      "acuracia_cv": 0.2004,
+      "acuracia_baseline_classe_majoritaria": 0.2095,
+      "acuracia_acaso_5_classes": 0.2,
+      "r2_cv": -0.0435,
+      "r2_baseline": -0.0014
+    }
+  },
+  "etapa3_desperdicio": {
+    "taxas_observadas": {
+      "incoerencia_classificacao": 0.6537,
+      "contato_repetido": 0.0543,
+      "pendente_cliente": 0.3402,
+      "l1_repetitivo": 0.1789,
+      "open_sem_resposta": 0.3329
+    },
+    "premissas": {
+      "tickets_ano": 30000,
+      "aht_min": {
+        "baixo": 8,
+        "base": 12,
+        "alto": 18
+      },
+      "retriagem_min": {
+        "baixo": 3,
+        "base": 5,
+        "alto": 10
+      },
+      "contatos_extras_repeticao": {
+        "baixo": 1,
+        "base": 2,
+        "alto": 3
+      },
+      "followup_min_pendente": {
+        "baixo": 2,
+        "base": 4,
+        "alto": 8
+      },
+      "deflexao_l1": {
+        "baixo": 0.2,
+        "base": 0.4,
+        "alto": 0.6
+      },
+      "custo_hora_rs": {
+        "baixo": 25,
+        "base": 35,
+        "alto": 55
+      }
+    },
+    "cenarios": {
+      "baixo": {
+        "horas": {
+          "Retriagem por classificação errada": 981,
+          "Recontato (cliente volta a pedir)": 217,
+          "Cobrança de pendentes do cliente": 340,
+          "L1 repetitivo feito por humano": 143
+        },
+        "horas_total": 1681,
+        "custo_total_rs": 42028,
+        "fte_equivalente": 0.83,
+        "divida_capacidade_open_h": 1331
+      },
+      "base": {
+        "horas": {
+          "Retriagem por classificação errada": 1634,
+          "Recontato (cliente volta a pedir)": 652,
+          "Cobrança de pendentes do cliente": 680,
+          "L1 repetitivo feito por humano": 429
+        },
+        "horas_total": 3396,
+        "custo_total_rs": 118851,
+        "fte_equivalente": 1.68,
+        "divida_capacidade_open_h": 1997
+      },
+      "alto": {
+        "horas": {
+          "Retriagem por classificação errada": 3268,
+          "Recontato (cliente volta a pedir)": 1467,
+          "Cobrança de pendentes do cliente": 1361,
+          "L1 repetitivo feito por humano": 966
+        },
+        "horas_total": 7062,
+        "custo_total_rs": 388396,
+        "fte_equivalente": 3.5,
+        "divida_capacidade_open_h": 2996
+      }
+    }
+  }
+}

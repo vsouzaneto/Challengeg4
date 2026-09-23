@@ -1,0 +1,433 @@
+[
+  {
+    "id": "A1",
+    "pergunta": "Os números dos documentos batem com o código?",
+    "veredito": "SUSTENTOU",
+    "conclusao": "11/11 números-chave encontrados no texto exatamente como o código calcula; 4 scripts sem caractere de controle.",
+    "evidencia": {
+      "verificados": 11,
+      "nao_encontrados": {
+        "PROPOSTA_AUTOMACAO.md": [],
+        "ECONOMIA_E_APRENDIZADO.md": []
+      },
+      "caracteres_de_controle_nos_scripts": {
+        "aprendizado.py": 0,
+        "automacao.py": 0,
+        "harness_automacao.py": 0,
+        "modelo.py": 0
+      }
+    }
+  },
+  {
+    "id": "A2",
+    "pergunta": "As regras de palavra-chave foram um espantalho?",
+    "veredito": "SUSTENTOU",
+    "conclusao": "Com margem, regras chegam a 95%+ de acerto, mas cobrindo no máximo 15,7% dos tickets; o modelo cobre 73,2%. A frase 'regras param em 80%' estava errada; a conclusão (modelo > regra) se mantém.",
+    "evidencia": {
+      "grade": [
+        {
+          "palavras": 10,
+          "margem": 1,
+          "cobertura": 0.5711,
+          "acerto": 0.7985
+        },
+        {
+          "palavras": 10,
+          "margem": 2,
+          "cobertura": 0.2302,
+          "acerto": 0.9437
+        },
+        {
+          "palavras": 10,
+          "margem": 3,
+          "cobertura": 0.1028,
+          "acerto": 0.9736
+        },
+        {
+          "palavras": 10,
+          "margem": 4,
+          "cobertura": 0.041,
+          "acerto": 0.9847
+        },
+        {
+          "palavras": 10,
+          "margem": 5,
+          "cobertura": 0.0254,
+          "acerto": 0.9918
+        },
+        {
+          "palavras": 20,
+          "margem": 1,
+          "cobertura": 0.6508,
+          "acerto": 0.796
+        },
+        {
+          "palavras": 20,
+          "margem": 2,
+          "cobertura": 0.3026,
+          "acerto": 0.9326
+        },
+        {
+          "palavras": 20,
+          "margem": 3,
+          "cobertura": 0.157,
+          "acerto": 0.966
+        },
+        {
+          "palavras": 20,
+          "margem": 4,
+          "cobertura": 0.0774,
+          "acerto": 0.9771
+        },
+        {
+          "palavras": 20,
+          "margem": 5,
+          "cobertura": 0.05,
+          "acerto": 0.9812
+        },
+        {
+          "palavras": 50,
+          "margem": 1,
+          "cobertura": 0.7573,
+          "acerto": 0.6333
+        },
+        {
+          "palavras": 50,
+          "margem": 2,
+          "cobertura": 0.4361,
+          "acerto": 0.7477
+        },
+        {
+          "palavras": 50,
+          "margem": 3,
+          "cobertura": 0.2817,
+          "acerto": 0.8237
+        },
+        {
+          "palavras": 50,
+          "margem": 4,
+          "cobertura": 0.1966,
+          "acerto": 0.8719
+        },
+        {
+          "palavras": 50,
+          "margem": 5,
+          "cobertura": 0.1426,
+          "acerto": 0.9069
+        }
+      ],
+      "melhor_regra_com_95pct": {
+        "palavras": 20,
+        "margem": 3,
+        "cobertura": 0.157,
+        "acerto": 0.966
+      },
+      "modelo_cobertura_95pct": 0.7319
+    }
+  },
+  {
+    "id": "A3",
+    "pergunta": "O modelo escolhido é o certo, ou outro ganha com folga?",
+    "veredito": "SUSTENTOU",
+    "conclusao": "Melhor alternativa: SVM linear calibrado com 74,5% contra 73,2% (critério: vencer por mais de 2 p.p.). Economia achada: 50 mil variáveis dão o mesmo resultado com metade do tempo de treino.",
+    "evidencia": {
+      "alternativas": {
+        "Regressão logística, 200 mil variáveis (proposta)": {
+          "cobertura": 0.7319,
+          "acerto": 0.9513,
+          "treino_s": 16.7
+        },
+        "Regressão logística, 50 mil variáveis": {
+          "cobertura": 0.7305,
+          "acerto": 0.9505,
+          "treino_s": 9.0
+        },
+        "Naive Bayes complementar": {
+          "cobertura": 0.549,
+          "acerto": 0.9522,
+          "treino_s": 2.1
+        },
+        "SVM linear calibrado": {
+          "cobertura": 0.7446,
+          "acerto": 0.9499,
+          "treino_s": 3.2
+        },
+        "Gradiente estocástico (log)": {
+          "cobertura": 0.7304,
+          "acerto": 0.9518,
+          "treino_s": 2.5
+        }
+      }
+    }
+  },
+  {
+    "id": "A4",
+    "pergunta": "O limiar de confiança é estável em outras divisões do dado?",
+    "veredito": "SUSTENTOU",
+    "conclusao": "Cobertura 71,3%–74,4%, acerto 95,0%–95,4% em 5 divisões.",
+    "evidencia": {
+      "divisoes": [
+        {
+          "seed": 42,
+          "limiar": 0.725,
+          "cobertura": 0.7305,
+          "acerto": 0.9505
+        },
+        {
+          "seed": 1,
+          "limiar": 0.73,
+          "cobertura": 0.7223,
+          "acerto": 0.9543
+        },
+        {
+          "seed": 7,
+          "limiar": 0.695,
+          "cobertura": 0.7441,
+          "acerto": 0.9517
+        },
+        {
+          "seed": 13,
+          "limiar": 0.735,
+          "cobertura": 0.7134,
+          "acerto": 0.9534
+        },
+        {
+          "seed": 99,
+          "limiar": 0.72,
+          "cobertura": 0.7269,
+          "acerto": 0.9504
+        }
+      ]
+    }
+  },
+  {
+    "id": "A5",
+    "pergunta": "A confiança do modelo é calibrada (70% de confiança ≈ 70% de acerto)?",
+    "veredito": "SUSTENTOU",
+    "conclusao": "Erro de calibração (ECE) = 0,036 (critério < 0,05). O limiar de confiança significa o que diz.",
+    "evidencia": {
+      "ece": 0.0357,
+      "faixas": [
+        {
+          "faixa": "0.2-0.3",
+          "n": 36,
+          "confianca": 0.274,
+          "acerto": 0.306
+        },
+        {
+          "faixa": "0.3-0.4",
+          "n": 314,
+          "confianca": 0.358,
+          "acerto": 0.401
+        },
+        {
+          "faixa": "0.4-0.5",
+          "n": 650,
+          "confianca": 0.453,
+          "acerto": 0.523
+        },
+        {
+          "faixa": "0.5-0.6",
+          "n": 749,
+          "confianca": 0.55,
+          "acerto": 0.63
+        },
+        {
+          "faixa": "0.6-0.7",
+          "n": 742,
+          "confianca": 0.65,
+          "acerto": 0.726
+        },
+        {
+          "faixa": "0.7-0.8",
+          "n": 882,
+          "confianca": 0.75,
+          "acerto": 0.81
+        },
+        {
+          "faixa": "0.8-0.9",
+          "n": 1236,
+          "confianca": 0.853,
+          "acerto": 0.903
+        },
+        {
+          "faixa": "0.9-1.0",
+          "n": 4959,
+          "confianca": 0.975,
+          "acerto": 0.986
+        }
+      ]
+    }
+  },
+  {
+    "id": "A6",
+    "pergunta": "O limiar protege contra uma categoria que o modelo nunca viu?",
+    "veredito": "DERRUBOU",
+    "conclusao": "NÃO protege: 34,9% a 60,5% da categoria nova são classificados errado com confiança alta. Um detector por ticket (similaridade) também não resolve: AUC 0,51–0,72. Solução: monitor de população (aprendizado.py, B2).",
+    "evidencia": {
+      "por_categoria": [
+        {
+          "categoria_nova": "Purchase",
+          "vai_para_humano": 0.651,
+          "classificada_errado_com_confianca": 0.349,
+          "auc_detector_por_similaridade": 0.505
+        },
+        {
+          "categoria_nova": "Storage",
+          "vai_para_humano": 0.613,
+          "classificada_errado_com_confianca": 0.387,
+          "auc_detector_por_similaridade": 0.566
+        },
+        {
+          "categoria_nova": "Administrative rights",
+          "vai_para_humano": 0.395,
+          "classificada_errado_com_confianca": 0.605,
+          "auc_detector_por_similaridade": 0.721
+        },
+        {
+          "categoria_nova": "Internal Project",
+          "vai_para_humano": 0.62,
+          "classificada_errado_com_confianca": 0.38,
+          "auc_detector_por_similaridade": 0.684
+        }
+      ]
+    }
+  },
+  {
+    "id": "A7",
+    "pergunta": "Um gold set de 3.000 rótulos entrega os 73% de cobertura?",
+    "veredito": "DERRUBOU",
+    "conclusao": "NÃO: com 3.000 rótulos a cobertura é 49,8%, não 73,0%. O ROI da proposta supunha o modelo maduro desde o dia 1; o caminho real está no ciclo de aprendizado (B1).",
+    "evidencia": {
+      "curva": [
+        {
+          "rotulos": 500,
+          "cobertura": 0.1788,
+          "acerto": 0.9492
+        },
+        {
+          "rotulos": 1000,
+          "cobertura": 0.3388,
+          "acerto": 0.9482
+        },
+        {
+          "rotulos": 3000,
+          "cobertura": 0.4982,
+          "acerto": 0.9473
+        },
+        {
+          "rotulos": 10000,
+          "cobertura": 0.6524,
+          "acerto": 0.9492
+        },
+        {
+          "rotulos": 28701,
+          "cobertura": 0.7301,
+          "acerto": 0.9502
+        }
+      ]
+    }
+  },
+  {
+    "id": "A8",
+    "pergunta": "Rotular os tickets mais incertos acelera o aprendizado?",
+    "veredito": "DERRUBOU",
+    "conclusao": "NÃO: com 3.000 rótulos, sorteio chega a 51,3% e 'mais incertos' a 48,1%. O gold set deve ser sorteado (estratificado), e a auditoria precisa incluir acertos, não só dúvidas.",
+    "evidencia": {
+      "sorteio": {
+        "rotulos": 3000,
+        "cobertura": 0.5135,
+        "acerto": 0.9552
+      },
+      "mais_incertos": {
+        "rotulos": 3000,
+        "cobertura": 0.4814,
+        "acerto": 0.9505
+      }
+    }
+  },
+  {
+    "id": "A9",
+    "pergunta": "A quase-duplicata ajuda a classificar?",
+    "veredito": "DERRUBOU",
+    "conclusao": "NÃO: copiar a classe da duplicata acerta 96,1%, mas o modelo já acerta 95,6% nesses tickets (acaso: 18,6%). O valor da duplicata é vincular ao ticket anterior (histórico, resolução, recontato), não classificar.",
+    "evidencia": {
+      "pct_com_duplicata": 0.054,
+      "acerto_copiando_a_duplicata": 0.9613,
+      "acerto_do_modelo_nesses_tickets": 0.9555,
+      "acerto_por_acaso": 0.1864
+    }
+  },
+  {
+    "id": "A10",
+    "pergunta": "Os 33% de humano dependem de um gatilho só?",
+    "veredito": "SUSTENTOU",
+    "conclusao": "Nenhum gatilho sozinho responde por mais de 6,6% do total (critério ≤ 10 p.p.). Mas 1267 dos 2798 tickets da rota 1 só têm gatilhos em que o risco está na DECISÃO, não no texto: dá para a IA rascunhar (economia B6).",
+    "evidencia": {
+      "rota1": 2798,
+      "exclusivos": {
+        "perda_de_dados": 555,
+        "seguranca": 357,
+        "conta_bloqueada": 121,
+        "recontato": 363,
+        "dinheiro": 260,
+        "hardware": 430,
+        "reparo_troca": 407
+      },
+      "pp_do_total": {
+        "perda_de_dados": 0.0655,
+        "seguranca": 0.0422,
+        "conta_bloqueada": 0.0143,
+        "recontato": 0.0429,
+        "dinheiro": 0.0307,
+        "hardware": 0.0508,
+        "reparo_troca": 0.0481
+      },
+      "rota1_so_hardware_reparo_recontato": 1267
+    }
+  },
+  {
+    "id": "A11",
+    "pergunta": "O custo de LLM pode passar do ganho que ela gera?",
+    "veredito": "SUSTENTOU",
+    "conclusao": "Em 20.000 cenários (tokens ×0,5–10, preço ×0,5–3, volume, câmbio), o custo passa do ganho em 0,04%. Até uma LLM classificando os 30 mil tickets custaria ≈ US$ 16/ano: o motivo para não usá-la ali é acerto e latência, não dinheiro.",
+    "evidencia": {
+      "p_custo_maior_que_ganho": 0.0004,
+      "custo_p90_rs": 4171,
+      "ganho_p10_rs": 10767,
+      "llm_classificando_tudo_usd_ano": 16.3
+    }
+  },
+  {
+    "id": "A12",
+    "pergunta": "\"Regras fixas primeiro\" resiste a qualquer combinação de premissas?",
+    "veredito": "SUSTENTOU",
+    "conclusao": "As duas regras fixas são as 2 melhores em horas por semana de esforço em 88,1% dos cenários (horas nas faixas da Entrega 1; esforço ×0,5–2).",
+    "evidencia": {
+      "pct_cenarios_regras_fixas_no_top2_h_por_semana": 0.8807,
+      "pct_classificacao_em_1o": 0.0159
+    }
+  },
+  {
+    "id": "A13",
+    "pergunta": "A proposta cobre o que o desafio pede?",
+    "veredito": "SUSTENTOU",
+    "conclusao": "Todos os requisitos cobertos.",
+    "evidencia": {
+      "requisitos": {
+        "Usa os dois datasets": true,
+        "Classificação automática": true,
+        "Roteamento inteligente": true,
+        "Respostas sugeridas": true,
+        "Triagem de prioridade": true,
+        "Detecção de duplicatas": true,
+        "O que NÃO automatizar": true,
+        "Exemplos dos dados (≥ 8 tickets citados por ID)": true,
+        "Fluxo: entra → etapas → IA → humano": true,
+        "Não automatiza 100%": true,
+        "ROI em horas/mês (dica do desafio)": true,
+        "Acurácia geral, sem limiar (transparência)": true
+      }
+    }
+  }
+]
