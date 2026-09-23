@@ -65,7 +65,7 @@ export function groupedBars(el, { groups, series, y, bands = [], height = 250, w
   const sy = scale(y.min, y.max, f.m.t + f.ih, f.m.t);
   const bw = Math.min(26, (gw - 12) / series.length);
   const bg = bands.map((b) => `<rect x="${f.m.l + b.from * gw}" y="${f.m.t - 22}" width="${(b.to - b.from) * gw}" height="${f.ih + 22}" fill="${b.color}" opacity=".12"/>
-    <text x="${f.m.l + (b.from + (b.to - b.from) / 2) * gw}" y="${f.m.t - 8}" text-anchor="middle" style="fill:${b.color};font-weight:700;font-size:11px">${esc(b.label)}</text>`).join('');
+    <text x="${f.m.l + (b.from + (b.to - b.from) / 2) * gw}" y="${f.m.t - 8}" text-anchor="middle" style="fill:${b.color};font-weight:700;font-size:14px">${esc(b.label)}</text>`).join('');
   const bars = groups.map((g, i) => series.map((s, k) => {
     const v = s.values[i];
     const x0 = f.m.l + i * gw + (gw - bw * series.length) / 2 + k * bw;
