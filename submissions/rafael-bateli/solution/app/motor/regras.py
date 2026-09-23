@@ -66,14 +66,16 @@ def prioridade_d1(desc: str | None) -> tuple[str, list[str]]:
 
 
 # D2 — gatilhos que SÓ tiram da automação (Entrega 2, seção 2).
-ADMIN_TEXTO = re.compile(r"admin(?:istrator)? rights|administrator|elevated|permission", re.IGNORECASE)
+# Permissão de admin: protege-se a AÇÃO (conceder acesso exige aprovação humana no sistema de
+# identidade), não o rótulo. Uma regex de texto ("permission|administrator") foi medida na
+# Entrega 3: tirava 725 tickets bons da automação para salvar 3 — removida (Entrega 2, B4).
 RH_SENSIVEL = re.compile(r"\b(?:salary|payroll|termination|resign|sick|maternity)", re.IGNORECASE)
 ALERTA = re.compile(r"critical alert", re.IGNORECASE)
 
 
 def gatilhos_d2(texto: str, classe: str | None) -> list[str]:
     g = []
-    if classe == "Administrative rights" or ADMIN_TEXTO.search(texto):
+    if classe == "Administrative rights":
         g.append("permissao_admin")
     if classe == "HR Support" and RH_SENSIVEL.search(texto):
         g.append("rh_sensivel")

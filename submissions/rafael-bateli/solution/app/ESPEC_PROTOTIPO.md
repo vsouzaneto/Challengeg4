@@ -148,7 +148,7 @@ Cada etapa registra na `Decisao` um item do **rastro** (nome, resultado, motivo,
 - **Cache:** o modelo, o limiar e a matriz do histórico ficam num `.pkl` em `dados_locais/`, com a versão do scikit-learn e um hash do CSV. Se algum dos dois mudar, o modelo é retreinado.
 - **Rota:** texto vazio ou sem problema descrito → "pedir detalhes"; gatilho sensível → "humano aprova a ação"; senão, confiança ≥ limiar → "roteado automático"; senão → "triagem humana (top-3)". A cobertura do P2 (73,2%) é a do classificador (confiança ≥ limiar), antes dos gatilhos; a divisão por rota do D2 é reportada à parte.
 - **Gatilhos sensíveis (só tiram da automação):**
-  - classe prevista *Administrative rights*, ou texto com `admin rights|administrator|elevated|permission`;
+  - classe prevista *Administrative rights*. *Mudança na implementação:* a spec previa também uma regex de texto (`admin rights|administrator|elevated|permission`). Medida no teste do D2, ela tirava 728 tickets da automação para salvar 3 *admin* reais da fila errada. Foi removida por decisão do Rafael, em coerência com a Entrega 2 (B4: proteger a ação, não o rótulo);
   - classe prevista *HR Support* com `salary|payroll|termination|resign|sick|maternity`;
   - assinatura `critical alert` → incidente.
 - **Similares:** os 3 vizinhos mais próximos no treino (cosseno), com a classe de cada um. Cosseno ≥ 0,9 → vínculo de quase-duplicata.
