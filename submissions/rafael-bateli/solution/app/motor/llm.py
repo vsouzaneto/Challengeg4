@@ -19,7 +19,7 @@ PROVEDORES = {
     # o Google usa os dois nomes na documentação; aceitamos ambos
     "gemini": {"url": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
                "chave": ["GEMINI_API_KEY", "GOOGLE_API_KEY"], "env_modelo": "GEMINI_MODELO",
-               "modelo": "gemini-2.5-flash", "extra": {"reasoning_effort": "low"}},
+               "modelo": "gemini-3.6-flash", "extra": {"reasoning_effort": "low"}},
 }
 
 

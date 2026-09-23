@@ -169,7 +169,7 @@ Cada etapa registra na `Decisao` um item do **rastro** (nome, resultado, motivo,
 ### 5.1 Cadeia de provedores
 
 - **Uma função:** `gerar(tarefa, contexto) → Resposta(texto, provedor, modelo, latencia_ms, tokens, tentativas)`.
-- **Ordem:** `LLM_CADEIA`, padrão `groq,gemini,template`. Os modelos vêm de `GROQ_MODELO` (padrão `openai/gpt-oss-120b`) e `GEMINI_MODELO` (padrão `gemini-2.5-flash`, que está no free tier; se o provedor recusar o nome, o erro cai em `resposta_invalida` e a cadeia segue).
+- **Ordem:** `LLM_CADEIA`, padrão `groq,gemini,template`. Os modelos vêm de `GROQ_MODELO` (padrão `openai/gpt-oss-120b`) e `GEMINI_MODELO` (padrão `gemini-3.6-flash`; se o provedor recusar o nome, o erro cai em `resposta_invalida` e a cadeia segue). *Mudança na implementação:* a spec previa `gemini-2.5-flash`, mas o teste de fumaça devolveu HTTP 404 ("no longer available to new users"), e o próprio erro recomenda `gemini-3.6-flash`.
 - **Cliente:** HTTP (`requests`) no formato *chat completions* compatível com OpenAI. Os dois provedores oferecem esse endpoint, então é um cliente só, sem SDK.
 - **Quando pula para o próximo:** ausência de chave, HTTP 429, 5xx, timeout (20 s) ou resposta inválida. No 429 com `retry-after` ≤ 5 s, espera e tenta de novo 1 vez; se for maior, pula.
 - **Chaves:** `GROQ_API_KEY` e `GEMINI_API_KEY` num `.env` local (ignorado). O Rafael cria as contas e as chaves.
