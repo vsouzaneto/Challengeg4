@@ -20,6 +20,12 @@ IT_TICKETS_CSV = DATASETS / "all_tickets_processed_improved_v3.csv"  # Dataset 2
 SEED = 42
 
 
+def br(value, decimals=1, suffix=""):
+    """Número no padrão brasileiro: br(8469, 0) -> '8.469'; br(0.493 * 100, 1, '%') -> '49,3%'."""
+    text = f"{value:,.{decimals}f}".replace(",", "§").replace(".", ",").replace("§", ".")
+    return text + suffix
+
+
 def _to_builtin(obj):
     if isinstance(obj, (np.integer,)):
         return int(obj)

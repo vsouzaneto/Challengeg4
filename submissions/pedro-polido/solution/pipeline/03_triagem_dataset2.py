@@ -9,9 +9,11 @@ e process-log/auditoria-rotulos/candidatos.csv: divergências de alta confiança
 
 Uso: python 03_triagem_dataset2.py
 """
+import re
+
 import numpy as np
 import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS, TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
 from sklearn.model_selection import StratifiedKFold, cross_val_predict, train_test_split
@@ -43,8 +45,14 @@ POLICY = {
         f"head director coordinator administrator architect intern {DAYS.replace('|', ' ')} {MONTHS.replace('|', ' ')}"
         .split())),
     "min_content_words": 3,
+    # Texto fora do padrão de treino (outro idioma, assunto novo): a confiança do modelo não vale nada ali. Um ticket
+    # em português com 3 de 14 palavras conhecidas saiu com 100% de confiança antes desta regra. Nos tickets reais a
+    # cobertura mediana é 100% e o percentil 1 é 88%; em português/espanhol fica entre 8% e 30%.
+    "stopwords": sorted(ENGLISH_STOP_WORDS),
+    "min_coverage": 0.5,
+    "min_coverage_tokens": 3,
 }
-FLAG_BITS = {"sensitive": 1, "info_poor": 2, "thread": 4, "urgent": 8, "self_service": 16}
+FLAG_BITS = {"sensitive": 1, "info_poor": 2, "thread": 4, "urgent": 8, "self_service": 16, "ood": 32}
 
 # Descrição de cada fila em linguagem de atendente, escrita a partir dos termos de maior peso do modelo.
 QUEUE_INFO = {
@@ -58,17 +66,24 @@ QUEUE_INFO = {
     "Storage": "Pastas, mailboxes, cotas de armazenamento e permissões de compartilhamento",
 }
 
-df = pd.read_csv(IT_TICKETS_CSV)
-text = df["Document"]
 generic = set(POLICY["generic_words"])
-tokens = text.str.findall(r"\b\w\w+\b")
-df["words"] = tokens.str.len()
-df["content_words"] = tokens.apply(lambda ts: sum(t not in generic and not t.isdigit() for t in ts))
-df["msgs"] = 1 + text.str.count(POLICY["thread"])
-for flag in ["sensitive", "urgent", "self_service"]:
-    df[flag] = text.str.contains(POLICY[flag], regex=True)
-df["thread"] = df["msgs"] >= 2
-df["info_poor"] = df["content_words"] < POLICY["min_content_words"]
+
+
+def add_flags(frame):
+    """Sinais da política por ticket (espelhados em TriageModel.flags() no navegador)."""
+    text = frame["Document"].str.lower()
+    tokens = text.str.findall(r"\b\w\w+\b")
+    frame = frame.assign(words=tokens.str.len(),
+                         content_words=tokens.apply(lambda ts: sum(t not in generic and not t.isdigit() for t in ts)),
+                         msgs=1 + text.str.count(POLICY["thread"]))
+    for flag in ["sensitive", "urgent", "self_service"]:
+        frame[flag] = text.str.contains(POLICY[flag], regex=True)
+    frame["thread"] = frame["msgs"] >= 2
+    frame["info_poor"] = frame["content_words"] < POLICY["min_content_words"]
+    return frame
+
+
+df = add_flags(pd.read_csv(IT_TICKETS_CSV))
 
 # ---------------------------------------------------------------- classificador
 train, test = train_test_split(df, test_size=0.2, stratify=df["Topic_group"], random_state=SEED)
@@ -76,6 +91,20 @@ vec = TfidfVectorizer(min_df=2, sublinear_tf=True)  # unigramas, token_pattern p
 Xtr = vec.fit_transform(train["Document"])
 Xte = vec.transform(test["Document"])
 clf = LogisticRegression(C=C, max_iter=3000)
+
+skip = generic | set(POLICY["stopwords"])
+
+
+def is_ood(doc):
+    """Texto fora do padrão: menos de min_coverage das palavras de conteúdo estão no vocabulário do modelo."""
+    content = [t for t in re.findall(r"\b\w\w+\b", doc.lower()) if t not in skip and not t.isdigit()]
+    if len(content) < POLICY["min_coverage_tokens"]:
+        return False
+    known = sum(t in vec.vocabulary_ for t in content)
+    return known / len(content) < POLICY["min_coverage"]
+
+
+test = test.assign(ood=test["Document"].map(is_ood))
 
 # Limiares escolhidos com previsões fora-da-dobra do TREINO; o teste só é usado para reportar.
 cv = StratifiedKFold(5, shuffle=True, random_state=SEED)
@@ -108,11 +137,22 @@ pred = proba.argmax(1)
 second = np.argsort(-proba, 1)[:, 1]
 print(f"Teste: acerto {ok1.mean():.3f} | top-2 {ok2.mean():.3f}")
 
-# Faixas no teste (política completa: pedido vazio pede detalhes; sensível sempre vai para humano)
-lane = np.where(test["info_poor"].values, "pedir detalhes",
-                np.where(test["sensitive"].values, "humano",
-                         np.where(conf >= tau_auto, "auto", np.where(conf >= tau_assist, "assistido", "humano"))))
-for name in ["auto", "assistido", "humano", "pedir detalhes"]:
+
+
+def decide_lane(conf, info_poor, ood, sensitive):
+    """Política completa, na mesma ordem de TriageModel.lane() no navegador."""
+    if info_poor:
+        return "detalhes"
+    if ood or sensitive:
+        return "humano"
+    if conf >= tau_auto:
+        return "auto"
+    return "assistido" if conf >= tau_assist else "humano"
+
+
+lane = np.array([decide_lane(*a) for a in zip(conf, test["info_poor"], test["ood"], test["sensitive"])])
+print(f"  fora do padrão (cobertura < {POLICY['min_coverage']:.0%}): {test['ood'].sum()} ticket(s) de teste")
+for name in ["auto", "assistido", "humano", "detalhes"]:
     m = lane == name
     print(f"  {name:10s} {m.mean():6.1%} dos tickets | acerto top-1 {ok1[m].mean():.1%} | top-2 {ok2[m].mean():.1%}")
 
@@ -185,18 +225,34 @@ save_json("model.json", {
     "treino": {"n": len(train), "C": C, "min_df": 2},
 })
 
-# Paridade Python x navegador: 300 tickets de teste com as probabilidades do sklearn (checado por tests/parity.mjs)
-parity = test.sample(300, random_state=SEED)
-save_json("paridade.json", {"docs": parity["Document"].tolist(),
-                            "proba": np.round(clf.predict_proba(vec.transform(parity["Document"])), 6)})
+# Paridade Python x navegador (checada por tests/parity.mjs): 300 tickets de teste + frases escritas à mão em inglês
+# natural, português e espanhol, para exercitar a regra de cobertura. Compara probabilidades E a faixa de decisão.
+extra = pd.DataFrame({"Document": [
+    "my laptop screen is flickering and the docking station does not detect the external monitor",
+    "Hi team, I cannot log into Confluence since this morning, my account seems locked. Can you help?",
+    "Please create a new purchase order for two monitors and a keyboard for the new hire starting Monday",
+    "I will be on maternity leave from next month, who should I talk to about my payroll?",
+    "Olá, não consigo acessar minha conta do Outlook, a senha expirou e preciso de ajuda urgente",
+    "Meu notebook está muito lento e a tela pisca quando conecto o monitor externo",
+    "No puedo acceder a mi correo, la contraseña no funciona",
+    "hello please help thank you",
+]})
+parity = pd.concat([test.sample(300, random_state=SEED)[["Document"]], extra], ignore_index=True)
+parity = add_flags(parity).assign(ood=lambda d: d["Document"].map(is_ood))
+parity_proba = clf.predict_proba(vec.transform(parity["Document"]))
+save_json("paridade.json", {
+    "docs": parity["Document"].tolist(), "proba": np.round(parity_proba, 6),
+    "faixas": [decide_lane(*a) for a in zip(parity_proba.max(1), parity["info_poor"], parity["ood"], parity["sensitive"])],
+})
 
 # Exemplos para a triagem ao vivo: escolhidos por critério (inclui um erro de propósito), textos curtos
 rng = np.random.default_rng(SEED)
 short = test_eval["words"].between(8, 60).values
 criteria = {
-    "Senha bloqueada": short & (test["self_service"].values) & (conf >= tau_auto),
-    "Equipamento": short & (y_te == classes.index("Hardware")) & (conf >= tau_auto) & ~test["thread"].values,
-    "Pedido de compra": short & (y_te == classes.index("Purchase")) & (conf >= tau_auto),
+    # Os três primeiros mostram o caso típico: acerto, alta confiança, texto curto. O último mostra o oposto.
+    "Senha bloqueada": short & test["self_service"].values & (y_te == classes.index("Access")) & ok1 & (conf >= tau_auto),
+    "Equipamento": short & (y_te == classes.index("Hardware")) & ok1 & (conf >= tau_auto) & ~test["thread"].values,
+    "Pedido de compra": short & (y_te == classes.index("Purchase")) & ok1 & (conf >= tau_auto),
     "Cadeia de e-mails": test_eval["msgs"].between(3, 4).values & test_eval["words"].between(40, 110).values,
     "Pedido vazio": test["info_poor"].values & test_eval["words"].between(4, 20).values,
     "Assunto sensível": short & test["sensitive"].values & (test["Topic_group"] == "HR Support").values,
