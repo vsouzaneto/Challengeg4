@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chat de Atendimento</title>
+  <meta name="description" content="Chat de suporte com triagem por IA: acuse automático, regras de risco, pedido de detalhes aprovado pelo atendente, roteamento e passagem para humano.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%233547c8'/><path d='M8 11h16M8 16h10M8 21h6' stroke='white' stroke-width='3' stroke-linecap='round'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <nav class="nav">
+    <div class="wrap">
+      <a class="brand" href="./" style="text-decoration:none;color:inherit">Triagem<span>.</span>suporte</a>
+      <div class="nav-links">
+        <a href="./">← Página principal</a>
+        <a href="revisao.html">Revisão: só o CSV</a>
+        <a href="chat.html" class="active">Chat de atendimento</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero chat-hero">
+      <div class="wrap">
+        <div class="eyebrow">Diferencial · o fluxo funcionando numa conversa</div>
+        <h1>Chat de atendimento com triagem por IA</h1>
+        <p class="lead">Você é o <b>cliente</b> à esquerda e o <b>atendente</b> à direita. A IA confirma o recebimento na
+          hora, aplica as regras de risco antes de qualquer modelo, pede o que falta (com aprovação do atendente), roteia
+          quando tem confiança e passa para uma pessoa quando não deve decidir.</p>
+        <div class="legend-box">
+          <span><b>🤖</b> automático</span><span><b>🤝</b> IA sugere, humano aprova</span><span><b>🧑</b> só humano</span>
+          <span class="sep"></span>
+          <span class="small muted" id="llm-status">verificando o Gemini…</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="chat-section">
+      <div class="wrap chat-grid">
+        <div class="phone">
+          <div class="phone-head">
+            <div class="avatar">TI</div>
+            <div><b>Suporte de TI</b><div class="tiny" id="chat-sub">assistente com triagem por IA</div></div>
+            <button class="phone-reset" id="reset" title="Começar outra conversa">Nova conversa</button>
+          </div>
+          <div class="messages" id="messages" aria-live="polite"></div>
+          <form class="composer" id="composer">
+            <textarea id="input" rows="1" placeholder="Escreva como cliente…" aria-label="Mensagem do cliente"></textarea>
+            <button class="btn" type="submit">Enviar</button>
+          </form>
+          <div class="chips chat-chips" id="scenarios"></div>
+        </div>
+
+        <div class="card agent-panel">
+          <div class="card-title"><h3 id="panel-title">Painel do atendente</h3><span id="panel-badge"></span></div>
+          <div id="panel"><div class="empty-state">Nenhum ticket ainda. Escreva no chat ou escolha um cenário.</div></div>
+          <div id="actions"></div>
+          <h3 style="margin:18px 0 8px;font-size:.95rem">Registro de eventos</h3>
+          <ol class="events" id="events"></ol>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      O classificador roda no navegador (o mesmo da <a href="./#triagem">triagem ao vivo</a>). O Gemini só traduz e
+      redige rascunhos, e nenhum rascunho chega ao cliente sem a aprovação do atendente. As regras de decisão estão em
+      <code>js/chat-policy.js</code> e são testadas em <code>tests/chat.mjs</code>.
+    </div>
+  </footer>
+
+  <script type="module" src="js/chat.js"></script>
+</body>
+</html>

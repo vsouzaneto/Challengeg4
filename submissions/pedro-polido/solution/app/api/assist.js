@@ -11,7 +11,7 @@ const QUEUES = ['Access', 'Administrative rights', 'HR Support', 'Hardware', 'In
 
 // Limite simples por IP (melhor esforço: cada instância serverless tem a própria memória).
 const WINDOW_MS = 10 * 60 * 1000;
-const MAX_REQUESTS = 20;
+const MAX_REQUESTS = 40; // o chat usa tradução + rascunhos: uma conversa completa gasta de 2 a 4 chamadas
 const hits = new Map();
 function rateLimited(ip) {
   const now = Date.now();
@@ -40,7 +40,8 @@ const TASKS = {
       + 'peça exatamente o que falta; (3) se o tema for sensível, seja acolhedor, não peça detalhes pessoais por este canal '
       + 'e diga que uma pessoa do time vai tratar diretamente; (4) se for senha ou bloqueio, oriente o autoatendimento de '
       + 'redefinição usando o marcador [link do portal], sem inventar URL; (5) no máximo 110 palavras, tom cordial e direto, '
-      + 'em português do Brasil. Inclua um resumo interno de uma frase e até 3 perguntas ao solicitante, se faltar informação.',
+      + 'em português do Brasil com acentuação correta; (6) as perguntas ao solicitante vão só no campo perguntas, nunca '
+      + 'repetidas no texto da resposta. Inclua um resumo interno de uma frase e até 3 perguntas, se faltar informação.',
     schema: {
       type: 'OBJECT',
       properties: {
@@ -92,7 +93,10 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: `text obrigatório, até ${MAX_CHARS} caracteres` });
   }
   try {
-    return res.status(200).json(await gemini(task, body, key));
+    let out = await gemini(task, body, key);
+    // O flash-lite às vezes devolve o rascunho sem nenhum acento (1 em 6 num teste): nesse caso, uma nova tentativa
+    if (body.mode === 'draft' && !/[áàâãéêíóôõúç]/i.test(out.resposta_cliente || '')) out = await gemini(task, body, key);
+    return res.status(200).json(out);
   } catch (e) {
     return res.status(502).json({ error: e.message });
   }

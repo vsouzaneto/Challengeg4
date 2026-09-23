@@ -6,7 +6,7 @@ const LANES = {
   auto: { nome: 'Roteamento automático', acao: 'Vai direto para a fila, sem triagem humana.' },
   assistido: { nome: 'Assistido', acao: 'O atendente confirma entre as 2 sugestões com um clique.' },
   humano: { nome: 'Triagem humana', acao: 'Um atendente lê e decide do zero.' },
-  detalhes: { nome: 'Pedir detalhes', acao: 'Resposta automática pedindo o que falta antes de qualquer triagem.' },
+  detalhes: { nome: 'Pedir detalhes', acao: 'A IA redige o pedido do que falta e o atendente aprova o envio, antes de qualquer triagem.' },
 };
 
 export class TriageModel {
