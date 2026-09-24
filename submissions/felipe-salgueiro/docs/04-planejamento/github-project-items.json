@@ -1,0 +1,154 @@
+{
+  "updated": "2026-09-23",
+  "project": "PVT_kwHODD8M084Bkedf",
+  "url": "https://github.com/users/felipeluissalgueiro/projects/2",
+  "source": "Linear P-MAR-55",
+  "sync": "manual",
+  "items": [
+    {
+      "linear_id": "MAR-97",
+      "github_issue": 1,
+      "github_url": "https://github.com/felipeluissalgueiro/ai-master-challenge/issues/1",
+      "github_item_id": "PVTI_lAHODD8M084Bkedfzg8bol0",
+      "previous_draft_item_id": "PVTI_lAHODD8M084Bkedfzg8blJE",
+      "type": "epic",
+      "parent": null,
+      "blocked_by": [],
+      "source_status": "Backlog",
+      "github_status": "Todo",
+      "technical_plan": false
+    },
+    {
+      "linear_id": "MAR-98",
+      "github_issue": 2,
+      "github_url": "https://github.com/felipeluissalgueiro/ai-master-challenge/issues/2",
+      "github_item_id": "PVTI_lAHODD8M084Bkedfzg8bol8",
+      "previous_draft_item_id": "PVTI_lAHODD8M084Bkedfzg8blJM",
+      "type": "epic",
+      "parent": null,
+      "blocked_by": [],
+      "source_status": "Backlog",
+      "github_status": "Todo",
+      "technical_plan": false
+    },
+    {
+      "linear_id": "MAR-96",
+      "github_issue": 3,
+      "github_url": "https://github.com/felipeluissalgueiro/ai-master-challenge/issues/3",
+      "github_item_id": "PVTI_lAHODD8M084Bkedfzg8bono",
+      "previous_draft_item_id": "PVTI_lAHODD8M084Bkedfzg8blJU",
+      "type": "epic",
+      "parent": null,
+      "blocked_by": [],
+      "source_status": "Backlog",
+      "github_status": "Todo",
+      "technical_plan": false
+    },
+    {
+      "linear_id": "MAR-99",
+      "github_issue": 4,
+      "github_url": "https://github.com/felipeluissalgueiro/ai-master-challenge/issues/4",
+      "github_item_id": "PVTI_lAHODD8M084Bkedfzg8bolk",
+      "previous_draft_item_id": "PVTI_lAHODD8M084Bkedfzg8blJw",
+      "type": "story",
+      "parent": "MAR-97",
+      "blocked_by": [],
+      "source_status": "Backlog",
+      "github_status": "Todo",
+      "technical_plan": true
+    },
+    {
+      "linear_id": "MAR-100",
+      "github_issue": 9,
+      "github_url": "https://github.com/felipeluissalgueiro/ai-master-challenge/issues/9",
+      "github_item_id": "PVTI_lAHODD8M084Bkedfzg8bomg",
+      "previous_draft_item_id": "PVTI_lAHODD8M084Bkedfzg8blKA",
+      "type": "story",
+      "parent": "MAR-97",
+      "blocked_by": [],
+      "source_status": "Backlog",
+      "github_status": "Todo",
+      "technical_plan": true
+    },
+    {
+      "linear_id": "MAR-101",
+      "github_issue": 7,
+      "github_url": "https://github.com/felipeluissalgueiro/ai-master-challenge/issues/7",
+      "github_item_id": "PVTI_lAHODD8M084Bkedfzg8bomY",
+      "previous_draft_item_id": "PVTI_lAHODD8M084Bkedfzg8blJs",
+      "type": "story",
+      "parent": "MAR-98",
+      "blocked_by": [],
+      "source_status": "Backlog",
+      "github_status": "Todo",
+      "technical_plan": true
+    },
+    {
+      "linear_id": "MAR-105",
+      "github_issue": 8,
+      "github_url": "https://github.com/felipeluissalgueiro/ai-master-challenge/issues/8",
+      "github_item_id": "PVTI_lAHODD8M084Bkedfzg8bomA",
+      "previous_draft_item_id": "PVTI_lAHODD8M084Bkedfzg8blJg",
+      "type": "story",
+      "parent": "MAR-98",
+      "blocked_by": [
+        "MAR-99",
+        "MAR-101"
+      ],
+      "source_status": "Backlog",
+      "github_status": "Todo",
+      "technical_plan": true
+    },
+    {
+      "linear_id": "MAR-103",
+      "github_issue": 10,
+      "github_url": "https://github.com/felipeluissalgueiro/ai-master-challenge/issues/10",
+      "github_item_id": "PVTI_lAHODD8M084Bkedfzg8bolo",
+      "previous_draft_item_id": "PVTI_lAHODD8M084Bkedfzg8blJo",
+      "type": "story",
+      "parent": "MAR-98",
+      "blocked_by": [
+        "MAR-99",
+        "MAR-101"
+      ],
+      "source_status": "Backlog",
+      "github_status": "Todo",
+      "technical_plan": true
+    },
+    {
+      "linear_id": "MAR-102",
+      "github_issue": 6,
+      "github_url": "https://github.com/felipeluissalgueiro/ai-master-challenge/issues/6",
+      "github_item_id": "PVTI_lAHODD8M084Bkedfzg8bomI",
+      "previous_draft_item_id": "PVTI_lAHODD8M084Bkedfzg8blKE",
+      "type": "story",
+      "parent": "MAR-96",
+      "blocked_by": [
+        "MAR-99",
+        "MAR-105"
+      ],
+      "source_status": "Backlog",
+      "github_status": "Todo",
+      "technical_plan": true
+    },
+    {
+      "linear_id": "MAR-104",
+      "github_issue": 5,
+      "github_url": "https://github.com/felipeluissalgueiro/ai-master-challenge/issues/5",
+      "github_item_id": "PVTI_lAHODD8M084Bkedfzg8bolg",
+      "previous_draft_item_id": "PVTI_lAHODD8M084Bkedfzg8blJc",
+      "type": "story",
+      "parent": "MAR-96",
+      "blocked_by": [
+        "MAR-100",
+        "MAR-105",
+        "MAR-103",
+        "MAR-102"
+      ],
+      "source_status": "Backlog",
+      "github_status": "Todo",
+      "technical_plan": true
+    }
+  ],
+  "verification": "10 real repository issues verified by issue list. Project add returned IDs; issue #4 reverse projectItems confirms Project 2. Project aggregate remains totalCount=0 with no view filter: visibility unresolved. Do not create further duplicates. Previous drafts preserved, not deleted."
+}

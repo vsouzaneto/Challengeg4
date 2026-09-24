@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0.0",
+  "status": "executive_report_for_head_of_marketing",
+  "artifact": "executive_performance_and_strategy_report",
+  "lineage": {
+    "database": {
+      "relative_path": "../data/evidence/social_media_analysis.sqlite",
+      "sha256": "7279027727b912c4c4ad8ec49704164f86e0eeb039218d8ee2b00d0ab78d7bad",
+      "access": "sqlite_uri_mode_ro_and_pragma_query_only",
+      "integrity_check": "ok"
+    },
+    "tables_read": [
+      "bronze_posts_raw",
+      "silver_posts_metrics",
+      "silver_posts_dimensions",
+      "silver_posts_audience",
+      "silver_posts_follower_bands",
+      "silver_posts_dates",
+      "silver_creator_profiles",
+      "gold_sponsorship_comparisons",
+      "gold_numeric_correlations"
+    ],
+    "generator": {
+      "relative_path": "generate.py",
+      "sha256": "55716b2a68a7fa13570a5ca91c059772d863df8cf28eb3f00d472df63ab34775"
+    }
+  },
+  "outputs": {
+    "evidence": {
+      "relative_path": "evidence.json",
+      "sha256": "de0502d33bec4b09fe6970686196f4c83c1fe484b659c40fc607b75d6d1ddf1d",
+      "rows_analyzed": 52214
+    },
+    "html": {
+      "relative_path": "performance-strategy.html",
+      "sha256": "754a05702142ced9ce80ed5a7939219ae5fb899df3ae14583f5fad3639e54145",
+      "self_contained": true,
+      "external_assets": 0
+    },
+    "readme": {
+      "relative_path": "README.md",
+      "sha256": "4cccf79baeb7f878d007e986bce906980910d6561ae9729e242811c69a706a6a"
+    }
+  },
+  "separation_of_concerns": {
+    "executive_report": "performance-strategy.html",
+    "exploratory_viewer": "../prototype/index.html",
+    "prototype_preserved": true
+  },
+  "interpretation_guards": [
+    "Diferenças descritivas não são efeitos causais.",
+    "Diferença menor que o IQR é contexto, não teste de equivalência ou limiar econômico.",
+    "O exemplo Instagram-Tech é pós-hoc e exige validação independente.",
+    "Nenhum portfólio, cadência ou prática operacional atual do G4 é presumido.",
+    "Política e limiares de teste são propostas, não achados do dataset."
+  ]
+}
