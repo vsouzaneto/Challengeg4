@@ -1,0 +1,21 @@
+# Build context for the `docs` image (docker-compose: context = submission root).
+# Allowlist: only what solution/docs-site/Dockerfile COPYs. Everything else (node_modules, .venv,
+# data, models, .claude, .env*) never reaches the Docker daemon.
+*
+!README.md
+!CLAUDE.md
+!docs
+!process-log
+!solution/README.md
+!solution/docs-site
+# Re-exclude generated/local content inside the allowed folders.
+solution/docs-site/.venv
+solution/docs-site/site
+solution/docs-site/.ruff_cache
+solution/docs-site/.mypy_cache
+**/__pycache__
+**/.DS_Store
+**/.env
+**/.env.*
+**/*.local
+**/.private

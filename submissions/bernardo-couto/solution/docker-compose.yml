@@ -1,0 +1,66 @@
+# Short path: `docker compose up` serves API, web and docs from committed artifacts (no JDK needed).
+# Full path: `docker compose --profile pipeline run --rm pipeline` re-runs the Spark jobs (JDK 17 image).
+# Hardening (docs/security-review.md): no-new-privileges everywhere; api/pipeline run as non-root
+# with every Linux capability dropped. nginx images keep default caps (they bind :80 as root and
+# drop to the `nginx` worker user themselves).
+name: lead-scorer
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data/gold/scores:/app/data/gold/scores:ro
+      - ./models:/app/models:ro
+      - ./data/feedback:/app/data/feedback
+    environment:
+      LEAD_SCORER_CORS_ORIGINS: '["http://localhost:5173","http://localhost:4173"]'
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/api/v1/health"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  web:
+    build:
+      context: ./web
+    ports:
+      - "5173:80"
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      api:
+        condition: service_healthy
+
+  docs:
+    build:
+      context: ..
+      dockerfile: solution/docs-site/Dockerfile
+    ports:
+      - "8001:80"
+    security_opt:
+      - no-new-privileges:true
+
+  pipeline:
+    profiles: ["pipeline"]
+    build:
+      context: .
+      dockerfile: pipeline/Dockerfile
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+    environment:
+      AS_OF: "2017-12-31"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    command: ["make", "-C", "/app", "pipeline", "AS_OF=${AS_OF:-2017-12-31}"]

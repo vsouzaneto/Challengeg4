@@ -1,0 +1,24 @@
+/* G4 palette (see .claude/skills/g4-design-system/SKILL.md) */
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap');
+
+:root {
+  --md-primary-fg-color: #001f35;
+  --md-primary-fg-color--light: #184560;
+  --md-primary-fg-color--dark: #001f35;
+  --md-accent-fg-color: #b9915b;
+  --md-default-bg-color: #f5f4f3;
+  --md-default-fg-color: #031a26;
+  --md-typeset-a-color: #184560;
+}
+
+.md-typeset h1,
+.md-typeset h2 {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-weight: 700;
+  color: #001f35;
+}
+
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: 10px;
+}

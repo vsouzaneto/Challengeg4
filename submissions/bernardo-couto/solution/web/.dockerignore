@@ -1,0 +1,13 @@
+# Build context for the `web` image (context = solution/web).
+# `COPY . .` runs after `npm ci`: the host node_modules must never overwrite the clean install.
+node_modules
+dist
+coverage
+playwright-report
+test-results
+*.tsbuildinfo
+.DS_Store
+.env
+.env.*
+*.local
+.private

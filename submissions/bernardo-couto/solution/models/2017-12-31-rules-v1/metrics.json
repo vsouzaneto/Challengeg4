@@ -1,0 +1,1062 @@
+{
+  "model_version": "2017-12-31-rules-v1",
+  "as_of": "2017-12-31",
+  "cuts": [
+    "2017-06-30",
+    "2017-09-30"
+  ],
+  "summary": {
+    "blend_model_weight": 0.0,
+    "coverage": 2089,
+    "prospecting_count": 500,
+    "zombie_count": 1291,
+    "account_known_rate": 0.3179,
+    "mean_calibration_error": 0.0433,
+    "spearman_score_price": 0.4609,
+    "tier_counts": {
+      "A": 67,
+      "B": 516,
+      "C": 771,
+      "D": 735
+    },
+    "confidence_counts": {
+      "alta": 88,
+      "media": 372,
+      "baixa": 1629
+    },
+    "expected_value_total": 2109217.19,
+    "zombie_nominal_value": 3185047.89,
+    "alive_nominal_value": 692669.81
+  },
+  "backtest": {
+    "2017-06-30": {
+      "n_open": 1686,
+      "n_labeled": 970,
+      "n_censored": 716,
+      "base_rate": 0.6278,
+      "brier": 0.2348,
+      "auc_pr": 0.6611,
+      "auc_pr_ci": [
+        0.6115,
+        0.6996
+      ],
+      "auc_roc": 0.5333,
+      "lift_top_decile": 1.0673,
+      "precision_at_10": 0.63,
+      "precision_at_10_ci": [
+        0.5571,
+        0.6724
+      ],
+      "precision_at_25": 0.6019,
+      "revenue_capture_top20": 0.3761,
+      "revenue_capture_top20_ci": [
+        0.3203,
+        0.4309
+      ],
+      "mean_calibration_error": 0.0405,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "p_low": 0.6514,
+          "p_high": 0.6635,
+          "predicted": 0.654,
+          "actual": 0.567,
+          "count": 194
+        },
+        {
+          "bin": 1,
+          "p_low": 0.6635,
+          "p_high": 0.6674,
+          "predicted": 0.664,
+          "actual": 0.6392,
+          "count": 194
+        },
+        {
+          "bin": 2,
+          "p_low": 0.6674,
+          "p_high": 0.6691,
+          "predicted": 0.6678,
+          "actual": 0.634,
+          "count": 194
+        },
+        {
+          "bin": 3,
+          "p_low": 0.6691,
+          "p_high": 0.6725,
+          "predicted": 0.6706,
+          "actual": 0.6186,
+          "count": 194
+        },
+        {
+          "bin": 4,
+          "p_low": 0.6725,
+          "p_high": 0.6787,
+          "predicted": 0.6756,
+          "actual": 0.6804,
+          "count": 194
+        }
+      ],
+      "spearman_score_price": 0.54,
+      "zombies_at_cut": 149,
+      "zombies_closed_after": 0,
+      "zombies_won_after": 0,
+      "ranking_metrics_use": "priority_score",
+      "probabilistic_metrics_use": "p_win"
+    },
+    "2017-09-30": {
+      "n_open": 2409,
+      "n_labeled": 935,
+      "n_censored": 1474,
+      "base_rate": 0.5979,
+      "brier": 0.2428,
+      "auc_pr": 0.5995,
+      "auc_pr_ci": [
+        0.5631,
+        0.6488
+      ],
+      "auc_roc": 0.4949,
+      "lift_top_decile": 1.0143,
+      "precision_at_10": 0.56,
+      "precision_at_10_ci": [
+        0.5067,
+        0.6167
+      ],
+      "precision_at_25": 0.5524,
+      "revenue_capture_top20": 0.3591,
+      "revenue_capture_top20_ci": [
+        0.3022,
+        0.4003
+      ],
+      "mean_calibration_error": 0.0462,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "p_low": 0.6141,
+          "p_high": 0.642,
+          "predicted": 0.6194,
+          "actual": 0.5936,
+          "count": 187
+        },
+        {
+          "bin": 1,
+          "p_low": 0.642,
+          "p_high": 0.6436,
+          "predicted": 0.6423,
+          "actual": 0.6417,
+          "count": 187
+        },
+        {
+          "bin": 2,
+          "p_low": 0.6436,
+          "p_high": 0.6485,
+          "predicted": 0.6454,
+          "actual": 0.5936,
+          "count": 187
+        },
+        {
+          "bin": 3,
+          "p_low": 0.6485,
+          "p_high": 0.6566,
+          "predicted": 0.6552,
+          "actual": 0.5294,
+          "count": 187
+        },
+        {
+          "bin": 4,
+          "p_low": 0.6566,
+          "p_high": 0.6581,
+          "predicted": 0.6581,
+          "actual": 0.631,
+          "count": 187
+        }
+      ],
+      "spearman_score_price": 0.5011,
+      "zombies_at_cut": 530,
+      "zombies_closed_after": 0,
+      "zombies_won_after": 0,
+      "ranking_metrics_use": "priority_score",
+      "probabilistic_metrics_use": "p_win"
+    }
+  },
+  "baselines": {
+    "random": {
+      "2017-06-30": {
+        "auc_pr": 0.6052,
+        "auc_pr_ci": [
+          0.5652,
+          0.6456
+        ],
+        "auc_roc": 0.466,
+        "lift_top_decile": 0.9195,
+        "precision_at_10": 0.6033,
+        "precision_at_10_ci": [
+          0.5467,
+          0.6601
+        ],
+        "precision_at_25": 0.6076,
+        "revenue_capture_top20": 0.1713,
+        "revenue_capture_top20_ci": [
+          0.1414,
+          0.2085
+        ]
+      },
+      "2017-09-30": {
+        "auc_pr": 0.5919,
+        "auc_pr_ci": [
+          0.5515,
+          0.6367
+        ],
+        "auc_roc": 0.5042,
+        "lift_top_decile": 0.8897,
+        "precision_at_10": 0.6,
+        "precision_at_10_ci": [
+          0.5433,
+          0.6533
+        ],
+        "precision_at_25": 0.6057,
+        "revenue_capture_top20": 0.203,
+        "revenue_capture_top20_ci": [
+          0.1644,
+          0.2432
+        ]
+      }
+    },
+    "price": {
+      "2017-06-30": {
+        "auc_pr": 0.6409,
+        "auc_pr_ci": [
+          0.5921,
+          0.6788
+        ],
+        "auc_roc": 0.4916,
+        "lift_top_decile": 1.0837,
+        "precision_at_10": 0.6567,
+        "precision_at_10_ci": [
+          0.5867,
+          0.6967
+        ],
+        "precision_at_25": 0.6305,
+        "revenue_capture_top20": 0.4975,
+        "revenue_capture_top20_ci": [
+          0.4491,
+          0.5463
+        ]
+      },
+      "2017-09-30": {
+        "auc_pr": 0.5936,
+        "auc_pr_ci": [
+          0.5479,
+          0.6353
+        ],
+        "auc_roc": 0.4782,
+        "lift_top_decile": 1.0143,
+        "precision_at_10": 0.5833,
+        "precision_at_10_ci": [
+          0.5333,
+          0.6433
+        ],
+        "precision_at_25": 0.5943,
+        "revenue_capture_top20": 0.4886,
+        "revenue_capture_top20_ci": [
+          0.4321,
+          0.5287
+        ]
+      }
+    },
+    "newest": {
+      "2017-06-30": {
+        "auc_pr": 0.6219,
+        "auc_pr_ci": [
+          0.5772,
+          0.661
+        ],
+        "auc_roc": 0.5011,
+        "lift_top_decile": 0.936,
+        "precision_at_10": 0.6133,
+        "precision_at_10_ci": [
+          0.5586,
+          0.67
+        ],
+        "precision_at_25": 0.6229,
+        "revenue_capture_top20": 0.1741,
+        "revenue_capture_top20_ci": [
+          0.1426,
+          0.2127
+        ]
+      },
+      "2017-09-30": {
+        "auc_pr": 0.5836,
+        "auc_pr_ci": [
+          0.5442,
+          0.628
+        ],
+        "auc_roc": 0.4951,
+        "lift_top_decile": 0.9787,
+        "precision_at_10": 0.55,
+        "precision_at_10_ci": [
+          0.5067,
+          0.62
+        ],
+        "precision_at_25": 0.5981,
+        "revenue_capture_top20": 0.1939,
+        "revenue_capture_top20_ci": [
+          0.1557,
+          0.2351
+        ]
+      }
+    },
+    "oldest": {
+      "2017-06-30": {
+        "auc_pr": 0.6174,
+        "auc_pr_ci": [
+          0.5753,
+          0.6591
+        ],
+        "auc_roc": 0.4989,
+        "lift_top_decile": 0.936,
+        "precision_at_10": 0.6267,
+        "precision_at_10_ci": [
+          0.569,
+          0.6793
+        ],
+        "precision_at_25": 0.6324,
+        "revenue_capture_top20": 0.1597,
+        "revenue_capture_top20_ci": [
+          0.1278,
+          0.1941
+        ]
+      },
+      "2017-09-30": {
+        "auc_pr": 0.5797,
+        "auc_pr_ci": [
+          0.5369,
+          0.6234
+        ],
+        "auc_roc": 0.5049,
+        "lift_top_decile": 0.8719,
+        "precision_at_10": 0.5433,
+        "precision_at_10_ci": [
+          0.5,
+          0.6179
+        ],
+        "precision_at_25": 0.6114,
+        "revenue_capture_top20": 0.1797,
+        "revenue_capture_top20_ci": [
+          0.1351,
+          0.2114
+        ]
+      }
+    },
+    "base_rate": {
+      "2017-06-30": {
+        "auc_pr": 0.6611,
+        "auc_pr_ci": [
+          0.6115,
+          0.6996
+        ],
+        "auc_roc": 0.5333,
+        "lift_top_decile": 1.0673,
+        "precision_at_10": 0.68,
+        "precision_at_10_ci": [
+          0.6207,
+          0.73
+        ],
+        "precision_at_25": 0.64,
+        "revenue_capture_top20": 0.25,
+        "revenue_capture_top20_ci": [
+          0.1989,
+          0.3036
+        ],
+        "brier": 0.2348,
+        "calibration_bins": [
+          {
+            "bin": 0,
+            "p_low": 0.6514,
+            "p_high": 0.6635,
+            "predicted": 0.654,
+            "actual": 0.567,
+            "count": 194
+          },
+          {
+            "bin": 1,
+            "p_low": 0.6635,
+            "p_high": 0.6674,
+            "predicted": 0.664,
+            "actual": 0.6392,
+            "count": 194
+          },
+          {
+            "bin": 2,
+            "p_low": 0.6674,
+            "p_high": 0.6691,
+            "predicted": 0.6678,
+            "actual": 0.634,
+            "count": 194
+          },
+          {
+            "bin": 3,
+            "p_low": 0.6691,
+            "p_high": 0.6725,
+            "predicted": 0.6706,
+            "actual": 0.6186,
+            "count": 194
+          },
+          {
+            "bin": 4,
+            "p_low": 0.6725,
+            "p_high": 0.6787,
+            "predicted": 0.6756,
+            "actual": 0.6804,
+            "count": 194
+          }
+        ],
+        "mean_calibration_error": 0.0405
+      },
+      "2017-09-30": {
+        "auc_pr": 0.5995,
+        "auc_pr_ci": [
+          0.5631,
+          0.6488
+        ],
+        "auc_roc": 0.4949,
+        "lift_top_decile": 1.0143,
+        "precision_at_10": 0.5433,
+        "precision_at_10_ci": [
+          0.5033,
+          0.62
+        ],
+        "precision_at_25": 0.5924,
+        "revenue_capture_top20": 0.0061,
+        "revenue_capture_top20_ci": [
+          0.0047,
+          0.0164
+        ],
+        "brier": 0.2428,
+        "calibration_bins": [
+          {
+            "bin": 0,
+            "p_low": 0.6141,
+            "p_high": 0.642,
+            "predicted": 0.6194,
+            "actual": 0.5936,
+            "count": 187
+          },
+          {
+            "bin": 1,
+            "p_low": 0.642,
+            "p_high": 0.6436,
+            "predicted": 0.6423,
+            "actual": 0.6417,
+            "count": 187
+          },
+          {
+            "bin": 2,
+            "p_low": 0.6436,
+            "p_high": 0.6485,
+            "predicted": 0.6454,
+            "actual": 0.5936,
+            "count": 187
+          },
+          {
+            "bin": 3,
+            "p_low": 0.6485,
+            "p_high": 0.6566,
+            "predicted": 0.6552,
+            "actual": 0.5294,
+            "count": 187
+          },
+          {
+            "bin": 4,
+            "p_low": 0.6566,
+            "p_high": 0.6581,
+            "predicted": 0.6581,
+            "actual": 0.631,
+            "count": 187
+          }
+        ],
+        "mean_calibration_error": 0.0462
+      }
+    }
+  },
+  "by_signal": {
+    "p_win": {
+      "2017-06-30": {
+        "auc_pr": 0.6611,
+        "auc_pr_ci": [
+          0.6115,
+          0.6996
+        ],
+        "auc_roc": 0.5333,
+        "lift_top_decile": 1.0673,
+        "precision_at_10": 0.68,
+        "precision_at_10_ci": [
+          0.6207,
+          0.73
+        ],
+        "precision_at_25": 0.64,
+        "revenue_capture_top20": 0.25,
+        "revenue_capture_top20_ci": [
+          0.1989,
+          0.3036
+        ],
+        "brier": 0.2348,
+        "calibration_bins": [
+          {
+            "bin": 0,
+            "p_low": 0.6514,
+            "p_high": 0.6635,
+            "predicted": 0.654,
+            "actual": 0.567,
+            "count": 194
+          },
+          {
+            "bin": 1,
+            "p_low": 0.6635,
+            "p_high": 0.6674,
+            "predicted": 0.664,
+            "actual": 0.6392,
+            "count": 194
+          },
+          {
+            "bin": 2,
+            "p_low": 0.6674,
+            "p_high": 0.6691,
+            "predicted": 0.6678,
+            "actual": 0.634,
+            "count": 194
+          },
+          {
+            "bin": 3,
+            "p_low": 0.6691,
+            "p_high": 0.6725,
+            "predicted": 0.6706,
+            "actual": 0.6186,
+            "count": 194
+          },
+          {
+            "bin": 4,
+            "p_low": 0.6725,
+            "p_high": 0.6787,
+            "predicted": 0.6756,
+            "actual": 0.6804,
+            "count": 194
+          }
+        ],
+        "mean_calibration_error": 0.0405
+      },
+      "2017-09-30": {
+        "auc_pr": 0.5995,
+        "auc_pr_ci": [
+          0.5631,
+          0.6488
+        ],
+        "auc_roc": 0.4949,
+        "lift_top_decile": 1.0143,
+        "precision_at_10": 0.5433,
+        "precision_at_10_ci": [
+          0.5033,
+          0.62
+        ],
+        "precision_at_25": 0.5924,
+        "revenue_capture_top20": 0.0061,
+        "revenue_capture_top20_ci": [
+          0.0047,
+          0.0164
+        ],
+        "brier": 0.2428,
+        "calibration_bins": [
+          {
+            "bin": 0,
+            "p_low": 0.6141,
+            "p_high": 0.642,
+            "predicted": 0.6194,
+            "actual": 0.5936,
+            "count": 187
+          },
+          {
+            "bin": 1,
+            "p_low": 0.642,
+            "p_high": 0.6436,
+            "predicted": 0.6423,
+            "actual": 0.6417,
+            "count": 187
+          },
+          {
+            "bin": 2,
+            "p_low": 0.6436,
+            "p_high": 0.6485,
+            "predicted": 0.6454,
+            "actual": 0.5936,
+            "count": 187
+          },
+          {
+            "bin": 3,
+            "p_low": 0.6485,
+            "p_high": 0.6566,
+            "predicted": 0.6552,
+            "actual": 0.5294,
+            "count": 187
+          },
+          {
+            "bin": 4,
+            "p_low": 0.6566,
+            "p_high": 0.6581,
+            "predicted": 0.6581,
+            "actual": 0.631,
+            "count": 187
+          }
+        ],
+        "mean_calibration_error": 0.0462
+      }
+    },
+    "expected_value": {
+      "2017-06-30": {
+        "auc_pr": 0.6409,
+        "auc_pr_ci": [
+          0.5921,
+          0.6788
+        ],
+        "auc_roc": 0.4916,
+        "lift_top_decile": 1.0837,
+        "precision_at_10": 0.6567,
+        "precision_at_10_ci": [
+          0.5867,
+          0.6967
+        ],
+        "precision_at_25": 0.6305,
+        "revenue_capture_top20": 0.4975,
+        "revenue_capture_top20_ci": [
+          0.4491,
+          0.5463
+        ]
+      },
+      "2017-09-30": {
+        "auc_pr": 0.5936,
+        "auc_pr_ci": [
+          0.5479,
+          0.6353
+        ],
+        "auc_roc": 0.4782,
+        "lift_top_decile": 1.0143,
+        "precision_at_10": 0.5833,
+        "precision_at_10_ci": [
+          0.5333,
+          0.6433
+        ],
+        "precision_at_25": 0.5943,
+        "revenue_capture_top20": 0.4886,
+        "revenue_capture_top20_ci": [
+          0.4321,
+          0.5287
+        ]
+      }
+    },
+    "priority_score": {
+      "2017-06-30": {
+        "auc_pr": 0.6021,
+        "auc_pr_ci": [
+          0.561,
+          0.6437
+        ],
+        "auc_roc": 0.4612,
+        "lift_top_decile": 0.9195,
+        "precision_at_10": 0.63,
+        "precision_at_10_ci": [
+          0.5571,
+          0.6724
+        ],
+        "precision_at_25": 0.6019,
+        "revenue_capture_top20": 0.3761,
+        "revenue_capture_top20_ci": [
+          0.3203,
+          0.4309
+        ]
+      },
+      "2017-09-30": {
+        "auc_pr": 0.566,
+        "auc_pr_ci": [
+          0.5248,
+          0.61
+        ],
+        "auc_roc": 0.4406,
+        "lift_top_decile": 0.9787,
+        "precision_at_10": 0.56,
+        "precision_at_10_ci": [
+          0.5067,
+          0.6167
+        ],
+        "precision_at_25": 0.5524,
+        "revenue_capture_top20": 0.3591,
+        "revenue_capture_top20_ci": [
+          0.3022,
+          0.4003
+        ]
+      }
+    }
+  },
+  "shadow_model": {
+    "2017-06-30": {
+      "auc_pr": 0.6276,
+      "auc_pr_ci": [
+        0.5906,
+        0.6747
+      ],
+      "auc_roc": 0.5066,
+      "lift_top_decile": 1.0016,
+      "precision_at_10": 0.66,
+      "precision_at_10_ci": [
+        0.5931,
+        0.7
+      ],
+      "precision_at_25": 0.619,
+      "revenue_capture_top20": 0.3075,
+      "revenue_capture_top20_ci": [
+        0.2348,
+        0.3181
+      ],
+      "brier": 0.2733,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "p_low": 0.8125,
+          "p_high": 0.8232,
+          "predicted": 0.8138,
+          "actual": 0.6443,
+          "count": 194
+        },
+        {
+          "bin": 1,
+          "p_low": 0.8232,
+          "p_high": 0.8232,
+          "predicted": 0.8232,
+          "actual": 0.6082,
+          "count": 194
+        },
+        {
+          "bin": 2,
+          "p_low": 0.8232,
+          "p_high": 0.8232,
+          "predicted": 0.8232,
+          "actual": 0.5928,
+          "count": 194
+        },
+        {
+          "bin": 3,
+          "p_low": 0.8232,
+          "p_high": 0.8322,
+          "predicted": 0.832,
+          "actual": 0.6546,
+          "count": 194
+        },
+        {
+          "bin": 4,
+          "p_low": 0.8322,
+          "p_high": 1.0,
+          "predicted": 0.8344,
+          "actual": 0.6392,
+          "count": 194
+        }
+      ],
+      "mean_calibration_error": 0.1975,
+      "n_train": 2058,
+      "n_calibration": 520,
+      "train_positive_rate": 0.6487,
+      "frame_months": [
+        "2017-03-31",
+        "2017-04-30",
+        "2017-05-31"
+      ],
+      "calibrated": true,
+      "brier_raw": 0.2355,
+      "coefficients": {
+        "product=GTX Basic": 0.003109,
+        "product=MG Special": -0.038514,
+        "product=GTX Pro": 0.0,
+        "product=MG Advanced": 0.070018,
+        "product=GTX Plus Basic": -0.016679,
+        "product=GTX Plus Pro": 0.119648,
+        "product=GTK 500": -0.027936,
+        "product=__unknown": 0.0,
+        "product_rate": -0.078206,
+        "log_days": 0.008848,
+        "is_zombie": 0.0,
+        "log_price": 0.0,
+        "open_load": -0.06349,
+        "survival_rate": 0.0,
+        "intercept": 0.618597
+      }
+    },
+    "2017-09-30": {
+      "auc_pr": 0.5819,
+      "auc_pr_ci": [
+        0.5484,
+        0.6335
+      ],
+      "auc_roc": 0.4842,
+      "lift_top_decile": 1.0143,
+      "precision_at_10": 0.57,
+      "precision_at_10_ci": [
+        0.5433,
+        0.6567
+      ],
+      "precision_at_25": 0.5905,
+      "revenue_capture_top20": 0.2924,
+      "revenue_capture_top20_ci": [
+        0.2219,
+        0.3109
+      ],
+      "brier": 0.2763,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "p_low": 0.7273,
+          "p_high": 0.7857,
+          "predicted": 0.7343,
+          "actual": 0.6364,
+          "count": 187
+        },
+        {
+          "bin": 1,
+          "p_low": 0.7857,
+          "p_high": 0.7908,
+          "predicted": 0.7901,
+          "actual": 0.5775,
+          "count": 187
+        },
+        {
+          "bin": 2,
+          "p_low": 0.7908,
+          "p_high": 0.7908,
+          "predicted": 0.7908,
+          "actual": 0.5668,
+          "count": 187
+        },
+        {
+          "bin": 3,
+          "p_low": 0.7908,
+          "p_high": 0.7908,
+          "predicted": 0.7908,
+          "actual": 0.6203,
+          "count": 187
+        },
+        {
+          "bin": 4,
+          "p_low": 0.7908,
+          "p_high": 0.8481,
+          "predicted": 0.8075,
+          "actual": 0.5882,
+          "count": 187
+        }
+      ],
+      "mean_calibration_error": 0.1849,
+      "n_train": 5098,
+      "n_calibration": 515,
+      "train_positive_rate": 0.6636,
+      "frame_months": [
+        "2017-03-31",
+        "2017-04-30",
+        "2017-05-31",
+        "2017-06-30",
+        "2017-07-31",
+        "2017-08-31"
+      ],
+      "calibrated": true,
+      "brier_raw": 0.246,
+      "coefficients": {
+        "product=GTX Basic": 0.0,
+        "product=MG Special": 0.0,
+        "product=GTX Pro": 0.0,
+        "product=MG Advanced": 0.0,
+        "product=GTX Plus Basic": 0.0,
+        "product=GTX Plus Pro": 0.056662,
+        "product=GTK 500": 0.0,
+        "product=__unknown": 0.0,
+        "product_rate": -0.091831,
+        "log_days": 0.022273,
+        "is_zombie": 0.0,
+        "log_price": 0.0,
+        "open_load": -0.061099,
+        "survival_rate": -0.018982,
+        "intercept": 0.681856
+      }
+    }
+  },
+  "pessimistic": {
+    "2017-06-30": {
+      "random": {
+        "auc_pr": 0.3691,
+        "auc_roc": 0.5069
+      },
+      "price": {
+        "auc_pr": 0.3566,
+        "auc_roc": 0.4842
+      },
+      "newest": {
+        "auc_pr": 0.5258,
+        "auc_roc": 0.7339
+      },
+      "oldest": {
+        "auc_pr": 0.2494,
+        "auc_roc": 0.2661
+      },
+      "base_rate": {
+        "auc_pr": 0.3823,
+        "auc_roc": 0.5263
+      },
+      "p_win": {
+        "auc_pr": 0.4181,
+        "auc_roc": 0.5936
+      },
+      "priority_score": {
+        "auc_pr": 0.2962,
+        "auc_roc": 0.4236
+      }
+    },
+    "2017-09-30": {
+      "random": {
+        "auc_pr": 0.2525,
+        "auc_roc": 0.5329
+      },
+      "price": {
+        "auc_pr": 0.2227,
+        "auc_roc": 0.4845
+      },
+      "newest": {
+        "auc_pr": 0.4901,
+        "auc_roc": 0.8332
+      },
+      "oldest": {
+        "auc_pr": 0.1405,
+        "auc_roc": 0.1668
+      },
+      "base_rate": {
+        "auc_pr": 0.2334,
+        "auc_roc": 0.5005
+      },
+      "p_win": {
+        "auc_pr": 0.2921,
+        "auc_roc": 0.637
+      },
+      "priority_score": {
+        "auc_pr": 0.2162,
+        "auc_roc": 0.5168
+      }
+    }
+  },
+  "promotion": {
+    "promoted": false,
+    "blend_model_weight": 0.0,
+    "criteria": [
+      {
+        "cut": "2017-06-30",
+        "auc_pr_model": 0.6276,
+        "auc_pr_base": 0.6611,
+        "brier_model": 0.2733,
+        "brier_base": 0.2348,
+        "auc_pr_ok": false,
+        "brier_ok": false,
+        "passed": false
+      },
+      {
+        "cut": "2017-09-30",
+        "auc_pr_model": 0.5819,
+        "auc_pr_base": 0.5995,
+        "brier_model": 0.2763,
+        "brier_base": 0.2428,
+        "auc_pr_ok": false,
+        "brier_ok": false,
+        "passed": false
+      }
+    ],
+    "rule": "promote only if, in every cut, AUC-PR(model) >= AUC-PR(base rate) + 0.02 and Brier(model) <= Brier(base rate) after calibration"
+  },
+  "acceptance": {
+    "passed": true,
+    "by_cut": {
+      "2017-06-30": [
+        {
+          "check": "brier_p_win <= 0.245",
+          "value": 0.2348,
+          "passed": true
+        },
+        {
+          "check": "mean_calibration_error <= 0.06",
+          "value": 0.0405,
+          "passed": true
+        },
+        {
+          "check": "revenue_top20 >= 1.5 x random and CI low > random",
+          "value": [
+            0.3761,
+            0.1713
+          ],
+          "passed": true
+        },
+        {
+          "check": "spearman(priority_score, sales_price) < 0.9",
+          "value": 0.54,
+          "passed": true
+        },
+        {
+          "check": "zombies at cut that closed after (report; expected 0)",
+          "value": 0,
+          "passed": true
+        }
+      ],
+      "2017-09-30": [
+        {
+          "check": "brier_p_win <= 0.245",
+          "value": 0.2428,
+          "passed": true
+        },
+        {
+          "check": "mean_calibration_error <= 0.06",
+          "value": 0.0462,
+          "passed": true
+        },
+        {
+          "check": "revenue_top20 >= 1.5 x random and CI low > random",
+          "value": [
+            0.3591,
+            0.203
+          ],
+          "passed": true
+        },
+        {
+          "check": "spearman(priority_score, sales_price) < 0.9",
+          "value": 0.5011,
+          "passed": true
+        },
+        {
+          "check": "zombies at cut that closed after (report; expected 0)",
+          "value": 0,
+          "passed": true
+        }
+      ]
+    }
+  },
+  "weights": {
+    "prior_a": 20.0,
+    "zombie_days": 138,
+    "zombie_p_factor": 0.5,
+    "zombie_urgency": 0.2,
+    "zombie_score_cap": 49.0,
+    "prospecting_urgency": 0.5,
+    "w_p": 25.0,
+    "w_v": 35.0,
+    "w_u": 40.0,
+    "p_scale_lo": 0.3,
+    "p_scale_hi": 0.8,
+    "max_list_price": 26768.0,
+    "high_ticket_price": 4000.0,
+    "low_ticket_price": 600.0,
+    "min_group_n": 30,
+    "overload_quantile": 0.75,
+    "tier_a": 75.0,
+    "tier_b": 55.0,
+    "tier_c": 35.0,
+    "late_cycle_days": 120,
+    "late_action_days": 100,
+    "blend_model_weight": 0.0
+  }
+}

@@ -1,0 +1,9 @@
+[
+  "product",
+  "product_rate",
+  "log_days",
+  "is_zombie",
+  "log_price",
+  "open_load",
+  "survival_rate"
+]
