@@ -154,3 +154,50 @@ Registro cronológico de decisões, erros da IA corrigidos e insights humanos. C
 **Alternativas descartadas:** promover o modelo "por ter um modelo"; esconder o resultado negativo do backtest.
 **Evidência:** `solution/models/2017-12-31-rules-v1/{metrics.json,model_card.md}`, `solution/data/gold/scores/as_of=2017-12-31/_manifest.json`, `docs/ml-pipeline.md`, 64 testes em `solution/pipeline/tests`.
 **Impacto na entrega:** a tela Qualidade mostra o empate com o acaso como frase padrão; o valor da ferramenta está em valor × timing e na fila de limpeza.
+
+## [2026-09-23 22:30] decisao — Code review e QA: o que foi corrigido antes do PR e o que ficou
+
+**Contexto:** `code-reviewer` (12 achados, "aprovar com ajustes") e `quality-engineer` (clean-room, "pronto para PR") revisaram a árvore depois da onda de construção.
+**O que a IA propôs / fez:** corrigiu os achados 1–4 do code review (filas via `queue=` na API, top 10 de parados via API, `extend-exclude` do ruff, unidade do `Reason.weight` no contrato) e os dois erros de processo do QA (exclusão `feedback` sem âncora no `git-stage.sh`, README com "stubs"). Ver `02-erros-da-ia.md` E9 e E11.
+**O que estava errado ou incompleto:** o achado 5 (limiar 138 e faixa "esfriando" replicados em pipeline, API e web) e as 4 recomendações não bloqueantes do QA (partição com `part-*` duplicado, imagem stale do perfil `pipeline`, `git_sha=unknown` no container, warnings do eslint) não foram tratados.
+**Decisão humana (orquestrador):** entregar com o achado 5 e as recomendações do QA em aberto, listados aqui e em `docs/code-review.md`/`docs/qa-report.md`; nenhum deles muda um número exibido. A fonte única do limiar 138 fica como primeira tarefa de manutenção.
+**Alternativas descartadas:** publicar `ZOMBIE_DAYS` no pacote de contratos agora (toca pipeline, API e web às 22h da véspera do PR).
+**Evidência:** `docs/code-review.md`, `docs/qa-report.md`, `solution/web/src/pages/QueuePage.tsx`, `solution/pipeline/pyproject.toml`.
+**Impacto na entrega:** filas e contadores corretos na visão de time; `make lint` verde; contrato e UI na mesma unidade.
+
+## [2026-09-24 17:40] marco — Branch e 16 commits estruturados por etapa do fluxo
+
+**Contexto:** a árvore tinha 0 commits (branch `main`), o que o `g4-evaluator` apontou como a mudança de maior alavancagem: "sem commit a submissão não existe para o comitê".
+**O que a IA propôs / fez:** criou `submission/bernardo-couto`, rodou `tools/git-stage.sh` para obter a lista validada (273 arquivos, 0 gerados, 0 fora da pasta), desfez o stage e recompôs 16 commits na ordem do fluxo do `CLAUDE.md` (scaffold → agentes → dados → ADRs → contratos → pipeline → análise → modelos → API → produto/design → web → docs-site → build → revisões → process log → README).
+**O que estava errado ou incompleto:** `process-log/tools/` estava vazio no momento do stage (os dois arquivos existiam no início da sessão; causa não identificada). Restaurados de uma cópia idêntica do clean-room do QA e commitados em seguida.
+**Decisão humana:** pedido do Bernardo ("Estruturar commits"). Um commit por etapa em vez de um único "initial submission", para que o histórico conte o processo.
+**Alternativas descartadas:** commit único; commits por data (as sessões misturam etapas).
+**Evidência:** `git log --oneline main..submission/bernardo-couto`.
+**Impacto na entrega:** o git history vira evidência de processo, como pede o brief.
+
+## [2026-09-24 17:55] decisao — Confirmações do Bernardo: visual, vocabulário, portas, modelo e toolchain
+
+**Contexto:** cinco decisões estavam marcadas "a confirmar pelo Bernardo" desde a onda de construção.
+**O que a IA propôs / fez:** listou as pendências e as sugestões do orquestrador para cada uma.
+**Decisão humana (Bernardo, 2026-09-24):** "seguir com sua sugestão" para: padrões visuais V1–V4 (tiers C/D com fundo tinta e texto escuro; aviso de conta discreto na fila e faixa completa no drawer; serif só em h1 e wordmark; 3 linhas por deal); filas "Trabalhar" / "Confirmar ou encerrar" e rótulo "Fecham {p}% dos {product}"; LR não promovida (`blend_model_weight = 0`) e `sales_price` no contrato (schema 1.1.0). Portas: "deixar as portas padrão dos frameworks" — API 8000, web 5173, docs 8001, bind `0.0.0.0` mantido para demo. Toolchain do web: bump feito nesta sessão (`vite` 7.3, `vitest` 4.0, `@vitejs/plugin-react` 5.2; `react-router-dom` já estava em 7.18), `npm audit` com 0 vulnerabilidades, 33 testes, lint, typecheck e build verdes; lockfile regenerado com o `npm` 10 da imagem `node:20-alpine` porque o `npm` 11.4 local falha com erro interno do arborist neste conjunto de peers (`npm ci` verificado nos dois).
+**Alternativas descartadas:** `127.0.0.1` no Compose (ferramenta estritamente local); adiar o bump para depois do PR (o security review pedia commit isolado, e o frontend já estava estável).
+**Evidência:** `solution/web/package.json`, commit `build(web): bump vite 7, vitest 4 and plugin-react 5`; `docs/security-review.md` M2/M3; `docs/design/design-tokens.md`.
+**Impacto na entrega:** nenhuma decisão de produto fica marcada como pendente; `docs/limitations.md` atualizado (M2/M3 fechados; portas registradas como escolha).
+
+## [2026-09-24 18:05] decisao — "Parado nominal": duas definições, uma palavra para cada
+
+**Contexto:** o `g4-evaluator` apontou dois valores para "parado nominal": R$ 3.198.664 na API/UI e R$ 3.185.048 no model card.
+**O que a IA propôs / fez:** verificou a origem: a API e o `metrics.json` somam `sales_price` (preço de tabela); o model card e o `_manifest.json` usam preço × razão histórica `close_value/preço` dos Won (0,998 no agregado). A diferença é 0,4% e ambos arredondam para R$ 3,19 mi.
+**Decisão humana (orquestrador):** "nominal" = preço de tabela (R$ 3.198.664), como a UI e a API já dizem e como um gerente entende a palavra; o outro número passa a ser chamado de "a preço × razão" onde aparece (`docs/limitations.md`, narrativa). O model card é artefato gerado e não é editado à mão; o texto do template muda no próximo `train`.
+**Alternativas descartadas:** editar o model card à mão (quebra a rastreabilidade artefato ↔ código); trocar a API para preço × razão (muda um número na tela na véspera do PR sem ganho de decisão).
+**Evidência:** `docs/ml-pipeline.md` §"Valor nominal parado"; `solution/api/README.md` (`nominal_zombie_value`); `docs/evaluation.md` §6.
+**Impacto na entrega:** um único significado para "nominal" nos textos; sem mudança de código.
+
+## [2026-09-24 18:15] marco — Evidências reais: screenshots contra a API e chat exports das sessões 5 e 6
+
+**Contexto:** os 7 screenshots eram do modo demonstração (MSW) e só a sessão 1 tinha chat export.
+**O que a IA propôs / fez:** adicionou `npm run screenshots:real` (Vite normal em `:5199` com proxy para a API em `:8000`; usa o deal real `28EJ0L9T` de Darcel Schlecht no drawer; pula o estado "artefatos ausentes", que só existe como mock) e capturou 6 telas com `model_version 2017-12-31-rules-v1` no rodapé. Adicionou `--since/--until` ao exportador para fatiar o JSONL longo e gerou os exports da sessão 5 (construção, 08:49–22:32 de 23/09) e da sessão 6 (esta). Conferiu que nenhum bloco casando com `filter-patterns.txt` e nenhum segredo saiu nos exports.
+**O que estava errado ou incompleto:** na tela real, o top 10 de Darcel Schlecht são dez deals GTX Plus Pro em Prospecting com o mesmo score 67 (sem `engage_date`, urgência fixa em 50%; sete sem conta). É o comportamento esperado da regra, mas mostra que a fila de um vendedor com muitos Prospecting idênticos precisa de um desempate visível. Registrado como limitação de UX, não corrigido.
+**Decisão humana:** pedido do Bernardo ("quanto às demais, pode resolver").
+**Evidência:** `process-log/screenshots/`, `process-log/chat-exports/`, `solution/web/scripts/screenshots.mjs`, `process-log/tools/export_claude_session.py`.
+**Impacto na entrega:** evidências verificáveis com dados reais; o export da sessão 6 é parcial por definição (gerado antes do fim da sessão).

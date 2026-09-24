@@ -3,7 +3,7 @@
 ## Sobre mim
 
 - **Nome:** Bernardo Couto
-- **LinkedIn:** TODO(Bernardo)
+- **LinkedIn:** https://www.linkedin.com/in/bernardocouto
 - **Challenge escolhido:** 003 — Lead Scorer (Vendas / RevOps)
 
 ---
@@ -47,7 +47,7 @@ flowchart LR
 | docs | http://localhost:8001 | Este README, arquitetura, dados, scoring, ML, API, design, segurança, limitações, ADRs e process log |
 | pipeline (perfil) | — | `build-features → train → score` com JDK 17 na imagem; artefatos commitados para a UI abrir sem JDK (ADR 0006) |
 
-**Telas** (capturadas em modo demonstração — dados fictícios servidos no navegador via MSW, como indica a faixa amarela; TODO(Bernardo): recapturar contra a API real):
+**Telas** (capturadas com `npm run screenshots:real` contra a API servindo a partição `as_of=2017-12-31` e o modelo `2017-12-31-rules-v1`; só `web-estado-artefatos.png` vem do modo demonstração, porque o estado "artefatos ausentes" não existe com os artefatos commitados):
 
 | Tela | Arquivo | O que mostra |
 |---|---|---|
@@ -56,7 +56,7 @@ flowchart LR
 | Confirmar ou encerrar | `process-log/screenshots/web-fila-confirmar.png` | Fila de parados > 138 dias, maior valor primeiro, valor nominal fora do forecast |
 | Time | `process-log/screenshots/web-time.png` | Esperado vs parado fora do forecast, distribuição de tiers, tabela por vendedor sem coluna de posição |
 | Qualidade | `process-log/screenshots/web-qualidade.png` | Quatro perguntas da Head com resposta em português; empate com o acaso como frase padrão |
-| Estados | `web-estado-vazio.png`, `web-estado-artefatos.png` | Recorte vazio e artefatos ausentes (503 com o comando para gerar) |
+| Estados | `web-estado-vazio.png`, `web-estado-artefatos.png` | Recorte vazio (API real) e artefatos ausentes (503 com o comando para gerar; modo demonstração) |
 
 **Backtest vs baselines** — o que o vendedor vê (`priority_score`) contra o que ele já poderia fazer sem ferramenta. Bootstrap pareado, 2.000 reamostras. Fonte: `solution/models/2017-12-31-rules-v1/model_card.md` §5 (gerado de `metrics.json`).
 
@@ -168,9 +168,9 @@ Também: `regParam = 0,1` da spec zerava todos os coeficientes da LR (ajustado p
 - [x] Configuração do Claude Code versionada: `.claude/` (15 agentes, 9 skills, 6 hooks, `settings.json`) e `CLAUDE.md`
 - [x] Decision log datado: `process-log/decisions.md`
 - [x] Narrativa e erros da IA: `process-log/01-narrativa.md`, `process-log/02-erros-da-ia.md`
-- [x] Chat export da sessão de setup: `process-log/chat-exports/` (gerado por `process-log/tools/export_claude_session.py`; raciocínio interno não exportado) — TODO(Bernardo): exportar as sessões seguintes com o mesmo script
-- [x] Screenshots do app: `process-log/screenshots/` (modo demonstração) — TODO(Bernardo): recapturar contra a API real
-- [ ] Git history: commits pequenos na branch `submission/bernardo-couto` (`git log --oneline -- submissions/bernardo-couto`) — TODO(Bernardo): staging com `tools/git-stage.sh` e commits ainda não feitos nesta árvore
+- [x] Chat exports das sessões: `process-log/chat-exports/` (3 arquivos: setup e produto, construção, fechamento e PR; gerados por `process-log/tools/export_claude_session.py` com filtro de padrões; raciocínio interno não exportado)
+- [x] Screenshots do app: `process-log/screenshots/` (6 telas contra a API real; 1 estado de erro em modo demonstração)
+- [x] Git history: commits pequenos na branch `submission/bernardo-couto`, um por etapa do fluxo (`git log --oneline -- submissions/bernardo-couto`), staging via `tools/git-stage.sh`
 - [x] Hipóteses registradas antes da análise: `solution/pipeline/analysis/00_hypotheses.md`
 - [x] Artefatos gerados por código: `solution/models/2017-12-31-rules-v1/{metrics.json,model_card.md}`, `solution/data/gold/scores/as_of=2017-12-31/_manifest.json`
 - [x] Documentação navegável: http://localhost:8001 após `docker compose up` (`solution/docs-site/`)
@@ -178,4 +178,4 @@ Também: `regParam = 0,1` da spec zerava todos os coeficientes da LR (ajustado p
 
 ---
 
-_Submissão enviada em: TODO(Bernardo)_
+_Submissão enviada em: 2026-09-24_

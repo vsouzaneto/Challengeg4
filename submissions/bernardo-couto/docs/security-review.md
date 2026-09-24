@@ -234,6 +234,9 @@ Nenhum pin de dependência foi alterado (não havia CVE com correção sem *majo
 
 ## Decisões pendentes
 
+> **Atualização 2026-09-24:** (1) M2/M3 fechados — `vite` 7.3, `vitest` 4.0, `@vitejs/plugin-react` 5.2, `react-router-dom` 7.18; `npm audit` 0 vulnerabilidades (decision log 2026-09-24 17:55). (2) I4: portas padrão dos frameworks em `0.0.0.0`, confirmado pelo Bernardo para demo. (3) B2/B3 (nginx não-root, Mermaid vendorizado): permanecem como recomendação em `docs/limitations.md`.
+
+
 1. **M2/M3 — toolchain do web**: subir `vite`/`vitest` (dev) e `react-router-dom` (runtime) para as versões com correção, aceitando os *major bumps*, ou registrar a aceitação de risco em `docs/limitations.md`. Recomendação: fazer o bump **depois** que o `application-engineer` estabilizar `web/src`, num commit isolado, com `npm test && npm run lint && npm run build` verdes.
 2. **I4 — bind das portas**: manter `0.0.0.0` (demo acessível de outra máquina) ou `127.0.0.1` (ferramenta estritamente local).
 3. **B2/B3 — nginx não-root e mermaid vendorizado**: mudanças nos Dockerfiles `web`/`docs-site` e no `mkdocs.yml`; baixo risco, mas tocam arquivos de outros agentes.

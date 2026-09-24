@@ -19,6 +19,8 @@ Lista exibida na primeira abertura da fila e no rodapé da tela Qualidade (`docs
 | 7 | **Não usa fim de trimestre por deal.** | O padrão observado é de registro de Lost, não de fechamento; possível artefato do dataset (`docs/revops-review.md` §3b). `QUARTER_END_WINDOW` não existe no enum. |
 | 8 | **Não funciona com dados de hoje.** Toda idade é contada até `as_of` (31/12/2017). | Snapshot único; nenhum código usa relógio real (hook bloqueia `today()`/`current_date()`). |
 
+**Desempate entre deals iguais.** Um vendedor com muitos deals em Prospecting do mesmo produto vê uma sequência de scores idênticos (ex.: Darcel Schlecht, dez GTX Plus Pro com 67 pontos, `process-log/screenshots/web-fila.png`): sem `engage_date` a urgência é fixa em 50% e sem conta não há contexto. A ordem entre eles é estável mas arbitrária; a UI ainda não mostra um desempate (conta preenchida primeiro, por exemplo).
+
 ## 2. Limites do dado
 
 | Limite | Evidência | Efeito na ferramenta |
@@ -27,7 +29,7 @@ Lista exibida na primeira abertura da fila e no rodapé da tela Qualidade (`docs
 | **68% sem conta é artefato temporal, não atraso de preenchimento** | Fração com conta ≈ 0,3 em todo mês de engajamento (0,21–0,54, sem tendência); 100% dos deals fechados têm conta vs 32% dos abertos (`docs/data-quality-report.md`, "`account_known` é um artefato temporal") | `account_*` proibido como feature: prevê "já fechou", não "vai fechar". Conta entra só em `confidence` e nos reason codes. |
 | **Sem dados de atividade** | Nenhuma coluna de contato, reunião ou proposta | "Parado há 150 dias" e "falei ontem" são indistinguíveis. É a lacuna que mais limita o score (`docs/revops-review.md` §4, lacuna 1). |
 | **Snapshot único de 2017** | `close_date` de 2017-03-01 a 2017-12-31; `engage_date` desde 2016-10-20 | Deals rápidos engajados antes de março/2017 não existem no dado (truncamento); conta e estágio em cortes passados são anacrônicos; não há como validar o efeito de calendário. |
-| **81% do pipeline Engaging passou do ciclo máximo histórico** | 1.291 de 1.589 acima de 138 dias; R$ 3.185.048 nominais vs R$ 692.670 dos 298 vivos (`solution/data/gold/scores/as_of=2017-12-31/_manifest.json`) | A primeira quinzena de uso é limpeza de CRM, não venda. Marcar os 1.291 como Lost derruba o win rate acumulado de 63% para 53% (`docs/revops-review.md` §7). |
+| **81% do pipeline Engaging passou do ciclo máximo histórico** | 1.291 de 1.589 acima de 138 dias; R$ 3.198.664 nominais a preço de tabela (R$ 3.185.048 a preço × razão) vs R$ 692.670 dos 298 vivos (`solution/data/gold/scores/as_of=2017-12-31/_manifest.json`) | A primeira quinzena de uso é limpeza de CRM, não venda. Marcar os 1.291 como Lost derruba o win rate acumulado de 63% para 53% (`docs/revops-review.md` §7). |
 | **Base pequena em alguns cruzamentos** | GTK 500: 25 deals fechados; 17 pares agente×produto com menos de 10 (`docs/data-quality-report.md`) | Suavização bayesiana (a = 20); textos avisam "amostra pequena" abaixo de 30. |
 | **Dataset possivelmente sintético** (Kaggle, CC0) | Uniformidade do dia de fechamento dentro do mês; Lost quase ausente em mês de fim de trimestre (`docs/revops-review.md` §3b) | Padrões de calendário foram avaliados e ficaram fora do score. |
 
@@ -52,9 +54,9 @@ Lista exibida na primeira abertura da fila e no rodapé da tela Qualidade (`docs
 | **Exposição do desempenho individual** | `/agents`, `/pipeline/summary`, reason codes `AGENT_*` com números | Score não é métrica de avaliação de pessoas nem insumo de remuneração; visão de manager ordenada por valor parado, sem coluna de posição; intervalos de confiança antes de qualquer comparação. |
 | **Campos manipuláveis pelo vendedor** (`product`, `engage_date`, `deal_stage`, `account`, carteira, feedback) | Tabela de gaming em `docs/security-review.md`, "Gaming do score" | Monitorar troca de produto por deal, deals recriados em < 30 dias, taxa de `discard`; nenhuma ação do feedback vira label sem validação externa. |
 | **LGPD** | Dados do challenge são públicos e sintéticos | Em CRM real: nomes de vendedores e managers são dados pessoais; base legal com teste de balanceamento; minimização na API; retenção do `actions.parquet`; access log sem query string; TLS. |
-| **Dependências de desenvolvimento do web com CVEs** (M2/M3) | 7 findings em `npm audit`, todos em devDependencies (vite, vitest, esbuild); `react-router-dom` 6.30 com 2 CVEs moderados sem pré-condição de exploração na SPA | Bump para vite ≥ 6 / vitest ≥ 3.2.6 / react-router-dom v7 em commit isolado. `pip-audit`: 0 CVEs nos 4 projetos Python; `detect-secrets`: 0. |
+| **Dependências do web** (M2/M3, fechados em 2026-09-24) | Na revisão: 7 findings em `npm audit`, todos em devDependencies (vite 5, vitest 2, esbuild 0.21) e `react-router-dom` 6.30. Após o bump (vite 7.3, vitest 4.0, plugin-react 5.2, react-router-dom 7.18): `npm audit` 0 vulnerabilidades | Manter `npm audit`/`pip-audit` no ciclo de release. `pip-audit`: 0 CVEs nos 4 projetos Python; `detect-secrets`: 0. Lockfile regenerado com npm 10 (imagem `node:20-alpine`); `npm ci` verificado local e na imagem. |
 | **Mermaid do site de docs carregado de CDN** (B3) | `unpkg.com`, sem pin por hash | Vendorizar o script para permitir CSP `script-src 'self'`. |
-| **Portas em `0.0.0.0`** (I4) | Adequado para demo local | `127.0.0.1:` no Compose fora do laptop. |
+| **Portas em `0.0.0.0`** (I4) | Escolha confirmada em 2026-09-24: portas padrão dos frameworks (8000, 5173, 8001), acessíveis de outra máquina para demo | `127.0.0.1:` no Compose fora do laptop. |
 
 ## 5. O que faltaria para escalar
 

@@ -51,12 +51,26 @@ Cada item traz o que a IA fez, como foi percebido, a correção e a evidência. 
 - **Correção:** processo interrompido, índice zerado, script reescrito para listar os não-rastreados com exclusões explícitas e forçar só essa lista (`--pathspec-from-file`). Nova execução: 155 arquivos em 0,1 s, com validação automática de "gerados = 0" e "fora da pasta = 0". Hook `guard_bash.py` passou a bloquear `git add -f` direto.
 - **Evidência:** chat export (blocos "safe git staging script"); `tools/git-stage.sh`.
 
+<a id="e9"></a>
+## E9 — Exclusão sem âncora no `git-stage.sh` derrubava um módulo do web (verificação)
+- **O que fez:** a lista de exclusões do script de staging tinha `feedback` sem caminho, para deixar `solution/data/feedback/` fora do PR. O padrão também casava com `solution/web/src/features/feedback/`, e o módulo inteiro ficava fora do índice.
+- **Como percebeu:** clean-room do `quality-engineer` (checkout só do que o script sobe, em pasta temporária): o build do web falhava por import ausente — exatamente na máquina do avaliador, enquanto passava na do autor. No mesmo QA, o `solution/README.md` ainda chamava `train`/`score` de stubs depois de os jobs estarem implementados.
+- **Correção:** exclusão ancorada em `**/data/feedback`; README corrigido; clean-room repetido com build verde.
+- **Evidência:** `docs/qa-report.md`, "Erros da IA/processo encontrados nesta rodada"; `tools/git-stage.sh`.
+
 <a id="e10"></a>
 ## E10 — Premissas de scoring escritas antes do backtest (verificação)
 - **O que fez:** a skill afirmava que idade em Engaging era sinal positivo até ~90 dias e que "mais novo primeiro" seria um baseline forte.
 - **Como percebeu:** backtest temporal do `data-scientist` (dois cortes, ICs por bootstrap): idade não discrimina entre deals vivos (AUC-ROC 0,50); "mais novo primeiro" só ganha quando censurados contam como Lost. Sete de onze hipóteses registradas antes da análise foram refutadas.
 - **Correção:** skills reescritas; p_win reduzido à taxa-base por produto; sinais sem poder preditivo viraram reason codes informativos; posicionamento do produto mudou para "valor × timing + higiene".
 - **Evidência:** `solution/pipeline/analysis/00_hypotheses.md`, `docs/figures/10_backtest.md`, decision log 2026-09-23 14:30.
+
+<a id="e11"></a>
+## E11 — Fila do vendedor sem o filtro `queue` da API (verificação)
+- **O que fez:** `QueuePage` carregava até 500 deals sem `queue=` e separava vivos/parados no cliente; `TeamPage` pedia os 50 mais antigos e ordenava por valor no cliente ("top 10 parados por valor" era top 10 entre os 50 mais velhos). O comentário no código dizia que a API não tinha filtro de idade, o que já não era verdade.
+- **Como percebeu:** `code-reviewer` (dois achados de nível alto) com o `_manifest.json` em mão: 1.291 parados em 2.089 abertos, então sem filtro de vendedor a resposta truncava e as badges contavam sobre a amostra.
+- **Correção:** uma query por aba com `queue=work|confirm`, contadores do `total` da API, top 10 com `queue=confirm&sort=-expected_value`. Também: `extend-exclude = ["analysis"]` no ruff (`make lint` estava vermelho) e unidade do `Reason.weight` no contrato alinhada com a implementação (pontos do score).
+- **Evidência:** `docs/code-review.md` achados 1–4; `solution/web/src/pages/{QueuePage,TeamPage}.tsx`.
 
 <a id="e8"></a>
 ## E8 — Objeção técnica registrada e decidida pelo humano (não é erro, é julgamento)

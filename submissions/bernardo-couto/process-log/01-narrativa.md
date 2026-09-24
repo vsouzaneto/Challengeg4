@@ -53,7 +53,7 @@ Onda de construção orquestrada pela sessão principal, um agente por especiali
 | 4 | `product-designer` | `docs/design/{ux-spec,design-tokens,accessibility,review-checklist}.md`; tabela de contraste calculada | Scaffold com contraste 2,89–4,39:1 corrigido para AA (decision log 12:30) |
 | 5 | `revops-engineer` | `docs/revops-review.md`: validação dos 14 reason codes, duas filas, sprint de limpeza, piloto com controle, lista "o que a ferramenta não faz" | Mediana por vendedor 12 vivos / 44 parados; 6 de 27 sem deal vivo; 561 deals / R$ 1,25 mi em 139–180 d; win rate 63% → 53% se os 1.291 virarem Lost (§7); `QUARTER_END_WINDOW` vetado (decision log 15:20) |
 | 6 | `security-engineer` | `docs/security-review.md`: modelo de ameaças, auditorias, correções em nginx/Compose/`.dockerignore`/staging, hooks fail-closed | 0 críticos/altos; `pip-audit` 0 CVEs em 4 projetos; `detect-secrets` 0; contexto do docs de dezenas de MB para 378 kB (decision log 15:50) |
-| 7 | `machine-learning-engineer` | Regras em Spark SQL, LR em modo sombra, jobs `train`/`score`, model card, PSI, validação linha a linha contra `ScoredDeal`, `docs/ml-pipeline.md` | LR não promovida (AUC-PR 0,628/0,582 vs 0,661/0,600); A 67 / B 516 / C 771 / D 735; Spearman 0,46; R$ 3.185.048 nominais parados; `train` 58,1 s, `score` 10,3 s (`metrics.json`, `_manifest.json`; decision log 16:40) |
+| 7 | `machine-learning-engineer` | Regras em Spark SQL, LR em modo sombra, jobs `train`/`score`, model card, PSI, validação linha a linha contra `ScoredDeal`, `docs/ml-pipeline.md` | LR não promovida (AUC-PR 0,628/0,582 vs 0,661/0,600); A 67 / B 516 / C 771 / D 735; Spearman 0,46; R$ 3.185.048 parados a preço × razão (R$ 3.198.664 a preço de tabela, o "nominal" da UI); `train` 58,1 s, `score` 10,3 s (`metrics.json`, `_manifest.json`; decision log 16:40) |
 | 8 | `backend-engineer` | API FastAPI em `/api/v1`: 11 rotas, filtros, `queue=work\|confirm`, `as_of`, feedback append-only, envelope de erro, headers `X-As-Of`/`X-Model-Version`, `openapi.json` exportado | `solution/api/README.md`; testes em `solution/api/tests` |
 | 9 | `application-engineer` | Web React: fila Trabalhar / Confirmar ou encerrar, drawer, `/time`, `/qualidade`, estado na URL, modo mock (MSW), captura de telas com Playwright | 7 screenshots em `screenshots/` (modo demonstração) |
 | 10 | `quality-engineer` · `code-reviewer` · `security-engineer` | Clean-room, `docs/code-review.md`, ajustes de setup | `docs/code-review.md` |
@@ -61,7 +61,20 @@ Onda de construção orquestrada pela sessão principal, um agente por especiali
 
 **Onde a IA errou nesta onda** (detalhe em [erros-da-ia.md](./02-erros-da-ia.md)): hipótese da conta preenchida ao longo do ciclo (refutada pelo `data-engineer`); premissas de idade e "mais novo primeiro" (refutadas pelo backtest); rótulo "Prob. de fechar" e direções +/− em reason codes sem poder preditivo (pegos pelo `revops-engineer`); hooks fail-open e `COPY . .` com `node_modules` (pegos pelo `security-engineer`); `regParam` que zerava a LR e unidades misturadas nos pesos (pegos pelo `machine-learning-engineer`).
 
-**Decisões humanas pendentes de confirmação do Bernardo** (marcadas no decision log): padrões visuais V1–V4; vocabulário "Trabalhar" / "Confirmar ou encerrar"; troca de "Prob. de fechar" por "Fecham {p}% dos {product}"; bump de `vite`/`vitest`/`react-router-dom`; bind das portas.
+**Decisões humanas que ficaram pendentes nesta onda** (marcadas no decision log): padrões visuais V1–V4; vocabulário "Trabalhar" / "Confirmar ou encerrar"; troca de "Prob. de fechar" por "Fecham {p}% dos {product}"; bump de `vite`/`vitest`/`react-router-dom`; bind das portas. Todas confirmadas pelo Bernardo na sessão 6 (decision log 2026-09-24).
+
+## Sessão 6 — 24/09/2026 · Fechamento, commits e PR
+
+**Pedido do Bernardo:** "Falta alguma decisão?", "Estruturar commits", "Quais são meus TODOs?", e então as respostas: LinkedIn, abrir o PR agora, seguir as sugestões do orquestrador para as decisões pendentes, manter as portas padrão dos frameworks, push e PR.
+
+**Como a sessão foi conduzida:**
+1. Auditoria do decision log contra o que aconteceu depois da última entrada: quatro decisões tomadas sem registro (correções do code review, erro do `git-stage.sh` pego no QA, bump parcial do router, dois estimadores de "parado nominal") e as pendências do evaluator. Registradas em `decisions.md` e `02-erros-da-ia.md` (E9).
+2. `docker compose up --build`: a UI em `localhost:5173` mostrava uma página vazia. Causa: dois dev servers Vite de outro projeto do Bernardo ocupavam a porta no host; o container estava correto. Diagnóstico por `lsof` e pelo título da página servida; nenhum processo alheio foi encerrado.
+3. 16 commits na branch `submission/bernardo-couto`, um por etapa do fluxo do `CLAUDE.md`, a partir da lista validada pelo `git-stage.sh` (273 arquivos, 0 gerados, 0 fora da pasta).
+4. Bump de `vite` 5→7, `vitest` 2→4 e `@vitejs/plugin-react` 4→5 (M2/M3 do security review). O `npm` 11.4 local falha com um erro interno do arborist neste conjunto de peers; o lockfile foi regenerado com o `npm` 10 da imagem `node:20-alpine` e o `npm ci` verificado nos dois. 33 testes, lint, typecheck, build e `npm audit` com 0 vulnerabilidades.
+5. Screenshots recapturadas contra a API real (`npm run screenshots:real`, novo modo do script); chat exports das sessões 5 e 6 gerados com `--since/--until` (opção nova do exportador).
+
+**Incidente registrado:** `process-log/tools/` estava vazio quando os commits foram feitos, embora os dois arquivos existissem no início da sessão. Restaurados de uma cópia idêntica do clean-room do QA (`diff` limpo contra a cópia do site de docs). Causa não identificada; entrada no decision log.
 
 ## Ferramentas e para quê
 
