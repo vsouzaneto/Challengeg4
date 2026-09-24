@@ -1,0 +1,114 @@
+{
+  "job": "score",
+  "as_of": "2017-12-31",
+  "model_version": "2017-12-31-rules-v1",
+  "model_dir": "/Users/bernardocouto/Documents/Development/G4/g4-ai-master-challenge/submissions/bernardo-couto/solution/models/2017-12-31-rules-v1",
+  "blend_model_weight": 0.0,
+  "git_sha": "4aed364",
+  "spark_version": "3.5.9",
+  "params": {
+    "prior_a": 20.0,
+    "zombie_days": 138,
+    "zombie_p_factor": 0.5,
+    "zombie_urgency": 0.2,
+    "zombie_score_cap": 49.0,
+    "prospecting_urgency": 0.5,
+    "w_p": 25.0,
+    "w_v": 35.0,
+    "w_u": 40.0,
+    "p_scale_lo": 0.3,
+    "p_scale_hi": 0.8,
+    "max_list_price": 26768.0,
+    "high_ticket_price": 4000.0,
+    "low_ticket_price": 600.0,
+    "min_group_n": 30,
+    "overload_quantile": 0.75,
+    "tier_a": 75.0,
+    "tier_b": 55.0,
+    "tier_c": 35.0,
+    "late_cycle_days": 120,
+    "late_action_days": 100,
+    "blend_model_weight": 0.0
+  },
+  "raw_checksums": {
+    "accounts.csv": "e5242324768a563fc632cddfed49a29acbbf2892b8a3c6453cc9650de9ae0358",
+    "metadata.csv": "22b34e498d07e3d7f322afdbf81d70a5dc0a389792944e50ca2af86a3597f0af",
+    "products.csv": "7c1c8cbbdb6d4c286902e1985eeb529a36366d6a43f43cd4a93c4b1da2a6eb84",
+    "sales_pipeline.csv": "825ce8f6c32d4009548b468df3173d55a46fd73f2531f532c5459371dc52adf2",
+    "sales_teams.csv": "aeff1272ebe196f5a27e3fc0578aa27abf48ed9ae461aa344fb95990e5ad8bd1"
+  },
+  "gold_manifest_git_sha": "4aed364",
+  "counts": {
+    "rows": 2089,
+    "engaging": 1589,
+    "prospecting": 500,
+    "zombies": 1291,
+    "alive": 298,
+    "account_known": 664,
+    "account_known_rate": 0.3179,
+    "tiers": {
+      "A": 67,
+      "B": 516,
+      "C": 771,
+      "D": 735
+    },
+    "confidence": {
+      "alta": 88,
+      "media": 372,
+      "baixa": 1629
+    }
+  },
+  "values": {
+    "expected_value_total": 2109217.19,
+    "expected_value_alive": 437245.79,
+    "expected_value_zombies": 998150.24,
+    "zombie_nominal_value": 3185047.89,
+    "alive_nominal_value": 692669.81,
+    "prospecting_nominal_value": 1073389.49
+  },
+  "spearman_score_price": 0.4609,
+  "psi": {
+    "product_rate": 3.707358,
+    "log_days": 6.134211,
+    "is_zombie": 0.0,
+    "log_price": 0.004678,
+    "open_load": 0.577017,
+    "survival_rate": 4.05361,
+    "product": 0.005905
+  },
+  "psi_alerts": [
+    "log_days",
+    "open_load",
+    "product_rate",
+    "survival_rate"
+  ],
+  "shadow_model": {
+    "mean_p_model": 0.7933,
+    "mean_p_win": 0.4367,
+    "spearman_p_model_p_win": -0.0593,
+    "mode": "shadow (logged only)"
+  },
+  "columns": [
+    "opportunity_id",
+    "sales_agent",
+    "manager",
+    "regional_office",
+    "product",
+    "sales_price",
+    "account",
+    "deal_stage",
+    "days_in_engaging",
+    "priority_score",
+    "tier",
+    "p_win",
+    "expected_value",
+    "urgency",
+    "confidence",
+    "reasons",
+    "next_action",
+    "as_of",
+    "model_version"
+  ],
+  "duration_seconds": 10.29,
+  "generated_at": "2026-09-23T15:47:02+00:00"
+}

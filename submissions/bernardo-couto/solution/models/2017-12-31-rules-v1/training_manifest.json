@@ -1,0 +1,291 @@
+{
+  "job": "train",
+  "model_version": "2017-12-31-rules-v1",
+  "as_of": "2017-12-31",
+  "snapshot_date": "2017-12-31",
+  "git_sha": "4aed364",
+  "spark_version": "3.5.9",
+  "seed": 20171231,
+  "lr_params": {
+    "elasticNetParam": 0.5,
+    "regParam": 0.01,
+    "maxIter": 200
+  },
+  "blend_model_weight": 0.0,
+  "promoted": false,
+  "weights": {
+    "prior_a": 20.0,
+    "zombie_days": 138,
+    "zombie_p_factor": 0.5,
+    "zombie_urgency": 0.2,
+    "zombie_score_cap": 49.0,
+    "prospecting_urgency": 0.5,
+    "w_p": 25.0,
+    "w_v": 35.0,
+    "w_u": 40.0,
+    "p_scale_lo": 0.3,
+    "p_scale_hi": 0.8,
+    "max_list_price": 26768.0,
+    "high_ticket_price": 4000.0,
+    "low_ticket_price": 600.0,
+    "min_group_n": 30,
+    "overload_quantile": 0.75,
+    "tier_a": 75.0,
+    "tier_b": 55.0,
+    "tier_c": 35.0,
+    "late_cycle_days": 120,
+    "late_action_days": 100,
+    "blend_model_weight": 0.0
+  },
+  "features": [
+    "product",
+    "product_rate",
+    "log_days",
+    "is_zombie",
+    "log_price",
+    "open_load",
+    "survival_rate"
+  ],
+  "forbidden_features": [
+    "account",
+    "account_age_years",
+    "account_known",
+    "close_date",
+    "close_value",
+    "cycle_days",
+    "days_to_close_from_as_of",
+    "employees",
+    "engage_date",
+    "engage_month",
+    "is_subsidiary",
+    "label",
+    "label_won",
+    "n_account",
+    "office_location",
+    "realized_value",
+    "revenue",
+    "sector",
+    "subsidiary_of",
+    "win_rate_account",
+    "year_established"
+  ],
+  "frame": {
+    "start": "2017-03-31",
+    "months": [
+      "2017-03-31",
+      "2017-04-30",
+      "2017-05-31",
+      "2017-06-30",
+      "2017-07-31",
+      "2017-08-31",
+      "2017-09-30",
+      "2017-10-31",
+      "2017-11-30"
+    ],
+    "calibration_month": "2017-11-30",
+    "counts": {
+      "train_rows": 8066,
+      "calibration_rows": 548,
+      "train_positive_rate": 0.6558393255640962
+    }
+  },
+  "coefficients": {
+    "product=GTX Basic": 0.006925,
+    "product=MG Special": 0.0,
+    "product=GTX Pro": 0.0,
+    "product=MG Advanced": 0.0,
+    "product=GTX Plus Basic": -0.024118,
+    "product=GTX Plus Pro": 0.036481,
+    "product=GTK 500": 0.0,
+    "product=__unknown": 0.0,
+    "product_rate": -0.053793,
+    "log_days": 0.025375,
+    "is_zombie": 0.0,
+    "log_price": 0.0,
+    "open_load": -0.004464,
+    "survival_rate": 0.0,
+    "intercept": 0.645695
+  },
+  "calibrated": true,
+  "feature_distributions": {
+    "product_rate": {
+      "type": "numeric",
+      "edges": [
+        0.566895649329408,
+        0.6053805440636051,
+        0.6194019274376417,
+        0.6263404207516972,
+        0.6367628205906911,
+        0.6419841779264458,
+        0.6510980710207847,
+        0.659584206595842,
+        0.6722342780736941,
+        0.8033137557959815,
+        0.8453028731129978
+      ],
+      "shares": [
+        0.08256880733944955,
+        0.10339697495660799,
+        0.10711629060252914,
+        0.08108108108108109,
+        0.10798413091991074,
+        0.08926357550210762,
+        0.11864616910488471,
+        0.10339697495660799,
+        0.09918175055789735,
+        0.10736424497892388
+      ],
+      "null_share": 0.0,
+      "mean": 0.6609256954206073
+    },
+    "log_days": {
+      "type": "numeric",
+      "edges": [
+        0.0,
+        1.791759469228055,
+        2.4849066497880004,
+        3.044522437723423,
+        3.4011973816621555,
+        3.6375861597263857,
+        3.8712010109078907,
+        4.04305126783455,
+        4.219507705176107,
+        4.418840607796598,
+        4.912654885736052
+      ],
+      "shares": [
+        0.0985618646169105,
+        0.09087527894867345,
+        0.1037689065212001,
+        0.10612447309695017,
+        0.09050334738408133,
+        0.10711629060252914,
+        0.09620629804116043,
+        0.10500867840317382,
+        0.10017356806347633,
+        0.10166129432184479
+      ],
+      "null_share": 0.0,
+      "mean": 3.333946257147014
+    },
+    "is_zombie": {
+      "type": "numeric",
+      "edges": [
+        -0.5,
+        0.5
+      ],
+      "shares": [
+        1.0
+      ],
+      "null_share": 0.0,
+      "mean": 0.0
+    },
+    "log_price": {
+      "type": "numeric",
+      "edges": [
+        4.02535169073515,
+        6.311734809152915,
+        7.00033446027523,
+        8.129764445794171,
+        8.480944058741116,
+        8.609407675404048,
+        10.194999780568262
+      ],
+      "shares": [
+        0.18051078601537318,
+        0.2203074634267295,
+        0.1585668237044384,
+        0.16216216216216217,
+        0.1672452268782544,
+        0.1112075378130424
+      ],
+      "null_share": 0.0,
+      "mean": 6.928407887829284
+    },
+    "open_load": {
+      "type": "numeric",
+      "edges": [
+        15.0,
+        32.0,
+        40.0,
+        50.0,
+        60.0,
+        68.0,
+        76.0,
+        86.0,
+        100.0,
+        121.0,
+        166.0
+      ],
+      "shares": [
+        0.07178279196627821,
+        0.1252169600793454,
+        0.09571038928837095,
+        0.09137118770146294,
+        0.1068683362261344,
+        0.09670220679394992,
+        0.1094718571782792,
+        0.09186709645425242,
+        0.10662038184973965,
+        0.10438879246218696
+      ],
+      "null_share": 0.0,
+      "mean": 73.18844532606
+    },
+    "survival_rate": {
+      "type": "numeric",
+      "edges": [
+        0.6153091265947006,
+        0.654253316112531,
+        0.672171596803589,
+        0.6894859776345451,
+        0.6980692262798758,
+        0.7034849027330231,
+        0.7172991771048779,
+        0.7228651399589038,
+        0.7984565853178992,
+        0.8054920577195329,
+        0.8207109737248841
+      ],
+      "shares": [
+        0.10004959087527895,
+        0.09447061740639723,
+        0.10426481527398959,
+        0.09385073146541037,
+        0.09732209273493678,
+        0.107736176543516,
+        0.09794197867592364,
+        0.0963302752293578,
+        0.10575254153235805,
+        0.10228118026283164
+      ],
+      "null_share": 0.0,
+      "mean": 0.717699979926259
+    },
+    "product": {
+      "type": "categorical",
+      "shares": {
+        "GTX Basic": 0.2203074634267295,
+        "MG Special": 0.18051078601537318,
+        "GTX Pro": 0.1672452268782544,
+        "MG Advanced": 0.16216216216216217,
+        "GTX Plus Basic": 0.1585668237044384,
+        "GTX Plus Pro": 0.10674435903793703,
+        "GTK 500": 0.004463178775105381
+      }
+    }
+  },
+  "raw_checksums": {
+    "accounts.csv": "e5242324768a563fc632cddfed49a29acbbf2892b8a3c6453cc9650de9ae0358",
+    "metadata.csv": "22b34e498d07e3d7f322afdbf81d70a5dc0a389792944e50ca2af86a3597f0af",
+    "products.csv": "7c1c8cbbdb6d4c286902e1985eeb529a36366d6a43f43cd4a93c4b1da2a6eb84",
+    "sales_pipeline.csv": "825ce8f6c32d4009548b468df3173d55a46fd73f2531f532c5459371dc52adf2",
+    "sales_teams.csv": "aeff1272ebe196f5a27e3fc0578aa27abf48ed9ae461aa344fb95990e5ad8bd1"
+  },
+  "cuts": [
+    "2017-06-30",
+    "2017-09-30"
+  ],
+  "duration_seconds": 58.1,
+  "generated_at": "2026-09-23T15:46:50+00:00"
+}
