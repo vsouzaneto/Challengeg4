@@ -1,0 +1,174 @@
+{
+  "schema_version": 2,
+  "scope": "curated_public_process_evidence",
+  "current_status": "SKEPTIC_REMEDIATION_IMPLEMENTED_PENDING_REVIEW",
+  "transition": "EXECUTIVE_REFINEMENT_IMPLEMENTED_PENDING_REVIEW -> SKEPTIC_REMEDIATION_IMPLEMENTED_PENDING_REVIEW",
+  "events": [
+    {
+      "event_id": "EVT-001",
+      "stage": "challenge_selection",
+      "human_decision": "Challenge 004 escolhido como sistema de decisão.",
+      "ai_contribution": "IA comparou opções e propôs Data Trust Gate.",
+      "evidence": "docs/prototype-scope.md",
+      "outcome": "Hipótese inicial formalizada."
+    },
+    {
+      "event_id": "EVT-002",
+      "stage": "dataset_audit",
+      "human_decision": "Não tratar a fixture como verdade operacional.",
+      "ai_contribution": "IA apoiou auditoria determinística e testes adversariais.",
+      "evidence": "evidence/dataset-audit.json",
+      "outcome": "Fonte simulada e limitações de identidade confirmadas."
+    },
+    {
+      "event_id": "EVT-003",
+      "stage": "first_skeptic_block",
+      "human_decision": "Aceitar o bloqueio e corrigir sem apagar a falha.",
+      "ai_contribution": "Revisão cética encontrou proveniência e linguagem estatística insuficientes.",
+      "evidence": "reports/refutation-log.md",
+      "outcome": "Geração inicial rejeitada em 64/100."
+    },
+    {
+      "event_id": "EVT-004",
+      "stage": "mvp_visual_qa",
+      "human_decision": "Rejeitar o atalho de clipping e corrigir overflow na origem.",
+      "ai_contribution": "QA local identificou overflow e autenticou seis capturas.",
+      "evidence": "reports/qa-evidence-failed-mobile-overflow.json",
+      "outcome": "MVP anterior corrigido, mas não promovido."
+    },
+    {
+      "event_id": "EVT-005",
+      "stage": "final_review_generation_1",
+      "human_decision": "Preservar a geração 1 como rejeitada.",
+      "ai_contribution": "Revisão autoritativa encontrou instrução canônica obsoleta.",
+      "evidence": "reports/qa-evidence-stale-final-review-gen1.json",
+      "outcome": "Geração 1 bloqueada em 8,8/10."
+    },
+    {
+      "event_id": "EVT-006",
+      "stage": "final_review_generation_2",
+      "human_decision": "Preservar a geração 2 como rejeitada.",
+      "ai_contribution": "Revisão autoritativa encontrou próximos passos ainda contraditórios.",
+      "evidence": "reports/qa-evidence-stale-final-review-gen2.json",
+      "outcome": "Geração 2 bloqueada em 8,8/10."
+    },
+    {
+      "event_id": "EVT-007",
+      "stage": "human_review_revise",
+      "human_decision": "Aprovar tese Desconstrução + Choque de Realidade + Gatekeeper.",
+      "ai_contribution": "IA decompôs o edital em claims, decisões, números e contrato de QA V2.",
+      "evidence": "docs/prototype-scope.md",
+      "outcome": "Revisão humana solicitou substituição integral do dashboard."
+    },
+    {
+      "event_id": "EVT-008",
+      "stage": "v2_tdd_red",
+      "human_decision": "Exigir testes exatos antes da implementação.",
+      "ai_contribution": "IA criou regressões para hero, métricas, gatekeeper, segurança, responsividade e QA.",
+      "evidence": "tests/test_build_all.py",
+      "outcome": "RED observado contra o dashboard anterior."
+    },
+    {
+      "event_id": "EVT-009",
+      "stage": "v2_implemented",
+      "human_decision": "Manter publicação bloqueada até revisão.",
+      "ai_contribution": "IA implementou narrativa V2, dados estruturados, documentação e verificação visual ampliada.",
+      "evidence": "scripts/build_all.py e dist/index.html",
+      "outcome": "V2_IMPLEMENTED_PENDING_REVIEW."
+    },
+    {
+      "event_id": "EVT-010",
+      "stage": "v2_authoritative_block",
+      "human_decision": "Aceitar o bloqueio autoritativo e preservar a geração HTML 9181a874… como rejeitada.",
+      "ai_contribution": "O Cético identificou quatro falhas altas, duas médias e uma baixa: lacunas estratégicas, inferência de hashtags sem método, tese excessiva, ajuste de patrocínio indevido, estimandos mistos, mapas não vinculantes e anglicismos.",
+      "evidence": "reports/refutation-log.md",
+      "outcome": "Schema FAIL; 7,4/10; BLOCK; C0/H4/M2/L1."
+    },
+    {
+      "event_id": "EVT-011",
+      "stage": "v2_remediation_tdd_red",
+      "human_decision": "Converter integralmente H-01 a H-04, M-01 a M-02 e L-01 em regressões antes da correção.",
+      "ai_contribution": "Sete testes específicos falharam pelas causas esperadas: matriz ausente, inferência hardcoded, tese ampla, ajuste composto indevido, estimandos mistos, validação semântica ausente e anglicismos.",
+      "evidence": "evidence/test-results-red-v2-remediation.txt",
+      "outcome": "RED observado: 7 testes, 3 falhas e 4 erros causais."
+    },
+    {
+      "event_id": "EVT-012",
+      "stage": "v2_remediation_implemented",
+      "human_decision": "Manter submissão bloqueada e preparar nova geração para revisão autoritativa externa.",
+      "ai_contribution": "IA implementou matriz de seis respostas, Welch normal bilateral com Holm, tese descritiva restrita, patrocínio por componentes, estimando comparável, mapas vinculantes e linguagem pt-BR.",
+      "evidence": "scripts/build_all.py, tests/test_build_all.py e reports/refutation-log.md",
+      "outcome": "V2 corrigida; revisão autoritativa ainda pendente."
+    },
+    {
+      "event_id": "EVT-013",
+      "stage": "v2_reproducibility_block",
+      "human_decision": "Preservar a geração c46cf0a como rejeitada e tornar o checkout autossuficiente.",
+      "ai_contribution": "O Cético confirmou as correções analíticas, mas bloqueou a geração porque CSV e ZIP não integravam os bytes congelados e o escopo ainda declarava 18 capturas.",
+      "evidence": "reports/refutation-log.md",
+      "outcome": "Schema FAIL; 8,7/10; BLOCK; C0/H1/M0/L1."
+    },
+    {
+      "event_id": "EVT-014",
+      "stage": "v2_authoritative_pass",
+      "human_decision": "Congelar o checkpoint local 687ca17 para validação humana, sem autorizar submissão.",
+      "ai_contribution": "A revisão autoritativa reproduziu 43 testes, build duplo, auditoria do CSV/ZIP, 970 análises de hashtags e QA com 20 capturas.",
+      "evidence": "reports/refutation-log.md e evidence/build-manifest.json",
+      "outcome": "V2 aprovada tecnicamente: Schema PASS; 10,0/10; C0/H0/M0/L0."
+    },
+    {
+      "event_id": "EVT-015",
+      "stage": "human_visual_refinement",
+      "human_decision": "Aprovar a direção da V2 e solicitar refinamentos visuais antes da validação final.",
+      "ai_contribution": "IA converteu o feedback em regressões para histórico completo, espaçamento e cards de patrocínio e múltiplas comparações.",
+      "evidence": "reports/human-review-v2.md e tests/test_build_all.py",
+      "outcome": "V2 em refinamento visual solicitado por Thiago; submissão permanece bloqueada."
+    },
+    {
+      "event_id": "EVT-016",
+      "stage": "human_visual_refinement_implemented",
+      "human_decision": "Manter a substituição do checkpoint bloqueada até uma nova revisão autoritativa.",
+      "ai_contribution": "IA exibiu o histórico completo, corrigiu espaçamentos e converteu patrocínio e múltiplas comparações em cards; testes, build duplo e QA de 26 capturas passaram.",
+      "evidence": "evidence/test-results.txt, evidence/qa-evidence.json e reports/visual-qa.md",
+      "outcome": "Refinamentos implementados; nova geração aguarda revisão autoritativa."
+    },
+    {
+      "event_id": "EVT-017",
+      "stage": "human_executive_refinement",
+      "human_decision": "Solicitar linguagem financeira, alertas de risco, visual temporal e meta semanal orientada à mensuração.",
+      "ai_contribution": "IA limitou as afirmações ao que a base permite: risco financeiro específico desta base, gráfico com escala declarada e SESOI ainda provisória.",
+      "evidence": "reports/human-review-v2.md",
+      "outcome": "Segunda rodada de refinamento executivo aceita; revisão anterior ficou obsoleta."
+    },
+    {
+      "event_id": "EVT-018",
+      "stage": "executive_refinement_implemented",
+      "human_decision": "Manter checkpoint, submissão e publicação bloqueados até testes, QA e revisão da nova geração.",
+      "ai_contribution": "IA implementou tradução de hashtags, risco de CAC/ROI, alertas executivos, eletrocardiograma trimestral, impacto de identidade e meta de instrumentação; a QA foi ampliada para 28 capturas com identidade em desktop e celular.",
+      "evidence": "scripts/build_all.py, tests/test_build_all.py e reports/visual-qa.md",
+      "outcome": "Refinamentos executivos implementados; nova geração aguarda revisão autoritativa."
+    },
+    {
+      "event_id": "EVT-019",
+      "stage": "authoritative_review_block",
+      "human_decision": "Não promover a geração 90c3a5b após o bloqueio Cético autoritativo.",
+      "ai_contribution": "A revisão reproduziu 45 testes e 28 capturas, mas bloqueou a geração por linguagem inferencial excessiva e manifesto de testes pendente; também apontou três achados médios.",
+      "evidence": "/root/authoritative-skeptic-review-90c3a5b.md e reports/refutation-log.md",
+      "outcome": "BLOCK, 8,27/10, C0/H2/M3/L0; safe_to_checkpoint=false."
+    },
+    {
+      "event_id": "EVT-020",
+      "stage": "authoritative_review_remediation",
+      "human_decision": "Manter checkpoint e submissão bloqueados até nova revisão dos bytes corrigidos.",
+      "ai_contribution": "IA limitou a linguagem de hashtags, corrigiu o parser do log de testes, qualificou a meta SESOI, eliminou capturas antigas, adicionou QA da matriz em 125% e 150% e criou regressões focadas.",
+      "evidence": "scripts/build_all.py, tests/test_build_all.py, evidence/qa-evidence.json e reports/visual-qa.md",
+      "outcome": "Remediação implementada; nova geração aguarda revisão autoritativa."
+    }
+  ],
+  "rejected_generations_preserved": [
+    "reports/qa-evidence-stale-final-review-gen1.json",
+    "reports/qa-evidence-stale-final-review-gen2.json"
+  ],
+  "pending_events": ["human_visual_validation", "human_submission_decision"],
+  "privacy": {"raw_conversations_embedded": false, "secrets_embedded": false, "unrelated_private_context_embedded": false}
+}

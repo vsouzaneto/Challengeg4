@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "candidate": "Thiago Queiroz — Challenge 004",
+  "status": "READY_FOR_HUMAN_SUBMISSION_GATE",
+  "source_checkpoint": {
+    "commit": "22cf85409aaa3be1e4a54af50ef9a6ba13ac972e",
+    "tree": "f161b73eed8ed457ba8f7cf3b38bcdbc6188dc5e",
+    "technical_review": "PASS 10.0/10 C0/H0/M0/L0"
+  },
+  "external_submission_authorized": false,
+  "files": [
+    {
+      "path": "README.md",
+      "size": 9183,
+      "sha256": "bf8373abdc28b3a323953f603ea7fde076f09527f88171dceac6efe8b1ac4faf"
+    },
+    {
+      "path": "docs/dataset-audit.md",
+      "size": 8213,
+      "sha256": "18001d2c9db82aa299b96bc80b5e6dc253b126a319ff798783534fe7ad1d5c68"
+    },
+    {
+      "path": "docs/visual-qa.md",
+      "size": 2065,
+      "sha256": "ffa84f42cd30e5bb3c58fdea70e1990c8b611b1d305f2ca5cd6ce375d2ea69b5"
+    },
+    {
+      "path": "process-log/README.md",
+      "size": 1171,
+      "sha256": "ccb8b1308017404e1afc6ffa9302aa6355219759779ac050025a0f16cf8b1cf8"
+    },
+    {
+      "path": "process-log/authoritative-skeptic-review.md",
+      "size": 1327,
+      "sha256": "b5a84eac1d7d749af4a688f0952f3f41bc853e5847c3fe37a0ca5440f31aac9c"
+    },
+    {
+      "path": "process-log/git-history.md",
+      "size": 838,
+      "sha256": "3d2ecc9068b2157b3004509677fe94b69668995cd22a9f515b0796b28eb45be0"
+    },
+    {
+      "path": "process-log/human-review-v2.md",
+      "size": 1712,
+      "sha256": "b16113903dfdff31db207bb058030baec0dcbe23d083e9d8c7571b4807ffbbf2"
+    },
+    {
+      "path": "process-log/kaggle-notebook-comparison.md",
+      "size": 16980,
+      "sha256": "70f588e7258010ff47be4f7e18be9e070eb4e4c8338885487e44f4e8367d0412"
+    },
+    {
+      "path": "process-log/process-log.md",
+      "size": 7704,
+      "sha256": "6ad0f2cdb979b41fb5ce5a435203741cab19c3324cdfeffe1a76315ad6e2d7ef"
+    },
+    {
+      "path": "process-log/process-timeline.json",
+      "size": 10231,
+      "sha256": "59e2f233b314472e386790321b0fe0aa642b872762d3cb66654fe25dc4d43e55"
+    },
+    {
+      "path": "process-log/refutation-log.md",
+      "size": 15744,
+      "sha256": "3d8d2eee69de23b81d3050e1e46bcdadbee7ff0a3dee7ef51367ae61a4e73d5d"
+    },
+    {
+      "path": "solution/social-growth-decision-system-v2.html",
+      "size": 47132,
+      "sha256": "5e4fd58f3157b6bf69f30d74646607f2044a706ed79f6ac9b8ab4086fa8a47a2"
+    },
+    {
+      "path": "solution/source-checkpoint.zip",
+      "size": 20997091,
+      "sha256": "841af10ae849cc0ee4226f9ca0b436ddfeb0b9d246fcd05ddce109979c34e7b2"
+    }
+  ]
+}
