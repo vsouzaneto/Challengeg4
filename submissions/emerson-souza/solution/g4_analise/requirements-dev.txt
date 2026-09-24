@@ -1,0 +1,4 @@
+# Ferramentas de desenvolvimento (testes e executavel). Nao sao necessarias para usar o sistema.
+-r requirements.txt
+pytest==9.1.1
+pyinstaller==6.22.3

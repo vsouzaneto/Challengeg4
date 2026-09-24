@@ -1,0 +1,10 @@
+{
+  "allowedMcpPatterns": [
+    { "pattern": "listar", "comment": "Só leitura: módulos, listas, sessões" },
+    { "pattern": "obter", "comment": "Só leitura: resumo, plano de ação, método" },
+    { "pattern": "consultar", "comment": "Só leitura: listas da análise" },
+    { "pattern": "sugerir", "comment": "Só leitura: sugere o De/Para, não cria nada" },
+    { "pattern": "classificar", "comment": "Só leitura: classifica um texto, não grava" },
+    { "pattern": "recomendar", "comment": "Só leitura: calcula a recomendação, não grava" }
+  ]
+}
