@@ -1,0 +1,23 @@
+services:
+  lead-scorer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+      - "5173:5173"
+    environment:
+      COOKIE_SECURE: "${COOKIE_SECURE:-false}"
+    volumes:
+      - lead-scorer-postgres:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:3000/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 45s
+
+volumes:
+  lead-scorer-postgres:
+    name: lead-scorer-postgres
