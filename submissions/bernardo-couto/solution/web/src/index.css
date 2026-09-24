@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-g4-surface text-g4-text font-sans antialiased;
+    line-height: 1.5;
+  }
+  :focus-visible {
+    outline: 2px solid #184560;
+    outline-offset: 2px;
+    border-radius: 10px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex h-10 items-center justify-center gap-2 rounded px-4 text-sm font-semibold disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply btn bg-g4-primary text-white hover:bg-g4-navy700 disabled:bg-tier-Cbg disabled:text-g4-disabled;
+  }
+  .btn-action {
+    @apply btn bg-g4-secondary text-g4-primary hover:brightness-95;
+  }
+  .btn-danger {
+    @apply btn bg-g4-risk text-white hover:bg-g4-riskDeep;
+  }
+  .btn-secondary {
+    @apply btn border border-g4line bg-white text-g4-navy700 hover:bg-g4-rowHover;
+  }
+  .select {
+    @apply h-10 w-full rounded border border-g4line bg-white px-3 text-sm text-g4-text disabled:text-g4-disabled;
+  }
+  .card {
+    @apply rounded border border-g4line bg-white shadow-card;
+  }
+}
