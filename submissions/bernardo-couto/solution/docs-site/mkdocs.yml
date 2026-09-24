@@ -56,14 +56,12 @@ validation:
   unrecognized_links: info
   anchors: warn
 
-# Raw evidence (transcripts, redaction patterns, screenshots) is linked from the process log but is not a doc page.
+# Raw evidence (transcripts, screenshots) is linked from the process log but is not a doc page.
 exclude_docs: |
   process-log/chat-exports/
-  process-log/tools/redact-patterns.txt
 
 not_in_nav: |
   CLAUDE.md
-  process-log/tools/*
 
 nav:
   - Início: index.md

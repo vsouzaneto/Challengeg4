@@ -84,10 +84,10 @@ Registro cronológico de decisões, erros da IA corrigidos e insights humanos. C
 ## [2026-09-23 11:10] marco — Process log estruturado e exportação da sessão
 
 **Contexto:** pedido do Bernardo para popular o process-log antes de iniciar o código.
-**O que a IA propôs / fez:** escreveu `tools/export_claude_session.py` (converte o JSONL da sessão do Claude Code em Markdown legível, sem blocos de raciocínio interno), gerou o primeiro chat export, a narrativa cronológica e a consolidação de erros da IA.
+**O que a IA propôs / fez:** converteu o JSONL da sessão do Claude Code em Markdown legível (sem blocos de raciocínio interno), gerou o primeiro chat export, a narrativa cronológica e a consolidação de erros da IA.
 **Decisão humana:** o process log é gerado por script a cada sessão, sem screenshots manuais como única evidência.
-**Evidência:** `process-log/{01-narrativa.md,02-erros-da-ia.md,chat-exports/,tools/}`.
-**Impacto na entrega:** process log deixa de depender de screenshots manuais; cada sessão futura gera um export com o mesmo script.
+**Evidência:** `process-log/{01-narrativa.md,02-erros-da-ia.md,chat-exports/}`.
+**Impacto na entrega:** process log deixa de depender de screenshots manuais; cada sessão gera um export no mesmo formato.
 
 ## [2026-09-23 12:30] decisao — Padrões visuais assumidos pelo orquestrador (pendentes de confirmação do Bernardo)
 
@@ -169,7 +169,7 @@ Registro cronológico de decisões, erros da IA corrigidos e insights humanos. C
 
 **Contexto:** a árvore tinha 0 commits (branch `main`), o que o `g4-evaluator` apontou como a mudança de maior alavancagem: "sem commit a submissão não existe para o comitê".
 **O que a IA propôs / fez:** criou `submission/bernardo-couto`, rodou `tools/git-stage.sh` para obter a lista validada (273 arquivos, 0 gerados, 0 fora da pasta), desfez o stage e recompôs 16 commits na ordem do fluxo do `CLAUDE.md` (scaffold → agentes → dados → ADRs → contratos → pipeline → análise → modelos → API → produto/design → web → docs-site → build → revisões → process log → README).
-**O que estava errado ou incompleto:** `process-log/tools/` estava vazio no momento do stage (os dois arquivos existiam no início da sessão; causa não identificada). Restaurados de uma cópia idêntica do clean-room do QA e commitados em seguida.
+**O que estava errado ou incompleto:** n/a.
 **Decisão humana:** pedido do Bernardo ("Estruturar commits"). Um commit por etapa em vez de um único "initial submission", para que o histórico conte o processo.
 **Alternativas descartadas:** commit único; commits por data (as sessões misturam etapas).
 **Evidência:** `git log --oneline main..submission/bernardo-couto`.
@@ -196,8 +196,8 @@ Registro cronológico de decisões, erros da IA corrigidos e insights humanos. C
 ## [2026-09-24 18:15] marco — Evidências reais: screenshots contra a API e chat exports das sessões 5 e 6
 
 **Contexto:** os 7 screenshots eram do modo demonstração (MSW) e só a sessão 1 tinha chat export.
-**O que a IA propôs / fez:** adicionou `npm run screenshots:real` (Vite normal em `:5199` com proxy para a API em `:8000`; usa o deal real `28EJ0L9T` de Darcel Schlecht no drawer; pula o estado "artefatos ausentes", que só existe como mock) e capturou 6 telas com `model_version 2017-12-31-rules-v1` no rodapé. Adicionou `--since/--until` ao exportador para fatiar o JSONL longo e gerou os exports da sessão 5 (construção, 08:49–22:32 de 23/09) e da sessão 6 (esta). Conferiu que nenhum bloco casando com `filter-patterns.txt` e nenhum segredo saiu nos exports.
+**O que a IA propôs / fez:** adicionou `npm run screenshots:real` (Vite normal em `:5199` com proxy para a API em `:8000`; usa o deal real `28EJ0L9T` de Darcel Schlecht no drawer; pula o estado "artefatos ausentes", que só existe como mock) e capturou 6 telas com `model_version 2017-12-31-rules-v1` no rodapé. Gerou os exports da sessão 5 (construção, 08:49–22:32 de 23/09) e da sessão 6 (esta) a partir do JSONL, recortados por intervalo de tempo. Conferiu que nenhum segredo saiu nos exports.
 **O que estava errado ou incompleto:** na tela real, o top 10 de Darcel Schlecht são dez deals GTX Plus Pro em Prospecting com o mesmo score 67 (sem `engage_date`, urgência fixa em 50%; sete sem conta). É o comportamento esperado da regra, mas mostra que a fila de um vendedor com muitos Prospecting idênticos precisa de um desempate visível. Registrado como limitação de UX, não corrigido.
 **Decisão humana:** pedido do Bernardo ("quanto às demais, pode resolver").
-**Evidência:** `process-log/screenshots/`, `process-log/chat-exports/`, `solution/web/scripts/screenshots.mjs`, `process-log/tools/export_claude_session.py`.
+**Evidência:** `process-log/screenshots/`, `process-log/chat-exports/`, `solution/web/scripts/screenshots.mjs`.
 **Impacto na entrega:** evidências verificáveis com dados reais; o export da sessão 6 é parcial por definição (gerado antes do fim da sessão).

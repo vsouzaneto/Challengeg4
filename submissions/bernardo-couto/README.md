@@ -133,7 +133,7 @@ Cronologia completa em `process-log/01-narrativa.md`; decisões datadas em `proc
 1. **Entender antes de construir** (22/09, noite): leitura dos 9 documentos do repositório; download do dataset e perfil com pandas; achados viram hooks e skill `crm-dataset`; 8 agentes e 6 hooks testados com payloads simulados.
 2. **Correções e Spark** (23/09, madrugada): renomear agentes, criar `security-engineer` e `machine-learning-engineer`; IA objeta a Spark por volume, Bernardo decide por arquitetura (ADR 0001); JDK 23 detectado como incompatível e transformado em guardrail.
 3. **Produto, entrega e design** (23/09, manhã): Streamlit → FastAPI + React + Docker + MkDocs (ADRs 0002–0004); Jev avaliado e rejeitado (ADR 0005); tokens do G4 extraídos do site e contraste AA calculado; papéis de produto e tech lead criados.
-4. **Process log estruturado**: script `process-log/tools/export_claude_session.py` gera o chat export sem raciocínio interno; narrativa e erros consolidados.
+4. **Process log estruturado**: chat exports gerados a partir do JSONL das sessões, sem raciocínio interno; narrativa e erros consolidados.
 5. **Construção** (23/09, 11h em diante): tech-lead → scaffold e contrato `ScoredDeal` (ADR 0007); data-engineer → bronze/silver/gold e dois achados novos (conta é artefato temporal; 81% parados); data-scientist → 11 hipóteses, backtest, 7 refutadas; product-designer → UX spec e tokens; revops-engineer → revisão de textos, duas filas, sprint de limpeza; security-engineer → 0 críticos, correções de nginx/Docker/hooks; machine-learning-engineer → jobs, model card, LR em sombra; backend-engineer → API; application-engineer → web e screenshots; quality-engineer, code-reviewer e tech-writer → fechamento.
 
 ### Onde a IA errou e como corrigi
@@ -168,7 +168,7 @@ Também: `regParam = 0,1` da spec zerava todos os coeficientes da LR (ajustado p
 - [x] Configuração do Claude Code versionada: `.claude/` (15 agentes, 9 skills, 6 hooks, `settings.json`) e `CLAUDE.md`
 - [x] Decision log datado: `process-log/decisions.md`
 - [x] Narrativa e erros da IA: `process-log/01-narrativa.md`, `process-log/02-erros-da-ia.md`
-- [x] Chat exports das sessões: `process-log/chat-exports/` (3 arquivos: setup e produto, construção, fechamento e PR; gerados por `process-log/tools/export_claude_session.py` com filtro de padrões; raciocínio interno não exportado)
+- [x] Chat exports das sessões: `process-log/chat-exports/` (3 arquivos: setup e produto, construção, fechamento e PR; gerados a partir do JSONL das sessões do Claude Code; raciocínio interno não exportado)
 - [x] Screenshots do app: `process-log/screenshots/` (6 telas contra a API real; 1 estado de erro em modo demonstração)
 - [x] Git history: commits pequenos na branch `submission/bernardo-couto`, um por etapa do fluxo (`git log --oneline -- submissions/bernardo-couto`), staging via `tools/git-stage.sh`
 - [x] Hipóteses registradas antes da análise: `solution/pipeline/analysis/00_hypotheses.md`

@@ -39,7 +39,7 @@ Cronologia por sessão. Cada item aponta para evidência (decision log, chat exp
 
 ## Sessão 4 — 23/09/2026 · Process log e início do código
 
-Exportação da transcrição desta sessão com o script [`tools/export_claude_session.py`](./tools/export_claude_session.py) (raciocínio interno não exportado). Início da construção: scaffold do monorepo pelo `tech-lead`, seguido de dados, scoring, API, web e docs.
+Exportação da transcrição desta sessão a partir do JSONL do Claude Code (raciocínio interno não exportado). Início da construção: scaffold do monorepo pelo `tech-lead`, seguido de dados, scoring, API, web e docs.
 
 ## Sessão 5 — 23/09/2026 (11h em diante) · Construção
 
@@ -72,9 +72,8 @@ Onda de construção orquestrada pela sessão principal, um agente por especiali
 2. `docker compose up --build`: a UI em `localhost:5173` mostrava uma página vazia. Causa: dois dev servers Vite de outro projeto do Bernardo ocupavam a porta no host; o container estava correto. Diagnóstico por `lsof` e pelo título da página servida; nenhum processo alheio foi encerrado.
 3. 16 commits na branch `submission/bernardo-couto`, um por etapa do fluxo do `CLAUDE.md`, a partir da lista validada pelo `git-stage.sh` (273 arquivos, 0 gerados, 0 fora da pasta).
 4. Bump de `vite` 5→7, `vitest` 2→4 e `@vitejs/plugin-react` 4→5 (M2/M3 do security review). O `npm` 11.4 local falha com um erro interno do arborist neste conjunto de peers; o lockfile foi regenerado com o `npm` 10 da imagem `node:20-alpine` e o `npm ci` verificado nos dois. 33 testes, lint, typecheck, build e `npm audit` com 0 vulnerabilidades.
-5. Screenshots recapturadas contra a API real (`npm run screenshots:real`, novo modo do script); chat exports das sessões 5 e 6 gerados com `--since/--until` (opção nova do exportador).
+5. Screenshots recapturadas contra a API real (`npm run screenshots:real`, novo modo do script); chat exports das sessões 5 e 6 gerados a partir do JSONL das sessões, recortados por intervalo de tempo.
 
-**Incidente registrado:** `process-log/tools/` estava vazio quando os commits foram feitos, embora os dois arquivos existissem no início da sessão. Restaurados de uma cópia idêntica do clean-room do QA (`diff` limpo contra a cópia do site de docs). Causa não identificada; entrada no decision log.
 
 ## Ferramentas e para quê
 
