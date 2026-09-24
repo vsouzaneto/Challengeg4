@@ -1,0 +1,23 @@
+{
+  "name": "lead-scorer-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc -p tsconfig.test.json",
+    "test": "tsx --test src/**/*.test.ts",
+    "db:migrate": "tsx src/database/setup.ts",
+    "db:setup": "node dist/database/db-setup.js",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "pg": "^8.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "@types/pg": "^8.23.1",
+    "tsx": "^4.20.6",
+    "typescript": "^7.0.2"
+  }
+}

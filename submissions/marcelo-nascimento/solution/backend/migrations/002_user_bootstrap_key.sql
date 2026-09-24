@@ -1,0 +1,1 @@
+ALTER TABLE users ADD COLUMN bootstrap_key TEXT UNIQUE;
