@@ -11,7 +11,7 @@
 |---|---|
 | Decisões do Pedro que definiram a entrega | 4 (desafio, narrativa, LLM, formato do protótipo) + revisão dos rótulos |
 | Hipóteses da IA refutadas pelos dados | 4 |
-| Erros da IA pegos pela verificação | 31 ([lista](#erros-da-ia-pegos-pela-verificação)): 19 antes de entrar na entrega e 12 depois (9 na revisão pedida pelo Pedro, 2 pela segunda opinião, 1 no teste do chat) |
+| Erros da IA pegos pela verificação | 38 ([lista](#erros-da-ia-pegos-pela-verificação)): 21 antes de entrar na entrega e 17 depois (9 na revisão pedida pelo Pedro, 2 pela segunda opinião, 1 no teste do chat, 4 na validação final, 1 na revisão do export) |
 | Verificação automática do protótipo | 308/308 textos com a mesma fila e a mesma faixa em Python e no navegador |
 | Validação cruzada (outra IA) | 19 afirmações recalculadas: 16 confirmam, 2 divergem, 1 não verificável; 2 pontos novos entraram na revisão |
 
@@ -221,6 +221,37 @@ Outras decisões desta etapa:
   outro resultado (n = 9). O n = 31 da segunda opinião só fecha agrupando por tipo (4 × 4 × 5 = 80 combinações).
   Refeito por tipo, confirma: desvio entre combinações 0,241, contra 0,240 com a nota embaralhada.
 
+## 14. Validação final, export da conversa e fork (24/09)
+
+- **Pedido do Pedro:** uma última checagem com portão de decisão. Se os números, as contagens e as conclusões batessem
+  com os dados de origem, seguir para os prints, o export da conversa, o fork e o teste do protótipo; se não, parar e
+  mostrar a divergência. Parte desta etapa rodou com o Claude Fable (o Pedro trocou o modelo com `/model`); o resto,
+  com o Claude Opus.
+- **Recálculo:** o pipeline reexecutado gerou JSONs idênticos aos commitados. 9 verificadores recalcularam em código
+  784 afirmações da entrega; cada divergência passou por 3 refutadores (42 agentes). 7 alarmes foram refutados e **4
+  confirmados, todos de texto**: a revisão humana dos rótulos marcada como feita com a coluna vazia; "errar quase
+  metade" onde o erro é 55%; Purchase, Storage e Access como as filas mais precisas, sem Internal Project (90,4%); e os
+  3 modelos maiores do Gemini "nas três execuções", quando dois só foram tentados na terceira. **A IA parou no
+  portão.** O Pedro revisou os 40 casos (concordou com a IA em todos), as outras 3 frases foram corrigidas, e o portão
+  foi reconferido em código antes de seguir.
+- **Export:** o zip do app (31 MB, conversa + 54 subagentes) virou [`chat-export/`](chat-export/) por um gerador que
+  confere a saída contra o bruto: 11 de 11 mensagens do Pedro e 100 de 100 textos do Claude idênticos, 471 chamadas de
+  ferramenta, 0 dado pessoal. Uma revisão independente (7 lentes, 2 refutadores por achado, 63 agentes) confirmou 23
+  de 28 achados; 22 foram corrigidos no gerador.
+- **Erro da IA: chave do Gemini no export.** Na validação, a IA afirmou que nenhuma chave aparecia na transcrição. A
+  busca só conhecia o formato antigo (`AIza…`), e a chave do Pedro está no formato novo, na saída do comando que
+  renomeou o `.env`. Ela não está no repositório, no histórico do git nem na versão legível; está no zip bruto, que não
+  é publicado. Recomendação: revogar.
+- **Fork:** `P0lid0/ai-master-challenge`, criado em 24/09 com a conta pessoal do Pedro. A branch não foi enviada (o
+  pedido era só o fork).
+- **Teste final do protótipo**, com o servidor reiniciado do zero: rotas e API (tradução ok, entradas inválidas com
+  400, caminho `../.env` com 404); página principal (ticket em inglês roteado sozinho para Hardware com 99,9% e rascunho
+  do Gemini; ticket em português com 39% vai para uma pessoa, e depois da tradução vai sozinho para Access com 90,7%;
+  tema sensível para uma pessoa; pedido vago pede detalhes; os 8 exemplos); simulador (2.500 tickets/mês: 91 h e
+  R$ 43,6 mil por ano; 353/mês: 13 h); revisão (os 3 cenários iguais aos publicados, e o volume editável recalcula);
+  chat (tradução e roteamento, pedido de detalhes aprovado e retriagem, regra de risco com rascunho enviado pelo
+  atendente, escolha de fila no assistido); 3 suítes de teste; console e log do servidor sem erro.
+
 ---
 
 ## Erros da IA pegos pela verificação
@@ -258,3 +289,10 @@ Outras decisões desta etapa:
 | 29 | Tipos do CSV não comparados com os do enunciado (3 no brief, 5 no CSV) | segunda opinião de outra IA, recalculada | 13 |
 | 30 | Script de verificação agrupando a "pior combinação" por assunto em vez de tipo | n = 9 não batia com o n = 31 afirmado | 13 |
 | 31 | Documento da validação cruzada escrito em 1ª pessoa, atribuindo ao Pedro erros que foram da IA | releitura antes do commit | 13 |
+| 32 | README com a revisão humana dos rótulos marcada como feita, com a coluna `veredito_pedro` vazia | validação final (recálculo + 3 refutadores) | 14 |
+| 33 | "Rotear sozinho seria errar quase metade", com erro de 55% | validação final | 14 |
+| 34 | Purchase, Storage e Access apresentadas como as filas mais precisas (Internal Project, 90,4%, estava acima de Access) | validação final | 14 |
+| 35 | 3 modelos maiores do Gemini "falharam nas três execuções" (dois só foram tentados na terceira) | validação final, contra os logs brutos | 14 |
+| 36 | "Nenhuma chave do Gemini aparece na transcrição": a busca só conhecia o formato antigo | revisão independente do export | 14 |
+| 37 | Primeira versão do export legível com 22 defeitos (notificações que sumiam, escapes do markdown, prints cortando o pedido sem aviso, horário dos workflows) | revisão independente do export | 14 |
+| 38 | O nome a omitir do export ficou gravado no próprio gerador, que seria publicado | varredura da pasta antes do commit | 14 |

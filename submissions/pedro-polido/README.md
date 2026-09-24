@@ -189,7 +189,8 @@ triagem, que estes dados não permitem medir.
 ## Process Log — Como usei IA
 
 > **Process log principal:** [`PROCESS_LOG.md`](PROCESS_LOG.md) (iterações, verificações e o que eu decidi). O log técnico,
-> com os 31 erros da IA e como cada um foi pego, está em [`process-log/README.md`](process-log/README.md).
+> com os 38 erros da IA e como cada um foi pego, está em [`process-log/README.md`](process-log/README.md). A conversa
+> inteira com o Claude Code está em [`process-log/chat-export/`](process-log/chat-export/).
 
 ### Ferramentas usadas
 
@@ -276,7 +277,8 @@ ou nas variáveis de ambiente da Vercel.
 - [x] Screenshots: [`process-log/screenshots/`](process-log/screenshots/) (07 a 09: chat de atendimento)
 - [x] Validação cruzada: texto da segunda opinião e verificação item a item em
   [`process-log/validacao-cruzada/`](process-log/validacao-cruzada/)
-- [ ] Chat export da sessão com o Claude Code: `process-log/chat-export/` (pendente: revisar dados pessoais antes de publicar)
+- [x] Chat export da sessão com o Claude Code, revisado e sem dados pessoais, com 9 prints:
+  [`process-log/chat-export/`](process-log/chat-export/)
 - [ ] Print da conversa com a outra IA (pendente; o texto já está na pasta acima)
 
 ---
