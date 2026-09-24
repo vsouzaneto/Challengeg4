@@ -1,17 +1,21 @@
-// Captures the three screens (plus states) in mock mode for process-log/screenshots.
-// Usage: npm run screenshots  (starts `vite --mode mock` on :5199, needs Playwright chromium).
+// Captures the three screens (plus states) for process-log/screenshots.
+// Usage: npm run screenshots        -> mock mode (`vite --mode mock`, MSW fixtures, yellow demo banner)
+//        npm run screenshots:real   -> real mode (`vite` proxying /api to the API on :8000; needs `docker compose up`)
+// Both start Vite on :5199 and need Playwright chromium. Real mode skips the "artifacts missing"
+// state, which only exists as a mock (`?mock=missing`).
 import { spawn } from 'node:child_process';
 import { mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { chromium } from 'playwright';
 
 const PORT = 5199;
+const REAL = process.env.SHOTS_MODE === 'real';
 const OUT = resolve(process.argv[2] ?? '../../process-log/screenshots');
 mkdirSync(OUT, { recursive: true });
 
-const vite = spawn('npx', ['vite', '--mode', 'mock', '--port', String(PORT), '--strictPort'], {
-  stdio: 'ignore',
-});
+const viteArgs = ['vite', '--port', String(PORT), '--strictPort'];
+if (!REAL) viteArgs.splice(1, 0, '--mode', 'mock');
+const vite = spawn('npx', viteArgs, { stdio: 'ignore' });
 const base = `http://localhost:${PORT}`;
 
 async function waitForServer() {
@@ -35,7 +39,8 @@ const shots = [
   ],
   [
     'web-fila-drawer.png',
-    '/?as_of=2017-12-31&agent=Darcel+Schlecht&deal=Z063OYW0',
+    // Z063OYW0 is an MSW fixture; 28EJ0L9T is Darcel Schlecht's top deal in the real gold partition.
+    `/?as_of=2017-12-31&agent=Darcel+Schlecht&deal=${REAL ? '28EJ0L9T' : 'Z063OYW0'}`,
     '[role=dialog]',
   ],
   [
@@ -47,7 +52,7 @@ const shots = [
   ['web-qualidade.png', '/qualidade?as_of=2017-12-31', 'svg[role=img]'],
   ['web-estado-artefatos.png', '/?as_of=2017-12-31&mock=missing', 'pre'],
   ['web-estado-vazio.png', '/?as_of=2017-12-31&agent=Ninguem', '[role=status]'],
-];
+].filter(([file]) => !(REAL && file === 'web-estado-artefatos.png'));
 
 try {
   await waitForServer();

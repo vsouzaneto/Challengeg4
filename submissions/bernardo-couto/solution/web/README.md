@@ -15,7 +15,8 @@ npm run lint         # eslint + prettier
 npm run typecheck    # tsc -b
 npm run build        # dist/ (o modo mock nunca entra no bundle)
 npm run gen:api      # regenera src/api/schema.d.ts (ou `make gen-api` em solution/, sem API rodando)
-npm run screenshots  # captura as telas em modo mock para process-log/screenshots (Playwright)
+npm run screenshots       # captura as telas em modo mock para process-log/screenshots (Playwright)
+npm run screenshots:real  # idem contra a API real em :8000 (docker compose up); pula o estado "artefatos ausentes"
 ```
 
 ## Modo demonstração (`dev:mock`)
