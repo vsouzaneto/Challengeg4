@@ -76,6 +76,9 @@ A lista completa, com os 31 erros, está em [`process-log/README.md`](process-lo
   tinha, e cada afirmação dela foi recalculada ([`validacao-cruzada/`](process-log/validacao-cruzada/)) `[evidência: anexar print]`.
 - **As decisões de produto:** abrir a entrega pela auditoria, usar o Gemini só onde ele ganha (tradução e rascunho) e
   publicar um web app.
+- **A revisão dos 40 casos da auditoria de rótulos:** concordei com a IA em todos, mas vi que boa parte dos ambíguos
+  só se resolve consultando outro sistema (conta, chamado, pedido de compra). Daí a proposta de um agente de
+  verificação só de leitura, avaliado no modo sombra (recomendação 6 do README).
 - **A escolha do diferencial:** pedi um chat, porque é onde temos mais experiência pelo histórico de agentes já
   construídos. Ele está em [`solution/app/chat.html`](solution/app/chat.html).
 
@@ -117,4 +120,4 @@ A lista completa, com os 31 erros, está em [`process-log/README.md`](process-lo
 - [ ] Print da conversa da validação cruzada (o texto já está em `process-log/validacao-cruzada/`), e confirmar que é a do Claude Chat.
 - [ ] Print do pedido para usar a TRIA como base.
 - [ ] Prints da minha análise manual dos CSVs.
-- [ ] Minha revisão dos 40 casos de rótulo (coluna `veredito_pedro`, hoje vazia) e os 2 trechos `[PEDRO: ...]` do README.
+- [ ] O trecho `[PEDRO: ...]` do README sobre o que a Tria mudou na proposta.

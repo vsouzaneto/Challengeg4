@@ -115,8 +115,11 @@ Outras decisões desta etapa:
 - No teste há 143 tickets em que o modelo tinha ≥ 90% de confiança e discordou do rótulo. Sorteamos 40.
 - **Veredito da IA** (Claude, lendo caso a caso): 15 o modelo está certo, 13 o rótulo está certo, 9 ambíguos, 3 nenhum
   dos dois. Ou seja, cerca de 1/3 dos "erros" de alta confiança são erros do rótulo.
-- **Revisão do Pedro:** coluna `veredito_pedro` em [`candidatos.csv`](auditoria-rotulos/candidatos.csv).
-  _[PEDRO: em quantos casos discordou da IA e por quê]_
+- **Revisão do Pedro:** coluna `veredito_pedro` em [`candidatos.csv`](auditoria-rotulos/candidatos.csv). Ele revisou
+  os 40 casos e concordou com o veredito da IA em todos. A observação dele foi outra: boa parte dos ambíguos não se
+  resolve relendo o ticket, e sim consultando outro sistema (conta bloqueada, chamado do equipamento, pedido de compra
+  existente). Daí a proposta de um agente de verificação só de leitura, que nunca executa nada, avaliado no modo sombra
+  pela fração de ambíguos que passa a ser resolvida.
 - **Terceira opinião (Gemini 3.5 Flash-Lite, sem ver o rótulo nem a previsão do modelo):** nos 15 casos em que a IA
   julgou o rótulo errado, o Gemini **nunca** escolheu o rótulo e ficou com a fila do modelo em 10. Nos 13 em que julgou
   o rótulo certo, ficou com o rótulo em 8. Concordância nos 28 casos categóricos: 64%. Em 38% dos 40 casos ele escolheu
@@ -154,8 +157,9 @@ Outras decisões desta etapa:
   o cache por rodada deixa os números finais reproduzíveis.
 - **Onde o LLM perde:** nas filas cujo significado é da casa. Hardware 47% contra 89% do linear, Miscellaneous 50%
   contra 76%, HR Support 64% contra 87%. Nas filas autoexplicativas (Access, Storage, Internal Project), fica perto.
-- **Modelos maiores indisponíveis:** `gemini-3.5-flash`, `3.6-flash` e `flash-latest` devolveram 429/503 nas três
-  execuções. Isso ficou registrado no resultado, e não derrubou o script.
+- **Modelos maiores indisponíveis:** `gemini-3.5-flash` devolveu 429/503 nas três execuções; `3.6-flash` e
+  `flash-latest` só foram tentados na terceira e também falharam. Isso ficou registrado no resultado, e não derrubou o
+  script.
 - **Dois defeitos de engenharia pegos durante a execução** (erro 13 da lista, e um desperdício): os resultados só eram
   gravados no fim, e o script ainda esperava 8 minutos depois da última tentativa falha antes de desistir. Correção:
   cache por rodada (uma nova execução pula o que já terminou), nenhuma espera depois da última tentativa, e 3

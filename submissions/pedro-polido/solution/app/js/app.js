@@ -416,7 +416,7 @@ const sens = op.filas.reduce((s, f) => s + f.sensivel * f.volume, 0) / op.total;
 const prec = Object.fromEntries(op.filas.map((f) => [f.fila, f.precisao]));
 $('#not-automate').innerHTML = [
   `<strong>Temas sensíveis (${pct(sens, 1)} dos tickets):</strong> licença-maternidade, salário, desligamento, acidente. É dado pessoal sensível (LGPD) e pede empatia. O filtro prefere errar para o lado humano: "salary module" também cai aqui, e esse erro é barato.`,
-  `<strong>Confiança abaixo de ${pct(sim.limiar_assistido)} (${pct(lowShare, 1)} dos tickets):</strong> a 1ª sugestão acerta ${pct(lowTop1)}. Rotear sozinho seria errar quase metade.`,
+  `<strong>Confiança abaixo de ${pct(sim.limiar_assistido)} (${pct(lowShare, 1)} dos tickets):</strong> a 1ª sugestão acerta ${pct(lowTop1)}. Rotear sozinho erraria ${pct(1 - lowTop1)} deles.`,
   `<strong>Conceder acesso ou direito de administrador:</strong> a IA identifica e roteia (precisão de ${pct(prec.Access)} em Access e ${pct(prec['Administrative rights'])} em Administrative rights), mas a concessão é decisão humana com aprovação.`,
   '<strong>Pedidos vazios:</strong> nenhum modelo acerta o que não foi dito. A IA redige um pedido do que falta, o atendente aprova o envio, e a triagem vem depois.',
   `<strong>Reclamação, cancelamento e reembolso:</strong> envolvem retenção e dinheiro. A IA redige, a pessoa envia. No CSV, pelo rótulo, reembolso é ${pct(rev.nao_automatizar.categorias[0].pct, 1)} e cancelamento ${pct(rev.nao_automatizar.categorias[1].pct, 1)} dos tickets (<a href="revisao.html#e22">revisão, 2.2</a>); como o texto não confirma o rótulo, a regra é de política.`,

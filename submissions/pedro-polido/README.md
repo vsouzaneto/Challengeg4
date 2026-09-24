@@ -97,7 +97,8 @@ de tempo e 0 de satisfação. Em ruído puro, 8% das rodadas têm algum alarme f
 - **Hardware é o "ralo":** recebe 28% do volume, mas 38% dos tickets mal roteados.
 - **Vício de rótulo:** 61% dos pedidos sem conteúdo ("access hello please provide kind regards") estão rotulados como
   HR Support. O modelo aprendeu o vício e "acerta" 93% deles. Na política, pedido vazio nunca é roteado.
-- **Auditoria de rótulos:** dos 40 "erros" com confiança ≥ 90% revisados um a um, **15 são erros do rótulo**, 13 do
+- **Auditoria de rótulos:** dos 40 "erros" com confiança ≥ 90% revisados um a um (pela IA e depois por mim, sem
+  discordância), **15 são erros do rótulo**, 13 do
   modelo e 12 ambíguos. O acerto real da faixa automática é maior que o medido.
 
 **4. Classificador e política** (TF-IDF + regressão logística, 85,7% de acerto, 96,1% com a fila certa entre as 2
@@ -145,12 +146,16 @@ triagem, que estes dados não permitem medir.
 2. **Triagem em modo sombra (semanas 1–2):** o modelo sugere e as pessoas roteiam como hoje. Avança se a faixa
    automática acertar ≥ 97% nos tickets reais.
 3. **Roteamento automático nas filas fortes (semanas 3–4), se a operação tiver filas como as da base de TI:** Purchase,
-   Storage e Access (precisão de 89% a 95%), com a faixa assistida em todas. Com dados como os do CSV (sem coluna de
+   Storage, Internal Project e Access (precisão de 89% a 95%), com a faixa assistida em todas. Com dados como os do CSV (sem coluna de
    fila e sem rótulo confiável), a triagem segue humana até existirem rótulos novos.
 4. **Arrumar a taxonomia:** HR Support absorve pedido vazio e pedido de acesso, e Hardware é o ralo dos erros. As
    correções dos atendentes no modo sombra viram os novos rótulos.
 5. **LLM onde ele agrega:** traduzir tickets em português e redigir rascunhos que o atendente aprova. A métrica é a taxa
    de edição dos rascunhos.
+6. **Verificar antes de rotear (próxima evolução):** na auditoria de rótulos, boa parte dos casos ambíguos só se resolve
+   consultando outro sistema (conta bloqueada, chamado aberto do equipamento, pedido de compra existente). A proposta é
+   um agente com acesso **só de leitura** a esses sistemas, que verifica antes de rotear e nunca executa nada. Entra no
+   modo sombra, e a métrica é quantos ambíguos passam a ser resolvidos com verificação.
 
 ### O que NÃO automatizar
 
@@ -204,7 +209,8 @@ triagem, que estes dados não permitem medir.
    recalcula as afirmações da segunda opinião); cada afirmação da entrega sai de um número calculado, não digitado.
 5. Protótipo com o mesmo modelo, com paridade Python × navegador verificada em 308 textos.
 6. Revisão visual por captura de tela, que pegou erros de conteúdo, não só de layout.
-7. Auditoria de rótulos: a IA deu o primeiro veredito em 40 casos; a revisão humana está na coluna `veredito_pedro`.
+7. Auditoria de rótulos: a IA deu o primeiro veredito em 40 casos; revisei os 40 e concordei em todos (coluna
+   `veredito_pedro`).
 8. Chat de atendimento: a política é uma função pura testada em 13 cenários, e a tela foi testada no navegador com o
    Gemini ativo (7 cenários, aprovação, passagem para uma pessoa, HTML escapado, 375 px).
 9. Validação cruzada com uma segunda IA, conferida número a número.
@@ -231,7 +237,11 @@ triagem, que estes dados não permitem medir.
   (chave minha, fora do chat e do git) só onde agrega.
 - **O chat como diferencial**, pela minha experiência com agentes de atendimento.
 - **Uma segunda opinião de outra IA** sobre o mesmo CSV, que trouxe dois pontos que a análise principal não tinha.
-- _[PEDRO: resultado da sua revisão da auditoria de rótulos: em quantos casos você discordou do veredito da IA e por quê]_
+- **A revisão dos 40 casos da auditoria de rótulos.** Concordei com o veredito da IA em todos. O que a revisão me
+  mostrou foi outra coisa: boa parte dos casos ambíguos não se resolve lendo o ticket de novo, e sim consultando outro
+  sistema (se a conta está bloqueada, se o equipamento tem chamado, se já existe pedido de compra). Por isso a próxima
+  evolução que proponho é um agente com acesso só de leitura a esses sistemas, que verifica antes de rotear e nunca
+  executa nada. Ele entra no modo sombra, medindo quantos ambíguos passam a ser resolvidos com verificação.
 - _[PEDRO: o que a sua experiência operando triagem em produção (Tria) mudou na proposta, com as suas palavras]_
 
 ---
@@ -261,7 +271,8 @@ ou nas variáveis de ambiente da Vercel.
 
 - [x] Git history: um commit por etapa, com o motivo das correções
 - [x] Narrativa escrita: [`PROCESS_LOG.md`](PROCESS_LOG.md) e o log técnico [`process-log/README.md`](process-log/README.md)
-- [x] Revisão humana da auditoria de rótulos: [`process-log/auditoria-rotulos/`](process-log/auditoria-rotulos/)
+- [x] Revisão humana da auditoria de rótulos: 40 de 40 casos, coluna `veredito_pedro` em
+  [`process-log/auditoria-rotulos/`](process-log/auditoria-rotulos/)
 - [x] Screenshots: [`process-log/screenshots/`](process-log/screenshots/) (07 a 09: chat de atendimento)
 - [x] Validação cruzada: texto da segunda opinião e verificação item a item em
   [`process-log/validacao-cruzada/`](process-log/validacao-cruzada/)
