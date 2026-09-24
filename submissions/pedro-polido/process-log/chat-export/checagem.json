@@ -1,0 +1,54 @@
+{
+ "sessao": "af4f8351-3548-48db-bc24-2fde74d09020",
+ "sessao_app": "local_830b29aa-fb45-4f24-a006-6569c0571a5c",
+ "titulo": "Estudo api",
+ "periodo_brt": [
+  "22/09/2026 23:07",
+  "24/09/2026 20:23"
+ ],
+ "bruto": {
+  "assistant:thinking": 421,
+  "assistant:tool_use": 471,
+  "user:tool_result": 471,
+  "assistant:text": 100,
+  "respostas_de_multipla_escolha": 1,
+  "notificacoes": 35,
+  "resumo_de_contexto": 1,
+  "troca_de_modelo": 2
+ },
+ "exportado": {
+  "mensagens_do_pedro": 11,
+  "blocos_de_texto_do_assistente": 100,
+  "chamadas_de_ferramenta": 471,
+  "eventos_de_sistema": 23
+ },
+ "textos_do_assistente_ausentes_ou_alterados": [],
+ "mensagens_do_pedro_ausentes_ou_alteradas": [],
+ "ferramentas_bruto_igual_exportado": true,
+ "textos_bruto_igual_exportado": true,
+ "ordem_cronologica_pedro_e_claude": true,
+ "ordem_do_arquivo_preservada": true,
+ "notificacoes_agrupadas": {
+  "grupos": 2,
+  "notificacoes_nos_grupos": 18
+ },
+ "redacoes": {
+  "nome da segunda conta do GitHub": 1
+ },
+ "dados_pessoais_na_saida": 0,
+ "mojibake_na_saida": 0,
+ "segredos_no_bruto": [
+  {
+   "linha": 1130,
+   "ocorrencias": 2
+  }
+ ],
+ "segredos_na_saida": 0,
+ "subagentes": {
+  "arquivos": 54,
+  "com_resposta_final": 54,
+  "diarios_de_workflow": 3,
+  "workflows": 3,
+  "agentes_declarados": 54
+ }
+}
