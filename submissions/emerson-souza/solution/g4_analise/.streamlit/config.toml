@@ -1,0 +1,42 @@
+[client]
+toolbarMode = "minimal"
+
+[server]
+maxUploadSize = 500
+
+[browser]
+gatherUsageStats = false
+
+# Identidade visual do G4 Analise: cores próprias (índigo + paleta colorida por categoria), ícones sóbrios.
+[theme]
+base = "light"
+primaryColor = "#4F46E5"
+backgroundColor = "#F7F8FC"
+secondaryBackgroundColor = "#EEF0FA"
+textColor = "#1E2433"
+linkColor = "#4F46E5"
+font = "\"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif"
+headingFont = "\"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif"
+headingFontWeights = 600
+headingFontSizes = ["1.85rem", "1.35rem", "1.1rem"]
+baseFontSize = 14
+baseRadius = "2px"
+buttonRadius = "2px"
+borderColor = "#D6DAE8"
+showWidgetBorder = true
+dataframeHeaderBackgroundColor = "#EEF0FA"
+metricValueFontSize = "1.7rem"
+metricValueFontWeight = 600
+redColor = "#D1495B"
+orangeColor = "#F2A541"
+greenColor = "#3BB273"
+blueColor = "#2E86AB"
+violetColor = "#6C5CE7"
+chartCategoricalColors = ["#2E86AB", "#E4572E", "#3BB273", "#F2A541", "#6C5CE7", "#17A398", "#D1495B", "#8D6A9F"]
+
+[theme.sidebar]
+backgroundColor = "#1E2433"
+secondaryBackgroundColor = "#2A3142"
+textColor = "#E3E6F0"
+primaryColor = "#6366F1"
+borderColor = "#353D52"
