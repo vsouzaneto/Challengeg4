@@ -1,0 +1,32 @@
+# Build context for the `api` and `pipeline` images (context = solution/).
+# `web` has its own web/.dockerignore; `docs` uses the submission-root .dockerignore.
+**/.venv
+**/node_modules
+**/dist
+**/site
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+**/.mypy_cache
+**/*.tsbuildinfo
+**/.DS_Store
+.git
+# Runtime data: the pipeline regenerates bronze/silver/gold; feedback is user data mounted at runtime.
+data/bronze
+data/silver
+data/gold/opportunity_features
+data/gold/history_stats
+data/gold/labels
+data/feedback
+spark-warehouse
+derby.log
+metastore_db
+# Secrets and local-only files, at any depth.
+**/.env
+**/.env.*
+**/*.local
+**/.private
+**/CLAUDE.local.md
+**/settings.local.json
+**/kaggle.json
+**/credentials.json
