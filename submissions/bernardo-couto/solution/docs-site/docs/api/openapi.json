@@ -1,0 +1,2576 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Lead Scorer API",
+    "summary": "Priorização explicável de deals abertos para o time de vendas.",
+    "description": "\nAPI do **Lead Scorer**: prioriza os deals abertos do CRM para o vendedor saber em quais focar.\n\n**Como o score é calculado (resumo):**\n\n1. `p_win` — probabilidade de fechar, por regras transparentes (taxa-base por produto, histórico\n   do vendedor, sobrevivência em Engaging) combinadas a um modelo Spark ML treinado no histórico.\n2. `expected_value` — preço de tabela × razão histórica de fechamento do produto × `p_win`.\n3. `urgency` — quanto agir esta semana muda o desfecho (janela de decisão do ciclo).\n4. `priority_score` (0–100) e `tier` (A–D) combinam os três com pesos nomeados.\n5. Cada deal traz `reasons` em português, com o número que justifica cada linha.\n\nA API **só lê** o parquet gerado pelo pipeline (`data/gold/scores/as_of=…`); nenhum score é\nrecalculado aqui. Snapshot dos dados: **2017-12-31** — nenhuma rota usa a data de hoje.\n\n**Convenções**\n\n* Prefixo `/api/v1`; toda resposta com dados de score traz os headers `X-As-Of` e\n  `X-Model-Version`.\n* Erros sempre no envelope `{\"error\": {\"code\", \"message\", \"hint\"}}`; `503` significa\n  \"pipeline ainda não rodou\" e o `hint` diz o comando.\n* Paginação `limit`/`offset` + `total`; ordenação `sort=-campo,campo`.\n\nDocumentação completa no serviço `docs` (`http://localhost:8001`).\n",
+    "contact": {
+      "name": "Bernardo Couto"
+    },
+    "license": {
+      "name": "MIT"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000",
+      "description": "Local / Docker Compose"
+    }
+  ],
+  "paths": {
+    "/api/v1/health": {
+      "get": {
+        "tags": [
+          "operacao"
+        ],
+        "summary": "Verifica se a API está de pé",
+        "description": "Usado pelo `HEALTHCHECK` do Docker e pelo frontend ao abrir. Não toca em disco.",
+        "operationId": "get_health",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/meta": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "Snapshots e modelo disponíveis",
+        "description": "Lista as partições `as_of=` presentes em `data/gold/scores`, a versão em `models/latest` e a contagem de deals abertos da partição padrão. Quando `artifacts_present` é falso, a UI orienta a rodar o pipeline em vez de falhar. Nunca retorna 503: é o endpoint que a UI usa para decidir o que mostrar.",
+        "operationId": "get_meta",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetaResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/deals": {
+      "get": {
+        "tags": [
+          "deals"
+        ],
+        "summary": "Lista deals pontuados com filtros, ordenação e paginação",
+        "description": "Retorna os deals abertos da partição `as_of` (padrão: a mais recente), ordenados por `priority_score` decrescente. Filtros combinam por **E**. `total` conta os deals que satisfazem os filtros antes da paginação.\n\nExemplos:\n\n* Top 10 de um vendedor: `?sales_agent=Darcel%20Schlecht&limit=10`\n* Time de um gerente sem conta cadastrada: `?manager=Melvin%20Marxen&account_known=false`\n* Deals mais antigos em Engaging primeiro: `?deal_stage=Engaging&sort=-days_in_engaging`\n* Fila **Trabalhar** (vivos + Prospecting): `?queue=work`; fila **Confirmar ou encerrar** (parados > 138 dias): `?queue=confirm&sort=-expected_value`\n* Primeira onda de parados (139-180 dias): `?queue=confirm&min_days_in_engaging=139&max_days_in_engaging=180`\n\nCampos ordenáveis: `account`, `days_in_engaging`, `deal_stage`, `expected_value`, `manager`, `opportunity_id`, `p_win`, `priority_score`, `product`, `regional_office`, `sales_agent`, `sales_price`, `tier`, `urgency`. Prefixo `-` inverte.",
+        "operationId": "list_deals",
+        "parameters": [
+          {
+            "name": "sales_agent",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Nome exato do vendedor.",
+              "examples": [
+                "Darcel Schlecht"
+              ],
+              "title": "Sales Agent"
+            },
+            "description": "Nome exato do vendedor."
+          },
+          {
+            "name": "manager",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Nome exato do gerente.",
+              "examples": [
+                "Melvin Marxen"
+              ],
+              "title": "Manager"
+            },
+            "description": "Nome exato do gerente."
+          },
+          {
+            "name": "regional_office",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Escritório regional.",
+              "examples": [
+                "Central",
+                "East",
+                "West"
+              ],
+              "title": "Regional Office"
+            },
+            "description": "Escritório regional."
+          },
+          {
+            "name": "deal_stage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "Prospecting",
+                    "Engaging"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Estágio do deal aberto.",
+              "title": "Deal Stage"
+            },
+            "description": "Estágio do deal aberto."
+          },
+          {
+            "name": "tier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Faixa de prioridade.",
+              "title": "Tier"
+            },
+            "description": "Faixa de prioridade."
+          },
+          {
+            "name": "min_score",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "maximum": 100,
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Só deals com `priority_score >= min_score`.",
+              "title": "Min Score"
+            },
+            "description": "Só deals com `priority_score >= min_score`."
+          },
+          {
+            "name": "account_known",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`true`: só deals com conta; `false`: só sem conta (~68% dos abertos). Omitido: todos.",
+              "title": "Account Known"
+            },
+            "description": "`true`: só deals com conta; `false`: só sem conta (~68% dos abertos). Omitido: todos."
+          },
+          {
+            "name": "queue",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "work",
+                    "confirm"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`work`: deals vivos (`days_in_engaging` <= 138) e Prospecting (sem data); `confirm`: parados há mais de 138 dias, para confirmar ou encerrar no CRM. Omitido: ambas as filas.",
+              "title": "Queue"
+            },
+            "description": "`work`: deals vivos (`days_in_engaging` <= 138) e Prospecting (sem data); `confirm`: parados há mais de 138 dias, para confirmar ou encerrar no CRM. Omitido: ambas as filas."
+          },
+          {
+            "name": "min_days_in_engaging",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Só deals com `days_in_engaging >= valor` (exclui Prospecting).",
+              "title": "Min Days In Engaging"
+            },
+            "description": "Só deals com `days_in_engaging >= valor` (exclui Prospecting)."
+          },
+          {
+            "name": "max_days_in_engaging",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Só deals com `days_in_engaging <= valor` (exclui Prospecting).",
+              "title": "Max Days In Engaging"
+            },
+            "description": "Só deals com `days_in_engaging <= valor` (exclui Prospecting)."
+          },
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Partição a servir (`YYYY-MM-DD`). Padrão: a mais recente listada em `GET /meta`. Cortes de backtest (ex.: `2017-09-30`) mostram o que o vendedor teria visto.",
+              "examples": [
+                "2017-12-31"
+              ],
+              "title": "As Of"
+            },
+            "description": "Partição a servir (`YYYY-MM-DD`). Padrão: a mais recente listada em `GET /meta`. Cortes de backtest (ex.: `2017-09-30`) mostram o que o vendedor teria visto."
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Campos separados por vírgula; `-` para decrescente.",
+              "examples": [
+                "-priority_score",
+                "-expected_value,sales_agent"
+              ],
+              "default": "-priority_score",
+              "title": "Sort"
+            },
+            "description": "Campos separados por vírgula; `-` para decrescente."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "description": "Tamanho da página.",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Tamanho da página."
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Itens a pular.",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Itens a pular."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DealsPage"
+                }
+              }
+            },
+            "headers": {
+              "X-As-Of": {
+                "description": "Partição servida (YYYY-MM-DD).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Model-Version": {
+                "description": "Versão do modelo que gerou os scores.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Partição `as_of` inexistente.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "AS_OF_NOT_FOUND",
+                    "message": "Não há partição as_of=2016-01-01.",
+                    "hint": "Partições disponíveis: 2017-12-31. Veja GET /api/v1/meta."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parâmetro ou corpo inválido.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "Parâmetros ou corpo da requisição inválidos.",
+                    "hint": "Veja `details` e o schema em /docs."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Artefatos do pipeline ausentes ou inválidos.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "ARTIFACTS_MISSING",
+                    "message": "Nenhum score encontrado em data/gold/scores.",
+                    "hint": "Rode `make pipeline` em solution/ ou `docker compose --profile pipeline run --rm pipeline`."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/deals/{opportunity_id}": {
+      "get": {
+        "tags": [
+          "deals"
+        ],
+        "summary": "Detalhe de um deal: score, explicações e próxima ação",
+        "description": "Um deal com `p_win`, `expected_value`, `urgency`, `confidence`, as `reasons` em português ordenadas por |peso| e a `next_action` sugerida. É o payload da tela de detalhe: o vendedor deve entender *por que* o score em menos de um minuto.",
+        "operationId": "get_deal",
+        "parameters": [
+          {
+            "name": "opportunity_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 32,
+              "description": "ID da oportunidade no CRM.",
+              "title": "Opportunity Id"
+            },
+            "description": "ID da oportunidade no CRM."
+          },
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Partição a servir (`YYYY-MM-DD`). Padrão: a mais recente listada em `GET /meta`. Cortes de backtest (ex.: `2017-09-30`) mostram o que o vendedor teria visto.",
+              "examples": [
+                "2017-12-31"
+              ],
+              "title": "As Of"
+            },
+            "description": "Partição a servir (`YYYY-MM-DD`). Padrão: a mais recente listada em `GET /meta`. Cortes de backtest (ex.: `2017-09-30`) mostram o que o vendedor teria visto."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deal encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScoredDeal"
+                }
+              }
+            },
+            "headers": {
+              "X-As-Of": {
+                "description": "Partição servida (YYYY-MM-DD).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Model-Version": {
+                "description": "Versão do modelo que gerou os scores.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Deal não encontrado na partição (ou `as_of` inexistente).",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "DEAL_NOT_FOUND",
+                    "message": "Deal 'XXXX' não está aberto em as_of=2017-12-31.",
+                    "hint": "Confira o opportunity_id ou troque o parâmetro `as_of`."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parâmetro ou corpo inválido.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "Parâmetros ou corpo da requisição inválidos.",
+                    "hint": "Veja `details` e o schema em /docs."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Artefatos do pipeline ausentes ou inválidos.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "ARTIFACTS_MISSING",
+                    "message": "Nenhum score encontrado em data/gold/scores.",
+                    "hint": "Rode `make pipeline` em solution/ ou `docker compose --profile pipeline run --rm pipeline`."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/agents": {
+      "get": {
+        "tags": [
+          "dimensoes"
+        ],
+        "summary": "Vendedores com deal aberto",
+        "description": "Um item por vendedor, com gerente, região, quantidade de deals abertos, valor esperado somado e distribuição por tier. Ordenado por valor esperado decrescente.",
+        "operationId": "list_agents",
+        "parameters": [
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Partição a servir (`YYYY-MM-DD`). Padrão: a mais recente listada em `GET /meta`. Cortes de backtest (ex.: `2017-09-30`) mostram o que o vendedor teria visto.",
+              "examples": [
+                "2017-12-31"
+              ],
+              "title": "As Of"
+            },
+            "description": "Partição a servir (`YYYY-MM-DD`). Padrão: a mais recente listada em `GET /meta`. Cortes de backtest (ex.: `2017-09-30`) mostram o que o vendedor teria visto."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AgentSummary"
+                  },
+                  "title": "Response List Agents"
+                }
+              }
+            },
+            "headers": {
+              "X-As-Of": {
+                "description": "Partição servida (YYYY-MM-DD).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Model-Version": {
+                "description": "Versão do modelo que gerou os scores.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Partição `as_of` inexistente.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "AS_OF_NOT_FOUND",
+                    "message": "Não há partição as_of=2016-01-01.",
+                    "hint": "Partições disponíveis: 2017-12-31. Veja GET /api/v1/meta."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parâmetro ou corpo inválido.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "Parâmetros ou corpo da requisição inválidos.",
+                    "hint": "Veja `details` e o schema em /docs."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Artefatos do pipeline ausentes ou inválidos.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "ARTIFACTS_MISSING",
+                    "message": "Nenhum score encontrado em data/gold/scores.",
+                    "hint": "Rode `make pipeline` em solution/ ou `docker compose --profile pipeline run --rm pipeline`."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/managers": {
+      "get": {
+        "tags": [
+          "dimensoes"
+        ],
+        "summary": "Gerentes e seus times",
+        "description": "Um item por gerente com região, vendedores e totais do time.",
+        "operationId": "list_managers",
+        "parameters": [
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Partição a servir (`YYYY-MM-DD`). Padrão: a mais recente listada em `GET /meta`. Cortes de backtest (ex.: `2017-09-30`) mostram o que o vendedor teria visto.",
+              "examples": [
+                "2017-12-31"
+              ],
+              "title": "As Of"
+            },
+            "description": "Partição a servir (`YYYY-MM-DD`). Padrão: a mais recente listada em `GET /meta`. Cortes de backtest (ex.: `2017-09-30`) mostram o que o vendedor teria visto."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ManagerSummary"
+                  },
+                  "title": "Response List Managers"
+                }
+              }
+            },
+            "headers": {
+              "X-As-Of": {
+                "description": "Partição servida (YYYY-MM-DD).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Model-Version": {
+                "description": "Versão do modelo que gerou os scores.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Partição `as_of` inexistente.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "AS_OF_NOT_FOUND",
+                    "message": "Não há partição as_of=2016-01-01.",
+                    "hint": "Partições disponíveis: 2017-12-31. Veja GET /api/v1/meta."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parâmetro ou corpo inválido.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "Parâmetros ou corpo da requisição inválidos.",
+                    "hint": "Veja `details` e o schema em /docs."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Artefatos do pipeline ausentes ou inválidos.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "ARTIFACTS_MISSING",
+                    "message": "Nenhum score encontrado em data/gold/scores.",
+                    "hint": "Rode `make pipeline` em solution/ ou `docker compose --profile pipeline run --rm pipeline`."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/regions": {
+      "get": {
+        "tags": [
+          "dimensoes"
+        ],
+        "summary": "Escritórios regionais",
+        "description": "Um item por escritório regional com gerentes, vendedores e totais.",
+        "operationId": "list_regions",
+        "parameters": [
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Partição a servir (`YYYY-MM-DD`). Padrão: a mais recente listada em `GET /meta`. Cortes de backtest (ex.: `2017-09-30`) mostram o que o vendedor teria visto.",
+              "examples": [
+                "2017-12-31"
+              ],
+              "title": "As Of"
+            },
+            "description": "Partição a servir (`YYYY-MM-DD`). Padrão: a mais recente listada em `GET /meta`. Cortes de backtest (ex.: `2017-09-30`) mostram o que o vendedor teria visto."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RegionSummary"
+                  },
+                  "title": "Response List Regions"
+                }
+              }
+            },
+            "headers": {
+              "X-As-Of": {
+                "description": "Partição servida (YYYY-MM-DD).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Model-Version": {
+                "description": "Versão do modelo que gerou os scores.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Partição `as_of` inexistente.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "AS_OF_NOT_FOUND",
+                    "message": "Não há partição as_of=2016-01-01.",
+                    "hint": "Partições disponíveis: 2017-12-31. Veja GET /api/v1/meta."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parâmetro ou corpo inválido.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "Parâmetros ou corpo da requisição inválidos.",
+                    "hint": "Veja `details` e o schema em /docs."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Artefatos do pipeline ausentes ou inválidos.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "ARTIFACTS_MISSING",
+                    "message": "Nenhum score encontrado em data/gold/scores.",
+                    "hint": "Rode `make pipeline` em solution/ ou `docker compose --profile pipeline run --rm pipeline`."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pipeline/summary": {
+      "get": {
+        "tags": [
+          "pipeline"
+        ],
+        "summary": "Resumo do pipeline para o gerente",
+        "description": "Agrega os deals abertos por vendedor, gerente ou região: quantidade, valor esperado, **zumbis** (`days_in_engaging` > 138, o ciclo máximo observado nos Won) com o valor preso neles (esperado e nominal, quando `sales_price` existe na partição), deals **esfriando** (101-138 dias), cobertura de conta (fração com `account` preenchida) e distribuição por tier. Os filtros restringem o recorte antes de agrupar: um gerente passa `?manager=...&group_by=sales_agent` para ver seu time vendedor a vendedor.",
+        "operationId": "get_pipeline_summary",
+        "parameters": [
+          {
+            "name": "group_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "sales_agent",
+                "manager",
+                "regional_office"
+              ],
+              "type": "string",
+              "description": "Dimensão dos grupos.",
+              "default": "manager",
+              "title": "Group By"
+            },
+            "description": "Dimensão dos grupos."
+          },
+          {
+            "name": "sales_agent",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Restringe a um vendedor.",
+              "title": "Sales Agent"
+            },
+            "description": "Restringe a um vendedor."
+          },
+          {
+            "name": "manager",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Restringe a um gerente.",
+              "title": "Manager"
+            },
+            "description": "Restringe a um gerente."
+          },
+          {
+            "name": "regional_office",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Restringe a uma região.",
+              "title": "Regional Office"
+            },
+            "description": "Restringe a uma região."
+          },
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Partição a servir (`YYYY-MM-DD`). Padrão: a mais recente listada em `GET /meta`. Cortes de backtest (ex.: `2017-09-30`) mostram o que o vendedor teria visto.",
+              "examples": [
+                "2017-12-31"
+              ],
+              "title": "As Of"
+            },
+            "description": "Partição a servir (`YYYY-MM-DD`). Padrão: a mais recente listada em `GET /meta`. Cortes de backtest (ex.: `2017-09-30`) mostram o que o vendedor teria visto."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PipelineSummary"
+                }
+              }
+            },
+            "headers": {
+              "X-As-Of": {
+                "description": "Partição servida (YYYY-MM-DD).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Model-Version": {
+                "description": "Versão do modelo que gerou os scores.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Partição `as_of` inexistente.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "AS_OF_NOT_FOUND",
+                    "message": "Não há partição as_of=2016-01-01.",
+                    "hint": "Partições disponíveis: 2017-12-31. Veja GET /api/v1/meta."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parâmetro ou corpo inválido.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "Parâmetros ou corpo da requisição inválidos.",
+                    "hint": "Veja `details` e o schema em /docs."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Artefatos do pipeline ausentes ou inválidos.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "ARTIFACTS_MISSING",
+                    "message": "Nenhum score encontrado em data/gold/scores.",
+                    "hint": "Rode `make pipeline` em solution/ ou `docker compose --profile pipeline run --rm pipeline`."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/model/metrics": {
+      "get": {
+        "tags": [
+          "modelo"
+        ],
+        "summary": "Métricas do backtest e model card do modelo em produção",
+        "description": "Lê `models/latest/metrics.json` (backtest temporal vs. baselines aleatório, preço, mais-novo-primeiro e taxa-base; calibração), `feature_list.json` e `model_card.md`. O conteúdo de `metrics` é o JSON gravado pelo job `train`, sem transformação. Retorna 503 com a instrução de geração quando o pipeline ainda não treinou.",
+        "operationId": "get_model_metrics",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelMetricsResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Artefatos do modelo ausentes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": {
+                    "code": "MODEL_ARTIFACTS_MISSING",
+                    "message": "Artefato do modelo ausente: models/latest.",
+                    "hint": "Rode `make pipeline` (job `train`) para gerar models/<versão>/ e o ponteiro models/latest."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/feedback": {
+      "post": {
+        "tags": [
+          "feedback"
+        ],
+        "summary": "Registra a ação do vendedor sobre um deal",
+        "description": "Grava em `data/feedback/actions.parquet` (append atômico) o que o vendedor fez depois de ver a recomendação. O deal precisa existir na partição `as_of` (padrão: a mais recente); o registro guarda o `priority_score` e a `model_version` exibidos naquele momento para permitir avaliar o scorer contra o comportamento real depois.\n\n`recorded_at` é o único carimbo de relógio real do sistema: é auditoria, nunca feature.",
+        "operationId": "create_feedback",
+        "parameters": [
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Partição a servir (`YYYY-MM-DD`). Padrão: a mais recente listada em `GET /meta`. Cortes de backtest (ex.: `2017-09-30`) mostram o que o vendedor teria visto.",
+              "examples": [
+                "2017-12-31"
+              ],
+              "title": "As Of"
+            },
+            "description": "Partição a servir (`YYYY-MM-DD`). Padrão: a mais recente listada em `GET /meta`. Cortes de backtest (ex.: `2017-09-30`) mostram o que o vendedor teria visto."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedbackCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Ação registrada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedbackRecord"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Deal não encontrado na partição (ou `as_of` inexistente).",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "DEAL_NOT_FOUND",
+                    "message": "Deal 'XXXX' não está aberto em as_of=2017-12-31.",
+                    "hint": "Confira o opportunity_id ou troque o parâmetro `as_of`."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parâmetro ou corpo inválido.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "Parâmetros ou corpo da requisição inválidos.",
+                    "hint": "Veja `details` e o schema em /docs."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Artefatos do pipeline ausentes ou inválidos.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "ARTIFACTS_MISSING",
+                    "message": "Nenhum score encontrado em data/gold/scores.",
+                    "hint": "Rode `make pipeline` em solution/ ou `docker compose --profile pipeline run --rm pipeline`."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "feedback"
+        ],
+        "summary": "Ações registradas",
+        "description": "Lista o conteúdo de `actions.parquet`, mais recente primeiro. Filtro opcional por `opportunity_id`. Vazio (200) quando ninguém registrou nada ainda.",
+        "operationId": "list_feedback",
+        "parameters": [
+          {
+            "name": "opportunity_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Opportunity Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FeedbackRecord"
+                  },
+                  "title": "Response List Feedback"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parâmetro ou corpo inválido.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "Parâmetros ou corpo da requisição inválidos.",
+                    "hint": "Veja `details` e o schema em /docs."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AgentSummary": {
+        "properties": {
+          "sales_agent": {
+            "type": "string",
+            "title": "Sales Agent",
+            "description": "Nome do vendedor (valor a usar em `?sales_agent=`)."
+          },
+          "manager": {
+            "type": "string",
+            "title": "Manager",
+            "description": "Gerente do vendedor."
+          },
+          "regional_office": {
+            "type": "string",
+            "title": "Regional Office",
+            "description": "Escritório regional."
+          },
+          "open_deals": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Open Deals",
+            "description": "Deals abertos no snapshot."
+          },
+          "expected_value": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Expected Value",
+            "description": "Soma de `expected_value` dos deals abertos."
+          },
+          "tier_distribution": {
+            "$ref": "#/components/schemas/TierDistribution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "sales_agent",
+          "manager",
+          "regional_office",
+          "open_deals",
+          "expected_value",
+          "tier_distribution"
+        ],
+        "title": "AgentSummary",
+        "examples": [
+          {
+            "expected_value": 91250.5,
+            "manager": "Melvin Marxen",
+            "open_deals": 46,
+            "regional_office": "Central",
+            "sales_agent": "Darcel Schlecht",
+            "tier_distribution": {
+              "A": 12,
+              "B": 14,
+              "C": 12,
+              "D": 8
+            }
+          }
+        ]
+      },
+      "DealsPage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ScoredDeal"
+            },
+            "type": "array",
+            "title": "Items",
+            "description": "Deals da página, já filtrados e ordenados."
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Total",
+            "description": "Total de deals que satisfazem os filtros (sem paginação)."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Limit",
+            "description": "Tamanho da página aplicado."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Offset",
+            "description": "Deslocamento aplicado."
+          },
+          "sort": {
+            "type": "string",
+            "title": "Sort",
+            "description": "Ordenação aplicada, no formato `-campo,campo`."
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date",
+            "title": "As Of",
+            "description": "Partição servida."
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version",
+            "description": "Versão do modelo que gerou os scores desta partição."
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "limit",
+          "offset",
+          "sort",
+          "as_of",
+          "model_version"
+        ],
+        "title": "DealsPage",
+        "description": "Paginated list of scored deals plus the snapshot it came from.",
+        "examples": [
+          {
+            "as_of": "2017-12-31",
+            "items": [
+              {
+                "account": "Konex",
+                "as_of": "2017-12-31",
+                "confidence": "alta",
+                "days_in_engaging": 78,
+                "deal_stage": "Engaging",
+                "expected_value": 3412.5,
+                "manager": "Melvin Marxen",
+                "model_version": "2017-12-31-lr-v1",
+                "next_action": "Ligar esta semana e propor data de fechamento.",
+                "opportunity_id": "Z063OYW0",
+                "p_win": 0.71,
+                "priority_score": 82.4,
+                "product": "GTX Pro",
+                "reasons": [
+                  {
+                    "code": "AGENT_PRODUCT_FIT",
+                    "direction": "+",
+                    "text_pt": "Você fecha 74% dos GTX Pro (média do time: 63%).",
+                    "weight": 9.0
+                  },
+                  {
+                    "code": "SURVIVAL_POSITIVE",
+                    "direction": "+",
+                    "text_pt": "78 dias em Engaging: deals que passam de 60 dias fecham em 68%.",
+                    "weight": 0.6
+                  }
+                ],
+                "regional_office": "Central",
+                "sales_agent": "Darcel Schlecht",
+                "sales_price": 4821.0,
+                "tier": "A",
+                "urgency": 0.8
+              }
+            ],
+            "limit": 50,
+            "model_version": "2017-12-31-lr-v1",
+            "offset": 0,
+            "sort": "-priority_score",
+            "total": 2089
+          }
+        ]
+      },
+      "ErrorBody": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code",
+            "description": "Código estável, em SCREAMING_SNAKE_CASE.",
+            "examples": [
+              "ARTIFACTS_MISSING",
+              "DEAL_NOT_FOUND",
+              "VALIDATION_ERROR"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Mensagem em pt-BR para exibir ao usuário.",
+            "examples": [
+              "Nenhum score encontrado em data/gold/scores."
+            ]
+          },
+          "hint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hint",
+            "description": "Como resolver: comando a rodar, parâmetro a corrigir ou rota a consultar.",
+            "examples": [
+              "Rode `make pipeline` ou `docker compose --profile pipeline run --rm pipeline`."
+            ]
+          },
+          "details": {
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Details",
+            "description": "Detalhes estruturados (erros de validação campo a campo, linhas inválidas)."
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ErrorBody"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorBody"
+          }
+        },
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "ErrorResponse",
+        "description": "Standard error envelope: ``{\"error\": {\"code\", \"message\", \"hint\"}}``.",
+        "examples": [
+          {
+            "error": {
+              "code": "ARTIFACTS_MISSING",
+              "hint": "Rode `make pipeline` em solution/ (JDK 17/21).",
+              "message": "Nenhum score encontrado em data/gold/scores."
+            }
+          }
+        ]
+      },
+      "FeedbackAction": {
+        "type": "string",
+        "enum": [
+          "contacted",
+          "meeting_scheduled",
+          "proposal_sent",
+          "discard",
+          "account_fixed",
+          "note",
+          "closed_in_crm"
+        ],
+        "title": "FeedbackAction",
+        "description": "What the seller did after seeing the recommendation."
+      },
+      "FeedbackCreate": {
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Opportunity Id",
+            "description": "Deal alvo da ação."
+          },
+          "action": {
+            "$ref": "#/components/schemas/FeedbackAction",
+            "description": "`contacted`, `meeting_scheduled`, `proposal_sent`, `discard` (ocultar da minha fila), `account_fixed` (conta preenchida no CRM), `closed_in_crm` (vendedor encerrou o deal no CRM) ou `note`."
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note",
+            "description": "Observação livre, até 500 caracteres."
+          },
+          "actor": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Actor",
+            "description": "Quem registrou (nome do vendedor/gerente)."
+          }
+        },
+        "type": "object",
+        "required": [
+          "opportunity_id",
+          "action",
+          "actor"
+        ],
+        "title": "FeedbackCreate",
+        "examples": [
+          {
+            "action": "contacted",
+            "actor": "Darcel Schlecht",
+            "note": "Falei com o comprador; reunião na quinta.",
+            "opportunity_id": "Z063OYW0"
+          }
+        ]
+      },
+      "FeedbackRecord": {
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Opportunity Id",
+            "description": "Deal alvo da ação."
+          },
+          "action": {
+            "$ref": "#/components/schemas/FeedbackAction",
+            "description": "`contacted`, `meeting_scheduled`, `proposal_sent`, `discard` (ocultar da minha fila), `account_fixed` (conta preenchida no CRM), `closed_in_crm` (vendedor encerrou o deal no CRM) ou `note`."
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note",
+            "description": "Observação livre, até 500 caracteres."
+          },
+          "actor": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Actor",
+            "description": "Quem registrou (nome do vendedor/gerente)."
+          },
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "UUID4 hexadecimal do registro."
+          },
+          "recorded_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Recorded At",
+            "description": "Carimbo de auditoria (UTC). Única hora real do sistema; nunca entra no score."
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date",
+            "title": "As Of",
+            "description": "Partição em que o deal foi visto ao registrar a ação."
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version",
+            "description": "Versão do modelo exibida ao usuário naquele momento."
+          },
+          "priority_score": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Priority Score",
+            "description": "Score mostrado no momento da ação."
+          }
+        },
+        "type": "object",
+        "required": [
+          "opportunity_id",
+          "action",
+          "actor",
+          "id",
+          "recorded_at",
+          "as_of",
+          "model_version",
+          "priority_score"
+        ],
+        "title": "FeedbackRecord",
+        "description": "Persisted row of ``data/feedback/actions.parquet``.",
+        "examples": [
+          {
+            "action": "contacted",
+            "actor": "Darcel Schlecht",
+            "as_of": "2017-12-31",
+            "id": "8f1c2a9e4b7d4e1f9c3a5b6d7e8f9a0b",
+            "model_version": "2017-12-31-lr-v1",
+            "note": "Falei com o comprador; reunião na quinta.",
+            "opportunity_id": "Z063OYW0",
+            "priority_score": 82.4,
+            "recorded_at": "2026-09-23T13:45:12.123456Z"
+          }
+        ]
+      },
+      "HealthResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "`ok` quando o processo responde.",
+            "examples": [
+              "ok"
+            ]
+          },
+          "version": {
+            "type": "string",
+            "title": "Version",
+            "description": "Versão da API.",
+            "examples": [
+              "1.0.0"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "version"
+        ],
+        "title": "HealthResponse",
+        "examples": [
+          {
+            "status": "ok",
+            "version": "1.0.0"
+          }
+        ]
+      },
+      "ManagerSummary": {
+        "properties": {
+          "manager": {
+            "type": "string",
+            "title": "Manager",
+            "description": "Nome do gerente (valor a usar em `?manager=`)."
+          },
+          "regional_office": {
+            "type": "string",
+            "title": "Regional Office",
+            "description": "Escritório regional do time."
+          },
+          "sales_agents": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Sales Agents",
+            "description": "Vendedores do time, em ordem alfabética."
+          },
+          "open_deals": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Open Deals"
+          },
+          "expected_value": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Expected Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "manager",
+          "regional_office",
+          "sales_agents",
+          "open_deals",
+          "expected_value"
+        ],
+        "title": "ManagerSummary"
+      },
+      "MetaResponse": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "title": "Schema Version",
+            "description": "Versão do contrato `ScoredDeal`."
+          },
+          "as_of_available": {
+            "items": {
+              "type": "string",
+              "format": "date"
+            },
+            "type": "array",
+            "title": "As Of Available",
+            "description": "Partições `as_of=` encontradas em gold/scores, em ordem crescente."
+          },
+          "default_as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Default As Of",
+            "description": "Partição mais recente (snapshot padrão da UI). Nulo se não há artefatos."
+          },
+          "model_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Version",
+            "description": "Versão apontada por `models/latest`. Nulo se o pipeline ainda não rodou."
+          },
+          "artifacts_present": {
+            "type": "boolean",
+            "title": "Artifacts Present",
+            "description": "Falso quando não há scores: a UI mostra como gerar em vez de uma tabela vazia."
+          },
+          "open_deals": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Open Deals",
+            "description": "Quantidade de deals abertos na partição padrão. Nulo sem artefatos."
+          },
+          "snapshot_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Snapshot Date",
+            "description": "Data do snapshot do CRM: toda idade/tempo é ancorada aqui, nunca em hoje.",
+            "default": "2017-12-31"
+          }
+        },
+        "type": "object",
+        "required": [
+          "schema_version",
+          "as_of_available",
+          "default_as_of",
+          "model_version",
+          "artifacts_present"
+        ],
+        "title": "MetaResponse",
+        "description": "What the UI needs before it renders anything: which snapshots exist and which model.",
+        "examples": [
+          {
+            "artifacts_present": true,
+            "as_of_available": [
+              "2017-12-31"
+            ],
+            "default_as_of": "2017-12-31",
+            "model_version": "2017-12-31-lr-v1",
+            "open_deals": 2089,
+            "schema_version": "1.0.0",
+            "snapshot_date": "2017-12-31"
+          }
+        ]
+      },
+      "ModelMetricsResponse": {
+        "properties": {
+          "model_version": {
+            "type": "string",
+            "title": "Model Version",
+            "description": "Versão apontada por `models/latest`."
+          },
+          "metrics": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Metrics",
+            "description": "Conteúdo de `metrics.json` (backtest vs. baselines, calibração). Livre."
+          },
+          "feature_list": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Feature List",
+            "description": "Conteúdo de `feature_list.json`, se presente."
+          },
+          "model_card_path": {
+            "type": "string",
+            "title": "Model Card Path",
+            "description": "Caminho do `model_card.md`, relativo a solution/."
+          },
+          "model_card_markdown": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Card Markdown",
+            "description": "Texto do model card (pt-BR) para renderizar na UI."
+          }
+        },
+        "type": "object",
+        "required": [
+          "model_version",
+          "metrics",
+          "model_card_path"
+        ],
+        "title": "ModelMetricsResponse",
+        "description": "Backtest metrics and model card location as written by the ``train`` job.",
+        "examples": [
+          {
+            "feature_list": [
+              "product_base_rate",
+              "days_in_engaging"
+            ],
+            "metrics": {
+              "backtest": {
+                "2017-09-30": {
+                  "brier": 0.21,
+                  "precision_at_10": 0.78
+                }
+              },
+              "baselines": {
+                "random": {
+                  "precision_at_10": 0.63
+                }
+              }
+            },
+            "model_card_markdown": "# Model card\n...",
+            "model_card_path": "models/2017-12-31-lr-v1/model_card.md",
+            "model_version": "2017-12-31-lr-v1"
+          }
+        ]
+      },
+      "PipelineGroup": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key",
+            "description": "Valor da dimensão agrupada (vendedor, gerente ou região)."
+          },
+          "open_deals": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Open Deals",
+            "description": "Deals abertos."
+          },
+          "engaging": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Engaging",
+            "description": "Deals em Engaging."
+          },
+          "prospecting": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Prospecting",
+            "description": "Deals em Prospecting (sem data, urgência desconhecida)."
+          },
+          "expected_value": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Expected Value",
+            "description": "Soma de `expected_value`."
+          },
+          "zombie_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Zombie Count",
+            "description": "Deals com `days_in_engaging` > 138 (ciclo máximo observado)."
+          },
+          "zombie_value": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Zombie Value",
+            "description": "`expected_value` preso nesses zumbis."
+          },
+          "nominal_zombie_value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nominal Zombie Value",
+            "description": "Soma de `sales_price` (valor nominal, fora do forecast) dos zumbis. Nulo quando a partição não traz `sales_price`; 0 quando não há zumbis."
+          },
+          "cooling_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Cooling Count",
+            "description": "Deals esfriando: `days_in_engaging` entre 101 e 138 (inclusive)."
+          },
+          "cooling_value": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Cooling Value",
+            "description": "`expected_value` dos deals esfriando."
+          },
+          "account_coverage": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Account Coverage",
+            "description": "Fração de deals com conta conhecida (~0,32 no snapshot)."
+          },
+          "tier_distribution": {
+            "$ref": "#/components/schemas/TierDistribution"
+          },
+          "avg_priority_score": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Avg Priority Score",
+            "description": "Média de `priority_score`."
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "open_deals",
+          "engaging",
+          "prospecting",
+          "expected_value",
+          "zombie_count",
+          "zombie_value",
+          "nominal_zombie_value",
+          "cooling_count",
+          "cooling_value",
+          "account_coverage",
+          "tier_distribution",
+          "avg_priority_score"
+        ],
+        "title": "PipelineGroup",
+        "description": "Manager-level view of one slice of the pipeline (an agent, a manager or a region).",
+        "examples": [
+          {
+            "account_coverage": 0.31,
+            "avg_priority_score": 51.3,
+            "cooling_count": 24,
+            "cooling_value": 30150.0,
+            "engaging": 245,
+            "expected_value": 512340.0,
+            "key": "Melvin Marxen",
+            "nominal_zombie_value": 109300.0,
+            "open_deals": 320,
+            "prospecting": 75,
+            "tier_distribution": {
+              "A": 80,
+              "B": 80,
+              "C": 80,
+              "D": 80
+            },
+            "zombie_count": 18,
+            "zombie_value": 22110.0
+          }
+        ]
+      },
+      "PipelineSummary": {
+        "properties": {
+          "group_by": {
+            "type": "string",
+            "enum": [
+              "sales_agent",
+              "manager",
+              "regional_office"
+            ],
+            "title": "Group By",
+            "description": "Dimensão usada nos grupos."
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date",
+            "title": "As Of"
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version"
+          },
+          "zombie_threshold_days": {
+            "type": "integer",
+            "title": "Zombie Threshold Days",
+            "description": "Limiar de zumbi aplicado (138)."
+          },
+          "cooling_min_days": {
+            "type": "integer",
+            "title": "Cooling Min Days",
+            "description": "Início da faixa 'esfriando' (101)."
+          },
+          "total": {
+            "$ref": "#/components/schemas/PipelineGroup",
+            "description": "Agregado do recorte inteiro (key = `*`)."
+          },
+          "groups": {
+            "items": {
+              "$ref": "#/components/schemas/PipelineGroup"
+            },
+            "type": "array",
+            "title": "Groups",
+            "description": "Um item por valor da dimensão."
+          }
+        },
+        "type": "object",
+        "required": [
+          "group_by",
+          "as_of",
+          "model_version",
+          "zombie_threshold_days",
+          "cooling_min_days",
+          "total",
+          "groups"
+        ],
+        "title": "PipelineSummary"
+      },
+      "Reason": {
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/ReasonCode",
+            "description": "Código estável da regra ou contribuição que gerou esta explicação.",
+            "examples": [
+              "PRODUCT_BASE_RATE",
+              "ZOMBIE_RISK"
+            ]
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "+",
+              "-",
+              "i"
+            ],
+            "title": "Direction",
+            "description": "Direção do efeito no score: '+' aumenta, '-' reduz, 'i' informativo.",
+            "examples": [
+              "+",
+              "-",
+              "i"
+            ]
+          },
+          "weight": {
+            "type": "number",
+            "title": "Weight",
+            "description": "Contribuição em pontos de priority_score (escala 0-100); reason codes informativos têm peso 0. As reasons são ordenadas por |peso| decrescente.",
+            "examples": [
+              9.0,
+              -16.5,
+              0.0
+            ]
+          },
+          "text_pt": {
+            "type": "string",
+            "maxLength": 400,
+            "minLength": 1,
+            "title": "Text Pt",
+            "description": "Frase curta em pt-BR na voz do vendedor, com o número que a justifica.",
+            "examples": [
+              "78 dias em Engaging: acima da mediana de fechamento deste produto (57)."
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "direction",
+          "weight",
+          "text_pt"
+        ],
+        "title": "Reason",
+        "description": "One explanation line, in the seller's voice, with the number that justifies it.",
+        "examples": [
+          {
+            "code": "ZOMBIE_RISK",
+            "direction": "-",
+            "text_pt": "142 dias em Engaging: acima do ciclo máximo observado (138). Confirme se o deal ainda existe.",
+            "weight": -16.5
+          }
+        ]
+      },
+      "ReasonCode": {
+        "type": "string",
+        "enum": [
+          "PRODUCT_BASE_RATE",
+          "AGENT_TRACK_RECORD",
+          "AGENT_PRODUCT_FIT",
+          "SECTOR_FIT",
+          "ACCOUNT_SIZE",
+          "ACCOUNT_HISTORY",
+          "ACCOUNT_UNKNOWN",
+          "SURVIVAL_POSITIVE",
+          "ZOMBIE_RISK",
+          "HIGH_TICKET",
+          "LOW_TICKET",
+          "PROSPECTING_NO_TIMELINE",
+          "AGENT_OVERLOAD",
+          "MODEL_CONTRIBUTION"
+        ],
+        "title": "ReasonCode",
+        "description": "Closed set of reason codes. Every rule in the pipeline emits exactly one of these."
+      },
+      "RegionSummary": {
+        "properties": {
+          "regional_office": {
+            "type": "string",
+            "title": "Regional Office",
+            "description": "Escritório regional (`?regional_office=`)."
+          },
+          "managers": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Managers",
+            "description": "Gerentes do escritório, em ordem alfabética."
+          },
+          "agents": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Agents",
+            "description": "Quantidade de vendedores com deal aberto."
+          },
+          "open_deals": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Open Deals"
+          },
+          "expected_value": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Expected Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "regional_office",
+          "managers",
+          "agents",
+          "open_deals",
+          "expected_value"
+        ],
+        "title": "RegionSummary"
+      },
+      "ScoredDeal": {
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Opportunity Id",
+            "description": "Identificador único da oportunidade no CRM.",
+            "examples": [
+              "Z063OYW0"
+            ]
+          },
+          "sales_agent": {
+            "type": "string",
+            "title": "Sales Agent",
+            "description": "Vendedor responsável.",
+            "examples": [
+              "Darcel Schlecht"
+            ]
+          },
+          "manager": {
+            "type": "string",
+            "title": "Manager",
+            "description": "Gerente do vendedor.",
+            "examples": [
+              "Melvin Marxen"
+            ]
+          },
+          "regional_office": {
+            "type": "string",
+            "title": "Regional Office",
+            "description": "Escritório regional do vendedor.",
+            "examples": [
+              "Central",
+              "East",
+              "West"
+            ]
+          },
+          "product": {
+            "type": "string",
+            "title": "Product",
+            "description": "Produto (nome conformado ao catálogo).",
+            "examples": [
+              "GTX Pro",
+              "MG Special"
+            ]
+          },
+          "account": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account",
+            "description": "Conta (cliente). Ausente em ~68% dos deals abertos; nunca descarta o deal.",
+            "examples": [
+              "Konex",
+              null
+            ]
+          },
+          "deal_stage": {
+            "type": "string",
+            "enum": [
+              "Prospecting",
+              "Engaging"
+            ],
+            "title": "Deal Stage",
+            "description": "Estágio atual do deal aberto.",
+            "examples": [
+              "Engaging"
+            ]
+          },
+          "days_in_engaging": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Days In Engaging",
+            "description": "Dias desde engage_date até as_of. Nulo em Prospecting (sem data).",
+            "examples": [
+              78,
+              null
+            ]
+          },
+          "priority_score": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Priority Score",
+            "description": "Score de prioridade 0-100 = f(p_win, expected_value, urgency).",
+            "examples": [
+              82.4
+            ]
+          },
+          "tier": {
+            "type": "string",
+            "enum": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "title": "Tier",
+            "description": "Faixa A-D por quantis do priority_score.",
+            "examples": [
+              "A"
+            ]
+          },
+          "p_win": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "P Win",
+            "description": "Probabilidade estimada de fechar (calibrada).",
+            "examples": [
+              0.71
+            ]
+          },
+          "expected_value": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Expected Value",
+            "description": "Valor esperado = sales_price x razão histórica de fechamento do produto x p_win.",
+            "examples": [
+              3412.5
+            ]
+          },
+          "sales_price": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sales Price",
+            "description": "Preço de tabela do produto (valor nominal, sem probabilidade). Nulo em partições geradas antes do schema 1.1.0.",
+            "examples": [
+              4821.0,
+              null
+            ]
+          },
+          "urgency": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Urgency",
+            "description": "Urgência 0-1: quanto a ação do vendedor esta semana muda o desfecho.",
+            "examples": [
+              0.8
+            ]
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "alta",
+              "media",
+              "baixa"
+            ],
+            "title": "Confidence",
+            "description": "Confiança na estimativa: cai sem conta conhecida ou com histórico pequeno.",
+            "examples": [
+              "alta",
+              "media",
+              "baixa"
+            ]
+          },
+          "reasons": {
+            "items": {
+              "$ref": "#/components/schemas/Reason"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Reasons",
+            "description": "Explicações ordenadas por |peso|, misturando regras e modelo."
+          },
+          "next_action": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Next Action",
+            "description": "Próximo passo sugerido, em uma frase.",
+            "examples": [
+              "Ligar esta semana e propor data de fechamento."
+            ]
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date",
+            "title": "As Of",
+            "description": "Data de referência do score (snapshot ou corte de backtest).",
+            "examples": [
+              "2017-12-31"
+            ]
+          },
+          "model_version": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Model Version",
+            "description": "Versão do modelo/regras que gerou o score (pasta em models/).",
+            "examples": [
+              "2017-12-31-lr-v1"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "opportunity_id",
+          "sales_agent",
+          "manager",
+          "regional_office",
+          "product",
+          "deal_stage",
+          "priority_score",
+          "tier",
+          "p_win",
+          "expected_value",
+          "urgency",
+          "confidence",
+          "reasons",
+          "next_action",
+          "as_of",
+          "model_version"
+        ],
+        "title": "ScoredDeal",
+        "description": "One open deal at ``as_of`` with its priority score and explanation.\n\nThis is the row schema of ``gold/scores/as_of=YYYY-MM-DD`` and the item schema of the\nAPI. The API never recomputes anything: it only reads and filters these rows.",
+        "examples": [
+          {
+            "account": "Konex",
+            "as_of": "2017-12-31",
+            "confidence": "alta",
+            "days_in_engaging": 78,
+            "deal_stage": "Engaging",
+            "expected_value": 3412.5,
+            "manager": "Melvin Marxen",
+            "model_version": "2017-12-31-lr-v1",
+            "next_action": "Ligar esta semana e propor data de fechamento.",
+            "opportunity_id": "Z063OYW0",
+            "p_win": 0.71,
+            "priority_score": 82.4,
+            "product": "GTX Pro",
+            "reasons": [
+              {
+                "code": "AGENT_PRODUCT_FIT",
+                "direction": "+",
+                "text_pt": "Você fecha 74% dos GTX Pro (média do time: 63%).",
+                "weight": 9.0
+              },
+              {
+                "code": "SURVIVAL_POSITIVE",
+                "direction": "+",
+                "text_pt": "78 dias em Engaging: deals que passam de 60 dias fecham em 68%.",
+                "weight": 0.6
+              }
+            ],
+            "regional_office": "Central",
+            "sales_agent": "Darcel Schlecht",
+            "sales_price": 4821.0,
+            "tier": "A",
+            "urgency": 0.8
+          }
+        ]
+      },
+      "TierDistribution": {
+        "properties": {
+          "A": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "A",
+            "default": 0
+          },
+          "B": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "B",
+            "default": 0
+          },
+          "C": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "C",
+            "default": 0
+          },
+          "D": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "D",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "TierDistribution",
+        "description": "Count of open deals per tier.",
+        "examples": [
+          {
+            "A": 5,
+            "B": 12,
+            "C": 20,
+            "D": 9
+          }
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "operacao",
+      "description": "Saúde do serviço."
+    },
+    {
+      "name": "meta",
+      "description": "Descoberta de snapshots (`as_of`), versão do modelo e contagens."
+    },
+    {
+      "name": "deals",
+      "description": "Deals pontuados: lista filtrável, detalhe e explicação (reason codes)."
+    },
+    {
+      "name": "dimensoes",
+      "description": "Vendedores, gerentes e regiões com contagens, para preencher filtros."
+    },
+    {
+      "name": "pipeline",
+      "description": "Visão do gerente: zumbis, valor em risco, cobertura de conta por recorte."
+    },
+    {
+      "name": "modelo",
+      "description": "Métricas do backtest temporal vs. baselines e model card."
+    },
+    {
+      "name": "feedback",
+      "description": "Ações registradas pelo vendedor sobre um deal (loop de aprendizado)."
+    }
+  ]
+}

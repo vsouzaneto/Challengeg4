@@ -1,0 +1,110 @@
+site_name: Lead Scorer — Documentação
+site_description: Priorização explicável de deals para vendas (G4 AI Master Challenge 003)
+site_author: Bernardo Couto
+docs_dir: docs
+site_dir: site
+use_directory_urls: true
+strict: true
+
+theme:
+  name: material
+  language: pt-BR
+  font:
+    text: Manrope
+    code: JetBrains Mono
+  palette:
+    scheme: default
+    primary: custom
+    accent: custom
+  features:
+    - navigation.sections
+    - navigation.top
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+
+extra_css:
+  - stylesheets/g4.css
+
+plugins:
+  - search:
+      lang: pt
+  - include-markdown:
+      rewrite_relative_urls: false
+  - mermaid2
+  - swagger-ui-tag
+
+markdown_extensions:
+  - admonition
+  - tables
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid_custom
+
+validation:
+  omitted_files: info
+  absolute_links: warn
+  unrecognized_links: info
+  anchors: warn
+
+# Raw evidence (transcripts, redaction patterns, screenshots) is linked from the process log but is not a doc page.
+exclude_docs: |
+  process-log/chat-exports/
+  process-log/tools/redact-patterns.txt
+
+not_in_nav: |
+  CLAUDE.md
+  process-log/tools/*
+
+nav:
+  - Início: index.md
+  - Como rodar: como-rodar.md
+  - Arquitetura:
+      - Visão geral: docs/solution-architecture.md
+      - Time de agentes (Claude Code): docs/agents-architecture.md
+  - Dados e qualidade: docs/data-quality-report.md
+  - Scoring e backtest:
+      - Lógica de scoring (para a Head): docs/scoring-logic.md
+      - Especificação do scoring: docs/specs/scoring-spec.md
+      - Hipóteses e vereditos: hipoteses.md
+      - Figuras — EDA: docs/figures/01_eda.md
+      - Figuras — Backtest: docs/figures/10_backtest.md
+      - Figuras — Diagnósticos: docs/figures/11_diagnostics.md
+      - Figuras — Candidatos de modelo: docs/figures/20_model_candidates.md
+  - Pipeline de ML e model card: docs/ml-pipeline.md
+  - Revisão de RevOps: docs/revops-review.md
+  - API: api/index.md
+  - Design e UX:
+      - Especificação de UX: docs/design/ux-spec.md
+      - Design tokens: docs/design/design-tokens.md
+      - Acessibilidade: docs/design/accessibility.md
+      - Checklist de revisão: docs/design/review-checklist.md
+  - Qualidade e segurança:
+      - Code review: docs/code-review.md
+      - Avaliação simulada (rubrica do G4): docs/evaluation.md
+      - Revisão de segurança: docs/security-review.md
+      - Relatório de QA: docs/qa-report.md
+  - Limitações: docs/limitations.md
+  - ADRs:
+      - Visão geral: adrs.md
+      - 0001 Spark como pipeline batch: docs/adr/0001-spark-como-pipeline-batch.md
+      - 0002 FastAPI + React: docs/adr/0002-fastapi-react-em-vez-de-streamlit.md
+      - 0003 Docker Compose: docs/adr/0003-docker-compose-como-entrega.md
+      - 0004 MkDocs: docs/adr/0004-mkdocs-para-documentacao-navegavel.md
+      - 0005 Sem LLM no scoring: docs/adr/0005-sem-llm-no-scoring.md
+      - 0006 Artefatos commitados: docs/adr/0006-artefatos-commitados-para-rodar-sem-jdk.md
+      - 0007 Contrato compartilhado: docs/adr/0007-contrato-scoreddeal-em-pacote-compartilhado.md
+  - Process log:
+      - Índice de evidências: process-log/README.md
+      - Narrativa por sessão: process-log/01-narrativa.md
+      - Onde a IA errou: process-log/02-erros-da-ia.md
+      - Decision log: process-log/decisions.md

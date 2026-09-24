@@ -1,0 +1,14 @@
+[project]
+name = "lead-scorer-docs"
+version = "1.0.0"
+description = "MkDocs Material site generated from the submission's Markdown (docs/, process-log/, READMEs)."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "mkdocs-material>=9.5",
+    "mkdocs-mermaid2-plugin>=1.1",
+    "mkdocs-swagger-ui-tag>=0.6",
+    "mkdocs-include-markdown-plugin>=6.2",
+]
+
+[tool.uv]
+package = false
