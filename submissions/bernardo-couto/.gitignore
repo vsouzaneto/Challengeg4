@@ -1,0 +1,37 @@
+# Local to submissions/bernardo-couto (allowed: inside the submission folder)
+solution/data/bronze/
+solution/data/silver/
+solution/data/gold/*
+!solution/data/gold/scores/
+solution/data/gold/scores/*
+!solution/data/gold/scores/as_of=2017-12-31/
+solution/data/feedback/
+solution/models/*/pipeline_model/
+solution/spark-warehouse/
+derby.log
+metastore_db/
+solution/.venv/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+solution/web/node_modules/
+solution/web/dist/
+solution/web/coverage/
+solution/web/playwright-report/
+solution/web/test-results/
+*.tsbuildinfo
+solution/docs-site/site/
+.DS_Store
+# Secrets and local-only files (security-review): never staged, at any depth.
+.env
+.env.*
+*.local
+.private/
+kaggle.json
+credentials.json
+CLAUDE.local.md
+.claude/settings.local.json
+
