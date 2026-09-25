@@ -13,7 +13,7 @@
 | Hipóteses da IA refutadas pelos dados | 4 |
 | Erros da IA pegos pela verificação | 38 ([lista](#erros-da-ia-pegos-pela-verificação)): 21 antes de entrar na entrega e 17 depois (9 na revisão pedida pelo Pedro, 2 pela segunda opinião, 1 no teste do chat, 4 na validação final, 1 na revisão do export) |
 | Verificação automática do protótipo | 308/308 textos com a mesma fila e a mesma faixa em Python e no navegador |
-| Validação cruzada (outra IA) | 19 afirmações recalculadas: 16 confirmam, 2 divergem, 1 não verificável; 2 pontos novos entraram na revisão |
+| Validação cruzada (Claude Chat) | 19 afirmações recalculadas: 16 confirmam, 2 divergem, 1 não verificável; 2 pontos novos entraram na revisão |
 
 ---
 
@@ -208,9 +208,10 @@ Outras decisões desta etapa:
 - **Erro da IA: a mesma faixa descrita de dois jeitos.** A página principal dizia "resposta automática pede o que falta";
   a revisão e o chat dizem que a IA redige e o atendente aprova. Ficou a versão com aprovação nos três lugares.
 
-## 13. Validação cruzada: segunda opinião de outra IA (`validacao-cruzada/`)
+## 13. Validação cruzada: segunda opinião do Claude Chat (`validacao-cruzada/`)
 
-- **O Pedro trouxe uma segunda opinião** de outra IA sobre o Dataset 1. Cada afirmação foi recalculada por
+- **O Pedro trouxe uma segunda opinião** do Claude Chat sobre o Dataset 1, pedida sem mostrar os achados desta
+  entrega ([prints](validacao-cruzada/prints/)). Cada afirmação foi recalculada por
   `06_validacao_cruzada.py`: 19 afirmações, 16 confirmam, 2 divergem ("ruído uniforme", que é triangular, e "gênero
   uniforme", que não é), 1 não é verificável (o hash dos dois anexos).
 - **Dois pontos que a análise principal não tinha:** 392 descrições são cópia exata de outra (47 grupos, nenhum com o
@@ -285,8 +286,8 @@ Outras decisões desta etapa:
 | 25 | Fila *Administrative rights* chamada de "Instalação de software" no chat (76% dos tickets com "outlook" estão nela) | caso de senha do Outlook roteado para ela no teste | 12 |
 | 26 | "Pedir detalhes" descrito como resposta automática na página principal, com aprovação na revisão e no chat | leitura do painel durante o teste | 12 |
 | 27 | Caixa de mensagem do chat herdando 190 px de altura; texto branco sobre roxo claro no tema escuro | captura de tela com o Edge headless | 12 |
-| 28 | "0 registros repetidos" sem conferir o texto sozinho: 392 descrições são cópia exata | segunda opinião de outra IA, recalculada | 13 |
-| 29 | Tipos do CSV não comparados com os do enunciado (3 no brief, 5 no CSV) | segunda opinião de outra IA, recalculada | 13 |
+| 28 | "0 registros repetidos" sem conferir o texto sozinho: 392 descrições são cópia exata | segunda opinião do Claude Chat, recalculada | 13 |
+| 29 | Tipos do CSV não comparados com os do enunciado (3 no brief, 5 no CSV) | segunda opinião do Claude Chat, recalculada | 13 |
 | 30 | Script de verificação agrupando a "pior combinação" por assunto em vez de tipo | n = 9 não batia com o n = 31 afirmado | 13 |
 | 31 | Documento da validação cruzada escrito em 1ª pessoa, atribuindo ao Pedro erros que foram da IA | releitura antes do commit | 13 |
 | 32 | README com a revisão humana dos rótulos marcada como feita, com a coluna `veredito_pedro` vazia | validação final (recálculo + 3 refutadores) | 14 |

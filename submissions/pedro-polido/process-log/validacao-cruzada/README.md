@@ -1,7 +1,8 @@
-# Validação cruzada: segunda opinião de outra IA sobre o Dataset 1
+# Validação cruzada: segunda opinião do Claude Chat sobre o Dataset 1
 
-O Pedro pediu uma segunda opinião a outra IA sobre o mesmo CSV. Pelo próprio texto dela ("Cole aqui o que a outra IA
-encontrou"), ela não viu esta entrega. A resposta está abaixo, sem edição. Em seguida, cada afirmação dela foi recalculada a partir do CSV por
+O Pedro pediu uma segunda opinião ao Claude Chat (claude.ai), com o CSV anexado e o contexto do desafio, sem mostrar
+os achados desta entrega: "veja se encontra os desvios nesse dataset, minha outra IA encontrou alguns quero ver se
+bate". A resposta está abaixo, sem edição. Em seguida, cada afirmação dela foi recalculada a partir do CSV por
 [`solution/pipeline/06_validacao_cruzada.py`](../../solution/pipeline/06_validacao_cruzada.py). Os números da tabela
 saem de [`verificacao.json`](verificacao.json), gerado pelo script; nenhum foi copiado da resposta dela.
 
@@ -9,7 +10,8 @@ saem de [`verificacao.json`](verificacao.json), gerado pelo script; nenhum foi c
 com o arquivo. Duas das confirmações eram **pontos que a análise principal não tinha**. Entraram na revisão (Etapa 1) e
 estão listados na seção "O que mudou".
 
-[evidência: anexar print da conversa com a outra IA]
+Prints da conversa no Claude Chat: [o pedido e o início da resposta](prints/01-pedido-e-inicio-da-resposta.png) ·
+[os desvios 1 a 6](prints/02-desvios-1-a-6.png). O trecho visível nos prints é idêntico ao texto abaixo.
 
 ## O texto recebido
 

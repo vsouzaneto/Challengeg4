@@ -1,4 +1,4 @@
-"""Validação cruzada: confere, uma a uma, as afirmações da segunda opinião (outra IA) sobre o Dataset 1.
+"""Validação cruzada: confere, uma a uma, as afirmações da segunda opinião (Claude Chat) sobre o Dataset 1.
 
 Cada afirmação vira um número recalculado aqui a partir do CSV, e o veredito fica ao lado:
 confirma, diverge (com o número que contradiz) ou não verificável com o arquivo.

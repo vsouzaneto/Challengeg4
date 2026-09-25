@@ -39,7 +39,7 @@ com o avaliador no papel do cliente e do atendente. A IA confirma o recebimento 
 tem confiança e passa para uma pessoa quando não deve decidir. O Gemini traduz e redige, mas nada do que ele escreve
 chega ao cliente sem o clique do atendente. Cada um dos 7 cenários abre direto por link (`chat.html?cenario=1` a `7`).
 
-**Validação cruzada:** uma segunda IA analisou o mesmo CSV sem ver esta entrega, e cada afirmação dela foi recalculada
+**Validação cruzada:** o Claude Chat analisou o mesmo CSV sem ver os achados desta entrega, e cada afirmação dele foi recalculada
 por script ([`process-log/validacao-cruzada/`](process-log/validacao-cruzada/)). Das 19 afirmações, 16 se confirmam,
 2 divergem e 1 não é verificável. Duas eram novas e entraram na revisão.
 
@@ -58,7 +58,7 @@ por script ([`process-log/validacao-cruzada/`](process-log/validacao-cruzada/)).
 | 5. Protótipo | Funciona com dados reais, na mão de quem usa? | [`solution/app`](solution/app) |
 | 6. Revisão | O que o CSV sozinho sustenta? | [`05_revisao_csv.py`](solution/pipeline/05_revisao_csv.py) → [`revisao.html`](solution/app/revisao.html) |
 | 7. Chat | Como o fluxo fica numa conversa, com o atendente aprovando o que a IA escreve? | [`chat.html`](solution/app/chat.html) + [`chat-policy.js`](solution/app/js/chat-policy.js) |
-| 8. Validação cruzada | Outra IA chega aos mesmos desvios? | [`06_validacao_cruzada.py`](solution/pipeline/06_validacao_cruzada.py) → [`validacao-cruzada/`](process-log/validacao-cruzada/) |
+| 8. Validação cruzada | Outra IA (Claude Chat) chega aos mesmos desvios? | [`06_validacao_cruzada.py`](solution/pipeline/06_validacao_cruzada.py) → [`validacao-cruzada/`](process-log/validacao-cruzada/) |
 
 Princípio em todas as etapas: tentar derrubar cada achado antes de reportá-lo. Os limiares da política foram escolhidos em
 validação cruzada **no treino**, e o conjunto de teste (9.568 tickets) só foi usado para medir.
@@ -199,7 +199,7 @@ triagem, que estes dados não permitem medir.
 | Claude Code (Claude Opus) | Agente principal: exploração dos dados, testes estatísticos, pipeline em Python, web app, revisão visual |
 | Gemini | Dentro do produto: tradução e rascunho de resposta. No benchmark: LLM × classificador linear |
 | Edge headless | Capturas de tela da página inteira para revisar o visual (o painel do navegador estava oculto) |
-| Outra IA (segunda opinião) | Análise independente do mesmo CSV; cada afirmação dela foi recalculada por script |
+| Claude Chat (segunda opinião) | Análise independente do mesmo CSV; cada afirmação dele foi recalculada por script |
 
 ### Workflow
 
@@ -214,7 +214,7 @@ triagem, que estes dados não permitem medir.
    `veredito_pedro`).
 8. Chat de atendimento: a política é uma função pura testada em 13 cenários, e a tela foi testada no navegador com o
    Gemini ativo (7 cenários, aprovação, passagem para uma pessoa, HTML escapado, 375 px).
-9. Validação cruzada com uma segunda IA, conferida número a número.
+9. Validação cruzada com o Claude Chat, conferida número a número.
 
 ### Onde a IA errou, e como a verificação pegou (seleção; lista completa no log)
 
@@ -237,13 +237,18 @@ triagem, que estes dados não permitem medir.
 - **Um web app publicado em vez de Streamlit**, para o avaliador abrir um link e usar em 30 segundos, com o Gemini
   (chave minha, fora do chat e do git) só onde agrega.
 - **O chat como diferencial**, pela minha experiência com agentes de atendimento.
-- **Uma segunda opinião de outra IA** sobre o mesmo CSV, que trouxe dois pontos que a análise principal não tinha.
+- **Uma segunda opinião do Claude Chat** sobre o mesmo CSV, que trouxe dois pontos que a análise principal não tinha.
 - **A revisão dos 40 casos da auditoria de rótulos.** Concordei com o veredito da IA em todos. O que a revisão me
   mostrou foi outra coisa: boa parte dos casos ambíguos não se resolve lendo o ticket de novo, e sim consultando outro
   sistema (se a conta está bloqueada, se o equipamento tem chamado, se já existe pedido de compra). Por isso a próxima
   evolução que proponho é um agente com acesso só de leitura a esses sistemas, que verifica antes de rotear e nunca
   executa nada. Ele entra no modo sombra, medindo quantos ambíguos passam a ser resolvidos com verificação.
-- _[PEDRO: o que a sua experiência operando triagem em produção (Tria) mudou na proposta, com as suas palavras]_
+- **A TRIA como base.** A TRIA, o assistente de recrutamento que construí, já triou mais de 10 mil candidatos em
+  operação real, dentro do WhatsApp: a conversa é a triagem, as perguntas seguem os critérios da vaga definidos pelo RH,
+  e o recrutador recebe o resultado já filtrado, no sistema que já usa ([portfólio](https://pedro-polido.vercel.app/)). A proposta segue esse
+  desenho: a IA atende no canal onde o cliente já está, confirma o recebimento, pede o que falta e entrega o ticket
+  organizado na fila certa, e a pessoa decide onde há julgamento (tema sensível, reembolso, perda de dados). O uso do
+  LLM segue o mesmo critério que defendo no portfólio: modelo determinístico primeiro, LLM só onde ele agrega.
 
 ---
 
@@ -279,7 +284,7 @@ ou nas variáveis de ambiente da Vercel.
   [`process-log/validacao-cruzada/`](process-log/validacao-cruzada/)
 - [x] Chat export da sessão com o Claude Code, revisado e sem dados pessoais, com 9 prints:
   [`process-log/chat-export/`](process-log/chat-export/)
-- [ ] Print da conversa com a outra IA (pendente; o texto já está na pasta acima)
+- [x] Prints da conversa com o Claude Chat: [`process-log/validacao-cruzada/prints/`](process-log/validacao-cruzada/prints/)
 
 ---
 

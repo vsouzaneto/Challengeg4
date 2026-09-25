@@ -55,7 +55,7 @@ $('#e1-erros').innerHTML = [
   'Na revisão por chat, o ROI contou como elegíveis ao pedido de detalhes tickets que o próprio fluxo manda direto para uma pessoa (C1–C6). Refeito seguindo o fluxo, o ROI provável caiu.',
   'Na revisão por chat, chamei os 19 casos de C6 de "sem falsos alarmes" sem lê-los. Na leitura, 4 são falsos positivos.',
   'Rotulei o proxy de volume (registros ÷ meses de compra) como INFERÊNCIA. É PREMISSA: data de compra não é data de abertura do ticket.',
-  `Reportei "0 registros repetidos" comparando todas as colunas e não conferi o texto sozinho: ${int(e1.descricoes_identicas.copias)} descrições são cópia exata de outra. Também não comparei os tipos do CSV com os do brief. Os dois pontos vieram de uma segunda opinião (outra IA), conferida número a número.`,
+  `Reportei "0 registros repetidos" comparando todas as colunas e não conferi o texto sozinho: ${int(e1.descricoes_identicas.copias)} descrições são cópia exata de outra. Também não comparei os tipos do CSV com os do brief. Os dois pontos vieram de uma segunda opinião (Claude Chat), conferida número a número.`,
 ].map((t) => `<li>${esc(t)}</li>`).join('');
 
 // ------------------------------------------------------------------------------------------------ 2.1
