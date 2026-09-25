@@ -4,7 +4,7 @@
 
 Usei o **Claude Code** como agente principal (análise dos CSVs com código, pipeline, web app, testes e agentes de
 verificação), o **Gemini** dentro do protótipo e num benchmark, e o **Claude Chat** para uma validação cruzada
-independente. Foram **10 pedidos meus** nesta sessão, **15 commits** e **38 erros da IA** pegos por verificação: 21
+independente. Foram **10 pedidos meus** nesta sessão, **16 commits** e **38 erros da IA** pegos por verificação: 21
 antes de entrarem na entrega e 17 depois. O principal ponto de julgamento humano foi desconfiar da base. Questionei a contagem
 do CSV de tickets e pedi uma revisão ponto a ponto só com o arquivo. Ela confirmou a contagem, explicou os "30 mil" e
 derrubou o ROI que eu tinha: de "~91 h/mês" para ROI negativo com o volume do próprio CSV. No diferencial, pedi um
@@ -17,7 +17,7 @@ batiam com os dados, e eu revisei os 40 casos da auditoria de rótulos.
 | Ferramenta | Papel no processo | Por que essa |
 |---|---|---|
 | Claude Code (Claude Opus; parte da validação final com o Claude Fable) | Leu o repositório, analisou os CSVs com código, escreveu 6 scripts de pipeline, o web app (com o chat) e os testes, e orquestrou agentes de verificação independentes | Executa código sobre os arquivos reais e deixa rastro (scripts, commits); nenhum número vem de memória |
-| Claude Chat | Validação cruzada da análise do CSV, sem o contexto da sessão | Uma segunda IA, sem ver os meus achados, para ver se chegava aos mesmos desvios. A resposta, os [prints](process-log/validacao-cruzada/prints/) e a verificação item a item estão em [`process-log/validacao-cruzada/`](process-log/validacao-cruzada/) |
+| Claude Chat | Validação cruzada da análise do CSV, sem o contexto da sessão; e, depois da revisão dos rótulos, testar se a minha ideia do agente de verificação fazia sentido ([print](process-log/auditoria-rotulos/claude-chat-agente-de-verificacao.png)) | Uma segunda IA, sem ver os meus achados, para ver se chegava aos mesmos desvios. A resposta, os [prints](process-log/validacao-cruzada/prints/) e a verificação item a item estão em [`process-log/validacao-cruzada/`](process-log/validacao-cruzada/) |
 | Gemini 3.5 Flash-Lite | No protótipo: traduz tickets em português e redige rascunhos de resposta. No benchmark: comparado ao classificador | Chave que eu já tinha. Medido nos mesmos 234 tickets, classifica pior (42–64% contra 85,9%), então ficou só onde agrega |
 | TRIA (meu assistente de recrutamento e seleção) | Base de arquitetura: IA tria e encaminha, humano decide nos casos sensíveis | Já opero triagem automatizada em produção: mais de 10 mil candidatos triados pela TRIA, no WhatsApp ([portfólio](https://pedro-polido.vercel.app/)) |
 
@@ -44,13 +44,13 @@ se perdeu; o que a TRIA é e faz está no meu [portfólio](https://pedro-polido.
 | 1 | "consegue visualizar esse projeto? se sim leia o readme e compreenda o que teremos que fazer" (22/09) | Resumo do repositório, das regras e dos 4 desafios | — | [print 01](process-log/chat-export/prints/01-primeiro-pedido.png) |
 | 2 | "qual desafio acha que dá para fazer algo mais diferente que chame a atenção de forma eficiente?" | Recomendação do 002, com uma hipótese a verificar: a base de métricas seria sintética | Escolhi o 002 pela minha experiência; TRIA como base | [print 02](process-log/chat-export/prints/02-escolha-do-desafio.png) |
 | 3 | Anexei os dois CSVs: "bora no 002" | Primeira verificação: 8.469 registros, `{product_purchased}` sem preencher em 100% das descrições, 49,3% dos tickets "resolvidos antes da 1ª resposta" | Decidi abrir com a auditoria, usar Gemini e fazer um web app | [print 03](process-log/chat-export/prints/03-decisoes-do-pedro.png); commit `376fc59` |
-| 4 | Deixei a IA construir a v1 | Pipeline, detector de gargalos, classificador na base de TI, web app com simulador e triagem ao vivo | Analisei os CSVs por conta própria e conferi as afirmações `[evidência: anexar print/export]` | commits `d7eed68` a `90a8a38` |
+| 4 | Deixei a IA construir a v1 | Pipeline, detector de gargalos, classificador na base de TI, web app com simulador e triagem ao vivo | Analisei os CSVs por conta própria e conferi as afirmações ([prints](process-log/analise-manual/)) | commits `d7eed68` a `90a8a38` |
 | 5 | "coloquei a chave no .env, pode rodar o benchmark" | Benchmark Gemini × classificador; achou um modelo descontinuado | Chave fora do chat e do git | [print 04](process-log/chat-export/prints/04-benchmark.png); commits `680650c`, `7205e61`; `process-log/benchmark-llm/` |
 | 6 | Reanexei o CSV ("deveria conter cerca de 30.000 tickets") e pedi uma revisão ponto a ponto, com FATO / INFERÊNCIA / PREMISSA e as respostas reestruturadas por tópico: automatizar, não automatizar, fluxo, ROI | Etapa 1: 8.469 registros confirmados. As 29.808 linhas físicas explicam os "30 mil". 5 agentes analistas + 5 verificadores | Revisei ponto a ponto contra o enunciado e fiz a validação cruzada no Claude Chat, que encontrou os mesmos desvios ([prints](process-log/validacao-cruzada/prints/)) | [print 05](process-log/chat-export/prints/05-revisao-dos-30-mil.png) |
 | 7 | "suba o novo localhost atualizado" | Página de revisão (Etapas 1 a 3, fluxograma, ROI editável) + 2 auditores independentes: 35 problemas | Correções aplicadas e ROI refeito | commit `fc3222d` |
 | 8 | Este process log, a partir da minha narrativa | Primeira versão deste arquivo | Marquei as evidências que faltam | [print 06](process-log/chat-export/prints/06-pedido-do-process-log.png); commit `4cded97` |
 | 9 | "constrói o chat do diferencial", e colei a segunda opinião que pedi ao Claude Chat | Chat de atendimento com política testada em 13 cenários e testado no navegador com o Gemini; script que recalcula as 19 afirmações da segunda opinião | O chat como diferencial, pela experiência com agentes de atendimento; trazer a segunda opinião | [print 07](process-log/chat-export/prints/07-chat-e-segunda-opiniao.png); commits `ef898b4` e `425a02e`; capturas 07 a 09 |
-| 10 | Validação final com portão de decisão, depois prints, export da conversa, fork e teste do protótipo | Recálculo de 784 afirmações a partir dos CSVs: 4 textos não batiam, e a IA parou sem seguir. Depois: export revisado, fork e teste de ponta a ponta | Revisei os 40 casos de rótulo (concordei em todos) e propus o agente de verificação só de leitura | [prints 08 e 09](process-log/chat-export/prints/08-validacao-final.png); commits `1568a89` e `ba5a03b`; [`chat-export/`](process-log/chat-export/) |
+| 10 | Validação final com portão de decisão, depois prints, export da conversa, fork e teste do protótipo | Recálculo de 784 afirmações a partir dos CSVs: 4 textos não batiam, e a IA parou sem seguir. Depois: export revisado, fork e teste de ponta a ponta | Revisei os 40 casos de rótulo (concordei em todos), testei no Claude Chat a ideia do agente de verificação só de leitura ([print](process-log/auditoria-rotulos/claude-chat-agente-de-verificacao.png)) e a propus | [prints 08 e 09](process-log/chat-export/prints/08-validacao-final.png); commits `1568a89` e `ba5a03b`; [`chat-export/`](process-log/chat-export/) |
 
 ## 5. Onde a IA errou e como corrigi
 
@@ -75,7 +75,7 @@ A lista completa, com os 38 erros, está em [`process-log/README.md`](process-lo
 - **A escolha do challenge pela minha experiência** em automação de suporte, e não pelo que parecia mais fácil.
 - **A TRIA como base:** IA que tria no canal onde a pessoa já está e entrega o resultado filtrado; humano que decide
   no que é sensível ([portfólio](https://pedro-polido.vercel.app/); o print do pedido se perdeu).
-- **A desconfiança e a checagem manual dos dados** `[evidência: anexar print/export]`. Foi a minha dúvida sobre a contagem
+- **A desconfiança e a checagem manual dos dados** ([prints da leitura no Excel](process-log/analise-manual/)). Foi a minha dúvida sobre a contagem
   que disparou a revisão, e foi a revisão que derrubou o ROI de "~91 h/mês".
 - **As regras da revisão:** nenhum número de memória, separação entre FATO / INFERÊNCIA / PREMISSA, exemplo real com ID
   do ticket, e nenhuma etapa antes de fechar a anterior.
@@ -83,7 +83,8 @@ A lista completa, com os 38 erros, está em [`process-log/README.md`](process-lo
   tinha, e cada afirmação dela foi recalculada ([`validacao-cruzada/`](process-log/validacao-cruzada/), com os [prints](process-log/validacao-cruzada/prints/)).
 - **As decisões de produto:** abrir a entrega pela auditoria, usar o Gemini só onde ele ganha (tradução e rascunho) e
   publicar um web app.
-- **A revisão dos 40 casos da auditoria de rótulos:** concordei com a IA em todos, mas vi que boa parte dos ambíguos
+- **A revisão dos 40 casos da auditoria de rótulos** ([print da conversa com o Claude Chat](process-log/auditoria-rotulos/claude-chat-agente-de-verificacao.png)): concordei com
+  a IA em todos, mas vi que boa parte dos ambíguos
   só se resolve consultando outro sistema (conta, chamado, pedido de compra). Daí a proposta de um agente de
   verificação só de leitura, avaliado no modo sombra (recomendação 6 do README).
 - **A escolha do diferencial:** pedi um chat, porque é onde temos mais experiência pelo histórico de agentes já
@@ -100,8 +101,8 @@ A lista completa, com os 38 erros, está em [`process-log/README.md`](process-lo
 | Página de revisão | 1 | 2 auditores independentes, 1 commit | 35 problemas; 5 erros da IA corrigidos, 3 deles na própria resposta da revisão |
 | Process log | 1 | 1 commit | — |
 | Chat e validação cruzada | 1, com a segunda opinião colada | 13 cenários em Node, 7 no navegador com o Gemini, 19 afirmações recalculadas, 2 commits | 9 erros da IA: 7 da construção, 2 apontados pela segunda opinião |
-| Validação final, export e fork | 1, mais a minha revisão dos 40 rótulos | 42 agentes na validação, 63 na revisão do export, teste de ponta a ponta, 4 commits | 7 erros da IA: 4 textos, a afirmação sobre a chave e 2 no gerador do export |
-| **Total** | **10 nesta sessão**, mais a validação no Claude Chat | **15 commits** | **38 erros da IA corrigidos** (11 + 2 + 4 + 5 + 9 + 7) |
+| Validação final, export e fork | 1, mais a minha revisão dos 40 rótulos | 42 agentes na validação, 63 na revisão do export, teste de ponta a ponta, 5 commits | 7 erros da IA: 4 textos, a afirmação sobre a chave e 2 no gerador do export |
+| **Total** | **10 nesta sessão**, mais a validação no Claude Chat | **16 commits** | **38 erros da IA corrigidos** (11 + 2 + 4 + 5 + 9 + 7) |
 
 ## 8. Evidências anexas
 
@@ -109,15 +110,17 @@ A lista completa, com os 38 erros, está em [`process-log/README.md`](process-lo
   · `6b35e41` 00:23 triagem · `de2a8e8` 00:41 web app · `90a8a38` 00:47 README e log · `680650c` 00:59 correção do
   Gemini · `7205e61` 01:46 benchmark · `fc3222d` 15:48 revisão só com o CSV · `4cded97` 15:51 este log ·
   `ef898b4` chat de atendimento · `425a02e` validação cruzada; em 24/09: `1568a89` validação final e revisão dos
-  rótulos · `ba5a03b` export da conversa · `a3326bc` fechamento dos logs · e o commit dos prints do Claude Chat e da TRIA.
+  rótulos · `ba5a03b` export da conversa · `a3326bc` fechamento dos logs · `c44adc0` prints do Claude Chat e TRIA · e o commit das evidências da análise
+  manual.
 - [`process-log/chat-export/`](process-log/chat-export/): a conversa inteira com o Claude Code, conferida contra o
   export bruto, com 9 prints dos momentos da linha do tempo acima.
 - **Fork:** [github.com/P0lid0/ai-master-challenge](https://github.com/P0lid0/ai-master-challenge).
-- [`process-log/README.md`](process-log/README.md): log técnico, com decisões, hipóteses refutadas e os 31 erros.
+- [`process-log/README.md`](process-log/README.md): log técnico, com decisões, hipóteses refutadas e os 38 erros.
 - [`process-log/benchmark-llm/`](process-log/benchmark-llm/): logs brutos das 3 execuções do benchmark.
 - [`process-log/auditoria-rotulos/candidatos.csv`](process-log/auditoria-rotulos/candidatos.csv): 40 casos, com o
   veredito da IA, o do Gemini e o meu.
 - [`process-log/screenshots/`](process-log/screenshots/): 9 capturas do protótipo (07 a 09 são do chat).
+- [`process-log/analise-manual/`](process-log/analise-manual/): a minha leitura dos dois datasets no Excel.
 - [`process-log/validacao-cruzada/`](process-log/validacao-cruzada/): o texto da segunda opinião, sem edição, e cada
   afirmação recalculada por [`06_validacao_cruzada.py`](solution/pipeline/06_validacao_cruzada.py).
 - [`solution/app/chat.html`](solution/app/chat.html): o chat do diferencial; a política está em
@@ -125,9 +128,7 @@ A lista completa, com os 38 erros, está em [`process-log/README.md`](process-lo
 - [`solution/app/revisao.html`](solution/app/revisao.html) e
   [`05_revisao_csv.py`](solution/pipeline/05_revisao_csv.py): a revisão ponto a ponto.
 
-## O que falta eu anexar
+## O que falta
 
 - [ ] Revogar a chave do Gemini que ficou no zip bruto do export, e cadastrar uma nova na Vercel no deploy.
 - [ ] Enviar a branch para o fork, publicar na Vercel e abrir o PR.
-- [ ] Prints da minha análise manual dos CSVs.
-- [ ] Revisar o trecho sobre a TRIA no README ("O que eu adicionei"), montado a partir do meu portfólio.

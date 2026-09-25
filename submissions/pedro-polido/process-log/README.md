@@ -118,8 +118,9 @@ Outras decisões desta etapa:
 - **Revisão do Pedro:** coluna `veredito_pedro` em [`candidatos.csv`](auditoria-rotulos/candidatos.csv). Ele revisou
   os 40 casos e concordou com o veredito da IA em todos. A observação dele foi outra: boa parte dos ambíguos não se
   resolve relendo o ticket, e sim consultando outro sistema (conta bloqueada, chamado do equipamento, pedido de compra
-  existente). Daí a proposta de um agente de verificação só de leitura, que nunca executa nada, avaliado no modo sombra
-  pela fração de ambíguos que passa a ser resolvida.
+  existente). Ele levou essa ideia ao Claude Chat para testar se fazia sentido
+  ([print](auditoria-rotulos/claude-chat-agente-de-verificacao.png)). Daí a proposta de um agente de verificação só de
+  leitura, que nunca executa nada, avaliado no modo sombra pela fração de ambíguos que passa a ser resolvida.
 - **Terceira opinião (Gemini 3.5 Flash-Lite, sem ver o rótulo nem a previsão do modelo):** nos 15 casos em que a IA
   julgou o rótulo errado, o Gemini **nunca** escolheu o rótulo e ficou com a fila do modelo em 10. Nos 13 em que julgou
   o rótulo certo, ficou com o rótulo em 8. Concordância nos 28 casos categóricos: 64%. Em 38% dos 40 casos ele escolheu

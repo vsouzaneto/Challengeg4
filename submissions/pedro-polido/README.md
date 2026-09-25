@@ -285,6 +285,8 @@ ou nas variáveis de ambiente da Vercel.
 - [x] Chat export da sessão com o Claude Code, revisado e sem dados pessoais, com 9 prints:
   [`process-log/chat-export/`](process-log/chat-export/)
 - [x] Prints da conversa com o Claude Chat: [`process-log/validacao-cruzada/prints/`](process-log/validacao-cruzada/prints/)
+  e [a proposta do agente de verificação](process-log/auditoria-rotulos/claude-chat-agente-de-verificacao.png)
+- [x] Prints da minha leitura dos dois datasets no Excel: [`process-log/analise-manual/`](process-log/analise-manual/)
 
 ---
 
