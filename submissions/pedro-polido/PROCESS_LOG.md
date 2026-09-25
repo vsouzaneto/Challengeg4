@@ -4,7 +4,7 @@
 
 Usei o **Claude Code** como agente principal (análise dos CSVs com código, pipeline, web app, testes e agentes de
 verificação), o **Gemini** dentro do protótipo e num benchmark, e o **Claude Chat** para uma validação cruzada
-independente. Foram **10 pedidos meus** nesta sessão, **16 commits** e **38 erros da IA** pegos por verificação: 21
+independente. Foram **11 pedidos meus** nesta sessão, **17 commits** e **38 erros da IA** pegos por verificação: 21
 antes de entrarem na entrega e 17 depois. O principal ponto de julgamento humano foi desconfiar da base. Questionei a contagem
 do CSV de tickets e pedi uma revisão ponto a ponto só com o arquivo. Ela confirmou a contagem, explicou os "30 mil" e
 derrubou o ROI que eu tinha: de "~91 h/mês" para ROI negativo com o volume do próprio CSV. No diferencial, pedi um
@@ -51,6 +51,7 @@ se perdeu; o que a TRIA é e faz está no meu [portfólio](https://pedro-polido.
 | 8 | Este process log, a partir da minha narrativa | Primeira versão deste arquivo | Marquei as evidências que faltam | [print 06](process-log/chat-export/prints/06-pedido-do-process-log.png); commit `4cded97` |
 | 9 | "constrói o chat do diferencial", e colei a segunda opinião que pedi ao Claude Chat | Chat de atendimento com política testada em 13 cenários e testado no navegador com o Gemini; script que recalcula as 19 afirmações da segunda opinião | O chat como diferencial, pela experiência com agentes de atendimento; trazer a segunda opinião | [print 07](process-log/chat-export/prints/07-chat-e-segunda-opiniao.png); commits `ef898b4` e `425a02e`; capturas 07 a 09 |
 | 10 | Validação final com portão de decisão, depois prints, export da conversa, fork e teste do protótipo | Recálculo de 784 afirmações a partir dos CSVs: 4 textos não batiam, e a IA parou sem seguir. Depois: export revisado, fork e teste de ponta a ponta | Revisei os 40 casos de rótulo (concordei em todos), testei no Claude Chat a ideia do agente de verificação só de leitura ([print](process-log/auditoria-rotulos/claude-chat-agente-de-verificacao.png)) e a propus | [prints 08 e 09](process-log/chat-export/prints/08-validacao-final.png); commits `1568a89` e `ba5a03b`; [`chat-export/`](process-log/chat-export/) |
+| 11 | "pode subir a branch para o fork e publicar no vercel e abrir pr" | Branch no fork, projeto novo na Vercel ([triagem-suporte-ia.vercel.app](https://triagem-suporte-ia.vercel.app)), PR aberto no repositório do desafio | Mantive a chave atual do Gemini, fiz o login na Vercel e cadastrei a chave eu mesmo | commit da publicação; o PR |
 
 ## 5. Onde a IA errou e como corrigi
 
@@ -102,7 +103,8 @@ A lista completa, com os 38 erros, está em [`process-log/README.md`](process-lo
 | Process log | 1 | 1 commit | — |
 | Chat e validação cruzada | 1, com a segunda opinião colada | 13 cenários em Node, 7 no navegador com o Gemini, 19 afirmações recalculadas, 2 commits | 9 erros da IA: 7 da construção, 2 apontados pela segunda opinião |
 | Validação final, export e fork | 1, mais a minha revisão dos 40 rótulos | 42 agentes na validação, 63 na revisão do export, teste de ponta a ponta, 5 commits | 7 erros da IA: 4 textos, a afirmação sobre a chave e 2 no gerador do export |
-| **Total** | **10 nesta sessão**, mais a validação no Claude Chat | **16 commits** | **38 erros da IA corrigidos** (11 + 2 + 4 + 5 + 9 + 7) |
+| Publicação | 1 | branch no fork, deploy na Vercel conferido de fora, PR, 1 commit | — |
+| **Total** | **11 nesta sessão**, mais a validação no Claude Chat | **17 commits** | **38 erros da IA corrigidos** (11 + 2 + 4 + 5 + 9 + 7) |
 
 ## 8. Evidências anexas
 
@@ -110,11 +112,11 @@ A lista completa, com os 38 erros, está em [`process-log/README.md`](process-lo
   · `6b35e41` 00:23 triagem · `de2a8e8` 00:41 web app · `90a8a38` 00:47 README e log · `680650c` 00:59 correção do
   Gemini · `7205e61` 01:46 benchmark · `fc3222d` 15:48 revisão só com o CSV · `4cded97` 15:51 este log ·
   `ef898b4` chat de atendimento · `425a02e` validação cruzada; em 24/09: `1568a89` validação final e revisão dos
-  rótulos · `ba5a03b` export da conversa · `a3326bc` fechamento dos logs · `c44adc0` prints do Claude Chat e TRIA · e o commit das evidências da análise
-  manual.
+  rótulos · `ba5a03b` export da conversa · `a3326bc` fechamento dos logs · `c44adc0` prints do Claude Chat e TRIA · `34150b6` evidências da análise manual · e o commit da publicação.
 - [`process-log/chat-export/`](process-log/chat-export/): a conversa inteira com o Claude Code, conferida contra o
   export bruto, com 9 prints dos momentos da linha do tempo acima.
 - **Fork:** [github.com/P0lid0/ai-master-challenge](https://github.com/P0lid0/ai-master-challenge).
+- **Protótipo publicado:** [triagem-suporte-ia.vercel.app](https://triagem-suporte-ia.vercel.app).
 - [`process-log/README.md`](process-log/README.md): log técnico, com decisões, hipóteses refutadas e os 38 erros.
 - [`process-log/benchmark-llm/`](process-log/benchmark-llm/): logs brutos das 3 execuções do benchmark.
 - [`process-log/auditoria-rotulos/candidatos.csv`](process-log/auditoria-rotulos/candidatos.csv): 40 casos, com o
@@ -130,5 +132,5 @@ A lista completa, com os 38 erros, está em [`process-log/README.md`](process-lo
 
 ## O que falta
 
-- [ ] Revogar a chave do Gemini que ficou no zip bruto do export, e cadastrar uma nova na Vercel no deploy.
-- [ ] Enviar a branch para o fork, publicar na Vercel e abrir o PR.
+- [ ] Cadastrar a chave do Gemini na Vercel. Decidi manter a chave atual; o zip bruto do export, onde ela aparece,
+      fica só comigo.

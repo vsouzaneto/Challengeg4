@@ -6,7 +6,7 @@
 - **LinkedIn:** [linkedin.com/in/pedro-pólido](https://www.linkedin.com/in/pedro-p%C3%B3lido)
 - **Challenge escolhido:** 002 — Redesign de Suporte
 
-**Protótipo no ar:** _URL_DO_DEPLOY_ · **Rodar local:** [instruções](#como-rodar)
+**Protótipo no ar:** [triagem-suporte-ia.vercel.app](https://triagem-suporte-ia.vercel.app) · [revisão só com o CSV](https://triagem-suporte-ia.vercel.app/revisao.html) · [chat de atendimento](https://triagem-suporte-ia.vercel.app/chat.html) · **Rodar local:** [instruções](#como-rodar)
 
 ---
 
@@ -290,4 +290,4 @@ ou nas variáveis de ambiente da Vercel.
 
 ---
 
-_Submissão enviada em: DATA_DO_PR_
+_Submissão enviada em: 25/09/2026_
