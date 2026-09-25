@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Revisão do CSV</title>
+  <meta name="description" content="Revisão ponto a ponto usando só o CSV de tickets: verificação do arquivo, o que automatizar, o que não automatizar, fluxo e ROI com premissas editáveis.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%233547c8'/><path d='M8 11h16M8 16h10M8 21h6' stroke='white' stroke-width='3' stroke-linecap='round'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <nav class="nav">
+    <div class="wrap">
+      <a class="brand" href="./" style="text-decoration:none;color:inherit">Triagem<span>.</span>suporte</a>
+      <div class="nav-links">
+        <a href="./">← Página principal</a>
+        <a href="#etapa1">Etapa 1</a>
+        <a href="#e21">2.1 Automatizar</a>
+        <a href="#e22">2.2 Não automatizar</a>
+        <a href="#e23">2.3 Na prática</a>
+        <a href="#e3">3 · ROI</a>
+        <a href="#pendencias">Pendências</a>
+        <a href="chat.html" class="nav-rev">Chat de atendimento →</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero" id="topo">
+      <div class="wrap">
+        <div class="eyebrow">Revisão · só o CSV do Dataset 1</div>
+        <h1>Revisão ponto a ponto: o que o CSV sustenta</h1>
+        <p class="lead">Análise refeita usando apenas o arquivo <code>customer_support_tickets.csv</code>, sem a outra base.
+          Todo número medido no CSV sai de <code>pipeline/05_revisao_csv.py</code>; premissas e referências à página
+          principal estão marcadas. Os números de 2.1 e 2.2 também foram recalculados por uma verificação independente, e
+          uma segunda auditoria revisou o texto desta página.</p>
+        <div class="legend-box">
+          <span><b>🤖</b> automático</span><span><b>🤝</b> IA sugere, humano aprova</span><span><b>🧑</b> só humano</span>
+          <span class="sep"></span>
+          <span class="tag fato">FATO</span> medido no CSV
+          <span class="tag inf">INFERÊNCIA</span> dedução a partir dos dados
+          <span class="tag prem">PREMISSA</span> valor assumido
+        </div>
+      </div>
+    </section>
+
+    <section id="etapa1">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Etapa 1 · Verificação do CSV</div>
+          <h2 id="e1-title"></h2>
+          <p class="lead" id="e1-lead"></p>
+        </div>
+        <div class="card"><div class="table-scroll"><table id="e1-table"></table></div></div>
+        <div class="callout" style="margin-top:16px" id="e1-conclusao"></div>
+        <div class="grid-2" style="margin-top:16px">
+          <div class="card">
+            <h3>Colunas, tipos e nulos</h3>
+            <div class="table-scroll" style="margin-top:10px"><table id="e1-colunas"></table></div>
+          </div>
+          <div class="card">
+            <h3>Erros meus nas respostas anteriores, corrigidos aqui</h3>
+            <ol class="clean small" style="margin-top:12px" id="e1-erros"></ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="e21">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">2.1 · O que automatizar</div>
+          <h2>Três automações se sustentam, e nenhuma decide a categoria do ticket</h2>
+          <p class="lead">Classificar, rotear e priorizar exigem rótulos que os dados não confirmam. O que sobra são
+            automações de fluxo, que não decidem nada sobre o conteúdo do ticket.</p>
+        </div>
+        <div class="card"><div class="table-scroll"><table id="e21-mantidas"></table></div></div>
+        <h3 style="margin:28px 0 12px">Descartadas, e por quê</h3>
+        <div class="card"><div class="table-scroll"><table id="e21-descartadas"></table></div></div>
+      </div>
+    </section>
+
+    <section id="e22">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">2.2 · O que NÃO automatizar</div>
+          <h2 id="e22-title"></h2>
+          <p class="lead">Uma regra 🤖 identifica e encaminha; a decisão e o atendimento ficam com uma pessoa. Os trechos
+            são cópias literais do CSV (o script confere cada um).</p>
+        </div>
+        <div class="stackbar" id="e22-bar"></div>
+        <div class="card" style="margin-top:16px"><div class="table-scroll"><table id="e22-humano"></table></div></div>
+        <h3 style="margin:28px 0 12px">🤝 IA sinaliza, humano confirma</h3>
+        <div class="card"><div class="table-scroll"><table id="e22-assistido"></table></div></div>
+        <p class="small muted" style="margin-top:12px" id="e22-nota"></p>
+      </div>
+    </section>
+
+    <section id="e23">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">2.3 · Como funcionaria na prática</div>
+          <h2>Do ticket que entra à resolução</h2>
+        </div>
+        <div class="card mermaid-card">
+          <pre class="mermaid" id="fluxo">
+flowchart TD
+    A["Ticket entra<br/>e-mail · chat · telefone · redes sociais"]:::auto
+    B["🤖 Registro com data de abertura<br/>+ acuse de recebimento"]:::auto
+    C{"🤖 Regras de risco<br/>campo ou palavra-chave"}:::auto
+    D["🧑 Decisão financeira<br/>reembolso · cancelamento · cobrança"]:::human
+    E["🧑 Atendimento prioritário<br/>perda de dados · invasão · emoção/jurídico"]:::human
+    F{"🤖 Mensagem de erro<br/>vazia no texto?"}:::auto
+    G["🤝 IA redige pedido de detalhes<br/>atendente aprova o envio"]:::hitl
+    H["🤖 Aguardando o cliente<br/>+ lembrete automático<br/>(em qualquer caminho)"]:::auto
+    J["🤝 Sinais para o triador<br/>acesso · Critical · reincidência · urgência"]:::hitl
+    I["🧑 Triagem humana<br/>fila · prioridade · categoria"]:::human
+    K["🧑 Resolução"]:::human
+    L[("🤖 Registro de decisões,<br/>correções e rascunhos editados")]:::auto
+    M["🧑 Revisão semanal<br/>métricas e rótulos auditados"]:::human
+    A --> B --> C
+    C -- "C1–C3" --> D
+    C -- "C4–C6" --> E
+    C -- "nenhuma" --> F
+    C -. "C7–C10" .-> J
+    F -- "sim" --> G --> H
+    D <-.-> H
+    E <-.-> H
+    I <-.-> H
+    F -- "não" --> I
+    J -.-> I
+    D --> K
+    E --> K
+    I --> K
+    K --> L --> M
+    M -. "ajusta as regras; com rótulos confiáveis,<br/>avalia um classificador" .-> C
+    classDef auto fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    classDef hitl fill:#f9a825,stroke:#f57f17,color:#000000
+    classDef human fill:#c62828,stroke:#8e0000,color:#ffffff
+</pre>
+          <div class="legend" style="justify-content:center">
+            <span><i style="background:#2e7d32"></i>🤖 IA automática</span>
+            <span><i style="background:#f9a825"></i>🤝 IA sugere, humano aprova</span>
+            <span><i style="background:#c62828"></i>🧑 somente humano</span>
+          </div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Etapa</th><th>O que acontece</th><th>Quem atua</th><th>Gatilho para humano</th><th>Limiar de confiança</th></tr></thead>
+              <tbody>
+                <tr><td>1. Entrada</td><td>Grava o ticket <b>com data de abertura</b> (campo que falta no CSV)</td><td>🤖</td><td>Falha de integração → fila humana</td><td>Não se aplica (regra)</td></tr>
+                <tr><td>2. Acuse</td><td>Mensagem padrão, sem prometer prazo, registrada separada da 1ª resposta humana</td><td>🤖</td><td>Nenhum</td><td>Não se aplica</td></tr>
+                <tr><td>3. Regras de risco</td><td>Campo ou palavra-chave; na dúvida, marca</td><td>🤖 só encaminha</td><td>Qualquer ocorrência de C1–C6 → 🧑</td><td>Não se aplica: regra, e falso positivo é barato</td></tr>
+                <tr><td>4. Pedido de detalhes</td><td>Regra detecta mensagem de erro vazia (<code>{error_message}</code>) em ticket fora de C1–C6; IA redige; atendente aprova</td><td>🤝</td><td>Atendente rejeita; ticket em C1–C6; cliente já respondeu</td><td>Detecção por regra; 100% dos rascunhos revisados até a auditoria mostrar ≥ 90% de acerto <span class="tag prem">PREMISSA</span></td></tr>
+                <tr><td>5. Lembrete</td><td>Qualquer ticket aguardando o cliente há N dias (2 dias úteis <span class="tag prem">PREMISSA</span>), em qualquer caminho do fluxo</td><td>🤖</td><td>Cliente responde → volta à triagem; C1–C6 nunca fecham sozinhos</td><td>Não se aplica</td></tr>
+                <tr><td>6. Sinais C7–C10</td><td>Viram etiquetas para quem faz a triagem</td><td>🤝</td><td>A decisão é sempre humana</td><td>Não se aplica (regra)</td></tr>
+                <tr><td>7. Triagem</td><td>Humano define fila, prioridade e categoria</td><td>🧑</td><td>—</td><td><b>Não calculado</b>: o modelo testado não superou a linha de base neste CSV</td></tr>
+                <tr><td>8. Resolução</td><td>Humano resolve</td><td>🧑</td><td>—</td><td>—</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <h3>Ciclo de feedback</h3>
+          <ul class="clean small" style="margin-top:10px">
+            <li>Cada decisão da triagem vira rótulo, com autor e data. Cada rascunho aprovado, editado ou rejeitado vira sinal de qualidade.</li>
+            <li>Toda semana: acerto das regras C1–C10 numa amostra auditada, taxa de edição dos rascunhos e taxa de resposta aos lembretes. As regras são ajustadas com os falsos positivos e negativos.</li>
+            <li>Retreino só com rótulos humanos novos (os atuais não servem: tipo e assunto sem associação detectável). A partir de 2.000 rótulos <span class="tag prem">PREMISSA</span>, treinar um classificador e ligá-lo em 🤝 somente se superar a linha de base por +20 pontos percentuais e tiver ≥ 90% de concordância na auditoria <span class="tag prem">PREMISSA</span>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="e3">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Etapa 3 · ROI</div>
+          <h2 id="e3-title"></h2>
+          <p class="lead" id="e3-lead"></p>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Fórmula</h3>
+            <ul class="clean small formula" style="margin-top:10px">
+              <li><b>horas</b> por automação = volume elegível/mês × minutos poupados ÷ 60 × taxa de acerto</li>
+              <li><b>benefício/mês</b> = horas × custo/hora</li>
+              <li><b>custo/mês</b> = manutenção + uso de API + revisão humana dos rascunhos</li>
+              <li><b>ROI 12 meses</b> = (12 × benefício − (implantação + 12 × custo/mês)) ÷ (implantação + 12 × custo/mês)</li>
+              <li><b>payback</b> = implantação ÷ (benefício/mês − custo/mês)</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Volume e elegíveis</h3>
+            <ul class="clean small" style="margin-top:10px" id="e3-volume"></ul>
+          </div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <div class="card-title"><h3>Premissas e resultado por cenário</h3><span class="tag prem">PREMISSA</span></div>
+          <div class="table-scroll"><table id="e3-cenarios"></table></div>
+        </div>
+        <div class="grid-2" style="margin-top:16px">
+          <div class="card">
+            <div class="card-title"><h3>Simule com os seus números</h3><span class="tiny muted">recalcula com a mesma fórmula</span></div>
+            <div class="inputs" id="e3-inputs"></div>
+            <div class="kpis" style="grid-template-columns:repeat(2,1fr);margin-top:14px" id="e3-sim"></div>
+          </div>
+          <div class="card">
+            <div class="card-title"><h3>Premissas que mais mudam o resultado</h3><span class="tiny muted">ROI 12m, cenário provável</span></div>
+            <div id="e3-sens"></div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <h3>Ganhos não financeiros</h3>
+          <ul class="clean small" style="margin-top:10px" id="e3-ganhos"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="pendencias">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Pendências e premissas a validar</div>
+          <h2>O que falta para a decisão ficar em pé</h2>
+        </div>
+        <ol class="clean card" style="padding:22px 22px 22px 40px" id="pend"></ol>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      Revisão do Challenge 002 · números gerados por <code>pipeline/05_revisao_csv.py</code> sobre o CSV anexado ·
+      <a href="./">voltar à página principal</a>.
+    </div>
+  </footer>
+
+  <script type="module" src="js/revisao.js"></script>
+</body>
+</html>

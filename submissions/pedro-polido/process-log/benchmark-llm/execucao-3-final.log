@@ -1,0 +1,19 @@
+234 tickets | classificador linear: 85.9%
+  gemini-3.5-flash-lite  nomes      acerto 42.3% (linear 85.9%, McNemar p = 0.000) | 48 tokens/ticket | 0.10 s/ticket
+  gemini-3.5-flash-lite  descricoes acerto 58.5% (linear 85.9%, McNemar p = 0.000) | 53 tokens/ticket | 0.07 s/ticket
+  gemini-3.5-flash-lite  exemplos   acerto 64.1% (linear 85.9%, McNemar p = 0.000) | 89 tokens/ticket | 0.06 s/ticket
+   gemini-3.5-flash: tentativa 1 falhou (HTTP Error 429: Too Many Requests); nova em 15s
+   gemini-3.5-flash: tentativa 2 falhou (HTTP Error 429: Too Many Requests); nova em 30s
+   gemini-3.5-flash: tentativa 1 falhou (HTTP Error 429: Too Many Requests); nova em 15s
+   gemini-3.5-flash: tentativa 2 falhou (HTTP Error 429: Too Many Requests); nova em 30s
+  gemini-3.5-flash: indisponível (gemini-3.5-flash falhou 3 vezes seguidas: HTTP Error 429: Too Many Requests); tentando o próximo
+   gemini-3.6-flash: tentativa 1 falhou (HTTP Error 503: Service Unavailable); nova em 15s
+   gemini-3.6-flash: tentativa 2 falhou (HTTP Error 503: Service Unavailable); nova em 30s
+  gemini-3.6-flash: indisponível (gemini-3.6-flash falhou 3 vezes seguidas: HTTP Error 503: Service Unavailable); tentando o próximo
+   gemini-flash-latest: tentativa 1 falhou (HTTP Error 503: Service Unavailable); nova em 15s
+   gemini-flash-latest: tentativa 2 falhou (HTTP Error 503: Service Unavailable); nova em 30s
+   gemini-flash-latest: tentativa 1 falhou (HTTP Error 503: Service Unavailable); nova em 15s
+   gemini-flash-latest: tentativa 2 falhou (HTTP Error 503: Service Unavailable); nova em 30s
+  gemini-flash-latest: indisponível (gemini-flash-latest falhou 3 vezes seguidas: HTTP Error 503: Service Unavailable); tentando o próximo
+  auditoria: Gemini fica com o rótulo em 28%, com o modelo em 35%, outra fila em 38% | concorda com o veredito do Claude em 64% dos 28 casos categóricos
+-> solution\app\data\llm_benchmark.json (2 KB)

@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Triagem de Suporte com IA</title>
+  <meta name="description" content="Diagnóstico dos dados de suporte, política de automação medida em tickets reais e um roteador de tickets rodando no navegador.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%233547c8'/><path d='M8 11h16M8 16h10M8 21h6' stroke='white' stroke-width='3' stroke-linecap='round'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <nav class="nav">
+    <div class="wrap">
+      <div class="brand">Triagem<span>.</span>suporte</div>
+      <div class="nav-links">
+        <a href="#resumo">Resumo</a>
+        <a href="#auditoria">1 · Auditoria</a>
+        <a href="#operacao">2 · Onde o tempo se perde</a>
+        <a href="#simulador">3 · Simulador</a>
+        <a href="#triagem">4 · Triagem ao vivo</a>
+        <a href="#pratica">5 · Na prática</a>
+        <a href="revisao.html" class="nav-rev">Revisão: só o CSV →</a>
+        <a href="chat.html" class="nav-rev">Chat de atendimento →</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Resumo ------------------------------------------------------------------------------------------------- -->
+    <section id="resumo" class="hero">
+      <div class="wrap">
+        <div class="eyebrow">AI Master Challenge 002 · Redesign de Suporte</div>
+        <h1>O painel de suporte não mostra onde o tempo se perde. A triagem mostra.</h1>
+        <p class="lead">
+          Antes de diagnosticar, auditei os dados. As métricas operacionais têm as marcas de dado sintético: nenhum gargalo ou fator de
+          satisfação que se tire delas é real. Onde o texto é real (<span class="num" data-k="d2_total"></span> tickets),
+          medi quanto da triagem a IA pode assumir, com que acerto, e o que deve continuar humano.
+        </p>
+        <a class="rev-banner" href="revisao.html">
+          <b>Revisão ponto a ponto usando só o CSV</b>
+          <span>verificação do arquivo (8.469 registros, não 30 mil), o que automatizar e o que não, fluxo e ROI com premissas editáveis →</span>
+        </a>
+        <a class="rev-banner" href="chat.html" style="margin-top:10px">
+          <b>Chat de atendimento: o fluxo funcionando numa conversa</b>
+          <span>você faz o papel do cliente e do atendente; a IA confirma o recebimento, aplica as regras de risco, pede detalhes e roteia →</span>
+        </a>
+        <div class="answers">
+          <div class="answer">
+            <div class="q">Onde estamos perdendo tempo?</div>
+            <div class="big num" data-k="neg_pct"></div>
+            <p>dos tickets fechados foram "resolvidos antes da primeira resposta". <strong>Os tempos do painel são
+              inválidos</strong>, então qualquer gargalo apontado neles é ruído. O custo que a IA pode reduzir está na
+              <strong>triagem manual</strong>: ler, entender e rotear cada ticket.</p>
+          </div>
+          <div class="answer">
+            <div class="q">O que automatizar?</div>
+            <div class="big num" data-k="auto_share"></div>
+            <p>dos tickets <strong>da base de TI</strong> (não o CSV) roteados <strong>sem humano</strong>, com <strong><span data-k="auto_acc"></span> de acerto</strong>.
+              Em outros <span data-k="assist_share"></span>, o atendente escolhe entre 2 sugestões.
+              <span data-k="human_share"></span> ficam <strong>inteiramente humanos</strong>, incluindo todo tema sensível.</p>
+          </div>
+          <div class="answer">
+            <div class="q">Mostre que funciona</div>
+            <div class="big num" data-k="test_n"></div>
+            <p>tickets reais que o modelo <strong>nunca viu</strong> alimentam o <a href="#simulador">simulador</a>.
+              A <a href="#triagem">triagem ao vivo</a> roda no seu navegador: sem servidor e sem custo por ticket.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. Auditoria ------------------------------------------------------------------------------------------- -->
+    <section id="auditoria">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">1 · Auditoria dos dados operacionais (Dataset 1)</div>
+          <h2>Tentei quebrar o dataset antes de confiar nele. Ele não sobreviveu.</h2>
+          <p class="lead">Todo diagnóstico de gargalo e satisfação depende das métricas de canal, prioridade, tempo e nota.
+            Cada verificação abaixo é reproduzível (<code>pipeline/01_auditoria_dataset1.py</code>).</p>
+        </div>
+        <div class="checks" id="checks"></div>
+
+        <div class="grid-2" style="margin-top:16px">
+          <div class="card">
+            <div class="card-title"><h3>"Tempo de resolução" dos tickets fechados</h3><span class="tiny muted">resolução − 1ª resposta</span></div>
+            <div class="chart" id="chart-ttr"></div>
+            <p class="small muted" style="margin-top:10px" id="ttr-note"></p>
+          </div>
+          <div class="card">
+            <div class="card-title"><h3>Nota de satisfação por canal</h3><span class="tiny muted">média ± IC 95%</span></div>
+            <div class="chart" id="chart-csat"></div>
+            <p class="small muted" style="margin-top:10px" id="csat-note"></p>
+          </div>
+        </div>
+
+        <h3 style="margin:36px 0 12px">O que uma análise ingênua reportaria, e o teste que a derruba</h3>
+        <div class="naive" id="naive"></div>
+
+        <div class="grid-2" style="margin-top:16px">
+          <div class="card">
+            <h3>Um detector de gargalos que não inventa gargalo</h3>
+            <p class="small muted" style="margin:8px 0 14px">Em vez de "pior média", cada segmento de canal × prioridade ×
+              tipo é testado contra o resto, com correção para comparações múltiplas. Deixo pronto para rodar nos dados
+              reais assim que existirem.</p>
+            <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
+              <div class="kpi"><div class="kpi-label">Segmentos testados</div><div class="kpi-value num" data-k="seg_tested"></div></div>
+              <div class="kpi good"><div class="kpi-label">Gargalos reais</div><div class="kpi-value num" data-k="seg_flags"></div></div>
+              <div class="kpi"><div class="kpi-label">Alarme falso em ruído</div><div class="kpi-value num" data-k="false_alarm"></div><div class="kpi-sub">das rodadas</div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><h3>Ele encontra gargalo quando existe</h3><span class="tiny muted">gargalo injetado · 100 simulações</span></div>
+            <div class="chart" id="chart-power"></div>
+            <div class="legend" id="legend-power"></div>
+          </div>
+        </div>
+
+        <div class="callout" style="margin-top:16px">
+          <strong>O que isso significa para a operação:</strong> antes de otimizar tempos, é preciso medir tempos. O painel
+          precisa registrar eventos (criação, 1ª resposta, cada transferência de fila, reabertura, resolução) com
+          horário e responsável, e a pesquisa de satisfação precisa registrar a taxa de resposta. Com
+          <span data-k="closed_n"></span> tickets fechados (cerca de um mês no volume do brief; o CSV não informa o volume), o detector acima já enxerga um
+          gargalo de +3 h em canal × prioridade.
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Operação -------------------------------------------------------------------------------------------- -->
+    <section id="operacao">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">2 · Onde o tempo se perde (Dataset 2, texto real)</div>
+          <h2><span data-k="d2_total"></span> tickets reais, 8 filas, e o trabalho escondido da triagem</h2>
+          <p class="lead">Cada ticket precisa ser lido, entendido e colocado na fila certa antes de alguém começar a
+            resolver. É o trabalho mais repetitivo da operação e o que a IA faz melhor.</p>
+        </div>
+        <div class="grid-3">
+          <div class="card"><div class="kpi-label">Chegam como cadeia de e-mails</div><div class="kpi-value num" data-k="thread"></div>
+            <p class="small muted" data-k="thread_note"></p></div>
+          <div class="card"><div class="kpi-label">Erros de roteamento que caem em Hardware</div><div class="kpi-value num" data-k="sink"></div>
+            <p class="small muted" data-k="sink_note"></p></div>
+          <div class="card"><div class="kpi-label">Pedidos vazios rotulados como HR Support</div><div class="kpi-value num" data-k="empty_hr"></div>
+            <p class="small muted" data-k="empty_note"></p></div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <div class="card-title"><h3>As 8 filas: volume, o que as caracteriza e quão bem o modelo as reconhece</h3>
+            <span class="tiny muted">F1 no conjunto de teste</span></div>
+          <div id="queues"></div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <div class="card-title"><h3>Acerto do modelo por faixa de confiança: a base da política de automação</h3>
+            <span class="tiny muted"><span data-k="test_n"></span> tickets de teste</span></div>
+          <div class="chart" id="chart-local"></div>
+          <div class="legend"><span><i style="background:var(--accent)"></i>acerta a fila (1ª sugestão)</span><span><i style="background:color-mix(in srgb,var(--accent) 35%,transparent)"></i>fila certa entre as 2 primeiras</span></div>
+          <p class="small muted" style="margin-top:10px" id="local-note"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Simulador ------------------------------------------------------------------------------------------- -->
+    <section id="simulador">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">3 · Simulador de automação</div>
+          <h2>Quanto automatizar? Mova o limiar e veja o custo de cada ponto de acerto.</h2>
+          <p class="lead">Tudo calculado sobre os <span data-k="test_n"></span> tickets de teste, com as previsões
+            reais do modelo. As premissas de tempo e custo são suas: troque pelos números da operação.</p>
+        </div>
+        <div class="sim">
+          <div class="card controls">
+            <div class="control">
+              <label for="tau">Confiança mínima para rotear sozinho <span class="num" id="tau-v"></span></label>
+              <input type="range" id="tau" min="0.5" max="0.99" step="0.005">
+              <div class="hint" id="tau-hint"></div>
+            </div>
+            <label class="toggle"><input type="checkbox" id="t-sens" checked><span>Tema sensível sempre com humano</span></label>
+            <label class="toggle"><input type="checkbox" id="t-empty" checked><span>Pedido vazio recebe pedido de detalhes</span></label>
+            <div class="inputs" style="margin-top:16px">
+              <div><label for="p-vol">Tickets por mês</label><input id="p-vol" type="number" min="0" value="2500"></div>
+              <div><label for="p-cost">Custo da hora (R$)</label><input id="p-cost" type="number" min="0" value="40"></div>
+              <div><label for="p-manual">Triagem manual (min)</label><input id="p-manual" type="number" min="0" step="0.5" value="3"></div>
+              <div><label for="p-assist">Triagem assistida (min)</label><input id="p-assist" type="number" min="0" step="0.5" value="1"></div>
+              <div><label for="p-rework">Retrabalho por erro (min)</label><input id="p-rework" type="number" min="0" value="15"></div>
+            </div>
+            <p class="tiny muted" style="margin-top:12px">Volume inicial: 2.500 tickets/mês, os 30 mil/ano do brief
+              (premissa). O CSV <b>não informa</b> o volume: não tem data de abertura, e os "~30.000 registros" do brief
+              batem com as linhas físicas do arquivo, não com os 8.469 registros. Com o proxy do CSV (~353/mês), o
+              resultado muda muito: veja a <a href="revisao.html#e3">revisão</a>. Custo/hora: analista de suporte N1 com encargos. O retrabalho cobre
+              a fila errada lendo, devolvendo e o ticket esperando de novo.</p>
+          </div>
+          <div class="stack">
+            <div class="card">
+              <div class="lanes-bar" id="sim-bar"></div>
+              <div class="lanes-legend" id="sim-lanes"></div>
+            </div>
+            <div class="kpis" id="sim-kpis"></div>
+            <div class="card">
+              <div class="card-title"><h3>Cobertura × acerto do roteamento automático</h3><span class="tiny muted">cada ponto é um limiar</span></div>
+              <div class="chart" id="chart-curve"></div>
+              <div class="legend"><span><i style="background:var(--auto)"></i>acerto dos tickets roteados sozinhos</span><span><i style="background:var(--accent)"></i>% dos tickets roteados sozinhos</span></div>
+            </div>
+            <div class="card">
+              <div class="card-title"><h3>Por fila de destino</h3><span class="tiny muted">tickets roteados sozinhos no mês</span></div>
+              <div class="table-scroll"><table id="sim-table"></table></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Triagem ao vivo ------------------------------------------------------------------------------------- -->
+    <section id="triagem">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">4 · Triagem ao vivo</div>
+          <h2>Cole um ticket. O modelo roda aqui, no seu navegador.</h2>
+          <p class="lead">Mesmo modelo do simulador, exportado do Python e verificado ticket a ticket (300 de 300 iguais ao
+            sklearn). O Gemini entra só onde agrega: traduzir tickets em português e redigir a resposta.</p>
+        </div>
+        <div class="live">
+          <div>
+            <textarea id="ticket" placeholder="Ex.: my laptop screen is flickering and the docking station does not detect the external monitor"></textarea>
+            <div class="chips" id="examples"></div>
+            <p class="tiny muted">Os exemplos são tickets do conjunto de teste, escolhidos por critério (inclusive um em que o
+              modelo discorda do rótulo). O texto do dataset vem pré-processado: sem pontuação e sem palavras comuns.</p>
+            <div class="banner" id="pt-banner" hidden></div>
+          </div>
+          <div class="card" id="result"><div class="empty-state">Escreva ou escolha um exemplo para ver a triagem.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Na prática ------------------------------------------------------------------------------------------ -->
+    <section id="pratica">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">5 · Como funcionaria na prática</div>
+          <h2>Do ticket que chega à fila certa: onde a IA atua e onde a pessoa decide</h2>
+        </div>
+        <div class="flow">
+          <div class="step"><div class="n">1</div><h3>Entrada</h3><p>E-mail, chat, portal ou WhatsApp. Uma única porta.</p></div>
+          <div class="step"><div class="n">2</div><h3>Regras de segurança</h3><p>Tema sensível → humano. Pedido vazio → pedir detalhes. Antes de qualquer modelo.</p></div>
+          <div class="step"><div class="n">3</div><h3>Classificador</h3><p>Fila + confiança em milissegundos, com as palavras que justificam a decisão.</p></div>
+          <div class="step"><div class="n">4</div><h3>Faixa de decisão</h3><p>O limiar de confiança decide quem toca o ticket (quadro abaixo).</p></div>
+          <div class="step"><div class="n">5</div><h3>Aprendizado</h3><p>Toda correção do atendente vira dado de treino. Relatório semanal de acerto por fila.</p></div>
+        </div>
+        <div class="lanes-4" id="lanes-explained"></div>
+
+        <div class="grid-2" style="margin-top:28px">
+          <div class="card">
+            <h3>O que NÃO automatizar, e por quê</h3>
+            <ul class="clean small" style="margin-top:12px" id="not-automate"></ul>
+          </div>
+          <div class="card">
+            <h3>Onde entra o LLM (e onde não)</h3>
+            <ul class="clean small" style="margin-top:12px">
+              <li><strong>Classificar:</strong> modelo linear. Medido abaixo: o Gemini acerta bem menos, e perde justamente
+                nas filas da casa (Hardware, Miscellaneous, HR Support), que só os rótulos históricos ensinam. O linear custa
+                zero por ticket, responde em milissegundos e explica cada decisão.</li>
+              <li><strong>Traduzir e normalizar:</strong> LLM. Tickets em português entram no mesmo classificador.</li>
+              <li><strong>Redigir resposta e pedir detalhes:</strong> LLM, sempre como rascunho que o atendente aprova.</li>
+              <li><strong>Responder direto ao cliente:</strong> não. Todo texto gerado passa pelo atendente, e a taxa de edição
+                dos rascunhos é a métrica que decide se o LLM está ajudando.</li>
+            </ul>
+            <div id="llm-bench" hidden style="margin-top:18px"></div>
+          </div>
+        </div>
+
+        <h3 style="margin:36px 0 12px">Implantação em 4 passos, cada um com critério de avanço</h3>
+        <div class="timeline">
+          <div class="card"><div class="eyebrow">Semanas 1–2</div><h3>Modo sombra</h3><p class="small muted">O modelo sugere, as pessoas roteiam como hoje. Mede-se o acerto real por fila. Avança se a faixa automática acertar ≥ 97%.</p></div>
+          <div class="card"><div class="eyebrow">Semanas 3–4</div><h3>Automático nas filas fortes</h3><p class="small muted">Liga o roteamento automático nas filas com precisão de 89% a 95% (Purchase, Storage, Internal Project e Access) e a faixa assistida em todas. Vale para uma operação com filas como as da base de TI; com dados como os do CSV, ver a <a href="revisao.html#e23">revisão</a>.</p></div>
+          <div class="card"><div class="eyebrow">Mês 2</div><h3>Todas as filas + medição</h3><p class="small muted">Painel com eventos reais (1ª resposta, transferências, reabertura) e o detector de gargalos rodando toda semana.</p></div>
+          <div class="card"><div class="eyebrow">Mês 3</div><h3>Rascunhos com LLM</h3><p class="small muted">Respostas sugeridas para as intenções mais frequentes, aprovadas pelo atendente. Mede-se a taxa de edição.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      Protótipo de <strong>Pedro Pólido</strong> para o AI Master Challenge 002. Dados: Customer Support Tickets e IT Service
+      Ticket Classification (Kaggle, CC0). Pipeline, metodologia e process log no repositório da submissão.
+      Construído com Claude Code; o Gemini atende as funções de tradução e rascunho.
+    </div>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+{
+ "hash": {
+  "afirmacao": "Os dois anexos são o mesmo arquivo (MD5 idêntico)",
+  "verificado": "MD5 da cópia usada aqui: 3597b88e44038ae8bcc716b208e6e7c1",
+  "veredito": "não verificável",
+  "nota": "Só há uma cópia no repositório local; o hash fica registrado para quem quiser comparar."
+ },
+ "volume": {
+  "afirmacao": "8.469 tickets, não ~30.000",
+  "verificado": "8.469 registros; 29.807 linhas físicas sem o cabeçalho (descrições com quebra de linha)",
+  "veredito": "confirma",
+  "nota": "Explica o '30 mil': é a contagem de linhas do arquivo, não de tickets."
+ },
+ "janela_primeira_resposta": {
+  "afirmacao": "Todas as primeiras respostas caem numa janela de ~27 h (31/05 a 02/06/2023)",
+  "verificado": "31/05/2023 21:55 a 02/06/2023 00:54 = 27,0 h",
+  "veredito": "confirma",
+  "nota": ""
+ },
+ "compra_ate_resposta": {
+  "afirmacao": "Compras de 2020 a 2021; a primeira resposta chega 1,5 a 3 anos depois",
+  "verificado": "compras de 01/01/2020 a 30/12/2021; intervalo de 1,42 a 3,41 anos",
+  "veredito": "confirma",
+  "nota": ""
+ },
+ "tempo_negativo": {
+  "afirmacao": "49,3% dos fechados com tempo negativo; média −0,06 h; de −23 h a +23 h",
+  "verificado": "49,3% negativos; média -0,06 h; de -23,2 a 23,5 h",
+  "veredito": "confirma",
+  "nota": ""
+ },
+ "ruido_uniforme": {
+  "afirmacao": "A diferença é ruído uniforme",
+  "verificado": "KS contra uniforme p = 3.55e-46 (rejeita); KS contra triangular p = 0,200; curtose em excesso -0,50 (uniforme −1,2; triangular −0,6)",
+  "veredito": "diverge",
+  "nota": "É ruído, mas triangular: o formato da diferença entre dois horários uniformes independentes. A conclusão (sem sinal operacional) não muda; a palavra 'uniforme' é que está errada."
+ },
+ "ausencias_por_status": {
+  "afirmacao": "Ausências seguem regra fixa por status (Open 2.819, Pending 2.881, Closed 2.769); CSAT só nos fechados (33%)",
+  "verificado": "Closed: 2.769 (1ª resp. 100%, resolução 100%, CSAT 100%); Open: 2.819 (1ª resp. 0%, resolução 0%, CSAT 0%); Pending Customer Response: 2.881 (1ª resp. 100%, resolução 0%, CSAT 0%); CSAT em 32,7% dos tickets",
+  "veredito": "confirma",
+  "nota": ""
+ },
+ "placeholder": {
+  "afirmacao": "100% das descrições contêm {product_purchased}",
+  "verificado": "100,0% das descrições",
+  "veredito": "confirma",
+  "nota": ""
+ },
+ "lixo_de_geracao": {
+  "afirmacao": "Há lixo de geração: <StringProperty ...>, [16:43:25]Gnome:, '{error_message}'",
+  "verificado": "<StringProperty: 1 descrições; [hh:mm:ss]Nome:: 35 descrições; {error_message}: 472 descrições",
+  "veredito": "confirma",
+  "nota": ""
+ },
+ "descricoes_duplicadas": {
+  "afirmacao": "392 descrições são duplicatas exatas",
+  "verificado": "439 tickets em 47 grupos de texto idêntico = 392 cópias além da 1ª",
+  "veredito": "confirma",
+  "nota": "Novo: a auditoria só procurava registros repetidos em todas as colunas (zero)."
+ },
+ "resolucoes": {
+  "afirmacao": "Resoluções são frases sem sentido do Faker, com média de 5,5 palavras",
+  "verificado": "média de 5,49 palavras em 2.769 resoluções (fechados)",
+  "veredito": "confirma",
+  "nota": ""
+ },
+ "tipo_x_assunto": {
+  "afirmacao": "Tipo e assunto são independentes (qui-quadrado p = 0,98)",
+  "verificado": "p = 0,981; 'Refund request' vai de 6,1% a 7,4% dos tickets de cada tipo",
+  "veredito": "confirma",
+  "nota": ""
+ },
+ "tipos_enunciado": {
+  "afirmacao": "O enunciado cita 3 tipos; o dataset tem 5",
+  "verificado": "5 tipos no CSV: Billing inquiry, Cancellation request, Product inquiry, Refund request, Technical issue; o enunciado lista Technical issue, Billing inquiry, Product inquiry",
+  "veredito": "confirma",
+  "nota": "Novo: a auditoria não comparava os tipos do CSV com os do enunciado."
+ },
+ "emails_repetidos": {
+  "afirmacao": "139 e-mails se repetem, todos com nome diferente",
+  "verificado": "139 e-mails repetidos; em 139 deles cada ocorrência tem um nome diferente",
+  "veredito": "confirma",
+  "nota": ""
+ },
+ "categorias_uniformes": {
+  "afirmacao": "Todas as categorias são quase perfeitamente uniformes (canal, prioridade, tipo, gênero, CSAT)",
+  "verificado": "Ticket Channel: p = 0,718; Ticket Priority: p = 0,205; Ticket Type: p = 0,115; Customer Gender: p = 0,007; Customer Satisfaction Rating: p = 0,797",
+  "veredito": "diverge",
+  "nota": "Quatro das cinco são compatíveis com uniforme; rejeita em: Customer Gender (Male 2.896, Female 2.887, Other 2.686)."
+ },
+ "kruskal_csat": {
+  "afirmacao": "CSAT não varia por canal, prioridade, tipo, assunto, gênero nem produto (todos p > 0,27)",
+  "verificado": "p de 0,278 a 0,807",
+  "veredito": "confirma",
+  "nota": ""
+ },
+ "kruskal_tempo": {
+  "afirmacao": "O mesmo vale para o tempo de resolução",
+  "verificado": "p de 0,381 a 0,919",
+  "veredito": "confirma",
+  "nota": ""
+ },
+ "tempo_x_csat": {
+  "afirmacao": "Correlação entre tempo e CSAT ρ = 0,02 (p = 0,25)",
+  "verificado": "ρ = 0,022 (p = 0,254)",
+  "veredito": "confirma",
+  "nota": ""
+ },
+ "pior_combinacao": {
+  "afirmacao": "Pior combinação Phone + High + Refund (CSAT 2,29, n = 31); embaralhando 200 vezes, a variação é a mesma (0,241 × 0,243)",
+  "verificado": "pior: Phone + High + Refund request com CSAT 2,29 (n = 31); desvio entre combinações 0,241 real × 0,240 embaralhado (percentil 58 do real)",
+  "veredito": "confirma",
+  "nota": ""
+ }
+}
