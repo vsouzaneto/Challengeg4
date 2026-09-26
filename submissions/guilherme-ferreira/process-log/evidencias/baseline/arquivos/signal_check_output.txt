@@ -1,0 +1,33 @@
+
+== SAÚDE DOS DADOS ==
+                                     check valor                                                   status
+                   Dispersão de views (CV) 0.010 ALERTA: views quase constantes (real costuma ter CV > 1)
+             Correlação views × seguidores 0.005                 ALERTA: alcance não depende de audiência
+                  Correlação views × likes 0.001                      ALERTA: likes não dependem de views
+                Posts com engajamento zero  0.0%               ALERTA: nenhum post fracassou (improvável)
+Seguidores distintos por creator (mediana)    10    ALERTA: seguidores mudam a cada post do mesmo creator
+
+== SEGMENTOS: SINAL OU RUÍDO? (métrica: engajamento / views) ==
+        dimensao     nivel  posts  lift_ER_%  ±IC95_%  lift_1a_metade  lift_2a_metade veredito
+        platform  Bilibili  10598       0.02     0.05            0.03            0.00    RUÍDO
+        platform Instagram  10423      -0.03     0.05           -0.04           -0.02    RUÍDO
+        platform   RedNote  10402       0.02     0.05            0.00            0.04    RUÍDO
+        platform    TikTok  10296       0.00     0.05            0.03           -0.02    RUÍDO
+        platform   YouTube  10495      -0.01     0.05           -0.02            0.00    RUÍDO
+    content_type     image  10303      -0.01     0.05           -0.01           -0.00    RUÍDO
+    content_type     mixed   5213       0.04     0.07            0.09           -0.01    RUÍDO
+    content_type      text   5198       0.05     0.07            0.03            0.06    RUÍDO
+    content_type     video  31500      -0.01     0.03           -0.02           -0.01    RUÍDO
+content_category    beauty  21023       0.00     0.03            0.02           -0.01    RUÍDO
+content_category lifestyle  20761       0.01     0.03            0.00            0.02    RUÍDO
+content_category      tech  10430      -0.03     0.05           -0.04           -0.01    RUÍDO
+    creator_tier      <10K    454      -0.04     0.24           -0.01           -0.06    RUÍDO
+    creator_tier    10-50K   2110       0.02     0.11           -0.04            0.09    RUÍDO
+    creator_tier   50-100K   2597       0.03     0.09            0.02            0.04    RUÍDO
+    creator_tier  100-500K  21024       0.00     0.03           -0.01            0.02    RUÍDO
+    creator_tier     500K+  26029      -0.01     0.03            0.01           -0.03    RUÍDO
+    is_sponsored     False  29900       0.00     0.03            0.00            0.00    RUÍDO
+    is_sponsored      True  22314      -0.00     0.03           -0.00           -0.01    RUÍDO
+
+Resumo: 0 de 19 segmentos com sinal acionável; 5 alertas de saúde dos dados.
+Não tome decisões de alocação com base neste arquivo antes de resolver os alertas.

@@ -1,0 +1,4 @@
+efeito,rodadas,taxa_sinal,taxa_abaixo_do_limiar,lift_medido_medio,falsos_positivos_por_rodada
+0.15,200,1.0,0.0,0.15036585351094642,0.0
+0.1,200,0.515,0.485,0.10023762713368103,0.0
+0.03,200,0.0,0.995,0.030087315455870293,0.0
