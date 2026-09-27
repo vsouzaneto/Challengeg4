@@ -1,0 +1,23 @@
+/* ---------------------------------------------------------------------
+   The "editorial gold" design system now lives in the MUI theme
+   (app/theme.ts, a single light-mode createTheme palette) and in
+   individual components' `sx` props, not in hand-written CSS classes --
+   MUI's CssBaseline (mounted in app/ThemeRegistry.tsx) provides the
+   cross-browser reset and applies theme.palette.background/text to
+   <html>/<body>.
+
+   The only thing that still needs to live here is the two font custom
+   properties (--font-serif / --font-sans): next/font (see layout.tsx)
+   generates a scoped custom property with the actual @font-face family
+   name on <html> via the `variable` option, and this file supplies the
+   fallback stack around it so `var(--font-serif)` / `var(--font-sans)`
+   resolve to a complete, usable font-family list wherever the theme or a
+   component references them (theme.ts's typography config, and the
+   handful of components that still set fontFamily directly via sx).
+------------------------------------------------------------------------ */
+
+:root {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  --font-serif: "Fraunces", Georgia, "Times New Roman", serif;
+}

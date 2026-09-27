@@ -1,0 +1,55 @@
+"use client";
+
+import type { LiftResult } from "@/lib/aggregate-utils";
+import { dataTier } from "@/lib/aggregate-utils";
+import DataConfidenceDot, {
+  INSUFFICIENT_DATA_MESSAGE,
+} from "./DataConfidenceDot";
+import HelpTip from "./HelpTip";
+import HeroCell from "./HeroCell";
+
+function fmtLift(lift: number | null): string {
+  if (lift === null) return "-";
+  const pct = (lift - 1) * 100;
+  return `${pct >= 0 ? "+" : ""}${pct.toFixed(1)}%`;
+}
+
+const LIFT_HELP_TEXT =
+  "Quanto melhor ou pior é a taxa de engajamento da seleção atual em comparação a uma referência (a plataforma como um todo, ou todas as plataformas se nenhuma estiver selecionada).";
+
+/**
+ * Hero-row lift indicator: current filtered selection's weighted
+ * engagement rate vs. its own platform baseline (or global baseline if no
+ * platform is selected). Pure arithmetic, live from the loaded dataset.
+ *
+ * Plain-language data-confidence tiering (see dataTier): below 10 posts in
+ * the current filter, the number is hidden in favor of an honest message;
+ * between 10 and 29, the number is shown with a small "treat as
+ * directional" hint; at 30+ it's shown as-is.
+ */
+export default function LiftIndicator({ result }: { result: LiftResult }) {
+  const tier = dataTier(result.n);
+  const label = (
+    <>
+      Lift vs. referência
+      <HelpTip text={LIFT_HELP_TEXT} />
+    </>
+  );
+
+  if (tier === "insufficient") {
+    return <HeroCell label={label} value={INSUFFICIENT_DATA_MESSAGE} muted />;
+  }
+
+  return (
+    <HeroCell
+      label={label}
+      value={
+        <>
+          {fmtLift(result.lift)}
+          <DataConfidenceDot n={result.n} />
+        </>
+      }
+      sub={`TE ponderada vs. ${result.baselineLabel} (${result.baselineN.toLocaleString()} posts)`}
+    />
+  );
+}
