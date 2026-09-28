@@ -65,7 +65,16 @@ export function PipelineView({ board }: { board: BoardDTO }) {
 
           <div className="-mx-4 flex gap-4 overflow-x-auto px-4 pb-4 md:-mx-6 md:px-6" role="list" aria-label="Raias do pipeline">
             {board.lanes.map((lane) =>
-              lane.kind === "aberta" ? (
+              lane.count === 0 ? (
+                <div
+                  key={lane.stage}
+                  role="listitem"
+                  aria-label={`Raia ${lane.stage}: nenhuma oportunidade neste filtro`}
+                  className="flex w-14 shrink-0 flex-col items-center rounded-2xl border border-dashed py-4 text-muted-foreground"
+                >
+                  <span className="text-sm font-semibold [writing-mode:vertical-rl]">{lane.stage} · 0</span>
+                </div>
+              ) : lane.kind === "aberta" ? (
                 <OpenLane
                   key={lane.stage}
                   lane={lane}
@@ -192,19 +201,20 @@ function ClosedLane({ lane }: { lane: LaneDTO }) {
   const summary = won ? `${fmtMoney(lane.closedTotal)} fechados` : "encerrados sem venda"
   if (!open) {
     return (
-      <button
-        type="button"
-        role="listitem"
-        onClick={() => setOpen(true)}
-        aria-expanded={false}
-        aria-label={`Raia ${lane.stage}: ${lane.count} oportunidades, ${summary}. Expandir histórico`}
-        className="flex w-14 shrink-0 flex-col items-center gap-3 rounded-2xl border border-dashed py-4 text-muted-foreground transition-colors hover:bg-muted/50"
-      >
-        <ChevronLeftIcon className="size-4" aria-hidden />
-        <span className="text-sm font-semibold [writing-mode:vertical-rl]">
-          {lane.stage} · {fmtInt(lane.count)}
-        </span>
-      </button>
+      <div role="listitem" className="flex shrink-0">
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          aria-expanded={false}
+          aria-label={`Raia ${lane.stage}: ${lane.count} oportunidades, ${summary}. Expandir histórico`}
+          className="flex w-14 shrink-0 flex-col items-center gap-3 rounded-2xl border border-dashed py-4 text-muted-foreground transition-colors hover:bg-muted/50"
+        >
+          <ChevronLeftIcon className="size-4" aria-hidden />
+          <span className="text-sm font-semibold [writing-mode:vertical-rl]">
+            {lane.stage} · {fmtInt(lane.count)}
+          </span>
+        </button>
+      </div>
     )
   }
   return (

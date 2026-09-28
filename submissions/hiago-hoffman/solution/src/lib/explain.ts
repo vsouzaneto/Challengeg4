@@ -16,6 +16,7 @@ export function fmtMoney(v: number | null) {
 }
 export const fmtMoneyFull = (v: number | null) => (v === null ? "—" : `US$ ${fmtInt(v)}`)
 export const fmtPct = (p: number | null, digits = 0) => (p === null ? "—" : `${(p * 100).toFixed(digits).replace(".", ",")}%`)
+export const fmtDec = (n: number, digits = 3) => n.toFixed(digits).replace(".", ",")
 export const fmtDays = (d: number | null) => (d === null ? "sem data" : `${d} ${d === 1 ? "dia" : "dias"}`)
 
 export type Tone = "neutral" | "warning" | "danger" | "muted"

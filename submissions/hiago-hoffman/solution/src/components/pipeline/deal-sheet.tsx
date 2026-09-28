@@ -16,24 +16,26 @@ import { cn } from "@/lib/utils"
 type Load = { status: "loading" } | { status: "error"; message: string } | { status: "ok"; data: DetailDTO }
 
 export function DealSheet({ id, onClose }: { id: string | null; onClose: () => void }) {
-  const [load, setLoad] = useState<Load>({ status: "loading" })
   const [attempt, setAttempt] = useState(0)
+  const [result, setResult] = useState<{ key: string; load: Load } | null>(null)
+  const key = `${id}#${attempt}`
+  // Resultado de outra oportunidade (ou de outra tentativa) conta como carregando.
+  const load: Load = result?.key === key ? result.load : { status: "loading" }
 
   useEffect(() => {
     if (!id) return
     const ctrl = new AbortController()
-    setLoad({ status: "loading" })
     fetch(`/api/oportunidades/${encodeURIComponent(id)}`, { signal: ctrl.signal })
       .then(async (r) => {
         const body = await r.json()
         if (!r.ok) throw new Error(body.error ?? "Falha ao carregar o detalhamento.")
-        setLoad({ status: "ok", data: body })
+        setResult({ key, load: { status: "ok", data: body } })
       })
       .catch((e: Error) => {
-        if (e.name !== "AbortError") setLoad({ status: "error", message: e.message })
+        if (e.name !== "AbortError") setResult({ key, load: { status: "error", message: e.message } })
       })
     return () => ctrl.abort()
-  }, [id, attempt])
+  }, [id, key])
 
   const data = load.status === "ok" ? load.data : null
   return (
