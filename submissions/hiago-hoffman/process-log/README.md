@@ -76,6 +76,16 @@ Verificações que mudaram o código:
   - base simulada "até 30/09/2017" → modelo v2 criado, configuração mantida, parâmetros reaprendidos;
   - restaurar a base padrão → volta ao v1.
 
+### 6. Iteração v1.2: bug encontrado pelo humano na tela
+
+- **Relato:** "todas as oportunidades em Prospecting estão com score 100" e "os de Revalidar também precisam de score".
+- **Diagnóstico medido antes de mexer no código:** a premissa `c = 1` dava a Prospecting a maior chance da curva, idêntica para todos (6 scores possíveis, 88 dos 100 primeiros). O percentil ainda dava a blocos empatados a melhor posição. Uma simulação mostrou um terceiro problema: em percentil, deals parados chegariam a 71.
+- **Proposta aprovada antes de implementar:**
+  - conversão aprendida comparando bases sucessivas (50% sem observações);
+  - chance da cauda para Revalidar;
+  - escala absoluta `100 × R / (R + K)`.
+- **Verificação:** a simulação sem calibração previa 27 deals de Prospecting no top 100; o número real, com calibração, é 44, e foi o que ficou documentado. Na primeira versão, a explicação de um deal de 423 dias citava a evidência errada ("0 de 1 deal"); foi corrigida para a semana que de fato define a chance ("0 de 1.273").
+
 ## Onde a IA errou (resumo)
 
 1. Viés de seleção na tabela de sobrevivência (corrigido após a revisão externa).
@@ -83,6 +93,8 @@ Verificações que mudaram o código:
 3. Tentar decidir escopo no lugar do responsável pela entrega.
 4. Probabilidades mal calibradas na primeira versão do motor (detectado pelo backtest).
 5. Cinco bugs de interface detectados só ao rodar e usar o app.
+6. Premissa `c = 1` para Prospecting, que colocou esses deals artificialmente no topo (v1.2).
+7. Número da simulação (27) diferente do real (44): conferido antes de documentar.
 
 ## Evidências
 

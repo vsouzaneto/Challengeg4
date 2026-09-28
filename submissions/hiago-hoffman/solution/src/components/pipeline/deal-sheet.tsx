@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Skeleton } from "@/components/ui/skeleton"
-import { fmtDays, fmtInt, fmtMoney, fmtMoneyFull, fmtPct } from "@/lib/explain"
+import { fmtChance, fmtDays, fmtDec, fmtInt, fmtMoney, fmtMoneyFull, fmtPct } from "@/lib/explain"
 import type { DetailDTO } from "@/lib/server/view"
 import { cn } from "@/lib/utils"
 
@@ -77,7 +77,79 @@ export function DealSheet({ id, onClose }: { id: string | null; onClose: () => v
 }
 
 function DetailBody({ d }: { d: DetailDTO }) {
-  const calibrated = d.calibration.before !== null && d.calibration.after !== null
+  const fora = d.tail !== null
+  const adjTotal = d.adjustments.reduce((sum, a) => sum + a.impact, 0)
+  // Passos só aparecem quando participam do cálculo deste deal; a numeração acompanha.
+  const steps: { title: string; value: string; body: React.ReactNode }[] = []
+  if (fora) {
+    steps.push({
+      title: "Chance além do histórico",
+      value: fmtChance(d.base.p),
+      body: `Nenhuma curva cobre esta idade. Dos ${fmtInt(d.tail!.atRisk)} deals da base que ficaram abertos por ${d.tail!.fromDays} dias ou mais, ${fmtInt(d.tail!.wins)} terminaram ganhos. Estimativa: (ganhos + 1) ÷ (deals + 2), que sobe sozinha se deals antigos voltarem a ser ganhos.`,
+    })
+  } else {
+    steps.push({
+      title: d.conversion ? "Chance de um deal recém-engajado" : "Chance pela idade do deal",
+      value: fmtPct(d.base.p),
+      body: d.conversion
+        ? `Sem data de entrada: parte da chance de um deal no primeiro dia de Engaging (${d.base.curve}).`
+        : `Entre os ${fmtInt(d.base.support)} deals da base que chegaram a esta idade ainda abertos, esta é a parcela que terminou ganha (${d.base.curve}).`,
+    })
+    steps.push({
+      title: "Ajustes por grupo",
+      value: d.adjustments.length ? `${adjTotal >= 0 ? "+" : ""}${fmtPct(adjTotal, 1)}` : "nenhum",
+      body: (
+        <>
+          {d.adjustments.length > 0 && (
+            <ul className="mb-1 flex flex-col gap-1">
+              {d.adjustments.map((a) => (
+                <li key={a.label}>
+                  {a.label} ({a.group}): {a.impact >= 0 ? "+" : ""}
+                  {fmtPct(a.impact, 1)}, com peso {fmtPct(a.weight)} por ter {Math.round(a.n)} deals de histórico
+                </li>
+              ))}
+            </ul>
+          )}
+          {d.groupsNote}
+        </>
+      ),
+    })
+    if (d.calibration.before !== null && d.calibration.after !== null) {
+      steps.push({
+        title: "Calibração pelo histórico de acertos",
+        value: fmtPct(d.calibration.after),
+        body: `O modelo foi testado em datas passadas; esta etapa corrige o viés observado: ${fmtPct(d.calibration.before)} → ${fmtPct(d.calibration.after)}.`,
+      })
+    }
+    if (d.conversion) {
+      const seen = d.conversion.converted + d.conversion.failed
+      steps.push({
+        title: "Conversão Prospecting → Engaging",
+        value: `× ${fmtPct(d.conversion.c)}`,
+        body:
+          seen === 0
+            ? "Aprendida comparando bases sucessivas do CRM. Ainda não há deals acompanhados de uma base para a outra, então vale a estimativa neutra de 50%; o valor se ajusta a cada upload."
+            : `Aprendida comparando bases sucessivas do CRM: ${fmtInt(d.conversion.converted)} de ${fmtInt(seen)} deals acompanhados entraram em Engaging. Estimativa: (convertidos + 1) ÷ (acompanhados + 2).`,
+      })
+    }
+  }
+  steps.push({
+    title: "Valor se ganhar",
+    value: fmtMoney(d.value.value),
+    body: `Preço de tabela ${fmtMoneyFull(d.value.price)} × ${fmtDec(d.value.rho)} (razão histórica entre valor fechado e preço de tabela).`,
+  })
+  steps.push({
+    title: "Receita esperada",
+    value: fmtMoney(d.expected),
+    body: d.expected === null ? "Sem receita esperada: falta o preço do produto." : `${fmtChance(d.p)} de chance × ${fmtMoney(d.value.value)}.`,
+  })
+  if (d.score !== null && d.K !== null) {
+    steps.push({
+      title: "Score",
+      value: String(d.score),
+      body: `100 × receita esperada ÷ (receita esperada + ${fmtMoney(d.K)}). ${fmtMoney(d.K)} é a receita esperada mediana dos deals vivos: quem está na mediana fica com 50, quem tem o triplo fica com 75.`,
+    })
+  }
   return (
     <div className="flex flex-col gap-6 p-4">
       <div className="flex items-center gap-4">
@@ -105,49 +177,11 @@ function DetailBody({ d }: { d: DetailDTO }) {
           Como o score foi calculado
         </h3>
         <ol className="flex flex-col gap-3 text-sm">
-          <Step n={1} title="Chance pela idade do deal" value={fmtPct(d.base.p)}>
-            {d.base.p === null
-              ? "Sem estimativa: o deal está além de todo o histórico de ganhos da base."
-              : d.base.prospecting
-                ? "Sem data de entrada: usa a chance de um deal que acabou de entrar em Engaging. É uma estimativa otimista, porque ainda não se sabe quantos deals de Prospecting chegam a Engaging."
-                : `Entre os ${fmtInt(d.base.support)} deals da base que chegaram a esta idade ainda abertos, esta é a parcela que terminou ganha (${d.base.curve}).`}
-          </Step>
-          <Step
-            n={2}
-            title="Ajustes por grupo"
-            value={
-              d.adjustments.length
-                ? `${d.adjustments.reduce((s, a) => s + a.impact, 0) >= 0 ? "+" : ""}${fmtPct(d.adjustments.reduce((s, a) => s + a.impact, 0), 1)}`
-                : "nenhum"
-            }
-          >
-            {d.adjustments.length > 0 && (
-              <ul className="mb-1 flex flex-col gap-1">
-                {d.adjustments.map((a) => (
-                  <li key={a.label}>
-                    {a.label} ({a.group}): {a.impact >= 0 ? "+" : ""}
-                    {fmtPct(a.impact, 1)}, com peso {fmtPct(a.weight)} por ter {Math.round(a.n)} deals de histórico
-                  </li>
-                ))}
-              </ul>
-            )}
-            {d.groupsNote}
-          </Step>
-          {calibrated && (
-            <Step n={3} title="Calibração pelo histórico de acertos" value={fmtPct(d.calibration.after)}>
-              O modelo foi testado em datas passadas; esta etapa corrige o viés observado: {fmtPct(d.calibration.before)} →{" "}
-              {fmtPct(d.calibration.after)}.
+          {steps.map((st, i) => (
+            <Step key={st.title} n={i + 1} title={st.title} value={st.value}>
+              {st.body}
             </Step>
-          )}
-          <Step n={calibrated ? 4 : 3} title="Valor se ganhar" value={fmtMoney(d.value.value)}>
-            Preço de tabela {fmtMoneyFull(d.value.price)} × {d.value.rho.toFixed(3).replace(".", ",")} (razão histórica entre valor
-            fechado e preço de tabela).
-          </Step>
-          <Step n={calibrated ? 5 : 4} title="Receita esperada" value={fmtMoney(d.expected)}>
-            {d.expected === null
-              ? "Sem receita esperada: falta a chance ou o valor."
-              : `${fmtPct(d.calibration.after)} × ${fmtMoney(d.value.value)}. O score ${d.score} indica que esta receita esperada é maior que a de ${d.score}% das oportunidades abertas com score.`}
-          </Step>
+          ))}
         </ol>
       </section>
 

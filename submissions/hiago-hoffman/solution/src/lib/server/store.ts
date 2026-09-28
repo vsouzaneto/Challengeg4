@@ -1,8 +1,9 @@
 import { createHash } from "node:crypto"
-import { mkdir, readFile, rm, writeFile } from "node:fs/promises"
+import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises"
 import path from "node:path"
 
 import { type Backtest, runBacktest } from "@/lib/scoring/backtest"
+import { type Conversion, type Snapshot, learnConversion, snapshotOf } from "@/lib/scoring/conversion"
 import { type Dataset, type RawFiles, formatDay, prepareDataset } from "@/lib/scoring/dataset"
 import { type Config, type LevelFit, type Model, type ScoredDeal, fitModel, scorePipeline } from "@/lib/scoring/model"
 
@@ -15,6 +16,7 @@ const DATA_DIR = process.env.LEAD_SCORER_DATA_DIR ?? path.join(process.cwd(), "d
 const STORAGE_DIR = process.env.LEAD_SCORER_STORAGE_DIR ?? path.join(process.cwd(), "storage")
 const UPLOAD_DIR = path.join(STORAGE_DIR, "base")
 const VERSIONS_FILE = path.join(STORAGE_DIR, "versions.json")
+const SNAPSHOTS_DIR = path.join(STORAGE_DIR, "snapshots") // uma foto de estágios por base, para aprender c
 export const FILE_NAMES = ["accounts", "products", "sales_teams", "sales_pipeline"] as const
 
 export interface ModelVersion {
@@ -33,6 +35,8 @@ export interface ModelVersion {
   deals: number
   closed: number
   source: "padrão" | "upload"
+  K?: number | null // referência da escala do score nesta versão
+  conversion?: number // c vigente quando a versão foi criada
 }
 
 export interface AppState {
@@ -41,6 +45,8 @@ export interface AppState {
   groupDiagnostics: LevelFit[] // pesos aprendidos por grupo, mesmo quando o backtest descarta os grupos
   backtest: Backtest
   scored: ScoredDeal[]
+  K: number | null
+  conversion: Conversion
   byId: Map<string, ScoredDeal>
   version: ModelVersion
   versions: ModelVersion[]
@@ -67,6 +73,16 @@ async function readVersions(): Promise<ModelVersion[]> {
   }
 }
 
+async function readSnapshots(): Promise<Snapshot[]> {
+  try {
+    const names = (await readdir(SNAPSHOTS_DIR)).filter((n) => n.endsWith(".json"))
+    return Promise.all(names.map(async (n) => JSON.parse(await readFile(path.join(SNAPSHOTS_DIR, n), "utf8"))))
+  } catch {
+    return []
+  }
+}
+
+const memorySnapshots: Snapshot[] = []
 let memoryVersions: ModelVersion[] | null = null
 let cache: { fingerprint: string; state: AppState } | null = null
 let building: { fingerprint: string; promise: Promise<AppState> } | null = null
@@ -80,7 +96,19 @@ async function build(files: RawFiles, source: ModelVersion["source"], fingerprin
   const backtest = runBacktest(ds, known?.config ?? last?.config ?? null)
   const config = known ? known.config : backtest.chosen.config
   const model = fitModel(ds, ds.refDay, config)
-  const scored = scorePipeline(ds, model, backtest.calibrator)
+
+  const snapshot = snapshotOf(ds, fingerprint)
+  const stored = [...(await readSnapshots()), ...memorySnapshots]
+  const conversion = learnConversion([...stored.filter((x) => x.fingerprint !== fingerprint), snapshot])
+  if (!stored.some((x) => x.fingerprint === fingerprint)) {
+    try {
+      await mkdir(SNAPSHOTS_DIR, { recursive: true })
+      await writeFile(path.join(SNAPSHOTS_DIR, `${fingerprint}.json`), JSON.stringify(snapshot))
+    } catch {
+      memorySnapshots.push(snapshot)
+    }
+  }
+  const { deals: scored, K } = scorePipeline(ds, model, { calibrator: backtest.calibrator, conversion: conversion.c })
 
   let version = known
   let persisted = true
@@ -101,6 +129,8 @@ async function build(files: RawFiles, source: ModelVersion["source"], fingerprin
       deals: ds.deals.length,
       closed: model.counts.closed,
       source,
+      K,
+      conversion: conversion.c,
     }
     versions.push(version)
     try {
@@ -119,6 +149,8 @@ async function build(files: RawFiles, source: ModelVersion["source"], fingerprin
     groupDiagnostics: fitModel(ds, ds.refDay, { ...config, levels: "completo" }).levels,
     backtest,
     scored,
+    K,
+    conversion,
     byId: new Map(scored.map((s) => [s.deal.id, s])),
     version,
     versions: [...versions].reverse(),

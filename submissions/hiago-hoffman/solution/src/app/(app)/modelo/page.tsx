@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/page-header"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { fmtDec, fmtInt, fmtPct } from "@/lib/explain"
+import { fmtChance, fmtDec, fmtInt, fmtMoney, fmtPct } from "@/lib/explain"
 import { formatDay } from "@/lib/scoring/dataset"
 import { POLICY, calibrate } from "@/lib/scoring/model"
 import { getState } from "@/lib/server/store"
@@ -24,6 +24,9 @@ export default async function ModeloPage() {
   const curve = model.curves.global
   const t = model.thresholds.global
   const results = [...bt.results].sort((a, b) => a.brier - b.brier)
+  const conv = s.conversion
+  const boundaryWeek = Math.floor(t.tardio / POLICY.weekDays)
+  const tailRange = [curve.tailP[boundaryWeek], curve.tailP.at(-1)!]
   const best = results[0]
 
   return (
@@ -48,6 +51,15 @@ export default async function ModeloPage() {
             <Info label="Oportunidades" value={`${fmtInt(v.deals)} (${fmtInt(v.closed)} encerradas)`} />
             <Info label="Configuração" value={v.configKey} className="sm:col-span-2" />
             <Info label="Treinado em" value={new Date(v.createdAt).toISOString().slice(0, 16).replace("T", " ")} />
+            <Info
+              label="Escala do score (K)"
+              value={s.K === null ? "—" : `${fmtMoney(s.K)}: receita esperada mediana dos deals vivos = score 50`}
+              className="sm:col-span-2"
+            />
+            <Info
+              label="Conversão Prospecting → Engaging"
+              value={`${fmtPct(conv.c)} (${conv.converted + conv.failed === 0 ? "sem deals acompanhados ainda" : `${fmtInt(conv.converted)} de ${fmtInt(conv.converted + conv.failed)} acompanhados`}; ${fmtInt(conv.snapshots)} ${conv.snapshots === 1 ? "base" : "bases"})`}
+            />
           </dl>
           {!s.persisted && (
             <p className="mt-3 text-xs text-muted-foreground">Disco somente leitura: o histórico de versões está só em memória.</p>
@@ -105,7 +117,10 @@ export default async function ModeloPage() {
         <Card>
           <CardHeader>
             <CardTitle>Chance de ganho pela idade</CardTitle>
-            <CardDescription>Já calibrada. É o principal componente da chance nesta versão.</CardDescription>
+            <CardDescription>
+              Já calibrada. É o principal componente da chance nesta versão. Além do histórico, a chance é (ganhos + 1) ÷ (deals
+              + 2) entre os deals que chegaram àquela idade, sem nunca subir com a idade.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <Table>
@@ -130,9 +145,10 @@ export default async function ModeloPage() {
                 })}
                 <TableRow>
                   <TableCell>mais de {t.tardio} dias</TableCell>
-                  <TableCell className="text-right text-muted-foreground" colSpan={2}>
-                    sem histórico: revalidar
+                  <TableCell className="text-right tabular-nums">
+                    {fmtChance(tailRange[0])} a {fmtChance(tailRange[1])}
                   </TableCell>
+                  <TableCell className="text-right text-muted-foreground">revalidar</TableCell>
                 </TableRow>
               </TableBody>
             </Table>

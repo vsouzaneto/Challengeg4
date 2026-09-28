@@ -16,6 +16,8 @@ export function fmtMoney(v: number | null) {
 }
 export const fmtMoneyFull = (v: number | null) => (v === null ? "—" : `US$ ${fmtInt(v)}`)
 export const fmtPct = (p: number | null, digits = 0) => (p === null ? "—" : `${(p * 100).toFixed(digits).replace(".", ",")}%`)
+// Chances pequenas com duas casas, para "0,08%" não virar "0%".
+export const fmtChance = (p: number | null) => (p !== null && p > 0 && p < 0.01 ? fmtPct(p, 2) : fmtPct(p))
 export const fmtDec = (n: number, digits = 3) => n.toFixed(digits).replace(".", ",")
 export const fmtDays = (d: number | null) => (d === null ? "sem data" : `${d} ${d === 1 ? "dia" : "dias"}`)
 
@@ -26,7 +28,7 @@ export const STATE_META: Record<AgeState, { label: string; tone: Tone; action: (
     label: "Sem data de entrada",
     tone: "muted",
     action: () =>
-      "Faça o primeiro contato e registre a entrada em Engaging. Sem essa data, a chance é uma estimativa de início de funil.",
+      "Faça o primeiro contato e registre a entrada em Engaging. Sem essa data, a chance combina a de um deal recém-engajado com a conversão Prospecting → Engaging aprendida.",
   },
   inicio: {
     label: "Início",
@@ -53,7 +55,7 @@ export const STATE_META: Record<AgeState, { label: string; tone: Tone; action: (
     label: "Revalidar",
     tone: "muted",
     action: (t) =>
-      `Revalide com o cliente ou encerre: 99% dos ganhos da base fecharam até ${fmtDays(t.tardio)}. Não há histórico para estimar a chance.`,
+      `Revalide com o cliente ou encerre: 99% dos ganhos da base fecharam até ${fmtDays(t.tardio)}. A chance vem só dos raros ganhos depois dessa idade.`,
   },
 }
 

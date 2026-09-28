@@ -345,15 +345,15 @@ logit(p) = logit(p_base(a)) + Σ w_g · δ_g
 | Em andamento | ≤ P75 do ciclo dos ganhos | 14–88 |
 | **Esfriando** | P75–P95 dos ganhos | 88–116 |
 | Tardio | P95–P99 dos ganhos | 116–130 |
-| **Fora do histórico** | > P99 dos ganhos | > 130 — `p` não é exibido; fila **Revalidar** |
+| **Fora do histórico** | > P99 dos ganhos | > 130 — fila **Revalidar**; chance pela cauda (v1.2, seção 6.5) |
 
-**Passo 6 — Score 0–100:** percentil de `R` entre os deals abertos com estimativa (empresa inteira), fixo por versão do modelo; não recalcula ao filtrar.
+**Passo 6 — Score 0–100:** ~~percentil de `R`~~ → **v1.2:** `100 × R / (R + K)`, `K` = receita esperada mediana dos deals vivos, fixo por versão; não recalcula ao filtrar (seção 6.5).
 
 **Passo 7 — Casos especiais**
 
 | Caso | Tratamento |
 |---|---|
-| Prospecting (sem `engage_date`) | `p = p_base(0) × c`; `c` = conversão Prospecting → Engaging, inexistente na base → `c = 1` com marca "estimativa de entrada" |
+| Prospecting (sem `engage_date`) | `p = p_base(0) × c`; ~~`c = 1`~~ → **v1.2:** `c` aprendido entre bases sucessivas, `(convertidos + 1) / (acompanhados + 2)`, começa em 50% (seção 6.5) |
 | Vendedor / produto / região / combinação nova | `n = 0` → `w = 0` → herda o nível acima; nunca erro nem chance zero |
 | Produto sem série conhecida | Curva e `ρ` globais |
 | Deal sem conta | Tarefa de cadastro; fora do cálculo |
@@ -387,11 +387,44 @@ logit(p) = logit(p_base(a)) + Σ w_g · δ_g
 
 ---
 
+### 6.5 Correção v1.2: Prospecting travado em 100 e Revalidar sem score
+
+**Problema reportado:** deals de Prospecting aparecendo com score 100; deals em Revalidar sem score.
+
+**Diagnóstico (três furos na regra):**
+
+1. **`c = 1` dava a Prospecting a maior chance da curva.** Sem data de entrada, `p = p_base(0) × c`. Com `c = 1`, todos os 500 deals ficavam com 38%, acima de qualquer deal vivo em Engaging (máximo 37,5%). A chance era idêntica para todos, então o score virava só o preço: 6 valores possíveis (um por produto). 88 das 100 primeiras posições eram Prospecting.
+2. **Empates herdavam a melhor posição do percentil.** Os 47 GTX Plus Pro de Prospecting ocupavam as posições 2–48 e todos recebiam 100.
+3. **Percentil é ordinal.** Ao dar score aos deals de Revalidar, um GTK 500 parado chegava a 71, acima de deals vivos de MG Special. As duas receitas esperadas eram quase zero, mas o percentil não enxerga magnitude.
+
+**Correção (sem constantes à mão):**
+
+| Componente | Antes | v1.2 |
+|---|---|---|
+| Conversão Prospecting → Engaging | `c = 1` fixo | Aprendida comparando fotos sucessivas da base (uma por upload): `(convertidos + 1) / (acompanhados + 2)`. Sem observações = 50% |
+| Chance em Revalidar | sem chance, sem score | Cauda empírica: `(ganhos a partir da idade + 1) / (deals que chegaram lá + 2)`, com mínimo acumulado (nunca sobe com a idade). Hoje 5,6% na fronteira e 0,08% depois de 140 dias (0 ganhos em 1.273) |
+| Escala do score | percentil de `R` | `100 × R / (R + K)`, `K` = receita esperada mediana dos deals vivos (score 50 = mediana; 75 = o triplo) |
+
+**Efeito na base do challenge:**
+
+| | Antes | Depois |
+|---|---|---|
+| Prospecting entre as 100 primeiras | 88 | 44 |
+| Maior score de Prospecting | 100 | 78 |
+| Deals com score 100 | 48 | 0 |
+| Revalidar | sem score | 0–40, ordenados por receita esperada |
+
+Prospecting continua forte no topo (44 de 100) porque, depois da calibração, `38% × 50% ≈ 18%` ainda é comparável à chance de deals engajados mais velhos. Agora eles se intercalam por valor, em vez de ocupar o topo em bloco.
+
+**Custo medido:** o Brier calibrado passou de 0,221 para 0,224, porque os deals de Revalidar agora entram no backtest com a chance da cauda (pequena, mas não zero) e quase nunca ganham. A receita capturada no topo não mudou (55,6%).
+
+Coberto por testes: Revalidar sempre com score e chance monotônica; Prospecting abaixo dos engajados e nunca 100; `R = K` vale 50 e `R = 3K` vale 75; conversão aprendida em cenário sintético.
+
 ## 7. Questões em aberto
 
 - Data de referência: usar 31/12/2017 (fim da base) como "hoje"? → **v1: sim, data máxima da base.**
 - Deals parados: → **v1: estado "Fora do histórico", fila Revalidar.**
-- Prospecting (sem data): → **v1: `p_base(0) × c`, marcado como estimativa de entrada.** Pendente: definir `c` (hoje 1) enquanto a base não traz a conversão Prospecting → Engaging.
+- Prospecting (sem data): → **v1.2: `c` aprendido entre bases sucessivas; 50% até haver observações.** Ressalva: deals que continuam em Prospecting não entram na conta; se o CRM nunca encerrar Prospecting parados, `c` tende a ficar otimista.
 - Especialização: → **v1: capturada pelos níveis vendedor × produto e região × produto com peso aprendido; sem regra por nome.**
 
 ---

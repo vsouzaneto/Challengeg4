@@ -57,7 +57,7 @@ export function PipelineView({ board }: { board: BoardDTO }) {
       ) : (
         <>
           <dl className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-            <Stat label="com score para trabalhar" value={board.summary.comScore} />
+            <Stat label="vivos para trabalhar" value={board.summary.vivos} />
             <Stat label="esfriando ou tardios: agir esta semana" value={board.summary.esfriando} tone="warning" />
             <Stat label="parados além do histórico: revalidar" value={board.summary.revalidar} />
             <Stat label="com pendência de cadastro" value={board.summary.pendencias} />
@@ -138,7 +138,7 @@ function OpenLane({
           {start && <Badge className="ml-auto">Comece aqui</Badge>}
         </div>
         <span className="text-xs text-muted-foreground">
-          {fmtInt(lane.cards.length)} com score · receita esperada {fmtMoney(lane.expectedTotal)}
+          {fmtInt(lane.cards.length)} vivos · receita esperada {fmtMoney(lane.expectedTotal)}
         </span>
       </header>
 
@@ -176,7 +176,7 @@ function Revalidar({ lane, showAgent, onOpen }: { lane: LaneDTO; showAgent: bool
           Revalidar · {fmtInt(count)}
         </span>
         <span className="pl-6 text-xs text-muted-foreground">
-          Abertos há mais tempo que 99% dos ganhos da base. {fmtMoney(value)} em jogo: confirme com o cliente ou encerre.
+          Abertos há mais tempo que 99% dos ganhos da base, com chance próxima de zero. {fmtMoney(value)} em jogo: confirme com o cliente ou encerre. Ordenados por score.
         </span>
       </summary>
       <ol className="flex flex-col gap-2 p-2 pt-0">

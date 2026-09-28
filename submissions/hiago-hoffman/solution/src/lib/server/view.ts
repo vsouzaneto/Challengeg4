@@ -1,6 +1,6 @@
-import { FLAG_LABEL, STATE_META, fmtDays, fmtMoney, fmtPct } from "@/lib/explain"
+import { FLAG_LABEL, STATE_META, fmtChance, fmtDays, fmtInt, fmtMoney, fmtPct } from "@/lib/explain"
 import { LOST_STAGE, WON_STAGE, formatDay, type Deal } from "@/lib/scoring/dataset"
-import { LEVELS, POLICY, type AgeState, type ScoredDeal } from "@/lib/scoring/model"
+import { LEVELS, type AgeState, type ScoredDeal } from "@/lib/scoring/model"
 import type { AppState } from "@/lib/server/store"
 
 // DTOs enviados à interface. Tudo aqui é derivado do estado calculado no servidor.
@@ -49,7 +49,7 @@ export interface BoardDTO {
     agents: { name: string; manager: string | null; region: string | null }[]
   }
   filters: Filters
-  summary: { comScore: number; esfriando: number; revalidar: number; pendencias: number }
+  summary: { vivos: number; esfriando: number; revalidar: number; pendencias: number }
   refDay: string
   version: number
 }
@@ -71,14 +71,17 @@ function median(xs: number[]) {
 
 function tooltipFor(s: ScoredDeal, rank: number | null, med: { p: number; v: number }): string[] {
   const meta = STATE_META[s.state]
+  if (s.expected === null) return ["Sem score", "Produto fora do catálogo: sem preço para estimar o valor"]
+  const head = `Score ${s.score}${rank ? ` · #${rank} nesta visão` : ""}`
+  const revenue = `Receita esperada ${fmtMoney(s.expected)} = ${fmtChance(s.p)} de chance × ${fmtMoney(s.value)}`
   if (s.state === "fora") {
     return [
-      "Sem score: revalidar",
-      `${fmtDays(s.age)} aberto: 99% dos ganhos fecharam até ${fmtDays(s.thresholds.tardio)}`,
-      `Valor em jogo: ${fmtMoney(s.value)}`,
+      head,
+      revenue,
+      `${fmtDays(s.age)} aberto: além de 99% dos ganhos (${fmtDays(s.thresholds.tardio)})`,
+      `Na base, ${fmtInt(s.tail!.wins)} de ${fmtInt(s.tail!.atRisk)} deals abertos há ${s.tail!.fromDays}+ dias foram ganhos`,
     ]
   }
-  if (s.expected === null) return ["Sem score", "Produto fora do catálogo: sem preço para estimar o valor"]
   const driver =
     s.value! >= med.v && s.p! >= med.p
       ? "Valor e chance acima da mediana do pipeline"
@@ -88,9 +91,11 @@ function tooltipFor(s: ScoredDeal, rank: number | null, med: { p: number; v: num
           ? "Puxado pela chance: ticket menor, boa chance para a idade"
           : "Valor e chance abaixo da mediana do pipeline"
   return [
-    `Score ${s.score}${rank ? ` · #${rank} nesta visão` : ""}`,
-    `Receita esperada ${fmtMoney(s.expected)} = ${fmtPct(s.p)} de chance × ${fmtMoney(s.value)}`,
-    `${s.age === null ? "Sem data de entrada" : fmtDays(s.age)} · ${meta.label}`,
+    head,
+    revenue,
+    s.conversion !== null
+      ? `Sem data de entrada: chance inclui ${fmtPct(s.conversion)} de conversão para Engaging`
+      : `${fmtDays(s.age)} · ${meta.label}`,
     driver,
   ]
 }
@@ -121,7 +126,7 @@ export function buildBoard(state: AppState, filters: Filters): BoardDTO {
   const open = state.scored.filter((s) => matches(s.deal, filters))
   const ranked = open.filter((s) => s.expected !== null).sort(byExpected)
   const viewRank = new Map(ranked.map((s, i) => [s.deal.id, i + 1]))
-  const withScore = state.scored.filter((s) => s.expected !== null)
+  const withScore = state.scored.filter((s) => s.expected !== null && s.state !== "fora")
   const med = { p: median(withScore.map((s) => s.p!)), v: median(withScore.map((s) => s.value!)) }
 
   const toCard = (s: ScoredDeal): CardDTO => {
@@ -159,7 +164,7 @@ export function buildBoard(state: AppState, filters: Filters): BoardDTO {
     const active = inLane
       .filter((s) => s.state !== "fora")
       .sort(byExpected)
-    const stale = inLane.filter((s) => s.state === "fora").sort((a, b) => (b.value ?? 0) - (a.value ?? 0))
+    const stale = inLane.filter((s) => s.state === "fora").sort(byExpected)
     return {
       stage,
       kind: "aberta",
@@ -188,7 +193,7 @@ export function buildBoard(state: AppState, filters: Filters): BoardDTO {
     },
     filters,
     summary: {
-      comScore: ranked.length,
+      vivos: ranked.filter((s) => s.state !== "fora").length,
       esfriando: open.filter((s) => s.state === "esfriando" || s.state === "tardio").length,
       revalidar: open.filter((s) => s.state === "fora").length,
       pendencias: open.filter((s) => s.flags.length > 0).length,
@@ -216,10 +221,14 @@ export interface DetailDTO {
   age: number | null
   action: string
   thresholds: { inicio: number; andamento: number; esfriando: number; tardio: number; source: string }
-  base: { p: number | null; support: number; curve: string; prospecting: boolean }
+  base: { p: number | null; support: number; curve: string }
+  tail: { wins: number; atRisk: number; fromDays: number } | null
+  conversion: { c: number; converted: number; failed: number } | null
+  K: number | null
   adjustments: { label: string; group: string; n: number; weight: number; impact: number }[]
   groupsNote: string
   calibration: { before: number | null; after: number | null }
+  p: number | null // chance final usada na receita esperada
   value: { price: number | null; rho: number; value: number | null }
   expected: number | null
   tasks: string[]
@@ -262,11 +271,18 @@ export function buildDetail(state: AppState, id: string): DetailDTO | null {
       p: s.pBase,
       support: s.support,
       curve: d.series && state.model.curves.bySeries[d.series] ? `curva da série ${d.series}` : "curva geral",
-      prospecting: s.age === null && POLICY.prospectingConversion === 1,
     },
+    tail: s.tail,
+    conversion:
+      s.conversion === null
+        ? null
+        : { c: s.conversion, converted: state.conversion.converted, failed: state.conversion.failed },
+    K: state.K,
     adjustments: s.adjustments.map((a) => ({ label: a.label, group: a.group, n: a.n, weight: a.weight, impact: a.impact })),
     groupsNote,
-    calibration: { before: s.pModel, after: s.p },
+    // calibração vem antes da conversão de Prospecting
+    calibration: { before: s.pModel, after: s.p === null || s.conversion === null ? s.p : s.p / s.conversion },
+    p: s.p,
     value: { price: d.price, rho: s.rho, value: s.value },
     expected: s.expected,
     tasks: s.flags.map((f) => FLAG_LABEL[f] ?? f),

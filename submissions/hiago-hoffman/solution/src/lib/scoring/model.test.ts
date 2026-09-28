@@ -5,6 +5,7 @@ import { readFileSync } from "node:fs"
 import { join } from "node:path"
 import { parseCsv } from "./csv.ts"
 import { formatDay, prepareDataset, type Deal } from "./dataset.ts"
+import { learnConversion } from "./conversion.ts"
 import { fitModel, scoreDeal, scorePipeline } from "./model.ts"
 
 const dir = join(import.meta.dirname, "../../../data")
@@ -60,11 +61,42 @@ test("entidade nova herda o nível acima, sem erro nem chance zero", () => {
   assert.ok(s.flags.includes("sem_conta"))
 })
 
-test("pipeline: deals fora do histórico não recebem score; score é percentil 0–100", () => {
-  const scored = scorePipeline(ds, model)
-  const fora = scored.filter((s) => s.state === "fora")
-  assert.ok(fora.length > 1200 && fora.every((s) => s.score === null))
-  const withScore = scored.filter((s) => s.score !== null)
-  assert.ok(withScore.every((s) => s.score! >= 0 && s.score! <= 100))
-  assert.equal(Math.max(...withScore.map((s) => s.score!)), 100)
+test("Revalidar também tem score: chance da cauda pequena e que não sobe com a idade", () => {
+  const { deals } = scorePipeline(ds, model, { conversion: 0.5 })
+  const fora = deals.filter((s) => s.state === "fora")
+  assert.ok(fora.length > 1200)
+  const tail = model.curves.global.tailP
+  const boundary = tail[Math.floor(model.thresholds.global.tardio / 7)] // chance na fronteira do histórico
+  assert.ok(fora.every((s) => s.score !== null && s.p! > 0 && s.p! <= boundary))
+  assert.ok(tail.every((p, k) => k === 0 || p <= tail[k - 1]))
+  // Hoje: nenhum ganho depois da semana 19 entre 1.273 deals → (0 + 1) / (1.273 + 2)
+  assert.ok(Math.abs(tail[20] - 1 / (1273 + 2)) < 1e-9)
+})
+
+test("Prospecting: conversão aplicada; não fica acima dos deals engajados nem trava em 100", () => {
+  const { deals } = scorePipeline(ds, model, { conversion: 0.5 })
+  const prosp = deals.filter((s) => s.state === "entrada")
+  const live = deals.filter((s) => s.state !== "fora" && s.state !== "entrada")
+  assert.ok(Math.max(...prosp.map((s) => s.p!)) < Math.max(...live.map((s) => s.p!)))
+  assert.ok(prosp.every((s) => s.score! < 100))
+})
+
+test("escala do score: receita esperada igual a K vale 50, o triplo vale 75", () => {
+  const { deals, K } = scorePipeline(ds, model, { conversion: 0.5 })
+  assert.ok(K! > 0)
+  const s = deals.find((x) => x.expected !== null)!
+  const score = (r: number) => Math.round((100 * r) / (r + K!))
+  assert.equal(score(K!), 50)
+  assert.equal(score(3 * K!), 75)
+  assert.equal(s.score, score(s.expected!))
+  assert.ok(deals.every((x) => x.score === null || (x.score >= 0 && x.score <= 100)))
+})
+
+test("conversão Prospecting → Engaging aprendida entre bases", () => {
+  assert.equal(learnConversion([]).c, 0.5)
+  const antes = { fingerprint: "a", refDay: 1, prospecting: ["p1", "p2", "p3", "p4"], engaged: [] }
+  const depois = { fingerprint: "b", refDay: 2, prospecting: ["p4"], engaged: ["p1", "p2"] } // p3 sumiu, p4 pendente
+  const conv = learnConversion([depois, antes])
+  assert.deepEqual([conv.converted, conv.failed], [2, 1])
+  assert.equal(conv.c, 3 / 5)
 })

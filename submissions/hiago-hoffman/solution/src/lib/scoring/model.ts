@@ -13,7 +13,6 @@ export const POLICY = {
   statePercentiles: { andamento: 0.75, esfriando: 0.95, tardio: 0.99 },
   minSeriesWon: 100, // ganhos mínimos para uma série ter curva/limiares próprios
   minImpactToExplain: 0.01, // ajuste só é citado na explicação se mover p em ≥ 1 p.p.
-  prospectingConversion: 1, // c = conversão Prospecting → Engaging (inexistente na base)
   candidates: {
     halfLife: [90, 180, 365, null] as (number | null)[], // null = sem ponderação por recência
     seriesPrior: [null, 200] as (number | null)[], // null = só curva global
@@ -56,6 +55,11 @@ export interface Curve {
   hl: number[] // hazard de perda por semana
   pFrom: number[] // P(ganhar em algum momento | aberto no início da semana k)
   support: number[] // deals (sem peso) ainda abertos no início da semana k
+  winsFrom: number[] // ganhos (sem peso) com ciclo a partir da semana k
+  // Chance para quem passou do histórico: (ganhos + 1) / (em risco + 2) a partir da semana k,
+  // sem nunca subir com a idade (mínimo acumulado). Hoje: 0 ganhos em 1.273 deals → 0,08%.
+  tailP: number[]
+  tailWeek: number[] // semana cuja evidência define tailP[k] (onde o mínimo foi atingido)
   lastEventWeek: number
 }
 
@@ -124,22 +128,28 @@ function buildCurve(obs: Obs[], prior: Curve | null, m: number): Curve {
   const L = new Array(len).fill(0)
   const ends = new Array(len).fill(0)
   const endsRaw = new Array(len).fill(0)
+  const WRaw = new Array(len).fill(0)
   for (const o of obs) {
     ends[o.week] += o.w
     endsRaw[o.week] += 1
+    if (o.outcome === "won") WRaw[o.week] += 1
     if (o.outcome === "won") W[o.week] += o.w
     else if (o.outcome === "lost") L[o.week] += o.w
   }
   const hw = new Array(len).fill(0)
   const hl = new Array(len).fill(0)
   const support = new Array(len).fill(0)
+  const winsFrom = new Array(len).fill(0)
   let risk = 0
   let riskRaw = 0
+  let winsRaw = 0
   let lastEventWeek = -1
   for (let k = len - 1; k >= 0; k--) {
     risk += ends[k]
     riskRaw += endsRaw[k]
     support[k] = riskRaw
+    winsRaw += WRaw[k]
+    winsFrom[k] = winsRaw
     if (lastEventWeek < 0 && W[k] + L[k] > 0) lastEventWeek = k
     const pw = prior ? prior.hw[k] ?? 0 : 0
     const pl = prior ? prior.hl[k] ?? 0 : 0
@@ -154,7 +164,15 @@ function buildCurve(obs: Obs[], prior: Curve | null, m: number): Curve {
   }
   const pFrom = new Array(len + 1).fill(0)
   for (let k = len - 1; k >= 0; k--) pFrom[k] = hw[k] + (1 - hw[k] - hl[k]) * pFrom[k + 1]
-  return { hw, hl, pFrom, support, lastEventWeek: prior ? prior.lastEventWeek : lastEventWeek }
+  const tailP = new Array(len).fill(0)
+  const tailWeek = new Array(len).fill(0)
+  for (let k = 0; k < len; k++) {
+    const laplace = (winsFrom[k] + 1) / (support[k] + 2)
+    const keep = k > 0 && tailP[k - 1] <= laplace
+    tailP[k] = keep ? tailP[k - 1] : laplace
+    tailWeek[k] = keep ? tailWeek[k - 1] : k
+  }
+  return { hw, hl, pFrom, support, winsFrom, tailP, tailWeek, lastEventWeek: prior ? prior.lastEventWeek : lastEventWeek }
 }
 
 // ---------- Passo 2: ajustes hierárquicos com encolhimento aprendido ----------
@@ -393,9 +411,16 @@ export interface ScoredDeal {
   value: number | null
   expected: number | null
   support: number
+  tail: { wins: number; atRisk: number; fromDays: number } | null // evidência usada além do histórico
+  conversion: number | null // c aplicado a deals sem data de entrada
   flags: string[]
   score: number | null
   rank: number | null
+}
+
+export interface ScoreOptions {
+  calibrator?: Calibrator | null
+  conversion?: number // c = conversão Prospecting → Engaging, aprendida entre bases (conversion.ts)
 }
 
 // Calibração (Platt): p_cal = sigmoid(a + b·logit(p)), aprendida no backtest. Monotônica em p.
@@ -433,7 +458,7 @@ export function fitCalibrator(points: { p: number; y: number }[]): Calibrator {
 
 export const calibrate = (p: number, c: Calibrator | null) => (c ? sigmoid(c.a + c.b * logit(clampP(p))) : p)
 
-export function scoreDeal(d: Deal, m: Model, at: number, calibrator: Calibrator | null = null): ScoredDeal {
+export function scoreDeal(d: Deal, m: Model, at: number, opts: ScoreOptions = {}): ScoredDeal {
   const curve = (d.series && m.curves.bySeries[d.series]) || m.curves.global
   const seriesT = d.series ? m.thresholds.bySeries[d.series] : undefined
   const t = seriesT ?? m.thresholds.global
@@ -458,9 +483,17 @@ export function scoreDeal(d: Deal, m: Model, at: number, calibrator: Calibrator 
   let pModel: number | null = null // antes da calibração
   let p: number | null = null
   const adjustments: Adjustment[] = []
-  if (state !== "fora") {
+  let tail: ScoredDeal["tail"] = null
+  let conversion: number | null = null
+  if (state === "fora") {
+    // Além do histórico: sem curva, usa a evidência direta da cauda (curva global, mais deals).
+    const g = m.curves.global
+    const w = Math.min(week, g.tailP.length - 1)
+    const src = g.tailWeek[w]
+    tail = { wins: g.winsFrom[src], atRisk: g.support[src], fromDays: src * POLICY.weekDays }
+    pBase = pModel = p = g.tailP[w]
+  } else {
     pBase = curve.pFrom[week] ?? 0
-    if (age === null) pBase *= POLICY.prospectingConversion
     let x = logit(clampP(pBase))
     for (const level of m.levels) {
       const key = LEVELS.find((l) => l.id === level.id)!.key(d)
@@ -479,7 +512,11 @@ export function scoreDeal(d: Deal, m: Model, at: number, calibrator: Calibrator 
       })
     }
     pModel = sigmoid(x)
-    p = calibrate(pModel, calibrator)
+    p = calibrate(pModel, opts.calibrator ?? null)
+    if (age === null) {
+      conversion = opts.conversion ?? 1
+      p *= conversion
+    }
   }
 
   let rho = m.rho.mean
@@ -505,21 +542,28 @@ export function scoreDeal(d: Deal, m: Model, at: number, calibrator: Calibrator 
     value,
     expected,
     support: curve.support[week] ?? 0,
+    tail,
+    conversion,
     flags,
     score: null,
     rank: null,
   }
 }
 
-// Pontua o pipeline aberto na data de referência. Score = percentil da receita esperada (empresa inteira).
-export function scorePipeline(ds: Dataset, m: Model, calibrator: Calibrator | null = null): ScoredDeal[] {
-  const scored = ds.deals.filter((d) => d.outcome === null).map((d) => scoreDeal(d, m, ds.refDay, calibrator))
-  const ranked = scored.filter((s) => s.expected !== null).sort((a, b) => b.expected! - a.expected!)
-  const n = ranked.length
+// Pontua o pipeline aberto na data de referência.
+// Score = 100 × R / (R + K): escala absoluta. K = receita esperada mediana dos deals vivos com data
+// de entrada (score 50 = mediana; 75 = o triplo). K é fixo por versão e não muda com filtros.
+export function scorePipeline(ds: Dataset, m: Model, opts: ScoreOptions = {}): { deals: ScoredDeal[]; K: number | null } {
+  const deals = ds.deals.filter((d) => d.outcome === null).map((d) => scoreDeal(d, m, ds.refDay, opts))
+  const median = (xs: number[]) => (xs.length ? [...xs].sort((a, b) => a - b)[Math.floor(xs.length / 2)] : null)
+  const live = deals.filter((s) => s.expected !== null && s.state !== "fora" && s.state !== "entrada")
+  const K = median(live.map((s) => s.expected!)) ?? median(deals.filter((s) => s.expected! > 0).map((s) => s.expected!))
+  if (!K) return { deals, K: null }
+
+  const ranked = deals.filter((s) => s.expected !== null).sort((a, b) => b.expected! - a.expected!)
   ranked.forEach((s, i) => {
-    const first = i > 0 && ranked[i - 1].expected === s.expected ? ranked[i - 1] : null
-    s.rank = first ? first.rank : i + 1
-    s.score = first ? first.score : Math.round(100 * (1 - i / n))
+    s.score = Math.round((100 * s.expected!) / (s.expected! + K))
+    s.rank = i > 0 && ranked[i - 1].expected === s.expected ? ranked[i - 1].rank : i + 1
   })
-  return scored
+  return { deals, K }
 }

@@ -57,7 +57,7 @@ Detalhes e justificativas estatísticas em [`../docs/analise-lead-scorer.md`](..
 
 ```text
 receita esperada R = p × v
-score (0–100)      = percentil de R entre as oportunidades abertas com estimativa (empresa inteira)
+score (0–100)      = 100 × R / (R + K), K = receita esperada mediana dos deals vivos (score 50 = mediana; 75 = o triplo)
 ```
 
 1. **Chance pela idade, `p_base(a)`.** Modelo de sobrevivência semanal com dois desfechos (ganho e perda). Deals ainda abertos entram como observação sem desfecho, não como perda. Resultados recentes pesam mais (meia-vida escolhida no backtest).
@@ -66,13 +66,14 @@ score (0–100)      = percentil de R entre as oportunidades abertas com estimat
    - Se o grupo não varia mais do que o acaso, `k = ∞` e o peso é zero.
    - Nenhum nome está no código: vendedor, produto ou região novos começam com peso zero e herdam o nível acima.
 3. **Calibração (Platt).** Ajuste aprendido no backtest para que "30%" signifique 30%.
+   - **Prospecting (sem data de entrada):** chance × `c`, a conversão Prospecting → Engaging aprendida comparando bases sucessivas (uma foto por upload): `(convertidos + 1) / (acompanhados + 2)`. Sem observações, 50%.
 4. **Valor se ganhar:** `v = preço de tabela × razão histórica valor fechado / preço`, encolhida por produto → série → geral.
 5. **Estados pela idade.** Os percentis do ciclo dos ganhos são fixos por política (75/95/99); os dias são reaprendidos a cada base.
    - **Início:** antes da mediana do ciclo das perdas.
    - **Em andamento:** até o percentil 75 dos ganhos.
    - **Esfriando:** entre os percentis 75 e 95.
    - **Tardio:** entre os percentis 95 e 99.
-   - **Revalidar:** acima do percentil 99. Sem score.
+   - **Revalidar:** acima do percentil 99. Sem curva para essa idade; a chance vem da cauda: `(ganhos a partir da idade + 1) / (deals que chegaram lá + 2)`, sem nunca subir com a idade. Hoje: 5,6% na fronteira e 0,08% depois de 140 dias.
 6. **Aprendizado contínuo.** A cada base nova:
    - todos os parâmetros são reestimados;
    - 16 configurações (recência × curva × grupos) disputam um backtest com cortes mensais;
@@ -85,7 +86,7 @@ Resultado na base do challenge (backtest de mar a ago/2017):
 |---|---|---|
 | Sem modelo: taxa histórica e ordenação por preço | 0,314 | 46,7% |
 | Modelo v1, antes da calibração | 0,231 | 55,6% |
-| Modelo v1, calibrado (validação deixando cada mês de fora) | 0,221 | — |
+| Modelo v1.2, calibrado (validação deixando cada mês de fora) | 0,224 | — |
 
 Na base atual, produto, região e vendedor não melhoraram a previsão; a versão vigente usa só o tempo. Se isso mudar com resultados novos, a configuração muda sozinha.
 
@@ -110,7 +111,7 @@ Base: `intento-product-starter` (Next.js 16, TypeScript, Tailwind v4, shadcn/ui 
 
 ## Limitações
 
-- **Prospecting não tem data de entrada.** A chance usa a de um deal recém-engajado vezes a conversão Prospecting → Engaging (`c`). A base não tem essa conversão, então `c = 1`: é uma estimativa otimista, sinalizada no card. Com o histórico de estágios, `c` passa a ser aprendido.
+- **Prospecting não tem data de entrada.** A conversão `c` só é aprendida a partir do segundo upload, comparando as bases; até lá vale 50%. Deals que continuam em Prospecting não entram na conta; se o CRM nunca encerrar Prospecting parados, `c` tende a ficar otimista.
 - **Sem histórico de atividades.** Sem dados de ligações, reuniões ou próximo passo, o modelo só enxerga tempo e valor. Qualquer campo novo entra como um grupo a mais e ganha peso só se o backtest aprovar.
 - **Foto única da base.** O CRM exporta o estado atual, não as mudanças de estágio. O backtest reconstrói o passado a partir das datas de entrada e fechamento.
 - **Sem autenticação por usuário.** O filtro por vendedor não é uma permissão. Para produção: SSO do G4 e visão restrita por vendedor/manager.

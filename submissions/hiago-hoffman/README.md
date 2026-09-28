@@ -51,7 +51,7 @@ Na base do challenge, o modelo captura **55,6% da receita ganha nos 20% do topo 
 - Raias com os nomes do CRM (`Prospecting`, `Engaging`, `Won`, `Lost`).
 - O **#1** destacado como "Comece por este" e o selo **Comece aqui** na raia dele.
 - **Esfriando:** deals que passaram do tempo em que 75% dos ganhos já tinham fechado.
-- **Revalidar:** bloco no fim da raia com os deals parados além do histórico.
+- **Revalidar:** bloco no fim da raia com os deals parados além do histórico, também com score (chance vinda dos raros ganhos tardios da base).
 - **Tooltip no score:** receita esperada = chance × valor, idade e o que puxa o score.
 - **Detalhamento ao clicar:** o cálculo passo a passo, a posição do deal na linha do tempo, o que fazer agora e as pendências de cadastro.
 - **Filtros** por região, manager e vendedor. O ranking é refeito dentro do filtro.
@@ -67,7 +67,7 @@ Na base do challenge, o modelo captura **55,6% da receita ganha nos 20% do topo 
 | Backtest (mar–ago/2017) | Brier | Receita no top 20% |
 |---|---|---|
 | Sem modelo (taxa histórica + preço) | 0,314 | 46,7% |
-| Modelo em uso | 0,231 (0,221 calibrado) | 55,6% |
+| Modelo em uso | 0,231 (0,224 calibrado) | 55,6% |
 
 ### Recomendações
 
@@ -78,7 +78,7 @@ Na base do challenge, o modelo captura **55,6% da receita ganha nos 20% do topo 
 
 ### Limitações
 
-- **Prospecting sem data de entrada:** a conversão Prospecting → Engaging não existe na base, então a chance desses deals é uma estimativa otimista (sinalizada no card).
+- **Prospecting sem data de entrada:** a conversão Prospecting → Engaging é aprendida comparando uploads sucessivos; com uma base só, vale a estimativa neutra de 50%.
 - **Foto única do CRM:** sem histórico de mudanças de estágio nem atividades.
 - **Sem autenticação por usuário:** o filtro por vendedor não é uma permissão.
 - **Efeito da própria ferramenta:** o sistema ainda não registra a ação tomada após o score, o que é necessário para medir impacto e evitar que a lista reforce os próprios erros.
@@ -118,6 +118,7 @@ Detalhes em [`solution/README.md`](solution/README.md#limitações).
 - **Escopo:** a IA começou a opinar sobre o que cabia no challenge. Corrigi: a decisão de escopo é minha.
 - **Probabilidades otimistas** na primeira versão do motor: detectadas pelo backtest e corrigidas com calibração.
 - **Bugs de interface** (hidratação, rolagem, ordenação, cache do Tailwind, página congelada no build): detectados rodando o app, não lendo o código.
+- **Furo no score de Prospecting:** a premissa `c = 1`, proposta pela IA, colocava todo deal de Prospecting com a maior chance da curva, e o percentil dava 100 a blocos inteiros. Eu vi o sintoma na tela; a IA diagnosticou três causas e corrigiu com conversão aprendida entre bases, chance da cauda para Revalidar e escala absoluta (v1.2).
 
 ### O que eu adicionei que a IA sozinha não faria
 

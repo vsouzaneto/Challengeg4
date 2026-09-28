@@ -4,7 +4,7 @@ import { CircleAlertIcon } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { STATE_META, fmtDays, fmtMoney, fmtPct, scoreTier, type Tone } from "@/lib/explain"
+import { STATE_META, fmtChance, fmtDays, fmtMoney, scoreTier, type Tone } from "@/lib/explain"
 import type { AgeState } from "@/lib/scoring/model"
 import type { CardDTO } from "@/lib/server/view"
 import { cn } from "@/lib/utils"
@@ -101,7 +101,7 @@ export function DealCard({
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
         {card.p !== null && (
           <span>
-            <span className="font-medium text-foreground">{fmtPct(card.p)}</span> de chance
+            <span className="font-medium text-foreground">{fmtChance(card.p)}</span> de chance
           </span>
         )}
         {card.expected !== null && (
