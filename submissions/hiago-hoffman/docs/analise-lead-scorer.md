@@ -370,13 +370,28 @@ logit(p) = logit(p_base(a)) + Σ w_g · δ_g
 
 **Políticas (definidas pelo negócio, não aprendidas):** percentis dos estados, intervalo semanal, candidatos de meia-vida, critérios de promoção, tamanho do "topo da lista".
 
+### 6.4 O que a implementação mostrou (v1.1)
+
+- **O motor TypeScript reproduz a análise em Python**: `p_base(0) = 51,9%`, `p_base(90d) = 38,8%`, última semana com evento = 19, limiares 14/88/116/130 dias (sem recência). Conferido em teste automatizado.
+- **Backtest (6 cortes mensais, mar–ago/2017, 16 configurações):**
+
+| | Brier | Receita ganha no top 20% |
+|---|---|---|
+| Sem modelo (taxa histórica + ordenação por preço) | 0,314 | 46,7% |
+| Melhor configuração: recência 90d · curva global · só tempo | 0,231 | 55,6% |
+| Mesma, com grupos (produto, região, vendedor…) | 0,231 | 55,2% |
+
+  Os grupos **não melhoraram** a previsão: a regra adaptativa confirmou sozinha o achado da seção 4.1.
+- **Calibração adicionada (Platt):** as probabilidades altas saíam otimistas (previsto 78%, observado 47%). Com o calibrador aprendido no backtest, o Brier cai para **0,221** (validação deixando cada mês de fora).
+- **Efeito do `c = 1` em Prospecting:** a chance de um deal recém-engajado é o ponto mais alto da curva, então deals de Prospecting de produtos caros aparecem no topo da lista. É consequência direta da premissa otimista; ver a seção 7.
+
 ---
 
 ## 7. Questões em aberto
 
 - Data de referência: usar 31/12/2017 (fim da base) como "hoje"? → **v1: sim, data máxima da base.**
 - Deals parados: → **v1: estado "Fora do histórico", fila Revalidar.**
-- Prospecting (sem data): → **v1: `p_base(0) × c`, marcado como estimativa de entrada.**
+- Prospecting (sem data): → **v1: `p_base(0) × c`, marcado como estimativa de entrada.** Pendente: definir `c` (hoje 1) enquanto a base não traz a conversão Prospecting → Engaging.
 - Especialização: → **v1: capturada pelos níveis vendedor × produto e região × produto com peso aprendido; sem regra por nome.**
 
 ---
