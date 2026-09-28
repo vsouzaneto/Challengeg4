@@ -42,3 +42,6 @@ next-env.d.ts
 
 # artefatos de teste (Playwright MCP)
 .playwright-mcp/
+
+# base enviada por upload e histórico de versões do modelo (gerados em runtime)
+/storage/

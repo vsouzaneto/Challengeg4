@@ -1,4 +1,8 @@
 @import "tailwindcss";
+/* O .gitignore da raiz do repositório ignora submissions/; sem isto o Tailwind varre o cache do Next. */
+@source not "../../.next";
+@source not "../../storage";
+@source not "../../data";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 

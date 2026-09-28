@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { BoxIcon, HouseIcon } from "lucide-react"
+import { BrainCircuitIcon, KanbanIcon, TargetIcon } from "lucide-react"
 
 import {
   Sidebar,
@@ -17,7 +17,10 @@ import {
 } from "@/components/ui/sidebar"
 
 // Navegação principal. Um item por área do produto; derive de permissões quando houver.
-const nav = [{ title: "Início", href: "/", icon: HouseIcon }]
+const nav = [
+  { title: "Pipeline", href: "/", icon: KanbanIcon },
+  { title: "Modelo e base", href: "/modelo", icon: BrainCircuitIcon },
+]
 
 export function AppSidebar() {
   const pathname = usePathname()
@@ -29,9 +32,9 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" render={<Link href="/" />}>
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <BoxIcon />
+                <TargetIcon />
               </div>
-              <span className="truncate font-semibold">Produto</span>
+              <span className="truncate font-semibold">Lead Scorer</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

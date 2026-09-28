@@ -1,12 +1,13 @@
 {
-  "name": "intento-product-starter",
+  "name": "lead-scorer",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "node --test src/lib/scoring/model.test.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",

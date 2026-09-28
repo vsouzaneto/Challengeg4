@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: { default: "Intento Product Starter", template: "%s | Intento Product Starter" },
-  description: "Template da Intento Tech para SaaS, dashboards e sistemas.",
+  title: { default: "Lead Scorer", template: "%s | Lead Scorer" },
+  description: "Priorização de oportunidades por receita esperada, com modelo que reaprende a cada nova base.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
