@@ -7,7 +7,7 @@ Como a solução foi construída, em ordem, com os pontos em que a IA errou e as
 | Ferramenta | Uso |
 |---|---|
 | **Claude Code** (desktop, Claude Opus 5.5) | Fork e setup do repositório, download do dataset (conector Kaggle), análise exploratória em Python/pandas/scipy, desenho do modelo, implementação (Next.js + TypeScript), testes, validação no navegador integrado, documentação |
-| **Segunda IA (revisão independente)** | Revisou criticamente a primeira análise. O documento dela está em [`revisao-externa-ia.md`](revisao-externa-ia.md) |
+| **ChatGPT (revisão independente)** | Revisou criticamente a primeira análise, com acesso à base. Conversa em [`chat-export/conversa-chatgpt.md`](chat-export/conversa-chatgpt.md); documento gerado em [`revisao-externa-ia.md`](revisao-externa-ia.md) |
 | **Skills da Intento** | `intento-product-design` (estrutura antes da estética, estados, validação), `shadcn` (componentes Base UI) |
 | **Navegador integrado do Claude Code** | Validação das jornadas: filtros, tooltip, detalhamento, upload válido e inválido, mobile |
 
@@ -30,16 +30,16 @@ Pedido explícito: "analise a base, olhe mês a mês, traga o que ela diz além 
   - pipeline "zumbi": 81% dos deals em Engaging estão abertos há mais tempo do que qualquer deal já fechado.
 - **Pergunta de negócio acrescentada no meio:** "qual o produto mais vendido, qual gera mais receita, quem é especialista?"
 
-### 3. Revisão cruzada com outra IA (iteração decisiva)
+### 3. Revisão cruzada com o ChatGPT (iteração decisiva)
 
-A análise foi entregue a uma segunda IA para crítica. Eu (Claude) conferi cada afirmação dela contra a base:
+A análise foi entregue ao ChatGPT, que baixou a base e refez os cálculos. O documento dele voltou para o Claude, que conferiu cada afirmação contra a base:
 
 - **Ela acertou e me corrigiu em três pontos:**
   1. Minha tabela "sobreviver aumenta a chance de ganhar" tinha viés de seleção, porque ignorava os deals abertos. Refeita com riscos competitivos (abertos como censurados), a conclusão se inverteu: a chance **cai** com a idade.
   2. O caso "Hayden × MG Advanced", que eu chamei de "único caso forte", não sobrevive à correção de Benjamini–Hochberg (q = 0,30).
   3. Eram 178 testes, não ~200.
 - **Ela errou em dois pontos:**
-  - criticou propostas que não estavam no documento (pesos 70/30, normalização pelo maior preço);
+  - criticou como "proposta anterior" pesos 70/30 e normalização pelo maior preço, que eram propostas dele mesmo, feitas antes na mesma conversa (o export confirma);
   - não percebeu que o próprio método dela zera a chance de 81% do pipeline.
 - **Direção humana decisiva:** a regra de score não pode depender de nomes da base e não pode ser fixa; precisa aprender com os resultados e reajustar os pesos sozinha. Isso levou ao modelo v1: estrutura fixa, parâmetros reaprendidos, encolhimento hierárquico, backtest e promoção de versão.
 - **Correção de conduta:** a IA passou a opinar sobre o que "cabia no challenge". Resposta humana: "Não é você que deve dizer o que cabe." A partir daí as decisões de escopo voltaram para o humano, e a IA passou a apresentar opções.
@@ -59,6 +59,9 @@ A análise foi entregue a uma segunda IA para crítica. Eu (Claude) conferi cada
 | `8797aa5` | Setup: starter, dataset, análise e modelo v1 |
 | `53f71f1` | Motor de score + pipeline |
 | `ac12477` | Página Modelo e base + upload |
+| `6197b2c` | Documentação da submissão |
+| `6e0e8ec` | Score v1.2: Prospecting, Revalidar e escala absoluta |
+| `119d2e4` | Score v2: um score só, com a situação como fator |
 
 Verificações que mudaram o código:
 
@@ -102,6 +105,13 @@ Verificações que mudaram o código:
   - os rankings pulavam números porque Revalidar ficava num bloco à parte; passou a entrar na mesma lista.
 - **Custo medido e registrado:** chance por situação captura 55,3% contra 55,6% da chance semana a semana.
 
+### 8. Refinamento de uso: o que o vendedor lê
+
+- **"Deixe no detalhamento apenas o que justifica a posição."** Saíram fatores fora da fórmula, fatores ×1,00, urgência desligada, pendências, dados da conta e rodapé. Ficou a conta que gera a nota.
+- **"A mensagem ao passar o mouse não está clara."** O tooltip foi reescrito em linguagem de vendedor: nota e posição; valor × chance = dinheiro esperado, comparado a um deal típico; situação em palavras; só os fatores que mexeram na nota.
+- **"O filtro não está considerando o que eu selecionei."** A cascata região → manager → vendedor funcionava, mas o caminho inverso não: escolher um vendedor deixava região e manager em "Todos". Os filtros agora são normalizados no servidor, o que vale também para links compartilhados.
+- **Pergunta de negócio:** "existem produtos vendidos só em uma região?" Sim, só o GTK 500: 23 de 25 encerrados no West. A regra região × produto mede conversão, e fora do West há 2 deals, pouco para separar do acaso. Também foi testada a experiência do vendedor/região com o produto, sem sinal.
+
 ## Onde a IA errou (resumo)
 
 1. Viés de seleção na tabela de sobrevivência (corrigido após a revisão externa).
@@ -119,4 +129,5 @@ Verificações que mudaram o código:
 - Histórico do git na branch `submission/hiago-hoffman`.
 - Scripts de análise em [`analysis/`](analysis/).
 - Revisão externa em [`revisao-externa-ia.md`](revisao-externa-ia.md).
+- Conversas completas: [Claude Code](chat-export/conversa-claude-code.md) e [ChatGPT](chat-export/conversa-chatgpt.md).
 - Testes em `solution/src/lib/scoring/model.test.ts`.

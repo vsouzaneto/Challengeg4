@@ -1,30 +1,50 @@
 # Lead Scorer
 
-Aplicação web que mostra ao vendedor o pipeline ordenado por **receita esperada** (chance de ganhar × valor), explica o porquê de cada score e reaprende o modelo sempre que a base do CRM é atualizada.
+Aplicação web que mostra ao vendedor o pipeline ordenado por **uma nota de 0 a 100** (valor do deal × chance de ganhar na situação em que ele está × demais fatores aprendidos), explica a nota e reaprende o modelo sempre que a base do CRM é atualizada.
 
 ## Setup
 
-Requisitos: Node.js 20 ou superior.
+### Pré-requisitos
+
+- [Node.js](https://nodejs.org) 20 ou superior (`node -v` para conferir).
+- Git.
+
+### Rodar do zero
 
 ```bash
+git clone https://github.com/gandahiago/ai-master-challenge.git
+cd ai-master-challenge
+git checkout submission/hiago-hoffman
+cd submissions/hiago-hoffman/solution
 npm install
-npm run dev        # desenvolvimento: http://localhost:3000
+npm run dev
 ```
 
-Produção:
+Abra http://localhost:3000.
+
+- A base do challenge já vem em `data/`; não é preciso baixar nada do Kaggle.
+- No primeiro acesso em modo de desenvolvimento, o Next compila as páginas e o modelo é treinado: leva de 30 s a 1 min. Depois disso, cada página abre em menos de 1 s.
+
+### Produção
 
 ```bash
 npm run build
 npm start          # http://localhost:3000
 ```
 
-Testes do motor de score (sem dependências extras):
+### Testes
 
 ```bash
-npm test
+npm test           # 14 testes do motor de score, sem dependências extras
 ```
 
-A base do challenge já vem em `data/` e o app abre pronto para uso.
+### Problemas comuns
+
+| Sintoma | Solução |
+|---|---|
+| Porta 3000 ocupada | `npm run dev -- -p 3001` e abra http://localhost:3001 |
+| Primeira página demora | Normal no modo dev (compilação + treino do modelo); use `npm run build && npm start` para abrir rápido |
+| `npm install` falha | Confira a versão do Node (`node -v`, precisa ser 20+) |
 
 ### Plugar a base do CRM
 
