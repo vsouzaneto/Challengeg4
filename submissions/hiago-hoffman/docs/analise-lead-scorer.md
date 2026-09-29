@@ -420,6 +420,37 @@ Prospecting continua forte no topo (44 de 100) porque, depois da calibração, `
 
 Coberto por testes: Revalidar sempre com score e chance monotônica; Prospecting abaixo dos engajados e nunca 100; `R = K` vale 50 e `R = 3K` vale 75; conversão aprendida em cenário sintético.
 
+### 6.6 Modelo v2: um score só, com a situação como fator
+
+**Pedido:** um score único para todas as oportunidades, com a situação do deal como fator; regra de produto por região/vendedor explícita; cliente com histórico de compras como fator; tudo aprendido pelos dados, com o objetivo de colocar no topo os deals que geram receita, de preferência as maiores.
+
+**Fórmula (igual para Prospecting, Engaging e Revalidar):**
+
+```text
+Prioridade = Valor × Situação × Afinidade × Relacionamento × Produto × Time × Calendário × Urgência
+Score      = 100 × Prioridade / (Prioridade + K)     K = prioridade mediana dos deals vivos
+```
+
+| Fator | Como é aprendido | Base do challenge (v2) |
+|---|---|---|
+| Valor | Preço × razão histórica valor fechado / preço | × 0,997 |
+| Situação | Chance de ganho dos deals que passaram pela situação (curva de sobrevivência com abertos censurados; cauda com +1/+2), calibrada | Início 29% · Em andamento 27% · Esfriando 18% · Tardio 4% · Revalidar 0,06% · Prospecting 15% (Início × conversão 50%) |
+| Afinidade (região × produto, vendedor × produto) | Peso por encolhimento; cada grupo testado sozinho no backtest | Vendedor × produto entra (×1,00, sem sinal); região × produto fica fora (54,7% contra 54,8%) |
+| Relacionamento (cliente com compra anterior à entrada do deal) | Idem; conta não informada = neutro | Fora: reduziu a receita capturada (53,4% contra 54,8%) |
+| Produto, Time | Idem | Entram com ×1,00 (sem sinal) |
+| Calendário (mês do trimestre de entrada) | Idem | Entra: 55,2% contra 54,8% (×0,83 a ×1,17) |
+| Urgência | 1 + força × queda prevista da chance na janela; força e janela testadas (4 × 4) | Desligada: melhor combinação capturou 54,7%, abaixo da versão sem urgência |
+
+**Critério de seleção (definido pelo negócio):** receita ganha capturada nos 20% do topo, ponderada pelo valor. O erro de probabilidade só desempata. Um grupo entra se capturar pelo menos a mesma receita que a versão sem ele.
+
+**Resultado:** 55,3% da receita no topo (sem modelo: 46,7%). Erro calibrado 0,222.
+
+**Troca registrada:** a chance por situação (faixas) é mais grossa que a chance semana a semana da v1.2. No teste, a v1.2 capturava 55,6%; a v2 captura 55,3%. É o custo de a situação ser um fator explícito e explicável.
+
+**Calibração trocada para isotônica:** a calibração Platt (uma reta na escala logit) extrapolava mal nos extremos e inflava a chance de Revalidar de 0,17% para 1,24% (7×). Com isso, deals parados de GTK 500 ficavam acima de deals vivos. A isotônica aprende a correspondência por faixas e mantém Revalidar em 0,06%. O erro calibrado agregado ficou em 0,222 (Platt: 0,220).
+
+**Cliente com histórico: por que o fator ficou fora.** Todos os deals sem histórico entraram antes de março/2017, quando a base ainda não tinha fechamentos. Desde abril/2017, 100% dos deals têm histórico. No único mês com os dois grupos, a taxa de ganho foi igual (68% contra 67%). A regra está na fórmula e é testada a cada base; entra quando os dados mostrarem ganho de receita.
+
 ## 7. Questões em aberto
 
 - Data de referência: usar 31/12/2017 (fim da base) como "hoje"? → **v1: sim, data máxima da base.**

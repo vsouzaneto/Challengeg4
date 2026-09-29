@@ -1,4 +1,4 @@
-import type { AgeState, Thresholds } from "@/lib/scoring/model"
+import type { AgeState } from "@/lib/scoring/model"
 
 // Textos e rótulos derivados dos componentes do cálculo. Nenhum número é escrito à mão:
 // limiares e percentuais vêm do modelo treinado.
@@ -23,47 +23,13 @@ export const fmtDays = (d: number | null) => (d === null ? "sem data" : `${d} ${
 
 export type Tone = "neutral" | "warning" | "danger" | "muted"
 
-export const STATE_META: Record<AgeState, { label: string; tone: Tone; action: (t: Thresholds) => string }> = {
-  entrada: {
-    label: "Sem data de entrada",
-    tone: "muted",
-    action: () =>
-      "Faça o primeiro contato e registre a entrada em Engaging. Sem essa data, a chance combina a de um deal recém-engajado com a conversão Prospecting → Engaging aprendida.",
-  },
-  inicio: {
-    label: "Início",
-    tone: "neutral",
-    action: (t) => `Qualifique rápido: metade das perdas da base acontece até ${fmtDays(t.inicio)}.`,
-  },
-  andamento: {
-    label: "Em andamento",
-    tone: "neutral",
-    action: (t) => `Avance para o fechamento: 75% dos ganhos da base fecham até ${fmtDays(t.andamento)}.`,
-  },
-  esfriando: {
-    label: "Esfriando",
-    tone: "warning",
-    action: (t) =>
-      `Aja esta semana: o deal passou de ${fmtDays(t.andamento)}, tempo em que 75% dos ganhos já tinham fechado, e a chance cai rápido daqui em diante.`,
-  },
-  tardio: {
-    label: "Tardio",
-    tone: "danger",
-    action: (t) => `Última janela: 95% dos ganhos da base fecharam até ${fmtDays(t.esfriando)}. Confirme se o cliente ainda decide.`,
-  },
-  fora: {
-    label: "Revalidar",
-    tone: "muted",
-    action: (t) =>
-      `Revalide com o cliente ou encerre: 99% dos ganhos da base fecharam até ${fmtDays(t.tardio)}. A chance vem só dos raros ganhos depois dessa idade.`,
-  },
-}
-
-export const FLAG_LABEL: Record<string, string> = {
-  sem_conta: "Vincular a conta do cliente",
-  produto_fora_catalogo: "Produto fora do catálogo: cadastrar preço",
-  vendedor_sem_cadastro: "Vendedor sem time cadastrado",
-  estimativa_entrada: "Registrar data de entrada em Engaging",
+export const STATE_META: Record<AgeState, { label: string; tone: Tone }> = {
+  entrada: { label: "Sem data de entrada", tone: "muted" },
+  inicio: { label: "Início", tone: "neutral" },
+  andamento: { label: "Em andamento", tone: "neutral" },
+  esfriando: { label: "Esfriando", tone: "warning" },
+  tardio: { label: "Tardio", tone: "danger" },
+  fora: { label: "Revalidar", tone: "muted" },
 }
 
 export function scoreTier(score: number | null): "alta" | "media" | "baixa" | null {

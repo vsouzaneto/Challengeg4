@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import { fmtInt, fmtMoney } from "@/lib/explain"
-import type { BoardDTO, CardDTO, LaneDTO } from "@/lib/server/view"
+import type { BoardDTO, LaneDTO } from "@/lib/server/view"
 import { cn } from "@/lib/utils"
 
 const PAGE = 15
@@ -29,7 +29,7 @@ export function PipelineView({ board }: { board: BoardDTO }) {
     <div className="flex min-w-0 flex-col gap-5">
       <PageHeader
         title={scope ? `Pipeline · ${scope}` : "Pipeline"}
-        description="Ordenado por receita esperada: chance de ganhar × valor. Comece pelo #1 e desça a lista."
+        description="Um score para todas as oportunidades: valor × chance da situação × demais fatores aprendidos. Comece pelo #1 e desça a lista."
         actions={
           <Link href="/modelo" className={buttonVariants({ variant: "outline", size: "sm" })}>
             Modelo v{board.version} · base até {board.refDay}
@@ -138,13 +138,13 @@ function OpenLane({
           {start && <Badge className="ml-auto">Comece aqui</Badge>}
         </div>
         <span className="text-xs text-muted-foreground">
-          {fmtInt(lane.cards.length)} vivos · receita esperada {fmtMoney(lane.expectedTotal)}
+          prioridade somada {fmtMoney(lane.priorityTotal)}
         </span>
       </header>
 
       {lane.cards.length === 0 && (
         <p className="rounded-xl border border-dashed p-4 text-center text-sm text-muted-foreground">
-          Nenhuma oportunidade ativa nesta raia.
+          Nenhuma oportunidade aberta nesta raia.
         </p>
       )}
       <ol className="flex flex-col gap-2">
@@ -161,37 +161,7 @@ function OpenLane({
         </Button>
       )}
 
-      {lane.revalidar.count > 0 && <Revalidar lane={lane} showAgent={showAgent} onOpen={onOpen} />}
     </section>
-  )
-}
-
-function Revalidar({ lane, showAgent, onOpen }: { lane: LaneDTO; showAgent: boolean; onOpen: (id: string) => void }) {
-  const { count, value, cards } = lane.revalidar
-  return (
-    <details className="group rounded-xl border border-dashed bg-background/60">
-      <summary className="flex cursor-pointer list-none flex-col gap-0.5 p-3 [&::-webkit-details-marker]:hidden">
-        <span className="flex items-center gap-2 text-sm font-medium">
-          <ChevronRightIcon className="size-4 transition-transform group-open:rotate-90" aria-hidden />
-          Revalidar · {fmtInt(count)}
-        </span>
-        <span className="pl-6 text-xs text-muted-foreground">
-          Abertos há mais tempo que 99% dos ganhos da base, com chance próxima de zero. {fmtMoney(value)} em jogo: confirme com o cliente ou encerre. Ordenados por score.
-        </span>
-      </summary>
-      <ol className="flex flex-col gap-2 p-2 pt-0">
-        {cards.map((c: CardDTO) => (
-          <li key={c.id}>
-            <DealCard card={c} first={false} showAgent={showAgent} onOpen={onOpen} />
-          </li>
-        ))}
-        {count > cards.length && (
-          <li className="px-1 pb-1 text-xs text-muted-foreground">
-            Mostrando os {cards.length} de maior valor. Filtre por vendedor para ver a lista dele.
-          </li>
-        )}
-      </ol>
-    </details>
   )
 }
 

@@ -6,7 +6,6 @@ import { CircleAlertIcon, RotateCwIcon } from "lucide-react"
 import { ScoreBadge, StatePill } from "@/components/pipeline/deal-card"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Skeleton } from "@/components/ui/skeleton"
 import { fmtChance, fmtDays, fmtDec, fmtInt, fmtMoney, fmtMoneyFull, fmtPct } from "@/lib/explain"
@@ -42,7 +41,7 @@ export function DealSheet({ id, onClose }: { id: string | null; onClose: () => v
     <Sheet open={id !== null} onOpenChange={(open) => !open && onClose()}>
       <SheetContent className="w-full gap-0 overflow-y-auto sm:max-w-lg">
         <SheetHeader className="border-b">
-          <SheetTitle>{data ? `${data.account?.name ?? "Conta não informada"} · ${data.product}` : "Detalhamento do score"}</SheetTitle>
+          <SheetTitle>{data ? `${data.account ?? "Conta não informada"} · ${data.product}` : "Detalhamento do score"}</SheetTitle>
           <SheetDescription>
             {data ? `${data.id} · ${data.stage} · ${data.agent}${data.region ? ` (${data.region})` : ""}` : id}
           </SheetDescription>
@@ -77,104 +76,72 @@ export function DealSheet({ id, onClose }: { id: string | null; onClose: () => v
 }
 
 function DetailBody({ d }: { d: DetailDTO }) {
-  const fora = d.tail !== null
-  const adjTotal = d.adjustments.reduce((sum, a) => sum + a.impact, 0)
-  // Passos só aparecem quando participam do cálculo deste deal; a numeração acompanha.
-  const steps: { title: string; value: string; body: React.ReactNode }[] = []
-  if (fora) {
-    steps.push({
-      title: "Chance além do histórico",
-      value: fmtChance(d.base.p),
-      body: `Nenhuma curva cobre esta idade. Dos ${fmtInt(d.tail!.atRisk)} deals da base que ficaram abertos por ${d.tail!.fromDays} dias ou mais, ${fmtInt(d.tail!.wins)} terminaram ganhos. Estimativa: (ganhos + 1) ÷ (deals + 2), que sobe sozinha se deals antigos voltarem a ser ganhos.`,
-    })
-  } else {
-    steps.push({
-      title: d.conversion ? "Chance de um deal recém-engajado" : "Chance pela idade do deal",
-      value: fmtPct(d.base.p),
-      body: d.conversion
-        ? `Sem data de entrada: parte da chance de um deal no primeiro dia de Engaging (${d.base.curve}).`
-        : `Entre os ${fmtInt(d.base.support)} deals da base que chegaram a esta idade ainda abertos, esta é a parcela que terminou ganha (${d.base.curve}).`,
-    })
-    steps.push({
-      title: "Ajustes por grupo",
-      value: d.adjustments.length ? `${adjTotal >= 0 ? "+" : ""}${fmtPct(adjTotal, 1)}` : "nenhum",
-      body: (
-        <>
-          {d.adjustments.length > 0 && (
-            <ul className="mb-1 flex flex-col gap-1">
-              {d.adjustments.map((a) => (
-                <li key={a.label}>
-                  {a.label} ({a.group}): {a.impact >= 0 ? "+" : ""}
-                  {fmtPct(a.impact, 1)}, com peso {fmtPct(a.weight)} por ter {Math.round(a.n)} deals de histórico
-                </li>
-              ))}
-            </ul>
-          )}
-          {d.groupsNote}
-        </>
-      ),
-    })
-    if (d.calibration.before !== null && d.calibration.after !== null) {
-      steps.push({
-        title: "Calibração pelo histórico de acertos",
-        value: fmtPct(d.calibration.after),
-        body: `O modelo foi testado em datas passadas; esta etapa corrige o viés observado: ${fmtPct(d.calibration.before)} → ${fmtPct(d.calibration.after)}.`,
-      })
-    }
-    if (d.conversion) {
-      const seen = d.conversion.converted + d.conversion.failed
-      steps.push({
-        title: "Conversão Prospecting → Engaging",
-        value: `× ${fmtPct(d.conversion.c)}`,
-        body:
-          seen === 0
-            ? "Aprendida comparando bases sucessivas do CRM. Ainda não há deals acompanhados de uma base para a outra, então vale a estimativa neutra de 50%; o valor se ajusta a cada upload."
-            : `Aprendida comparando bases sucessivas do CRM: ${fmtInt(d.conversion.converted)} de ${fmtInt(seen)} deals acompanhados entraram em Engaging. Estimativa: (convertidos + 1) ÷ (acompanhados + 2).`,
-      })
-    }
-  }
-  steps.push({
-    title: "Valor se ganhar",
-    value: fmtMoney(d.value.value),
-    body: `Preço de tabela ${fmtMoneyFull(d.value.price)} × ${fmtDec(d.value.rho)} (razão histórica entre valor fechado e preço de tabela).`,
-  })
-  steps.push({
-    title: "Receita esperada",
-    value: fmtMoney(d.expected),
-    body: d.expected === null ? "Sem receita esperada: falta o preço do produto." : `${fmtChance(d.p)} de chance × ${fmtMoney(d.value.value)}.`,
-  })
-  if (d.score !== null && d.K !== null) {
+  const mult = (x: number) => `×${x.toFixed(2).replace(".", ",")}`
+  const sit = d.situation
+  // Cada passo é um termo da conta que gera a posição; nada que não entrou no cálculo aparece.
+  const steps: { title: string; value: string; body: React.ReactNode }[] = [
+    {
+      title: "Valor se ganhar",
+      value: fmtMoney(d.value.value),
+      body: `Preço de tabela ${fmtMoneyFull(d.value.price)} × ${fmtDec(d.value.rho)}, a razão histórica entre valor fechado e preço.`,
+    },
+    {
+      title: `Situação: ${sit.label}`,
+      value: fmtChance(sit.factor),
+      body: sit.conversion
+        ? `${sit.meaning} Chance de um deal em Início (${fmtChance(sit.chance)}) × ${fmtPct(sit.conversion.c)} de conversão para Engaging${
+            sit.conversion.converted + sit.conversion.failed === 0
+              ? " (estimativa neutra até haver uploads sucessivos para comparar)."
+              : ` (${fmtInt(sit.conversion.converted)} de ${fmtInt(sit.conversion.converted + sit.conversion.failed)} deals acompanhados converteram).`
+          }`
+        : `${sit.meaning} Entre os ${fmtInt(sit.reached)} deals da base que chegaram a esta situação, a chance de terminar ganho é ${fmtChance(sit.chance)}.`,
+    },
+    ...d.factors.map((f) => ({ title: f.label, value: mult(f.factor), body: f.reason })),
+    ...(d.urgency
+      ? [
+          {
+            title: "Urgência",
+            value: mult(d.urgency.factor),
+            body: `A chance deste deal cai ${fmtPct(d.urgency.drop)} nos próximos ${d.urgency.horizonDays} dias se nada for feito.`,
+          },
+        ]
+      : []),
+    {
+      title: "Prioridade",
+      value: fmtMoney(d.priority),
+      body:
+        d.priority === null
+          ? "Sem prioridade: o produto não tem preço no catálogo."
+          : `${fmtMoney(d.value.value)} × ${fmtChance(d.p)} de chance${d.urgency ? ` × ${mult(d.urgency.factor)} de urgência` : ""}.`,
+    },
+  ]
+  if (d.score !== null && d.K !== null && d.priority !== null) {
+    const ratio = d.priority / d.K
     steps.push({
       title: "Score",
       value: String(d.score),
-      body: `100 × receita esperada ÷ (receita esperada + ${fmtMoney(d.K)}). ${fmtMoney(d.K)} é a receita esperada mediana dos deals vivos: quem está na mediana fica com 50, quem tem o triplo fica com 75.`,
+      body: `100 × prioridade ÷ (prioridade + ${fmtMoney(d.K)}), onde ${fmtMoney(d.K)} é a prioridade mediana dos deals vivos. Este deal está em ${fmtDec(ratio, ratio < 10 ? 2 : 0)}× a mediana.`,
     })
   }
+
   return (
     <div className="flex flex-col gap-6 p-4">
       <div className="flex items-center gap-4">
         <ScoreBadge score={d.score} className="size-14 text-xl" />
         <div className="flex flex-col gap-1">
           <span className="font-medium">
-            {d.score === null
-              ? "Sem score"
-              : `#${d.rankGlobal} de ${fmtInt(d.nScored)} oportunidades abertas com score`}
+            {d.score === null ? "Sem score" : `#${d.rank} de ${fmtInt(d.nScored)} oportunidades abertas`}
           </span>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <StatePill state={d.state} />
-            {d.age === null ? "sem data de entrada" : `${fmtDays(d.age)} desde a entrada em Engaging`}
+            {d.age !== null && `${fmtDays(d.age)} desde a entrada em Engaging`}
           </div>
         </div>
       </div>
 
-      <Alert variant={d.state === "esfriando" || d.state === "tardio" ? "destructive" : "default"}>
-        <AlertTitle>O que fazer</AlertTitle>
-        <AlertDescription>{d.action}</AlertDescription>
-      </Alert>
-
       <section className="flex flex-col gap-3" aria-labelledby="calc">
         <h3 id="calc" className="font-semibold">
-          Como o score foi calculado
+          Por que está nesta posição
         </h3>
         <ol className="flex flex-col gap-3 text-sm">
           {steps.map((st, i) => (
@@ -186,38 +153,6 @@ function DetailBody({ d }: { d: DetailDTO }) {
       </section>
 
       {d.age !== null && <AgeTimeline d={d} />}
-
-      {d.tasks.length > 0 && (
-        <section className="flex flex-col gap-2" aria-labelledby="tasks">
-          <h3 id="tasks" className="font-semibold">
-            Pendências de cadastro
-          </h3>
-          <ul className="flex list-disc flex-col gap-1 pl-5 text-sm">
-            {d.tasks.map((t) => (
-              <li key={t}>{t}</li>
-            ))}
-          </ul>
-          <p className="text-xs text-muted-foreground">Pendências não reduzem o score; são tarefas para manter a base confiável.</p>
-        </section>
-      )}
-
-      {d.account && (d.account.sector || d.account.location) && (
-        <section className="flex flex-col gap-1 text-sm" aria-labelledby="acc">
-          <h3 id="acc" className="font-semibold">
-            Conta
-          </h3>
-          <span className="text-muted-foreground">
-            {[d.account.sector, d.account.employees && `${fmtInt(d.account.employees)} funcionários`, d.account.location]
-              .filter(Boolean)
-              .join(" · ")}
-          </span>
-        </section>
-      )}
-
-      <Separator />
-      <p className="text-xs text-muted-foreground">
-        Modelo v{d.model.version} · base até {d.model.refDay} · {d.model.configKey}
-      </p>
     </div>
   )
 }

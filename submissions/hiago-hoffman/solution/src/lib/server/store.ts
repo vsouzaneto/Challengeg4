@@ -2,10 +2,10 @@ import { createHash } from "node:crypto"
 import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises"
 import path from "node:path"
 
-import { type Backtest, runBacktest } from "@/lib/scoring/backtest"
+import { type Backtest, configKey, runBacktest } from "@/lib/scoring/backtest"
 import { type Conversion, type Snapshot, learnConversion, snapshotOf } from "@/lib/scoring/conversion"
 import { type Dataset, type RawFiles, formatDay, prepareDataset } from "@/lib/scoring/dataset"
-import { type Config, type LevelFit, type Model, type ScoredDeal, fitModel, scorePipeline } from "@/lib/scoring/model"
+import { type Config, LEVELS, type LevelFit, type Model, type ScoredDeal, fitModel, scorePipeline } from "@/lib/scoring/model"
 
 /*
  * Estado do sistema: lê a base (CSVs do CRM), reaprende o modelo quando a base muda
@@ -93,8 +93,10 @@ async function build(files: RawFiles, source: ModelVersion["source"], fingerprin
   const known = versions.find((v) => v.fingerprint === fingerprint)
   const last = versions.at(-1)
   // Base já vista: mantém a configuração daquela versão. Base nova: candidata disputa com a vigente.
-  const backtest = runBacktest(ds, known?.config ?? last?.config ?? null)
-  const config = known ? known.config : backtest.chosen.config
+  // Versões gravadas com um formato de configuração antigo são ignoradas.
+  const valid = (c?: Config) => (c && Array.isArray(c.levels) && c.urgency ? c : null)
+  const backtest = runBacktest(ds, valid(known?.config) ?? valid(last?.config))
+  const config = valid(known?.config) ?? backtest.chosen.config
   const model = fitModel(ds, ds.refDay, config)
 
   const snapshot = snapshotOf(ds, fingerprint)
@@ -119,7 +121,7 @@ async function build(files: RawFiles, source: ModelVersion["source"], fingerprin
       fingerprint,
       refDay: formatDay(ds.refDay),
       config,
-      configKey: backtest.chosen.key,
+      configKey: configKey(config),
       brier: backtest.chosen.brier,
       calibratedBrier: backtest.calibratedBrier,
       capture: backtest.chosen.capture,
@@ -146,7 +148,7 @@ async function build(files: RawFiles, source: ModelVersion["source"], fingerprin
   return {
     ds,
     model,
-    groupDiagnostics: fitModel(ds, ds.refDay, { ...config, levels: "completo" }).levels,
+    groupDiagnostics: fitModel(ds, ds.refDay, { ...config, levels: LEVELS.map((l) => l.id) }).levels,
     backtest,
     scored,
     K,

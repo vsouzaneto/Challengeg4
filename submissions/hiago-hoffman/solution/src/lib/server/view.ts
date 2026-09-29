@@ -1,6 +1,6 @@
-import { FLAG_LABEL, STATE_META, fmtChance, fmtDays, fmtInt, fmtMoney, fmtPct } from "@/lib/explain"
+import { STATE_META, fmtChance, fmtDays, fmtDec, fmtInt, fmtMoney, fmtPct } from "@/lib/explain"
 import { LOST_STAGE, WON_STAGE, formatDay, type Deal } from "@/lib/scoring/dataset"
-import { LEVELS, type AgeState, type ScoredDeal } from "@/lib/scoring/model"
+import type { AgeState, ScoredDeal } from "@/lib/scoring/model"
 import type { AppState } from "@/lib/server/store"
 
 // DTOs enviados à interface. Tudo aqui é derivado do estado calculado no servidor.
@@ -21,7 +21,7 @@ export interface CardDTO {
   rank: number | null // posição dentro da visão filtrada
   p: number | null
   value: number | null
-  expected: number | null
+  priority: number | null
   age: number | null
   state: AgeState | null
   flags: string[]
@@ -35,9 +35,8 @@ export interface LaneDTO {
   kind: "aberta" | "ganha" | "perdida"
   count: number
   cards: CardDTO[]
-  expectedTotal: number
+  priorityTotal: number
   closedTotal: number
-  revalidar: { count: number; value: number; cards: CardDTO[] }
 }
 
 export interface BoardDTO {
@@ -55,48 +54,58 @@ export interface BoardDTO {
 }
 
 const CLOSED_LIMIT = 30
-const REVALIDAR_LIMIT = 30
 
-// Mesma ordem no ranking e nas raias: receita esperada desc, desempate estável pelo ID.
-const byExpected = (a: ScoredDeal, b: ScoredDeal) => (b.expected ?? -1) - (a.expected ?? -1) || a.deal.id.localeCompare(b.deal.id)
+// Mesma ordem no ranking, nas raias e no bloco Revalidar: prioridade desc, desempate pelo ID.
+const byPriority = (a: ScoredDeal, b: ScoredDeal) => (b.priority ?? -1) - (a.priority ?? -1) || a.deal.id.localeCompare(b.deal.id)
 
 const matches = (d: Deal, f: Filters) =>
   (!f.regiao || d.region === f.regiao) && (!f.manager || d.manager === f.manager) && (!f.vendedor || d.agent === f.vendedor)
 
-function median(xs: number[]) {
-  if (!xs.length) return 0
-  const s = [...xs].sort((a, b) => a - b)
-  return s[Math.floor(s.length / 2)]
+// Tooltip em linguagem de vendedor: a nota, a conta que a gera e só o que mexeu nela.
+function situationPhrase(s: ScoredDeal) {
+  const days = fmtDays(s.age)
+  switch (s.state) {
+    case "entrada":
+      return `Prospecting: ainda não entrou em Engaging. A chance já desconta os ${fmtPct(1 - (s.situation.conversion ?? 1))} que costumam não avançar`
+    case "inicio":
+      return `Início: aberto há ${days}`
+    case "andamento":
+      return `Em andamento: aberto há ${days}, dentro do prazo normal de fechamento`
+    case "esfriando":
+      return `Esfriando: aberto há ${days}, já passou do prazo em que a maioria dos ganhos fecha`
+    case "tardio":
+      return `Tardio: aberto há ${days}, quase todos os ganhos já teriam fechado`
+    case "fora":
+      return `Revalidar: aberto há ${days}, além do prazo de 99% dos ganhos. Chance quase nula`
+  }
 }
 
-function tooltipFor(s: ScoredDeal, rank: number | null, med: { p: number; v: number }): string[] {
-  const meta = STATE_META[s.state]
-  if (s.expected === null) return ["Sem score", "Produto fora do catálogo: sem preço para estimar o valor"]
-  const head = `Score ${s.score}${rank ? ` · #${rank} nesta visão` : ""}`
-  const revenue = `Receita esperada ${fmtMoney(s.expected)} = ${fmtChance(s.p)} de chance × ${fmtMoney(s.value)}`
-  if (s.state === "fora") {
-    return [
-      head,
-      revenue,
-      `${fmtDays(s.age)} aberto: além de 99% dos ganhos (${fmtDays(s.thresholds.tardio)})`,
-      `Na base, ${fmtInt(s.tail!.wins)} de ${fmtInt(s.tail!.atRisk)} deals abertos há ${s.tail!.fromDays}+ dias foram ganhos`,
-    ]
+function factorPhrase(f: ScoredDeal["factors"][number]) {
+  const pct = Math.round((f.factor - 1) * 100)
+  const effect = `chance ${Math.abs(pct)}% ${pct > 0 ? "maior" : "menor"}`
+  switch (f.kind) {
+    case "calendario":
+      return `Entrou no ${f.group} do trimestre: ${effect}`
+    case "relacionamento":
+      return `Cliente ${f.group} de compras: ${effect}`
+    case "afinidade":
+      return `${f.group} costuma converter ${pct > 0 ? "mais" : "menos"}: ${effect}`
+    default:
+      return `${f.label} ${f.group}: ${effect}`
   }
-  const driver =
-    s.value! >= med.v && s.p! >= med.p
-      ? "Valor e chance acima da mediana do pipeline"
-      : s.value! >= med.v
-        ? "Puxado pelo valor: ticket alto, chance abaixo da mediana"
-        : s.p! >= med.p
-          ? "Puxado pela chance: ticket menor, boa chance para a idade"
-          : "Valor e chance abaixo da mediana do pipeline"
+}
+
+function tooltipFor(s: ScoredDeal, rank: number | null, K: number | null): string[] {
+  if (s.priority === null) return ["Sem nota", "Produto fora do catálogo: sem preço para calcular"]
+  const ratio = K ? s.priority / K : null
+  const vsTypical =
+    ratio === null ? "" : ratio >= 1.05 ? `, ${fmtDec(ratio, ratio < 10 ? 1 : 0)}× um deal típico` : ratio <= 0.95 ? ", abaixo de um deal típico" : ", igual a um deal típico"
   return [
-    head,
-    revenue,
-    s.conversion !== null
-      ? `Sem data de entrada: chance inclui ${fmtPct(s.conversion)} de conversão para Engaging`
-      : `${fmtDays(s.age)} · ${meta.label}`,
-    driver,
+    `Nota ${s.score} de 100${rank ? ` · ${rank}º da lista` : ""}`,
+    `Vale ${fmtMoney(s.value)} e tem ${fmtChance(s.p)} de chance de fechar: ${fmtMoney(s.priority)} esperados${vsTypical}`,
+    situationPhrase(s),
+    ...s.factors.filter((f) => Math.abs(f.factor - 1) >= 0.005).map(factorPhrase),
+    ...(s.urgency.factor - 1 >= 0.005 ? [`Urgência: a chance cai ${fmtPct(s.urgency.drop)} em ${s.urgency.horizonDays} dias se nada for feito`] : []),
   ]
 }
 
@@ -111,7 +120,7 @@ function closedCard(d: Deal): CardDTO {
     rank: null,
     p: null,
     value: null,
-    expected: null,
+    priority: null,
     age: null,
     state: null,
     flags: [],
@@ -121,13 +130,21 @@ function closedCard(d: Deal): CardDTO {
   }
 }
 
-export function buildBoard(state: AppState, filters: Filters): BoardDTO {
+// Os filtros ficam coerentes com o que foi escolhido: vendedor preenche o manager e a região dele;
+// manager preenche a região. Vale também para links compartilhados só com ?vendedor=.
+function normalize(state: AppState, f: Filters): Filters {
+  const agent = f.vendedor ? state.ds.agents.get(f.vendedor) : undefined
+  const manager = f.manager ?? agent?.manager ?? undefined
+  const managerRegion = manager ? [...state.ds.agents.values()].find((a) => a.manager === manager)?.region : undefined
+  return { regiao: f.regiao ?? agent?.region ?? managerRegion ?? undefined, manager, vendedor: f.vendedor }
+}
+
+export function buildBoard(state: AppState, rawFilters: Filters): BoardDTO {
   const { ds } = state
+  const filters = normalize(state, rawFilters)
   const open = state.scored.filter((s) => matches(s.deal, filters))
-  const ranked = open.filter((s) => s.expected !== null).sort(byExpected)
+  const ranked = open.filter((s) => s.priority !== null).sort(byPriority)
   const viewRank = new Map(ranked.map((s, i) => [s.deal.id, i + 1]))
-  const withScore = state.scored.filter((s) => s.expected !== null && s.state !== "fora")
-  const med = { p: median(withScore.map((s) => s.p!)), v: median(withScore.map((s) => s.value!)) }
 
   const toCard = (s: ScoredDeal): CardDTO => {
     const rank = viewRank.get(s.deal.id) ?? null
@@ -137,46 +154,35 @@ export function buildBoard(state: AppState, filters: Filters): BoardDTO {
       rank,
       p: s.p,
       value: s.value,
-      expected: s.expected,
+      priority: s.priority,
       age: s.age,
       state: s.state,
       flags: s.flags,
-      tooltip: tooltipFor(s, rank, med),
+      tooltip: tooltipFor(s, rank, state.K),
     }
   }
 
   const lanes: LaneDTO[] = ds.lanes.map((stage) => {
     if (stage === WON_STAGE || stage === LOST_STAGE) {
-      const closed = ds.deals
-        .filter((d) => d.stage === stage && matches(d, filters))
-        .sort((a, b) => (b.close ?? 0) - (a.close ?? 0))
+      const closed = ds.deals.filter((d) => d.stage === stage && matches(d, filters)).sort((a, b) => (b.close ?? 0) - (a.close ?? 0))
       return {
         stage,
         kind: stage === WON_STAGE ? "ganha" : "perdida",
         count: closed.length,
         cards: closed.slice(0, CLOSED_LIMIT).map(closedCard),
-        expectedTotal: 0,
+        priorityTotal: 0,
         closedTotal: closed.reduce((sum, d) => sum + (d.closeValue ?? 0), 0),
-        revalidar: { count: 0, value: 0, cards: [] },
       }
     }
-    const inLane = open.filter((s) => s.deal.stage === stage)
-    const active = inLane
-      .filter((s) => s.state !== "fora")
-      .sort(byExpected)
-    const stale = inLane.filter((s) => s.state === "fora").sort(byExpected)
+    // Um score só: todas as oportunidades da raia numa lista, na ordem do score (Revalidar inclusive).
+    const inLane = open.filter((s) => s.deal.stage === stage).sort(byPriority)
     return {
       stage,
       kind: "aberta",
       count: inLane.length,
-      cards: active.map(toCard),
-      expectedTotal: active.reduce((sum, s) => sum + (s.expected ?? 0), 0),
+      cards: inLane.map(toCard),
+      priorityTotal: inLane.reduce((sum, s) => sum + (s.priority ?? 0), 0),
       closedTotal: 0,
-      revalidar: {
-        count: stale.length,
-        value: stale.reduce((sum, s) => sum + (s.value ?? 0), 0),
-        cards: stale.slice(0, REVALIDAR_LIMIT).map(toCard),
-      },
     }
   })
 
@@ -204,88 +210,95 @@ export function buildBoard(state: AppState, filters: Filters): BoardDTO {
 }
 
 // ---------- Detalhe de uma oportunidade ----------
+// Só o que justifica a posição: valor, situação, fatores que mudaram a chance, urgência ativa, score.
+
+const ALWAYS = 0.005 // abaixo disso o fator é ×1,00 e não aparece
 
 export interface DetailDTO {
   id: string
   stage: string
   product: string
-  series: string | null
   agent: string
-  manager: string | null
   region: string | null
-  account: { name: string; sector: string | null; employees: number | null; location: string | null } | null
+  account: string | null
   score: number | null
-  rankGlobal: number | null
+  rank: number | null
   nScored: number
   state: AgeState
   age: number | null
-  action: string
   thresholds: { inicio: number; andamento: number; esfriando: number; tardio: number; source: string }
-  base: { p: number | null; support: number; curve: string }
-  tail: { wins: number; atRisk: number; fromDays: number } | null
-  conversion: { c: number; converted: number; failed: number } | null
-  K: number | null
-  adjustments: { label: string; group: string; n: number; weight: number; impact: number }[]
-  groupsNote: string
-  calibration: { before: number | null; after: number | null }
-  p: number | null // chance final usada na receita esperada
+  situation: {
+    label: string
+    meaning: string
+    chance: number // chance da situação (calibrada, antes da conversão)
+    factor: number // fator final da situação na fórmula
+    reached: number
+    conversion: { c: number; converted: number; failed: number } | null
+  }
+  factors: { label: string; factor: number; reason: string }[] // só os diferentes de ×1,00
+  urgency: { factor: number; drop: number; horizonDays: number } | null // só se ativa
   value: { price: number | null; rho: number; value: number | null }
-  expected: number | null
-  tasks: string[]
-  model: { version: number; refDay: string; configKey: string }
+  p: number
+  priority: number | null
+  K: number | null
+}
+
+function meaningOf(state: AgeState, t: { inicio: number; andamento: number; esfriando: number; tardio: number }) {
+  switch (state) {
+    case "entrada":
+      return "Sem data de entrada em Engaging."
+    case "inicio":
+      return `Até ${t.inicio} dias desde a entrada: ainda antes do prazo em que metade das perdas acontece.`
+    case "andamento":
+      return `${t.inicio} a ${t.andamento} dias desde a entrada: dentro do prazo em que 75% dos ganhos fecham.`
+    case "esfriando":
+      return `${t.andamento} a ${t.esfriando} dias desde a entrada: passou do prazo em que 75% dos ganhos já tinham fechado.`
+    case "tardio":
+      return `${t.esfriando} a ${t.tardio} dias desde a entrada: 95% dos ganhos já tinham fechado.`
+    case "fora":
+      return `Mais de ${t.tardio} dias desde a entrada: 99% dos ganhos já tinham fechado.`
+  }
 }
 
 export function buildDetail(state: AppState, id: string): DetailDTO | null {
   const s = state.byId.get(id)
   if (!s) return null
   const d = s.deal
-  const acc = d.account ? state.ds.accounts.get(d.account) : undefined
-  const zeroWeight = state.groupDiagnostics.filter((l) => l.k === null).map((l) => l.label)
-  const groupsNote =
-    state.model.config.levels === "tempo"
-      ? `Grupos (${LEVELS.map((l) => l.label.toLowerCase()).join(", ")}) foram testados no backtest e não melhoraram a previsão; nesta versão a chance depende só da idade.`
-      : zeroWeight.length
-        ? `Sem diferença no histórico, peso zero: ${zeroWeight.join(", ")}.`
-        : ""
   return {
     id: d.id,
     stage: d.stage,
     product: d.product,
-    series: d.series,
     agent: d.agent,
-    manager: d.manager,
     region: d.region,
-    account: acc
-      ? { name: acc.name, sector: acc.sector, employees: acc.employees, location: acc.location }
-      : d.account
-        ? { name: d.account, sector: null, employees: null, location: null }
-        : null,
+    account: d.account,
     score: s.score,
-    rankGlobal: s.rank,
+    rank: s.rank,
     nScored: state.scored.filter((x) => x.score !== null).length,
     state: s.state,
     age: s.age,
-    action: STATE_META[s.state].action(s.thresholds),
     thresholds: { ...s.thresholds, source: s.thresholdSource === "série" ? `série ${d.series}` : "base inteira" },
-    base: {
-      p: s.pBase,
-      support: s.support,
-      curve: d.series && state.model.curves.bySeries[d.series] ? `curva da série ${d.series}` : "curva geral",
+    situation: {
+      label: STATE_META[s.state].label,
+      meaning: meaningOf(s.state, s.thresholds),
+      chance: s.situation.conversion ? s.situation.factor / s.situation.conversion : s.situation.factor,
+      factor: s.situation.factor,
+      reached: s.situation.reached,
+      conversion:
+        s.situation.conversion === null
+          ? null
+          : { c: s.situation.conversion, converted: state.conversion.converted, failed: state.conversion.failed },
     },
-    tail: s.tail,
-    conversion:
-      s.conversion === null
-        ? null
-        : { c: s.conversion, converted: state.conversion.converted, failed: state.conversion.failed },
-    K: state.K,
-    adjustments: s.adjustments.map((a) => ({ label: a.label, group: a.group, n: a.n, weight: a.weight, impact: a.impact })),
-    groupsNote,
-    // calibração vem antes da conversão de Prospecting
-    calibration: { before: s.pModel, after: s.p === null || s.conversion === null ? s.p : s.p / s.conversion },
-    p: s.p,
+    factors: s.factors
+      .filter((f) => Math.abs(f.factor - 1) >= ALWAYS)
+      .map((f) => ({
+        label: `${f.label} (${f.group})`,
+        factor: f.factor,
+        reason: `Na base, deals deste grupo ganharam ${fmtPct(f.rate)}, contra ${fmtPct(f.expected)} esperados; o ajuste pesa ${fmtPct(f.weight)} por ter ${fmtInt(f.n)} deals de histórico.`,
+      })),
+    urgency: s.urgency.factor - 1 >= ALWAYS ? { factor: s.urgency.factor, drop: s.urgency.drop, horizonDays: s.urgency.horizonDays } : null,
     value: { price: d.price, rho: s.rho, value: s.value },
-    expected: s.expected,
-    tasks: s.flags.map((f) => FLAG_LABEL[f] ?? f),
-    model: { version: state.version.version, refDay: formatDay(state.ds.refDay), configKey: state.version.configKey },
+    p: s.p,
+    priority: s.priority,
+    K: state.K,
   }
 }

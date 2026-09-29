@@ -96,7 +96,9 @@ export function FilterBar({ options, filters }: { options: BoardDTO["options"]; 
       </Select>
 
       <div className="w-60">
+        {/* key: recria a lista quando região/manager mudam, para nunca mostrar vendedores de fora do filtro */}
         <Combobox
+          key={`${filters.regiao ?? ""}|${filters.manager ?? ""}`}
           items={agents.map((a) => a.name)}
           value={filters.vendedor ?? null}
           onValueChange={(v) => apply({ ...filters, vendedor: (v as string | null) ?? undefined })}

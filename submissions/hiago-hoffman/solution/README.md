@@ -45,50 +45,48 @@ O servidor precisa de disco gravável em `LEAD_SCORER_STORAGE_DIR` para guardar 
 
 - **Pipeline:** raias com os nomes dos estágios do CRM (`Prospecting`, `Engaging`, `Won`, `Lost`).
   - O card **#1** fica destacado ("Comece por este") e a raia dele recebe o selo **Comece aqui**. Dentro de cada raia, os cards seguem a ordem de receita esperada.
-  - Passe o mouse no score para ver o resumo. Clique no card para ver o cálculo passo a passo.
+  - Passe o mouse na nota para ver, em linguagem direta, o valor, a chance e a situação do deal, e o que mais mexeu na nota.
+  - Clique no card para ver a conta completa: só os fatores que de fato mudaram a posição daquele deal.
+  - Ao escolher um vendedor, a região e o manager dele são preenchidos; ao escolher uma região ou um manager, as listas abaixo mostram só quem pertence a ela.
   - Filtre por região, manager ou vendedor. Os filtros ficam na URL, então dá para compartilhar a visão de um vendedor. O ranking (#) é recalculado dentro do filtro; o score continua sendo o da empresa inteira.
   - `Won` e `Lost` ficam recolhidas como histórico.
-  - Deals abertos há mais tempo do que 99% dos ganhos da base vão para o bloco **Revalidar** no fim da raia.
+  - Todas as oportunidades abertas da raia, inclusive as em **Revalidar**, estão numa única lista ordenada pelo score.
 - **Modelo e base:** versão vigente, teste em datas passadas, o que o modelo aprendeu, qualidade da base, upload e histórico de versões.
 
 ## Lógica do score
 
-Detalhes e justificativas estatísticas em [`../docs/analise-lead-scorer.md`](../docs/analise-lead-scorer.md), seção 6.
+Detalhes e justificativas estatísticas em [`../docs/analise-lead-scorer.md`](../docs/analise-lead-scorer.md), seções 6.5 e 6.6.
+
+Um score só, com a mesma fórmula para toda oportunidade aberta (Prospecting, Engaging e Revalidar):
 
 ```text
-receita esperada R = p × v
-score (0–100)      = 100 × R / (R + K), K = receita esperada mediana dos deals vivos (score 50 = mediana; 75 = o triplo)
+Prioridade = Valor × Situação × Afinidade × Relacionamento × Produto × Time × Calendário × Urgência
+Score      = 100 × Prioridade / (Prioridade + K)     K = prioridade mediana dos deals vivos (score 50)
 ```
 
-1. **Chance pela idade, `p_base(a)`.** Modelo de sobrevivência semanal com dois desfechos (ganho e perda). Deals ainda abertos entram como observação sem desfecho, não como perda. Resultados recentes pesam mais (meia-vida escolhida no backtest).
-2. **Ajustes por grupo:** série, produto, região, manager, vendedor, região × produto, vendedor × produto e mês do trimestre de entrada.
-   - Cada grupo recebe peso `w = n / (n + k)`, com `k` aprendido pelo método dos momentos.
-   - Se o grupo não varia mais do que o acaso, `k = ∞` e o peso é zero.
-   - Nenhum nome está no código: vendedor, produto ou região novos começam com peso zero e herdam o nível acima.
-3. **Calibração (Platt).** Ajuste aprendido no backtest para que "30%" signifique 30%.
-   - **Prospecting (sem data de entrada):** chance × `c`, a conversão Prospecting → Engaging aprendida comparando bases sucessivas (uma foto por upload): `(convertidos + 1) / (acompanhados + 2)`. Sem observações, 50%.
-4. **Valor se ganhar:** `v = preço de tabela × razão histórica valor fechado / preço`, encolhida por produto → série → geral.
-5. **Estados pela idade.** Os percentis do ciclo dos ganhos são fixos por política (75/95/99); os dias são reaprendidos a cada base.
-   - **Início:** antes da mediana do ciclo das perdas.
-   - **Em andamento:** até o percentil 75 dos ganhos.
-   - **Esfriando:** entre os percentis 75 e 95.
-   - **Tardio:** entre os percentis 95 e 99.
-   - **Revalidar:** acima do percentil 99. Sem curva para essa idade; a chance vem da cauda: `(ganhos a partir da idade + 1) / (deals que chegaram lá + 2)`, sem nunca subir com a idade. Hoje: 5,6% na fronteira e 0,08% depois de 140 dias.
-6. **Aprendizado contínuo.** A cada base nova:
-   - todos os parâmetros são reestimados;
-   - 16 configurações (recência × curva × grupos) disputam um backtest com cortes mensais;
-   - a candidata só substitui a configuração vigente se for melhor em erro de probabilidade **e** em receita capturada no topo da lista;
-   - a versão fica registrada.
+1. **Situação:** Prospecting (sem data de entrada), Início, Em andamento, Esfriando, Tardio ou Revalidar.
+   - Os dias de cada faixa são percentis do ciclo dos ganhos, reaprendidos a cada base.
+   - O fator é a chance de ganho dos deals da base que passaram por essa situação. É estimado pela curva de sobrevivência, com os deals abertos contados como sem desfecho; depois do histórico, pela cauda (ganhos + 1) ÷ (deals + 2).
+   - Prospecting = fator de Início × conversão Prospecting → Engaging, aprendida comparando uploads sucessivos (50% sem observações).
+2. **Afinidade, Relacionamento, Produto, Time e Calendário:** grupos com peso `n / (n + k)`, com `k` aprendido pelo método dos momentos.
+   - Grupo sem sinal fica com ×1,00.
+   - Cada grupo é testado sozinho no backtest e só entra se não reduzir a receita capturada.
+   - Relacionamento = a conta já tinha uma compra fechada antes de o deal entrar em Engaging; conta não informada é neutra.
+3. **Calibração isotônica:** "30% previsto" passa a valer 30% observado, sem inflar chances muito pequenas.
+4. **Urgência:** 1 + força × queda prevista da chance na janela. Força (0,5 a 3) e janela (7 a 28 dias) são escolhidas no backtest; fica desligada se não aumentar a receita capturada.
+5. **Aprendizado contínuo:** a cada base nova, todos os parâmetros são reestimados e as escolhas acima são refeitas no teste em datas passadas. A versão candidata só substitui a vigente se capturar pelo menos a mesma receita. As versões ficam registradas.
+
+**Critério de todas as escolhas:** receita ganha capturada nos 20% do topo da lista, ponderada pelo valor (deals maiores pesam mais). O erro de probabilidade só desempata.
 
 Resultado na base do challenge (backtest de mar a ago/2017):
 
-| | Erro de probabilidade (Brier) | Receita ganha no top 20% da lista |
+| | Receita ganha no top 20% | Erro de probabilidade (Brier) |
 |---|---|---|
-| Sem modelo: taxa histórica e ordenação por preço | 0,314 | 46,7% |
-| Modelo v1, antes da calibração | 0,231 | 55,6% |
-| Modelo v1.2, calibrado (validação deixando cada mês de fora) | 0,224 | — |
+| Sem modelo: taxa histórica e ordenação por preço | 46,7% | 0,314 |
+| Situação sem grupos | 54,8% | 0,235 |
+| Modelo em uso (v2) | 55,3% | 0,235 (0,222 calibrado) |
 
-Na base atual, produto, região e vendedor não melhoraram a previsão; a versão vigente usa só o tempo. Se isso mudar com resultados novos, a configuração muda sozinha.
+Nesta base, entram na fórmula produto, time, vendedor × produto (todos ×1,00, sem sinal) e o mês do trimestre de entrada. Região × produto e cliente com histórico foram testados e ficaram fora. A urgência ficou desligada.
 
 ## Estrutura
 
@@ -112,6 +110,8 @@ Base: `intento-product-starter` (Next.js 16, TypeScript, Tailwind v4, shadcn/ui 
 ## Limitações
 
 - **Prospecting não tem data de entrada.** A conversão `c` só é aprendida a partir do segundo upload, comparando as bases; até lá vale 50%. Deals que continuam em Prospecting não entram na conta; se o CRM nunca encerrar Prospecting parados, `c` tende a ficar otimista.
+- **Chance por situação é uma média da faixa.** Deals do mesmo produto na mesma situação empatam no score. Perto da chance semana a semana, a v2 captura 0,3 p.p. a menos de receita (55,3% contra 55,6%), em troca de uma fórmula explícita por situação.
+- **Urgência e relacionamento não são validados causalmente.** Sem registro de ações, o teste mede se a lista aponta para receita que entrou, não se agir mudou o resultado.
 - **Sem histórico de atividades.** Sem dados de ligações, reuniões ou próximo passo, o modelo só enxerga tempo e valor. Qualquer campo novo entra como um grupo a mais e ganha peso só se o backtest aprovar.
 - **Foto única da base.** O CRM exporta o estado atual, não as mudanças de estágio. O backtest reconstrói o passado a partir das datas de entrada e fechamento.
 - **Sem autenticação por usuário.** O filtro por vendedor não é uma permissão. Para produção: SSO do G4 e visão restrita por vendedor/manager.

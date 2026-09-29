@@ -9,14 +9,15 @@ import { type Dataset, type Deal, monthOfQuarter } from "./dataset.ts"
 // Políticas: decisões de negócio, não aprendidas.
 export const POLICY = {
   weekDays: 7,
-  // percentis do ciclo dos ganhos que delimitam os estados (os dias são aprendidos)
+  // percentis do ciclo dos ganhos que delimitam as situações (os dias são aprendidos)
   statePercentiles: { andamento: 0.75, esfriando: 0.95, tardio: 0.99 },
   minSeriesWon: 100, // ganhos mínimos para uma série ter curva/limiares próprios
-  minImpactToExplain: 0.01, // ajuste só é citado na explicação se mover p em ≥ 1 p.p.
+  // Candidatos que o backtest testa; a escolha é feita pelos dados (backtest.ts).
   candidates: {
     halfLife: [90, 180, 365, null] as (number | null)[], // null = sem ponderação por recência
     seriesPrior: [null, 200] as (number | null)[], // null = só curva global
-    levels: ["tempo", "completo"] as const,
+    urgencyLambda: [0.5, 1, 2, 3], // força da urgência (0 = desligada, sempre testada)
+    urgencyHorizonDays: [7, 14, 21, 28], // janela da queda de chance
   },
   topShare: 0.2, // "topo da lista" avaliado no backtest
   followUpDays: 120, // acompanhamento mínimo após cada corte do backtest
@@ -26,26 +27,60 @@ export const POLICY = {
 export interface Config {
   halfLife: number | null
   seriesPrior: number | null
-  levels: "tempo" | "completo"
+  levels: string[] // grupos que entram na fórmula (cada um aprovado separadamente no backtest)
+  urgency: { lambda: number; horizonDays: number } // lambda 0 = urgência desligada
+}
+
+// Fator da fórmula ao qual cada grupo pertence.
+export type FactorKind = "afinidade" | "relacionamento" | "produto" | "time" | "calendario"
+
+export const FACTOR_LABEL: Record<FactorKind, string> = {
+  afinidade: "Afinidade (produto × região/vendedor)",
+  relacionamento: "Relacionamento (histórico do cliente)",
+  produto: "Produto",
+  time: "Time (região, manager, vendedor)",
+  calendario: "Calendário",
+}
+
+// Contexto para chaves que dependem do tempo: primeira compra (Won) de cada conta.
+export interface KeyCtx {
+  firstWin: Map<string, number>
+  at: number
 }
 
 interface LevelDef {
   id: string
   label: string
-  key: (d: Deal) => string | null
+  kind: FactorKind
+  key: (d: Deal, ctx: KeyCtx) => string | null
 }
 
+// Cliente com histórico = a conta já tinha uma compra fechada antes de o deal entrar em Engaging
+// (ou antes da data do cálculo, se não tem data de entrada). Conta não informada = sem ajuste.
+export const hasHistory = (d: Deal, ctx: KeyCtx) =>
+  d.account ? (ctx.firstWin.get(d.account) ?? Infinity) < (d.engage ?? ctx.at) : null
+
 export const LEVELS: LevelDef[] = [
-  { id: "serie", label: "Série do produto", key: (d) => d.series },
-  { id: "produto", label: "Produto", key: (d) => d.product },
-  { id: "regiao", label: "Região", key: (d) => d.region },
-  { id: "manager", label: "Manager", key: (d) => d.manager },
-  { id: "vendedor", label: "Vendedor", key: (d) => d.agent },
-  { id: "regiao_produto", label: "Região × produto", key: (d) => (d.region ? `${d.region} · ${d.product}` : null) },
-  { id: "vendedor_produto", label: "Vendedor × produto", key: (d) => `${d.agent} · ${d.product}` },
+  { id: "serie", label: "Série do produto", kind: "produto", key: (d) => d.series },
+  { id: "produto", label: "Produto", kind: "produto", key: (d) => d.product },
+  { id: "regiao", label: "Região", kind: "time", key: (d) => d.region },
+  { id: "manager", label: "Manager", kind: "time", key: (d) => d.manager },
+  { id: "vendedor", label: "Vendedor", kind: "time", key: (d) => d.agent },
+  { id: "regiao_produto", label: "Região × produto", kind: "afinidade", key: (d) => (d.region ? `${d.region} · ${d.product}` : null) },
+  { id: "vendedor_produto", label: "Vendedor × produto", kind: "afinidade", key: (d) => `${d.agent} · ${d.product}` },
+  {
+    id: "cliente_historico",
+    label: "Cliente com histórico de compras",
+    kind: "relacionamento",
+    key: (d, ctx) => {
+      const h = hasHistory(d, ctx)
+      return h === null ? null : h ? "com histórico" : "sem histórico"
+    },
+  },
   {
     id: "mes_trimestre",
     label: "Mês do trimestre de entrada",
+    kind: "calendario",
     key: (d) => (d.engage === null ? null : `${monthOfQuarter(d.engage)}º mês`),
   },
 ]
@@ -66,6 +101,7 @@ export interface Curve {
 export interface LevelFit {
   id: string
   label: string
+  kind: FactorKind
   k: number | null // força da priori; null = ∞ (sem sinal → peso 0)
   groups: Record<string, { n: number; rate: number; expected: number; w: number; delta: number }>
 }
@@ -83,11 +119,20 @@ export interface Thresholds {
   nWon: number
 }
 
+export type Situation = "inicio" | "andamento" | "esfriando" | "tardio" | "fora"
+
+// Fator da situação: chance de ganho de um deal que está nessa situação (média das semanas da
+// faixa, ponderada pelos deals que passaram por elas). Mesmo método para todas as situações.
+export type SituationTable = Record<Situation, { p: number; reached: number; fromDays: number; toDays: number | null }>
+
 export interface Model {
   cutoff: number
   config: Config
   base: number
   curves: { global: Curve; bySeries: Record<string, Curve> }
+  situations: { global: SituationTable; bySeries: Record<string, SituationTable> }
+  ctx: KeyCtx
+  accountWins: Map<string, number[]> // dias das compras (Won) de cada conta até o corte
   levels: LevelFit[]
   rho: RhoFit
   thresholds: { global: Thresholds; bySeries: Record<string, Thresholds> }
@@ -177,7 +222,7 @@ function buildCurve(obs: Obs[], prior: Curve | null, m: number): Curve {
 
 // ---------- Passo 2: ajustes hierárquicos com encolhimento aprendido ----------
 
-function fitLevels(rows: { d: Deal; y: number; w: number }[], useLevels: boolean) {
+function fitLevels(rows: { d: Deal; y: number; w: number }[], levelIds: string[], ctx: KeyCtx) {
   let sw = 0
   let sy = 0
   for (const r of rows) {
@@ -187,11 +232,10 @@ function fitLevels(rows: { d: Deal; y: number; w: number }[], useLevels: boolean
   const base = sw > 0 ? clampP(sy / sw) : 0.5
   const pred = rows.map(() => base)
   const levels: LevelFit[] = []
-  if (!useLevels) return { base, levels }
 
-  for (const level of LEVELS) {
+  for (const level of LEVELS.filter((l) => levelIds.includes(l.id))) {
     const agg = new Map<string, { n: number; won: number; exp: number }>()
-    const keys = rows.map((r) => level.key(r.d))
+    const keys = rows.map((r) => level.key(r.d, ctx))
     rows.forEach((r, i) => {
       const key = keys[i]
       if (!key) return
@@ -231,7 +275,7 @@ function fitLevels(rows: { d: Deal; y: number; w: number }[], useLevels: boolean
       const g = keys[i] ? groups[keys[i]!] : undefined
       if (g && g.w > 0) pred[i] = clampP(sigmoid(logit(pred[i]) + g.w * g.delta))
     })
-    levels.push({ id: level.id, label: level.label, k, groups })
+    levels.push({ id: level.id, label: level.label, kind: level.kind, k, groups })
   }
   return { base, levels }
 }
@@ -239,6 +283,7 @@ function fitLevels(rows: { d: Deal; y: number; w: number }[], useLevels: boolean
 // ---------- Passo 3: razão valor realizado / preço ----------
 
 const RHO_LEVELS = LEVELS.filter((l) => l.id === "serie" || l.id === "produto")
+const NO_CTX: KeyCtx = { firstWin: new Map(), at: 0 } // série e produto não dependem do tempo
 
 function fitRho(rows: { d: Deal; r: number; w: number }[]): RhoFit {
   let sw = 0
@@ -256,7 +301,7 @@ function fitRho(rows: { d: Deal; r: number; w: number }[]): RhoFit {
   const levels: RhoFit["levels"] = []
   for (const level of RHO_LEVELS) {
     const agg = new Map<string, { n: number; s: number }>()
-    const keys = rows.map((x) => level.key(x.d))
+    const keys = rows.map((x) => level.key(x.d, NO_CTX))
     rows.forEach((x, i) => {
       const key = keys[i]
       if (!key) return
@@ -312,6 +357,37 @@ function thresholdsFrom(won: { v: number; w: number }[], lost: { v: number; w: n
   }
 }
 
+// ---------- Passo 1b: fator da situação ----------
+
+// Chance de ganhar em algum momento para um deal aberto no início da semana w: curva enquanto
+// há eventos; depois dela, a cauda (ganhos + 1) / (em risco + 2) da curva global.
+export function weekChance(curve: Curve, global: Curve, w: number): number {
+  if (w <= curve.lastEventWeek) return curve.pFrom[w] ?? 0
+  return global.tailP[Math.min(w, global.tailP.length - 1)]
+}
+
+function situationTable(curve: Curve, global: Curve, t: Thresholds): SituationTable {
+  const wk = (days: number) => Math.floor(days / POLICY.weekDays)
+  const last = Math.max(curve.support.length, global.support.length) - 1
+  const band = (fromDays: number, toDays: number | null, from: number, to: number) => {
+    let num = 0
+    let den = 0
+    for (let w = from; w <= to; w++) {
+      const n = curve.support[w] ?? global.support[w] ?? 0
+      num += n * weekChance(curve, global, w)
+      den += n
+    }
+    return { p: den > 0 ? num / den : weekChance(curve, global, from), reached: curve.support[from] ?? global.support[from] ?? 0, fromDays, toDays }
+  }
+  return {
+    inicio: band(0, t.inicio, 0, Math.max(0, wk(t.inicio) - 1)),
+    andamento: band(t.inicio, t.andamento, wk(t.inicio), wk(t.andamento)),
+    esfriando: band(t.andamento, t.esfriando, wk(t.andamento) + 1, wk(t.esfriando)),
+    tardio: band(t.esfriando, t.tardio, wk(t.esfriando) + 1, wk(t.tardio)),
+    fora: band(t.tardio, null, wk(t.tardio) + 1, Math.max(last, wk(t.tardio) + 1)),
+  }
+}
+
 // ---------- Treino ----------
 
 export function fitModel(ds: Dataset, cutoff: number, config: Config): Model {
@@ -359,18 +435,33 @@ export function fitModel(ds: Dataset, cutoff: number, config: Config): Model {
     for (const [series, list] of perSeries) bySeries[series] = buildCurve(list, global, config.seriesPrior)
   }
 
-  const { base, levels } = fitLevels(closed, config.levels === "completo")
+  const firstWin = new Map<string, number>()
+  const accountWins = new Map<string, number[]>()
+  for (const d of ds.deals) {
+    if (d.outcome !== "won" || !d.account || d.close === null || d.close > cutoff) continue
+    firstWin.set(d.account, Math.min(firstWin.get(d.account) ?? Infinity, d.close))
+    accountWins.set(d.account, [...(accountWins.get(d.account) ?? []), d.close])
+  }
+  const ctx: KeyCtx = { firstWin, at: cutoff }
+
+  const { base, levels } = fitLevels(closed, config.levels, ctx)
   const globalT = thresholdsFrom(cyclesAll.won, cyclesAll.lost)
   const seriesT: Record<string, Thresholds> = {}
   for (const [series, c] of cycles) {
     if (c.won.length >= POLICY.minSeriesWon) seriesT[series] = thresholdsFrom(c.won, c.lost.length ? c.lost : cyclesAll.lost)
   }
+  const sitSeries: Record<string, SituationTable> = {}
+  for (const [series, curve] of Object.entries(bySeries)) sitSeries[series] = situationTable(curve, global, seriesT[series] ?? globalT)
+  for (const series of Object.keys(seriesT)) sitSeries[series] ??= situationTable(global, global, seriesT[series])
 
   return {
     cutoff,
     config,
     base,
     curves: { global, bySeries },
+    situations: { global: situationTable(global, global, globalT), bySeries: sitSeries },
+    ctx,
+    accountWins,
     levels,
     rho: fitRho(ratios),
     thresholds: { global: globalT, bySeries: seriesT },
@@ -384,17 +475,66 @@ export function fitModel(ds: Dataset, cutoff: number, config: Config): Model {
 }
 
 // ---------- Pontuação ----------
+//
+// Um score só, a mesma fórmula para todo deal aberto:
+//   Prioridade = Valor × Situação × Afinidade × Relacionamento × (outros grupos) × Urgência
+//   Score      = 100 × Prioridade / (Prioridade + K)
+// Cada fator é aprendido; o que não tem sinal na base fica ×1,00.
 
-export type AgeState = "entrada" | "inicio" | "andamento" | "esfriando" | "tardio" | "fora"
+export type AgeState = "entrada" | Situation
 
-export interface Adjustment {
+// Calibração isotônica, aprendida no backtest: "30% previsto" passa a valer 30% observado.
+// Blocos monotônicos (PAV) com taxa suavizada (acertos + 1) / (deals + 2), interpolados entre si.
+// Diferente de uma reta em logit, não infla chances muito pequenas (ex.: deals em Revalidar).
+export interface Calibrator {
+  xs: number[] // chance prevista média de cada bloco (crescente)
+  ys: number[] // taxa observada suavizada do bloco (não decrescente)
+}
+
+export function fitCalibrator(points: { p: number; y: number }[]): Calibrator {
+  const sorted = [...points].sort((a, b) => a.p - b.p)
+  const blocks: { sp: number; sy: number; n: number }[] = []
+  const rate = (b: { sy: number; n: number }) => (b.sy + 1) / (b.n + 2)
+  for (const { p, y } of sorted) {
+    blocks.push({ sp: p, sy: y, n: 1 })
+    while (blocks.length > 1 && rate(blocks[blocks.length - 2]) >= rate(blocks[blocks.length - 1])) {
+      const last = blocks.pop()!
+      const prev = blocks[blocks.length - 1]
+      prev.sp += last.sp
+      prev.sy += last.sy
+      prev.n += last.n
+    }
+  }
+  return { xs: blocks.map((b) => b.sp / b.n), ys: blocks.map(rate) }
+}
+
+export function calibrate(p: number, c: Calibrator | null): number {
+  if (!c || !c.xs.length) return p
+  const { xs, ys } = c
+  if (p <= xs[0]) return xs[0] > 0 ? (ys[0] * p) / xs[0] : ys[0]
+  if (p >= xs[xs.length - 1]) return ys[ys.length - 1]
+  let i = 1
+  while (xs[i] < p) i++
+  const t = (p - xs[i - 1]) / (xs[i] - xs[i - 1])
+  return ys[i - 1] + t * (ys[i] - ys[i - 1])
+}
+
+export interface ScoreOptions {
+  calibrator?: Calibrator | null
+  conversion?: number // c = conversão Prospecting → Engaging, aprendida entre bases (conversion.ts)
+}
+
+// Um fator multiplicativo da fórmula, já na escala final (depois da calibração).
+export interface GroupFactor {
   level: string
   label: string
+  kind: FactorKind
   group: string
-  n: number
-  weight: number
-  delta: number
-  impact: number // variação de p causada por este ajuste
+  n: number // deals (com peso de recência) que sustentam o ajuste
+  rate: number // taxa de ganho observada no grupo
+  expected: number // taxa que o modelo esperava para o grupo antes deste ajuste
+  weight: number // peso aprendido do grupo (0 = sem sinal)
+  factor: number // multiplicador aplicado à chance
 }
 
 export interface ScoredDeal {
@@ -403,75 +543,96 @@ export interface ScoredDeal {
   state: AgeState
   thresholds: Thresholds
   thresholdSource: "série" | "geral"
-  pBase: number | null
-  pModel: number | null
-  p: number | null
-  adjustments: Adjustment[]
+  situation: { p: number; reached: number; conversion: number | null; factor: number } // factor = fator final da situação
+  factors: GroupFactor[]
+  p: number // chance final
+  urgency: { factor: number; drop: number; horizonDays: number; lambda: number }
   rho: number
   value: number | null
-  expected: number | null
-  support: number
-  tail: { wins: number; atRisk: number; fromDays: number } | null // evidência usada além do histórico
-  conversion: number | null // c aplicado a deals sem data de entrada
+  expected: number | null // valor × chance
+  priority: number | null // expected × urgência
+  history: { purchases: number } | null // compras anteriores da conta (para a explicação)
   flags: string[]
   score: number | null
   rank: number | null
 }
 
-export interface ScoreOptions {
-  calibrator?: Calibrator | null
-  conversion?: number // c = conversão Prospecting → Engaging, aprendida entre bases (conversion.ts)
+export function situationOf(age: number | null, t: Thresholds): AgeState {
+  if (age === null) return "entrada"
+  if (age > t.tardio) return "fora"
+  if (age < t.inicio) return "inicio"
+  if (age <= t.andamento) return "andamento"
+  if (age <= t.esfriando) return "esfriando"
+  return "tardio"
 }
-
-// Calibração (Platt): p_cal = sigmoid(a + b·logit(p)), aprendida no backtest. Monotônica em p.
-export interface Calibrator {
-  a: number
-  b: number
-}
-
-export function fitCalibrator(points: { p: number; y: number }[]): Calibrator {
-  const xs = points.filter((q) => q.p > 0 && q.p < 1).map((q) => ({ x: logit(q.p), y: q.y }))
-  let a = 0
-  let b = 1
-  for (let it = 0; it < 50 && xs.length; it++) {
-    let ga = 0, gb = 0, haa = 0, hab = 0, hbb = 0
-    for (const { x, y } of xs) {
-      const p = sigmoid(a + b * x)
-      const r = y - p
-      const v = p * (1 - p)
-      ga += r
-      gb += r * x
-      haa += v
-      hab += v * x
-      hbb += v * x * x
-    }
-    const det = haa * hbb - hab * hab
-    if (Math.abs(det) < 1e-12) break
-    const da = (hbb * ga - hab * gb) / det
-    const db = (haa * gb - hab * ga) / det
-    a += da
-    b += db
-    if (Math.abs(da) + Math.abs(db) < 1e-9) break
-  }
-  return { a, b }
-}
-
-export const calibrate = (p: number, c: Calibrator | null) => (c ? sigmoid(c.a + c.b * logit(clampP(p))) : p)
 
 export function scoreDeal(d: Deal, m: Model, at: number, opts: ScoreOptions = {}): ScoredDeal {
-  const curve = (d.series && m.curves.bySeries[d.series]) || m.curves.global
+  const g = m.curves.global
+  const curve = (d.series && m.curves.bySeries[d.series]) || g
   const seriesT = d.series ? m.thresholds.bySeries[d.series] : undefined
   const t = seriesT ?? m.thresholds.global
+  const table = (d.series && m.situations.bySeries[d.series]) || m.situations.global
   const age = d.engage === null ? null : at - d.engage
-  const week = age === null ? 0 : Math.floor(age / POLICY.weekDays)
+  const state = situationOf(age, t)
+  const cal = opts.calibrator ?? null
 
-  let state: AgeState
-  if (age === null) state = "entrada"
-  else if (age > t.tardio || week > curve.lastEventWeek) state = "fora"
-  else if (age < t.inicio) state = "inicio"
-  else if (age <= t.andamento) state = "andamento"
-  else if (age <= t.esfriando) state = "esfriando"
-  else state = "tardio"
+  // Situação: chance da faixa (Prospecting usa a de Início × conversão aprendida).
+  const band = table[state === "entrada" ? "inicio" : state]
+  const conversion = state === "entrada" ? (opts.conversion ?? 1) : null
+  const conv = conversion ?? 1
+  let x = logit(clampP(band.p))
+  const situationFactor = calibrate(band.p, cal) * conv
+
+  // Grupos aprovados no backtest: cada um vira um multiplicador explícito.
+  const ctx: KeyCtx = { firstWin: m.ctx.firstWin, at }
+  const factors: GroupFactor[] = []
+  for (const level of m.levels) {
+    const def = LEVELS.find((l) => l.id === level.id)!
+    const key = def.key(d, ctx)
+    if (!key) continue
+    const gr = level.groups[key]
+    const before = calibrate(sigmoid(x), cal)
+    if (gr && gr.w > 0) x += gr.w * gr.delta
+    factors.push({
+      level: level.id,
+      label: level.label,
+      kind: level.kind,
+      group: key,
+      n: gr?.n ?? 0,
+      rate: gr?.rate ?? 0,
+      expected: gr?.expected ?? 0,
+      weight: gr?.w ?? 0,
+      factor: calibrate(sigmoid(x), cal) / before,
+    })
+  }
+  const p = calibrate(sigmoid(x), cal) * conv
+
+  // Urgência: queda prevista da chance na janela, se nada for feito (0 para Prospecting).
+  const { lambda, horizonDays } = m.config.urgency
+  let drop = 0
+  if (age !== null) {
+    const w = Math.floor(age / POLICY.weekDays)
+    const now = weekChance(curve, g, w)
+    const later = weekChance(curve, g, w + Math.round(horizonDays / POLICY.weekDays))
+    drop = now > 0 ? Math.max(0, (now - later) / now) : 0
+  }
+  const urgency = { factor: 1 + lambda * drop, drop, horizonDays, lambda }
+
+  let rho = m.rho.mean
+  for (const level of m.rho.levels) {
+    const key = RHO_LEVELS.find((l) => l.id === level.id)!.key(d, NO_CTX)
+    const gr = key ? level.groups[key] : undefined
+    if (gr) rho += gr.w * gr.shift
+  }
+  const value = d.price === null ? null : d.price * rho
+  const expected = value === null ? null : p * value
+
+  let history: ScoredDeal["history"] = null
+  if (d.account) {
+    let purchases = 0
+    for (const day of m.accountWins.get(d.account) ?? []) if (day < (d.engage ?? at)) purchases++
+    history = { purchases }
+  }
 
   const flags: string[] = []
   if (!d.account) flags.push("sem_conta")
@@ -479,91 +640,41 @@ export function scoreDeal(d: Deal, m: Model, at: number, opts: ScoreOptions = {}
   if (d.region === null) flags.push("vendedor_sem_cadastro")
   if (age === null) flags.push("estimativa_entrada")
 
-  let pBase: number | null = null
-  let pModel: number | null = null // antes da calibração
-  let p: number | null = null
-  const adjustments: Adjustment[] = []
-  let tail: ScoredDeal["tail"] = null
-  let conversion: number | null = null
-  if (state === "fora") {
-    // Além do histórico: sem curva, usa a evidência direta da cauda (curva global, mais deals).
-    const g = m.curves.global
-    const w = Math.min(week, g.tailP.length - 1)
-    const src = g.tailWeek[w]
-    tail = { wins: g.winsFrom[src], atRisk: g.support[src], fromDays: src * POLICY.weekDays }
-    pBase = pModel = p = g.tailP[w]
-  } else {
-    pBase = curve.pFrom[week] ?? 0
-    let x = logit(clampP(pBase))
-    for (const level of m.levels) {
-      const key = LEVELS.find((l) => l.id === level.id)!.key(d)
-      const g = key ? level.groups[key] : undefined
-      if (!g || g.w === 0) continue
-      const before = sigmoid(x)
-      x += g.w * g.delta
-      adjustments.push({
-        level: level.id,
-        label: level.label,
-        group: key!,
-        n: g.n,
-        weight: g.w,
-        delta: g.delta,
-        impact: sigmoid(x) - before,
-      })
-    }
-    pModel = sigmoid(x)
-    p = calibrate(pModel, opts.calibrator ?? null)
-    if (age === null) {
-      conversion = opts.conversion ?? 1
-      p *= conversion
-    }
-  }
-
-  let rho = m.rho.mean
-  for (const level of m.rho.levels) {
-    const key = RHO_LEVELS.find((l) => l.id === level.id)!.key(d)
-    const g = key ? level.groups[key] : undefined
-    if (g) rho += g.w * g.shift
-  }
-  const value = d.price === null ? null : d.price * rho
-  const expected = p === null || value === null ? null : p * value
-
   return {
     deal: d,
     age,
     state,
     thresholds: t,
     thresholdSource: seriesT ? "série" : "geral",
-    pBase,
-    pModel,
+    situation: { p: band.p, reached: band.reached, conversion, factor: situationFactor },
+    factors,
     p,
-    adjustments,
+    urgency,
     rho,
     value,
     expected,
-    support: curve.support[week] ?? 0,
-    tail,
-    conversion,
+    priority: expected === null ? null : expected * urgency.factor,
+    history,
     flags,
     score: null,
     rank: null,
   }
 }
 
-// Pontua o pipeline aberto na data de referência.
-// Score = 100 × R / (R + K): escala absoluta. K = receita esperada mediana dos deals vivos com data
-// de entrada (score 50 = mediana; 75 = o triplo). K é fixo por versão e não muda com filtros.
+// Pontua o pipeline aberto na data de referência. Score = 100 × P / (P + K), escala absoluta:
+// K = prioridade mediana dos deals vivos com data de entrada (50 = mediana; 75 = o triplo).
+// K é fixo por versão e não muda com filtros.
 export function scorePipeline(ds: Dataset, m: Model, opts: ScoreOptions = {}): { deals: ScoredDeal[]; K: number | null } {
   const deals = ds.deals.filter((d) => d.outcome === null).map((d) => scoreDeal(d, m, ds.refDay, opts))
   const median = (xs: number[]) => (xs.length ? [...xs].sort((a, b) => a - b)[Math.floor(xs.length / 2)] : null)
-  const live = deals.filter((s) => s.expected !== null && s.state !== "fora" && s.state !== "entrada")
-  const K = median(live.map((s) => s.expected!)) ?? median(deals.filter((s) => s.expected! > 0).map((s) => s.expected!))
+  const live = deals.filter((s) => s.priority !== null && s.state !== "fora" && s.state !== "entrada")
+  const K = median(live.map((s) => s.priority!)) ?? median(deals.filter((s) => s.priority! > 0).map((s) => s.priority!))
   if (!K) return { deals, K: null }
 
-  const ranked = deals.filter((s) => s.expected !== null).sort((a, b) => b.expected! - a.expected!)
+  const ranked = deals.filter((s) => s.priority !== null).sort((a, b) => b.priority! - a.priority!)
   ranked.forEach((s, i) => {
-    s.score = Math.round((100 * s.expected!) / (s.expected! + K))
-    s.rank = i > 0 && ranked[i - 1].expected === s.expected ? ranked[i - 1].rank : i + 1
+    s.score = Math.round((100 * s.priority!) / (s.priority! + K))
+    s.rank = i > 0 && ranked[i - 1].priority === s.priority ? ranked[i - 1].rank : i + 1
   })
   return { deals, K }
 }

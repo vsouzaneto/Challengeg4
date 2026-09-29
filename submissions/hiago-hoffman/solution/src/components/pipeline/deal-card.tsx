@@ -104,9 +104,9 @@ export function DealCard({
             <span className="font-medium text-foreground">{fmtChance(card.p)}</span> de chance
           </span>
         )}
-        {card.expected !== null && (
+        {card.priority !== null && (
           <span>
-            Receita esperada <span className="font-medium text-foreground">{fmtMoney(card.expected)}</span>
+            Prioridade <span className="font-medium text-foreground">{fmtMoney(card.priority)}</span>
           </span>
         )}
       </div>

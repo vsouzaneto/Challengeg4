@@ -86,6 +86,22 @@ Verificações que mudaram o código:
   - escala absoluta `100 × R / (R + K)`.
 - **Verificação:** a simulação sem calibração previa 27 deals de Prospecting no top 100; o número real, com calibração, é 44, e foi o que ficou documentado. Na primeira versão, a explicação de um deal de 423 dias citava a evidência errada ("0 de 1 deal"); foi corrigida para a semana que de fato define a chance ("0 de 1.273").
 
+### 7. Iteração v2: um score só, com a situação como fator
+
+- **Pedido:** "deve ter um score só, e a situação da oportunidade deve ser um fator do score".
+- **Esclarecimento antes de desenvolver:** a IA perguntou o papel da situação (definir a chance, urgência ou as duas coisas). A resposta foi "as duas coisas". A IA então descreveu o fluxo com números reais antes de codificar.
+- **Decisões humanas:**
+  - empates são aceitáveis;
+  - força e janela da urgência aprendidas pelos dados;
+  - critério = receita capturada, de preferência as maiores;
+  - cliente com histórico entra como fator aprendido, não como bônus fixo.
+- **Pergunta humana que expôs uma falha:** "não encontrei a regra de priorizar produto por região/vendedor". A regra existia, mas era testada em bloco com os demais grupos. Passou a ser testada grupo a grupo e ganhou fator explícito na fórmula.
+- **Verificações que mudaram o resultado:**
+  - a calibração Platt inflava a cauda em 7× e foi trocada por isotônica;
+  - a regra de inclusão exigia "não piorar nada" e foi alinhada ao critério de receita;
+  - os rankings pulavam números porque Revalidar ficava num bloco à parte; passou a entrar na mesma lista.
+- **Custo medido e registrado:** chance por situação captura 55,3% contra 55,6% da chance semana a semana.
+
 ## Onde a IA errou (resumo)
 
 1. Viés de seleção na tabela de sobrevivência (corrigido após a revisão externa).
@@ -95,6 +111,8 @@ Verificações que mudaram o código:
 5. Cinco bugs de interface detectados só ao rodar e usar o app.
 6. Premissa `c = 1` para Prospecting, que colocou esses deals artificialmente no topo (v1.2).
 7. Número da simulação (27) diferente do real (44): conferido antes de documentar.
+8. Teste de grupos em bloco, que podia esconder a regra de produto por região/vendedor (v2).
+9. Calibração Platt inflando chances muito pequenas (v2).
 
 ## Evidências
 

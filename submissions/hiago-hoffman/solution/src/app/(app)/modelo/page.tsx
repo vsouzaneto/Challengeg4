@@ -4,9 +4,9 @@ import { PageHeader } from "@/components/page-header"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { fmtChance, fmtDec, fmtInt, fmtMoney, fmtPct } from "@/lib/explain"
+import { STATE_META, fmtChance, fmtDec, fmtInt, fmtMoney, fmtPct } from "@/lib/explain"
 import { formatDay } from "@/lib/scoring/dataset"
-import { POLICY, calibrate } from "@/lib/scoring/model"
+import { FACTOR_LABEL, type FactorKind, LEVELS, POLICY, type Situation, calibrate } from "@/lib/scoring/model"
 import { getState } from "@/lib/server/store"
 import { cn } from "@/lib/utils"
 import { UploadForm } from "./upload-form"
@@ -15,25 +15,23 @@ export const metadata: Metadata = { title: "Modelo e base" }
 // Lê o estado vivo (base e versões): nunca pré-renderizar no build.
 export const dynamic = "force-dynamic"
 
-const AGES = [0, 14, 30, 60, 90, 120]
+const SITUATIONS: Situation[] = ["inicio", "andamento", "esfriando", "tardio", "fora"]
+const KINDS: FactorKind[] = ["afinidade", "relacionamento", "produto", "time", "calendario"]
 const IMPACT_LABEL = { bloqueia: "Impede o score", tarefa: "Vira pendência", info: "Informativo" }
 
 export default async function ModeloPage() {
   const s = await getState()
   const { model, backtest: bt, version: v } = s
-  const curve = model.curves.global
-  const t = model.thresholds.global
-  const results = [...bt.results].sort((a, b) => a.brier - b.brier)
   const conv = s.conversion
-  const boundaryWeek = Math.floor(t.tardio / POLICY.weekDays)
-  const tailRange = [curve.tailP[boundaryWeek], curve.tailP.at(-1)!]
-  const best = results[0]
+  const cfg = model.config
+  const base = bt.bases.reduce((best, r) => (r.capture > best.capture ? r : best))
+  const bestUrgency = [...bt.urgencyTests].sort((a, b) => b.capture - a.capture)[0]
 
   return (
     <div className="flex max-w-5xl flex-col gap-6">
       <PageHeader
         title="Modelo e base"
-        description="O score é recalculado e o modelo reaprende sempre que a base muda. Aqui está o que ele aprendeu e como foi testado."
+        description="Um score para todas as oportunidades. A estrutura da fórmula é fixa; cada fator é reaprendido e testado sempre que a base muda."
       />
 
       <Card>
@@ -49,21 +47,102 @@ export default async function ModeloPage() {
             <Info label="Base" value={v.source === "upload" ? "enviada por upload" : "padrão (dataset do challenge)"} />
             <Info label="Data de referência" value={v.refDay} />
             <Info label="Oportunidades" value={`${fmtInt(v.deals)} (${fmtInt(v.closed)} encerradas)`} />
-            <Info label="Configuração" value={v.configKey} className="sm:col-span-2" />
+            <Info label="Configuração" value={v.configKey} className="sm:col-span-3" />
+            <Info label="Escala do score (K)" value={s.K === null ? "—" : `${fmtMoney(s.K)}: prioridade mediana dos deals vivos = score 50`} className="sm:col-span-2" />
             <Info label="Treinado em" value={new Date(v.createdAt).toISOString().slice(0, 16).replace("T", " ")} />
-            <Info
-              label="Escala do score (K)"
-              value={s.K === null ? "—" : `${fmtMoney(s.K)}: receita esperada mediana dos deals vivos = score 50`}
-              className="sm:col-span-2"
-            />
-            <Info
-              label="Conversão Prospecting → Engaging"
-              value={`${fmtPct(conv.c)} (${conv.converted + conv.failed === 0 ? "sem deals acompanhados ainda" : `${fmtInt(conv.converted)} de ${fmtInt(conv.converted + conv.failed)} acompanhados`}; ${fmtInt(conv.snapshots)} ${conv.snapshots === 1 ? "base" : "bases"})`}
-            />
           </dl>
-          {!s.persisted && (
-            <p className="mt-3 text-xs text-muted-foreground">Disco somente leitura: o histórico de versões está só em memória.</p>
-          )}
+          {!s.persisted && <p className="mt-3 text-xs text-muted-foreground">Disco somente leitura: o histórico de versões está só em memória.</p>}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>A fórmula</CardTitle>
+          <CardDescription>
+            Prioridade = Valor × Situação × Afinidade × Relacionamento × Produto × Time × Calendário × Urgência. Score = 100 ×
+            Prioridade ÷ (Prioridade + K). Fator sem sinal nos dados vale ×1,00 e sobe sozinho quando a base mostrar efeito.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Fator</TableHead>
+                <TableHead>Como é aprendido</TableHead>
+                <TableHead>Nesta versão</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <FormulaRow name="Valor" how="Preço de tabela × razão histórica entre valor fechado e preço" now={`× ${fmtDec(model.rho.mean)} em média`} />
+              <FormulaRow
+                name="Situação"
+                how="Chance de ganho dos deals da base que passaram por cada situação (curva de sobrevivência, calibrada)"
+                now="Tabela abaixo"
+              />
+              <FormulaRow
+                name="Conversão de Prospecting"
+                how="Comparando uploads sucessivos: (convertidos + 1) ÷ (acompanhados + 2)"
+                now={`${fmtPct(conv.c)} · ${conv.converted + conv.failed === 0 ? "sem deals acompanhados ainda" : `${fmtInt(conv.converted)} de ${fmtInt(conv.converted + conv.failed)}`} · ${fmtInt(conv.snapshots)} ${conv.snapshots === 1 ? "base" : "bases"}`}
+              />
+              {KINDS.map((kind) => {
+                const levels = LEVELS.filter((l) => l.kind === kind)
+                const inUse = levels.filter((l) => cfg.levels.includes(l.id))
+                return (
+                  <FormulaRow
+                    key={kind}
+                    name={FACTOR_LABEL[kind]}
+                    how="Diferença de conversão do grupo, com peso n ÷ (n + k); só entra se o teste mostrar ganho de receita"
+                    now={inUse.length ? `Em uso: ${inUse.map((l) => l.label).join(", ")}` : "Fora: não aumentou a receita capturada"}
+                  />
+                )
+              })}
+              <FormulaRow
+                name="Urgência"
+                how="1 + força × queda prevista da chance na janela; força e janela escolhidas pelo teste"
+                now={cfg.urgency.lambda > 0 ? `Força ${fmtDec(cfg.urgency.lambda, 1)} em ${cfg.urgency.horizonDays} dias` : "Desligada: não aumentou a receita capturada"}
+              />
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Fator da situação</CardTitle>
+          <CardDescription>Os dias de cada situação e a chance são reaprendidos a cada base. Prospecting = Início × conversão.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Situação</TableHead>
+                <TableHead>Dias desde a entrada</TableHead>
+                <TableHead className="text-right">Chance de ganho</TableHead>
+                <TableHead className="text-right">Deals que chegaram lá</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableCell className="font-medium">{STATE_META.entrada.label}</TableCell>
+                <TableCell className="text-muted-foreground">sem data de entrada</TableCell>
+                <TableCell className="text-right tabular-nums">
+                  {fmtChance(calibrate(model.situations.global.inicio.p, bt.calibrator) * conv.c)}
+                </TableCell>
+                <TableCell className="text-right text-muted-foreground">—</TableCell>
+              </TableRow>
+              {SITUATIONS.map((sit) => {
+                const row = model.situations.global[sit]
+                return (
+                  <TableRow key={sit}>
+                    <TableCell className="font-medium">{STATE_META[sit].label}</TableCell>
+                    <TableCell>{row.toDays === null ? `mais de ${row.fromDays}` : `${Math.round(row.fromDays)}–${row.toDays}`}</TableCell>
+                    <TableCell className="text-right tabular-nums">{fmtChance(calibrate(row.p, bt.calibrator))}</TableCell>
+                    <TableCell className="text-right tabular-nums">{fmtInt(row.reached)}</TableCell>
+                  </TableRow>
+                )
+              })}
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
 
@@ -72,118 +151,69 @@ export default async function ModeloPage() {
           <CardTitle>Teste em datas passadas</CardTitle>
           <CardDescription>
             Em cada fim de mês de {formatDay(bt.cutoffs[0])} a {formatDay(bt.cutoffs.at(-1)!)}, o modelo só enxergou o que se sabia
-            naquela data e foi avaliado pelo que aconteceu depois. Erro de probabilidade: quanto menor, melhor. Receita no topo:
-            parcela da receita ganha que estava nos {fmtPct(POLICY.topShare)} primeiros da lista.
+            naquela data e foi avaliado pelo que aconteceu depois. Critério principal: receita ganha que estava nos{" "}
+            {fmtPct(POLICY.topShare)} primeiros da lista (deals maiores pesam mais). O erro de probabilidade desempata.
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col gap-4">
+        <CardContent className="flex flex-col gap-6">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Configuração</TableHead>
-                <TableHead className="text-right">Erro de probabilidade</TableHead>
+                <TableHead>Etapa</TableHead>
                 <TableHead className="text-right">Receita no topo</TableHead>
+                <TableHead className="text-right">Erro de probabilidade</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
+              <ResultRow label="Sem modelo: taxa histórica e ordenação só por preço" capture={bt.baseline.capture} brier={bt.baseline.brier} muted />
+              <ResultRow label={`Situação, sem grupos (${base.key.split(" · grupos")[0]})`} capture={base.capture} brier={base.brier} />
+              <ResultRow label="Configuração em uso" capture={bt.chosen.capture} brier={bt.chosen.brier} strong />
+            </TableBody>
+          </Table>
+          <p className="text-sm text-muted-foreground">
+            Depois da calibração, o erro da configuração em uso fica em {fmtDec(bt.calibratedBrier)} (medido deixando cada mês de
+            fora do ajuste).
+          </p>
+
+          <Table>
+            <TableHeader>
               <TableRow>
-                <TableCell className="text-muted-foreground">Sem modelo: taxa histórica e ordenação só por preço</TableCell>
-                <TableCell className="text-right tabular-nums">{fmtDec(bt.baseline.brier)}</TableCell>
-                <TableCell className="text-right tabular-nums">{fmtPct(bt.baseline.capture, 1)}</TableCell>
+                <TableHead>Grupo testado sozinho</TableHead>
+                <TableHead className="text-right">Receita no topo</TableHead>
+                <TableHead className="text-right">Erro</TableHead>
+                <TableHead>Resultado</TableHead>
               </TableRow>
-              {results.slice(0, 6).map((r) => (
-                <TableRow key={r.key} className={cn(r.key === bt.chosen.key && "bg-muted/60 font-medium")}>
-                  <TableCell>
-                    {r.key}
-                    {r.key === bt.chosen.key && <Badge className="ml-2">em uso</Badge>}
-                  </TableCell>
-                  <TableCell className="text-right tabular-nums">{fmtDec(r.brier)}</TableCell>
-                  <TableCell className="text-right tabular-nums">{fmtPct(r.capture, 1)}</TableCell>
+            </TableHeader>
+            <TableBody>
+              {bt.levelTests.map((t) => (
+                <TableRow key={t.id}>
+                  <TableCell>{t.label}</TableCell>
+                  <TableCell className="text-right tabular-nums">{fmtPct(t.capture, 1)}</TableCell>
+                  <TableCell className="text-right tabular-nums">{fmtDec(t.brier)}</TableCell>
+                  <TableCell>{t.included ? <Badge>entra</Badge> : <span className="text-muted-foreground">fora</span>}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
           <p className="text-sm text-muted-foreground">
-            Depois da calibração, o erro da configuração em uso cai de {fmtDec(bt.chosen.brier)} para{" "}
-            {fmtDec(bt.calibratedBrier)} (medido deixando cada mês de fora do ajuste). {results.length} configurações testadas.{" "}
-            {best.config.levels === "tempo"
-              ? "Usar produto, região e vendedor não melhorou a previsão."
-              : "Usar produto, região e vendedor melhorou a previsão."}
+            Referência sem grupos: {fmtPct(base.capture, 1)}. Um grupo entra se capturar pelo menos essa receita.
+          </p>
+
+          <p className="text-sm text-muted-foreground">
+            Urgência: {bt.urgencyTests.length} combinações de força ({POLICY.candidates.urgencyLambda.map((l) => fmtDec(l, 1)).join("; ")}) e janela (
+            {POLICY.candidates.urgencyHorizonDays.join(", ")} dias). Melhor: força {fmtDec(bestUrgency.config.urgency.lambda, 1)} em{" "}
+            {bestUrgency.config.urgency.horizonDays} dias, com {fmtPct(bestUrgency.capture, 1)} da receita no topo.{" "}
+            {cfg.urgency.lambda > 0 ? "Ficou acima da versão sem urgência e está em uso." : "Não superou a versão sem urgência, então fica desligada."}
           </p>
         </CardContent>
       </Card>
-
-      <div className="grid gap-6 lg:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Chance de ganho pela idade</CardTitle>
-            <CardDescription>
-              Já calibrada. É o principal componente da chance nesta versão. Além do histórico, a chance é (ganhos + 1) ÷ (deals
-              + 2) entre os deals que chegaram àquela idade, sem nunca subir com a idade.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Aberto há</TableHead>
-                  <TableHead className="text-right">Chance de ganhar</TableHead>
-                  <TableHead className="text-right">Deals que chegaram lá</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {AGES.map((age) => {
-                  const w = Math.floor(age / POLICY.weekDays)
-                  const p = w > curve.lastEventWeek ? null : calibrate(curve.pFrom[w], bt.calibrator)
-                  return (
-                    <TableRow key={age}>
-                      <TableCell>{age} dias</TableCell>
-                      <TableCell className="text-right tabular-nums">{fmtPct(p)}</TableCell>
-                      <TableCell className="text-right tabular-nums">{fmtInt(curve.support[w] ?? 0)}</TableCell>
-                    </TableRow>
-                  )
-                })}
-                <TableRow>
-                  <TableCell>mais de {t.tardio} dias</TableCell>
-                  <TableCell className="text-right tabular-nums">
-                    {fmtChance(tailRange[0])} a {fmtChance(tailRange[1])}
-                  </TableCell>
-                  <TableCell className="text-right text-muted-foreground">revalidar</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Estados do deal</CardTitle>
-            <CardDescription>Percentis fixos por política; os dias são reaprendidos a cada base.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableBody>
-                <StateRow label="Início" rule="antes da mediana do ciclo das perdas" days={`até ${t.inicio} dias`} />
-                <StateRow label="Em andamento" rule="até 75% dos ganhos" days={`${t.inicio}–${t.andamento} dias`} />
-                <StateRow label="Esfriando" rule="entre 75% e 95% dos ganhos" days={`${t.andamento}–${t.esfriando} dias`} />
-                <StateRow label="Tardio" rule="entre 95% e 99% dos ganhos" days={`${t.esfriando}–${t.tardio} dias`} />
-                <StateRow label="Revalidar" rule="depois de 99% dos ganhos" days={`mais de ${t.tardio} dias`} />
-              </TableBody>
-            </Table>
-            <p className="mt-3 text-sm text-muted-foreground">
-              Valor se ganhar = preço de tabela × {fmtDec(model.rho.mean)} (razão média entre valor fechado e
-              preço).
-            </p>
-          </CardContent>
-        </Card>
-      </div>
 
       <Card>
         <CardHeader>
           <CardTitle>Peso aprendido por grupo</CardTitle>
           <CardDescription>
-            Cada grupo só ganha peso se variar mais do que o acaso explicaria. Nenhum nome é regra fixa: vendedor, produto ou região
-            novos começam com peso zero e herdam o nível acima.
+            Cada grupo só ganha peso se variar mais do que o acaso explicaria. Nenhum nome é regra fixa: vendedor, produto, região
+            ou cliente novos começam com peso zero e herdam o nível acima.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -213,12 +243,6 @@ export default async function ModeloPage() {
               })}
             </TableBody>
           </Table>
-          {model.config.levels === "tempo" && (
-            <p className="mt-3 text-sm text-muted-foreground">
-              Mesmo com esses pesos, o teste em datas passadas mostrou que os grupos não melhoram a previsão; por isso a versão em
-              uso considera só o tempo. Se isso mudar com novos resultados, a configuração muda sozinha.
-            </p>
-          )}
         </CardContent>
       </Card>
 
@@ -260,7 +284,8 @@ export default async function ModeloPage() {
           <CardTitle>Atualizar a base</CardTitle>
           <CardDescription>
             Envie os quatro CSVs exportados do CRM, no mesmo formato. A base é validada antes de substituir a atual; em seguida o
-            modelo reaprende, disputa com a versão vigente no teste em datas passadas e os scores são recalculados.
+            modelo reaprende, disputa com a versão vigente no teste em datas passadas e os scores são recalculados. Cada upload também
+            ensina a conversão de Prospecting.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -279,8 +304,8 @@ export default async function ModeloPage() {
                 <TableHead>Versão</TableHead>
                 <TableHead>Base até</TableHead>
                 <TableHead className="text-right">Oportunidades</TableHead>
-                <TableHead className="text-right">Erro</TableHead>
                 <TableHead className="text-right">Receita no topo</TableHead>
+                <TableHead className="text-right">Erro</TableHead>
                 <TableHead>Configuração</TableHead>
               </TableRow>
             </TableHeader>
@@ -290,8 +315,8 @@ export default async function ModeloPage() {
                   <TableCell className="font-medium">v{ver.version}</TableCell>
                   <TableCell>{ver.refDay}</TableCell>
                   <TableCell className="text-right tabular-nums">{fmtInt(ver.deals)}</TableCell>
-                  <TableCell className="text-right tabular-nums">{fmtDec(ver.calibratedBrier)}</TableCell>
                   <TableCell className="text-right tabular-nums">{fmtPct(ver.capture, 1)}</TableCell>
+                  <TableCell className="text-right tabular-nums">{fmtDec(ver.calibratedBrier)}</TableCell>
                   <TableCell className="max-w-72 truncate text-muted-foreground">{ver.configKey}</TableCell>
                 </TableRow>
               ))}
@@ -312,12 +337,22 @@ function Info({ label, value, className }: { label: string; value: string; class
   )
 }
 
-function StateRow({ label, rule, days }: { label: string; rule: string; days: string }) {
+function FormulaRow({ name, how, now }: { name: string; how: string; now: string }) {
   return (
     <TableRow>
-      <TableCell className="font-medium">{label}</TableCell>
-      <TableCell className="text-muted-foreground">{rule}</TableCell>
-      <TableCell className="text-right tabular-nums">{days}</TableCell>
+      <TableCell className="font-medium whitespace-normal">{name}</TableCell>
+      <TableCell className="whitespace-normal text-muted-foreground">{how}</TableCell>
+      <TableCell className="whitespace-normal">{now}</TableCell>
+    </TableRow>
+  )
+}
+
+function ResultRow({ label, capture, brier, muted, strong }: { label: string; capture: number; brier: number; muted?: boolean; strong?: boolean }) {
+  return (
+    <TableRow className={cn(strong && "bg-muted/60 font-medium")}>
+      <TableCell className={cn("whitespace-normal", muted && "text-muted-foreground")}>{label}</TableCell>
+      <TableCell className="text-right tabular-nums">{fmtPct(capture, 1)}</TableCell>
+      <TableCell className="text-right tabular-nums">{fmtDec(brier)}</TableCell>
     </TableRow>
   )
 }
