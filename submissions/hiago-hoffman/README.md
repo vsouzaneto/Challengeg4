@@ -128,7 +128,7 @@ Detalhes em [`solution/README.md`](solution/README.md#limitações).
 | Ferramenta | Para que usou |
 |---|---|
 | Claude Code (Claude Opus 5.5) | Fork e setup, download do dataset, análise estatística, desenho do modelo, implementação, testes, validação no navegador e documentação |
-| ChatGPT | Revisão crítica independente da análise, com acesso à base ([conversa](process-log/chat-export/conversa-chatgpt.md) e [documento gerado](process-log/revisao-externa-ia.md)) |
+| ChatGPT | Revisão crítica independente da análise, com acesso à base ([conversa](process-log/chat-exports/conversa-chatgpt.md) e [documento gerado](process-log/revisao-externa-ia.md)) |
 | Skills da Intento (`intento-product-design`, `shadcn`) | Workflow de produto e componentes de interface |
 
 ### Workflow
@@ -167,8 +167,8 @@ Detalhes em [`solution/README.md`](solution/README.md#limitações).
 - [ ] Screenshots das conversas com IA
 - [ ] Screen recording do workflow
 - [x] Chat exports:
-  - Claude Code, a sessão inteira: [`process-log/chat-export/conversa-claude-code.md`](process-log/chat-export/conversa-claude-code.md)
-  - ChatGPT, a revisão independente: [`process-log/chat-export/conversa-chatgpt.md`](process-log/chat-export/conversa-chatgpt.md)
+  - Claude Code, a sessão inteira: [`process-log/chat-exports/conversa-claude-code.md`](process-log/chat-exports/conversa-claude-code.md)
+  - ChatGPT, a revisão independente: [`process-log/chat-exports/conversa-chatgpt.md`](process-log/chat-exports/conversa-chatgpt.md)
 - [x] Git history (branch `submission/hiago-hoffman`): cada commit é uma iteração, do setup à nota v2
 - [x] Outro:
   - process log narrado: [`process-log/README.md`](process-log/README.md);

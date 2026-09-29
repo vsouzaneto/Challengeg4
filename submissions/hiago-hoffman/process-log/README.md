@@ -7,7 +7,7 @@ Como a solução foi construída, em ordem, com os pontos em que a IA errou e as
 | Ferramenta | Uso |
 |---|---|
 | **Claude Code** (desktop, Claude Opus 5.5) | Fork e setup do repositório, download do dataset (conector Kaggle), análise exploratória em Python/pandas/scipy, desenho do modelo, implementação (Next.js + TypeScript), testes, validação no navegador integrado, documentação |
-| **ChatGPT (revisão independente)** | Revisou criticamente a primeira análise, com acesso à base. Conversa em [`chat-export/conversa-chatgpt.md`](chat-export/conversa-chatgpt.md); documento gerado em [`revisao-externa-ia.md`](revisao-externa-ia.md) |
+| **ChatGPT (revisão independente)** | Revisou criticamente a primeira análise, com acesso à base. Conversa em [`chat-exports/conversa-chatgpt.md`](chat-exports/conversa-chatgpt.md); documento gerado em [`revisao-externa-ia.md`](revisao-externa-ia.md) |
 | **Skills da Intento** | `intento-product-design` (estrutura antes da estética, estados, validação), `shadcn` (componentes Base UI) |
 | **Navegador integrado do Claude Code** | Validação das jornadas: filtros, tooltip, detalhamento, upload válido e inválido, mobile |
 
@@ -129,5 +129,5 @@ Verificações que mudaram o código:
 - Histórico do git na branch `submission/hiago-hoffman`.
 - Scripts de análise em [`analysis/`](analysis/).
 - Revisão externa em [`revisao-externa-ia.md`](revisao-externa-ia.md).
-- Conversas completas: [Claude Code](chat-export/conversa-claude-code.md) e [ChatGPT](chat-export/conversa-chatgpt.md).
+- Conversas completas: [Claude Code](chat-exports/conversa-claude-code.md) e [ChatGPT](chat-exports/conversa-chatgpt.md).
 - Testes em `solution/src/lib/scoring/model.test.ts`.
