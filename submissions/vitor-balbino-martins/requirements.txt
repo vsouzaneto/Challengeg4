@@ -1,0 +1,32 @@
+fastapi
+uvicorn[standard]
+typer[all]
+pydantic-settings
+python-json-logger
+python-multipart
+python-jose[cryptography]
+passlib[bcrypt]
+sqlalchemy[asyncio]
+asyncpg
+alembic
+langchain-postgres
+langchain-huggingface
+sentence-transformers
+scikit-learn
+numpy
+psycopg[binary]
+openai
+
+# -- optional: auto-enabled by add-queue / add-schedule (celery) --
+# celery[redis]
+# redis[hiredis]
+
+# -- optional: auto-enabled by add-schedule --backend apscheduler --
+# apscheduler
+
+# dev
+pytest
+pytest-asyncio
+httpx
+pytest-cov
+ruff

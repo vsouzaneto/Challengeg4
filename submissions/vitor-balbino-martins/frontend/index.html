@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Support Intelligence</title>
+<meta name="description" content="Painel operacional de suporte conectado a API de analise de tickets.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Pular para o conteudo</a>
+
+<div class="shell">
+
+  <!-- ==================== Sidebar ==================== -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32" role="img"><path d="M16 2 29 9.5v13L16 30 3 22.5v-13L16 2Z"/><path d="m9 16 4.5 4.5L23 11"/></svg></span>
+      <span class="brand-text">
+        <span class="brand-name">Support Intelligence</span>
+        <span class="brand-sub">Operations</span>
+      </span>
+    </div>
+
+    <nav class="side-nav" aria-label="Secoes">
+      <button class="nav-item" type="button" data-route="dashboard">
+        <span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span class="nav-label">Dashboard</span>
+      </button>
+      <button class="nav-item" type="button" data-route="overview" aria-current="page">
+        <span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span class="nav-label">Relatorio</span>
+      </button>
+      <button class="nav-item" type="button" data-route="kanban">
+        <span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="5" height="16" rx="1"/><rect x="10" y="4" width="5" height="10" rx="1"/><rect x="16" y="4" width="5" height="13" rx="1"/></svg></span><span class="nav-label">Kanban</span>
+      </button>
+      <button class="nav-item" type="button" data-route="improvements">
+        <span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5h14v5H5zM5 14h8v5H5zM16 14h3v5h-3z"/></svg></span><span class="nav-label">Melhorias</span>
+      </button>
+      <button class="nav-item" type="button" data-route="clusters">
+        <span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><circle cx="8" cy="16" r="3"/><circle cx="16" cy="16" r="3"/><path d="M10 8h4M8 10v4M16 10v4M10 16h4"/></svg></span><span class="nav-label">Agrupamentos</span>
+      </button>
+      <button class="nav-item" type="button" data-route="satisfaction">
+        <span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10Z"/></svg></span><span class="nav-label">Satisfacao</span>
+      </button>
+      <button class="nav-item" type="button" data-route="search">
+        <span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></span><span class="nav-label">Busca RAG</span>
+      </button>
+      <button class="nav-item" type="button" data-route="costs">
+        <span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v18M16 7.5C15.3 6.5 14 6 12 6c-2.5 0-4 1.1-4 2.8 0 4.2 8 2 8 6.2 0 1.8-1.7 3-4 3-2 0-3.5-.6-4.3-1.8"/></svg></span><span class="nav-label">Custo</span>
+      </button>
+    </nav>
+
+    <div class="side-foot">
+      <button class="conn" type="button" id="conn" data-state="unknown"
+              aria-label="Estado da conexao com a API. Abrir configuracoes.">
+        <span class="conn-dot" aria-hidden="true"></span>
+        <span>
+          <span class="conn-label" id="conn-label">Verificando API</span>
+          <span class="conn-meta" id="conn-meta">&mdash;</span>
+        </span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ==================== Main ==================== -->
+  <main class="main" id="main">
+
+    <header class="topbar">
+      <h1 class="topbar-title" id="topbar-title">Relatorio</h1>
+      <div class="topbar-tools">
+        <button class="btn btn-pearl" type="button" id="open-settings">Configurar API</button>
+        <button class="btn btn-utility" type="button" id="refresh-health">Testar conexao</button>
+      </div>
+    </header>
+
+    <!-- ---------- Relatorio de suporte ---------- -->
+    <section class="view is-active" id="view-overview" role="region" aria-labelledby="h-overview">
+      <div class="view-head">
+        <div>
+          <span class="eyebrow">POST /reports/support</span>
+          <h2 id="h-overview">O que a base esta dizendo.</h2>
+          <p>Metricas calculadas sobre o CSV completo e consolidadas por dois agentes Ollama:
+             extracao por lote e consolidacao operacional.</p>
+        </div>
+      </div>
+
+      <form class="filters" id="report-filters">
+        <div class="field">
+          <label for="report-dataset">Dataset</label>
+          <select id="report-dataset" name="dataset"></select>
+        </div>
+        <div class="field">
+          <label for="report-chunk">Registros por lote</label>
+          <input type="number" id="report-chunk" name="chunk_size" value="500" min="10" max="500" step="10">
+        </div>
+        <div class="field">
+          <label for="report-cost">Custo por hora (R$)</label>
+          <input type="number" id="report-cost" name="hourly_cost" value="80" min="0" step="1">
+        </div>
+        <div class="filters-actions">
+          <button class="btn btn-ghost btn-sm" type="button" id="report-cancel" hidden>Cancelar</button>
+          <button class="btn btn-primary" type="submit" id="report-run">Gerar relatorio</button>
+        </div>
+        <p class="filters-hint" id="report-hint"></p>
+      </form>
+
+      <div id="report-body"></div>
+    </section>
+
+    <section class="view" id="view-improvements" role="region" aria-labelledby="h-improvements">
+      <div class="view-head"><div><span class="eyebrow">POST /reports/improvements</span><h2 id="h-improvements">Da dor à ação.</h2><p>Esteira consolidada com os principais problemas da base, impacto operacional e ações recomendadas pela IA.</p></div><button class="btn btn-primary" type="button" id="improvements-run">Consolidar base</button></div>
+      <div id="improvements-body"><div class="state state-center"><h3>Nenhuma consolidação executada</h3><p>O agente reúne relatório, satisfação, clusters e evidências textuais.</p></div></div>
+    </section>
+
+    <section class="view" id="view-kanban" role="region" aria-labelledby="h-kanban">
+      <div class="view-head"><div><span class="eyebrow">GET /dashboard/tickets</span><h2 id="h-kanban">Fila de atendimento.</h2><p>Tickets persistidos da base, organizados pela etapa operacional atual.</p></div><button class="btn btn-primary" type="button" id="kanban-refresh">Atualizar tickets</button></div>
+      <div id="kanban-hint" class="card-note" style="margin-bottom:16px"></div>
+      <div id="kanban-body" class="kanban-board"><div class="state state-center"><div class="spinner"></div><h3>Carregando tickets</h3></div></div>
+    </section>
+
+    <!-- ---------- Dashboard persistido ---------- -->
+    <section class="view" id="view-dashboard" role="region" aria-labelledby="h-dashboard">
+      <div class="view-head">
+        <div><span class="eyebrow">GET /dashboard</span><h2 id="h-dashboard">Operação em tempo real.</h2><p>KPIs servidos do snapshot persistido, sem recalcular o RAG a cada abertura.</p></div>
+        <button class="btn btn-primary" type="button" id="dashboard-sync">Sincronizar CSV</button>
+      </div>
+      <div id="dashboard-body"><div class="state state-center"><div class="spinner"></div><h3>Carregando dashboard</h3></div></div>
+    </section>
+
+    <!-- ---------- Agrupamentos ---------- -->
+    <section class="view" id="view-clusters" role="region" aria-labelledby="h-clusters">
+      <div class="view-head">
+        <div>
+          <span class="eyebrow">POST /clustering</span>
+          <h2 id="h-clusters">Tickets que se repetem.</h2>
+          <p>O agrupamento reúne tickets semanticamente parecidos. Use os grupos maiores para encontrar temas repetitivos e os representantes para entender o motivo da classificação.</p>
+        </div>
+      </div>
+
+      <form class="filters" id="cluster-filters">
+        <div class="field">
+          <label for="cluster-dataset">Dataset</label>
+          <select id="cluster-dataset" name="dataset"></select>
+        </div>
+        <div class="field">
+          <label for="cluster-k">Grupos</label>
+          <input type="number" id="cluster-k" name="clusters" value="12" min="2" max="100">
+        </div>
+        <div class="field">
+          <label for="cluster-batch">Batch size</label>
+          <input type="number" id="cluster-batch" name="batch_size" value="256" min="32" max="2048" step="32">
+        </div>
+        <div class="field">
+          <label for="cluster-reps">Representantes</label>
+          <input type="number" id="cluster-reps" name="representatives" value="5" min="1" max="20">
+        </div>
+        <div class="filters-actions">
+          <button class="btn btn-ghost btn-sm" type="button" id="cluster-cancel" hidden>Cancelar</button>
+          <button class="btn btn-primary" type="submit" id="cluster-run">Agrupar</button>
+        </div>
+        <p class="filters-hint" id="cluster-hint"></p>
+      </form>
+
+      <div id="cluster-body"></div>
+    </section>
+
+    <!-- ---------- Satisfacao ---------- -->
+    <section class="view" id="view-satisfaction" role="region" aria-labelledby="h-satisfaction">
+      <div class="view-head">
+        <div>
+          <span class="eyebrow">POST /reports/satisfaction</span>
+          <h2 id="h-satisfaction">Onde a nota cai.</h2>
+          <p>Cruzamento dos dois datasets por similaridade TF-IDF: cada ticket com nota recebe o
+             topico do documento mais proximo, e a media por topico revela a dor real.</p>
+        </div>
+      </div>
+
+      <form class="filters" id="sat-filters">
+        <p class="card-note" style="flex:1 1 320px;margin:0">
+          O endpoint nao recebe parametros: ele cruza
+          <strong>customer_support_tickets.csv</strong> com
+          <strong>all_tickets_processed_improved_v3.csv</strong>.
+        </p>
+        <div class="filters-actions">
+          <button class="btn btn-ghost btn-sm" type="button" id="sat-cancel" hidden>Cancelar</button>
+          <button class="btn btn-primary" type="submit" id="sat-run">Cruzar datasets</button>
+        </div>
+        <p class="filters-hint" id="sat-hint"></p>
+      </form>
+
+      <div id="sat-body"></div>
+    </section>
+
+    <!-- ---------- Busca RAG ---------- -->
+    <section class="view" id="view-search" role="region" aria-labelledby="h-search">
+      <div class="view-head">
+        <div>
+          <span class="eyebrow">POST /rag/search &middot; POST /rag/index</span>
+          <h2 id="h-search">Pergunte a base.</h2>
+          <p>Busca semantica sobre os tickets indexados no PGVector. O indice precisa existir
+             antes da primeira consulta.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-wide-left">
+        <div>
+          <form class="filters" id="search-filters">
+            <div class="field field-grow">
+              <label for="rag-query">Consulta</label>
+              <input class="search-input" type="search" id="rag-query" name="query"
+                     placeholder="ex.: cliente nao consegue acessar a conta" minlength="2" required>
+            </div>
+            <div class="field">
+              <label for="rag-k">Resultados</label>
+              <input type="number" id="rag-k" name="k" value="5" min="1" max="50">
+            </div>
+            <div class="filters-actions">
+              <button class="btn btn-primary" type="submit" id="rag-run">Buscar</button>
+            </div>
+            <p class="filters-hint" id="search-hint"></p>
+          </form>
+          <div id="search-body"></div>
+        </div>
+
+        <aside class="tile-dark" id="index-panel" aria-labelledby="h-index">
+          <span class="eyebrow">INDICE VETORIAL</span>
+          <h3 id="h-index">Estado da indexacao</h3>
+          <div id="index-body"></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ---------- Custo ---------- -->
+    <section class="view" id="view-costs" role="region" aria-labelledby="h-costs">
+      <div class="view-head">
+        <div>
+          <span class="eyebrow">DERIVADO DE /reports/support</span>
+          <h2 id="h-costs">Quanto custa a demora.</h2>
+          <p>Todos os numeros abaixo saem do bloco <code>metrics.waste</code> do relatorio.
+             O unico valor que voce informa e o custo por hora.</p>
+        </div>
+      </div>
+      <div id="costs-body"></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ==================== Configuracao da API ==================== -->
+<dialog class="sheet" id="settings">
+  <form method="dialog" id="settings-form">
+    <h2>Conexao com a API</h2>
+    <p>Endereco base do backend FastAPI, incluindo o prefixo da versao.</p>
+    <div class="sheet-body">
+      <div class="field">
+        <label for="api-base">Base URL</label>
+        <input type="url" id="api-base" placeholder="http://localhost:8000/api/v1" required>
+      </div>
+      <p class="card-note" id="settings-note"></p>
+    </div>
+    <div class="sheet-foot">
+      <button class="btn btn-pearl" type="button" id="settings-cancel">Cancelar</button>
+      <button class="btn btn-primary" type="submit">Salvar</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+<div class="tooltip" id="tooltip" role="tooltip" aria-hidden="true"></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
