@@ -1,0 +1,11 @@
+{
+  "sourceUrl": "https://www.kaggle.com/datasets/agungpambudi/crm-sales-predictive-analytics",
+  "downloadUrl": "https://www.kaggle.com/api/v1/datasets/download/agungpambudi/crm-sales-predictive-analytics",
+  "license": "CC0: Public Domain",
+  "licenseEvidenceUrl": "https://www.kaggle.com/api/v1/datasets/list?search=crm-sales-predictive-analytics",
+  "licenseVerifiedOn": "2026-09-30",
+  "retrievedAt": "2026-09-30",
+  "datasetVersion": "kaggle-v1",
+  "lastUpdatedAtSource": "2024-04-14T15:32:58",
+  "notes": "Empresas fictícias em dataset público de demonstração. Licença declarada conferida na API Kaggle. Bytes originais preservados."
+}

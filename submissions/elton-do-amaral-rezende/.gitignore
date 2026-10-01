@@ -1,0 +1,16 @@
+node_modules/
+dist/
+coverage/
+.vite/
+*.tsbuildinfo
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+.npm-cache/
+.work/
+.sites-runtime/
+solution/data/generated/*.json
+solution/src/data/*.generated.json
