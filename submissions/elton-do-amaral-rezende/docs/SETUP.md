@@ -82,4 +82,4 @@ Os comandos do produto funcionam a partir de `solution/`; a solução pode ser t
 
 [Dados](DATA.md) · [Scoring](SCORING.md) · [Validação](VALIDATION.md) · [Plano por etapas](../Referencias/PLANO_IMPLEMENTACAO_LEAD_SCORER.md) · [Diário](../process-log/DIARIO.md).
 
-A publicação desta aplicação permite a revisão do produto. O README da raiz segue o template oficial, preenchido com Elton do Amaral Rezende, GitHub MunhozVs e LinkedIn. A submissão ao recrutamento é um passo separado: faltam confirmação do prazo e montagem do fork/PR conforme as regras vigentes. [Orientações de entrega](ENTREGA.md). Nenhum PR de candidatura foi enviado.
+A aplicação está pública para revisão. O README da raiz segue o template oficial, preenchido com Elton do Amaral Rezende, GitHub MunhozVs e LinkedIn. A candidatura foi enviada em 01/10/2026 pelo [Pull Request #173](https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/173). [Registro da entrega](ENTREGA.md).

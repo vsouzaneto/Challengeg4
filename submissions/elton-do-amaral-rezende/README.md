@@ -117,4 +117,4 @@ O diário inclui o link da conversa inicial no ChatGPT, que pode exigir acesso �
 
 ---
 
-Documento preparado em **01/10/2026**. **Submissão ainda não enviada**.
+Submissão enviada em **01/10/2026**: [Pull Request #173](https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/173).
