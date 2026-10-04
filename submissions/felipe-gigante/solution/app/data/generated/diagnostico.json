@@ -1,0 +1,779 @@
+{
+  "data_quality": {
+    "rows": 8469,
+    "rows_claimed_in_brief": 30000,
+    "status_counts": {
+      "Pending Customer Response": 2881,
+      "Open": 2819,
+      "Closed": 2769
+    },
+    "missing_first_response": 2819,
+    "frt_window": [
+      "2023-05-31 21:55:39",
+      "2023-06-02 00:54:21"
+    ],
+    "frt_window_hours": 27.0,
+    "has_creation_timestamp": false,
+    "closed": 2769,
+    "closed_negative_resolution": 1365,
+    "closed_negative_resolution_pct": 49.3,
+    "valid_resolution_rows": 1402,
+    "placeholder_pct": 100.0,
+    "placeholders": {
+      "{product_purchased}": 13873,
+      "{error_message}": 472,
+      "{product_id}": 52,
+      "{product_name}": 34,
+      "{product}": 13,
+      "{product_price}": 13
+    },
+    "type_subject_cramers_v": 0.034,
+    "type_subject_p": 0.981,
+    "csat_distribution": {
+      "1": 553,
+      "2": 549,
+      "3": 580,
+      "4": 543,
+      "5": 544
+    },
+    "csat_uniform_p": 0.797,
+    "text_to_type_accuracy": 20.3,
+    "text_to_type_chance": 20.0,
+    "text_to_subject_accuracy": 6.3,
+    "text_to_subject_chance": 6.2,
+    "resolution_examples": [
+      "Such option result friend able director.",
+      "Pick Republican offer world actually road during.",
+      "Deal step team east pressure.",
+      "Save operation blue call her pull."
+    ],
+    "distributions": {
+      "Ticket Type": {
+        "Refund request": 20.7,
+        "Technical issue": 20.6,
+        "Cancellation request": 20.0,
+        "Product inquiry": 19.4,
+        "Billing inquiry": 19.3
+      },
+      "Ticket Priority": {
+        "Medium": 25.9,
+        "Critical": 25.1,
+        "High": 24.6,
+        "Low": 24.4
+      },
+      "Ticket Channel": {
+        "Email": 25.3,
+        "Phone": 25.2,
+        "Social media": 25.0,
+        "Chat": 24.5
+      }
+    }
+  },
+  "bottlenecks": {
+    "channel": {
+      "rows": {
+        "Chat": {
+          "n": 355,
+          "mean": 7.5,
+          "median": 6.52,
+          "p75": 11.32,
+          "p90": 16.07,
+          "p95": 18.49
+        },
+        "Email": {
+          "n": 372,
+          "mean": 7.66,
+          "median": 6.47,
+          "p75": 11.42,
+          "p90": 15.8,
+          "p95": 18.64
+        },
+        "Phone": {
+          "n": 327,
+          "mean": 7.26,
+          "median": 6.05,
+          "p75": 10.64,
+          "p90": 15.14,
+          "p95": 17.32
+        },
+        "Social media": {
+          "n": 348,
+          "mean": 7.91,
+          "median": 6.43,
+          "p75": 12.33,
+          "p90": 16.92,
+          "p95": 19.08
+        }
+      },
+      "kruskal_p": 0.765
+    },
+    "type": {
+      "rows": {
+        "Billing inquiry": {
+          "n": 273,
+          "mean": 7.01,
+          "median": 5.27,
+          "p75": 10.13,
+          "p90": 15.4,
+          "p95": 18.1
+        },
+        "Cancellation request": {
+          "n": 265,
+          "mean": 7.69,
+          "median": 6.37,
+          "p75": 11.42,
+          "p90": 15.94,
+          "p95": 18.12
+        },
+        "Product inquiry": {
+          "n": 256,
+          "mean": 7.71,
+          "median": 6.99,
+          "p75": 10.94,
+          "p90": 15.88,
+          "p95": 18.7
+        },
+        "Refund request": {
+          "n": 303,
+          "mean": 8.14,
+          "median": 6.72,
+          "p75": 12.03,
+          "p90": 17.24,
+          "p95": 19.05
+        },
+        "Technical issue": {
+          "n": 305,
+          "mean": 7.37,
+          "median": 6.38,
+          "p75": 11.22,
+          "p90": 15.43,
+          "p95": 17.93
+        }
+      },
+      "kruskal_p": 0.136
+    },
+    "priority": {
+      "rows": {
+        "Critical": {
+          "n": 374,
+          "mean": 7.15,
+          "median": 5.98,
+          "p75": 10.58,
+          "p90": 15.21,
+          "p95": 17.99
+        },
+        "High": {
+          "n": 355,
+          "mean": 8.07,
+          "median": 7.12,
+          "p75": 12.58,
+          "p90": 17.11,
+          "p95": 18.66
+        },
+        "Low": {
+          "n": 332,
+          "mean": 8.0,
+          "median": 7.11,
+          "p75": 11.42,
+          "p90": 16.82,
+          "p95": 19.03
+        },
+        "Medium": {
+          "n": 341,
+          "mean": 7.17,
+          "median": 5.87,
+          "p75": 10.65,
+          "p90": 15.35,
+          "p95": 17.78
+        }
+      },
+      "kruskal_p": 0.074
+    },
+    "subject": {
+      "rows": {
+        "Account access": {
+          "n": 93,
+          "mean": 7.43,
+          "median": 6.25,
+          "p75": 11.22,
+          "p90": 15.98,
+          "p95": 18.5
+        },
+        "Battery life": {
+          "n": 75,
+          "mean": 8.35,
+          "median": 7.22,
+          "p75": 12.02,
+          "p90": 17.84,
+          "p95": 18.42
+        },
+        "Cancellation request": {
+          "n": 82,
+          "mean": 7.53,
+          "median": 6.51,
+          "p75": 10.51,
+          "p90": 17.35,
+          "p95": 19.12
+        },
+        "Data loss": {
+          "n": 68,
+          "mean": 7.62,
+          "median": 5.42,
+          "p75": 13.1,
+          "p90": 18.0,
+          "p95": 19.57
+        },
+        "Delivery problem": {
+          "n": 81,
+          "mean": 6.93,
+          "median": 5.23,
+          "p75": 10.4,
+          "p90": 14.78,
+          "p95": 16.53
+        },
+        "Display issue": {
+          "n": 73,
+          "mean": 7.71,
+          "median": 6.5,
+          "p75": 10.82,
+          "p90": 14.49,
+          "p95": 16.07
+        },
+        "Hardware issue": {
+          "n": 95,
+          "mean": 7.93,
+          "median": 6.32,
+          "p75": 11.53,
+          "p90": 16.16,
+          "p95": 20.84
+        },
+        "Installation support": {
+          "n": 85,
+          "mean": 6.87,
+          "median": 5.77,
+          "p75": 9.57,
+          "p90": 15.34,
+          "p95": 16.64
+        },
+        "Network problem": {
+          "n": 106,
+          "mean": 7.86,
+          "median": 6.96,
+          "p75": 11.41,
+          "p90": 16.94,
+          "p95": 18.61
+        },
+        "Payment issue": {
+          "n": 74,
+          "mean": 7.91,
+          "median": 7.51,
+          "p75": 11.3,
+          "p90": 15.82,
+          "p95": 17.48
+        },
+        "Peripheral compatibility": {
+          "n": 92,
+          "mean": 7.21,
+          "median": 5.88,
+          "p75": 9.87,
+          "p90": 14.81,
+          "p95": 17.9
+        },
+        "Product compatibility": {
+          "n": 108,
+          "mean": 7.13,
+          "median": 5.77,
+          "p75": 9.9,
+          "p90": 15.9,
+          "p95": 18.03
+        },
+        "Product recommendation": {
+          "n": 100,
+          "mean": 7.51,
+          "median": 6.14,
+          "p75": 11.05,
+          "p90": 16.73,
+          "p95": 18.4
+        },
+        "Product setup": {
+          "n": 91,
+          "mean": 7.63,
+          "median": 6.47,
+          "p75": 11.56,
+          "p90": 15.57,
+          "p95": 18.12
+        },
+        "Refund request": {
+          "n": 85,
+          "mean": 7.06,
+          "median": 5.73,
+          "p75": 11.27,
+          "p90": 14.67,
+          "p95": 15.39
+        },
+        "Software bug": {
+          "n": 94,
+          "mean": 8.81,
+          "median": 8.47,
+          "p75": 13.37,
+          "p90": 17.68,
+          "p95": 19.72
+        }
+      },
+      "kruskal_p": 0.83
+    },
+    "critical_vs_low": {
+      "critical_median": 5.98,
+      "low_median": 7.11,
+      "mannwhitney_p_critical_faster": 0.027
+    },
+    "combos_worst": [
+      {
+        "channel": "Chat",
+        "type": "Technical issue",
+        "priority": "Low",
+        "n": 15,
+        "median": 13.23,
+        "p90": 16.7
+      },
+      {
+        "channel": "Phone",
+        "type": "Refund request",
+        "priority": "High",
+        "n": 13,
+        "median": 12.65,
+        "p90": 17.87
+      },
+      {
+        "channel": "Chat",
+        "type": "Refund request",
+        "priority": "High",
+        "n": 22,
+        "median": 12.45,
+        "p90": 18.4
+      },
+      {
+        "channel": "Email",
+        "type": "Product inquiry",
+        "priority": "Medium",
+        "n": 14,
+        "median": 9.67,
+        "p90": 13.17
+      },
+      {
+        "channel": "Phone",
+        "type": "Cancellation request",
+        "priority": "Low",
+        "n": 10,
+        "median": 9.25,
+        "p90": 16.07
+      },
+      {
+        "channel": "Social media",
+        "type": "Billing inquiry",
+        "priority": "Medium",
+        "n": 14,
+        "median": 9.24,
+        "p90": 17.51
+      },
+      {
+        "channel": "Email",
+        "type": "Billing inquiry",
+        "priority": "High",
+        "n": 11,
+        "median": 9.22,
+        "p90": 13.07
+      },
+      {
+        "channel": "Email",
+        "type": "Cancellation request",
+        "priority": "High",
+        "n": 16,
+        "median": 9.16,
+        "p90": 16.28
+      },
+      {
+        "channel": "Social media",
+        "type": "Product inquiry",
+        "priority": "Low",
+        "n": 23,
+        "median": 9.13,
+        "p90": 17.92
+      },
+      {
+        "channel": "Social media",
+        "type": "Refund request",
+        "priority": "High",
+        "n": 20,
+        "median": 8.94,
+        "p90": 19.97
+      }
+    ],
+    "combos_best": [
+      {
+        "channel": "Social media",
+        "type": "Billing inquiry",
+        "priority": "High",
+        "n": 16,
+        "median": 2.71,
+        "p90": 12.65
+      },
+      {
+        "channel": "Phone",
+        "type": "Cancellation request",
+        "priority": "High",
+        "n": 12,
+        "median": 3.13,
+        "p90": 8.44
+      },
+      {
+        "channel": "Email",
+        "type": "Technical issue",
+        "priority": "Medium",
+        "n": 17,
+        "median": 3.3,
+        "p90": 16.83
+      },
+      {
+        "channel": "Chat",
+        "type": "Refund request",
+        "priority": "Critical",
+        "n": 17,
+        "median": 3.47,
+        "p90": 12.86
+      },
+      {
+        "channel": "Email",
+        "type": "Billing inquiry",
+        "priority": "Low",
+        "n": 17,
+        "median": 3.5,
+        "p90": 13.64
+      }
+    ],
+    "overall": {
+      "n": 1402,
+      "mean": 7.59,
+      "median": 6.38,
+      "p75": 11.36,
+      "p90": 16.0,
+      "p95": 18.52
+    },
+    "worst_combo_permutation_p": 0.13,
+    "null_max_median_p50": 11.77
+  },
+  "backlog": {
+    "open_without_first_response": 2819,
+    "pending_customer": 2881,
+    "closed": 2769,
+    "open_pct": 33.3,
+    "pending_pct": 34.0,
+    "critical_pct": 25.1,
+    "critical_or_high_pct": 49.8,
+    "open_critical": 692
+  },
+  "csat": {
+    "channel": {
+      "kruskal_p": 0.278,
+      "spread": 0.13,
+      "best": [
+        "Chat",
+        3.08
+      ],
+      "worst": [
+        "Phone",
+        2.95
+      ],
+      "means": {
+        "Phone": 2.95,
+        "Email": 2.96,
+        "Social media": 2.97,
+        "Chat": 3.08
+      }
+    },
+    "type": {
+      "kruskal_p": 0.699,
+      "spread": 0.09,
+      "best": [
+        "Cancellation request",
+        3.03
+      ],
+      "worst": [
+        "Refund request",
+        2.93
+      ],
+      "means": {
+        "Refund request": 2.93,
+        "Technical issue": 2.96,
+        "Product inquiry": 3.02,
+        "Billing inquiry": 3.03,
+        "Cancellation request": 3.03
+      }
+    },
+    "priority": {
+      "kruskal_p": 0.629,
+      "spread": 0.09,
+      "best": [
+        "Low",
+        3.05
+      ],
+      "worst": [
+        "Critical",
+        2.96
+      ],
+      "means": {
+        "Critical": 2.96,
+        "Medium": 2.98,
+        "High": 2.98,
+        "Low": 3.05
+      }
+    },
+    "product": {
+      "kruskal_p": 0.667,
+      "spread": 0.68,
+      "best": [
+        "Dyson Vacuum Cleaner",
+        3.22
+      ],
+      "worst": [
+        "Fitbit Versa Smartwatch",
+        2.54
+      ],
+      "means": null
+    },
+    "gender": {
+      "kruskal_p": 0.625,
+      "spread": 0.06,
+      "best": [
+        "Male",
+        3.03
+      ],
+      "worst": [
+        "Female",
+        2.97
+      ],
+      "means": {
+        "Female": 2.97,
+        "Other": 2.97,
+        "Male": 3.03
+      }
+    },
+    "spearman_resolution_hours": {
+      "rho": 0.001,
+      "p": 0.976,
+      "n": 1402
+    },
+    "spearman_age": {
+      "rho": -0.004,
+      "p": 0.832
+    },
+    "model": {
+      "rf_accuracy_cv": 19.7,
+      "majority_baseline": 21.1,
+      "rf_r2_cv": -0.054,
+      "top_permutation_importance_in_sample": {
+        "res_hours": 0.2473,
+        "age": 0.2175,
+        "frt_hour": 0.1931,
+        "Ticket Channel_Chat": 0.0527,
+        "Ticket Type_Technical issue": 0.0423,
+        "Ticket Type_Refund request": 0.0388
+      }
+    }
+  },
+  "opportunity": [
+    {
+      "subject": "Refund request",
+      "n": 576,
+      "share": 6.8,
+      "complexity": "Média",
+      "risk": "Alto",
+      "mode": "Humano",
+      "why": "Decisão financeira — IA só prepara o caso",
+      "high_risk_type_pct": 59.9
+    },
+    {
+      "subject": "Software bug",
+      "n": 574,
+      "share": 6.8,
+      "complexity": "Média",
+      "risk": "Médio",
+      "mode": "Assistida",
+      "why": "IA coleta contexto e versão; humano confirma bug",
+      "high_risk_type_pct": 59.9
+    },
+    {
+      "subject": "Product compatibility",
+      "n": 567,
+      "share": 6.7,
+      "complexity": "Baixa",
+      "risk": "Baixo",
+      "mode": "Automática",
+      "why": "Matriz de compatibilidade é dado estruturado",
+      "high_risk_type_pct": 57.7
+    },
+    {
+      "subject": "Delivery problem",
+      "n": 561,
+      "share": 6.6,
+      "complexity": "Média",
+      "risk": "Médio",
+      "mode": "Assistida",
+      "why": "Requer consulta a pedido (tool via MCP)",
+      "high_risk_type_pct": 59.9
+    },
+    {
+      "subject": "Hardware issue",
+      "n": 547,
+      "share": 6.5,
+      "complexity": "Alta",
+      "risk": "Médio",
+      "mode": "Assistida",
+      "why": "Pode virar RMA/garantia",
+      "high_risk_type_pct": 61.8
+    },
+    {
+      "subject": "Battery life",
+      "n": 542,
+      "share": 6.4,
+      "complexity": "Baixa",
+      "risk": "Baixo",
+      "mode": "Automática",
+      "why": "Troubleshooting padronizado",
+      "high_risk_type_pct": 60.7
+    },
+    {
+      "subject": "Network problem",
+      "n": 539,
+      "share": 6.4,
+      "complexity": "Média",
+      "risk": "Baixo",
+      "mode": "Assistida",
+      "why": "Diagnóstico guiado, escala se persistir",
+      "high_risk_type_pct": 56.4
+    },
+    {
+      "subject": "Installation support",
+      "n": 530,
+      "share": 6.3,
+      "complexity": "Baixa",
+      "risk": "Baixo",
+      "mode": "Automática",
+      "why": "Guias de instalação versionados",
+      "high_risk_type_pct": 61.5
+    },
+    {
+      "subject": "Product setup",
+      "n": 529,
+      "share": 6.2,
+      "complexity": "Baixa",
+      "risk": "Baixo",
+      "mode": "Automática",
+      "why": "Passo a passo documentável na KB",
+      "high_risk_type_pct": 59.7
+    },
+    {
+      "subject": "Payment issue",
+      "n": 526,
+      "share": 6.2,
+      "complexity": "Média",
+      "risk": "Alto",
+      "mode": "Humano",
+      "why": "Decisão financeira",
+      "high_risk_type_pct": 61.6
+    },
+    {
+      "subject": "Product recommendation",
+      "n": 517,
+      "share": 6.1,
+      "complexity": "Baixa",
+      "risk": "Baixo",
+      "mode": "Automática",
+      "why": "Catálogo + regras; potencial upsell",
+      "high_risk_type_pct": 57.8
+    },
+    {
+      "subject": "Account access",
+      "n": 509,
+      "share": 6.0,
+      "complexity": "Baixa",
+      "risk": "Médio",
+      "mode": "Assistida",
+      "why": "Reset de senha é self-service; acesso bloqueado/suspeita de fraude vai p/ humano",
+      "high_risk_type_pct": 59.5
+    },
+    {
+      "subject": "Peripheral compatibility",
+      "n": 496,
+      "share": 5.9,
+      "complexity": "Baixa",
+      "risk": "Baixo",
+      "mode": "Automática",
+      "why": "Matriz de compatibilidade",
+      "high_risk_type_pct": 60.9
+    },
+    {
+      "subject": "Data loss",
+      "n": 491,
+      "share": 5.8,
+      "complexity": "Alta",
+      "risk": "Alto",
+      "mode": "Humano",
+      "why": "Impacto alto e irreversível; julgamento técnico",
+      "high_risk_type_pct": 61.3
+    },
+    {
+      "subject": "Cancellation request",
+      "n": 487,
+      "share": 5.8,
+      "complexity": "Média",
+      "risk": "Alto",
+      "mode": "Humano",
+      "why": "Churn: oportunidade de retenção exige humano",
+      "high_risk_type_pct": 60.4
+    },
+    {
+      "subject": "Display issue",
+      "n": 478,
+      "share": 5.6,
+      "complexity": "Média",
+      "risk": "Baixo",
+      "mode": "Assistida",
+      "why": "Pode ser defeito de hardware (garantia)",
+      "high_risk_type_pct": 61.3
+    }
+  ],
+  "mode_share": {
+    "Humano": 54.8,
+    "Assistida": 30.1,
+    "Automática": 15.1
+  },
+  "waste_defaults": {
+    "annual_tickets": 30000,
+    "aht_minutes": {
+      "Email": 14,
+      "Chat": 10,
+      "Phone": 9,
+      "Social media": 12
+    },
+    "channel_share": {
+      "Email": 0.253,
+      "Phone": 0.252,
+      "Social media": 0.25,
+      "Chat": 0.245
+    },
+    "triage_minutes": 2.5,
+    "hour_cost_brl": 48.0,
+    "auto_containment": 0.6,
+    "assist_aht_reduction": 0.35,
+    "human_prep_reduction": 0.15,
+    "ai_cost_per_ticket_brl": 0.03,
+    "platform_cost_month_brl": 1500,
+    "human_review_minutes_auto": 0.5,
+    "sources": {
+      "aht": "Premissa: benchmarks de mercado de AHT por canal (ajustável). O dataset não tem tempo de manuseio.",
+      "hour_cost": "Premissa: custo carregado de analista N1 no Brasil (~R$ 4.5k salário + encargos ≈ R$ 48/h).",
+      "ai_cost": "Llama 3.1 8B (Groq) ~US$0,05/M tokens in, ~US$0,08/M out; ~3k tokens/ticket com cascata."
+    }
+  }
+}
