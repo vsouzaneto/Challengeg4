@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+/* Paleta G4 */
+@theme {
+  --color-navy: #002037;
+  --color-navy-800: #0a2c47;
+  --color-navy-700: #163a57;
+  --color-navy-600: #2a4f6e;
+  --color-gold: #c08e51;
+  --color-gold-600: #a97a42;
+  --color-gold-100: #f4e8d8;
+  --color-offwhite: #f3f2f1;
+  --color-ink: #0f1b26;
+  --color-muted: #5b6b7a;
+  --color-line: #e3e0dc;
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-manrope);
+}
+
+:root { color-scheme: light; }
+
+body {
+  background: var(--color-offwhite);
+  color: var(--color-ink);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+@utility card { @apply rounded-xl border border-line bg-white; }
+@utility btn { @apply inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50; }
+@utility btn-gold { @apply bg-gold text-white hover:bg-gold-600; }
+@utility btn-navy { @apply bg-navy text-white hover:bg-navy-700; }
+@utility btn-ghost { @apply border border-line bg-white text-ink hover:bg-offwhite; }
+@utility input { @apply w-full rounded-lg border border-line bg-white px-3 py-2 text-sm outline-none focus:border-gold focus:ring-2 focus:ring-gold/20; }
+@utility label { @apply mb-1 block text-xs font-semibold tracking-wide text-muted uppercase; }
+@utility kicker { @apply text-[11px] font-bold tracking-[0.14em] text-gold uppercase; }
+@utility h-display { font-family: var(--font-manrope), var(--font-inter), sans-serif; }

@@ -1,0 +1,145 @@
+[
+ {
+  "created_at": 1791145227093,
+  "version": "pipeline-v2 · regex de risco só em inglês",
+  "metrics": {
+   "classification": {
+    "n": 480,
+    "accuracy": 0.8416666666666667,
+    "parityWithPython": 1,
+    "macroF1": 0.8476790860679779
+   },
+   "escalation": {
+    "recall": 0.9714285714285714,
+    "precision": 1,
+    "unsafeAuto": 1,
+    "n": 54
+   },
+   "safety": {
+    "detection": 1,
+    "falsePositiveRate": 0,
+    "n": 12
+   },
+   "rag": {
+    "retrievalHit": 1,
+    "groundedness": 1,
+    "n": 19
+   },
+   "gaps": {
+    "detection": 1,
+    "n": 8
+   },
+   "priority": {
+    "exact": 0.5,
+    "withinOne": 0.9166666666666666,
+    "n": 12
+   },
+   "behavioral": {
+    "pass": 56,
+    "n": 58
+   },
+   "ms": 58,
+   "llm": false
+  },
+  "details": {
+   "perClass": [
+    {
+     "label": "Access",
+     "precision": 0.9152542372881356,
+     "recall": 0.9,
+     "f1": 0.9075630252100839
+    },
+    {
+     "label": "Administrative rights",
+     "precision": 1,
+     "recall": 0.6166666666666667,
+     "f1": 0.7628865979381444
+    },
+    {
+     "label": "HR Support",
+     "precision": 0.7746478873239436,
+     "recall": 0.9166666666666666,
+     "f1": 0.8396946564885496
+    },
+    {
+     "label": "Hardware",
+     "precision": 0.5520833333333334,
+     "recall": 0.8833333333333333,
+     "f1": 0.6794871794871794
+    },
+    {
+     "label": "Internal Project",
+     "precision": 0.9607843137254902,
+     "recall": 0.8166666666666667,
+     "f1": 0.882882882882883
+    },
+    {
+     "label": "Miscellaneous",
+     "precision": 0.8387096774193549,
+     "recall": 0.8666666666666667,
+     "f1": 0.8524590163934426
+    },
+    {
+     "label": "Purchase",
+     "precision": 1,
+     "recall": 0.8333333333333334,
+     "f1": 0.9090909090909091
+    },
+    {
+     "label": "Storage",
+     "precision": 1,
+     "recall": 0.9,
+     "f1": 0.9473684210526316
+    }
+   ],
+   "clsErrors": [
+    {
+     "text": "oracle optimization project test issue type optimization test issue type hi please assign please help thank wednesday pm optimization test i",
+     "expected": "Access",
+     "predicted": "Internal Project",
+     "confidence": 0.48188192151515463
+    },
+    {
+     "text": "account configuration tuesday configuration hello guys please change permissions after advised by mirroring permissions enough please let fu",
+     "expected": "Access",
+     "predicted": "Miscellaneous",
+     "confidence": 0.37586706941671055
+    },
+    {
+     "text": "source code mobile re source code importance high hi guys too guys bump priorities fix issues client has reported sorry putting more pressur",
+     "expected": "Access",
+     "predicted": "Internal Project",
+     "confidence": 0.4835176145842439
+    },
+    {
+     "text": "critical cannot access her computer thursday october pm critical cannot her computer hi cannot log her anymore her has expired she change pl",
+     "expected": "Access",
+     "predicted": "Hardware",
+     "confidence": 0.517930872557036
+    },
+    {
+     "text": "oracle fusion access rights pm re approved thanks think hello please provide same user rights questions please ask thanks hi banks intercomp",
+     "expected": "Access",
+     "predicted": "HR Support",
+     "confidence": 0.5595978277414854
+    }
+   ],
+   "rows": [
+    {
+     "suite": "escalation",
+     "input": "Quero meu dinheiro de volta, o produto veio com defeito",
+     "pass": false,
+     "got": "escalate=false (auto) · prioridade=Low",
+     "expected": "escalate=true · prioridade=Medium (±1)"
+    },
+    {
+     "suite": "escalation",
+     "input": "Vou abrir uma reclamação no Procon e acionar meu advogado se não resolverem",
+     "pass": false,
+     "got": "escalate=true (human) · prioridade=Medium",
+     "expected": "escalate=true · prioridade=Critical (±1)"
+    }
+   ]
+  }
+ }
+]
