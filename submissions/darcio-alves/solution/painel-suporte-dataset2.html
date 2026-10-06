@@ -1,0 +1,476 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Painel Service Desk TI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: faixa de resumo no topo, depois diagrama do processo, KPIs por grupo, gráficos em grade de 2 colunas, falhas e oportunidades. */
+:root{
+  --bg:#eef1f4; --surface:#ffffff; --ink:#14202b; --ink2:#44535f; --muted:#71808c; --line:#d9e0e6;
+  --accent:#0f766e; --accent-soft:#d6ece8; --bar:#a9b8c4; --warn:#a85a07; --warn-soft:#fbead3; --crit:#b42318; --crit-soft:#fbe0dd;
+  --ok:#17653a; --ok-soft:#d8efe1;
+  --f-sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif; --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0c1217; --surface:#141c23; --ink:#e6edf2; --ink2:#a7b4bf; --muted:#7a8894; --line:#26333f;
+  --accent:#3fc6b4; --accent-soft:#103029; --bar:#41525f; --warn:#f0a13a; --warn-soft:#3a2a10; --crit:#f58074; --crit-soft:#3d1d1a;
+  --ok:#55c98a; --ok-soft:#12301f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1217; --surface:#141c23; --ink:#e6edf2; --ink2:#a7b4bf; --muted:#7a8894; --line:#26333f;
+  --accent:#3fc6b4; --accent-soft:#103029; --bar:#41525f; --warn:#f0a13a; --warn-soft:#3a2a10; --crit:#f58074; --crit-soft:#3d1d1a;
+  --ok:#55c98a; --ok-soft:#12301f; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-sans);font-size:14px;line-height:1.5;padding-inline:20px;padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1{font-size:28px;line-height:1.15;font-weight:600;margin:0;letter-spacing:-.01em;text-wrap:balance}
+h2{font-size:17px;font-weight:600;margin:0;text-wrap:balance}
+h3{font-size:13px;font-weight:600;margin:0}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--ink2);max-width:72ch;margin-top:8px}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.sec{display:flex;flex-direction:column;gap:14px}
+.sec-head{display:flex;flex-direction:column;gap:4px}
+.sec-head p{color:var(--ink2);max-width:80ch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px;min-width:0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media(max-width:860px){.grid2,.grid3{grid-template-columns:minmax(0,1fr)}}
+.cap{color:var(--ink2);font-size:12.5px;margin-top:4px}
+.scroll{overflow-x:auto}
+
+/* KPI strip */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.kpi{background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.kpi b{font-family:var(--f-mono);font-weight:500;font-size:26px;letter-spacing:-.02em;line-height:1.1}
+.kpi span{font-size:12.5px;color:var(--ink2)}
+.kpi.flag b{color:var(--crit)}
+.kpi.good b{color:var(--accent)}
+
+/* diagram */
+figure{margin:0}
+figure svg{display:block;width:100%;min-width:900px;height:auto}
+figcaption{color:var(--ink2);font-size:12.5px;margin-top:8px;max-width:90ch}
+svg text{font-family:var(--f-sans);fill:currentColor}
+svg .m{font-family:var(--f-mono)}
+
+/* bars */
+.rows{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.row{display:grid;grid-template-columns:150px minmax(0,1fr) 84px;gap:10px;align-items:center;font-size:13px}
+.row .lab{color:var(--ink);overflow-wrap:anywhere}
+.row .val{font-family:var(--f-mono);font-size:12px;text-align:right;color:var(--ink2);font-variant-numeric:tabular-nums}
+.track{height:12px;position:relative;background:transparent}
+.fill{position:absolute;left:0;top:0;bottom:0;background:var(--bar);border-radius:0 3px 3px 0;min-width:2px}
+.fill.hi{background:var(--accent)} .fill.wr{background:var(--warn)} .fill.cr{background:var(--crit)}
+.ref{position:absolute;top:-3px;bottom:-3px;width:0;border-left:1.5px dashed var(--ink2)}
+@media(max-width:520px){.row{grid-template-columns:104px minmax(0,1fr) 68px}}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin-top:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+
+/* heatmap */
+.heat{display:grid;grid-template-columns:118px repeat(8,minmax(52px,1fr));gap:2px;font-size:11.5px;min-width:560px}
+.heat .h{color:var(--ink2);display:flex;align-items:flex-end;justify-content:center;text-align:center;padding:2px 0 4px;line-height:1.15;font-size:11px}
+.heat .r{color:var(--ink);display:flex;align-items:center;font-size:12px}
+.heat .c{height:36px;display:flex;align-items:center;justify-content:center;border-radius:3px;font-family:var(--f-mono);font-size:11.5px;font-variant-numeric:tabular-nums;cursor:default}
+.heat .d{background:var(--accent-soft);color:var(--ink2)}
+.axis{font-family:var(--f-mono);font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:2px 0 6px}
+
+/* hist */
+.hist{display:flex;align-items:flex-end;gap:6px;height:150px;margin-top:14px;padding-bottom:2px;border-bottom:1px solid var(--line)}
+.hist div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;height:100%;min-width:0}
+.hist span.b{width:100%;background:var(--bar);border-radius:3px 3px 0 0}
+.hist span.b.hi{background:var(--accent)}
+.hist em{font-style:normal;font-family:var(--f-mono);font-size:10.5px;color:var(--ink2)}
+.hlab{display:flex;gap:6px;margin-top:4px}
+.hlab span{flex:1;text-align:center;font-family:var(--f-mono);font-size:10.5px;color:var(--muted);min-width:0}
+
+/* tables */
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{font-weight:500;text-align:left;color:var(--muted);font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;padding:6px 10px 6px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 10px 9px 0;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;padding:1px 8px;border-radius:99px;white-space:nowrap}
+.pill.cr{background:var(--crit-soft);color:var(--crit)} .pill.wr{background:var(--warn-soft);color:var(--warn)}
+.pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.mu{background:var(--line);color:var(--ink2)}
+
+/* kpi groups */
+.kg{display:flex;flex-direction:column;gap:10px}
+.kg header{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.kitem{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding-top:10px;border-top:1px solid var(--line)}
+.kitem b{font-weight:500}
+.kitem .v{font-family:var(--f-mono);font-size:13px;text-align:right}
+.kitem p{grid-column:1/-1;color:var(--ink2);font-size:12.5px}
+
+/* findings */
+.find{display:grid;grid-template-columns:96px minmax(0,1fr);gap:4px 14px;padding:14px 0;border-top:1px solid var(--line)}
+.find:first-child{border-top:0;padding-top:0}
+.find h3{font-size:14px}
+.find p{color:var(--ink2);font-size:13px;margin-top:2px}
+.find .ev{font-family:var(--f-mono);font-size:12px;color:var(--ink);margin-top:6px}
+@media(max-width:560px){.find{grid-template-columns:minmax(0,1fr)}}
+
+/* calc */
+.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:12px}
+.calc label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--ink2)}
+.calc input{font:inherit;font-family:var(--f-mono);padding:7px 9px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--ink);width:100%}
+.calc input:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}
+.res div{border:1px solid var(--line);border-radius:4px;padding:10px 12px}
+.res b{display:block;font-family:var(--f-mono);font-weight:500;font-size:20px}
+.res span{font-size:12px;color:var(--ink2)}
+details{margin-top:12px} summary{cursor:pointer;color:var(--ink2);font-size:12.5px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.seg button{font:inherit;font-size:12px;padding:4px 10px;background:transparent;color:var(--ink2);border:0;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--ink)}
+#tip{position:fixed;z-index:10;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12px;padding:6px 9px;border-radius:4px;max-width:260px;opacity:0;transition:opacity .08s}
+.foot{color:var(--muted);font-size:12px;max-width:90ch}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Dataset 2 · IT Service Ticket Classification · lido como dado real</div>
+  <h1>Painel do service desk de TI</h1>
+  <p class="lede">47.837 e-mails abertos por usuários internos de uma empresa, cada um com o texto do chamado e a fila de TI que o recebeu. Não há datas, tempos, canal nem resolução. O painel mostra o que esse recorte permite medir, o que ele sugere sobre falhas de processo e quais KPIs precisam ser coletados para fechar o diagnóstico.</p>
+</header>
+
+<section class="kpis" aria-label="Resumo">
+  <div class="kpi"><b>47.837</b><span>tickets analisados, 8 filas</span></div>
+  <div class="kpi"><b>28,5%</b><span>do volume cai em Hardware, a maior fila</span></div>
+  <div class="kpi good"><b>51,3%</b><span>dos tickets têm roteamento sugerido com 98,6% de acerto</span></div>
+  <div class="kpi"><b>0,72%</b><span>de erro no roteamento automático proposto (344 tickets)</span></div>
+  <div class="kpi flag"><b>68,6%</b><span>recall de Administrative rights, a fila mais difícil de identificar</span></div>
+  <div class="kpi flag"><b>19,9%</b><span>dos tickets de senha estão rotulados como Hardware pelos atendentes</span></div>
+</section>
+
+<section class="sec">
+  <div class="sec-head">
+    <div class="eyebrow">1 · O que o dado representa</div>
+    <h2>Um e-mail vira ticket, recebe uma fila, e o dado termina aí</h2>
+    <p>Cada linha é o corpo de um e-mail enviado ao service desk, rotulado com a fila que o recebeu. O rótulo indica quem vai atender, não o assunto do texto. O dataset não diz se a fila foi escolhida por uma pessoa ou por regra do sistema. A limpeza do texto (minúsculas, sem números, sem nomes) foi feita por quem publicou o dataset, não pela operação.</p>
+  </div>
+  <div class="card scroll">
+  <figure>
+    <svg viewBox="0 0 1080 372" role="img" aria-label="Fluxo: usuário envia e-mail, o ticket recebe uma de oito filas; a limpeza do texto foi feita na publicação do dataset; o que acontece depois da fila não existe no dataset" style="color:var(--ink)">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+      </defs>
+      <!-- column 1 -->
+      <rect x="10" y="130" width="130" height="64" rx="6" fill="var(--surface)" stroke="currentColor" stroke-width="1.2"/>
+      <text x="75" y="158" text-anchor="middle" font-size="13" font-weight="600">Usuário interno</text>
+      <text x="75" y="176" text-anchor="middle" font-size="11.5" fill="var(--ink2)" style="fill:var(--ink2)">escreve em texto livre</text>
+      <line x1="140" y1="162" x2="196" y2="162" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)"/>
+      <text x="168" y="150" text-anchor="middle" font-size="11" style="fill:var(--ink2)">e-mail</text>
+      <!-- column 2 -->
+      <rect x="200" y="122" width="150" height="80" rx="6" fill="var(--surface)" stroke="currentColor" stroke-width="1.2"/>
+      <text x="275" y="150" text-anchor="middle" font-size="13" font-weight="600">Caixa do service desk</text>
+      <text x="275" y="168" text-anchor="middle" font-size="11.5" style="fill:var(--ink2)">saudação, assinatura,</text>
+      <text x="275" y="183" text-anchor="middle" font-size="11.5" style="fill:var(--ink2)">thread re/fw junto</text>
+      <line x1="350" y1="162" x2="406" y2="162" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)"/>
+      <text x="378" y="150" text-anchor="middle" font-size="11" style="fill:var(--ink2)">triagem</text>
+      <rect x="200" y="226" width="380" height="44" rx="6" fill="none" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="5 4"/>
+      <text x="390" y="244" text-anchor="middle" font-size="11.5" style="fill:var(--ink2)">Limpeza para publicação (autor do dataset, não a operação):</text>
+      <text x="390" y="260" text-anchor="middle" font-size="11.5" style="fill:var(--ink2)">minúsculas, sem números, sem nomes</text>
+      <line x1="390" y1="226" x2="390" y2="214" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="3 3"/>
+      <!-- column 3 -->
+      <rect x="410" y="112" width="170" height="100" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/>
+      <text x="495" y="140" text-anchor="middle" font-size="13" font-weight="600">Atribuição de fila</text>
+      <text x="495" y="159" text-anchor="middle" font-size="11.5" style="fill:var(--ink2)">pessoa ou regra:</text>
+      <text x="495" y="174" text-anchor="middle" font-size="11.5" style="fill:var(--ink2)">o dado não diz</text>
+      <text x="495" y="196" text-anchor="middle" font-size="11" class="m" style="fill:var(--accent)">Topic_group</text>
+      <!-- bracket -->
+      <line x1="580" y1="162" x2="612" y2="162" stroke="currentColor" stroke-width="1.4"/>
+      <line x1="612" y1="30" x2="612" y2="340" stroke="currentColor" stroke-width="1.4"/>
+      <g id="qs"></g>
+      <!-- column 5: invisible -->
+      <rect x="896" y="14" width="176" height="344" rx="6" fill="none" stroke="var(--muted)" stroke-width="1.3" stroke-dasharray="6 5"/>
+      <text x="984" y="40" text-anchor="middle" font-size="12.5" font-weight="600" style="fill:var(--ink2)">Fora do dataset</text>
+      <g style="fill:var(--ink2)" font-size="11.5">
+        <text x="912" y="70">Data e hora de abertura</text>
+        <text x="912" y="94">Canal de entrada</text>
+        <text x="912" y="118">Prioridade</text>
+        <text x="912" y="142">Tempo até 1ª resposta</text>
+        <text x="912" y="166">Tempo de resolução</text>
+        <text x="912" y="190">Reatribuições entre filas</text>
+        <text x="912" y="214">Reabertura</text>
+        <text x="912" y="238">Texto da resolução</text>
+        <text x="912" y="262">Satisfação (CSAT)</text>
+        <text x="912" y="286">Analista e custo</text>
+      </g>
+      <text x="984" y="324" text-anchor="middle" font-size="11" style="fill:var(--muted)">onde está o tempo perdido</text>
+      <line x1="856" y1="186" x2="892" y2="186" stroke="var(--muted)" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#ar)"/>
+    </svg>
+    <figcaption>Os retângulos de borda contínua existem no dado. Os tracejados não: a limpeza aconteceu na publicação, e tudo o que vem depois da fila está fora. Por isso o painel mede roteamento, ruído e padrões de demanda, e trata tempo e satisfação como lacunas a coletar.</figcaption>
+  </figure>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-head">
+    <div class="eyebrow">2 · KPIs que precisam ser analisados</div>
+    <h2>Três grupos: o que já dá para medir, o que dá para estimar pelo texto, o que falta coletar</h2>
+    <p>O terceiro grupo é o que responde ao problema real de uma operação sobrecarregada (tempo e satisfação). Sem ele, qualquer cálculo de horas desperdiçadas é hipótese.</p>
+  </div>
+  <div class="grid3">
+    <div class="card kg">
+      <header><h3>Medido neste dado</h3><span class="pill ok">disponível</span></header>
+      <div class="kitem"><b>Volume por fila</b><span class="v">8 filas</span><p>Hardware 28,5% e HR Support 22,8% somam mais da metade da demanda.</p></div>
+      <div class="kitem"><b>Acerto de roteamento sugerido</b><span class="v">86,3%</span><p>Validação cruzada em 5 partes, texto e fila apenas. Em top-2 sobe para 96,4%.</p></div>
+      <div class="kitem"><b>Cobertura de automação segura</b><span class="v">51,3%</span><p>Parcela com confiança de 90% ou mais; nela o acerto é 98,6%. Rotear só esses gera 344 erros, 0,72% do total.</p></div>
+      <div class="kitem"><b>Demanda repetitiva</b><span class="v">40,4%</span><p>Tickets que casam com 13 intenções recorrentes (senha, starter, timecard, PO, software etc.).</p></div>
+      <div class="kitem"><b>Ruído de texto</b><span class="v">87,8%</span><p>Têm saudação; 31,3% carregam cabeçalho de e-mail colado ("sent monday", "friday pm").</p></div>
+    </div>
+    <div class="card kg">
+      <header><h3>Estimável pelo texto</h3><span class="pill wr">proxy</span></header>
+      <div class="kitem"><b>Retrabalho e duplicidade</b><span class="v">0,9–19,6%</span><p>Só 436 tickets começam com re/fw. Até 9.369 têm re/fw no meio do texto (thread colada), já descontados 818 falsos positivos como "re enter". Faixa larga: medir com dado de reabertura.</p></div>
+      <div class="kitem"><b>Urgência declarada</b><span class="v">5,9%</span><p>2.806 tickets pedem urgência no texto, sem campo de prioridade para tratar isso.</p></div>
+      <div class="kitem"><b>Cobrança de resposta</b><span class="v">1,3%</span><p>643 tickets cobram retorno ("reminder", "any update"). Em Administrative rights são 4,3%.</p></div>
+      <div class="kitem"><b>Falha ou erro relatado</b><span class="v">18,5%</span><p>Incidentes, em oposição a pedidos. Chega a 29,0% em Administrative rights.</p></div>
+      <div class="kitem"><b>Tickets longos (&gt;80 palavras)</b><span class="v">11,8%</span><p>Quase sempre thread colada; esconde o pedido real no meio do texto.</p></div>
+    </div>
+    <div class="card kg">
+      <header><h3>Falta coletar</h3><span class="pill cr">lacuna</span></header>
+      <div class="kitem"><b>Primeira resposta e resolução</b><span class="v">por fila</span><p>Aponta onde o fluxo trava. Cruzar com urgência declarada.</p></div>
+      <div class="kitem"><b>Reatribuições entre filas</b><span class="v">por ticket</span><p>Mede o custo real do roteamento errado, hoje só estimado.</p></div>
+      <div class="kitem"><b>Reabertura e resolução no 1º contato</b><span class="v">%</span><p>Confirma se os re/fw são retrabalho.</p></div>
+      <div class="kitem"><b>Backlog e idade do ticket</b><span class="v">dias</span><p>Mostra se a sobrecarga é de capacidade ou de triagem.</p></div>
+      <div class="kitem"><b>Satisfação, canal, custo por ticket</b><span class="v">nota · R$</span><p>Liga a operação ao resultado e permite calcular ROI.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-head">
+    <div class="eyebrow">3 · Onde o roteamento falha</div>
+    <h2>Os erros se concentram em Hardware, e só parte disso é falha do processo</h2>
+    <p>Resultado de validação cruzada: o modelo prevê a fila de cada ticket sem ter visto o rótulo. Parte dos erros é viés do próprio modelo, que puxa para a fila maior: prevê Hardware em 31,0% dos casos contra 28,5% reais, e todas as filas pequenas aparecem menos do que são. O que sobra indica texto ambíguo entre filas, onde atendentes também tendem a discordar.</p>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Volume e acerto por fila</h3>
+      <div class="cap">Barra: volume (% do total). Recall: parcela dos tickets da fila que o modelo encontra. Linha tracejada: média geral de 86,3%.</div>
+      <div class="rows" id="queues"></div>
+      <div class="legend"><span><i style="background:var(--bar)"></i>volume</span><span><i style="background:var(--accent)"></i>recall acima da média</span><span><i style="background:var(--crit)"></i>recall abaixo de 80%</span></div>
+    </div>
+    <div class="card">
+      <h3>Confiança do modelo e decisão sugerida</h3>
+      <div class="cap">Quanto mais confiante, maior o acerto. A política segue direto dessa curva.</div>
+      <div class="rows" id="conf"></div>
+      <details><summary>Ver como tabela</summary><div class="scroll"><table id="conf-t"></table></div></details>
+    </div>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center">
+      <div><h3>Para onde cada fila escorrega</h3><div class="cap">Cada linha é a fila real; cada coluna, a fila prevista. Diagonal omitida de cor para destacar só os erros.</div></div>
+      <div class="seg" role="group" aria-label="Escala"><button id="b-pct" aria-pressed="true">% da fila</button><button id="b-n" aria-pressed="false">Tickets</button></div>
+    </div>
+    <div class="scroll" style="margin-top:10px"><div class="axis">fila prevista →</div><div class="heat" id="heat"></div></div>
+    <p class="cap" style="margin-top:10px">Leitura: 23,1% de Administrative rights (407 de 1.760) são previstos como Hardware, e 8,7% de Miscellaneous (611 de 7.060) também. A coluna Hardware é a mais quente da matriz, em parte porque o modelo favorece a fila maior. Confusão do modelo não é o mesmo que erro do atendente.</p>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-head">
+    <div class="eyebrow">4 · Demanda repetitiva e consistência</div>
+    <h2>A mesma intenção aparece em filas diferentes</h2>
+    <p>Para cada intenção (identificada por palavras-chave no texto), a última coluna mostra quanto vai para a fila dominante. Dispersão alta é um sinal a investigar, não prova de regra ausente: parte dela pode ser legítima. E-mail e Outlook em Storage provavelmente é quota de caixa de correio, e "pedido de acesso" mistura pastas, sites e sistemas.</p>
+  </div>
+  <div class="card scroll"><table id="intents"></table>
+    <p class="cap" style="margin-top:10px">As 13 intenções cobrem 40,4% dos tickets. Padrões de palavra-chave são aproximados; a coluna de fila dominante mostra a tendência, não uma regra exata.</p>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-head">
+    <div class="eyebrow">5 · Qualidade do texto e sinais de risco</div>
+    <h2>O que chega no ticket e o que ele sinaliza</h2>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>Ruído que o agente lê antes do pedido</h3><div class="cap">% dos tickets com cada elemento.</div><div class="rows" id="noise"></div></div>
+    <div class="card"><h3>Tamanho do ticket (palavras)</h3><div class="cap">Mediana de 26 palavras. 11,8% passam de 80 e 1% passa de 284.</div><div class="hist" id="hist"></div><div class="hlab" id="hlab"></div></div>
+  </div>
+  <div class="card">
+    <h3>Falha relatada e urgência declarada por fila</h3>
+    <div class="cap">% dos tickets de cada fila com termos de falha (error, failed, cannot) e com urgência explícita (urgent, asap, critical).</div>
+    <div class="rows" id="sig"></div>
+    <div class="legend"><span><i style="background:var(--accent)"></i>falha ou erro</span><span><i style="background:var(--bar)"></i>urgência</span></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-head">
+    <div class="eyebrow">6 · Falhas evidentes</div>
+    <h2>O que já aparece no dado, sem precisar de tempo ou satisfação</h2>
+  </div>
+  <div class="card">
+    <div class="find"><div><span class="pill cr">▲ Crítico</span></div><div><h3>Administrative rights não se distingue de Hardware pelo texto</h3><p>São instalações e upgrades que exigem privilégio, escritos do mesmo jeito que um pedido de Hardware. A fronteira entre as duas filas não está clara para quem escreve o ticket.</p><div class="ev">Recall de 68,6%, o pior das 8 filas · 23,1% previstos como Hardware</div></div></div>
+    <div class="find"><div><span class="pill wr">● Atenção</span></div><div><h3>Os próprios atendentes mandam pedidos de outras filas para Hardware</h3><p>No rótulo humano, sem modelo envolvido: 19,9% dos tickets de senha estão em Hardware, assim como 19,8% dos de pasta e drive e 22,6% dos pedidos de acesso. O modelo amplifica esse padrão (41,6% dos erros dele apontam Hardware), mas parte disso é viés de classe maior e não deve ser lida como falha da operação.</p><div class="ev">1.950 tickets de senha · 388 rotulados Hardware</div></div></div>
+    <div class="find"><div><span class="pill cr">▲ Crítico</span></div><div><h3>Miscellaneous é fila sem dono</h3><p>14,8% do volume. Mistura relatórios Oracle, aprovação de despesas, pesquisa de satisfação do ServiceNow e inclusão de endereço em lista. Sem critério de entrada, vira depósito e atrasa o que não tem responsável.</p><div class="ev">7.060 tickets · 16,2% deles previstos em outra fila</div></div></div>
+    <div class="find"><div><span class="pill cr">▲ Crítico</span></div><div><h3>Alertas automáticos não têm destino fixo</h3><p>Mensagens de máquina (alerta de impressora, relatório de recuperação de dispositivo, notificações de atualização do Windows) poderiam ter fila definida por regra. No dado, dividem-se entre Hardware (46%) e Miscellaneous (43%). Não dá para saber se foram classificadas por pessoa ou por regra; em qualquer caso, a mesma origem tem dois destinos.</p><div class="ev">220 tickets · mesma origem, dois destinos</div></div></div>
+    <div class="find"><div><span class="pill wr">● Atenção</span></div><div><h3>Mesmo pedido, filas diferentes</h3><p>Reset de senha vai para Access em 70,2% dos casos. Pedido de acesso tem fila dominante em apenas 38,2%, e e-mail e Outlook em 36,7%. Parte da dispersão pode ser legítima (subtipos atendidos por filas distintas), então é sinal para revisar o catálogo de serviços, não prova de que falta regra.</p><div class="ev">Intenções por palavra-chave · 2.341 pedidos de acesso · 2.026 de e-mail e Outlook</div></div></div>
+    <div class="find"><div><span class="pill wr">● Atenção</span></div><div><h3>Mensagens padronizadas com fila previsível</h3><p>28 aberturas de texto (as 5 primeiras palavras) se repetem 20 vezes ou mais e somam 1.779 tickets. São de dois tipos. Os modelos de pedido (21 aberturas, 1.541 tickets) são alguém pedindo algo por um modelo ou sistema: PO, novo colaborador, desligamento, código de projeto, acesso a site e lista. Os alertas e avisos de sistema (7 aberturas, 238 tickets) chegam sem que ninguém tenha pedido nada: caixa de correio cheia, alerta crítico, aviso de impressora e cobranças de ponto do Oracle. Em 25 das 28 aberturas, 90% ou mais vai para uma única fila, então dá para rotear por regra, sem modelo. As exceções são dois pedidos de acesso e o alerta crítico.</p><div class="ev">Pedidos 1.541 · Alertas 238 · Fila única (≥90%) em 1.611 tickets · Exceções: "access request for a list" 55% · "for a site" 70% · "critical alert" 86%</div>
+      <details><summary>Ver as 28 aberturas</summary><div class="scroll"><table id="modelos-t"></table></div></details></div></div>
+    <div class="find"><div><span class="pill wr">● Atenção</span></div><div><h3>Follow-ups podem estar virando tickets novos</h3><p>Só 436 tickets (0,9%) começam com re/fw, que é onde um assunto de resposta apareceria. Outros 8.933 têm re/fw no meio do texto, quase sempre thread colada. O efeito real fica entre 0,9% e 19,6% do volume e só se confirma com dado de reabertura.</p><div class="ev">Faixa 436 a 9.369 tickets · 818 falsos positivos descontados</div></div></div>
+    <div class="find"><div><span class="pill wr">● Atenção</span></div><div><h3>Prioridade vive no texto, não num campo</h3><p>2.806 tickets pedem urgência e 643 cobram resposta, mas o dado não tem prioridade nem SLA. O pedido urgente espera na mesma fila que o rotineiro.</p><div class="ev">Urgência declarada: Hardware 7,7% · Admin rights 8,4% · Internal Project 8,7%</div></div></div>
+    <div class="find"><div><span class="pill mu">◆ Dado</span></div><div><h3>Rótulos suspeitos</h3><p>344 tickets (0,72%) têm rótulo diferente da previsão com confiança de 90% ou mais. Parte parece erro de classificação humana. São exatamente os erros que o roteamento automático cometeria, então auditar essa amostra mostra o erro real da proposta, que pode ser menor que 0,72%.</p><div class="ev">Maior par: Hardware ↔ HR Support (84 casos)</div></div></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-head">
+    <div class="eyebrow">7 · Oportunidades de melhoria</div>
+    <h2>Ordem sugerida, do que é mais barato e seguro ao que exige mais dado</h2>
+  </div>
+  <div class="card scroll">
+    <table>
+      <thead><tr><th>Ação</th><th>Alcance no dado</th><th>Risco</th><th>Como validar</th></tr></thead>
+      <tbody>
+        <tr><td><b>Roteamento por regra para alertas automáticos e mensagens padronizadas</b></td><td class="n">1.979 tickets (4,1%)</td><td><span class="pill ok">Baixo</span></td><td>Comparar fila antes e depois em 30 dias</td></tr>
+        <tr><td><b>Formulário estruturado para os modelos de pedido (PO, starter, leaver, código de projeto, acesso)</b></td><td class="n">1.541 tickets (3,2%)</td><td><span class="pill ok">Baixo</span></td><td>Campos obrigatórios preenchidos e fila definida na entrada</td></tr>
+        <tr><td><b>Auto-rotear tickets com confiança ≥90%, sugerir 2 filas nos demais</b></td><td class="n">51,3% auto · erro 0,72%</td><td><span class="pill ok">Baixo</span></td><td>Auditar 200 tickets por semana; parar se acerto &lt; 97%</td></tr>
+        <tr><td><b>Redefinir Miscellaneous e Administrative rights com critério de entrada</b></td><td class="n">8.820 tickets (18,4%)</td><td><span class="pill wr">Médio</span></td><td>Reduzir reatribuições entre filas (hoje não medidas)</td></tr>
+        <tr><td><b>Limpar texto antes do agente ler (saudação, assinatura, thread)</b></td><td class="n">87,8% dos tickets</td><td><span class="pill ok">Baixo</span></td><td>Tempo de leitura por ticket em amostra</td></tr>
+        <tr><td><b>Vincular re/fw ao ticket original</b></td><td class="n">0,9% a 19,6%</td><td><span class="pill wr">Médio</span></td><td>Queda no volume bruto sem queda em demanda única</td></tr>
+        <tr><td><b>Campo de prioridade com SLA e cobrança automática</b></td><td class="n">6,9% com urgência ou cobrança</td><td><span class="pill wr">Médio</span></td><td>Tempo de resposta dos urgentes antes e depois</td></tr>
+        <tr><td><b>Coletar tempos, reatribuições, reabertura e CSAT</b></td><td class="n">todo o fluxo</td><td><span class="pill mu">Pré-requisito</span></td><td>Sem isso, ROI continua hipótese</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card">
+    <h3>Estimativa de horas recuperáveis</h3>
+    <div class="cap">Hipóteses editáveis. O dataset não informa período nem tempo de triagem; ajuste com os números da operação. Sem dupla contagem: 1.608 das 1.779 mensagens padronizadas já estão no grupo de alta confiança, então cada ticket economiza a triagem uma vez só. O tempo extra vale só para os 1.541 modelos de pedido; os 238 alertas são gerados por sistema e economizam apenas a triagem.</div>
+    <div class="calc">
+      <label>Tickets por ano<input id="c-n" type="number" value="47837" min="0" step="1000"></label>
+      <label>Minutos por triagem manual<input id="c-t" type="number" value="3" min="0" step="0.5"></label>
+      <label>Minutos extras por pedido em texto livre<input id="c-f" type="number" value="4" min="0" step="0.5"></label>
+      <label>Custo por hora (R$)<input id="c-c" type="number" value="60" min="0" step="5"></label>
+    </div>
+    <div class="res">
+      <div><b id="r1">–</b><span>horas/ano: triagem que deixa de ser manual (51,7% dos tickets: alta confiança + mensagens padronizadas)</span></div>
+      <div><b id="r2">–</b><span>horas/ano: tempo extra evitado com formulário nos modelos de pedido (3,2%)</span></div>
+      <div><b id="r3">–</b><span>horas/ano no total</span></div>
+      <div><b id="r4">–</b><span>custo evitado por ano</span></div>
+    </div>
+  </div>
+</section>
+
+<p class="foot">Método: texto vetorizado com TF-IDF de 1 e 2 palavras, regressão logística treinada por gradiente, validação cruzada estratificada em 5 partes sobre os 47.837 tickets. O rótulo do dataset é tratado como verdade, o que subestima o acerto onde o rótulo é discutível. O modelo favorece filas grandes, então a confusão mostrada mistura ambiguidade real do texto com viés do modelo. Re/fw e cabeçalhos são detectados por padrão de texto e apresentados como faixa ou teto. Mensagens padronizadas são aberturas de 5 palavras repetidas 20 vezes ou mais; a separação entre pedido e alerta foi feita lendo exemplos de cada abertura. Intenções por palavra-chave. Texto em inglês, já pré-processado pelo autor do dataset.</p>
+</div>
+<div id="tip" role="tooltip"></div>
+
+<script>
+const D = {"versao": "v3", "n": 47837, "accuracy": 86.3, "top2": 96.4, "err_total": 6576, "err_pct": 13.7, "err_to_hw": 41.6, "hw_pred_share": 31.0, "pred_share": {"Access": 14.2, "Administrative rights": 2.9, "HR Support": 23.2, "Hardware": 31.0, "Internal Project": 4.0, "Miscellaneous": 14.7, "Purchase": 4.7, "Storage": 5.3}, "perclass": {"Access": {"p": 91.7, "r": 87.3, "f": 89.5}, "Administrative rights": {"p": 88.5, "r": 68.6, "f": 77.3}, "HR Support": {"p": 85.9, "r": 87.4, "f": 86.7}, "Hardware": {"p": 81.6, "r": 88.9, "f": 85.1}, "Internal Project": {"p": 90.6, "r": 81.0, "f": 85.5}, "Miscellaneous": {"p": 83.8, "r": 83.8, "f": 83.8}, "Purchase": {"p": 96.6, "r": 88.5, "f": 92.4}, "Storage": {"p": 93.5, "r": 85.6, "f": 89.4}}, "cm": {"cls": ["Access", "Administrative rights", "HR Support", "Hardware", "Internal Project", "Miscellaneous", "Purchase", "Storage"], "cm": [[6223, 15, 231, 437, 26, 163, 8, 22], [31, 1208, 51, 407, 4, 45, 5, 9], [129, 17, 9541, 777, 51, 345, 11, 44], [256, 79, 630, 12102, 46, 404, 48, 52], [20, 1, 151, 133, 1716, 91, 1, 6], [90, 19, 349, 611, 48, 5914, 2, 27], [13, 11, 47, 168, 3, 37, 2180, 5], [24, 15, 101, 203, 1, 55, 1, 2377]]}, "conf": [{"b": "<50%", "share": 5.7, "acc": 44.5}, {"b": "50–70%", "share": 16.3, "acc": 62.1}, {"b": "70–90%", "share": 26.7, "acc": 86.2}, {"b": "≥90%", "share": 51.3, "acc": 98.6}], "hi_n": 24560, "hi_conf_share": 51.3, "hi_conf_acc": 98.6, "policy_err_n": 344, "policy_err_pct": 0.72, "bad90": 344, "bad90_pct": 0.72, "template_rows": 1779, "template_groups": 28, "template_in_hi": 1608, "hi_nontpl": 22952, "top_templates": [["new purchase po purchase po", 425], ["new starter access card enabling", 188], ["purchase request for it final", 101], ["new project code oracle fusion", 87], ["access request for a list", 78], ["please action direct reports missing", 71], ["access request for a site", 69], ["new purchase po wednesday pm", 62]], "modelos": {"total": 1779, "grupos": 28, "pedido_n": 1541, "pedido_grupos": 21, "alerta_n": 238, "alerta_grupos": 7, "grupos_fila_unica_90": 25, "n_fila_unica_90": 1611, "lista": [{"abertura": "new purchase po purchase po", "n": 425, "tipo": "pedido", "fila": "Purchase", "fila_pct": 99.8, "alta_conf": 421}, {"abertura": "new starter access card enabling", "n": 188, "tipo": "pedido", "fila": "HR Support", "fila_pct": 97.9, "alta_conf": 179}, {"abertura": "purchase request for it final", "n": 101, "tipo": "pedido", "fila": "Purchase", "fila_pct": 100.0, "alta_conf": 101}, {"abertura": "new project code oracle fusion", "n": 87, "tipo": "pedido", "fila": "Internal Project", "fila_pct": 100.0, "alta_conf": 83}, {"abertura": "access request for a list", "n": 78, "tipo": "pedido", "fila": "Hardware", "fila_pct": 55.1, "alta_conf": 13}, {"abertura": "please action direct reports missing", "n": 71, "tipo": "alerta", "fila": "HR Support", "fila_pct": 91.5, "alta_conf": 49}, {"abertura": "access request for a site", "n": 69, "tipo": "pedido", "fila": "Hardware", "fila_pct": 69.6, "alta_conf": 31}, {"abertura": "new purchase po wednesday pm", "n": 62, "tipo": "pedido", "fila": "Purchase", "fila_pct": 100.0, "alta_conf": 60}, {"abertura": "new purchase po friday pm", "n": 61, "tipo": "pedido", "fila": "Purchase", "fila_pct": 100.0, "alta_conf": 61}, {"abertura": "wants to access account documentation", "n": 57, "tipo": "pedido", "fila": "Storage", "fila_pct": 100.0, "alta_conf": 56}, {"abertura": "new purchase po thursday pm", "n": 55, "tipo": "pedido", "fila": "Purchase", "fila_pct": 100.0, "alta_conf": 55}, {"abertura": "document purchase order requisition implemented", "n": 54, "tipo": "pedido", "fila": "Purchase", "fila_pct": 100.0, "alta_conf": 54}, {"abertura": "leaver form for leave date", "n": 51, "tipo": "pedido", "fila": "HR Support", "fila_pct": 100.0, "alta_conf": 51}, {"abertura": "your mailbox is almost full", "n": 50, "tipo": "alerta", "fila": "Storage", "fila_pct": 100.0, "alta_conf": 50}, {"abertura": "new purchase po tuesday pm", "n": 47, "tipo": "pedido", "fila": "Purchase", "fila_pct": 100.0, "alta_conf": 47}, {"abertura": "new purchase po pm purchase", "n": 45, "tipo": "pedido", "fila": "Purchase", "fila_pct": 100.0, "alta_conf": 45}, {"abertura": "please action submit your time", "n": 36, "tipo": "alerta", "fila": "HR Support", "fila_pct": 100.0, "alta_conf": 36}, {"abertura": "new project code pas tuesday", "n": 30, "tipo": "pedido", "fila": "Internal Project", "fila_pct": 100.0, "alta_conf": 29}, {"abertura": "new purchase po wednesday march", "n": 26, "tipo": "pedido", "fila": "Purchase", "fila_pct": 100.0, "alta_conf": 26}, {"abertura": "internal audit visitor cards review", "n": 22, "tipo": "pedido", "fila": "Access", "fila_pct": 100.0, "alta_conf": 22}, {"abertura": "new delivery hello received items", "n": 21, "tipo": "pedido", "fila": "Purchase", "fila_pct": 90.5, "alta_conf": 17}, {"abertura": "new purchase po tuesday purchase", "n": 21, "tipo": "pedido", "fila": "Purchase", "fila_pct": 100.0, "alta_conf": 21}, {"abertura": "new purchase po thursday november", "n": 21, "tipo": "pedido", "fila": "Purchase", "fila_pct": 100.0, "alta_conf": 21}, {"abertura": "critical alert original message sent", "n": 21, "tipo": "alerta", "fila": "Hardware", "fila_pct": 85.7, "alta_conf": 3}, {"abertura": "device alert notification paper at", "n": 20, "tipo": "alerta", "fila": "Miscellaneous", "fila_pct": 100.0, "alta_conf": 20}, {"abertura": "time card error card error", "n": 20, "tipo": "alerta", "fila": "HR Support", "fila_pct": 100.0, "alta_conf": 19}, {"abertura": "there is error submission of", "n": 20, "tipo": "alerta", "fila": "HR Support", "fila_pct": 100.0, "alta_conf": 19}, {"abertura": "new purchase po friday march", "n": 20, "tipo": "pedido", "fila": "Purchase", "fila_pct": 95.0, "alta_conf": 19}]}, "pedido_rows": 1541, "intents": [{"intent": "Reset de senha / conta", "n": 1950, "pct": 4.08, "top": "Access", "toppct": 70.2, "dist": {"Access": 70.2, "Administrative rights": 6.2, "HR Support": 1.1, "Hardware": 19.9, "Internal Project": 0.2, "Miscellaneous": 1.0, "Purchase": 0.2, "Storage": 1.2}, "acc": 87.2}, {"intent": "Novo colaborador (starter)", "n": 2256, "pct": 4.72, "top": "HR Support", "toppct": 91.5, "dist": {"Access": 3.1, "Administrative rights": 0.0, "HR Support": 91.5, "Hardware": 2.9, "Internal Project": 0.1, "Miscellaneous": 1.6, "Purchase": 0.3, "Storage": 0.5}, "acc": 95.7}, {"intent": "Desligamento (leaver)", "n": 1072, "pct": 2.24, "top": "HR Support", "toppct": 69.1, "dist": {"Access": 12.8, "Administrative rights": 0.1, "HR Support": 69.1, "Hardware": 10.4, "Internal Project": 0.9, "Miscellaneous": 5.0, "Purchase": 0.2, "Storage": 1.5}, "acc": 89.8}, {"intent": "Timecard / ponto (Oracle)", "n": 1413, "pct": 2.95, "top": "HR Support", "toppct": 83.7, "dist": {"Access": 1.3, "Administrative rights": 0.8, "HR Support": 83.7, "Hardware": 3.6, "Internal Project": 0.6, "Miscellaneous": 9.9, "Purchase": 0.0, "Storage": 0.1}, "acc": 90.4}, {"intent": "Pedido de compra (PO)", "n": 1708, "pct": 3.57, "top": "Purchase", "toppct": 86.3, "dist": {"Access": 0.5, "Administrative rights": 0.1, "HR Support": 1.1, "Hardware": 5.4, "Internal Project": 0.2, "Miscellaneous": 6.4, "Purchase": 86.3, "Storage": 0.0}, "acc": 96.5}, {"intent": "Alerta automático (impressora/dispositivo/update)", "n": 220, "pct": 0.46, "top": "Hardware", "toppct": 45.9, "dist": {"Access": 0.0, "Administrative rights": 7.3, "HR Support": 3.2, "Hardware": 45.9, "Internal Project": 0.0, "Miscellaneous": 42.7, "Purchase": 0.5, "Storage": 0.5}, "acc": 90.0}, {"intent": "Instalar / atualizar software", "n": 4394, "pct": 9.19, "top": "Hardware", "toppct": 31.6, "dist": {"Access": 10.8, "Administrative rights": 20.3, "HR Support": 7.4, "Hardware": 31.6, "Internal Project": 0.9, "Miscellaneous": 4.1, "Purchase": 23.3, "Storage": 1.6}, "acc": 86.9}, {"intent": "VPN / rede", "n": 583, "pct": 1.22, "top": "Hardware", "toppct": 72.7, "dist": {"Access": 5.8, "Administrative rights": 2.4, "HR Support": 8.9, "Hardware": 72.7, "Internal Project": 0.5, "Miscellaneous": 6.3, "Purchase": 0.5, "Storage": 2.7}, "acc": 87.1}, {"intent": "E-mail / Outlook", "n": 2026, "pct": 4.24, "top": "Storage", "toppct": 36.7, "dist": {"Access": 2.3, "Administrative rights": 24.8, "HR Support": 17.9, "Hardware": 7.9, "Internal Project": 0.2, "Miscellaneous": 5.2, "Purchase": 5.1, "Storage": 36.7}, "acc": 88.6}, {"intent": "Pasta / drive / quota", "n": 1450, "pct": 3.03, "top": "Storage", "toppct": 59.9, "dist": {"Access": 4.4, "Administrative rights": 7.5, "HR Support": 2.9, "Hardware": 19.8, "Internal Project": 0.3, "Miscellaneous": 3.4, "Purchase": 1.8, "Storage": 59.9}, "acc": 87.0}, {"intent": "Equipamento (laptop/monitor/periférico)", "n": 3095, "pct": 6.47, "top": "Hardware", "toppct": 77.9, "dist": {"Access": 3.1, "Administrative rights": 4.2, "HR Support": 3.7, "Hardware": 77.9, "Internal Project": 0.1, "Miscellaneous": 1.3, "Purchase": 9.4, "Storage": 0.3}, "acc": 92.7}, {"intent": "Impressora", "n": 568, "pct": 1.19, "top": "Hardware", "toppct": 31.0, "dist": {"Access": 18.1, "Administrative rights": 4.0, "HR Support": 19.0, "Hardware": 31.0, "Internal Project": 1.9, "Miscellaneous": 21.1, "Purchase": 3.0, "Storage": 1.8}, "acc": 80.8}, {"intent": "Pedido de acesso", "n": 2341, "pct": 4.89, "top": "Storage", "toppct": 38.2, "dist": {"Access": 14.7, "Administrative rights": 0.7, "HR Support": 11.8, "Hardware": 22.6, "Internal Project": 2.2, "Miscellaneous": 9.4, "Purchase": 0.3, "Storage": 38.2}, "acc": 85.7}], "intent_cov": 40.4, "label_hw_share": {"Reset de senha / conta": 19.9, "Novo colaborador (starter)": 2.9, "Desligamento (leaver)": 10.4, "Timecard / ponto (Oracle)": 3.6, "Pedido de compra (PO)": 5.4, "Alerta automático (impressora/dispositivo/update)": 45.9, "Instalar / atualizar software": 31.6, "VPN / rede": 72.7, "E-mail / Outlook": 7.9, "Pasta / drive / quota": 19.8, "Equipamento (laptop/monitor/periférico)": 77.9, "Impressora": 31.0, "Pedido de acesso": 22.6}, "refw": {"qualquer": 10187, "inicio": 436, "inicio_pct": 0.9, "falsos_positivos": 818, "teto": 9369, "teto_pct": 19.6}, "noise": {"saudação": 87.8, "fechamento": 85.2, "cabeçalho de e-mail (sent/pm)": 31.3, "re/fw no texto (teto)": 19.6, "aviso legal": 2.2}, "dia_semana_qualquer": 58.5, "signals": {"urgência explícita": {"pct": 5.9, "n": 2806, "by": {"Access": 7.1, "Administrative rights": 8.4, "HR Support": 3.8, "Hardware": 7.7, "Internal Project": 8.7, "Miscellaneous": 5.0, "Purchase": 1.1, "Storage": 4.2}}, "cobrança/follow-up": {"pct": 1.3, "n": 643, "by": {"Access": 0.6, "Administrative rights": 4.3, "HR Support": 1.0, "Hardware": 2.0, "Internal Project": 1.1, "Miscellaneous": 1.4, "Purchase": 0.2, "Storage": 0.5}}, "falha / erro": {"pct": 18.5, "n": 8838, "by": {"Access": 13.9, "Administrative rights": 29.0, "HR Support": 23.0, "Hardware": 25.2, "Internal Project": 8.0, "Miscellaneous": 12.7, "Purchase": 2.5, "Storage": 9.7}}}, "urg_ou_cobranca": 6.9, "hist": [["1–10", 3229], ["11–20", 13873], ["21–30", 10583], ["31–50", 9631], ["51–80", 4883], ["81–150", 3662], ["151–300", 1563], ["301–1000", 413]], "long80_all": 11.8, "short10_all": 6.8, "words_pct": {"10": 12.0, "25": 17.0, "50": 26.0, "75": 46.0, "90": 91.0, "95": 136.0, "99": 284.0}, "class": {"Access": 7125, "Administrative rights": 1760, "HR Support": 10915, "Hardware": 13617, "Internal Project": 2119, "Miscellaneous": 7060, "Purchase": 2464, "Storage": 2777}};
+const fmt=(x,d=0)=>x.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const cls=D.cm.cls, cm=D.cm.cm, N=D.n;
+const tip=document.getElementById('tip');
+function bindTip(el,txt){
+  el.addEventListener('mousemove',e=>{tip.textContent=txt;tip.style.opacity=1;tip.style.left=Math.min(e.clientX+12,innerWidth-270)+'px';tip.style.top=(e.clientY+14)+'px'});
+  el.addEventListener('mouseleave',()=>tip.style.opacity=0);
+  el.setAttribute('tabindex','0');el.setAttribute('aria-label',txt);
+  el.addEventListener('focus',()=>{const r=el.getBoundingClientRect();tip.textContent=txt;tip.style.opacity=1;tip.style.left=r.left+'px';tip.style.top=(r.bottom+6)+'px'});
+  el.addEventListener('blur',()=>tip.style.opacity=0);
+}
+function row(parent,label,pct,valTxt,tipTxt,cls2,ref){
+  const r=document.createElement('div');r.className='row';
+  r.innerHTML=`<div class="lab"></div><div class="track"><div class="fill ${cls2||''}" style="width:${Math.max(0,Math.min(100,pct))}%"></div>${ref!=null?`<div class="ref" style="left:${ref}%"></div>`:''}</div><div class="val"></div>`;
+  r.children[0].textContent=label;r.children[2].textContent=valTxt;
+  bindTip(r.children[1],tipTxt);parent.appendChild(r);return r;
+}
+// queue diagram
+(function(){
+  const g=document.getElementById('qs');const ns='http://www.w3.org/2000/svg';
+  const order=[...cls].sort((a,b)=>D.class[b]-D.class[a]);const max=D.class[order[0]];
+  order.forEach((c,i)=>{
+    const y=30+i*40, v=D.class[c];
+    const mk=(t,a,txt)=>{const e=document.createElementNS(ns,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;g.appendChild(e);return e};
+    mk('line',{x1:612,y1:y+14,x2:636,y2:y+14,stroke:'currentColor','stroke-width':1.4,'marker-end':'url(#ar)'});
+    mk('rect',{x:640,y:y,width:210,height:28,rx:4,fill:'var(--surface)',stroke:'currentColor','stroke-width':1});
+    mk('rect',{x:641,y:y+1,width:Math.max(4,208*v/max),height:26,rx:3,fill:'var(--accent-soft)'});
+    mk('text',{x:650,y:y+18,'font-size':12,'font-weight':500},c);
+    mk('text',{x:842,y:y+18,'font-size':11.5,'text-anchor':'end',class:'m'},fmt(v));
+  });
+})();
+// queues chart
+(function(){
+  const p=document.getElementById('queues');const order=[...cls].sort((a,b)=>D.class[b]-D.class[a]);
+  const max=Math.max(...order.map(c=>D.class[c]));
+  order.forEach(c=>{
+    const v=D.class[c],pc=D.perclass[c];const sh=v/N*100;
+    row(p,c,v/max*100,fmt(sh,1)+'%',`${c}: ${fmt(v)} tickets (${fmt(sh,1)}%)`);
+    const k=pc.r<80?'cr':(pc.r>=D.accuracy?'hi':'');
+    const r=row(p,'  recall',pc.r,fmt(pc.r,1)+'%',`${c}: precisão ${fmt(pc.p,1)}%, recall ${fmt(pc.r,1)}%, F1 ${fmt(pc.f,1)}%`,k,D.accuracy);
+    r.children[0].style.color='var(--muted)';r.children[0].style.fontSize='11.5px';r.children[0].style.whiteSpace='pre';
+    r.style.marginTop='-4px';
+  });
+})();
+// confidence
+(function(){
+  const p=document.getElementById('conf');const pol={'≥90%':['Auto-rotear','ok'],'70–90%':['Sugerir 1 fila','wr'],'50–70%':['Sugerir 2 filas','wr'],'<50%':['Triagem humana','cr']};
+  const t=document.getElementById('conf-t');t.innerHTML='<tr><th>Confiança</th><th>% dos tickets</th><th>Acerto</th><th>Decisão</th></tr>';
+  [...D.conf].reverse().forEach(c=>{
+    const [d,k]=pol[c.b];
+    const r=row(p,'Confiança '+c.b,c.share,fmt(c.share,1)+'%',`Confiança ${c.b}: ${fmt(c.share,1)}% dos tickets, acerto ${fmt(c.acc,1)}%`,k==='ok'?'hi':(k==='cr'?'cr':'wr'));
+    const sub=document.createElement('div');sub.style.cssText='grid-column:1/-1;margin:-3px 0 4px;font-size:12px;color:var(--ink2)';
+    sub.innerHTML=`Acerto <b class="num">${fmt(c.acc,1)}%</b> · <span class="pill ${k}">${d}</span>`;p.appendChild(sub);
+    t.insertAdjacentHTML('beforeend',`<tr><td>${c.b}</td><td class="n">${fmt(c.share,1)}%</td><td class="n">${fmt(c.acc,1)}%</td><td>${d}</td></tr>`);
+  });
+})();
+// heatmap
+let mode='pct';
+function heat(){
+  const h=document.getElementById('heat');h.innerHTML='';
+  h.insertAdjacentHTML('beforeend','<div></div>'+cls.map(c=>`<div class="h">${c.replace('Administrative rights','Admin rights').replace('Internal Project','Internal Proj.')}</div>`).join(''));
+  cls.forEach((rc,i)=>{
+    const tot=cm[i].reduce((a,b)=>a+b,0);
+    h.insertAdjacentHTML('beforeend',`<div class="r">${rc}</div>`);
+    cm[i].forEach((v,j)=>{
+      const pc=v/tot*100;const d=document.createElement('div');d.className='c'+(i===j?' d':'');
+      if(i!==j){const a=Math.min(1,pc/24);d.style.background=`color-mix(in srgb, var(--warn) ${Math.round(a*85)}%, var(--surface))`;d.style.color=a>.55?'#fff':'var(--ink)'}
+      d.textContent=i===j?(mode==='pct'?fmt(pc,0)+'%':fmt(v)):(mode==='pct'?fmt(pc,1):fmt(v));
+      bindTip(d,`Real ${rc} → previsto ${cls[j]}: ${fmt(v)} tickets (${fmt(pc,1)}% de ${rc})`);
+      h.appendChild(d);
+    });
+  });
+}
+heat();
+document.getElementById('b-pct').onclick=()=>{mode='pct';b1.setAttribute('aria-pressed',true);b2.setAttribute('aria-pressed',false);heat()};
+document.getElementById('b-n').onclick=()=>{mode='n';b1.setAttribute('aria-pressed',false);b2.setAttribute('aria-pressed',true);heat()};
+const b1=document.getElementById('b-pct'),b2=document.getElementById('b-n');
+// intents
+(function(){
+  const t=document.getElementById('intents');
+  t.innerHTML='<tr><th>Intenção</th><th>Tickets</th><th style="min-width:130px">Volume</th><th>Fila dominante</th><th style="min-width:150px">% na fila dominante</th></tr>';
+  const rows=[...D.intents].sort((a,b)=>b.n-a.n);const mx=rows[0].n;
+  rows.forEach(r=>{
+    const k=r.toppct>=85?'hi':(r.toppct>=60?'wr':'cr');const lbl=r.toppct>=85?'consistente':(r.toppct>=60?'dispersa':'muito dispersa');
+    const second=Object.entries(r.dist).filter(e=>e[0]!==r.top).sort((a,b)=>b[1]-a[1])[0];
+    t.insertAdjacentHTML('beforeend',`<tr><td>${r.intent}</td><td class="n">${fmt(r.n)}</td><td><div class="track"><div class="fill" style="width:${r.n/mx*100}%"></div></div></td><td>${r.top}<div class="cap" style="margin:0">depois ${second[0]} (${fmt(second[1],1)}%)</div></td><td><div style="display:flex;align-items:center;gap:8px"><div class="track" style="flex:1"><div class="fill ${k}" style="width:${r.toppct}%"></div></div><span class="num" style="font-size:12px;width:44px">${fmt(r.toppct,1)}%</span></div><div class="cap" style="margin:0">${lbl}</div></td></tr>`);
+  });
+})();
+// noise
+(function(){const p=document.getElementById('noise');Object.entries(D.noise).forEach(([k,v])=>row(p,k,v,fmt(v,1)+'%',`${k}: ${fmt(v,1)}% dos tickets`,v>50?'hi':''))})();
+// hist
+(function(){const h=document.getElementById('hist'),l=document.getElementById('hlab');const mx=Math.max(...D.hist.map(x=>x[1]));
+  D.hist.forEach((x,i)=>{const d=document.createElement('div');d.innerHTML=`<em>${fmt(x[1]/N*100,0)}%</em><span class="b ${i>=5?'hi':''}" style="height:${x[1]/mx*100*0.78}%"></span>`;bindTip(d,`${x[0]} palavras: ${fmt(x[1])} tickets (${fmt(x[1]/N*100,1)}%)`);h.appendChild(d);l.insertAdjacentHTML('beforeend',`<span>${x[0]}</span>`)});
+})();
+// signals
+(function(){const p=document.getElementById('sig');const q=[...cls].sort((a,b)=>D.signals['falha / erro'].by[b]-D.signals['falha / erro'].by[a]);
+  q.forEach(c=>{const f=D.signals['falha / erro'].by[c],u=D.signals['urgência explícita'].by[c];
+    row(p,c,f/30*100,fmt(f,1)+'%',`${c}: ${fmt(f,1)}% relatam falha ou erro`,'hi');
+    const r=row(p,'  urgência',u/30*100,fmt(u,1)+'%',`${c}: ${fmt(u,1)}% pedem urgência`);r.style.marginTop='-4px';r.children[0].style.cssText='color:var(--muted);font-size:11.5px;white-space:pre';});
+})();
+// calc
+function calc(){
+  const n=+document.getElementById('c-n').value||0,t=+document.getElementById('c-t').value||0,f=+document.getElementById('c-f').value||0,c=+document.getElementById('c-c').value||0;
+  const auto=(D.hi_nontpl+D.template_rows)/N; const a=n*auto*t/60, b=n*(D.pedido_rows/N)*f/60, s=a+b;
+  document.getElementById('r1').textContent=fmt(a)+' h';document.getElementById('r2').textContent=fmt(b)+' h';
+  document.getElementById('r3').textContent=fmt(s)+' h';document.getElementById('r4').textContent='R$ '+fmt(s*c);
+}
+// modelos (28 aberturas repetidas)
+(function(){const t=document.getElementById('modelos-t');if(!t||!D.modelos)return;
+  t.innerHTML='<tr><th>Abertura (5 palavras)</th><th>Tipo</th><th>Tickets</th><th>Fila principal</th></tr>';
+  D.modelos.lista.forEach(g=>{const k=g.fila_pct>=90?'ok':'wr';t.insertAdjacentHTML('beforeend',`<tr><td>${g.abertura}</td><td>${g.tipo==='pedido'?'Modelo de pedido':'Alerta de sistema'}</td><td class="n">${fmt(g.n)}</td><td>${g.fila} <span class="pill ${k}">${fmt(g.fila_pct,0)}%</span></td></tr>`)});
+})();
+['c-n','c-t','c-f','c-c'].forEach(i=>document.getElementById(i).addEventListener('input',calc));calc();
+</script>
+
+</body></html>
