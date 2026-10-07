@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="Fila de oportunidades para decidir onde focar." />
+    <title>Foco | Fila de prioridade</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <header class="portfolio-header">
+      <a class="portfolio-logo" href="https://portfolio.lanzilotti.com.br/" target="_blank" rel="noopener noreferrer" aria-label="Abrir portfólio de Paulo Lanzilotti">
+        <span class="portfolio-logo-mark" aria-hidden="true">p<span>l.</span></span>
+        <span>Paulo<br>Lanzilotti</span>
+      </a>
+      <nav class="portfolio-nav" aria-label="Navegação do portfólio">
+        <a class="portfolio-primary" href="https://portfolio.lanzilotti.com.br/" target="_blank" rel="noopener noreferrer">Check my Portfolio</a>
+        <a class="portfolio-cv" href="./assets/paulo-lanzilotti-applied-ai.pdf" download="Paulo-Lanzilotti-Applied-AI.pdf">Download CV</a>
+        <a class="portfolio-contact" href="https://wa.me/5511916109494" target="_blank" rel="noopener noreferrer">
+          Let’s talk
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        </a>
+      </nav>
+    </header>
+
+    <main class="shell">
+      <div class="page-heading">
+        <div>
+          <h1>Fila de prioridade</h1>
+          <p>Clique em Queue Mode para iniciar seu fluxo de ligações.</p>
+        </div>
+        <div class="heading-actions">
+          <span class="open-count" id="open-count" aria-live="polite">Carregando oportunidades</span>
+          <button class="queue-mode-trigger" id="queue-mode-start" type="button" disabled>Queue Mode</button>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="stage-tabs" role="group" aria-label="Filtrar por etapa">
+          <button class="stage-tab is-active" type="button" data-stage="all" aria-pressed="true">Todas</button>
+          <button class="stage-tab" type="button" data-stage="Engaging" aria-pressed="false">Em negociação</button>
+          <button class="stage-tab" type="button" data-stage="Prospecting" aria-pressed="false">Prospecção</button>
+        </div>
+        <div class="toolbar-controls">
+          <label class="search-field">
+            <span class="sr-only">Buscar oportunidade</span>
+            <span class="search-icon" aria-hidden="true"></span>
+            <input id="search" type="search" placeholder="Buscar empresa, produto ou ID" autocomplete="off" />
+          </label>
+          <label class="seller-field">
+            <span class="sr-only">Filtrar por vendedor</span>
+            <select id="seller-filter">
+              <option value="all">Todos os vendedores</option>
+            </select>
+          </label>
+          <label class="seller-field">
+            <span class="sr-only">Filtrar por manager</span>
+            <select id="manager-filter">
+              <option value="all">Todos os managers</option>
+            </select>
+          </label>
+          <label class="seller-field">
+            <span class="sr-only">Filtrar por região</span>
+            <select id="office-filter">
+              <option value="all">Todas as regiões</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="workspace">
+        <aside class="detail" id="detail-panel" aria-label="Detalhes da oportunidade">
+          <div class="detail-placeholder">Selecione uma oportunidade para ver o contexto.</div>
+        </aside>
+
+        <section class="queue" aria-labelledby="queue-title">
+          <div class="panel-heading">
+            <h2 id="queue-title">Fila de trabalho</h2>
+            <span id="results-count" class="panel-count" aria-live="polite"></span>
+          </div>
+          <div id="queue-list" class="queue-list" aria-live="polite" aria-busy="true">
+            <div class="skeleton-row"><span></span><span></span></div>
+            <div class="skeleton-row"><span></span><span></span></div>
+            <div class="skeleton-row"><span></span><span></span></div>
+          </div>
+          <div class="queue-footer" id="queue-footer"></div>
+        </section>
+
+      </div>
+
+      <div class="sr-only" id="workflow-announcer" aria-live="polite"></div>
+
+    </main>
+    <dialog id="queue-dialog" class="queue-dialog" aria-labelledby="queue-mode-title">
+      <header class="queue-dialog-header">
+        <h2 id="queue-mode-title">Queue Mode</h2>
+        <button type="button" class="queue-dialog-close" id="queue-mode-close" aria-label="Fechar Queue Mode">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </header>
+      <div id="queue-mode-detail"></div>
+      <p class="sr-only" id="queue-mode-announcer" aria-live="polite"></p>
+    </dialog>
+  </body>
+</html>
