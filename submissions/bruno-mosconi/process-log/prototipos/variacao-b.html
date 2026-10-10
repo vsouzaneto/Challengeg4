@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Variação B: Mesa</title>
+<link rel="stylesheet" href="base.css" />
+<style>
+	/* Variação B: duas colunas, lista à esquerda e o motivo sempre visível à direita */
+	.wrap {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 36px 32px 96px;
+		display: grid;
+		gap: 32px;
+	}
+	.band {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 460px;
+		gap: 48px;
+		align-items: end;
+	}
+	.band h1 {
+		font-size: 28px;
+		font-weight: 650;
+		letter-spacing: -0.02em;
+	}
+	.band .t-lead {
+		color: var(--ink-2);
+		margin-top: 8px;
+		max-width: 52ch;
+	}
+	.band .t-lead b {
+		color: var(--ink);
+		font-weight: 600;
+	}
+	.desk {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 440px;
+		gap: 24px;
+		align-items: start;
+	}
+	.pane {
+		background: var(--surface);
+		border-radius: var(--r-panel);
+		box-shadow: 0 0 0 1px var(--line);
+	}
+	.list-pane {
+		padding: 4px 20px 16px;
+	}
+	.group-title {
+		font-size: 13px;
+		font-weight: 600;
+		color: var(--ink-2);
+		padding: 20px 8px 8px;
+		display: flex;
+		justify-content: space-between;
+	}
+	.item {
+		width: 100%;
+		text-align: left;
+		display: grid;
+		grid-template-columns: 44px minmax(0, 1fr) 190px 96px;
+		gap: 16px;
+		align-items: center;
+		padding: 12px 8px;
+		border-radius: 10px;
+		transition: background var(--t-fast) var(--ease-out);
+	}
+	.item:hover {
+		background: var(--hover);
+	}
+	.item[aria-current="true"] {
+		background: var(--accent-soft);
+	}
+	.item .name {
+		font-weight: 600;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.item .name span {
+		color: var(--ink-2);
+		font-weight: 450;
+	}
+	.item .val {
+		text-align: right;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+	}
+	/* os 5 primeiros: maiores, com a frase do motivo */
+	.item.lead {
+		padding: 16px 8px;
+	}
+	.item.lead .name {
+		font-size: 17px;
+	}
+	.item.lead .line {
+		display: block;
+		font-size: 13px;
+		color: var(--ink-2);
+		margin-top: 2px;
+		white-space: normal;
+	}
+	.item:not(.lead) .score b {
+		font-size: 17px;
+	}
+	.item:not(.lead) .score span {
+		display: none;
+	}
+	.item.lead .val {
+		font-size: 17px;
+	}
+	.sep {
+		height: 1px;
+		background: var(--line);
+		margin: 8px 8px 0;
+	}
+
+	.detail-pane {
+		position: sticky;
+		top: 72px;
+		padding: 28px;
+		display: grid;
+		gap: 22px;
+		max-height: calc(100vh - 96px);
+		overflow: auto;
+	}
+	.detail-pane .sheet-close {
+		display: none;
+	}
+	.detail-pane h2 {
+		font-size: 22px;
+		font-weight: 650;
+		letter-spacing: -0.01em;
+	}
+	.detail-pane .sub {
+		font-size: 13px;
+		color: var(--ink-2);
+		margin-top: 4px;
+	}
+
+	/* Equipe */
+	.member {
+		width: 100%;
+		text-align: left;
+		display: grid;
+		grid-template-columns: 32px minmax(0, 1fr) 150px 92px;
+		gap: 14px;
+		align-items: center;
+		padding: 14px 8px;
+		border-radius: 10px;
+	}
+	.member:hover {
+		background: var(--hover);
+	}
+	.member[aria-current="true"] {
+		background: var(--accent-soft);
+	}
+	.member .who {
+		font-weight: 600;
+		display: grid;
+	}
+	.member .who span {
+		font-weight: 450;
+		font-size: 13px;
+		color: var(--ink-2);
+	}
+	.member .bar,
+	.mini .bar {
+		position: relative;
+		height: 8px;
+		border-radius: 4px;
+		background: var(--line);
+		overflow: hidden;
+		transform-origin: left center;
+	}
+	.member .bar .seg,
+	.mini .bar .seg {
+		position: absolute;
+		inset: 0;
+		transform-origin: left center;
+	}
+	.member .val {
+		text-align: right;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+	}
+	.member .val span {
+		display: block;
+		font-weight: 450;
+		font-size: 12px;
+		color: var(--ink-2);
+	}
+	.preview {
+		display: grid;
+		gap: 18px;
+	}
+	.preview ol > li + li {
+		border-top: 1px solid var(--line);
+	}
+	.preview .p-row {
+		display: grid;
+		grid-template-columns: 40px 1fr auto;
+		gap: 12px;
+		align-items: center;
+		padding: 10px 0;
+	}
+	.preview .score b {
+		font-size: 17px;
+	}
+	.preview .score span {
+		display: none;
+	}
+	.note {
+		font-size: 13px;
+		color: var(--ink-2);
+	}
+	.back {
+		color: var(--accent);
+		font-weight: 600;
+		justify-self: start;
+	}
+	.swap {
+		animation: swap 220ms var(--ease-out);
+	}
+	@keyframes swap {
+		from {
+			opacity: 0;
+			transform: translateX(12px);
+		}
+	}
+	.enter {
+		animation: enter 240ms var(--ease-out);
+	}
+	@keyframes enter {
+		from {
+			opacity: 0;
+			transform: translateX(24px);
+		}
+	}
+
+	.mobile-date,
+	.tabbar {
+		display: none;
+	}
+	@media (max-width: 900px) {
+		.band,
+		.desk {
+			grid-template-columns: minmax(0, 1fr);
+		}
+		.detail-pane {
+			display: none;
+		}
+	}
+	@media (max-width: 640px) {
+		.controls .nav,
+		.controls .dates,
+		.controls .date-label,
+		.controls .person .name {
+			display: none;
+		}
+		.mobile-date {
+			display: inline-flex;
+			font-size: 13px;
+			font-weight: 600;
+			padding: 5px 10px;
+			border-radius: 999px;
+			background: var(--hover);
+		}
+		.wrap {
+			padding: 20px 12px 110px;
+			gap: 20px;
+		}
+		.band {
+			padding: 0 4px;
+			gap: 20px;
+		}
+		.band h1 {
+			font-size: 24px;
+		}
+		.list-pane {
+			padding: 4px 8px 12px;
+		}
+		.item {
+			grid-template-columns: 36px minmax(0, 1fr) 92px;
+			gap: 10px;
+		}
+		.item .val,
+		.member .val {
+			white-space: nowrap;
+		}
+		.seller-band #funnel {
+			display: none;
+		}
+		.item .ruler {
+			grid-column: 2 / -1;
+			grid-row: 2;
+		}
+		.member {
+			grid-template-columns: 32px minmax(0, 1fr) 104px;
+		}
+		.member .bar {
+			grid-column: 2 / -1;
+			grid-row: 2;
+		}
+		.tabbar {
+			display: flex;
+			position: fixed;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 15;
+			background: var(--controls);
+			backdrop-filter: saturate(1.4) blur(18px);
+			border-top: 1px solid var(--line);
+			padding: 8px 8px 22px;
+			justify-content: space-around;
+		}
+		.tabbar a {
+			text-decoration: none;
+			color: var(--ink-2);
+			font-size: 12px;
+			font-weight: 600;
+			padding: 6px 10px;
+		}
+		.tabbar a[aria-current="page"] {
+			color: var(--accent);
+		}
+	}
+</style>
+</head>
+<body>
+<header class="controls">
+	<div class="controls-inner">
+		<span class="brand">Onde focar</span>
+		<nav class="nav" aria-label="Áreas">
+			<a href="#semana" data-area="semana">Minha semana</a>
+			<a href="#equipe" data-area="equipe">Minha equipe</a>
+			<a href="#como-funciona">Como funciona</a>
+		</nav>
+		<span class="spacer"></span>
+		<div id="dates" style="display: contents"></div>
+		<button class="mobile-date" id="mobile-date" type="button"></button>
+		<div class="person"><span class="avatar" id="avatar"></span><span class="name" id="who"></span></div>
+	</div>
+</header>
+<div class="wrap" id="main"></div>
+<nav class="tabbar" aria-label="Áreas">
+	<a href="#semana" data-area="semana">Minha semana</a>
+	<a href="#equipe" data-area="equipe">Minha equipe</a>
+	<a href="#como-funciona">Como funciona</a>
+</nav>
+<script src="dados.js"></script>
+<script src="proto.js"></script>
+<script>
+	const S = {
+		iso: P.latest,
+		tab: "prioridades",
+		seller: new URLSearchParams(location.search).get("vendedor") || "Zane Levy",
+		area: location.hash === "#equipe" ? "equipe" : "semana",
+		from: null,
+		picked: null,
+		previewed: null,
+	};
+	const main = document.getElementById("main");
+	const initials = (n) => n.split(" ").map((x) => x[0]).join("");
+	const narrow = () => matchMedia("(max-width: 900px)").matches;
+
+	function header() {
+		document.getElementById("dates").innerHTML = P.datesHtml(S.iso);
+		document.getElementById("mobile-date").textContent = P.date(S.iso);
+		const me = S.area === "equipe" ? P.D.manager : S.seller;
+		document.getElementById("avatar").textContent = initials(me);
+		document.getElementById("who").textContent = me;
+		for (const a of document.querySelectorAll("[data-area]"))
+			a.setAttribute("aria-current", a.dataset.area === S.area ? "page" : "false");
+		for (const b of document.querySelectorAll("[data-date]")) b.onclick = () => changeDate(b.dataset.date);
+	}
+
+	const item = (d, lead) => `<li data-id="${d.id}"><button class="item ${lead ? "lead" : ""}" data-open="${d.id}" aria-current="${S.picked === d.id}">
+		${P.scoreHtml(d)}
+		<span class="name">${P.esc(d.product)}${d.account ? ` <span>${P.esc(d.account)}</span>` : ""}${lead ? `<span class="line">${P.chancePhrase(d)}</span>` : ""}</span>
+		${P.ruler(d)}
+		<span class="val">${P.usd(d.potential)}</span>
+	</button></li>`;
+
+	const coldItem = (d) => `<li data-id="${d.id}"><button class="item" data-cold="${d.id}" aria-current="${S.picked === d.id}">
+		<span></span>
+		<span class="name">${P.esc(d.product)}${d.account ? ` <span>${P.esc(d.account)}</span>` : ""}</span>
+		${P.ruler(d)}
+		<span class="val">${P.usd(d.price)}</span>
+	</button></li>`;
+
+	function weekHtml() {
+		const day = P.at(S.iso);
+		const seller = day.sellers[S.seller];
+		const w = P.weekNumbers(seller);
+		if (S.tab === "prioridades" && !seller.focus.some((d) => d.id === S.picked)) S.picked = seller.focus[0]?.id ?? null;
+		if (S.tab === "perda" && !seller.review.some((d) => d.id === S.picked)) S.picked = seller.review[0]?.id ?? null;
+		const tabs = [
+			["prioridades", "Prioridades da semana", seller.focus.length],
+			["perda", "Atualize ou dê perda", seller.review.length],
+			["prospeccao", "Prospecção", seller.prospect.length],
+		];
+		let list;
+		if (S.tab === "prioridades")
+			list = `<div class="group-title"><span>Comece por estes</span><span>Potencial</span></div>
+				<ol id="list">${seller.focus.slice(0, 5).map((d) => item(d, true)).join("")}</ol>
+				<div class="sep"></div>
+				<div class="group-title"><span>Depois</span><span>${seller.focus.length - 5} negócios</span></div>
+				<ol>${seller.focus.slice(5).map((d) => item(d, false)).join("")}</ol>`;
+		else if (S.tab === "perda")
+			list = `<div class="group-title"><span>Abertos há mais de 138 dias. Ordem pelo preço de lista.</span><span>Preço</span></div><ol>${seller.review.map(coldItem).join("")}</ol>`;
+		else
+			list = `<p class="note" style="padding: 20px 8px">${S.iso === P.latest ? "Nenhuma prospecção sem contato. Cadastre os novos contatos no CRM." : `A prospecção só aparece na data mais recente: a base não registra quando cada uma começou.`}</p>`;
+		const picked = S.tab === "perda" ? seller.review.find((d) => d.id === S.picked) : seller.focus.find((d) => d.id === S.picked);
+		const detail = picked ? (S.tab === "perda" ? P.coldDetail(picked) : P.dealDetail(picked, day)) : `<p class="note">Escolha um negócio para ver o motivo.</p>`;
+		return `${S.from ? `<button class="back" data-back>‹ Minha equipe</button>` : ""}
+		<section class="band seller-band">
+			<div>
+				<h1>${S.from ? `A semana de ${S.seller.split(" ")[0]}.` : P.greet(S.seller)}</h1>
+				<p class="t-lead"><b>${P.num(w.count)} negócios</b> para avançar esta semana, <b>${P.usdShort(w.listPrice)}</b> em negociação. <b>${w.coolSoon}</b> esfriam e <b>${w.coldSoon}</b> ficam frios nos próximos 14 dias.</p>
+			</div>
+			<div id="funnel">${P.funnelHtml(seller.funnel)}</div>
+		</section>
+		<div class="desk">
+			<section class="pane list-pane">
+				<div class="tabs" role="tablist">${tabs.map(([k, l, n]) => `<button role="tab" data-tab="${k}" aria-selected="${S.tab === k}">${l}<span class="n">${n}</span></button>`).join("")}</div>
+				${list}
+			</section>
+			<aside class="pane detail-pane" id="detail" aria-label="Motivo">${detail}</aside>
+		</div>`;
+	}
+
+	const teamBar = (a, max) => {
+		const parts = [["quente", a.slices["no-prazo"].listPrice], ["esfriando", a.slices.esfriando.listPrice], ["frio", a.slices.parado.listPrice]];
+		let x = 0;
+		return parts.map(([k, v]) => { const w = v / max; const h = `<span class="seg ${k}" style="transform: translateX(${x * 100}%) scaleX(${w})"></span>`; x += w; return h; }).join("");
+	};
+
+	function previewHtml(day, name) {
+		const s = day.sellers[name];
+		const w = P.weekNumbers(s);
+		return `<div class="preview">
+			<div><h2>${name}</h2><p class="sub">${w.count} prioridades, ${w.cold} frios para atualizar ou dar perda.</p></div>
+			${P.funnelHtml(s.funnel)}
+			<div class="group-title" style="padding: 4px 0 0"><span>Começaria por estes</span><span>Potencial</span></div>
+			<ol>${s.focus.slice(0, 3).map((d) => `<li class="p-row">${P.scoreHtml(d)}<span><b>${P.esc(d.product)}</b> <span class="muted">${P.esc(d.account ?? "")}</span><br><span class="t-caption">${P.days(d.age)}, ${P.deadlineText(d)}</span></span><span class="tnum"><b>${P.usd(d.potential)}</b></span></li>`).join("")}</ol>
+			<button class="btn" data-seller="${name}">Abrir a semana de ${name.split(" ")[0]}</button>
+		</div>`;
+	}
+
+	function teamHtml() {
+		const day = P.at(S.iso);
+		const active = day.team.filter((a) => a.open > 0);
+		const idle = day.team.filter((a) => a.open === 0);
+		if (!active.some((a) => a.agent === S.previewed)) S.previewed = active[0]?.agent;
+		const f = day.teamFunnel;
+		const total = f["no-prazo"].listPrice + f.esfriando.listPrice + f.parado.listPrice;
+		const max = Math.max(...active.map((a) => a.slices["no-prazo"].listPrice + a.slices.esfriando.listPrice + a.slices.parado.listPrice));
+		return `<section class="band">
+			<div>
+				<h1>${P.greet(P.D.manager)}</h1>
+				<p class="t-lead">Sua equipe tem <b>${P.num(f["no-prazo"].deals + f.esfriando.deals)} negócios</b> quentes e esfriando. <b>${Math.floor((f.parado.listPrice / total) * 100)}%</b> do valor em andamento está frio e precisa de atualização ou perda.</p>
+			</div>
+			<div id="funnel">${P.funnelHtml(f)}</div>
+		</section>
+		<div class="desk">
+			<section class="pane list-pane">
+				<div class="group-title"><span>Primeiro, quem tem mais valor frio para revisar</span><span>Frio</span></div>
+				<div id="team">${active
+					.map((a) => {
+						const t = a.slices["no-prazo"].listPrice + a.slices.esfriando.listPrice + a.slices.parado.listPrice;
+						return `<button class="member" data-preview="${a.agent}" data-id="${a.agent}" aria-current="${S.previewed === a.agent}">
+							<span class="avatar">${initials(a.agent)}</span>
+							<span class="who">${a.agent}<span>${a.focus} prioridades</span></span>
+							<span class="bar grow" role="img" aria-label="Quente, esfriando e frio">${teamBar(a, max)}</span>
+							<span class="val">${P.usdShort(a.slices.parado.listPrice)}<span>de ${P.usdShort(t)}</span></span>
+						</button>`;
+					})
+					.join("")}</div>
+				${idle.length ? `<p class="note" style="padding: 12px 8px 0">Sem negócio em andamento: ${idle.map((a) => `<b>${a.agent}</b>`).join(", ")}.</p>` : ""}
+				<p class="note" style="padding: 12px 8px 0">Retrato da carteira, não ranking: os dados não separam o efeito do vendedor do efeito da carteira e da região.</p>
+			</section>
+			<aside class="pane detail-pane" id="detail">${S.previewed ? previewHtml(day, S.previewed) : ""}</aside>
+		</div>`;
+	}
+
+	const view = () => (S.area === "equipe" && !S.from ? teamHtml() : weekHtml());
+
+	function render({ animate = false } = {}) {
+		header();
+		main.innerHTML = view();
+		if (animate) main.classList.remove("enter"), void main.offsetWidth, main.classList.add("enter");
+		if (S.area === "equipe" && !S.from && !render.grown) P.growOnce(main), (render.grown = true);
+		bind();
+	}
+
+	function swapDetail(html) {
+		const d = document.getElementById("detail");
+		d.innerHTML = html;
+		d.classList.remove("swap");
+		void d.offsetWidth;
+		d.classList.add("swap");
+		bindDetail();
+	}
+
+	function bindDetail() {
+		for (const b of main.querySelectorAll("#detail [data-seller]"))
+			b.onclick = () => { S.seller = b.dataset.seller; S.from = "equipe"; S.tab = "prioridades"; S.picked = null; render({ animate: true }); };
+	}
+
+	function bind() {
+		const day = P.at(S.iso);
+		const seller = day.sellers[S.seller];
+		for (const b of main.querySelectorAll("[data-open]"))
+			b.onclick = () => {
+				const d = seller.focus.find((x) => x.id === b.dataset.open);
+				S.picked = d.id;
+				for (const x of main.querySelectorAll(".item")) x.setAttribute("aria-current", x === b);
+				narrow() ? P.openSheet(P.dealDetail(d, day)) : swapDetail(P.dealDetail(d, day));
+			};
+		for (const b of main.querySelectorAll("[data-cold]"))
+			b.onclick = () => {
+				const d = seller.review.find((x) => x.id === b.dataset.cold);
+				S.picked = d.id;
+				for (const x of main.querySelectorAll(".item")) x.setAttribute("aria-current", x === b);
+				narrow() ? P.openSheet(P.coldDetail(d)) : swapDetail(P.coldDetail(d));
+			};
+		for (const b of main.querySelectorAll("[data-tab]")) b.onclick = () => { S.tab = b.dataset.tab; S.picked = null; render(); };
+		for (const b of main.querySelectorAll("[data-preview]"))
+			b.onclick = () => {
+				if (narrow()) { S.seller = b.dataset.preview; S.from = "equipe"; S.tab = "prioridades"; render({ animate: true }); return; }
+				S.previewed = b.dataset.preview;
+				for (const x of main.querySelectorAll(".member")) x.setAttribute("aria-current", x === b);
+				swapDetail(previewHtml(day, S.previewed));
+			};
+		const back = main.querySelector("[data-back]");
+		if (back) back.onclick = () => { S.from = null; render({ animate: true }); };
+		bindDetail();
+	}
+
+	function changeDate(iso) {
+		if (iso === S.iso) return;
+		const oldFunnel = main.querySelector("#funnel .funnel-bar")?.cloneNode(true);
+		P.flip(main, () => { S.iso = iso; header(); main.innerHTML = view(); bind(); });
+		P.morphFunnel(oldFunnel, main.querySelector("#funnel .funnel-bar"));
+	}
+
+	addEventListener("hashchange", () => {
+		if (location.hash === "#equipe" || location.hash === "#semana") {
+			S.area = location.hash.slice(1);
+			S.from = null;
+			render({ animate: true });
+		}
+	});
+	render();
+</script>
+</body>
+</html>

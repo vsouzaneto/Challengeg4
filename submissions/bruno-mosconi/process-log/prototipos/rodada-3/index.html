@@ -1,0 +1,2344 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Onde focar</title>
+<style>
+/* Protótipo de alta fidelidade, rodada 3 (D41). Direção: apple.com. Dados reais em ../dados.js. */
+@font-face {
+	font-family: "Onest";
+	src: url(../fontes/onest-latin-wght-normal.woff2) format("woff2");
+	font-weight: 100 900;
+	font-display: swap;
+}
+
+:root {
+	--bg: #ffffff;
+	--surface: #ffffff;
+	--fill: #f5f5f7;
+	--thumb: #ffffff;
+	--sep: #e8e8ed;
+	--ink: #1d1d1f;
+	--ink-2: #6e6e73;
+	--ink-3: #86868b;
+	--action: #0071e3;
+	--action-hover: #0077ed;
+	--action-press: #006edb;
+	--link: #0066cc;
+	--nav: rgba(255, 255, 255, 0.8);
+	--scrim: rgba(0, 0, 0, 0.32);
+	/* temperatura: marca (pontos) e texto (AA) */
+	--quente: #e35400;
+	--esfriando: #d9a400;
+	--frio: #86868b;
+	--quente-ink: #b64400;
+	--esfriando-ink: #8a5a00;
+	--frio-ink: #6e6e73;
+	--shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+	--shadow-lift: 0 10px 28px rgba(0, 0, 0, 0.08);
+	--shadow-panel: 0 4px 12px rgba(0, 0, 0, 0.04), 0 24px 64px rgba(0, 0, 0, 0.12);
+
+	--font: -apple-system, BlinkMacSystemFont, "Onest", "Helvetica Neue", Arial, sans-serif;
+	--ease: cubic-bezier(0.25, 0.1, 0.3, 1);
+	/* mola amortecida: ~2% de passagem, assenta sem quicar */
+	--spring: linear(0, 0.13 6%, 0.44 15%, 0.74 26%, 0.92 37%, 1.01 49%, 1.022 58%, 1.012 72%, 1);
+	--r-card: 18px;
+	--r-panel: 28px;
+	color-scheme: light;
+}
+:root[data-fonte="onest"] {
+	--font: "Onest", "Helvetica Neue", Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) {
+		--dim: 0.72;
+		--bg: #000000;
+		--surface: #1d1d1f;
+		--fill: #333336;
+		--thumb: #636366;
+		--sep: #38383a;
+		--ink: #f5f5f7;
+		--ink-2: #a1a1a6;
+		--ink-3: #86868b;
+		--link: #2997ff;
+		--nav: rgba(22, 22, 23, 0.8);
+		--scrim: rgba(0, 0, 0, 0.56);
+		--quente: #b84300;
+		--esfriando: #c78500;
+		--frio: #86868b;
+		--quente-ink: #ff9a5c;
+		--esfriando-ink: #f5c451;
+		--frio-ink: #a1a1a6;
+		--shadow: none;
+		--shadow-lift: 0 10px 28px rgba(0, 0, 0, 0.5);
+		--shadow-panel: 0 24px 64px rgba(0, 0, 0, 0.7);
+		color-scheme: dark;
+	}
+}
+:root[data-theme="dark"] {
+	--dim: 0.72;
+	--bg: #000000;
+	--surface: #1d1d1f;
+	--fill: #333336;
+	--thumb: #636366;
+	--sep: #38383a;
+	--ink: #f5f5f7;
+	--ink-2: #a1a1a6;
+	--ink-3: #86868b;
+	--link: #2997ff;
+	--nav: rgba(22, 22, 23, 0.8);
+	--scrim: rgba(0, 0, 0, 0.56);
+	--quente: #b84300;
+	--esfriando: #c78500;
+	--frio: #86868b;
+	--quente-ink: #ff9a5c;
+	--esfriando-ink: #f5c451;
+	--frio-ink: #a1a1a6;
+	--shadow: none;
+	--shadow-lift: 0 10px 28px rgba(0, 0, 0, 0.5);
+	--shadow-panel: 0 24px 64px rgba(0, 0, 0, 0.7);
+	color-scheme: dark;
+}
+
+* {
+	box-sizing: border-box;
+}
+html {
+	background: var(--bg);
+	-webkit-text-size-adjust: 100%;
+}
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--ink);
+	font-family: var(--font);
+	font-size: 17px;
+	line-height: 1.47;
+	letter-spacing: -0.022em;
+	-webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, p, ol, ul, dl, dd {
+	margin: 0;
+	padding: 0;
+}
+ol, ul {
+	list-style: none;
+}
+button, select {
+	font: inherit;
+	letter-spacing: inherit;
+	color: inherit;
+	background: none;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	cursor: pointer;
+	text-align: inherit;
+}
+a {
+	color: var(--link);
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+:focus-visible {
+	outline: 4px solid rgba(0, 125, 250, 0.6);
+	outline-offset: 1px;
+}
+.num {
+	font-variant-numeric: tabular-nums;
+}
+.ic {
+	width: 1em;
+	height: 1em;
+	fill: currentColor;
+	flex: none;
+}
+.sr {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+}
+
+/* Barra de navegação: fixa, translúcida, o conteúdo passa por baixo */
+.nav {
+	position: fixed;
+	inset: 0 0 auto;
+	z-index: 30;
+	height: 44px;
+	background: var(--nav);
+	-webkit-backdrop-filter: saturate(180%) blur(20px);
+	backdrop-filter: saturate(180%) blur(20px);
+}
+.nav-in {
+	max-width: 1180px;
+	height: 100%;
+	margin: 0 auto;
+	padding: 0 40px;
+	display: flex;
+	align-items: center;
+	gap: 32px;
+}
+.brand {
+	font-size: 19px;
+	font-weight: 600;
+	letter-spacing: 0.012em;
+	white-space: nowrap;
+}
+.areas {
+	display: flex;
+	gap: 24px;
+}
+.areas a {
+	font-size: 14px;
+	letter-spacing: -0.016em;
+	color: var(--ink-2);
+	white-space: nowrap;
+	padding: 12px 0;
+	transition: color 200ms var(--ease);
+}
+.areas a:hover {
+	color: var(--ink);
+	text-decoration: none;
+}
+.areas a[aria-current="page"] {
+	color: var(--ink);
+	font-weight: 600;
+}
+.spacer {
+	flex: 1;
+}
+.who {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 14px;
+	letter-spacing: -0.016em;
+	white-space: nowrap;
+	color: var(--ink);
+	padding: 6px 0;
+}
+.who:hover .who-name {
+	color: var(--link);
+}
+.avatar {
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	display: grid;
+	place-items: center;
+	background: var(--fill);
+	color: var(--ink);
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0;
+	flex: none;
+}
+.avatar.lg {
+	width: 40px;
+	height: 40px;
+	font-size: 15px;
+}
+
+/* Controle segmentado: data e abas */
+.seg {
+	position: relative;
+	display: inline-flex;
+	padding: 2px;
+	border-radius: 9px;
+	background: var(--fill);
+	max-width: 100%;
+}
+.seg button {
+	position: relative;
+	z-index: 1;
+	min-height: 28px;
+	padding: 3px 12px;
+	border-radius: 7px;
+	font-size: 14px;
+	letter-spacing: -0.016em;
+	white-space: nowrap;
+	color: var(--ink);
+	font-variant-numeric: tabular-nums;
+	transition: opacity 150ms var(--ease);
+}
+.seg button:hover:not([aria-pressed="true"], [aria-selected="true"], :disabled) {
+	opacity: 0.64;
+}
+.seg button:active:not(:disabled) {
+	opacity: 0.48;
+}
+.seg button:disabled {
+	color: var(--ink-3);
+	cursor: not-allowed;
+}
+.seg button[aria-pressed="true"],
+.seg button[aria-selected="true"] {
+	font-weight: 600;
+}
+.seg .n {
+	color: var(--ink-2);
+	margin-left: 6px;
+	font-weight: 400;
+}
+.seg-thumb {
+	position: absolute;
+	top: 2px;
+	bottom: 2px;
+	left: 0;
+	border-radius: 7px;
+	background: var(--thumb);
+	box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 3px 1px rgba(0, 0, 0, 0.04);
+	transition: transform 260ms var(--ease);
+}
+.tabs.seg button {
+	min-height: 36px;
+	padding: 6px 16px;
+	font-size: 15px;
+}
+.date-select {
+	display: none;
+}
+
+/* Botões em pílula */
+.pill {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	min-height: 44px;
+	padding: 0 22px;
+	border-radius: 980px;
+	font-size: 17px;
+	white-space: nowrap;
+	transition: background-color 200ms var(--ease), transform 150ms var(--ease);
+}
+.pill:active {
+	transform: scale(0.97);
+}
+.pill:disabled {
+	opacity: 0.42;
+	pointer-events: none;
+}
+.pill.primary {
+	background: var(--action);
+	color: #ffffff;
+}
+.pill.primary:hover {
+	background: var(--action-hover);
+}
+.pill.primary:active {
+	background: var(--action-press);
+}
+.pill.plain {
+	padding: 0 12px;
+	color: var(--link);
+}
+.pill.plain:hover {
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+.pill .ic {
+	font-size: 18px;
+	transition: transform 260ms var(--ease);
+}
+.pill[aria-expanded="true"] .ic {
+	transform: rotate(180deg);
+}
+
+/* Página */
+main {
+	max-width: 1180px;
+	margin: 0 auto;
+	padding: 76px 40px 120px;
+}
+.greet {
+	font-size: 21px;
+	line-height: 1.38;
+	letter-spacing: 0.011em;
+	color: var(--ink-2);
+}
+.greet b {
+	color: var(--ink);
+	font-weight: 600;
+}
+.back {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 17px;
+	color: var(--link);
+	margin-bottom: 12px;
+	min-height: 44px;
+}
+.back .ic {
+	font-size: 18px;
+}
+.back:hover {
+	text-decoration: underline;
+}
+.top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	flex-wrap: wrap;
+	margin-bottom: 28px;
+}
+.desk {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 380px;
+	gap: 40px;
+	align-items: start;
+}
+.side {
+	position: sticky;
+	top: 68px;
+	display: grid;
+	gap: 20px;
+}
+.stack {
+	display: grid;
+	gap: 20px;
+	min-width: 0;
+}
+
+/* Cartões: separação por espaço e sombra suave, sem borda */
+.card {
+	position: relative;
+	background: var(--surface);
+	border-radius: var(--r-card);
+	box-shadow: var(--shadow);
+}
+.lift {
+	transition: transform 220ms var(--ease);
+}
+.lift::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	box-shadow: var(--shadow-lift);
+	opacity: 0;
+	transition: opacity 220ms var(--ease);
+	pointer-events: none;
+}
+@media (hover: hover) {
+	.lift:hover {
+		transform: translateY(-2px);
+	}
+	.lift:hover::after {
+		opacity: 1;
+	}
+}
+.lift:active {
+	transform: scale(0.985);
+}
+
+/* Temperatura: ícone e texto, nunca só cor */
+.temp {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 15px;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+	white-space: nowrap;
+}
+.temp .ic {
+	font-size: 18px;
+}
+.t-quente {
+	color: var(--quente-ink);
+}
+.t-esfriando {
+	color: var(--esfriando-ink);
+}
+.t-frio {
+	color: var(--frio-ink);
+}
+.due {
+	font-size: 15px;
+	color: var(--ink-2);
+	white-space: nowrap;
+}
+.meta {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	flex-wrap: wrap;
+}
+
+/* Score: anel monocromático, a fração do anel é o próprio score */
+.ring {
+	position: relative;
+	display: inline-grid;
+	place-items: center;
+	flex: none;
+}
+.ring svg {
+	display: block;
+}
+.ring .track {
+	stroke: var(--fill);
+	fill: none;
+}
+.ring .val {
+	stroke: var(--ink);
+	fill: none;
+	stroke-linecap: round;
+}
+.ring b {
+	position: absolute;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: -0.01em;
+}
+.ring-lg b {
+	font-size: 28px;
+}
+.ring-md b {
+	font-size: 17px;
+}
+.ring-sm b {
+	font-size: 13px;
+}
+.ring-cap {
+	display: grid;
+	justify-items: center;
+	gap: 6px;
+	font-size: 14px;
+	color: var(--ink-2);
+}
+
+/* Herói: o negócio nº 1 */
+.hero {
+	border-radius: var(--r-panel);
+	padding: 40px 44px 36px;
+	display: grid;
+	gap: 24px;
+	cursor: pointer;
+}
+.hero-head {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 24px;
+}
+.hero h2 {
+	font-size: 40px;
+	line-height: 1.1;
+	font-weight: 600;
+	letter-spacing: 0;
+	margin-top: 14px;
+}
+.hero .acct {
+	font-size: 21px;
+	letter-spacing: 0.011em;
+	color: var(--ink-2);
+	margin-top: 6px;
+}
+.hero-pot {
+	font-size: 21px;
+	letter-spacing: 0.011em;
+	color: var(--ink-2);
+}
+.hero-pot .num {
+	font-size: 48px;
+	line-height: 1.08;
+	font-weight: 600;
+	letter-spacing: -0.003em;
+	color: var(--ink);
+	margin-right: 8px;
+}
+.hero-do {
+	display: grid;
+	gap: 6px;
+	max-width: 56ch;
+}
+.hero-do h3 {
+	font-size: 21px;
+	line-height: 1.24;
+	font-weight: 600;
+	letter-spacing: 0.011em;
+}
+.hero-do p {
+	color: var(--ink-2);
+}
+.hero-foot {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+}
+
+/* Nº 2 a 5 */
+.next {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 20px;
+}
+.mini {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 14px 16px;
+	padding: 22px 24px;
+	min-height: 44px;
+	width: 100%;
+}
+.mini .meta {
+	grid-column: 1 / -1;
+}
+.mini h3 {
+	font-size: 21px;
+	line-height: 1.2;
+	font-weight: 600;
+	letter-spacing: 0.011em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.mini .acct {
+	font-size: 15px;
+	color: var(--ink-2);
+	margin-top: 2px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.mini .pot {
+	font-size: 21px;
+	font-weight: 600;
+	letter-spacing: 0.011em;
+	font-variant-numeric: tabular-nums;
+	align-self: end;
+}
+.mini .ring {
+	align-self: end;
+}
+.rank {
+	font-size: 14px;
+	color: var(--ink-2);
+	font-variant-numeric: tabular-nums;
+}
+
+/* Lista completa */
+.more {
+	display: flex;
+	justify-content: center;
+}
+.list {
+	padding: 8px 0;
+}
+.row {
+	width: 100%;
+	min-height: 56px;
+	display: grid;
+	grid-template-columns: 40px minmax(0, 1fr) 190px 104px 18px;
+	align-items: center;
+	gap: 14px;
+	padding: 8px 20px 8px 24px;
+	position: relative;
+	transition: background-color 150ms var(--ease);
+}
+.row + .row::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 78px;
+	right: 0;
+	height: 1px;
+	background: var(--sep);
+}
+@media (hover: hover) {
+	.row:hover {
+		background: color-mix(in srgb, var(--fill) 60%, transparent);
+	}
+}
+.row:active {
+	background: var(--fill);
+}
+.row:first-child {
+	border-radius: var(--r-card) var(--r-card) 0 0;
+}
+.row:last-child {
+	border-radius: 0 0 var(--r-card) var(--r-card);
+}
+.row .sc {
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+	text-align: right;
+}
+.row .nm {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.row .nm span {
+	color: var(--ink-2);
+}
+.row .temp,
+.row .due {
+	font-size: 14px;
+	font-weight: 400;
+}
+.row .v {
+	text-align: right;
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+.row .chev {
+	color: var(--ink-3);
+	font-size: 16px;
+}
+.row .sc .ic {
+	font-size: 20px;
+}
+.list-intro {
+	font-size: 17px;
+	color: var(--ink-2);
+	max-width: 60ch;
+	margin-bottom: 4px;
+}
+.list-intro b {
+	color: var(--ink);
+	font-weight: 600;
+}
+
+/* Termômetro: a carteira no tempo */
+.thermo-card {
+	padding: 28px 28px 24px;
+	display: grid;
+	gap: 18px;
+}
+.thermo-card h2 {
+	font-size: 21px;
+	font-weight: 600;
+	letter-spacing: 0.011em;
+	line-height: 1.24;
+}
+.thermo-card .sub {
+	font-size: 14px;
+	letter-spacing: -0.016em;
+	color: var(--ink-2);
+	margin-top: 4px;
+}
+.thermo {
+	position: relative;
+	width: 100%;
+}
+.th-plot {
+	position: relative;
+}
+.th-track {
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 2px;
+	border-radius: 1px;
+	background: var(--fill);
+}
+.th-mark {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 1px;
+	background: var(--sep);
+}
+.th-zone {
+	position: absolute;
+	top: 0;
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 13px;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+	white-space: nowrap;
+}
+.th-zone .ic {
+	font-size: 15px;
+}
+.th-axis {
+	position: absolute;
+	bottom: 0;
+	font-size: 12px;
+	letter-spacing: -0.01em;
+	color: var(--ink-2);
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+}
+.dot {
+	position: absolute;
+	left: 0;
+	top: 0;
+	border-radius: 50%;
+	transform-origin: center;
+	opacity: var(--dim, 0.5);
+}
+.dot.top {
+	opacity: 1;
+	box-shadow: 0 0 0 2px var(--surface);
+	z-index: 2;
+}
+button.dot::before {
+	content: "";
+	position: absolute;
+	inset: -6px;
+	border-radius: 50%;
+}
+button.dot:hover,
+button.dot:focus-visible {
+	opacity: 1;
+	z-index: 3;
+}
+.dot.quente {
+	background: var(--quente);
+}
+.dot.esfriando {
+	background: var(--esfriando);
+}
+.dot.frio {
+	background: var(--frio);
+}
+.dot-label {
+	position: absolute;
+	left: 0;
+	top: 0;
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--ink);
+	font-variant-numeric: tabular-nums;
+	pointer-events: none;
+	z-index: 4;
+	text-shadow: 0 0 2px var(--surface), 0 0 2px var(--surface), 0 0 4px var(--surface);
+}
+.th-legend {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 12px;
+}
+.th-legend div {
+	display: grid;
+	gap: 2px;
+}
+.th-legend .v {
+	font-size: 17px;
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+.th-legend .c {
+	font-size: 14px;
+	color: var(--ink-2);
+	font-variant-numeric: tabular-nums;
+}
+.tip {
+	position: fixed;
+	z-index: 50;
+	pointer-events: none;
+	padding: 10px 14px;
+	border-radius: 12px;
+	background: var(--surface);
+	box-shadow: var(--shadow-panel);
+	font-size: 14px;
+	letter-spacing: -0.016em;
+	line-height: 1.4;
+	max-width: 260px;
+	opacity: 0;
+	transform: translateY(4px);
+	transition: opacity 150ms var(--ease), transform 150ms var(--ease);
+}
+.tip.on {
+	opacity: 1;
+	transform: none;
+}
+.tip b {
+	font-weight: 600;
+}
+.tip span {
+	color: var(--ink-2);
+	display: block;
+}
+
+/* Painel de detalhe: lateral no computador, folha no celular */
+.scrim {
+	position: fixed;
+	inset: 0;
+	z-index: 40;
+	background: var(--scrim);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 240ms var(--ease);
+}
+.panel {
+	position: fixed;
+	z-index: 41;
+	top: 60px;
+	right: max(16px, calc((100vw - 1180px) / 2 + 24px));
+	bottom: 16px;
+	width: 420px;
+	overflow: auto;
+	overscroll-behavior: contain;
+	background: var(--surface);
+	border-radius: var(--r-panel);
+	box-shadow: var(--shadow-panel);
+	padding: 36px 32px 32px;
+	transform: translateX(calc(100% + 48px));
+	visibility: hidden;
+	transition: transform 280ms var(--spring), visibility 0s linear 280ms;
+}
+.panel.open {
+	transform: none;
+	visibility: visible;
+	transition: transform 280ms var(--spring), visibility 0s;
+}
+.panel-in {
+	display: grid;
+	gap: 26px;
+}
+.close {
+	position: absolute;
+	top: 18px;
+	right: 18px;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	display: grid;
+	place-items: center;
+	background: var(--fill);
+	color: var(--ink-2);
+	font-size: 16px;
+	transition: transform 150ms var(--ease);
+}
+.close::before {
+	content: "";
+	position: absolute;
+	inset: -6px;
+}
+.close:hover {
+	color: var(--ink);
+}
+.close:active {
+	transform: scale(0.92);
+}
+.panel h2 {
+	font-size: 28px;
+	line-height: 1.14;
+	font-weight: 600;
+	letter-spacing: 0.007em;
+	padding-right: 40px;
+}
+.panel .acct {
+	font-size: 17px;
+	color: var(--ink-2);
+	margin-top: 6px;
+}
+.panel .score-line {
+	display: flex;
+	gap: 18px;
+	align-items: center;
+	font-size: 15px;
+	color: var(--ink-2);
+}
+.panel .why {
+	font-size: 21px;
+	line-height: 1.33;
+	letter-spacing: 0.011em;
+}
+.calc {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	gap: 10px 0;
+	font-variant-numeric: tabular-nums;
+}
+.calc dt {
+	color: var(--ink-2);
+}
+.calc dd {
+	text-align: right;
+	padding-left: 16px;
+}
+.calc .sum {
+	padding-top: 10px;
+	border-top: 1px solid var(--sep);
+	font-weight: 600;
+	color: var(--ink);
+}
+.todo {
+	display: grid;
+	gap: 6px;
+}
+.todo h3 {
+	font-size: 19px;
+	font-weight: 600;
+	letter-spacing: 0.012em;
+}
+.todo p {
+	color: var(--ink-2);
+}
+.foot {
+	font-size: 14px;
+	letter-spacing: -0.016em;
+	color: var(--ink-2);
+}
+.panel-ruler .thermo {
+	margin-top: 4px;
+}
+.panel .swap {
+	animation: swap 200ms var(--ease);
+}
+@keyframes swap {
+	from {
+		opacity: 0;
+		transform: translateY(6px);
+	}
+}
+
+/* Equipe */
+.lead-h1 {
+	font-size: 40px;
+	line-height: 1.1;
+	font-weight: 600;
+	letter-spacing: 0;
+	max-width: 22ch;
+}
+.lead-sub {
+	font-size: 21px;
+	line-height: 1.38;
+	letter-spacing: 0.011em;
+	color: var(--ink-2);
+	margin-top: 14px;
+	max-width: 46ch;
+}
+.team-head {
+	margin-bottom: 40px;
+}
+.member {
+	width: 100%;
+	min-height: 72px;
+	display: grid;
+	grid-template-columns: 40px minmax(0, 1fr) 170px 110px 18px;
+	align-items: center;
+	gap: 16px;
+	padding: 12px 20px 12px 24px;
+	position: relative;
+	transition: background-color 150ms var(--ease);
+}
+.member + .member::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 80px;
+	right: 0;
+	height: 1px;
+	background: var(--sep);
+}
+@media (hover: hover) {
+	.member:hover {
+		background: color-mix(in srgb, var(--fill) 60%, transparent);
+	}
+}
+.member[aria-current="true"] {
+	background: var(--fill);
+}
+.member:first-child {
+	border-radius: var(--r-card) var(--r-card) 0 0;
+}
+.member:last-child {
+	border-radius: 0 0 var(--r-card) var(--r-card);
+}
+.member .nm {
+	font-weight: 600;
+}
+.member .nm span {
+	display: block;
+	font-weight: 400;
+	font-size: 14px;
+	letter-spacing: -0.016em;
+	color: var(--ink-2);
+}
+.member .v {
+	text-align: right;
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+.member .v span {
+	display: block;
+	font-weight: 400;
+	font-size: 14px;
+	color: var(--ink-2);
+}
+.member .chev {
+	color: var(--ink-3);
+	font-size: 16px;
+}
+.note {
+	font-size: 14px;
+	letter-spacing: -0.016em;
+	color: var(--ink-2);
+	margin-top: 16px;
+	max-width: 70ch;
+}
+.preview {
+	padding: 32px 28px 28px;
+	display: grid;
+	gap: 22px;
+}
+.preview h2 {
+	font-size: 28px;
+	line-height: 1.14;
+	font-weight: 600;
+	letter-spacing: 0.007em;
+}
+.preview .sub {
+	font-size: 15px;
+	color: var(--ink-2);
+	margin-top: 4px;
+}
+.pv-row {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	gap: 14px;
+	align-items: center;
+	padding: 10px 0;
+}
+.pv-row + .pv-row {
+	border-top: 1px solid var(--sep);
+}
+.pv-row .nm {
+	font-weight: 600;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.pv-row .nm span {
+	display: block;
+	font-size: 14px;
+	font-weight: 400;
+	color: var(--ink-2);
+}
+.pv-row .v {
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+.pv-title {
+	font-size: 15px;
+	color: var(--ink-2);
+}
+
+/* Imagens: a beirada se dissolve no fundo da página */
+.art {
+	display: block;
+	width: 100%;
+	height: auto;
+	-webkit-mask-image: radial-gradient(ellipse 72% 70% at 50% 50%, #000 58%, transparent 100%);
+	mask-image: radial-gradient(ellipse 72% 70% at 50% 50%, #000 58%, transparent 100%);
+}
+.art.dark {
+	display: none;
+}
+:root[data-theme="dark"] .art.light {
+	display: none;
+}
+:root[data-theme="dark"] .art.dark {
+	display: block;
+}
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) .art.light {
+		display: none;
+	}
+	:root:not([data-theme="light"]) .art.dark {
+		display: block;
+	}
+}
+
+/* Estado vazio */
+.empty {
+	border-radius: var(--r-panel);
+	padding: 32px 40px 44px;
+	display: grid;
+	justify-items: center;
+	text-align: center;
+	gap: 10px;
+}
+.empty .art {
+	width: 220px;
+	margin-bottom: 4px;
+}
+.empty h2 {
+	font-size: 28px;
+	font-weight: 600;
+	letter-spacing: 0.007em;
+	line-height: 1.14;
+}
+.empty p {
+	color: var(--ink-2);
+	max-width: 44ch;
+}
+.empty .pill {
+	margin-top: 10px;
+}
+
+/* Entrada */
+.entry {
+	max-width: 760px;
+	margin: 0 auto;
+	display: grid;
+	gap: 8px;
+	text-align: center;
+}
+.entry .art {
+	margin: -12px auto 0;
+	max-width: 760px;
+	aspect-ratio: 16 / 7;
+	object-fit: cover;
+}
+.entry h1 {
+	font-size: 48px;
+	line-height: 1.08;
+	font-weight: 600;
+	letter-spacing: -0.003em;
+}
+.entry .lead-sub {
+	margin: 6px auto 0;
+}
+.people {
+	margin-top: 36px;
+	text-align: left;
+	display: grid;
+	gap: 28px;
+}
+.people h2 {
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--ink-2);
+	margin: 0 0 10px 4px;
+}
+.person {
+	width: 100%;
+	min-height: 64px;
+	display: grid;
+	grid-template-columns: 40px minmax(0, 1fr) 18px;
+	align-items: center;
+	gap: 16px;
+	padding: 10px 20px 10px 24px;
+	position: relative;
+	transition: background-color 150ms var(--ease);
+}
+.person + .person::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 80px;
+	right: 0;
+	height: 1px;
+	background: var(--sep);
+}
+@media (hover: hover) {
+	.person:hover {
+		background: color-mix(in srgb, var(--fill) 60%, transparent);
+	}
+}
+.person:first-child {
+	border-radius: var(--r-card) var(--r-card) 0 0;
+}
+.person:last-child {
+	border-radius: 0 0 var(--r-card) var(--r-card);
+}
+.person .nm span {
+	display: block;
+	font-size: 14px;
+	color: var(--ink-2);
+}
+.person .chev {
+	color: var(--ink-3);
+	font-size: 16px;
+}
+
+/* Como funciona */
+.how {
+	max-width: 980px;
+	margin: 0 auto;
+	display: grid;
+	gap: 28px;
+}
+.how .art {
+	-webkit-mask-image: radial-gradient(ellipse 80% 72% at 50% 50%, #000 62%, transparent 100%);
+	mask-image: radial-gradient(ellipse 80% 72% at 50% 50%, #000 62%, transparent 100%);
+}
+.how h1 {
+	font-size: 48px;
+	line-height: 1.08;
+	font-weight: 600;
+	letter-spacing: -0.003em;
+	text-align: center;
+}
+.how .lead-sub {
+	text-align: center;
+	margin: 0 auto;
+	max-width: 52ch;
+}
+.bands-card {
+	padding: 28px 28px 32px;
+	display: grid;
+	gap: 22px;
+}
+.bands-card h2 {
+	font-size: 19px;
+	font-weight: 600;
+	letter-spacing: 0.012em;
+	line-height: 1.3;
+	max-width: 48ch;
+}
+.bands {
+	display: grid;
+	grid-template-columns: repeat(7, minmax(0, 1fr));
+	gap: 12px;
+}
+.bands div {
+	display: grid;
+	gap: 4px;
+	align-content: start;
+}
+.bands .temp {
+	font-size: 13px;
+}
+.bands .age {
+	font-size: 14px;
+	color: var(--ink-2);
+}
+.bands .v {
+	font-size: 28px;
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.007em;
+}
+.bands .of {
+	font-size: 14px;
+	color: var(--ink-2);
+}
+
+/* Barra de abas embaixo (celular) */
+.tabbar {
+	display: none;
+}
+
+@media (max-width: 1060px) {
+	.desk {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.side {
+		position: static;
+	}
+}
+
+@media (max-width: 640px) {
+	.nav {
+		height: 48px;
+	}
+	.nav-in {
+		padding: 0 16px;
+		gap: 12px;
+	}
+	.areas,
+	.nav .seg,
+	.who-name {
+		display: none;
+	}
+	.date-select {
+		display: block;
+		appearance: none;
+		-webkit-appearance: none;
+		font-size: 14px;
+		font-weight: 600;
+		min-height: 32px;
+		padding: 4px 30px 4px 12px;
+		border-radius: 980px;
+		background: var(--fill)
+			url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath fill='%2386868b' d='M212.24,100.24l-80,80a6,6,0,0,1-8.48,0l-80-80a6,6,0,0,1,8.48-8.48L128,167.51l75.76-75.75a6,6,0,0,1,8.48,8.48Z'/%3E%3C/svg%3E")
+			no-repeat right 10px center / 14px;
+		font-variant-numeric: tabular-nums;
+	}
+	main {
+		padding: 72px 16px 120px;
+	}
+	.greet {
+		font-size: 17px;
+		letter-spacing: -0.022em;
+	}
+	.top {
+		margin-bottom: 20px;
+		gap: 14px;
+	}
+	.tabs.seg {
+		overflow-x: auto;
+		scrollbar-width: none;
+		max-width: calc(100vw - 32px);
+	}
+	.tabs.seg button {
+		font-size: 14px;
+		padding: 6px 12px;
+	}
+	.hero {
+		padding: 28px 24px 24px;
+		gap: 20px;
+	}
+	.hero h2 {
+		font-size: 32px;
+		margin-top: 10px;
+	}
+	.hero .acct {
+		font-size: 17px;
+	}
+	.hero-pot .num {
+		font-size: 40px;
+	}
+	.hero-pot {
+		font-size: 17px;
+	}
+	.hero-do h3 {
+		font-size: 19px;
+	}
+	.hero-foot .pill {
+		flex: 1;
+	}
+	.next {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 12px;
+	}
+	.mini {
+		padding: 18px 20px;
+		gap: 10px 14px;
+	}
+	.mini h3 {
+		font-size: 19px;
+	}
+	.row {
+		grid-template-columns: 30px minmax(0, 1fr) auto 14px;
+		grid-template-rows: auto auto;
+		gap: 2px 12px;
+		padding: 10px 16px;
+		min-height: 64px;
+	}
+	.row .sc {
+		grid-row: 1 / 3;
+	}
+	.row .nm {
+		grid-column: 2;
+	}
+	.row .meta-cell {
+		grid-column: 2;
+		grid-row: 2;
+	}
+	.row .v {
+		grid-column: 3;
+		grid-row: 1 / 3;
+	}
+	.row .chev {
+		grid-column: 4;
+		grid-row: 1 / 3;
+	}
+	.row + .row::before {
+		left: 58px;
+	}
+	.panel {
+		top: auto;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: auto;
+		max-height: 90vh;
+		border-radius: var(--r-panel) var(--r-panel) 0 0;
+		padding: 32px 24px calc(32px + env(safe-area-inset-bottom));
+		transform: translateY(calc(100% + 24px));
+	}
+	.panel::before {
+		content: "";
+		position: absolute;
+		top: 8px;
+		left: 50%;
+		width: 36px;
+		height: 5px;
+		margin-left: -18px;
+		border-radius: 3px;
+		background: var(--fill);
+	}
+	.panel.open + .scrim,
+	.scrim.on {
+		opacity: 1;
+		pointer-events: auto;
+	}
+	.lead-h1 {
+		font-size: 32px;
+	}
+	.lead-sub {
+		font-size: 17px;
+		letter-spacing: -0.022em;
+	}
+	.member {
+		grid-template-columns: 40px minmax(0, 1fr) 14px;
+		gap: 6px 14px;
+		padding: 14px 16px;
+	}
+	.member .avatar {
+		grid-row: 1 / 4;
+		align-self: start;
+	}
+	.member .nm {
+		grid-column: 2;
+		grid-row: 1;
+	}
+	.member .v {
+		grid-column: 2;
+		grid-row: 2;
+		text-align: left;
+	}
+	.member .v span {
+		display: inline;
+		margin-left: 4px;
+	}
+	.member .thermo {
+		grid-column: 2;
+		grid-row: 3;
+	}
+	.member .chev {
+		grid-column: 3;
+		grid-row: 1 / 4;
+	}
+	.member + .member::before {
+		left: 70px;
+	}
+	.entry h1,
+	.how h1 {
+		font-size: 34px;
+	}
+	.th-legend .v {
+		font-size: 15px;
+	}
+	.th-legend .temp {
+		font-size: 14px;
+	}
+	.bands {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 20px 12px;
+	}
+	.bands-card {
+		padding: 24px;
+	}
+	.tabbar {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 30;
+		padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+		background: var(--nav);
+		-webkit-backdrop-filter: saturate(180%) blur(20px);
+		backdrop-filter: saturate(180%) blur(20px);
+		box-shadow: 0 -0.5px 0 var(--sep);
+	}
+	.tabbar a {
+		display: grid;
+		justify-items: center;
+		gap: 2px;
+		min-height: 44px;
+		padding-top: 4px;
+		font-size: 11px;
+		font-weight: 500;
+		letter-spacing: 0;
+		color: var(--ink-2);
+		text-decoration: none;
+	}
+	.tabbar a .ic {
+		font-size: 26px;
+	}
+	.tabbar a[aria-current="page"] {
+		color: var(--link);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		transition-duration: 0ms !important;
+		animation-duration: 0ms !important;
+	}
+}
+</style>
+</head>
+<body>
+<header class="nav">
+	<div class="nav-in">
+		<span class="brand">Onde focar</span>
+		<nav class="areas" aria-label="Áreas">
+			<a href="#semana" data-area="semana">Minha semana</a>
+			<a href="#equipe" data-area="equipe">Minha equipe</a>
+			<a href="#como-funciona" data-area="como-funciona">Como funciona</a>
+		</nav>
+		<span class="spacer"></span>
+		<div id="dates"></div>
+		<select class="date-select" id="date-select" aria-label="Data dos dados"></select>
+		<a class="who" href="#entrada" id="who" aria-label="Trocar de pessoa"></a>
+	</div>
+</header>
+<main id="main"></main>
+<aside class="panel" id="panel" aria-label="Detalhe do negócio" inert>
+	<button class="close" id="close" type="button" aria-label="Fechar"></button>
+	<div class="panel-in" id="panel-in"></div>
+</aside>
+<div class="scrim" id="scrim"></div>
+<div class="tip" id="tip" role="status"></div>
+<nav class="tabbar" aria-label="Áreas">
+	<a href="#semana" data-area="semana"></a>
+	<a href="#equipe" data-area="equipe"></a>
+	<a href="#como-funciona" data-area="como-funciona"></a>
+</nav>
+<script src="../dados.js"></script>
+<script src="../proto.js"></script>
+<script src="icones.js"></script>
+<script>
+	// Textos e contas vêm de proto.js (rodada 2), que lê dados.js. Aqui ficam só tela e movimento.
+	const q = new URLSearchParams(location.search);
+	if (q.get("fonte") === "onest") document.documentElement.dataset.fonte = "onest";
+	if (q.get("tema")) document.documentElement.dataset.theme = q.get("tema") === "escuro" ? "dark" : "light";
+
+	const D = P.D;
+	const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+	const EASE = "cubic-bezier(0.25, 0.1, 0.3, 1)";
+	const SPRING = getComputedStyle(document.documentElement).getPropertyValue("--spring").trim();
+	const narrow = () => matchMedia("(max-width: 640px)").matches;
+	const $ = (s, r = document) => r.querySelector(s);
+	const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+	const icon = (n) => `<svg class="ic" viewBox="0 0 256 256" aria-hidden="true"><path d="${ICONES[n][0]}"/></svg>`;
+	const first = (name) => name.split(" ")[0];
+	const initials = (name) => name.split(" ").map((x) => x[0]).join("");
+	const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+	const TEMP = {
+		quente: { icon: "fire", label: "Quente" },
+		esfriando: { icon: "thermometer-simple", label: "Esfriando" },
+		frio: { icon: "snowflake", label: "Frio" },
+	};
+	const temp = (s) => `<span class="temp t-${s}">${icon(TEMP[s].icon)}${TEMP[s].label}</span>`;
+	const tempOf = (age) => P.situation(age);
+	const plural = (n, one, many) => `${P.num(n)} ${n === 1 ? one : many}`;
+	const art = (name, alt, cls = "") =>
+		`<img class="art light ${cls}" src="imagens/${name}-claro.webp" alt="${alt}"><img class="art dark ${cls}" src="imagens/${name}-escuro.webp" alt="${alt}">`;
+
+	const S = {
+		area: "entrada",
+		iso: P.latest,
+		// Só nomes da equipe: o parâmetro vai para o HTML e não pode carregar marcação.
+		seller: P.at(P.latest).team.some((a) => a.agent === q.get("vendedor")) ? q.get("vendedor") : "Zane Levy",
+		tab: "prioridades",
+		all: false,
+		from: null,
+		previewed: null,
+		open: null,
+	};
+	const team = () => P.at(S.iso).team.map((a) => a.agent);
+	const sellerAt = (name, iso = S.iso) => P.at(iso).sellers[name];
+
+	// Escala fixa de tamanho: o maior potencial de qualquer vendedor da equipe em qualquer data.
+	const PMAX = Math.max(
+		...D.dates.filter((d) => d.available).flatMap((d) => Object.values(d.sellers).flatMap((s) => s.focus.map((x) => x.potential))),
+	);
+
+	/* ---------- Score ---------- */
+	const RING = { lg: [34, 5], md: [22, 4], sm: [15, 3] };
+	const ring = (score, size) => {
+		const [r, w] = RING[size];
+		const box = 2 * (r + w);
+		const c = 2 * Math.PI * r;
+		return `<div class="ring ring-${size}" role="img" aria-label="Score ${score} de 100">
+			<svg viewBox="0 0 ${box} ${box}" width="${box}" height="${box}" aria-hidden="true">
+				<circle class="track" cx="${box / 2}" cy="${box / 2}" r="${r}" stroke-width="${w}"/>
+				<circle class="val" cx="${box / 2}" cy="${box / 2}" r="${r}" stroke-width="${w}" stroke-dasharray="${c.toFixed(2)}" stroke-dashoffset="${(c * (1 - score / 100)).toFixed(2)}" transform="rotate(-90 ${box / 2} ${box / 2})"/>
+			</svg><b aria-hidden="true">${score}</b></div>`;
+	};
+
+	/* ---------- Termômetro ---------- */
+	// Faixa de 0 a 138 dias (80% da largura) e uma zona fria comprimida até 440 dias.
+	const COLD_CAP = 440;
+	const RMAX = 14;
+	function layoutThermo(deals, W, { mini, single }) {
+		const hot = W * (single ? 0.8 : mini ? 0.62 : 0.7);
+		const gap = mini ? 6 : 14;
+		const x = (age) => (age <= 138 ? (age / 138) * hot : hot + gap + Math.min((age - 139) / (COLD_CAP - 139), 1) * (W - hot - gap - 4));
+		const r = (d) => (mini ? 2.25 : d.potential > 0 ? Math.max(4, 4 + 10 * Math.sqrt(d.potential / PMAX)) : 4);
+		const H = single ? 30 : mini ? 30 : 132;
+		const mid = H / 2;
+		// Enxame determinístico: os maiores primeiro, cada ponto no lugar livre mais perto do meio.
+		const placed = [];
+		const order = [...deals].sort((a, b) => r(b) - r(a) || a.age - b.age || (a.id < b.id ? -1 : 1));
+		for (const d of order) {
+			const px = x(d.age);
+			const pr = r(d);
+			// Se não houver lugar livre, fica onde a sobreposição é menor (não empilha no meio).
+			let best = mid;
+			let bestGap = -Infinity;
+			for (let k = 0; k < 400; k++) {
+				const off = (k % 2 ? 1 : -1) * Math.ceil(k / 2) * 0.75;
+				const py = mid + off;
+				if (py - pr < 0 || py + pr > H) continue;
+				const g = Math.min(Infinity, ...placed.map((p) => Math.hypot(p.x - px, p.y - py) - p.r - pr));
+				if (g >= 1) {
+					best = py;
+					break;
+				}
+				if (g > bestGap) (bestGap = g), (best = py);
+			}
+			placed.push({ d, x: px, y: best, r: pr });
+		}
+		return { placed, x, H, hot, gap };
+	}
+
+	const dotTransform = (p) => `translate(${(p.x - RMAX).toFixed(1)}px, ${(p.y - RMAX).toFixed(1)}px) scale(${(p.r / RMAX).toFixed(3)})`;
+
+	// deals: { id, age, potential, product, account, position? }
+	function drawThermo(el) {
+		const key = el.dataset.thermo;
+		const mini = el.dataset.mini === "1";
+		const single = el.dataset.single === "1";
+		const interactive = el.dataset.interactive === "1";
+		const deals = THERMO_DATA.get(key) || [];
+		const W = el.clientWidth;
+		if (!W) return;
+		const { placed, x, H } = layoutThermo(deals, W, { mini, single });
+		const zoneH = mini ? 0 : 24;
+		const axisH = mini ? 0 : 20;
+		const tag = interactive ? "button" : "span";
+		let html = `<div class="th-plot" style="height:${H + zoneH + axisH}px">`;
+		if (!mini) {
+			html += `<span class="th-zone t-quente" style="left:0">${icon("fire")}${single ? "" : "Quente"}</span>`;
+			html += `<span class="th-zone t-esfriando" style="left:${x(90) + 6}px">${icon("thermometer-simple")}${single ? "" : "Esfriando"}</span>`;
+			html += `<span class="th-zone t-frio" style="left:${x(139) - 2}px">${icon("snowflake")}${single ? "" : "Frio"}</span>`;
+		}
+		html += `<div style="position:absolute;left:0;right:0;top:${zoneH}px;height:${H}px">`;
+		html += `<span class="th-track" style="top:${H / 2 - 1}px"></span>`;
+		html += `<span class="th-mark" style="left:${x(90)}px"></span><span class="th-mark" style="left:${x(138)}px"></span>`;
+		for (const p of placed) {
+			const s = tempOf(p.d.age);
+			const top = p.d.position && p.d.position <= 5;
+			const label = `${p.d.product}${p.d.account ? `, ${p.d.account}` : ""}: ${P.days(p.d.age)}`;
+			html += `<${tag} class="dot ${s}${top || single ? " top" : ""}" data-dot="${p.d.id}" style="width:${2 * RMAX}px;height:${2 * RMAX}px;transform:${dotTransform(p)}" ${interactive ? `type="button" aria-label="${P.esc(label)}"` : ""}></${tag}>`;
+			if (top && !mini && !single) html += `<span class="dot-label" data-dot="l-${p.d.id}" style="transform:translate(${(p.x - 3.5).toFixed(1)}px, ${(p.y - p.r - 17).toFixed(1)}px)">${p.d.position}</span>`;
+		}
+		html += `</div>`;
+		if (!mini) {
+			html += `<span class="th-axis" style="left:0">0</span>`;
+			html += `<span class="th-axis" style="left:${x(90) - 10}px">90 dias</span>`;
+			html += `<span class="th-axis" style="left:${x(138) - (single ? 10 : 24)}px">138</span>`;
+		}
+		html += `</div>`;
+		el.innerHTML = html;
+		if (interactive) {
+			for (const b of $$("button.dot", el)) {
+				const d = deals.find((x) => x.id === b.dataset.dot);
+				const show = () => showTip(b, d);
+				b.addEventListener("pointerenter", show);
+				b.addEventListener("focus", show);
+				b.addEventListener("pointerleave", hideTip);
+				b.addEventListener("blur", hideTip);
+				b.addEventListener("click", () => openDeal(d.id));
+			}
+		}
+		el.setAttribute("role", "img");
+		el.setAttribute("aria-label", thermoSummary(deals));
+	}
+
+	const thermoSummary = (deals) => {
+		const c = { quente: 0, esfriando: 0, frio: 0 };
+		for (const d of deals) c[tempOf(d.age)]++;
+		return `${deals.length} negócios por idade: ${c.quente} quentes, ${c.esfriando} esfriando, ${c.frio} frios.`;
+	};
+
+	const tip = $("#tip");
+	function showTip(el, d) {
+		const s = tempOf(d.age);
+		const due = d.deadline ? `, ${P.deadlineText(d)}` : "";
+		tip.innerHTML = `<b>${P.esc(d.product)}</b>${d.account ? `<span>${P.esc(d.account)}</span>` : ""}<span>${TEMP[s].label}, ${P.days(d.age)}${due}</span>${d.potential ? `<span>Potencial ${P.usd(d.potential)}</span>` : `<span>Preço de lista ${P.usd(d.price)}</span>`}`;
+		const b = el.getBoundingClientRect();
+		tip.style.left = `${Math.min(innerWidth - 270, Math.max(8, b.left + b.width / 2 - 120))}px`;
+		tip.style.top = `${b.top - 12 - 90}px`;
+		tip.classList.add("on");
+	}
+	function hideTip() {
+		tip.classList.remove("on");
+	}
+
+	const THERMO_DATA = new Map();
+	const thermoSlot = (key, deals, { mini = false, single = false, interactive = false } = {}) => {
+		THERMO_DATA.set(key, deals);
+		return `<div class="thermo" data-thermo="${key}" data-mini="${mini ? 1 : 0}" data-single="${single ? 1 : 0}" data-interactive="${interactive ? 1 : 0}"></div>`;
+	};
+	const allDeals = (s) => [...s.focus, ...s.review];
+
+	/* ---------- Telas ---------- */
+	function headerHtml() {
+		const dates = $("#dates");
+		dates.innerHTML = `<div class="seg" role="group" aria-label="Data dos dados"><span class="seg-thumb"></span>${D.dates
+			.map(
+				(d) =>
+					`<button type="button" data-date="${d.iso}" aria-pressed="${d.iso === S.iso}" ${d.available ? "" : `disabled title="Histórico insuficiente nesta data"`}>${d.iso === P.latest ? P.date(d.iso) : P.date(d.iso).slice(0, 5)}</button>`,
+			)
+			.join("")}</div>`;
+		$("#date-select").innerHTML = D.dates
+			.filter((d) => d.available)
+			.map((d) => `<option value="${d.iso}" ${d.iso === S.iso ? "selected" : ""}>${P.date(d.iso)}</option>`)
+			.join("");
+		const me = S.area === "equipe" && !S.from ? D.manager : S.area === "entrada" ? null : S.from ? D.manager : S.seller;
+		$("#who").innerHTML = me ? `<span class="avatar">${initials(me)}</span><span class="who-name">${me}</span>` : "";
+		const area = S.from ? "equipe" : S.area;
+		for (const a of $$("[data-area]")) a.setAttribute("aria-current", a.dataset.area === area ? "page" : "false");
+		const show = S.area !== "entrada";
+		dates.style.visibility = show ? "visible" : "hidden";
+		$("#date-select").style.visibility = show ? "visible" : "hidden";
+		for (const b of $$("[data-date]")) b.onclick = () => changeDate(b.dataset.date);
+		$("#date-select").onchange = (e) => changeDate(e.target.value);
+		requestAnimationFrame(() => moveThumb(dates, false));
+	}
+
+	function moveThumb(root, animate = true) {
+		const seg = $(".seg", root);
+		if (!seg) return;
+		const on = $('[aria-pressed="true"], [aria-selected="true"]', seg);
+		const t = $(".seg-thumb", seg);
+		if (!on || !t) return;
+		if (!animate) t.style.transition = "none";
+		t.style.width = `${on.offsetWidth}px`;
+		t.style.transform = `translateX(${on.offsetLeft}px)`;
+		if (!animate) requestAnimationFrame(() => (t.style.transition = ""));
+	}
+
+	function greeting(s) {
+		const f = s.focus;
+		const n = Math.min(5, f.length);
+		const cool = f.filter((d) => d.deadline?.kind === "esfria" && d.deadline.days <= 7).length;
+		const cold = f.filter((d) => d.deadline?.kind === "parado" && d.deadline.days <= 7).length;
+		const lead = n === 1 ? "Comece por este." : `Comece por estes ${n}.`;
+		let urg;
+		if (cool && cold) urg = `${cool} ${cool === 1 ? "esfria" : "esfriam"} e ${cold} ${cold === 1 ? "fica frio" : "ficam frios"} nesta semana.`;
+		else if (cool) urg = `${cool} ${cool === 1 ? "esfria" : "esfriam"} nesta semana.`;
+		else if (cold) urg = `${cold} ${cold === 1 ? "fica frio" : "ficam frios"} nesta semana.`;
+		else urg = "Nenhum esfria nesta semana.";
+		const who = S.from ? `A semana de ${first(S.seller)}.` : `Bom dia, ${first(S.seller)}.`;
+		return `${who} <b>${lead}</b> ${urg}`;
+	}
+
+	const meta = (d) => {
+		const s = tempOf(d.age);
+		return `<div class="meta">${temp(s)}${d.deadline ? `<span class="due">${cap(P.deadlineText(d))}</span>` : ""}</div>`;
+	};
+	const acctOrId = (d) => (d.account ? P.esc(d.account) : `Negócio ${d.id}`);
+
+	function heroHtml(d) {
+		const t = P.todo(d);
+		return `<article class="card hero lift" data-id="${d.id}" data-open="${d.id}">
+			<div class="hero-head">
+				<div>
+					${meta(d)}
+					<h2>${P.esc(d.product)}</h2>
+					<p class="acct">${acctOrId(d)}</p>
+				</div>
+				<div class="ring-cap">${ring(d.score, "lg")}<span>Score</span></div>
+			</div>
+			<p class="hero-pot"><span class="num" data-count="${d.potential}">${P.usd(d.potential)}</span>de potencial</p>
+			<div class="hero-do"><h3>${t.title}.</h3><p>${P.chancePhrase(d)}</p></div>
+			<div class="hero-foot"><button class="pill primary" type="button" data-open="${d.id}">Ver o motivo</button></div>
+		</article>`;
+	}
+
+	const miniHtml = (d) => `<button class="card mini lift" type="button" data-id="${d.id}" data-open="${d.id}">
+		${meta(d)}
+		<div style="min-width:0"><h3>${P.esc(d.product)}</h3><p class="acct">${acctOrId(d)}</p></div>
+		<span class="rank">${d.position}º</span>
+		<span class="pot">${P.usd(d.potential)}</span>
+		${ring(d.score, "sm")}
+	</button>`;
+
+	const rowHtml = (d) => {
+		const s = tempOf(d.age);
+		return `<button class="row" type="button" data-id="${d.id}" data-open="${d.id}">
+			<span class="sc">${d.score}</span>
+			<span class="nm">${P.esc(d.product)}${d.account ? ` <span>${P.esc(d.account)}</span>` : ""}</span>
+			<span class="meta-cell"><span class="temp t-${s}">${icon(TEMP[s].icon)}${cap(P.deadlineText(d))}</span></span>
+			<span class="v">${P.usd(d.potential)}</span>
+			<span class="chev">${icon("caret-right")}</span>
+		</button>`;
+	};
+
+	const coldRowHtml = (d) => `<button class="row" type="button" data-id="${d.id}" data-cold="${d.id}">
+		<span class="sc t-frio">${icon("snowflake")}</span>
+		<span class="nm">${P.esc(d.product)}${d.account ? ` <span>${P.esc(d.account)}</span>` : ""}</span>
+		<span class="meta-cell due">Aberto há ${P.days(d.age)}</span>
+		<span class="v">${P.usd(d.price)}</span>
+		<span class="chev">${icon("caret-right")}</span>
+	</button>`;
+
+	function emptyHtml({ title, text, action }) {
+		return `<section class="card empty">
+			${art("vazio", "Um bloco de vidro fosco cinza, parado, sobre um fundo liso.")}
+			<h2>${title}</h2><p>${text}</p>
+			${action ? `<button class="pill primary" type="button" data-tab-go="${action.tab}">${action.label}</button>` : ""}
+		</section>`;
+	}
+
+	function thermoCard(s) {
+		const sum = (k) => {
+			const list = allDeals(s).filter((d) => tempOf(d.age) === k);
+			return { n: list.length, v: list.reduce((a, d) => a + d.price, 0) };
+		};
+		const q = sum("quente"), e = sum("esfriando"), f = sum("frio");
+		const n = q.n + e.n + f.n;
+		return `<section class="card thermo-card">
+			<div><h2>${S.from ? `A carteira de ${first(S.seller)}` : "Sua carteira"} no tempo</h2>
+			<p class="sub">${plural(n, "negócio em andamento", "negócios em andamento")} pela idade. Quanto maior o ponto, maior o potencial. Os números marcam os 5 primeiros.</p></div>
+			${thermoSlot(`seller:${S.seller}`, allDeals(s), { interactive: true })}
+			<div class="th-legend">
+				<div><span class="temp t-quente">${icon("fire")}Quentes</span><span class="v">${P.usdShort(q.v)}</span><span class="c">${plural(q.n, "negócio", "negócios")}</span></div>
+				<div><span class="temp t-esfriando">${icon("thermometer-simple")}Esfriando</span><span class="v">${P.usdShort(e.v)}</span><span class="c">${plural(e.n, "negócio", "negócios")}</span></div>
+				<div><span class="temp t-frio">${icon("snowflake")}Frios</span><span class="v">${P.usdShort(f.v)}</span><span class="c">${plural(f.n, "negócio", "negócios")}</span></div>
+			</div>
+			<p class="foot">Valores a preço de lista.</p>
+		</section>`;
+	}
+
+	function weekHtml() {
+		const s = sellerAt(S.seller);
+		const tabs = [
+			["prioridades", "Prioridades da semana", s.focus.length],
+			["perda", "Atualize ou dê perda", s.review.length],
+			["prospeccao", "Prospecção", s.prospect.length],
+		];
+		const tabsHtml = `<div class="tabs seg" role="tablist" aria-label="Listas"><span class="seg-thumb"></span>${tabs
+			.map(([k, l, n]) => `<button role="tab" type="button" data-tab="${k}" aria-selected="${S.tab === k}">${l}<span class="n">${n}</span></button>`)
+			.join("")}</div>`;
+		let body;
+		if (S.tab === "prioridades") {
+			if (!s.focus.length) {
+				body = emptyHtml(
+					!s.hasDeals
+						? { title: "Nada para avançar esta semana.", text: "Você não tem negócio no CRM nesta data. Cadastre os contatos novos para eles aparecerem aqui." }
+						: s.review.length
+							? { title: "Nada para avançar esta semana.", text: `Nenhum negócio seu está quente ou esfriando. Você tem ${plural(s.review.length, "negócio frio", "negócios frios")}: confirme com o cliente ou dê perda.`, action: { tab: "perda", label: "Ver os frios" } }
+							: { title: "Nada para avançar esta semana.", text: "Comece pela prospecção: são os contatos que ainda não viraram negócio.", action: { tab: "prospeccao", label: "Ver a prospecção" } },
+				);
+			} else {
+				const [h, ...rest] = s.focus;
+				const next = rest.slice(0, 4);
+				const others = rest.slice(4);
+				body = `${heroHtml(h)}
+					${next.length ? `<div class="next">${next.map(miniHtml).join("")}</div>` : ""}
+					${others.length ? `<div class="more"><button class="pill plain" type="button" id="all" aria-expanded="${S.all}">${S.all ? "Mostrar menos" : `Ver todos os ${s.focus.length}`}${icon("caret-down")}</button></div>` : ""}
+					${others.length && S.all ? `<div class="card list">${others.map(rowHtml).join("")}</div>` : ""}`;
+			}
+		} else if (S.tab === "perda") {
+			const total = s.review.reduce((a, d) => a + d.price, 0);
+			body = s.review.length
+				? `<p class="list-intro"><b>${plural(s.review.length, "negócio aberto", "negócios abertos")} há mais de 138 dias</b>, ${P.usdShort(total)} a preço de lista. Nenhum negócio da base fechou depois disso. Confirme com o cliente ou dê perda.</p>
+					<div class="card list">${s.review.map(coldRowHtml).join("")}</div>`
+				: emptyHtml({ title: "Nada para atualizar.", text: "Nenhum negócio seu passou de 138 dias aberto. Continue avançando as prioridades da semana." });
+		} else {
+			body =
+				S.iso !== P.latest
+					? emptyHtml({ title: "Prospecção só na data mais recente.", text: "O CRM não registra quando cada prospecção começou, então não dá para saber se ela já existia nesta data." })
+					: s.prospect.length
+						? `<div class="card list">${s.prospect.map((d) => `<div class="row"><span></span><span class="nm">${P.esc(d.product)} <span>${P.esc(d.account ?? "")}</span></span><span></span><span class="v">${P.usd(d.price)}</span><span></span></div>`).join("")}</div>`
+						: emptyHtml({ title: "Nenhuma prospecção esperando contato.", text: "Quando um contato novo entrar no CRM, ele aparece aqui, do maior preço para o menor." });
+		}
+		return `${S.from ? `<a class="back" href="#equipe" data-back>${icon("caret-left")}Minha equipe</a>` : ""}
+			<div class="top"><p class="greet">${s.focus.length ? greeting(s) : `${S.from ? `A semana de ${first(S.seller)}.` : `Bom dia, ${first(S.seller)}.`}`}</p>${tabsHtml}</div>
+			<div class="desk">
+				<div class="stack" id="stack">${body}</div>
+				<div class="side">${s.hasDeals ? thermoCard(s) : ""}</div>
+			</div>`;
+	}
+
+	function teamHtml() {
+		const day = P.at(S.iso);
+		const active = day.team.filter((a) => a.open > 0).sort((a, b) => b.slices.parado.listPrice - a.slices.parado.listPrice);
+		const idle = day.team.filter((a) => a.open === 0);
+		if (!active.some((a) => a.agent === S.previewed)) S.previewed = active[0]?.agent;
+		const f = day.teamFunnel;
+		const total = f["no-prazo"].listPrice + f.esfriando.listPrice + f.parado.listPrice;
+		const top = active[0];
+		const pct = Math.round((f.parado.listPrice / total) * 100);
+		const rows = active
+			.map((a) => {
+				const s = sellerAt(a.agent);
+				return `<button class="member" type="button" data-id="m-${a.agent}" data-preview="${a.agent}" aria-current="${S.previewed === a.agent}">
+					<span class="avatar lg">${initials(a.agent)}</span>
+					<span class="nm">${a.agent}<span>${plural(a.focus, "prioridade", "prioridades")}, ${plural(s.review.length, "frio", "frios")}</span></span>
+					${thermoSlot(`mini:${a.agent}`, allDeals(s), { mini: true })}
+					<span class="v">${P.usdShort(a.slices.parado.listPrice)}<span>frios</span></span>
+					<span class="chev">${icon("caret-right")}</span>
+				</button>`;
+			})
+			.join("");
+		const idleRows = idle
+			.map(
+				(a) => `<button class="member" type="button" data-id="m-${a.agent}" data-open-seller="${a.agent}">
+					<span class="avatar lg">${initials(a.agent)}</span>
+					<span class="nm">${a.agent}<span>Sem negócio em andamento</span></span><span></span><span></span>
+					<span class="chev">${icon("caret-right")}</span>
+				</button>`,
+			)
+			.join("");
+		return `<section class="team-head">
+				<p class="greet" style="margin-bottom:10px">Bom dia, ${first(D.manager)}.</p>
+				<h1 class="lead-h1">${P.usdShort(f.parado.listPrice)} frios na equipe. ${first(top.agent)} concentra ${P.usdShort(top.slices.parado.listPrice)}.</h1>
+				<p class="lead-sub">${pct}% do valor em andamento está frio: aberto há mais de 138 dias, quando nenhum negócio da base fechou. Peça para atualizar ou dar perda.</p>
+			</section>
+			<div class="desk">
+				<div>
+					<div class="card">${rows}${idleRows}</div>
+					<p class="note">Retrato da carteira, não ranking: os dados não separam o efeito do vendedor do efeito da carteira e da região. Valores a preço de lista.</p>
+				</div>
+				<div class="side"><section class="card preview" id="preview">${S.previewed ? previewHtml(S.previewed) : ""}</section></div>
+			</div>`;
+	}
+
+	function previewHtml(name) {
+		const s = sellerAt(name);
+		return `<div><h2>${name}</h2><p class="sub">${plural(s.focus.length, "prioridade", "prioridades")} na semana. ${plural(s.review.length, "frio", "frios")} para atualizar ou dar perda.</p></div>
+			${thermoSlot(`preview:${name}`, allDeals(s))}
+			<div><p class="pv-title">Começaria por estes</p>
+			<div>${s.focus
+				.slice(0, 3)
+				.map((d) => `<div class="pv-row">${ring(d.score, "sm")}<span class="nm">${P.esc(d.product)}<span>${d.account ? P.esc(d.account) : `Negócio ${d.id}`}</span></span><span class="v">${P.usd(d.potential)}</span></div>`)
+				.join("")}</div></div>
+			<button class="pill primary" type="button" data-open-seller="${name}">Abrir a semana de ${first(name)}</button>`;
+	}
+
+	function entryHtml() {
+		const names = P.at(P.latest).team.map((a) => a.agent);
+		const person = (name, role, attr) =>
+			`<button class="person" type="button" ${attr}><span class="avatar lg">${initials(name)}</span><span class="nm">${name}<span>${role}</span></span><span class="chev">${icon("caret-right")}</span></button>`;
+		return `<section class="entry">
+			${art("entrada", "Uma barra de vidro fosco iluminada por dentro, laranja numa ponta e cinza fria na outra.")}
+			<h1>Quem é você?</h1>
+			<p class="lead-sub">Escolha seu nome. O app abre na sua semana, com os negócios em que vale focar primeiro.</p>
+			<div class="people">
+				<div><h2>Gestor(a)</h2><div class="card">${person(D.manager, "Equipe de " + names.length + " vendedores", `data-go-team`)}</div></div>
+				<div><h2>Vendedor(a)</h2><div class="card">${names.map((n) => person(n, sellerAt(n, P.latest).hasDeals ? plural(sellerAt(n, P.latest).focus.length, "prioridade esta semana", "prioridades esta semana") : "Sem negócio em andamento", `data-go-seller="${n}"`)).join("")}</div></div>
+			</div>
+			<p class="note" style="margin: 20px auto 0">Protótipo: só a equipe de ${D.manager}. No app, a lista traz as 35 pessoas, agrupadas por regional.</p>
+		</section>`;
+	}
+
+	function howHtml() {
+		// Chance por faixa de idade em 31/12/2017, regra final (AGENTS §7; npm run auditoria). Arredondada.
+		const bands = [
+			["quente", "0 a 29 dias", 47],
+			["quente", "30 a 59 dias", 43],
+			["quente", "60 a 89 dias", 41],
+			["esfriando", "90 a 103 dias", 31],
+			["esfriando", "104 a 119 dias", 20],
+			["esfriando", "120 a 138 dias", 9],
+			["frio", "Mais de 138 dias", 0],
+		];
+		return `<section class="how">
+			${art("como-funciona", "Sete placas de vidro fosco em fila, do laranja quente, à esquerda, ao cinza frio, à direita.")}
+			<h1>Como a lista é feita</h1>
+			<p class="lead-sub">A idade do negócio diz se ele está quente, esfriando ou frio. O potencial, preço de lista vezes a chance de fechar pelo histórico, decide a ordem.</p>
+			<section class="card bands-card">
+				<h2>De cada 100 negócios que chegaram a cada idade ainda em andamento, quantos fecharam venda</h2>
+				<div class="bands">${bands
+					.map(([s, age, v]) => `<div>${temp(s)}<span class="age">${age}</span><span class="v">${v}</span></div>`)
+					.join("")}</div>
+			</section>
+			<p class="note" style="text-align:center;margin:0 auto">Negócios da base inteira até 31/12/2017. A página completa, com o que foi testado e descartado, entra no incremento 5.</p>
+		</section>`;
+	}
+
+	/* ---------- Painel ---------- */
+	const panel = $("#panel");
+	const panelIn = $("#panel-in");
+	const scrim = $("#scrim");
+	let lastFocus = null;
+	$("#close").innerHTML = icon("x");
+
+	function dealPanel(d) {
+		const day = P.at(S.iso);
+		const t = P.todo(d);
+		const rank = d.priceRank && d.priceRank !== d.position ? ` Pela ordem de preço, estaria em ${d.priceRank}º.` : "";
+		return `<div><h2>${P.esc(d.product)}</h2><p class="acct">${d.account ? P.esc(d.account) : "Empresa não informada no CRM"}. Negócio ${d.id}.</p></div>
+			<div class="score-line">${ring(d.score, "md")}<p>Mais potencial que ${d.score}% dos ${P.num(day.scoreBase)} negócios quentes e esfriando da empresa em ${P.date(S.iso)}. ${d.position}º na ${S.from ? `semana de ${first(S.seller)}` : "sua semana"}.${rank}</p></div>
+			<div class="panel-ruler">${meta(d)}${thermoSlot(`deal:${d.id}`, [d], { single: true })}</div>
+			<p class="why">${P.chancePhrase(d)}</p>
+			<dl class="calc">
+				<dt>Preço de lista</dt><dd>${P.usd(d.price)}</dd>
+				<dt>Chance de fechar, pelo histórico</dt><dd>× ${d.chance}%</dd>
+				<dt class="sum">Potencial</dt><dd class="sum">${P.usd(d.potential)}</dd>
+			</dl>
+			<div class="todo"><h3>${t.title}</h3><p>${t.text}</p></div>
+			<p class="foot">A chance usa só a idade do negócio. Vendedor, produto e empresa foram testados e não mudam a ordem. <a href="#como-funciona">Como funciona</a></p>`;
+	}
+
+	function coldPanel(d) {
+		const t = P.todo(d);
+		return `<div><h2>${P.esc(d.product)}</h2><p class="acct">${d.account ? P.esc(d.account) : "Empresa não informada no CRM"}. Negócio ${d.id}.</p></div>
+			<div class="panel-ruler">${meta(d)}${thermoSlot(`deal:${d.id}`, [{ ...d, potential: 0 }], { single: true })}</div>
+			<dl class="calc"><dt>Preço de lista</dt><dd>${P.usd(d.price)}</dd><dt>Aberto há</dt><dd>${P.days(d.age)}</dd></dl>
+			<div class="todo"><h3>${t.title}</h3><p>${t.text}</p></div>`;
+	}
+
+	function openPanel(html) {
+		const wasOpen = panel.classList.contains("open");
+		panelIn.innerHTML = html;
+		if (wasOpen && !REDUCED) {
+			panelIn.classList.remove("swap");
+			void panelIn.offsetWidth;
+			panelIn.classList.add("swap");
+		}
+		panel.inert = false;
+		panel.scrollTop = 0;
+		panel.classList.add("open");
+		if (narrow()) scrim.classList.add("on");
+		panel.setAttribute("role", narrow() ? "dialog" : "complementary");
+		if (narrow()) panel.setAttribute("aria-modal", "true");
+		else panel.removeAttribute("aria-modal");
+		requestAnimationFrame(() => $$("[data-thermo]", panel).forEach(drawThermo));
+		if (!wasOpen) {
+			lastFocus = document.activeElement;
+			$("#close").focus({ preventScroll: true });
+		}
+	}
+	function closePanel() {
+		if (!panel.classList.contains("open")) return;
+		panel.classList.remove("open");
+		scrim.classList.remove("on");
+		panel.inert = true;
+		S.open = null;
+		lastFocus?.focus?.({ preventScroll: true });
+	}
+	$("#close").onclick = closePanel;
+	scrim.onclick = closePanel;
+	addEventListener("keydown", (e) => e.key === "Escape" && closePanel());
+	document.addEventListener("pointerdown", (e) => {
+		if (!narrow() && panel.classList.contains("open") && !panel.contains(e.target) && !e.target.closest("[data-open],[data-cold],.dot")) closePanel();
+	});
+
+	function openDeal(id) {
+		const s = sellerAt(S.seller);
+		const d = s.focus.find((x) => x.id === id);
+		if (d) {
+			S.open = id;
+			openPanel(dealPanel(d));
+			return;
+		}
+		const c = s.review.find((x) => x.id === id);
+		if (c) {
+			S.open = id;
+			openPanel(coldPanel(c));
+		}
+	}
+
+	/* ---------- Render, rotas e movimento ---------- */
+	const main = $("#main");
+	function view() {
+		if (S.area === "entrada") return entryHtml();
+		if (S.area === "como-funciona") return howHtml();
+		if (S.area === "equipe" && !S.from) return teamHtml();
+		return weekHtml();
+	}
+
+	function bind() {
+		for (const b of $$("[data-open]", main))
+			b.onclick = (e) => {
+				e.stopPropagation();
+				openDeal(b.dataset.open);
+			};
+		for (const b of $$("[data-cold]", main)) b.onclick = () => openDeal(b.dataset.cold);
+		for (const b of $$("[data-tab]", main))
+			b.onclick = () => {
+				S.tab = b.dataset.tab;
+				closePanel();
+				render();
+			};
+		for (const b of $$("[data-tab-go]", main))
+			b.onclick = () => {
+				S.tab = b.dataset.tabGo;
+				render();
+			};
+		const all = $("#all", main);
+		if (all) all.onclick = () => ((S.all = !S.all), render());
+		for (const b of $$("[data-preview]", main))
+			b.onclick = () => {
+				if (narrow()) return openSeller(b.dataset.preview);
+				S.previewed = b.dataset.preview;
+				for (const x of $$(".member", main)) x.setAttribute("aria-current", x === b);
+				const pv = $("#preview", main);
+				pv.innerHTML = previewHtml(S.previewed);
+				if (!REDUCED) pv.animate([{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: 200, easing: EASE });
+				$$("[data-thermo]", pv).forEach(drawThermo);
+				bindSellerButtons(pv);
+			};
+		bindSellerButtons(main);
+		for (const b of $$("[data-go-seller]", main))
+			b.onclick = () => {
+				S.seller = b.dataset.goSeller;
+				S.from = null;
+				location.hash = "#semana";
+			};
+		const team = $("[data-go-team]", main);
+		if (team) team.onclick = () => (location.hash = "#equipe");
+		const back = $("[data-back]", main);
+		if (back)
+			back.onclick = (e) => {
+				e.preventDefault();
+				S.from = null;
+				S.area = "equipe";
+				render({ enter: true });
+			};
+	}
+	function bindSellerButtons(root) {
+		for (const b of $$("[data-open-seller]", root)) b.onclick = () => openSeller(b.dataset.openSeller);
+	}
+	function openSeller(name) {
+		S.seller = name;
+		S.from = "equipe";
+		S.tab = "prioridades";
+		S.all = false;
+		closePanel();
+		render({ enter: true });
+		scrollTo(0, 0);
+	}
+
+	function render({ enter = false } = {}) {
+		THERMO_DATA.clear();
+		headerHtml();
+		main.innerHTML = view();
+		bind();
+		$$("[data-thermo]", main).forEach(drawThermo);
+		requestAnimationFrame(() => moveThumb(main, false));
+		if (enter && maybeFirstOpen()) return;
+		if (enter && !REDUCED) main.animate([{ opacity: 0, transform: "translateY(8px)" }, { opacity: 1, transform: "none" }], { duration: 240, easing: EASE });
+	}
+
+	// Primeira abertura, uma vez por sessão: herói, cartões em cascata, pontos e o potencial contando.
+	// ?abertura força a sequência na primeira entrada (gravação do vídeo); não se repete na troca de data.
+	let forceOpen = q.has("abertura");
+	function maybeFirstOpen() {
+		if (S.area !== "semana" || S.from || REDUCED || !$(".hero", main)) return false;
+		let seen = false;
+		try {
+			seen = sessionStorage.getItem("onde-focar:aberto") === "1";
+			sessionStorage.setItem("onde-focar:aberto", "1");
+		} catch {}
+		if (seen && !forceOpen) return false;
+		forceOpen = false;
+		const hero = $(".hero", main);
+		if (hero) hero.animate([{ opacity: 0, transform: "translateY(24px)" }, { opacity: 1, transform: "none" }], { duration: 440, easing: EASE, fill: "backwards" });
+		$$(".next .mini", main).forEach((c, i) =>
+			c.animate([{ opacity: 0, transform: "translateY(16px)" }, { opacity: 1, transform: "none" }], { duration: 360, delay: 120 + i * 40, easing: EASE, fill: "backwards" }),
+		);
+		const side = $(".side .card", main);
+		if (side) side.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: EASE, fill: "backwards" });
+		for (const el of $$(".thermo .dot, .thermo .dot-label", main)) {
+			const to = el.style.transform;
+			const from = to.replace(/translate\([^,]+,/, `translate(${-RMAX}px,`);
+			el.animate([{ transform: from, opacity: 0 }, { transform: to, opacity: getComputedStyle(el).opacity }], {
+				duration: 480,
+				delay: 100,
+				easing: EASE,
+				fill: "backwards",
+			});
+		}
+		const n = $("[data-count]", main);
+		if (n) {
+			const target = +n.dataset.count;
+			const t0 = performance.now() + 80;
+			const step = (now) => {
+				const k = Math.min(1, Math.max(0, (now - t0) / 520));
+				n.textContent = P.usd(Math.round(target * (1 - (1 - k) ** 3)));
+				if (k < 1) requestAnimationFrame(step);
+			};
+			n.textContent = P.usd(0);
+			requestAnimationFrame(step);
+		}
+		return true;
+	}
+
+	// Troca de data: cada cartão e cada ponto sai de onde estava (FLIP). O tempo passa, os pontos andam.
+	function changeDate(iso) {
+		if (iso === S.iso || !P.at(iso)?.available) return;
+		hideTip();
+		const before = new Map();
+		for (const el of $$("[data-id]", main)) before.set(el.dataset.id, el.getBoundingClientRect());
+		const dots = new Map();
+		for (const el of $$(".thermo [data-dot]", main)) dots.set(`${el.closest("[data-thermo]").dataset.thermo}|${el.dataset.dot}`, getComputedStyle(el).transform);
+		const heroBefore = $(".hero", main)?.dataset.id;
+		const reopen = S.open;
+		S.iso = iso;
+		closePanel();
+		render();
+		moveThumb($("#dates"));
+		if (REDUCED) return;
+		const opt = { duration: 280, easing: EASE };
+		for (const el of $$("[data-id]", main)) {
+			const a = before.get(el.dataset.id);
+			const b = el.getBoundingClientRect();
+			if (el.classList.contains("hero") && el.dataset.id !== heroBefore) {
+				el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, easing: EASE });
+				continue;
+			}
+			if (!a) {
+				el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, easing: EASE });
+				continue;
+			}
+			const dx = a.left - b.left;
+			const dy = a.top - b.top;
+			if (Math.abs(dx) > 1 || Math.abs(dy) > 1) el.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: "none" }], opt);
+		}
+		for (const el of $$(".thermo [data-dot]", main)) {
+			const k = `${el.closest("[data-thermo]").dataset.thermo}|${el.dataset.dot}`;
+			const from = dots.get(k);
+			if (from && from !== "none") el.animate([{ transform: from }, { transform: el.style.transform }], opt);
+			else el.animate([{ opacity: 0 }, { opacity: getComputedStyle(el).opacity }], { duration: 220, easing: EASE });
+		}
+		if (reopen) openDeal(reopen);
+	}
+
+	function route() {
+		const h = location.hash.slice(1) || "entrada";
+		const area = ["entrada", "semana", "equipe", "como-funciona"].includes(h) ? h : "entrada";
+		S.area = area;
+		S.from = null;
+		closePanel();
+		render({ enter: true });
+		scrollTo(0, 0);
+	}
+	addEventListener("hashchange", route);
+	let rz;
+	addEventListener("resize", () => {
+		clearTimeout(rz);
+		rz = setTimeout(() => {
+			$$("[data-thermo]").forEach(drawThermo);
+			moveThumb($("#dates"), false);
+			moveThumb(main, false);
+		}, 120);
+	});
+
+	$$(".tabbar a").forEach((a) => {
+		const map = { semana: ["calendar-check", "Minha semana"], equipe: ["users-three", "Minha equipe"], "como-funciona": ["info", "Como funciona"] };
+		const [ic, label] = map[a.dataset.area];
+		a.innerHTML = `${icon(ic)}<span>${label}</span>`;
+	});
+	route();
+</script>
+</body>
+</html>

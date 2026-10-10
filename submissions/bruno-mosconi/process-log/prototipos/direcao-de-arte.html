@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Direção de arte: Onde focar</title>
+<link rel="stylesheet" href="base.css" />
+<style>
+	main {
+		max-width: 1040px;
+		margin: 0 auto;
+		padding: 56px 32px 120px;
+		display: grid;
+		gap: 64px;
+	}
+	section {
+		display: grid;
+		gap: 20px;
+	}
+	h1 {
+		font-size: 40px;
+		font-weight: 650;
+		letter-spacing: -0.025em;
+		line-height: 1.1;
+	}
+	h2 {
+		font-size: 24px;
+		font-weight: 650;
+		letter-spacing: -0.015em;
+	}
+	h3 {
+		font-size: 15px;
+		font-weight: 650;
+	}
+	.intro {
+		font-size: 19px;
+		line-height: 1.5;
+		color: var(--ink-2);
+		max-width: 62ch;
+	}
+	.grid2 {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 20px;
+	}
+	.panel {
+		background: var(--surface);
+		border-radius: var(--r-panel);
+		box-shadow: 0 0 0 1px var(--line);
+		padding: 24px;
+		display: grid;
+		gap: 14px;
+		align-content: start;
+	}
+	.principles {
+		display: grid;
+		gap: 14px;
+		counter-reset: p;
+	}
+	.principles li {
+		display: grid;
+		grid-template-columns: 220px 1fr;
+		gap: 16px;
+		padding-bottom: 14px;
+		border-bottom: 1px solid var(--line);
+	}
+	.principles b {
+		font-weight: 650;
+	}
+	.refs li {
+		display: grid;
+		grid-template-columns: 160px 1fr;
+		gap: 16px;
+		padding: 12px 0;
+		border-bottom: 1px solid var(--line);
+	}
+	.refs a {
+		color: var(--ink);
+		font-weight: 600;
+	}
+	.specimen .big {
+		font-size: 34px;
+		font-weight: 600;
+		letter-spacing: -0.02em;
+		line-height: 1.15;
+	}
+	.specimen .nums {
+		font-size: 28px;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+		line-height: 1.3;
+	}
+	.specimen .scale p {
+		display: flex;
+		gap: 16px;
+		align-items: baseline;
+	}
+	.specimen .scale span {
+		width: 72px;
+		font-size: 12px;
+		color: var(--ink-2);
+		flex: none;
+	}
+	.f-a {
+		font-family: "Onest", system-ui, sans-serif;
+	}
+	.f-b {
+		font-family: "Mona Sans", system-ui, sans-serif;
+	}
+	.swatches {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+		gap: 12px;
+	}
+	.sw {
+		border-radius: 12px;
+		overflow: hidden;
+		box-shadow: 0 0 0 1px var(--line);
+		background: var(--surface);
+	}
+	.sw i {
+		display: block;
+		height: 56px;
+	}
+	.sw div {
+		padding: 10px 12px;
+		font-size: 13px;
+		display: grid;
+	}
+	.sw b {
+		font-weight: 600;
+	}
+	.spacing {
+		display: flex;
+		gap: 18px;
+		align-items: end;
+		flex-wrap: wrap;
+	}
+	.spacing div {
+		display: grid;
+		gap: 6px;
+		justify-items: center;
+		font-size: 12px;
+		color: var(--ink-2);
+	}
+	.spacing i {
+		display: block;
+		background: var(--accent);
+		border-radius: 2px;
+	}
+	table {
+		border-collapse: collapse;
+		width: 100%;
+		font-size: 14px;
+	}
+	th,
+	td {
+		text-align: left;
+		padding: 10px 12px;
+		border-bottom: 1px solid var(--line);
+		vertical-align: top;
+	}
+	th {
+		color: var(--ink-2);
+		font-weight: 600;
+		font-size: 13px;
+	}
+	.demo-row {
+		display: flex;
+		gap: 12px;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+	.comp {
+		display: grid;
+		gap: 10px;
+	}
+	.comp-label {
+		font-size: 13px;
+		color: var(--ink-2);
+	}
+	.deal-demo {
+		display: grid;
+		grid-template-columns: 56px 1fr auto;
+		gap: 18px;
+		align-items: center;
+		padding: 18px;
+		border-radius: 12px;
+		box-shadow: 0 0 0 1px var(--line);
+	}
+	.entry {
+		display: grid;
+		gap: 16px;
+		padding: 28px;
+		border-radius: 18px;
+		background: var(--surface);
+		box-shadow: 0 0 0 1px var(--line);
+		max-width: 420px;
+	}
+	.entry .roles {
+		display: flex;
+		gap: 8px;
+	}
+	.entry .roles button {
+		flex: 1;
+		padding: 12px;
+		border-radius: 12px;
+		box-shadow: 0 0 0 1px var(--line-strong);
+		font-weight: 600;
+		text-align: left;
+	}
+	.entry .roles button[aria-pressed="true"] {
+		box-shadow: 0 0 0 2px var(--accent);
+	}
+	.entry select {
+		font: inherit;
+		padding: 10px 12px;
+		border-radius: 10px;
+		border: 1px solid var(--line-strong);
+		background: var(--surface);
+		color: var(--ink);
+	}
+	.check {
+		font-size: 13px;
+		color: var(--ink-2);
+	}
+	.check b {
+		color: var(--accent);
+	}
+	@media (max-width: 760px) {
+		.grid2,
+		.principles li,
+		.refs li {
+			grid-template-columns: 1fr;
+		}
+		main {
+			padding: 32px 16px 80px;
+		}
+	}
+</style>
+</head>
+<body>
+<main>
+	<header style="display: grid; gap: 16px">
+		<p class="t-caption">Onde focar, incremento 4 refeito. Protótipo para escolha do Bruno, 09/10/2026.</p>
+		<h1>Calma para ler, rápida para agir.</h1>
+		<p class="intro">A segunda de manhã de um vendedor dura poucos minutos. A tela diz primeiro o que fazer, depois por quê, e só então mostra os números de apoio. A calma vem da Apple: muito respiro, uma hierarquia clara e controles numa camada separada do conteúdo. A disciplina numérica vem da Stripe: números grandes e alinhados, e cor só para status.</p>
+	</header>
+
+	<section>
+		<h2>Princípios</h2>
+		<ol class="principles">
+			<li><b>Uma pergunta por tela</b><span>"Minha semana" responde "por onde começo?". "Minha equipe" responde "onde minha equipe está travada?". O resto fica no "Como funciona".</span></li>
+			<li><b>Prioridade é espaço, não cor</b><span>Os 3 a 5 primeiros negócios ganham tamanho e respiro; o resto da lista fica discreto. A cor fica para o status térmico e para uma única cor de ação.</span></li>
+			<li><b>Todo número tem contexto</b><span>O score diz "mais potencial que 92%". O potencial mostra a conta. A régua mostra onde o negócio está entre 0, 90 e 138 dias.</span></li>
+			<li><b>Movimento só como resposta</b><span>Quando você troca a data, a lista se reorganiza e a barra muda, porque o mundo mudou. Ao abrir um negócio, o painel desliza de onde veio. Nada se mexe sozinho.</span></li>
+			<li><b>A língua do vendedor</b><span>Quente, esfriando e frio. "Atualize ou dê perda". Estatística só no "Como funciona", traduzida.</span></li>
+		</ol>
+	</section>
+
+	<section>
+		<h2>O que aproveitei de cada referência</h2>
+		<ul class="refs">
+			<li><a href="https://www.createwithswift.com/liquid-glass-redefining-design-through-hierarchy-harmony-and-consistency/">Apple</a><span>Controles numa camada acima do conteúdo, sem competir com ele: a barra do topo é uma camada recuada e translúcida, e o conteúdo rola por baixo. Hierarquia guiada "por espaço, tamanho e comportamento, não só por cor". Ações parecidas agrupadas: a data é um único seletor segmentado.</span></li>
+			<li><a href="https://linear.app/now/how-we-redesigned-the-linear-ui">Linear</a><span>Poucas variáveis de cor geram o tema inteiro, claro e escuro (base, destaque, contraste). Menos ruído visual no cromo para dar mais peso ao conteúdo. Alinhamento rigoroso de rótulos e números, que se sente depois de alguns minutos de uso.</span></li>
+			<li><a href="https://www.925studios.co/blog/stripe-dashboard-design-breakdown">Stripe</a><span>Poucos números em destaque, grandes e de alto contraste, cada um com o contexto embaixo em texto menor. "Quando todo dado é colorido, a cor perde o sentido": cor só para status. Uma tela inicial opinativa, que mostra o que muda o comportamento.</span></li>
+			<li><a href="https://trailhead.salesforce.com/content/learn/modules/sell-smarter-with-pipeline-inspection/understand-deal-health-with-insights-and-scores">Salesforce</a><span>O score com os fatores que o explicam ao lado. Adaptei: não uso faixas Alta, Média e Baixa (contradizem a D28). Mostro o número de 0 a 100 e a conta que o produz.</span></li>
+			<li><a href="https://support.pipedrive.com/hc/pt-br/articles/206760949-O-recurso-de-Estagna%C3%A7%C3%A3o">Pipedrive</a><span>O negócio estagnado é marcado direto no cartão, pelo número de dias. Adaptei: a régua do tempo mostra os dias e os dois limites (90 e 138), e o selo diz a situação em texto, não só em cor.</span></li>
+			<li><a href="https://attio.com/help/reference/attio-101/attios-data-model/understanding-records">Attio</a><span>CRM que parece produto, não planilha: listas limpas, rótulos de alto contraste, a ficha do registro com um resumo no topo e as ações logo abaixo do nome. Não achei especificação oficial de tipografia ou cor; usei só o princípio.</span></li>
+		</ul>
+	</section>
+
+	<section>
+		<h2>Tipografia: escolha uma</h2>
+		<p class="muted" style="max-width: 70ch">As duas são de licença livre (SIL OFL 1.1), vão empacotadas no app (sem chamada de rede) e têm algarismos tabulares, conferidos no navegador: "1111" e "0000" ocupam a mesma largura. A variação A e a B usam a mesma fonte; troque com <code>?fonte=b</code> no endereço.</p>
+		<div class="grid2">
+			<div class="panel specimen f-a">
+				<p class="comp-label">Opção A: Onest (Simpals, 2021)</p>
+				<p class="big">Bom dia, Zane.</p>
+				<p class="t-lead">31 negócios para avançar esta semana, US$ 66 mil em negociação.</p>
+				<p class="nums">US$ 2.577 <span class="muted">potencial</span><br>98 <span class="muted">score</span>, 47%</p>
+				<div class="scale">
+					<p><span>34 / 600</span><span style="width: auto; font-size: 34px; color: var(--ink); font-weight: 600">Títulos</span></p>
+					<p><span>22 / 650</span><span style="width: auto; font-size: 22px; color: var(--ink); font-weight: 650">Nome do negócio</span></p>
+					<p><span>17 / 450</span><span style="width: auto; font-size: 17px; color: var(--ink)">Frase do motivo e textos de apoio</span></p>
+					<p><span>15 / 400</span><span style="width: auto; font-size: 15px; color: var(--ink)">Texto corrido, linhas da lista</span></p>
+					<p><span>13 / 400</span><span style="width: auto; font-size: 13px">Legendas e contexto dos números</span></p>
+				</div>
+				<p class="check">Por que: geométrica e calma, a mais próxima do espírito da SF Pro sem ser cópia. Os números são abertos e largos, bons para ler de longe.</p>
+			</div>
+			<div class="panel specimen f-b">
+				<p class="comp-label">Opção B: Mona Sans (GitHub, 2022)</p>
+				<p class="big">Bom dia, Zane.</p>
+				<p class="t-lead">31 negócios para avançar esta semana, US$ 66 mil em negociação.</p>
+				<p class="nums">US$ 2.577 <span class="muted">potencial</span><br>98 <span class="muted">score</span>, 47%</p>
+				<div class="scale">
+					<p><span>34 / 600</span><span style="width: auto; font-size: 34px; color: var(--ink); font-weight: 600">Títulos</span></p>
+					<p><span>22 / 650</span><span style="width: auto; font-size: 22px; color: var(--ink); font-weight: 650">Nome do negócio</span></p>
+					<p><span>17 / 450</span><span style="width: auto; font-size: 17px; color: var(--ink)">Frase do motivo e textos de apoio</span></p>
+					<p><span>15 / 400</span><span style="width: auto; font-size: 15px; color: var(--ink)">Texto corrido, linhas da lista</span></p>
+					<p><span>13 / 400</span><span style="width: auto; font-size: 13px">Legendas e contexto dos números</span></p>
+				</div>
+				<p class="check">Por que: grotesca com mais personalidade, desenho mais firme e técnico. Fica mais "produto de dados" e menos neutra que a Onest.</p>
+			</div>
+		</div>
+	</section>
+
+	<section>
+		<h2>Cores</h2>
+		<p class="muted" style="max-width: 72ch">Neutros frios no estilo Apple, uma única cor de ação (verde) e a escala térmica para o status. O azul fica com "frio" por ser o significado mais óbvio, e por isso a ação não pode ser azul. Os tons de marca passaram no validador da skill <code>dataviz</code>. No claro: luminosidade, croma, daltonismo (ΔE 14,9) e visão normal (ΔE 19,6) passam; o contraste do âmbar com o fundo fica abaixo de 3:1, então toda parte da barra leva rótulo de texto. No escuro, as 5 checagens passam. Todo texto atinge AA (4,5:1 ou mais).</p>
+		<h3>Claro</h3>
+		<div class="swatches">
+			<div class="sw"><i style="background: #f5f5f7"></i><div><b>Fundo</b>#F5F5F7</div></div>
+			<div class="sw"><i style="background: #ffffff"></i><div><b>Conteúdo</b>#FFFFFF</div></div>
+			<div class="sw"><i style="background: #1d1d1f"></i><div><b>Texto</b>#1D1D1F, 16,8:1</div></div>
+			<div class="sw"><i style="background: #6e6e73"></i><div><b>Texto de apoio</b>#6E6E73, 5,07:1</div></div>
+			<div class="sw"><i style="background: #0a7a5a"></i><div><b>Ação (destaque único)</b>#0A7A5A, 5,32:1</div></div>
+			<div class="sw"><i style="background: #d9480f"></i><div><b>Quente</b>marca #D9480F, texto #B53A0A</div></div>
+			<div class="sw"><i style="background: #e3a008"></i><div><b>Esfriando</b>marca #E3A008, texto #8A5A00</div></div>
+			<div class="sw"><i style="background: #4f7cb8"></i><div><b>Frio</b>marca #4F7CB8, texto #3A6399</div></div>
+		</div>
+		<h3>Escuro (selecionado, não invertido)</h3>
+		<div class="swatches" data-theme="dark" style="background: #000; padding: 12px; border-radius: 14px">
+			<div class="sw" style="background: #1c1c1e; box-shadow: 0 0 0 1px #38383a; color: #f5f5f7"><i style="background: #000"></i><div><b>Fundo</b>#000000</div></div>
+			<div class="sw" style="background: #1c1c1e; box-shadow: 0 0 0 1px #38383a; color: #f5f5f7"><i style="background: #1c1c1e"></i><div><b>Conteúdo</b>#1C1C1E</div></div>
+			<div class="sw" style="background: #1c1c1e; box-shadow: 0 0 0 1px #38383a; color: #f5f5f7"><i style="background: #3dd6a3"></i><div><b>Ação</b>#3DD6A3, 9,19:1</div></div>
+			<div class="sw" style="background: #1c1c1e; box-shadow: 0 0 0 1px #38383a; color: #f5f5f7"><i style="background: #c4422f"></i><div><b>Quente</b>marca #C4422F, texto #FF8F6B</div></div>
+			<div class="sw" style="background: #1c1c1e; box-shadow: 0 0 0 1px #38383a; color: #f5f5f7"><i style="background: #bf8b08"></i><div><b>Esfriando</b>marca #BF8B08, texto #F2C14E</div></div>
+			<div class="sw" style="background: #1c1c1e; box-shadow: 0 0 0 1px #38383a; color: #f5f5f7"><i style="background: #5b8bd6"></i><div><b>Frio</b>marca #5B8BD6, texto #8DB4F0</div></div>
+		</div>
+	</section>
+
+	<section>
+		<h2>Espaço e forma</h2>
+		<div class="spacing">
+			<div><i style="width: 4px; height: 4px"></i>4</div>
+			<div><i style="width: 8px; height: 8px"></i>8</div>
+			<div><i style="width: 12px; height: 12px"></i>12</div>
+			<div><i style="width: 16px; height: 16px"></i>16</div>
+			<div><i style="width: 24px; height: 24px"></i>24</div>
+			<div><i style="width: 32px; height: 32px"></i>32</div>
+			<div><i style="width: 48px; height: 48px"></i>48</div>
+			<div><i style="width: 64px; height: 64px"></i>64</div>
+		</div>
+		<p class="muted" style="max-width: 72ch">Base de 4 px. Entre seções, 40 a 64 px; dentro de um bloco, 12 a 24 px. Os raios seguem a hierarquia: 8 px nos controles, 14 px nos painéis, 18 px na folha de detalhe e 999 px nos selos. Linha fina de 1 px só onde separa itens. Sombra só na folha que flutua sobre a página.</p>
+	</section>
+
+	<section>
+		<h2>Componentes</h2>
+		<div class="grid2">
+			<div class="panel comp">
+				<p class="comp-label">Negócio em destaque ("Comece por estes")</p>
+				<div class="deal-demo" id="deal-demo"></div>
+				<p class="comp-label">O score é a posição do potencial entre os 298 negócios quentes e esfriando da empresa (D39). O potencial é preço de lista × chance de fechar, pelo histórico. A frase usa o mesmo número da conta.</p>
+			</div>
+			<div class="panel comp">
+				<p class="comp-label">Régua do tempo: 0, 90 e 138 dias. Substitui as colunas de idade e prazo.</p>
+				<div id="rulers" style="display: grid; gap: 18px"></div>
+				<div class="demo-row"><span class="tag quente">Quente</span><span class="tag esfriando">Esfriando</span><span class="tag frio">Frio</span></div>
+			</div>
+			<div class="panel comp">
+				<p class="comp-label">Barra da carteira, a preço de lista, com rótulo em cada parte</p>
+				<div id="funnel-demo"></div>
+			</div>
+			<div class="panel comp">
+				<p class="comp-label">Seletor de data. Datas com margem de erro acima de 5 pontos ficam bloqueadas, com o motivo.</p>
+				<div class="demo-row" id="dates-demo"></div>
+				<p class="comp-label">Ação principal e ação secundária</p>
+				<div class="demo-row"><button class="btn">Abrir a semana de Zane</button><button class="btn quiet">Ver detalhes</button></div>
+			</div>
+			<div class="panel comp">
+				<p class="comp-label">Conta e "o que fazer" no painel</p>
+				<dl class="calc"><dt>Preço de lista</dt><dd>US$ 5.482</dd><dt>Chance de fechar, pelo histórico</dt><dd>× 47%</dd><dt class="total">Potencial</dt><dd class="total">US$ 2.577</dd></dl>
+				<div class="todo"><h3>Peça uma resposta em até 8 dias</h3><p class="muted">Este negócio está perto de ficar frio. Pergunte ao cliente se ele segue adiante ou se o assunto acabou.</p></div>
+			</div>
+			<div class="panel comp">
+				<p class="comp-label">Entrada: a primeira tela pergunta quem é você e lembra a escolha</p>
+				<div class="entry">
+					<h3 style="font-size: 22px">Quem é você?</h3>
+					<div class="roles"><button aria-pressed="true">Vendedor<br><span class="t-caption">Minha semana</span></button><button aria-pressed="false">Gestor<br><span class="t-caption">Minha equipe</span></button></div>
+					<select aria-label="Seu nome"><option>Zane Levy</option></select>
+					<button class="btn">Ver minha semana</button>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section>
+		<h2>Movimento</h2>
+		<p class="muted" style="max-width: 72ch">Regra geral: menos de 300 ms, curva de saída <code>cubic-bezier(0.2, 0.8, 0.2, 1)</code>, só <code>transform</code> e <code>opacity</code>. Todo movimento pode ser interrompido por uma nova ação, nunca anima uma ação repetitiva e vira troca instantânea com "reduzir movimento" ligado. <b>Sem biblioteca:</b> são quatro padrões, feitos com a Web Animations API do navegador (FLIP) em cerca de 40 linhas de JavaScript, mais transições de CSS. Uma biblioteca como a Motion acrescentaria dezenas de kB para o mesmo resultado.</p>
+		<table>
+			<thead><tr><th>Momento</th><th>O que ajuda a entender</th><th>Propriedade</th><th>Duração</th></tr></thead>
+			<tbody>
+				<tr><td>Trocar a data</td><td>Os negócios sobem e descem para a nova posição, e quem entra aparece com opacidade: dá para ver o que mudou de uma semana para a outra</td><td>translateY (FLIP), opacity</td><td>260 ms</td></tr>
+				<tr><td>Barra da carteira</td><td>As partes quente, esfriando e frio mudam de tamanho no lugar, sem piscar</td><td>translateX + scaleX</td><td>260 ms</td></tr>
+				<tr><td>Abrir um negócio</td><td>O painel desliza do lado (de baixo, no celular) e o fundo escurece: o contexto continua ali</td><td>translateX/Y, opacity</td><td>220 ms</td></tr>
+				<tr><td>Trocar o negócio no painel fixo (B)</td><td>O conteúdo novo entra deslizando 12 px: confirma que trocou</td><td>translateX, opacity</td><td>220 ms</td></tr>
+				<tr><td>Abrir "Minha equipe"</td><td>As barras crescem uma vez, da esquerda; depois ficam paradas</td><td>scaleX, escalonado em até 120 ms</td><td>280 ms</td></tr>
+				<tr><td>Abrir a semana de um vendedor</td><td>A tela nova entra pela direita e "‹ Minha equipe" volta: o caminho fica claro</td><td>translateX, opacity</td><td>240 ms</td></tr>
+				<tr><td>Botão pressionado</td><td>Confirma o toque</td><td>scale 0,98</td><td>160 ms</td></tr>
+			</tbody>
+		</table>
+		<div class="demo-row"><button class="btn quiet" id="demo-ruler">Ver a régua crescer</button><button class="btn quiet" id="demo-sheet">Abrir o painel</button></div>
+	</section>
+
+	<section>
+		<h2>Fora</h2>
+		<p class="muted" style="max-width: 72ch">Gradiente decorativo, vidro fosco de enfeite (o único desfoque é o da barra de controles, que tem função: o conteúdo rola por baixo dela), ícone de enfeite, cartões iguais com sombra, número gigante sem contexto, caixa alta em rótulo, faixas Alta, Média e Baixa.</p>
+	</section>
+</main>
+<script src="dados.js"></script>
+<script src="proto.js"></script>
+<script>
+	const day = P.at(P.latest);
+	const z = day.sellers["Zane Levy"];
+	const d = z.focus[0];
+	document.getElementById("deal-demo").innerHTML = `${P.scoreHtml(d)}<div><div style="font-size: 20px; font-weight: 650">${d.product} <span class="muted" style="font-weight: 450">${d.account}</span></div><p class="muted" style="margin: 4px 0 10px">${P.chancePhrase(d)}</p>${P.ruler(d)}</div><div style="text-align: right"><b style="font-size: 22px" class="tnum">${P.usd(d.potential)}</b><br><span class="t-caption">potencial</span></div>`;
+	const samples = [z.focus.find((x) => x.age < 30), z.focus.find((x) => x.age >= 90 && x.deadline.days <= 14), z.review[0]];
+	document.getElementById("rulers").innerHTML = samples.map((x) => P.ruler(x)).join("");
+	document.getElementById("funnel-demo").innerHTML = P.funnelHtml(z.funnel);
+	document.getElementById("dates-demo").innerHTML = P.datesHtml(P.latest);
+	document.getElementById("demo-ruler").onclick = () => {
+		for (const f of document.querySelectorAll("#rulers .ruler-fill"))
+			f.animate([{ transform: "scaleX(0)" }, { transform: f.style.transform }], { duration: 280, easing: P.EASE });
+	};
+	document.getElementById("demo-sheet").onclick = () => P.openSheet(P.dealDetail(d, day));
+</script>
+</body>
+</html>

@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Variação A: Agenda</title>
+<link rel="stylesheet" href="base.css" />
+<style>
+	/* Variação A: uma coluna, lida de cima para baixo, como uma agenda da semana */
+	main {
+		max-width: 880px;
+		margin: 0 auto;
+		padding: 48px 32px 120px;
+		display: grid;
+		gap: 40px;
+	}
+	.hello {
+		display: grid;
+		gap: 12px;
+	}
+	.hello .t-lead {
+		color: var(--ink-2);
+		max-width: 46ch;
+		font-size: 20px;
+		line-height: 1.4;
+	}
+	.hello .t-lead b {
+		color: var(--ink);
+		font-weight: 600;
+	}
+	.portfolio {
+		display: grid;
+		gap: 14px;
+	}
+	.section-title {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 16px;
+	}
+	.section-title h2 {
+		font-size: 17px;
+		font-weight: 650;
+	}
+
+	/* Comece por estes: 3 negócios grandes, um painel só, separados por linha fina */
+	.top3 {
+		background: var(--surface);
+		border-radius: var(--r-panel);
+		box-shadow: 0 0 0 1px var(--line);
+	}
+	.top3 > li + li {
+		border-top: 1px solid var(--line);
+	}
+	.big {
+		width: 100%;
+		text-align: left;
+		display: grid;
+		grid-template-columns: 64px 1fr auto;
+		gap: 20px;
+		align-items: center;
+		padding: 24px 28px;
+		border-radius: var(--r-panel);
+		transition: background var(--t-fast) var(--ease-out);
+	}
+	.big:hover {
+		background: var(--hover);
+	}
+	.big .name {
+		font-size: 20px;
+		font-weight: 650;
+		letter-spacing: -0.01em;
+	}
+	.big .acct {
+		color: var(--ink-2);
+		font-weight: 450;
+	}
+	.big .why {
+		font-size: 15px;
+		color: var(--ink-2);
+		margin: 6px 0 12px;
+		max-width: 52ch;
+	}
+	.big .ruler {
+		max-width: 320px;
+	}
+	.money {
+		text-align: right;
+		display: grid;
+		gap: 2px;
+	}
+	.money b {
+		font-size: 22px;
+		font-weight: 650;
+		font-variant-numeric: tabular-nums;
+		letter-spacing: -0.01em;
+	}
+	.money span {
+		font-size: 13px;
+		color: var(--ink-2);
+	}
+	.chev {
+		color: var(--ink-3);
+		font-size: 20px;
+		margin-left: 8px;
+	}
+
+	/* O resto: linhas discretas */
+	.rest > li + li {
+		border-top: 1px solid var(--line);
+	}
+	.row {
+		width: 100%;
+		text-align: left;
+		display: grid;
+		grid-template-columns: 40px minmax(0, 1fr) 220px 110px;
+		gap: 16px;
+		align-items: center;
+		padding: 12px 8px;
+		border-radius: 10px;
+	}
+	.row:hover {
+		background: var(--hover);
+	}
+	.row .score b {
+		font-size: 17px;
+	}
+	.row .score span {
+		display: none;
+	}
+	.row .name {
+		font-weight: 600;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.row .name span {
+		font-weight: 450;
+		color: var(--ink-2);
+	}
+	.row .val {
+		text-align: right;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+	}
+	.cold-row {
+		grid-template-columns: minmax(0, 1fr) 220px 110px;
+	}
+
+	/* Equipe */
+	.team {
+		background: var(--surface);
+		border-radius: var(--r-panel);
+		box-shadow: 0 0 0 1px var(--line);
+		padding: 8px;
+	}
+	.member {
+		width: 100%;
+		text-align: left;
+		display: grid;
+		grid-template-columns: 36px 180px minmax(0, 1fr) 130px 20px;
+		gap: 16px;
+		align-items: center;
+		padding: 14px 16px;
+		border-radius: 10px;
+		transition: background var(--t-fast) var(--ease-out);
+	}
+	.member:hover {
+		background: var(--hover);
+	}
+	.member + .member {
+		box-shadow: 0 -1px 0 var(--line);
+	}
+	.member .who {
+		font-weight: 600;
+		display: grid;
+	}
+	.member .who span {
+		font-weight: 450;
+		font-size: 13px;
+		color: var(--ink-2);
+	}
+	.member .bar {
+		transform-origin: left center;
+		position: relative;
+		height: 10px;
+		border-radius: 5px;
+		background: var(--line);
+		overflow: hidden;
+	}
+	.member .bar .seg {
+		position: absolute;
+		inset: 0;
+		transform-origin: left center;
+	}
+	.member .val {
+		text-align: right;
+		display: grid;
+	}
+	.member .val b {
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+	}
+	.member .val span {
+		font-size: 13px;
+		color: var(--ink-2);
+	}
+	.idle {
+		padding: 12px 16px 8px;
+		display: flex;
+		gap: 12px;
+		align-items: baseline;
+		color: var(--ink-2);
+		font-size: 14px;
+	}
+	.note {
+		font-size: 13px;
+		color: var(--ink-2);
+		max-width: 70ch;
+	}
+
+	.view-enter {
+		animation: enter 240ms var(--ease-out);
+	}
+	@keyframes enter {
+		from {
+			opacity: 0;
+			transform: translateX(24px);
+		}
+	}
+	.back {
+		color: var(--accent);
+		font-weight: 600;
+		justify-self: start;
+	}
+
+	/* Celular: lista e ação primeiro; data recolhida; navegação embaixo */
+	.mobile-date,
+	.tabbar {
+		display: none;
+	}
+	@media (max-width: 640px) {
+		.controls .nav,
+		.controls .dates,
+		.controls .date-label,
+		.controls .person .name {
+			display: none;
+		}
+		.mobile-date {
+			display: inline-flex;
+			font-size: 13px;
+			font-weight: 600;
+			padding: 5px 10px;
+			border-radius: 999px;
+			background: var(--hover);
+		}
+		main {
+			padding: 24px 16px 120px;
+			gap: 28px;
+		}
+		.hello .t-lead {
+			font-size: 17px;
+		}
+		.big {
+			grid-template-columns: 1fr auto;
+			padding: 18px 16px;
+			gap: 12px 16px;
+		}
+		.big .score {
+			grid-row: 1;
+			grid-column: 2;
+		}
+		.big .body {
+			grid-column: 1 / -1;
+			grid-row: 2;
+		}
+		.big .money {
+			grid-row: 1;
+			grid-column: 1;
+			text-align: left;
+		}
+		.big .chev {
+			display: none;
+		}
+		.row {
+			grid-template-columns: 34px minmax(0, 1fr) 92px;
+		}
+		.carteira {
+			order: 10;
+		}
+		.section-title .t-caption {
+			display: none;
+		}
+		.money b,
+		.row .val,
+		.member .val b {
+			white-space: nowrap;
+		}
+		.row .ruler {
+			grid-column: 2 / -1;
+			grid-row: 2;
+		}
+		.cold-row {
+			grid-template-columns: minmax(0, 1fr) 84px;
+		}
+		.cold-row .ruler {
+			grid-column: 1 / -1;
+		}
+		.member {
+			grid-template-columns: 32px minmax(0, 1fr) 110px;
+		}
+		.member .bar {
+			grid-column: 1 / -1;
+			grid-row: 2;
+		}
+		.member .chev {
+			display: none;
+		}
+		.tabbar {
+			display: flex;
+			position: fixed;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 15;
+			background: var(--controls);
+			backdrop-filter: saturate(1.4) blur(18px);
+			border-top: 1px solid var(--line);
+			padding: 8px 8px 22px;
+			justify-content: space-around;
+		}
+		.tabbar a {
+			text-decoration: none;
+			color: var(--ink-2);
+			font-size: 12px;
+			font-weight: 600;
+			padding: 6px 10px;
+		}
+		.tabbar a[aria-current="page"] {
+			color: var(--accent);
+		}
+	}
+</style>
+</head>
+<body>
+<header class="controls">
+	<div class="controls-inner">
+		<span class="brand">Onde focar</span>
+		<nav class="nav" aria-label="Áreas">
+			<a href="#semana" data-area="semana">Minha semana</a>
+			<a href="#equipe" data-area="equipe">Minha equipe</a>
+			<a href="#como-funciona">Como funciona</a>
+		</nav>
+		<span class="spacer"></span>
+		<div id="dates" style="display: contents"></div>
+		<button class="mobile-date" id="mobile-date" type="button"></button>
+		<div class="person"><span class="avatar" id="avatar"></span><span class="name" id="who"></span></div>
+	</div>
+</header>
+<main id="main"></main>
+<nav class="tabbar" aria-label="Áreas">
+	<a href="#semana" data-area="semana">Minha semana</a>
+	<a href="#equipe" data-area="equipe">Minha equipe</a>
+	<a href="#como-funciona">Como funciona</a>
+</nav>
+<script src="dados.js"></script>
+<script src="proto.js"></script>
+<script>
+	const S = {
+		iso: P.latest,
+		tab: "prioridades",
+		seller: new URLSearchParams(location.search).get("vendedor") || "Zane Levy",
+		area: location.hash === "#equipe" ? "equipe" : "semana",
+		from: null,
+	};
+	const main = document.getElementById("main");
+	const initials = (n) => n.split(" ").map((x) => x[0]).join("");
+
+	function header() {
+		const me = S.area === "equipe" && !S.from ? P.D.manager : S.seller;
+		document.getElementById("dates").innerHTML = P.datesHtml(S.iso);
+		document.getElementById("mobile-date").textContent = P.date(S.iso);
+		document.getElementById("avatar").textContent = initials(S.area === "equipe" ? P.D.manager : S.seller);
+		document.getElementById("who").textContent = S.area === "equipe" ? P.D.manager : S.seller;
+		for (const a of document.querySelectorAll("[data-area]"))
+			a.setAttribute("aria-current", a.dataset.area === S.area ? "page" : "false");
+		for (const b of document.querySelectorAll("[data-date]"))
+			b.onclick = () => changeDate(b.dataset.date);
+	}
+
+	const bigItem = (d) => `<li data-id="${d.id}"><button class="big" data-open="${d.id}">
+		${P.scoreHtml(d)}
+		<div class="body">
+			<div class="name">${P.esc(d.product)}${d.account ? ` <span class="acct">${P.esc(d.account)}</span>` : ""}</div>
+			<p class="why">${P.chancePhrase(d)}</p>
+			${P.ruler(d)}
+		</div>
+		<div class="money"><b>${P.usd(d.potential)}</b><span>potencial</span></div>
+	</button></li>`;
+
+	const rowItem = (d) => `<li data-id="${d.id}"><button class="row" data-open="${d.id}">
+		${P.scoreHtml(d)}
+		<span class="name">${P.esc(d.product)}${d.account ? ` <span>${P.esc(d.account)}</span>` : ""}</span>
+		${P.ruler(d)}
+		<span class="val">${P.usd(d.potential)}</span>
+	</button></li>`;
+
+	const coldItem = (d) => `<li data-id="${d.id}"><button class="row cold-row" data-cold="${d.id}">
+		<span class="name">${P.esc(d.product)}${d.account ? ` <span>${P.esc(d.account)}</span>` : ""}</span>
+		${P.ruler(d)}
+		<span class="val">${P.usd(d.price)}</span>
+	</button></li>`;
+
+	function weekHtml() {
+		const day = P.at(S.iso);
+		const seller = day.sellers[S.seller];
+		const w = P.weekNumbers(seller);
+		const lead = `<b>${P.num(w.count)} negócios</b> para avançar esta semana, <b>${P.usdShort(w.listPrice)}</b> em negociação. <b>${w.coolSoon}</b> esfriam e <b>${w.coldSoon}</b> ficam frios nos próximos 14 dias.`;
+		const top = seller.focus.slice(0, 3);
+		const rest = seller.focus.slice(3);
+		const tabs = [
+			["prioridades", "Prioridades da semana", seller.focus.length],
+			["perda", "Atualize ou dê perda", seller.review.length],
+			["prospeccao", "Prospecção", seller.prospect.length],
+		];
+		let list;
+		if (S.tab === "prioridades")
+			list = `<section class="portfolio" aria-label="Comece por estes">
+				<div class="section-title"><h2>Comece por estes</h2><span class="t-caption">Ordem pelo potencial: preço de lista × chance de fechar, pelo histórico</span></div>
+				<ol class="top3" id="top">${top.map(bigItem).join("")}</ol>
+			</section>
+			<section class="portfolio" aria-label="O resto da semana">
+				<div class="section-title"><h2>O resto da semana</h2><span class="t-caption">${rest.length} negócios</span></div>
+				<ol class="rest" id="rest">${rest.map(rowItem).join("")}</ol>
+			</section>`;
+		else if (S.tab === "perda")
+			list = `<section class="portfolio"><div class="section-title"><h2>Abertos há mais de 138 dias</h2><span class="t-caption">Nenhum negócio da base fechou depois disso. Ordem pelo preço de lista.</span></div>
+				<ol class="rest" id="rest">${seller.review.map(coldItem).join("")}</ol></section>`;
+		else
+			list = seller.prospect.length
+				? `<section class="portfolio"><ol class="rest">${seller.prospect.map((d) => `<li class="row cold-row"><span class="name">${P.esc(d.product)} <span>${P.esc(d.account ?? "")}</span></span><span></span><span class="val">${P.usd(d.price)}</span></li>`).join("")}</ol></section>`
+				: `<p class="note">${S.iso === P.latest ? "Nenhuma prospecção sem contato. Cadastre os novos contatos no CRM." : `A prospecção só aparece na data mais recente: a base não registra quando cada uma começou, então não dá para saber quais já existiam em ${P.date(S.iso)}.`}</p>`;
+		return `${S.from ? `<button class="back" data-back>‹ Minha equipe</button>` : ""}
+		<section class="hello">
+			<h1 class="t-display">${S.from ? `A semana de ${S.seller.split(" ")[0]}.` : P.greet(S.seller)}</h1>
+			<p class="t-lead">${lead}</p>
+		</section>
+		<section class="portfolio carteira" aria-label="Carteira">
+			<div class="section-title"><h2>Carteira em andamento, a preço de lista</h2><span class="t-caption">${S.iso === P.latest ? "" : `Como estava em ${P.date(S.iso)}`}</span></div>
+			<div id="funnel">${P.funnelHtml(seller.funnel)}</div>
+		</section>
+		<div class="tabs" role="tablist">${tabs.map(([k, l, n]) => `<button role="tab" data-tab="${k}" aria-selected="${S.tab === k}">${l}<span class="n">${n}</span></button>`).join("")}</div>
+		${list}`;
+	}
+
+	function teamHtml() {
+		const day = P.at(S.iso);
+		const active = day.team.filter((a) => a.open > 0);
+		const idle = day.team.filter((a) => a.open === 0);
+		const f = day.teamFunnel;
+		const total = f["no-prazo"].listPrice + f.esfriando.listPrice + f.parado.listPrice;
+		const live = f["no-prazo"].deals + f.esfriando.deals;
+		const max = Math.max(...active.map((a) => a.slices["no-prazo"].listPrice + a.slices.esfriando.listPrice + a.slices.parado.listPrice));
+		const bar = (a) => {
+			const parts = [["quente", a.slices["no-prazo"].listPrice], ["esfriando", a.slices.esfriando.listPrice], ["frio", a.slices.parado.listPrice]];
+			let x = 0;
+			return parts.map(([k, v]) => { const w = v / max; const h = `<span class="seg ${k}" style="transform: translateX(${x * 100}%) scaleX(${w})"></span>`; x += w; return h; }).join("");
+		};
+		return `<section class="hello">
+			<h1 class="t-display">${P.greet(P.D.manager)}</h1>
+			<p class="t-lead">Sua equipe tem <b>${P.num(live)} negócios</b> quentes e esfriando. <b>${Math.floor((f.parado.listPrice / total) * 100)}%</b> do valor em andamento está frio e precisa de atualização ou perda.</p>
+		</section>
+		<section class="portfolio carteira-equipe"><div class="section-title"><h2>Carteira da equipe, a preço de lista</h2></div><div id="funnel">${P.funnelHtml(f)}</div></section>
+		<section class="portfolio">
+			<div class="section-title"><h2>Vendedores, por valor frio</h2><span class="t-caption">Primeiro, quem tem mais valor frio para revisar</span></div>
+			<div class="team" id="team">${active
+				.map((a) => {
+					const t = a.slices["no-prazo"].listPrice + a.slices.esfriando.listPrice + a.slices.parado.listPrice;
+					return `<button class="member" data-seller="${a.agent}" data-id="${a.agent}">
+						<span class="avatar">${initials(a.agent)}</span>
+						<span class="who">${a.agent}<span>${a.focus} prioridades</span></span>
+						<span class="bar grow" role="img" aria-label="Quente, esfriando e frio">${bar(a)}</span>
+						<span class="val"><b>${P.usdShort(a.slices.parado.listPrice)}</b><span>de ${P.usdShort(t)}</span></span>
+						<span class="chev">›</span>
+					</button>`;
+				})
+				.join("")}
+			${idle.length ? `<p class="idle">Sem negócio em andamento: ${idle.map((a) => `<b>${a.agent}</b>`).join(", ")}</p>` : ""}
+			</div>
+			<p class="note">É um retrato da carteira, não um ranking de desempenho: os dados não separam o efeito do vendedor do efeito da carteira e da região.</p>
+		</section>`;
+	}
+
+	function render({ animate = false } = {}) {
+		header();
+		main.innerHTML = S.area === "equipe" && !S.from ? teamHtml() : weekHtml();
+		if (animate) main.classList.remove("view-enter"), void main.offsetWidth, main.classList.add("view-enter");
+		if (S.area === "equipe" && !S.from) P.growOnce(main);
+		bind();
+	}
+
+	function bind() {
+		const day = P.at(S.iso);
+		const seller = day.sellers[S.seller];
+		for (const b of main.querySelectorAll("[data-open]"))
+			b.onclick = () => P.openSheet(P.dealDetail(seller.focus.find((d) => d.id === b.dataset.open), day));
+		for (const b of main.querySelectorAll("[data-cold]"))
+			b.onclick = () => P.openSheet(P.coldDetail(seller.review.find((d) => d.id === b.dataset.cold)));
+		for (const b of main.querySelectorAll("[data-tab]"))
+			b.onclick = () => { S.tab = b.dataset.tab; render(); };
+		for (const b of main.querySelectorAll("[data-seller]"))
+			b.onclick = () => { S.seller = b.dataset.seller; S.from = "equipe"; S.tab = "prioridades"; render({ animate: true }); };
+		const back = main.querySelector("[data-back]");
+		if (back) back.onclick = () => { S.from = null; render({ animate: true }); };
+	}
+
+	function changeDate(iso) {
+		if (iso === S.iso) return;
+		const oldFunnel = main.querySelector("#funnel .funnel-bar")?.cloneNode(true);
+		P.flip(main, () => { S.iso = iso; header(); main.innerHTML = S.area === "equipe" && !S.from ? teamHtml() : weekHtml(); bind(); });
+		P.morphFunnel(oldFunnel, main.querySelector("#funnel .funnel-bar"));
+	}
+
+	addEventListener("hashchange", () => {
+		if (location.hash === "#equipe" || location.hash === "#semana") {
+			S.area = location.hash.slice(1);
+			S.from = null;
+			render({ animate: true });
+		}
+	});
+	render();
+</script>
+</body>
+</html>

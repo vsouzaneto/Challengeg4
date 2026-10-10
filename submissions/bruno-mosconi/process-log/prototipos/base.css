@@ -1,0 +1,657 @@
+/* Direção de arte "calma, com disciplina numérica". Protótipo: tokens e componentes comuns às variações A e B. */
+
+@font-face {
+	font-family: "Onest";
+	src: url(fontes/onest-latin-wght-normal.woff2) format("woff2");
+	font-weight: 100 900;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Mona Sans";
+	src: url(fontes/mona-sans-latin-wght-normal.woff2) format("woff2");
+	font-weight: 200 900;
+	font-display: swap;
+}
+
+:root {
+	/* superfícies: o conteúdo fica na camada branca; os controles, numa camada levemente recuada */
+	--bg: #f5f5f7;
+	--surface: #ffffff;
+	--raised: #ffffff;
+	--controls: rgba(245, 245, 247, 0.86);
+	--ink: #1d1d1f;
+	--ink-2: #6e6e73;
+	--ink-3: #a1a1a6;
+	--line: #e5e5ea;
+	--line-strong: #d2d2d7;
+	--hover: #f0f0f3;
+	--scrim: rgba(29, 29, 31, 0.24);
+	/* destaque único */
+	--accent: #0a7a5a;
+	--accent-soft: #e3f3ec;
+	--on-accent: #ffffff;
+	/* status térmico: marca (barra, régua) e texto (selo) */
+	--quente: #d9480f;
+	--esfriando: #e3a008;
+	--frio: #4f7cb8;
+	--quente-ink: #b53a0a;
+	--esfriando-ink: #8a5a00;
+	--frio-ink: #3a6399;
+	--quente-soft: #fdeee7;
+	--esfriando-soft: #fdf4dc;
+	--frio-soft: #eaf1f9;
+	--shadow-sheet: 0 24px 64px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.06);
+
+	--font: "Onest", system-ui, sans-serif;
+	--r-control: 8px;
+	--r-panel: 14px;
+	--ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+	--t-fast: 160ms;
+	--t-base: 220ms;
+	--t-move: 260ms;
+	color-scheme: light;
+}
+
+:root[data-font="b"] {
+	--font: "Mona Sans", system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) {
+		--bg: #000000;
+		--surface: #1c1c1e;
+		--raised: #2c2c2e;
+		--controls: rgba(28, 28, 30, 0.86);
+		--ink: #f5f5f7;
+		--ink-2: #a1a1a6;
+		--ink-3: #6e6e73;
+		--line: #38383a;
+		--line-strong: #48484a;
+		--hover: #2c2c2e;
+		--scrim: rgba(0, 0, 0, 0.5);
+		--accent: #3dd6a3;
+		--accent-soft: #10392c;
+		--on-accent: #000000;
+		--quente: #c4422f;
+		--esfriando: #bf8b08;
+		--frio: #5b8bd6;
+		--quente-ink: #ff8f6b;
+		--esfriando-ink: #f2c14e;
+		--frio-ink: #8db4f0;
+		--quente-soft: #3a1d16;
+		--esfriando-soft: #36290a;
+		--frio-soft: #1a2738;
+		--shadow-sheet: 0 24px 64px rgba(0, 0, 0, 0.6);
+		color-scheme: dark;
+	}
+}
+:root[data-theme="dark"] {
+	--bg: #000000;
+	--surface: #1c1c1e;
+	--raised: #2c2c2e;
+	--controls: rgba(28, 28, 30, 0.86);
+	--ink: #f5f5f7;
+	--ink-2: #a1a1a6;
+	--ink-3: #6e6e73;
+	--line: #38383a;
+	--line-strong: #48484a;
+	--hover: #2c2c2e;
+	--scrim: rgba(0, 0, 0, 0.5);
+	--accent: #3dd6a3;
+	--accent-soft: #10392c;
+	--on-accent: #000000;
+	--quente: #c4422f;
+	--esfriando: #bf8b08;
+	--frio: #5b8bd6;
+	--quente-ink: #ff8f6b;
+	--esfriando-ink: #f2c14e;
+	--frio-ink: #8db4f0;
+	--quente-soft: #3a1d16;
+	--esfriando-soft: #36290a;
+	--frio-soft: #1a2738;
+	--shadow-sheet: 0 24px 64px rgba(0, 0, 0, 0.6);
+	color-scheme: dark;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--ink);
+	font-family: var(--font);
+	font-size: 15px;
+	line-height: 1.5;
+	-webkit-font-smoothing: antialiased;
+	font-feature-settings: "tnum" 1;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+dl,
+dd,
+figure {
+	margin: 0;
+	padding: 0;
+}
+
+ul,
+ol {
+	list-style: none;
+}
+
+button {
+	font: inherit;
+	color: inherit;
+	background: none;
+	border: 0;
+	padding: 0;
+	cursor: pointer;
+}
+
+:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+	border-radius: 6px;
+}
+
+.tnum {
+	font-variant-numeric: tabular-nums;
+}
+
+.muted {
+	color: var(--ink-2);
+}
+
+/* Escala tipográfica: 13 · 15 · 17 · 22 · 28 · 34. Hierarquia por tamanho e peso. */
+.t-caption {
+	font-size: 13px;
+	line-height: 1.4;
+	color: var(--ink-2);
+}
+.t-body {
+	font-size: 15px;
+}
+.t-lead {
+	font-size: 17px;
+	line-height: 1.45;
+}
+.t-title {
+	font-size: 22px;
+	line-height: 1.25;
+	font-weight: 650;
+	letter-spacing: -0.01em;
+}
+.t-display {
+	font-size: 34px;
+	line-height: 1.15;
+	font-weight: 600;
+	letter-spacing: -0.02em;
+}
+
+/* Barra de controles: camada recuada e fixa, o conteúdo rola por baixo */
+.controls {
+	position: sticky;
+	top: 0;
+	z-index: 10;
+	background: var(--controls);
+	backdrop-filter: saturate(1.4) blur(18px);
+	border-bottom: 1px solid var(--line);
+}
+.controls-inner > *,
+.nav a {
+	white-space: nowrap;
+}
+.controls-inner {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 10px 32px;
+	display: flex;
+	align-items: center;
+	gap: 24px;
+}
+.brand {
+	font-weight: 700;
+	font-size: 16px;
+	letter-spacing: -0.01em;
+	margin-right: 8px;
+}
+.nav {
+	display: flex;
+	gap: 4px;
+}
+.nav a {
+	color: var(--ink-2);
+	text-decoration: none;
+	font-weight: 550;
+	padding: 6px 12px;
+	border-radius: 999px;
+	transition: background var(--t-fast) var(--ease-out);
+}
+.nav a[aria-current="page"] {
+	color: var(--ink);
+	background: var(--raised);
+	box-shadow: 0 0 0 1px var(--line);
+}
+.nav a:hover {
+	color: var(--ink);
+}
+.spacer {
+	flex: 1;
+}
+.person {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: 550;
+}
+.avatar {
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	background: var(--accent-soft);
+	color: var(--accent);
+	display: grid;
+	place-items: center;
+	font-size: 12px;
+	font-weight: 700;
+}
+.link {
+	color: var(--accent);
+	font-weight: 550;
+	text-decoration: none;
+}
+.link:hover {
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+/* Seletor de data: segmentado, a data mais recente à direita */
+.dates {
+	display: inline-flex;
+	padding: 3px;
+	border-radius: 10px;
+	background: var(--hover);
+	gap: 2px;
+}
+.dates button {
+	padding: 5px 10px;
+	border-radius: 8px;
+	font-size: 13px;
+	font-weight: 550;
+	color: var(--ink-2);
+	font-variant-numeric: tabular-nums;
+}
+.dates button[aria-pressed="true"] {
+	background: var(--surface);
+	color: var(--ink);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--line);
+}
+.dates button:disabled {
+	color: var(--ink-3);
+	cursor: not-allowed;
+}
+.date-label {
+	font-size: 13px;
+	color: var(--ink-2);
+}
+
+/* Situação: selo com texto, sempre */
+.tag {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 13px;
+	font-weight: 600;
+	padding: 2px 8px 2px 7px;
+	border-radius: 999px;
+	white-space: nowrap;
+}
+.tag::before {
+	content: "";
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: currentColor;
+}
+.tag.quente {
+	color: var(--quente-ink);
+	background: var(--quente-soft);
+}
+.tag.esfriando {
+	color: var(--esfriando-ink);
+	background: var(--esfriando-soft);
+}
+.tag.frio {
+	color: var(--frio-ink);
+	background: var(--frio-soft);
+}
+
+/* Score: número tabular grande, rótulo pequeno embaixo */
+.score {
+	display: grid;
+	justify-items: center;
+	min-width: 44px;
+}
+.score b {
+	font-size: 24px;
+	line-height: 1;
+	font-weight: 650;
+	letter-spacing: -0.02em;
+	font-variant-numeric: tabular-nums;
+}
+.score span {
+	font-size: 11px;
+	color: var(--ink-2);
+	margin-top: 4px;
+}
+.score.lg b {
+	font-size: 40px;
+}
+
+/* Régua do tempo: 0 → 90 → 138 dias. Substitui as colunas de idade e prazo. */
+.ruler {
+	display: grid;
+	gap: 6px;
+	min-width: 150px;
+}
+.ruler-track {
+	position: relative;
+	height: 6px;
+	border-radius: 3px;
+	background: var(--line);
+	overflow: hidden;
+}
+.ruler-fill {
+	position: absolute;
+	inset: 0;
+	transform-origin: left center;
+	border-radius: 3px;
+}
+.ruler-fill.quente {
+	background: var(--quente);
+}
+.ruler-fill.esfriando {
+	background: var(--esfriando);
+}
+.ruler-fill.frio {
+	background: var(--frio);
+}
+.ruler-tick {
+	position: absolute;
+	top: -1px;
+	bottom: -1px;
+	width: 2px;
+	background: var(--surface);
+}
+.ruler-text {
+	font-size: 13px;
+	color: var(--ink-2);
+	white-space: nowrap;
+}
+.ruler-text b {
+	color: var(--ink);
+	font-weight: 600;
+}
+
+/* Barra do funil: térmica, a preço de lista, com rótulo em cada parte */
+.funnel {
+	display: grid;
+	gap: 12px;
+}
+.funnel-bar {
+	position: relative;
+	height: 12px;
+	border-radius: 6px;
+	background: var(--line);
+	overflow: hidden;
+}
+.funnel-bar .seg {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	transform-origin: left center;
+}
+.seg.quente {
+	background: var(--quente);
+}
+.seg.esfriando {
+	background: var(--esfriando);
+}
+.seg.frio {
+	background: var(--frio);
+}
+.funnel-legend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 28px;
+}
+.funnel-legend div {
+	display: grid;
+	gap: 2px;
+}
+.funnel-legend .k {
+	font-size: 13px;
+	color: var(--ink-2);
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+.funnel-legend .k i {
+	width: 8px;
+	height: 8px;
+	border-radius: 2px;
+}
+.funnel-legend .v {
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+
+/* Painel de detalhe: folha que desliza do lado (desktop) ou de baixo (celular) */
+.scrim {
+	position: fixed;
+	inset: 0;
+	background: var(--scrim);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity var(--t-base) var(--ease-out);
+	z-index: 20;
+}
+.scrim.open {
+	opacity: 1;
+	pointer-events: auto;
+}
+.sheet {
+	position: fixed;
+	z-index: 21;
+	top: 12px;
+	right: 12px;
+	bottom: 12px;
+	width: 420px;
+	background: var(--surface);
+	border-radius: 18px;
+	box-shadow: var(--shadow-sheet);
+	transform: translateX(calc(100% + 24px));
+	visibility: hidden;
+	transition:
+		transform var(--t-base) var(--ease-out),
+		visibility 0s linear var(--t-base);
+	overflow: auto;
+	padding: 28px;
+	display: grid;
+	align-content: start;
+	gap: 24px;
+}
+.sheet.open {
+	transform: none;
+	visibility: visible;
+	transition:
+		transform var(--t-base) var(--ease-out),
+		visibility 0s;
+}
+.sheet-close {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	background: var(--hover);
+	color: var(--ink-2);
+	font-size: 18px;
+	line-height: 1;
+}
+.sheet h2 {
+	font-size: 22px;
+	font-weight: 650;
+	letter-spacing: -0.01em;
+	padding-right: 40px;
+}
+.sheet .sub {
+	font-size: 13px;
+	color: var(--ink-2);
+	margin-top: 4px;
+}
+.sheet-head {
+	display: flex;
+	gap: 20px;
+	align-items: center;
+}
+.calc {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	gap: 8px 0;
+	padding: 16px;
+	border-radius: 12px;
+	background: var(--bg);
+	font-variant-numeric: tabular-nums;
+}
+.calc dt {
+	color: var(--ink-2);
+}
+.calc dd {
+	padding-left: 16px;
+	text-align: right;
+	font-weight: 550;
+}
+.calc .total {
+	border-top: 1px solid var(--line-strong);
+	padding-top: 8px;
+	font-weight: 700;
+	color: var(--ink);
+}
+.why {
+	font-size: 17px;
+	line-height: 1.45;
+}
+.todo {
+	padding: 16px;
+	border-radius: 12px;
+	border: 1px solid var(--line);
+	display: grid;
+	gap: 4px;
+}
+.todo h3 {
+	font-size: 15px;
+	font-weight: 650;
+}
+.footnote {
+	font-size: 13px;
+	color: var(--ink-2);
+}
+
+/* Botões */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 9px 16px;
+	border-radius: 10px;
+	font-weight: 600;
+	background: var(--accent);
+	color: var(--on-accent);
+	transition: transform var(--t-fast) var(--ease-out);
+}
+.btn:active {
+	transform: scale(0.98);
+}
+.btn.quiet {
+	background: var(--hover);
+	color: var(--ink);
+}
+
+/* Abas da lista: segmentado discreto */
+.tabs {
+	display: flex;
+	gap: 4px;
+	border-bottom: 1px solid var(--line);
+}
+.tabs button {
+	padding: 10px 4px;
+	margin-right: 20px;
+	font-weight: 600;
+	color: var(--ink-2);
+	border-bottom: 2px solid transparent;
+	margin-bottom: -1px;
+}
+.tabs button[aria-selected="true"] {
+	color: var(--ink);
+	border-bottom-color: var(--ink);
+}
+.tabs .n {
+	font-weight: 450;
+	margin-left: 6px;
+	color: var(--ink-2);
+	font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+	.controls-inner {
+		padding: 10px 16px;
+		gap: 12px;
+	}
+	.sheet {
+		top: auto;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: auto;
+		max-height: 88vh;
+		border-radius: 18px 18px 0 0;
+		transform: translateY(100%);
+		padding: 24px 20px 32px;
+	}
+	.t-display {
+		font-size: 26px;
+	}
+	.tabs {
+		overflow-x: auto;
+		scrollbar-width: none;
+	}
+	.tabs button {
+		white-space: nowrap;
+		margin-right: 16px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		transition-duration: 0ms !important;
+		animation-duration: 0ms !important;
+	}
+}

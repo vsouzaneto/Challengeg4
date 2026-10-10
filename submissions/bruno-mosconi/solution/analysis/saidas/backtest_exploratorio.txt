@@ -1,0 +1,27 @@
+Snapshots: ['2017-06-30', '2017-07-31', '2017-08-31', '2017-09-30'] | horizonte 90 dias | top 10 por vendedor | Prospecting fora (sem datas)
+  2017-06-30: 1686 abertos (Engaging), 149 com >138d, receita ganha nos 90d seguintes US$ 1421 mil
+  2017-07-31: 2257 abertos (Engaging), 275 com >138d, receita ganha nos 90d seguintes US$ 1719 mil
+  2017-08-31: 2265 abertos (Engaging), 408 com >138d, receita ganha nos 90d seguintes US$ 1298 mil
+  2017-09-30: 2409 abertos (Engaging), 530 com >138d, receita ganha nos 90d seguintes US$ 1220 mil
+| metodo                                             |   % da receita capturada pelo top 10 |   receita_top (US$ mil) |   % do top 10 ganho em 90d |   % do top 10 parado (>138d) |
+|:---------------------------------------------------|-------------------------------------:|------------------------:|---------------------------:|-----------------------------:|
+| Modelo ML (gradient boosting)                      |                                 45   |                    2548 |                       42.8 |                          0   |
+| Valor esperado (idade corrigida)                   |                                 44.6 |                    2525 |                       39.9 |                          0   |
+| Pontos (valor + idade)                             |                                 43.5 |                    2462 |                       39.2 |                          0.1 |
+| Regra: faixas de idade (≤90, 91–138, >138) e valor |                                 43.4 |                    2453 |                       38.7 |                          0   |
+| Regra: tira parados (>138d) e ordena por valor     |                                 40.9 |                    2315 |                       35.6 |                          0   |
+| Só valor                                           |                                 36.8 |                    2085 |                       31.8 |                         12.9 |
+| Valor esperado (idade, só fechados) — ORIGINAL     |                                 33   |                    1868 |                       28.3 |                         21.2 |
+| Aleatório                                          |                                 15.8 |                     894 |                       31.2 |                         13.6 |
+
+Por snapshot (% receita capturada):
+| metodo                                             |   2017-06-30 |   2017-07-31 |   2017-08-31 |   2017-09-30 |
+|:---------------------------------------------------|-------------:|-------------:|-------------:|-------------:|
+| Aleatório                                          |         20.4 |         14.5 |         14.3 |         13.7 |
+| Modelo ML (gradient boosting)                      |         50.6 |         42.4 |         43.1 |         44.3 |
+| Pontos (valor + idade)                             |         50.8 |         39.5 |         38.4 |         46.1 |
+| Regra: faixas de idade (≤90, 91–138, >138) e valor |         50.8 |         40.3 |         41.2 |         41.2 |
+| Regra: tira parados (>138d) e ordena por valor     |         48.5 |         39.2 |         38.1 |         37.4 |
+| Só valor                                           |         44.5 |         35.8 |         33.3 |         33.2 |
+| Valor esperado (idade corrigida)                   |         52.7 |         39.4 |         38   |         49.5 |
+| Valor esperado (idade, só fechados) — ORIGINAL     |         41.6 |         35.5 |         30.4 |         22.3 |

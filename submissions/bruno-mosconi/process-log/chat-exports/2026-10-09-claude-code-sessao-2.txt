@@ -1,0 +1,2850 @@
+
+❯ /clear
+
+❯ retome o projeto pelo handoof [removido]
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+⏺ O estado confere com o handoff: a árvore está limpa, o último commit é o
+  13f16c0 e o npm run check passa (43 testes). O próximo passo, o incremento 4,
+  depende de duas respostas suas.
+
+⏺ User answered Claude's questions:
+  ⎿  · G1-a: qual coorte vale para a chance pela idade e para o backtest? →
+     Entrada tardia, com três condições:
+     - Mantenha a coorte limpa como análise de sensibilidade. No "Como funciona"
+     e no README, mostre que as duas chegam à mesma conclusão: o valor
+     ponderado ganha de "só preço" (+7,66 p.p. em 3 datas com entrada tardia;
+     +18,69 p.p. na única data da limpa).
+     - Ponha a hipótese da entrada tardia nas Limitações e explique o método
+     numa frase: "Negócios iniciados antes de março de 2017 só estão na base se
+     ainda estavam abertos em 01/03/2017; por isso entram na conta a partir da
+     idade que tinham nessa data."
+     - Registre na D27 por que a limpa perdeu: validação numa data só, e 31/08
+     excluída por 0,01 p.p. do limite de IC.
+     · G1-b: como a lista "Foque agora" é ordenada? → Mantenha o valor
+     ponderado. O custo de esperar entra, mas sem prever queda de chance: os
+     saltos (13,5% para 4,3% em 3 dias) vêm dos limites das faixas, não de uma
+     queda real dia a dia, e mostrá-los como fato contradiz a D28. Use só os
+     dois limites com significado: "Esfria em N dias" (até 90) e "Fica parado em
+     N dias" (até 138, o maior ciclo já observado), como selo no negócio e como
+     linha no painel de motivo. A ordem da lista não muda. Registre como D30.
+
+     Leitura do problema: no README, não apresente a leitura como previsão dos
+     resultados. As hipóteses vieram do material de partida, como o próprio
+     texto diz. O que vale contar é o que a revisão confirmou e o que ela
+     corrigiu, como o vendedor mudar quanto do funil fica parado.
+
+     Pode começar o incremento 4.
+
+⏺ Vou aplicar as respostas do G1 primeiro (entrada tardia como padrão e D30 sem
+  previsão de queda) e depois começar o incremento 4. Antes, preciso ler o
+  núcleo e os documentos que mudam.
+
+  Ran 8 shell commands (ctrl+o to expand)
+
+⏺ Mudando o padrão do núcleo para a entrada tardia.
+
+⏺ Bash(cd ~/Projetos/ai-master-challenge/submissions/bruno-mos
+      coni/solution/src/core && python3 - <<'EOF'
+      import re,io…)
+  ⎿  Updated solution/src/core/backtest.ts (+2 -2)
+      91          cutoff?: "fixed" | "observed"; // 138 fixo ou o maior c
+          iclo observado em T (H2)
+      92          minEngage?: number; // curva só com iniciados a partir 
+          deste dia (H11)
+      93          coolingFrom?: number; // início de "esfriando" (D2: 90;
+           a preparação usou 91)
+      94 -        truncation?: Truncation; // padrão "clean" (G1)        
+      94 +        truncation?: Truncation; // padrão DEFAULT_TRUNCATION (
+         +D27)                                                           
+      95          /** Só as fotos com histórico suficiente (CA6). Padrão:
+           sim, quando truncation ≠ "none". */
+      96          onlyEligible?: boolean;
+      97  }
+     ...
+      175          const cutoffs: number[] = [];
+      176          const used: number[] = [];
+      177          const onlyEligible =
+      178 -                opts.onlyEligible ?? (opts.truncation ?? "clea
+          -n") !== "none";                                               
+      178 +                opts.onlyEligible ?? (opts.truncation ?? DEFAU
+          +LT_TRUNCATION) !== "none";                                    
+      179          for (const t of opts.snapshots ?? SNAPSHOTS) {
+      180                  const r = rankAt(ds, t, opts);
+      181                  if (onlyEligible && !r.eligible) continue;
+  ⎿  Updated solution/src/core/rules.ts (+6 -5)
+      14  /**
+      15   * A base só traz negócios concluídos a partir da primeira conc
+          lusão observada (01/03/2017) ou ainda
+      16   * abertos: os antigos que aparecem são os que sobreviveram até
+           lá (revisão inicial, H11).
+      17 - * - "clean" (padrão, G1): a coorte só usa negócios iniciados a
+         - partir da primeira conclusão observada.                       
+      18 - * - "lateEntry": usa todos, mas um negócio só conta na faixa b
+         - se, aos b dias, já estava na janela                           
+      19 - *   observada (início + b ≥ primeira conclusão). É a alternati
+         -va considerada (decisoes.md).                                  
+      17 + * - "lateEntry" (padrão, D27): usa todos, mas um negócio só co
+         +nta na faixa b se, aos b dias, já estava                       
+      18 + *   na janela observada (início + b ≥ primeira conclusão).    
+      19 + * - "clean": só negócios iniciados a partir da primeira conclu
+         +são observada (análise de sensibilidade).                      
+      20   * - "none": a curva da preparação, sem correção.
+      21   */
+      22  export type Truncation = "none" | "clean" | "lateEntry";
+      23 +export const DEFAULT_TRUNCATION: Truncation = "lateEntry";     
+      24  
+      25  /** Meia-largura máxima do IC 95% (Wilson) aceita em qualquer f
+          aixa para a data ficar disponível. */
+      26  export const MAX_HALF_WIDTH = 0.05;
+     ...
+      87  ): Deal[] {
+      88          const cutoff = opts.cutoff ?? STALE_AFTER;
+      89          const from =
+      89 -                (opts.truncation ?? "clean") === "clean"       
+      90 +                (opts.truncation ?? DEFAULT_TRUNCATION) === "cl
+         +ean"                                                           
+      91                          ? (firstCloseBy(deals, t) ?? Number.POS
+          ITIVE_INFINITY)
+      92                          : Number.NEGATIVE_INFINITY;
+      93          return deals.filter(
+     ...
+      108          const bands = opts.bands ?? BANDS;
+      109          const strict = (opts.atRisk ?? ">") === ">";
+      110          const window = firstCloseBy(deals, t) ?? Number.POSITI
+           VE_INFINITY;
+      110 -        const late = opts.truncation === "lateEntry";         
+      111 +        const late = (opts.truncation ?? DEFAULT_TRUNCATION) =
+          +== "lateEntry";                                               
+      112          const base = cohort(deals, t, opts).map((d) => ({
+      113                  engage: d.engage as number,
+      114                  dur: observedDuration(d, t),
+
+⏺ Bash(sed -i ''
+      's/^\tconcludedOnlyByDay,$/\tconcludedOnlyByDay,\n\tDEFAULT_TRUNCATION,/'
+      backtest.ts && cd ../.. && npx vitest run 2>&1 | grep -E
+      "✗|×|FAIL|expected|…)
+  ⎿  Updated solution/src/core/backtest.ts (+1 -0)
+      10          chanceCurve,
+      11          chanceForAge,
+      12          concludedOnlyByDay,
+      13 +        DEFAULT_TRUNCATION,                                    
+      14          hasEnoughHistory,
+      15          maxCycleBy,
+      16          observedDuration,
+
+⏺ Saíram só as 5 falhas esperadas, todas nos números de referência. Agora
+  atualizo esses testes para a regra final e mantenho a coorte limpa como
+  análise de sensibilidade.
+
+⏺ Bash(cd ~/Projetos/ai-master-challenge/submissions/bruno-mos
+      coni/solution/src/core && python3 - <<'EOF'
+      p='reference.test.ts'; s=open(p).read()…)
+  ⎿  Updated solution/src/core/reference.test.ts (+41 -34)
+      1  // Números de referência com os dados reais. Uma regressão no nú
+         cleo quebra o `npm run check`.
+      2  // - "none": a regra da preparação, reconciliada com o Python (0
+         1-revisao-inicial.md, R1–R4).
+      3 -// - "clean": a regra final (G1): coorte só com iniciados a part
+        -ir da primeira conclusão observada.                             
+      4 -// - "lateEntry": a alternativa considerada (decisoes.md).      
+      3 +// - "lateEntry": a regra final (D27): cada negócio conta a part
+        +ir da idade que tinha em 01/03/2017.                            
+      4 +// - "clean": a análise de sensibilidade: coorte só com iniciado
+        +s a partir de 01/03/2017.                                       
+      5  
+      6  import { describe, expect, it } from "vitest";
+      7  import { loadDataset } from "../node/load.ts";
+     ...
+      48                          );
+      49                  expect(cohort(ds.deals, T, { truncation: "none"
+           })).toHaveLength(5991);
+      50                  expect(pct("none")).toEqual([49.8, 46.4, 44.0, 
+          32.9, 21.2, 9.1]);
+      51 -                expect(cohort(ds.deals, T)).toHaveLength(4806);
+      51 +                expect(cohort(ds.deals, T, { truncation: "clean
+         +" })).toHaveLength(4806);                                      
+      52                  expect(pct("clean")).toEqual([47.3, 41.7, 38.6,
+           25.6, 13.5, 4.3]);
+      53                  expect(pct("lateEntry")).toEqual([47.3, 42.9, 4
+          1.2, 30.8, 19.9, 8.6]);
+      54          });
+     ...
+      78                  expect(
+      79                          Math.round(f.slices["no-prazo"].weighte
+          d + f.slices.esfriando.weighted),
+      80                  ).toBe(195_380);
+      81 -                const clean = funnelAt(ds, T);                 
+      82 -                expect(                                        
+      83 -                        Math.round(                            
+      84 -                                clean.slices["no-prazo"].weight
+         -ed + clean.slices.esfriando.weighted,                          
+      85 -                        ),                                     
+      86 -                ).toBe(154_880);                               
+      81 +                const weighted = (curve = chanceCurve(ds.deals,
+         + T)) => {                                                      
+      82 +                        const x = funnelAt(ds, T, curve);      
+      83 +                        return Math.round(                     
+      84 +                                x.slices["no-prazo"].weighted +
+         + x.slices.esfriando.weighted,                                  
+      85 +                        );                                     
+      86 +                };                                             
+      87 +                expect(weighted()).toBe(182_928);              
+      88 +                expect(weighted(chanceCurve(ds.deals, T, { trun
+         +cation: "clean" }))).toBe(                                     
+      89 +                        154_880,                               
+      90 +                );                                             
+      91          });
+      92  });
+      93  
+     ...
+       97                          Object.entries(r.share).map(([k, v]) =
+           > [k, round(v * 100, 2)]),
+     … 73 more lines (ctrl+o to expand)
+
+⏺ Testes passando. Agora ajusto os rótulos da auditoria e gero a saída de novo.
+
+⏺ Bash(python3 - <<'EOF'
+      p='scripts/auditoria.ts'; s=open(p).read()…)
+  ⎿  Updated solution/analysis/saidas/auditoria-ts.md (+7 -7)
+      175  H6: close_value ÷ preço de lista nos 4.238 ganhos: mínimo 0,66
+           , máximo 1,34, média 0,996; dentro de ±10%: 68,9%.
+      176  H7: maior ciclo dos ganhos = 138; dos perdidos = 138. Engaging
+            com data de conclusão: 0.
+      177  H8: "de cada 10" por faixa: 0: 49,8% → 5 · 30: 46,4% → 5 · 60:
+            44,0% → 4 · 90: 32,9% → 3 · 104: 21,2% → 2 · 120: 9,1% → 1.
+      178 -H10 (31/12): vendedores com "Foque agora" não vazia = 21; tama
+          -nho da lista de 1 a 31; dos 10 primeiros por valor ponderado, 
+          -em média 85,7% também são os 10 mais caros; listas idênticas e
+          -m 7 vendedores.                                               
+      178 +H10 (31/12): vendedores com "Foque agora" não vazia = 21; tama
+          +nho da lista de 1 a 31; dos 10 primeiros por valor ponderado, 
+          +em média 88,6% também são os 10 mais caros; listas idênticas e
+          +m 9 vendedores.                                               
+      179  Setores grafados no accounts.csv: employment, entertainment, f
+           inance, marketing, medical, retail, services, software, techno
+           lgy, telecommunications.
+      180  
+      181  ## Regra final (G1): a coorte e o corte da base
+     ...
+      184  
+      185  | Regra | 30/06/2017 | 31/07/2017 | 31/08/2017 | 30/09/2017 | 
+           31/12/2017 |
+      186  |---|---|---|---|---|---|
+      187 -| limpa: só iniciados a partir da primeira conclusão observada
+          - (regra final) | faixa 0: 0 em risco; faixa vazia | faixa 0: 3
+          -79 em risco; ±8,57 p.p. | faixa 0: 1.258 em risco; ±5,01 p.p. 
+          -| faixa 0: 2.022 em risco; ±3,72 p.p. ✓ | faixa 0: 4.806 em ri
+          -sco; ±2,05 p.p. ✓ |                                           
+      188 -| entrada tardia: todos, cada um a partir da idade que tinha e
+          -m 01/03/2017 (alternativa) | faixa 0: 0 em risco; faixa vazia 
+          -| faixa 0: 379 em risco; ±4,91 p.p. ✓ | faixa 0: 1.258 em risc
+          -o; ±3,40 p.p. ✓ | faixa 0: 2.022 em risco; ±2,95 p.p. ✓ | faix
+          -a 0: 4.806 em risco; ±1,87 p.p. ✓ |                           
+      187 +| entrada tardia: todos, cada um a partir da idade que tinha e
+          +m 01/03/2017 (regra final) | faixa 0: 0 em risco; faixa vazia 
+          +| faixa 0: 379 em risco; ±4,91 p.p. ✓ | faixa 0: 1.258 em risc
+          +o; ±3,40 p.p. ✓ | faixa 0: 2.022 em risco; ±2,95 p.p. ✓ | faix
+          +a 0: 4.806 em risco; ±1,87 p.p. ✓ |                           
+      188 +| limpa: só iniciados a partir da primeira conclusão observada
+          + (sensibilidade) | faixa 0: 0 em risco; faixa vazia | faixa 0:
+          + 379 em risco; ±8,57 p.p. | faixa 0: 1.258 em risco; ±5,01 p.p
+          +. | faixa 0: 2.022 em risco; ±3,72 p.p. ✓ | faixa 0: 4.806 em 
+          +risco; ±2,05 p.p. ✓ |                                         
+      189  | sem correção (regra da preparação) | faixa 0: 852 em risco; 
+           ±5,68 p.p. | faixa 0: 1.564 em risco; ±4,15 p.p. ✓ | faixa 0: 
+           2.443 em risco; ±3,37 p.p. ✓ | faixa 0: 3.207 em risco; ±2,94 
+           p.p. ✓ | faixa 0: 5.991 em risco; ±1,85 p.p. ✓ |
+      190  
+      191  Curva em 31/12/2017 (chance por faixa 0 · 30 · 60 · 90 · 104 ·
+            120):
+      192  
+      193 -- limpa: só iniciados a partir da primeira conclusão observada
+          - (regra final): 47,3% · 41,7% · 38,6% · 25,6% · 13,5% · 4,3%; 
+          -valor ponderado (no prazo + esfriando) US$ 154.880            
+      194 -- entrada tardia: todos, cada um a partir da idade que tinha e
+          -m 01/03/2017 (alternativa): 47,3% · 42,9% · 41,2% · 30,8% · 19
+          -,9% · 8,6%; valor ponderado (no prazo + esfriando) US$ 182.928
+      193 +- entrada tardia: todos, cada um a partir da idade que tinha e
+          +m 01/03/2017 (regra final): 47,3% · 42,9% · 41,2% · 30,8% · 19
+          +,9% · 8,6%; valor ponderado (no prazo + esfriando) US$ 182.928
+      194 +- limpa: só iniciados a partir da primeira conclusão observada
+          + (sensibilidade): 47,3% · 41,7% · 38,6% · 25,6% · 13,5% · 4,3%
+          +; valor ponderado (no prazo + esfriando) US$ 154.880          
+      195  - sem correção (regra da preparação): 49,8% · 46,4% · 44,0% · 
+           32,9% · 21,2% · 9,1%; valor ponderado (no prazo + esfriando) U
+           S$ 195.380
+      196  
+      197  Backtest só nas datas disponíveis, e teste pareado (unidade = 
+           vendedor). O CA3 pede o ganho sobre "só preço", com IC.
+      198  
+      199  | Regra | Fotos | Valor ponderado | Situação e preço | Só preç
+           o | Ponderado − só preço | Ponderado − situação e preço | Pond
+           erado − preço sem parados |
+      200  |---|---|---|---|---|---|---|---|
+      201 -| limpa: só iniciados a partir da primeira conclusão observada
+          - (regra final) | 30/09/2017 | 47,70% | 42,11% | 29,01% | 18,69
+          - p.p. (IC 12,28 a 25,57; p 0,0000) | 5,58 p.p. (IC 1,82 a 9,50
+          -; p 0,0083) | 12,56 p.p. (IC 7,70 a 17,85; p 0,0000) |        
+      202 -| entrada tardia: todos, cada um a partir da idade que tinha e
+          -m 01/03/2017 (alternativa) | 31/07/2017, 31/08/2017, 30/09/201
+          -7 | 40,86% | 40,74% | 33,20% | 7,66 p.p. (IC 3,49 a 12,62; p 0
+          -,0004) | 0,12 p.p. (IC -1,51 a 2,11; p 0,9032) | 3,22 p.p. (IC
+          - 0,63 a 6,41; p 0,0220) |                                     
+      201 +| entrada tardia: todos, cada um a partir da idade que tinha e
+          +m 01/03/2017 (regra final) | 31/07/2017, 31/08/2017, 30/09/201
+          +7 | 40,86% | 40,74% | 33,20% | 7,66 p.p. (IC 3,49 a 12,62; p 0
+          +,0004) | 0,12 p.p. (IC -1,51 a 2,11; p 0,9032) | 3,22 p.p. (IC
+          + 0,63 a 6,41; p 0,0220) |                                     
+      202 +| limpa: só iniciados a partir da primeira conclusão observada
+          + (sensibilidade) | 30/09/2017 | 47,70% | 42,11% | 29,01% | 18,
+          +69 p.p. (IC 12,28 a 25,57; p 0,0000) | 5,58 p.p. (IC 1,82 a 9,
+          +50; p 0,0083) | 12,56 p.p. (IC 7,70 a 17,85; p 0,0000) |      
+      203  | sem correção (regra da preparação) | 30/06/2017, 31/07/2017,
+            31/08/2017, 30/09/2017 | 44,41% | 43,16% | 36,17% | 8,23 p.p.
+            (IC 4,58 a 12,67; p 0,0001) | 1,25 p.p. (IC -0,19 a 2,91; p 0
+           ,1253) | 4,31 p.p. (IC 1,99 a 7,21; p 0,0006) |
+      204  
+      205  Calibração: prevista pela curva em T × ganha até 31/12/2017, p
+           ara os abertos com até 138 dias. "Ainda podiam concluir" são o
+           s que, em 31/12, estavam abertos com até 138 dias: o teto supõ
+           e que todos virariam venda.
+  ⎿  Updated solution/scripts/auditoria.ts (+4 -4)
+      687  h("\n## Regra final (G1): a coorte e o corte da base\n");
+      688  const RULES: [Truncation, string][] = [
+      689          [
+      690 -                "clean",                                      
+      691 -                "limpa: só iniciados a partir da primeira conc
+          -lusão observada (regra final)",                               
+      690 +                "lateEntry",                                  
+      691 +                "entrada tardia: todos, cada um a partir da id
+          +ade que tinha em 01/03/2017 (regra final)",                   
+      692          ],
+      693          [
+      694 -                "lateEntry",                                  
+      695 -                "entrada tardia: todos, cada um a partir da id
+          -ade que tinha em 01/03/2017 (alternativa)",                   
+      694 +                "clean",                                      
+      695 +                "limpa: só iniciados a partir da primeira conc
+          +lusão observada (sensibilidade)",                             
+      696          ],
+      697          ["none", "sem correção (regra da preparação)"],
+      698  ];
+
+⏺ A saída da auditoria mudou apenas onde esperado; a linha H10, que usa a curva
+  padrão, passou de 85,7% para 88,6% de sobreposição entre os 10 primeiros por
+  valor ponderado e os 10 mais caros. Agora vou buscar nos documentos os números
+  e termos que dependem da escolha de coorte.
+
+  Searched for 1 pattern, read 1 file, listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+⏺ Atualizando agora a §7 do AGENTS.md para a entrada tardia. Como é edição em
+  AGENTS.md, vai aparecer a confirmação.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+⏺ As dimensões da D3 usam a coorte sem corte, então não mudam. Agora edito o
+  AGENTS.md.
+
+⏺ Update(AGENTS.md)
+  ⎿  Added 1 line, removed 1 line
+      187  | D2 | Idade = T − `engage_date`. No prazo: 0–89 dias. Esfrian
+           do: 90–138. Parado: mais de 138. "Em andamento" é o conjunto d
+           e todos os negócios abertos. |
+      188  | D3 | Vendedor e produto **não** entram no score (D29). Produ
+           to não muda nada: p = 0,372 entre concluídos e 0,718 na coorte
+           . O vendedor não muda a taxa de ganho entre concluídos (p = 0,
+           264; 36–38% dos sorteios dão diferença igual ou maior), mas mu
+           da **quanto fica parado** (p < 0,001 na coorte). Esse efeito m
+           ultiplica todos os negócios do vendedor e **não muda a ordem d
+           a lista dele**. Na visão do gestor, a fração parada por vended
+           or aparece como situação do funil, não como ranking, com o avi
+           so de que os dados não separam vendedor, carteira e região. A 
+           tela "Como funciona" mostra o que foi testado e descartado. |
+      189  | D4 | Prospecting vai na lista "Inicie contato", ordenada por
+            preço de lista. |
+      190 -| D5 | Score = **valor ponderado** em US$ = chance pela idade 
+          -× preço de lista. É critério de ordem, não previsão de receita
+          - (a curva superestima: ver a calibração). Frase (D28): "Dos ne
+          -gócios que chegaram a N dias ainda em andamento, X de cada 10 
+          -viraram venda." Mantido por enquanto contra "situação e preço"
+          - (D30). |                                                     
+      190 +| D5 | Score = **valor ponderado** em US$ = chance pela idade 
+          +× preço de lista. É critério de ordem, não previsão de receita
+          + (a curva superestima: ver a calibração). Frase (D28): "Dos ne
+          +gócios que chegaram a N dias ainda em andamento, X de cada 10 
+          +viraram venda." Mantido contra "situação e preço" (D30), com o
+          +s selos "Esfria em N dias" e "Fica parado em N dias", que não 
+          +mudam a ordem. |                                              
+      191  | D6 | Publicar na Vercel, só após autorização. |
+      192  | D7 | Sem LLM no app. |
+      193  | D8 | React + Vite + TypeScript, sem servidor. |
+
+⏺ Update(AGENTS.md)
+  ⎿  Added 3 lines, removed 2 lines
+      202  | D18 em diante | Em `process-log/decisoes.md`, com data, quem
+            decidiu e evidência. |
+      203  
+      204  **Chance pela idade (sem viés de sobrevivência)**, calculada n
+           a data T:
+      205 -- **Coorte:** negócios não-Prospecting com `engage_date` ≤ T −
+          - 138 dias **e a partir da primeira conclusão observada até T**
+          - (01/03/2017), porque a base só traz os negócios antigos que s
+          -obreviveram até essa data (D27, H11). O desfecho é o visto em 
+          -T; quem ainda está aberto conta como "não ganhou".            
+      205 +- **Coorte:** negócios não-Prospecting com `engage_date` ≤ T −
+          + 138 dias. O desfecho é o visto em T; quem ainda está aberto c
+          +onta como "não ganhou".                                       
+      206 +- **Entrada tardia (D27):** negócios iniciados antes de março 
+          +de 2017 só estão na base se ainda estavam abertos em 01/03/201
+          +7 (a primeira conclusão observada); por isso entram na conta a
+          + partir da idade que tinham nessa data. Na faixa b, um negócio
+          + só conta se início + b ≥ 01/03/2017.                         
+      207  - **Faixa que começa em b dias:** chance = ganhos ÷ negócios d
+           a coorte que ainda estavam abertos depois de b dias, ou seja, 
+           com duração **maior que** b. Um negócio aberto com idade *a* s
+           ó é comparável a quem durou mais de *a* (revisão inicial, R1).
+      208  - **Faixas:** 0–29, 30–59, 60–89, 90–103, 104–119, 120–138. Ma
+           is de 138 dias: chance 0.
+      208 -- **Valores em 31/12/2017 (regra final):** 47,3% · 41,7% · 38,
+          -6% · 25,6% · 13,5% · 4,3%; a coorte tem 4.806 negócios (inicia
+          -dos de 01/03 a 15/08/2017). Sem a correção do corte da base (r
+          -egra da preparação, 5.991 negócios): 49,8% · 46,4% · 44,0% · 3
+          -2,9% · 21,2% · 9,1%.                                          
+      209 +- **Valores em 31/12/2017 (regra final):** 47,3% · 42,9% · 41,
+          +2% · 30,8% · 19,9% · 8,6%, com 5.991 negócios na coorte (4.806
+          + na faixa 0). Sensibilidade, coorte limpa (só iniciados a part
+          +ir de 01/03/2017, 4.806 negócios): 47,3% · 41,7% · 38,6% · 25,
+          +6% · 13,5% · 4,3%. Sem correção (regra da preparação): 49,8% ·
+          + 46,4% · 44,0% · 32,9% · 21,2% · 9,1%.                        
+      210  - **Errado, não usar:** calcular a chance só com negócios conc
+           luídos. Isso dá 68,7% aos 14 dias e 71,1% aos 90.
+      211  
+      212  **Listas por vendedor:**
+
+⏺ Update(AGENTS.md)
+  ⎿  Added 2 lines, removed 2 lines
+      219  **Em 31/12/2017:**
+      220  - Dos 1.589 Engaging: 110 no prazo, 188 esfriando, 1.291 parad
+           os.
+      221  - Preço de lista desses 1.589: US$ 3,89 mi, dos quais 82% estã
+           o parados. A prospecção (sem data) soma mais US$ 1,07 mi.
+      222 -- Valor ponderado: US$ 154.880 com a regra final (US$ 195.380 
+          -sem a correção). É critério de ordem, não previsão de receita.
+      222 +- Valor ponderado: US$ 182.928 com a regra final (US$ 154.880 
+          +com a coorte limpa; US$ 195.380 sem a correção). É critério de
+          + ordem, não previsão de receita.                              
+      223  
+      224 -**Backtest com a regra final** (só as datas com histórico sufi
+          -ciente): sobra só 30/09/2017. Valor ponderado 47,70%, contra 2
+          -9,01% de "só preço": **+18,69 p.p. (IC 95% de 12,28 a 25,57)**
+          - (CA3). Com entrada tardia (a alternativa da D27): 31/07, 31/0
+          -8 e 30/09, +7,66 p.p. (IC de 3,49 a 12,62). Fonte: `npm run au
+          -ditoria`, "Regra final (G1)".                                 
+      224 +**Backtest com a regra final** (só as datas com histórico sufi
+          +ciente): 31/07, 31/08 e 30/09/2017. Valor ponderado 40,86%, co
+          +ntra 33,20% de "só preço": **+7,66 p.p. (IC 95% de 3,49 a 12,6
+          +2)** (CA3). Contra "situação e preço", empate: +0,12 p.p. (IC 
+          +−1,51 a 2,11; p = 0,90). Sensibilidade, coorte limpa: sobra só
+          + 30/09, com +18,69 p.p. (IC de 12,28 a 25,57). As duas chegam 
+          +à mesma conclusão. Fonte: `npm run auditoria`, "Regra final (G
+          +1)".                                                          
+      225  
+      226  **Backtest de referência da preparação** (sem a correção do co
+           rte; fotos em 30/06, 31/07, 31/08 e 30/09/2017; 10 primeiros p
+           or vendedor; receita ganha em até 90 dias):
+      227  
+
+⏺ Update(AGENTS.md)
+  ⎿  Added 1 line, removed 1 line
+      210  - **Errado, não usar:** calcular a chance só com negócios conc
+           luídos. Isso dá 68,7% aos 14 dias e 71,1% aos 90.
+      211  
+      212  **Listas por vendedor:**
+      213 -1. "Foque agora": abertos com até 138 dias, por valor ponderad
+          -o. Selo "Esfriando" a partir de 90 dias.                      
+      213 +1. "Foque agora": abertos com até 138 dias, por valor ponderad
+          +o. Selo "Esfriando" a partir de 90 dias. Prazo (D30): "Esfria 
+          +em N dias" até os 90 e "Fica parado em N dias" até os 138, no 
+          +negócio e no painel de motivo. O prazo não muda a ordem e não 
+          +prevê queda de chance.                                        
+      214  2. "Revisar ou encerrar": parados há mais de 138 dias.
+      215  3. "Inicie contato": Prospecting, por preço (só em 31/12/2017)
+           .
+      216  
+
+⏺ Agora a D27, a D30, o CA3, a revisão e o README.
+
+⏺ Bash(cd
+      ~/Projetos/ai-master-challenge/submissions/bruno-mosconi
+      && python3 - <<'EOF'
+      import re…)
+  ⎿  Updated docs/plano-e-matriz.md (+1 -1)
+      18  | CA0 | **Revisão completa antes de construir:** regras, dados 
+          (recalculados de forma independente), código e documentação rev
+          isados; resultado em `process-log/01-revisao-inicial.md`; erros
+           confirmados registrados. | D16; P "entendeu o problema antes d
+          e executar"; G "evidência de verificação" |
+      19  | CA1 | Roda seguindo o README: `npm ci`, `npm run dev` e `npm 
+          run build` funcionam com Node 22.18 ou superior (D20). A URL pú
+          blica abre a mesma versão. | R "precisa rodar"; R Setup; D6 |
+      20  | CA2 | Usa as 4 tabelas originais (mais `metadata.csv`), versi
+          onadas sem alteração (hash SHA-256 conferido em teste). Contage
+          ns batem: 8.800 negócios; 4.238 / 2.473 / 1.589 / 500; 35 vende
+          dores; 7 produtos; 85 empresas. | R "dados reais" |
+      21 -| CA3 | O score vai além do valor: valor ponderado = chance pel
+         -a idade (coorte limpa, D27) × preço de lista. No backtest com a
+         - regra final, ele ganha de "só preço" com IC 95% que não inclui
+         - o zero, calculado por `npm run auditoria` e fixado em teste (h
+         -oje, +18,69 p.p., IC de 12,28 a 25,57, na foto de 30/09). | R "
+         -não é só ordenar por valor"; D5; D30 |                         
+      21 +| CA3 | O score vai além do valor: valor ponderado = chance pel
+         +a idade (entrada tardia, D27) × preço de lista. No backtest com
+         + a regra final, ele ganha de "só preço" com IC 95% que não incl
+         +ui o zero, calculado por `npm run auditoria` e fixado em teste 
+         +(hoje, +7,66 p.p., IC de 3,49 a 12,62, em 31/07, 31/08 e 30/09)
+         +. A coorte limpa, como sensibilidade, chega à mesma conclusão (
+         ++18,69 p.p. na única foto disponível, 30/09). | R "não é só ord
+         +enar por valor"; D5; D30 |                                     
+      22  | CA4 | Cada negócio mostra o motivo numa frase (D28): "Dos neg
+          ócios que chegaram a N dias ainda em andamento, X de cada 10 vi
+          raram venda", com preço e valor ponderado. Frase e score vêm do
+           mesmo cálculo (teste). A chance é apresentada como histórico, 
+          não como previsão. | R "entender por quê"; R "Explainability ga
+          nha"; D5; D28 |
+      23  | CA5 | Filtros regional → gestor → vendedor. Três listas: "Foq
+          ue agora" (selo "Esfriando" a partir de 90 dias), "Revisar ou e
+          ncerrar" (mais de 138 dias) e "Inicie contato" (Prospecting por
+           preço, só em 31/12/2017). Vendedor sem negócios ou sem negócio
+          s recentes vê um estado vazio que diz o que fazer. | R bônus fi
+          ltros; R "segunda de manhã"; D2; D4; D13 |
+      24  | CA6 | Data de referência padrão 31/12/2017. O seletor volta n
+          o tempo e reconstrói o funil só com o que se sabia na data. Tes
+          te anti-vazamento: mudar desfechos posteriores a T não altera o
+           resultado em T. Só ficam disponíveis as datas em que toda faix
+          a tem IC 95% de no máximo ±5 p.p. (`hasEnoughHistory`, D27). | 
+          D1; D27 |
+  ⎿  Updated process-log/01-revisao-inicial.md (+13 -2)
+      1  # Revisão inicial do material de partida
+      2  
+      3 -Status: **G1 aprovado e aplicado (09/10/2026). Duas escolhas pen
+        -dentes com o Bruno (fim do arquivo): coorte limpa × entrada tard
+        -ia, e valor ponderado × situação e preço.**                     
+      3 +Status: **concluída. G1 aprovado e aplicado (09/10/2026), com as
+        + duas escolhas finais respondidas pelo Bruno (fim do arquivo).**
+      4  
+      5  ## Plano
+      6  
+     ...
+      539  
+      540  ## G1 (09/10/2026): respostas do Bruno e o que foi feito
+      541  
+      542 -As respostas estão em `decisoes.md` (D27–D32). A leitura do Br
+          -uno (`00-leitura-do-problema.md`) foi criticada e versionada s
+          -em alteração (commit `a2fb335`): as hipóteses dela foram confi
+          -rmadas pela revisão. A da linha 15 só em parte: o vendedor mud
+          -a quanto fica parado.                                         
+      542 +As respostas estão em `decisoes.md` (D27–D32). A leitura do Br
+          +uno (`00-leitura-do-problema.md`) foi criticada e versionada s
+          +em alteração (commit `a2fb335`). As hipóteses dela vieram do m
+          +aterial de partida, como o próprio texto diz. A revisão confir
+          +mou as três primeiras (funil inflado, viés da taxa só com conc
+          +luídos, "sem empresa" vazando o desfecho) e corrigiu a quarta:
+          + o vendedor não muda a taxa de ganho, mas muda quanto do funil
+          + fica parado.                                                 
+      543  
+      544  **1. Coorte limpa, com o backtest refeito** (`auditoria-ts.md`
+           , "Regra final (G1)").
+      545  
+     ...
+      578  |---|---|---|
+      579  | G1-a | Coorte limpa (1 foto de validação) ou entrada tardia 
+           (3 fotos)? | **Entrada tardia** |
+      580  | G1-b | Os 3 exemplos convenceram? A "Foque agora" fica no va
+           lor ponderado, com o custo de esperar no painel? | **Sim, valo
+           r ponderado mais custo de esperar** |
+      581 +                                                              
+      582 +### Respostas do Bruno (09/10/2026)                           
+      583 +                                                              
+      584 +- **G1-a: entrada tardia**, com três condições, todas aplicada
+          +s:                                                            
+      585 +  - a coorte limpa fica como análise de sensibilidade. O "Como
+          + funciona" e o README mostram que as duas chegam à mesma concl
+          +usão: o valor ponderado ganha de "só preço" (+7,66 p.p. em 3 d
+          +atas com entrada tardia; +18,69 p.p. na única data da limpa); 
+      586 +  - a hipótese da entrada tardia vai para as Limitações, com o
+          + método numa frase;                                           
+      587 +  - a D27 registra por que a limpa perdeu: validação numa data
+          + só, e 31/08 excluída por 0,01 p.p. do limite de IC.          
+      588 +- **G1-b: valor ponderado.** O custo de esperar entra **sem pr
+          +ever queda de chance**. Os saltos (de 13,5% para 4,3% em 3 dia
+          +s) vêm dos limites das faixas, não de uma queda real dia a dia
+          +, e mostrá-los como fato contradiz a D28. Ficam só "Esfria em 
+          +N dias" (até 90) e "Fica parado em N dias" (até 138), como sel
+          +o e como linha no painel de motivo, sem mudar a ordem (D30). *
+          +*A frase que este arquivo recomendou no item 4 ("em 4 dias, a 
+          +chance cai de 4 para 3 em cada 10") foi recusada por esse moti
+          +vo.**                                                         
+      589 +- **Leitura do problema:** o README não a apresenta como previ
+          +são dos resultados. Conta o que a revisão confirmou e o que co
+          +rrigiu.                                                       
+      590 +                                                              
+      591 +Aplicação no código: o padrão passou a ser `DEFAULT_TRUNCATION
+          + = "lateEntry"` (`rules.ts`, também usado por `backtest.ts`); 
+          +`reference.test.ts` fixa as duas coortes; `npm run auditoria` 
+          +foi refeito. Efeito colateral registrado: com a regra final, d
+          +os 10 primeiros por valor ponderado, em média 88,6% também est
+          +ão entre os 10 mais caros, contra 85,7% com a limpa (H10).    
+  ⎿  Updated process-log/decisoes.md (+2 -2)
+      44  | D24 | 09/10/2026 | O viés de sobrevivência da preparação entr
+          a em `erros-da-ia.md`, como erro da preparação reproduzido na r
+          evisão. Flexibiliza a D17 só neste ponto | Bruno | deixar só na
+           nota do `process-log/README.md` | achado 7 do critico |
+      45  | D25 | 09/10/2026 | Ordem: revisão → G1 → incremento 4, já apr
+          ovado no G1 → portão visual → incremento 5 (D19). A leitura do 
+          problema escrita pelo Bruno fica em `00-leitura-do-problema.md`
+          , com commit próprio | Bruno | D19 antes do incremento 4 | acha
+          dos 1 e 12 do critico |
+      46  | D26 | 09/10/2026 | Origem dos dados conferida: os 5 CSVs de `
+          solution/data/` são idênticos byte a byte aos do zip do Kaggle 
+          baixado pelo Bruno. O zip não entra no repositório | Bruno (bai
+          xou), orquestrador (conferiu) | registrar a origem como "não ve
+          rificada" | `01-revisao-inicial.md`, P3 |
+      47 -| D27 | 09/10/2026 (G1) | **Coorte limpa.** A chance usa só neg
+         -ócios iniciados a partir da primeira conclusão observada até T 
+         -(01/03/2017), porque a base só traz os negócios antigos que sob
+         -reviveram até essa data (H11). Uma data fica disponível se **to
+         -da faixa tem IC 95% (Wilson) de no máximo ±5 p.p.**: é a justif
+         -icativa pedida para o "≥ 1.000 negócios" (o corte cai entre 379
+         - e 1.258). Com essa regra, sobra **uma** foto de backtest (30/0
+         -9; 31/08 fica fora por ±5,01 p.p.) | Bruno (regra); critério de
+         - IC: orquestrador (IA), a pedido do Bruno | **entrada tardia** 
+         -(o negócio antigo entra na conta a partir da idade que tinha em
+         - 01/03/2017): 3 fotos, curva mais alta nas faixas finais. Resul
+         -tados das duas em `01-revisao-inicial.md`, G1. **A escolha fina
+         -l entre as duas está com o Bruno** | `auditoria-ts.md`, "Regra 
+         -final (G1)"; `reference.test.ts` |                             
+      47 +| D27 | 09/10/2026 (G1) | **Entrada tardia, com a coorte limpa 
+         +como análise de sensibilidade.** Negócios iniciados antes de ma
+         +rço de 2017 só estão na base se ainda estavam abertos em 01/03/
+         +2017 (a primeira conclusão observada); por isso entram na conta
+         + a partir da idade que tinham nessa data (H11). Uma data fica d
+         +isponível se **toda faixa tem IC 95% (Wilson) de no máximo ±5 p
+         +.p.**: é a justificativa pedida para o "≥ 1.000 negócios". Fica
+         +m 3 fotos de backtest (31/07, 31/08, 30/09), com +7,66 p.p. sob
+         +re "só preço" (IC 3,49 a 12,62). **Por que a limpa perdeu:** a 
+         +validação dela fica numa data só (30/09), e 31/08 sai por 0,01 
+         +p.p. do limite de IC (±5,01). A limpa chega à mesma conclusão (
+         ++18,69 p.p., IC 12,28 a 25,57) e aparece no "Como funciona" e n
+         +o README. A hipótese da entrada tardia (o corte foi exatamente 
+         +"concluídos antes de 01/03/2017 saíram da base") entra nas Limi
+         +tações | Bruno; critério de IC: orquestrador (IA), a pedido do 
+         +Bruno | coorte limpa (só iniciados a partir de 01/03/2017): 1 f
+         +oto de validação | `auditoria-ts.md`, "Regra final (G1)"; `refe
+         +rence.test.ts` |                                               
+      48  | D28 | 09/10/2026 (G1) | A chance aparece como histórico, com 
+          a frase: "Dos negócios que chegaram a N dias ainda em andamento
+          , X de cada 10 viraram venda." N é o início da faixa. A calibra
+          ção aparece no "Como funciona" | Bruno | apresentar como probab
+          ilidade de fechar | `auditoria-ts.md`, calibração |
+      49  | D29 | 09/10/2026 (G1) | **D3, novo argumento.** Vendedor e pr
+          oduto ficam fora do score. Produto não muda nada; vendedor não 
+          muda a taxa entre concluídos, mas muda quanto fica parado, e um
+           fator por vendedor não muda a ordem da lista dele. Na visão do
+           gestor, a fração parada por vendedor aparece como **situação d
+          o funil, não como ranking de desempenho**, com o aviso de que o
+          s dados não separam o efeito do vendedor do efeito da carteira 
+          e da região | Bruno | ranking de vendedores | `auditoria-ts.md`
+          , H5 |
+      50 -| D30 | 09/10/2026 (G1) | **CA3:** o score precisa ganhar de "s
+         -ó preço" no backtest, com IC, calculado com a regra final. A "F
+         -oque agora" segue ordenada pelo valor ponderado (D5) **por enqu
+         -anto**. O Bruno avalia 3 exemplos reais em que o valor ponderad
+         -o e "situação e preço" divergem, e pode mudar | Bruno | ordenar
+         - por "situação e preço" | `01-revisao-inicial.md`, G1 |        
+      50 +| D30 | 09/10/2026 (G1) | **CA3:** o score precisa ganhar de "s
+         +ó preço" no backtest, com IC, calculado com a regra final. **A 
+         +"Foque agora" fica no valor ponderado (D5).** O custo de espera
+         +r entra **sem prever queda de chance**: os saltos entre faixas 
+         +(13,5% para 4,3% em 3 dias, na coorte limpa) vêm dos limites da
+         +s faixas, não de uma queda real dia a dia, e mostrá-los como fa
+         +to contradiz a D28. Ficam só os dois limites com significado: "
+         +Esfria em N dias" (até 90) e "Fica parado em N dias" (até 138, 
+         +o maior ciclo já observado), como selo no negócio e linha no pa
+         +inel de motivo. A ordem da lista não muda | Bruno, depois de av
+         +aliar 3 exemplos reais em que as duas ordens divergem | "situaç
+         +ão e preço"; custo de esperar como queda de chance ("em 4 dias,
+         + a chance cai de 4 para 3 em cada 10"), proposto pelo orquestra
+         +dor (IA) | `01-revisao-inicial.md`, G1, item 4 |               
+      51  | D31 | 09/10/2026 (G1) | **Piso não cortável do CA16:** três t
+          abelas vindas de `src/core`, sem gráfico (curva da coorte × só 
+          concluídos; backtest com IC; dimensões com os p-valores entre c
+          oncluídos e na coorte), mais uma linha no painel de motivo. Grá
+          ficos e seletor continuam cortáveis | Bruno, sobre a proposta d
+          o critico | página inteira cortável | achado K4 do critico |
+      52  | D32 | 09/10/2026 (G1) | O AGENTS §2.2 recebe os trechos liter
+          ais do enunciado que faltavam; a D3 é reescrita; a tabela do §7
+           aponta para D18 em diante; o `critico.md` passa a apontar para
+           a seção 7 | Bruno | — | achados P12, K5 e V9 |
+
+⏺ Agora o README: incluo a frase da hipótese nas Limitações, a sensibilidade na
+  lógica do score e corrijo o valor sugerido para o resumo.
+
+⏺ Bash(python3 - <<'EOF'
+      p='README.md'; s=open(p).read()…)  ⎿  Updated README.md (+14 -3)
+      12  
+      13  ## Executive Summary
+      14  
+      15 -[[PREENCHER ao final: 3–5 frases sobre o que foi construído, o 
+         -que os dados mostraram e a principal recomendação. Sugestão de 
+         -núcleo: os 1.589 negócios com data somam US$ 3,9 mi a preço de 
+         -lista, mas o valor ponderado é cerca de US$ 195 mil, porque 82%
+         - desse valor está parado há mais de 138 dias; a ferramenta orde
+         -na cada vendedor pelo valor ponderado e explica cada posição nu
+         -ma frase.]]                                                    
+      15 +[[PREENCHER ao final: 3–5 frases sobre o que foi construído, o 
+         +que os dados mostraram e a principal recomendação. Sugestão de 
+         +núcleo: os 1.589 negócios com data somam US$ 3,9 mi a preço de 
+         +lista, mas o valor ponderado é cerca de US$ 183 mil, porque 82%
+         + desse valor está parado há mais de 138 dias; a ferramenta orde
+         +na cada vendedor pelo valor ponderado e explica cada posição nu
+         +ma frase.]]                                                    
+      16  
+      17  ---
+      18  
+     ...
+      33  
+      34  [[PREENCHER: fórmula, faixas de idade, listas, o que foi testad
+          o e descartado (vendedor, produto, gestor, regional, setor, emp
+          resa), com p-valores e backtest]]
+      35  
+      36 +**Validação no passado, com duas coortes.** A regra foi testada
+         + em fotos antigas do funil: em cada data, o app só usa o que se
+         + sabia naquele dia. As duas formas de tratar o início cortado d
+         +a base chegam à mesma conclusão: o valor ponderado capta mais r
+         +eceita que ordenar por preço.                                  
+      37 +                                                               
+      38 +| Coorte | Fotos com histórico suficiente | Valor ponderado − s
+         +ó preço |                                                      
+      39 +|---|---|---|                                                  
+      40 +| Entrada tardia (regra do app) | 31/07, 31/08 e 30/09/2017 | +
+         +7,66 p.p. (IC 95% de 3,49 a 12,62) |                           
+      41 +| Limpa (sensibilidade) | só 30/09/2017 | +18,69 p.p. (IC 95% d
+         +e 12,28 a 25,57) |                                             
+      42 +                                                               
+      43 +Fonte: `npm run auditoria`, seção "Regra final (G1)".          
+      44 +                                                               
+      45  ### Setup
+      46  
+      47  [[PREENCHER: Node 22.18 ou superior, `npm ci`, `npm run dev`, `
+          npm run check`, `npm run auditoria`, URL]]
+     ...
+      52  
+      53  ### Limitações e como escalar
+      54  
+      46 -[[PREENCHER: o que não faz. Resumo de "Como escalar" em 5–8 lin
+         -has, apontando para `docs/como-escalar.md`.]]                  
+      55 +- **Hipótese da entrada tardia.** Negócios iniciados antes de m
+         +arço de 2017 só estão na base se ainda estavam abertos em 01/03
+         +/2017; por isso entram na conta a partir da idade que tinham ne
+         +ssa data. A hipótese é que o corte foi exatamente esse: nenhuma
+         + conclusão aparece antes de 01/03/2017, e os inícios sobem de 7
+         + para cerca de 800 por mês. Se ela não valer, a coorte limpa, q
+         +ue não depende dela, chega à mesma conclusão (tabela acima).   
+      56 +                                                               
+      57 +[[PREENCHER: o resto do que não faz. Resumo de "Como escalar" e
+         +m 5–8 linhas, apontando para `docs/como-escalar.md`.]]         
+      58  
+      59  ---
+      60  
+     ...
+      73  
+      74  ### Workflow
+      75  
+      65 -[[PREENCHER ao final, a partir dos commits e de `process-log/`]
+         -]                                                              
+      76 +[[PREENCHER ao final, a partir dos commits e de `process-log/`.
+         + A leitura do problema (`process-log/00-leitura-do-problema.md`
+         +) não entra como previsão dos resultados: as hipóteses vieram d
+         +o material de partida. Contar o que a revisão confirmou e o que
+         + corrigiu (o vendedor não muda a taxa de ganho, mas muda quanto
+         + do funil fica parado).]]                                      
+      77  
+      78  ### Onde a IA errou e como corrigi
+     … 1 more lines (ctrl+o to expand)
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+⏺ Os números conferem com a auditoria: os inícios vão de 7 em out/2016 a 792 em
+  mar/2017. Rodo a checagem e faço o commit do G1.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+⏺ O G1 está no commit cad53e8. Passo ao incremento 4 e começo lendo o plano, o
+  benchmark e o que o critico pede como entrada.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+⏺ Agora carrego a skill frontend-design e, em paralelo, confiro as versões das
+  dependências.
+
+⏺ Skill(frontend-design:frontend-design)
+  ⎿  Successfully loaded skill
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ A skill está carregada e as versões batem com a última conferência. Antes de
+  instalar, confiro o pacote de fonte: o app não pode chamar a rede (CA9), então
+  a fonte precisa vir no build.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Escrevo o plano do incremento 4 para o critico revisar antes de qualquer
+  código, como manda o gatilho.
+
+  Made 1 scratchpad edit +47 (ctrl+o to expand)
+
+⏺ critico(Critica plano do incremento 4)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+⏺ Enquanto o critico revisa o plano em segundo plano, vou instalar as
+  dependências, fixando no package.json as versões conferidas via npm view:
+  react/react-dom 19.3.0, fonte empacotada OFL, vite, plugin-react, tipos e
+  Playwright.
+
+⏺ Bash(npm install --save-exact react@19.3.0 react-dom@19.3.0
+      @fontsource-variable/source-sans-3@5.3.0 2>&1 | tail -3 && npm install
+      --save-exact -D vite@8.3.4 @vitejs…)
+  ⎿  Updated solution/package.json (+10 -0)
+      13          },
+      14          "devDependencies": {
+      15                  "@biomejs/biome": "2.5.15",
+      16 +                "@playwright/test": "1.64.0",                  
+      17                  "@types/node": "22.20.5",
+      18 +                "@types/react": "19.3.0",                      
+      19 +                "@types/react-dom": "19.3.0",                  
+      20 +                "@vitejs/plugin-react": "6.1.2",               
+      21                  "typescript": "7.0.2",
+      22 +                "vite": "8.3.4",                               
+      23                  "vitest": "5.0.3"
+      24 +        },                                                     
+      25 +        "dependencies": {                                      
+      26 +                "@fontsource-variable/source-sans-3": "5.3.0", 
+      27 +                "react": "19.3.0",                             
+      28 +                "react-dom": "19.3.0"                          
+      29          }
+      30  }
+  ⎿  … 1 more file changed
+  ⎿  (timeout 5m)
+
+⏺ Dependências instaladas sem vulnerabilidades. Vou seguir para o núcleo com os
+  testes já escritos: prazo (D30), funil filtrado, situação por vendedor e datas
+  disponíveis, enquanto a frase da D28 aguarda o parecer do critico sobre a
+  faixa 0.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Write(solution/src/core/reason.test.ts)
+  ⎿  Wrote 18 lines to solution/src/core/reason.test.ts
+       1 import { describe, expect, it } from "vitest";
+       2 import { deadline } from "./reason.ts";
+       3
+       4 describe("prazo (D30): só os dois limites, sem prever queda de c
+         hance", () => {
+       6     expect(deadline(0)).toEqual({ kind: "esfria", days: 90 });
+       7     expect(deadline(89)).toEqual({ kind: "esfria", days: 1 });
+       8   });
+       9
+      10   it("fica parado depois de 138 dias", () => {
+     … +9 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Write(solution/src/core/reason.ts)
+  ⎿  Wrote 19 lines to solution/src/core/reason.ts
+       1 // O motivo de cada posição, dito ao vendedor. Sai das mesmas fu
+         nções que dão o score.
+       2
+       3 import { COOLING_FROM, STALE_AFTER } from "./rules.ts";
+       4
+       6   kind: "esfria" | "parado";
+       7   days: number;
+       8 }
+       9
+      10 /**
+     … +13 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ O prazo da D30 está pronto e testado. Agora o funil filtrado por vendedor, a
+  situação da equipe e as datas disponíveis, com os testes primeiro.
+
+⏺ Bash(python3 - <<'EOF'
+      p='src/core/reference.test.ts'; s=open(p).read()…)
+  ⎿  Updated solution/src/core/reference.test.ts (+48 -1)
+       5  
+       6  import { describe, expect, it } from "vitest";
+       7  import { loadDataset } from "../node/load.ts";
+       8 -import { calibrationAt, funnelAt, stageCounts } from "./analysi
+         -s.ts";                                                         
+       8 +import {                                                       
+       9 +        availableDates,                                        
+      10 +        calibrationAt,                                         
+      11 +        funnelAt,                                              
+      12 +        stageCounts,                                           
+      13 +        teamStatus,                                            
+      14 +} from "./analysis.ts";                                        
+      15  import {
+      16          METHOD_NAMES,
+      17          perAgent,
+     ...
+       97          });
+       98  });
+       99  
+      100 +describe("telas (incremento 4)", () => {                      
+      101 +        it("datas do seletor: 30/06 sem histórico suficiente; 
+          +as outras 4 abertas", () => {                                 
+      102 +                expect(availableDates(ds).map((d) => d.availab
+          +le)).toEqual([                                                
+      103 +                        false,                                
+      104 +                        true,                                 
+      105 +                        true,                                 
+      106 +                        true,                                 
+      107 +                        true,                                 
+      108 +                ]);                                           
+      109 +        });                                                   
+      110 +                                                              
+      111 +        it("situação por vendedor: todos os 35 aparecem e a so
+          +ma bate com o funil", () => {                                 
+      112 +                const all = ds.agents.map((a) => a.name);     
+      113 +                const team = teamStatus(ds, T, all);          
+      114 +                const f = funnelAt(ds, T);                    
+      115 +                expect(team).toHaveLength(35);                
+      116 +                expect(team.filter((a) => a.open === 0)).toHav
+          +eLength(8); // 5 sem negócio + 3 sem nada aberto              
+      117 +                expect(team.reduce((s, a) => s + a.slices.para
+          +do.listPrice, 0)).toBe(                                       
+      118 +                        f.slices.parado.listPrice,            
+      119 +                );                                            
+      120 +                expect(team.reduce((s, a) => s + a.focus, 0)).
+          +toBe(                                                         
+      121 +                        f.slices["no-prazo"].deals + f.slices.
+          +esfriando.deals,                                              
+      122 +                );                                            
+     … 21 more lines (ctrl+o to expand)
+
+⏺ Falharam pelos motivos certos. Agora a implementação.
+
+⏺ Bash(python3 - <<'EOF'
+      p='src/core/analysis.ts'; s=open(p).read()…)
+  ⎿  Updated solution/src/core/analysis.ts (+71 -7)
+      1  // Números da investigação: a auditoria (scripts/auditoria.ts) e
+          a página "Como funciona" usam
+      2  // estas mesmas funções, para não haver uma segunda versão da re
+         gra.
+      3  
+      4 +import { SNAPSHOTS } from "./backtest.ts";                      
+      5  import { type Dataset, type Deal, priceOf } from "./data.ts";
+      6  import {
+      7          agentLists,
+     ...
+      10          chanceCurve,
+      11          chanceForAge,
+      12          closedBy,
+      13 +        hasEnoughHistory,                                      
+      14          observedDuration,
+      15          openAt,
+      16          REFERENCE_DATE,
+     ...
+      138          weighted: number;
+      139  }
+      140  
+      139 -/** Funil em andamento em T, por situação, a preço de lista; e
+          - a prospecção à parte (D13). */                               
+      141 +const emptySlices = (): Record<Situation, FunnelSlice> => ({  
+      142 +        "no-prazo": { deals: 0, listPrice: 0, weighted: 0 },  
+      143 +        esfriando: { deals: 0, listPrice: 0, weighted: 0 },   
+      144 +        parado: { deals: 0, listPrice: 0, weighted: 0 },      
+      145 +});                                                           
+      146 +                                                              
+      147 +/**                                                           
+      148 + * Funil em andamento em T, por situação, a preço de lista; e 
+          +a prospecção à parte (D13).                                   
+      149 + * `agents` limita aos vendedores dos filtros da tela.        
+      150 + */                                                           
+      151  export function funnelAt(
+      152          ds: Dataset,
+      153          t = REFERENCE_DATE,
+      154          curve: readonly BandChance[] = chanceCurve(ds.deals, t
+           ),
+      155 +        agents?: ReadonlySet<string>,                         
+      156  ) {
+      145 -        const slices: Record<Situation, FunnelSlice> = {      
+      146 -                "no-prazo": { deals: 0, listPrice: 0, weighted
+          -: 0 },                                                        
+      147 -                esfriando: { deals: 0, listPrice: 0, weighted:
+          - 0 },                                                         
+      148 -                parado: { deals: 0, listPrice: 0, weighted: 0 
+          -},                                                            
+      149 -        };                                                    
+      157 +        const slices = emptySlices();                         
+     … 71 more lines (ctrl+o to expand)
+  ⎿  Updated solution/src/core/reference.test.ts (+6 -1)
+      127          it("o funil filtrado por vendedores soma o funil de ca
+           da um", () => {
+      128                  const [a, b] = ds.agents.map((x) => x.name);
+      129                  const one = (n: string) => funnelAt(ds, T, und
+           efined, new Set([n]));
+      130 -                const both = funnelAt(ds, T, undefined, new Se
+          -t([a as string, b as string]));                               
+      130 +                const both = funnelAt(                        
+      131 +                        ds,                                   
+      132 +                        T,                                    
+      133 +                        undefined,                            
+      134 +                        new Set([a as string, b as string]),  
+      135 +                );                                            
+      136                  expect(both.slices.parado.listPrice).toBe(
+      137                          one(a as string).slices.parado.listPri
+           ce +
+      138                                  one(b as string).slices.parado
+           .listPrice,
+
+⏺ Os testes de referência passaram: a soma por vendedor bate com o funil e os 8
+  vendedores sem nada aberto conferem com o AGENTS §6. Agora vou preparar o Vite
+  e a configuração.
+
+  Read 1 file (ctrl+o to expand)
+
+⏺ Bash(cd
+      ~/Projetos/ai-master-challenge/submissions/bruno-mosconi
+      && python3 - <<'EOF'
+      p='.gitignore'; s=open(p).read()…)
+  ⎿  Updated .gitignore (+2 -0)
+       5  node_modules/
+       6  dist/
+       7  coverage/
+       8 +test-results/                                                  
+       9 +playwright-report/                                             
+      10  *.tsbuildinfo
+      11  
+      12  # Python
+  ⎿  Updated solution/biome.json (+6 -1)
+       7          },
+       8          "files": {
+       9                  "ignoreUnknown": false,
+      10 -                "includes": ["src/**", "scripts/**"]           
+      10 +                "includes": [                                  
+      11 +                        "src/**",                              
+      12 +                        "scripts/**",                          
+      13 +                        "e2e/**",                              
+      14 +                        "*.ts"                                 
+      15 +                ]                                              
+      16          },
+      17          "formatter": {
+      18                  "enabled": true,
+  ⎿  Updated solution/package.json (+5 -0)
+       7                  "node": ">=22.18"
+       8          },
+       9          "scripts": {
+      10 +                "dev": "vite",                                 
+      11 +                "build": "vite build",                         
+      12 +                "preview": "vite preview",                     
+      13                  "check": "tsc --noEmit && biome check . && vite
+          st run",
+      14                  "test": "vitest run",
+      15 +                "e2e": "playwright test e2e/fluxos.spec.ts",   
+      16 +                "prints": "playwright test e2e/prints.spec.ts",
+      17                  "auditoria": "node scripts/auditoria.ts"
+      18          },
+      19          "devDependencies": {
+  ⎿  Updated solution/tsconfig.json (+16 -3)
+       1  {
+       2          "compilerOptions": {
+       3                  "target": "es2024",
+       4 -                "lib": ["es2024", "dom"],                      
+       4 +                "lib": [                                       
+       5 +                        "es2024",                              
+       6 +                        "dom"                                  
+       7 +                ],                                             
+       8                  "module": "nodenext",
+       9                  "moduleResolution": "nodenext",
+      10                  "strict": true,
+     ...
+      14                  "verbatimModuleSyntax": true,
+      15                  "noEmit": true,
+      16                  "skipLibCheck": true,
+      14 -                "types": ["node"]                              
+      17 +                "types": [                                     
+      18 +                        "node",                                
+      19 +                        "vite/client"                          
+      20 +                ],                                             
+      21 +                "jsx": "react-jsx"                             
+      22          },
+      16 -        "include": ["src", "scripts"]                          
+      23 +        "include": [                                           
+      24 +                "src",                                         
+      25 +                "scripts",                                     
+      26 +                "e2e",                                         
+      27 +                "vite.config.ts",                              
+      28 +                "playwright.config.ts"                         
+      29 +        ]                                                      
+      30  }
+
+⏺ Um detalhe: o Vitest pegaria os arquivos *.spec.ts do Playwright. Os arquivos
+  de navegador vão se chamar *.pw.ts, e o Playwright procura só esse padrão.
+
+⏺ Bash(sed -i '' 's#e2e/fluxos.spec.ts#e2e/fluxos.pw.ts#;
+      s#e2e/prints.spec.ts#e2e/prints.pw.ts#' package.json && mkdir -p src/ui
+      e2e && cat > playwright.config.ts <<'…)
+  ⎿  Updated solution/package.json (+2 -2)
+      12                  "preview": "vite preview",
+      13                  "check": "tsc --noEmit && biome check . && vite
+          st run",
+      14                  "test": "vitest run",
+      15 -                "e2e": "playwright test e2e/fluxos.spec.ts",   
+      16 -                "prints": "playwright test e2e/prints.spec.ts",
+      15 +                "e2e": "playwright test e2e/fluxos.pw.ts",     
+      16 +                "prints": "playwright test e2e/prints.pw.ts",  
+      17                  "auditoria": "node scripts/auditoria.ts"
+      18          },
+      19          "devDependencies": {
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+⏺ Antes de desenhar a barra do funil, carrego a skill dataviz para validar a
+  paleta.
+
+⏺ Skill(dataviz)
+  ⎿  Successfully loaded skill
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ A paleta falhou no piso de croma: o azul-petróleo #0E6170 lê como cinza. Testo
+  variantes mais saturadas.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+⏺ #0F7DA8 passou nas cinco checagens. Confiro agora o contraste de texto (AA
+  4,5:1) dos tons que vão aparecer como texto em selos e links.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Paleta validada: as cores de marca passam nas cinco checagens de dataviz e os
+  tons de texto atendem ao contraste AA. Agora vou escrever a frase da D28 com
+  teste, podendo ajustar a redação da faixa 0 conforme o parecer do crítico.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Falta uma função que devolva a faixa de uma idade, para a frase e o score
+  saírem do mesmo lugar. Refatoro o chanceForAge para usá-la.
+
+⏺ Bash(python3 - <<'EOF'
+      p='src/core/rules.ts'; s=open(p).read()…)
+  ⎿  Updated solution/src/core/reference.test.ts (+17 -0)
+      20          SNAPSHOTS,
+      21  } from "./backtest.ts";
+      22  import { type Deal, day, type Stage } from "./data.ts";
+      23 +import { chancePhrase, outOfTen } from "./reason.ts";          
+      24  import {
+      25 +        agentLists,                                            
+      26 +        bandForAge,                                            
+      27          chanceCurve,
+      28          cohort,
+      29          hasEnoughHistory,
+     ...
+      127                  expect(stale).toEqual([...stale].sort((a, b) =
+           > b - a));
+      128          });
+      129  
+      130 +        it("CA4: em todo negócio da Foque agora, a frase e o s
+          +core saem da mesma faixa", () => {                            
+      131 +                const curve = chanceCurve(ds.deals, T);       
+      132 +                for (const { name } of ds.agents)             
+      133 +                        for (const s of agentLists(ds, T, name
+          +, curve).focus) {                                             
+      134 +                                const band = bandForAge(curve,
+          + s.age);                                                      
+      135 +                                expect(band?.chance).toBe(s.ch
+          +ance);                                                        
+      136 +                                expect(chancePhrase(band)).toC
+          +ontain(                                                       
+      137 +                                        outOfTen(s.chance) ===
+          + 0                                                            
+      138 +                                                ? "menos de 1 
+          +de cada 10"                                                   
+      139 +                                                : `${outOfTen(
+          +s.chance)} de cada 10`,                                       
+      140 +                                );                            
+      141 +                        }                                     
+      142 +        });                                                   
+      143 +                                                              
+      144          it("o funil filtrado por vendedores soma o funil de ca
+           da um", () => {
+      145                  const [a, b] = ds.agents.map((x) => x.name);
+      146                  const one = (n: string) => funnelAt(ds, T, und
+           efined, new Set([n]));
+  ⎿  Updated solution/src/core/rules.ts (+10 -3)
+      216          return idx;
+      217  }
+      218  
+      219 -export function chanceForAge(                                 
+      219 +/** A faixa da idade, ou null quando parado. A frase (D28) e o
+          + score usam a mesma faixa. */                                 
+      220 +export function bandForAge(                                   
+      221          curve: readonly BandChance[],
+      222          age: number,
+      223          cutoff = STALE_AFTER,
+      223 -): number {                                                   
+      224 +): BandChance | null {                                        
+      225          const i = bandIndex(
+      226                  age,
+      227                  curve.map((c) => c.from),
+      228                  cutoff,
+      229          );
+      229 -        return i < 0 ? 0 : (curve[i]?.chance ?? 0);           
+      230 +        return curve[i] ?? null;                              
+      231  }
+      232  
+      233 +export const chanceForAge = (                                 
+      234 +        curve: readonly BandChance[],                         
+      235 +        age: number,                                          
+      236 +        cutoff = STALE_AFTER,                                 
+      237 +): number => bandForAge(curve, age, cutoff)?.chance ?? 0;     
+      238 +                                                              
+      239  export type Situation = "no-prazo" | "esfriando" | "parado";
+      240  
+      241  export const situation = (
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from critico
+  Crítica do plano do incremento 4, rodada 1. O plano está alinhado com D2, D13,
+  D21, D27 e D30. `deadline()` bate com `situation()` (`rules.ts:234-238`). O
+  núcleo continua separado da UI. Faltam ajustes antes de codar: um vazamento de
+  dado posterior a T na tela, uma conta que não fecha no painel e uma soma que
+  uma decisão registrada recusou.
+
+  [IMPORTANTE] A coluna "empresa" vaza o desfecho nas datas anteriores a 31/12
+  Evidência: o plano põe "negócio (ID, produto, empresa)" na tabela
+  (plano-incremento-4.md:21). O AGENTS.md §6 diz: "1.425 dos 2.089 negócios em
+  andamento não têm empresa, e nenhum concluído está sem empresa. 'Sem empresa'
+  vaza o desfecho". A D1 diz: "recalcula as chances só com o que se sabia em T".
+  Impacto: em 31/07, 31/08 e 30/09, todo negócio aberto que mostra empresa
+  concluiu até 31/12, e todo "sem empresa" ainda estava aberto em 31/12. A tela
+  entrega o futuro, mesmo sem o score usar a empresa. O CA6 cai na tela, justo
+  numa armadilha que o próprio projeto documentou.
+  Ação: em T diferente de 31/12, esconder a coluna (e qualquer filtro por
+  empresa), com uma linha de motivo. Fazer a regra no núcleo (por exemplo,
+  `showAccount(t)`) e cobrir com um teste: em 30/09, nenhuma linha traz empresa.
+
+  [IMPORTANTE] No painel, "preço × chance = valor ponderado" não fecha se a
+  chance aparecer como "X de cada 10"
+  Evidência: o plano usa X = round(chance × 10) (plano:9), a coluna "chance ('X
+  de cada 10')" (plano:21) e "preço × chance = valor ponderado" no painel
+  (plano:22). Curva da regra final: 47,3 · 42,9 · 41,2 · 30,8 · 19,9 · 8,6%
+  (auditoria-ts.md:193), que vira 5 · 4 · 4 · 3 · 2 · 1.
+  Impacto: US$ 5.482 × 4/10 dá US$ 2.193, mas a tela mostra US$ 2.352. Além
+  disso, as faixas 30 e 60 dizem as duas "4 de cada 10" e ordenam diferente. O
+  vendedor confere a conta, vê que não bate e deixa de confiar. É exatamente o
+  "por quê" do enunciado.
+  Ação: a frase continua arredondada (D28), mas a conta do painel usa a
+  porcentagem exata com uma casa ("US$ 5.482 × 42,9% = US$ 2.352"). Um teste
+  confere que o preço exibido vezes a % exibida arredonda para o ponderado
+  exibido.
+
+  Sobre o seu ponto 1:
+  - A frase da faixa 0 está boa. "Dos negócios iniciados" é mais claro que
+  "chegaram a 0 dias".
+  - X = 0 não ocorre em 31/12 (a menor faixa, 8,6%, vira 1). "Menos de 1 de cada
+  10" serve. Se a faixa tiver 0 ganhos, use "nenhum".
+  - A frase da faixa 0 muda o texto literal da D28 e do CA4: registre a variante
+  em `decisoes.md`.
+
+  [IMPORTANTE] O valor ponderado somado na barra de números contradiz uma
+  decisão registrada e a calibração
+  Evidência: o plano põe na barra "Ao lado: valor ponderado, com 'critério de
+  ordem, não previsão de receita'" (plano:19). O G1 respondeu: "não soma o valor
+  ponderado como previsão" (01-revisao-inicial.md:532). Na calibração, a curva
+  da regra final previu 52,1%, 47,7% e 46,8%, e se realizaram 37,4%, 34,3% e
+  29,7% (auditoria-ts.md:209-211).
+  Impacto: um total de US$ 182.928 ao lado do funil é lido como previsão, com ou
+  sem aviso, e superestima. Somar um critério de ordem não leva a nenhuma ação.
+  Ação: tirar o total da barra. O valor ponderado aparece só por negócio. É
+  também o caminho mais curto. O Pipedrive mostra o total (benchmark-ux.md:13),
+  mas aqui a calibração diz que ele erra para cima.
+
+  [IMPORTANTE] H10: a tela vai parecer "ordenar por preço". Responder sem mudar
+  a regra
+  Evidência:
+  - 88,6% de sobreposição e 9 de 21 listas idênticas (saída do orquestrador).
+  - No backtest, o ponderado faz 40,86%, só preço 33,20% e "preço sem parados"
+  37,64% (40,86 − 3,22; auditoria-ts.md:201). Dos +7,66 p.p., cerca de 4,4 vêm
+  de separar os parados e cerca de 3,2 da chance.
+  - A mensagem aprovada no G1 foi "a idade decide em que lista o negócio está e
+  se ele esfria; o preço ordena dentro da lista; a chance explica"
+  (01-revisao-inicial.md:507 e :534).
+  Impacto: quem abre um vendedor e compara com a ordem por preço conclui "é só
+  ordenar por valor", o requisito mínimo que o enunciado proíbe.
+  Ação:
+  - (a) Uma linha fixa acima das abas com a mensagem do G1.
+  - (b) No painel, só quando divergir: "Pela ordem de preço, estaria em k.º".
+  Uma função do núcleo, com teste.
+  - (c) O README declara a decomposição 4,4 + 3,2 e o H10. Assumir isso
+  abertamente pesa a favor na banca.
+  - A barra com "82% parado" e a aba "Revisar ou encerrar" são a parte do score
+  que mais rende: deixe-as visíveis.
+
+  [IMPORTANTE] Falta um ramo no estado vazio: vendedor com histórico e nada em
+  andamento
+  Evidência: AGENTS.md §6: "9 dos 30 com histórico não têm nenhum negócio
+  recente: 6 só têm negócios parados (mais de 138 dias) e prospecção, e 3 não
+  têm nada aberto". O plano cobre só "Revisar ou encerrar", "Inicie contato" e
+  os 5 sem nenhum negócio (plano:23).
+  Impacto: os 3 vendedores, e mais gente nas datas passadas (onde "Inicie
+  contato" fica vazia pela D13), caem numa tela sem orientação. O CA5 diz que
+  esse estado precisa dizer o que fazer.
+  Ação: um terceiro texto, por exemplo "Nenhum negócio em andamento em [data].
+  Cadastre novos negócios ou fale com seu gestor". Um teste no núcleo com um
+  desses 3 vendedores e um caso no e2e.
+
+  [SUGESTÃO] Visão do gestor e a D29 (seu ponto 3)
+  Evidência: plano:20 ("Ordem pelo valor parado"); D12 (ajuste) fixa "ordenada
+  pelo valor parado"; D29 diz "situação do funil, não ranking de desempenho".
+  Impacto: ordenar pelo valor parado em US$ cumpre a D12. É mais defensável que
+  ordenar por % parado, porque mede onde há dinheiro a revisar e não o
+  desempenho de cada um. O risco está nos detalhes: os 5 sem negócios e os 3 sem
+  nada aberto vão para o fim com "US$ 0 parado" e parecem os melhores. Um
+  número de posição ou uma escala de cor no % também viram ranking.
+  Ação:
+  - sem número de posição;
+  - % parado sem gradiente de cor;
+  - o aviso da D29 junto da coluna de %;
+  - quem não tem negócio aberto fica num bloco à parte, com selo de texto, e não
+  ordenado como zero.
+  Com isso, respeita a D29.
+
+  [SUGESTÃO] A linha do piso da D31 no painel e o texto desatualizado no
+  benchmark
+  Evidência:
+  - A D31 pede "mais uma linha no painel de motivo" (decisoes.md:51), mas o
+  painel do plano (plano:22) não tem essa linha.
+  - benchmark-ux.md:39 ainda propõe "a chance cai de 44% para 33%", que a D30
+  recusou.
+  - benchmark-ux.md:25 fala em "faixas (alta, média, baixa)", que o plano não
+  usa.
+  Impacto: o painel é construído agora. Deixar a linha para o incremento 5
+  obriga a mexer nele de novo. Os dois trechos do benchmark contradizem decisões
+  que a banca vai ler.
+  Ação: no painel, uma linha como "A chance usa só a idade: vendedor, produto e
+  empresa foram testados e não mudam a ordem (Como funciona)". Corrigir as
+  linhas 25 e 39 do benchmark para a D30 e o "X de cada 10".
+
+  [SUGESTÃO] O que cortar se apertar o prazo (seu ponto 4)
+  Evidência: plano-e-matriz.md:51-58 (a ordem de corte e o que não pode ser
+  cortado); plano:17 e :42 (dependências).
+  Ação, nesta ordem:
+  1. `@fontsource-variable/source-sans-3` sai e entra a pilha `system-ui`, que
+  também tem `tabular-nums`. Uma dependência a menos. Só o Bruno decide se a
+  fonte própria faz parte de "sem cara de IA".
+  2. Em 390 px, o painel abre abaixo da tabela em vez de expandir sob a linha.
+  3. Ordenação por coluna só em preço e valor ponderado, não em todas.
+  4. O e2e fica com um fluxo de fumaça e os prints. As 3 personas ficam com o
+  testador-de-uso.
+  5. A barra empilhada por vendedor vira colunas numéricas. Precisa do ok do
+  Bruno, porque está fixada na D12.
+
+  Não cortar: o seletor de data (CA6), os filtros e os estados vazios (CA5), o
+  painel com a conta que fecha (CA4) e a correção da empresa.
+
+  Veredito: ajustar e seguir. Os quatro primeiros itens são mudanças pequenas no
+  plano e no núcleo (esconder a empresa fora de 31/12, a conta com a % exata,
+  tirar a soma, a posição por preço no painel), e cada uma tem teste objetivo.
+  Nenhuma muda a regra nem decisões do Bruno; só o corte 5 precisa do ok dele.
+
+⏺ Agent "Critica plano do incremento 4" finished · 3m 13s
+
+⏺ Vou corrigir os dois problemas mais graves apontados pelo crítico — o
+  vazamento pela empresa e a soma do valor ponderado — além do erro de
+  formatação do Biome.
+
+⏺ Bash(npx biome check --write biome.json >/dev/null 2>&1; cat >
+      [removido]…)
+  ⎿  Updated solution/biome.json (+1 -6)
+       7          },
+       8          "files": {
+       9                  "ignoreUnknown": false,
+      10 -                "includes": [                                  
+      11 -                        "src/**",                              
+      12 -                        "scripts/**",                          
+      13 -                        "e2e/**",                              
+      14 -                        "*.ts"                                 
+      15 -                ]                                              
+      10 +                "includes": ["src/**", "scripts/**", "e2e/**", 
+         +"*.ts"]                                                        
+      11          },
+      12          "formatter": {
+      13                  "enabled": true,
+
+⏺ Confirmei os dois achados: o campo "empresa" realmente vaza informação de
+  negócios já concluídos fora do dia 31/12 (ainda que não 100% como o crítico
+  sugeriu) e a tela não soma o valor ponderado como previsão, conforme a revisão
+  original. Agora vou medir o problema da conta no painel.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Mesmo arredondando a porcentagem, 2.373 de 6.016 linhas não batem com o valor
+  ponderado exato. Vou exibir o valor como preço × porcentagem exibida
+  (garantindo que a conta sempre feche sem inverter a ordem) e criar um teste
+  para fixar esse comportamento.
+
+⏺ Bash(python3 - <<'EOF'
+      p='src/core/reason.ts'; s=open(p).read()…)
+  ⎿  Updated solution/src/core/reference.test.ts (+31 -1)
+      20          SNAPSHOTS,
+      21  } from "./backtest.ts";
+      22  import { type Deal, day, type Stage } from "./data.ts";
+      23 -import { chancePhrase, outOfTen } from "./reason.ts";          
+      23 +import {                                                       
+      24 +        chancePhrase,                                          
+      25 +        outOfTen,                                              
+      26 +        showAccount,                                           
+      27 +        shownWeighted,                                         
+      28 +} from "./reason.ts";                                          
+      29  import {
+      30          agentLists,
+      31          bandForAge,
+      32          chanceCurve,
+      33          cohort,
+      34          hasEnoughHistory,
+      35 +        openAt,                                                
+      36          REFERENCE_DATE,
+      37          type Truncation,
+      38  } from "./rules.ts";
+     ...
+      147                          }
+      148          });
+      149  
+      150 +        it("o valor ponderado exibido (preço × chance com uma 
+          +casa) nunca inverte a ordem, em nenhuma data", () => {        
+      151 +                let rows = 0;                                 
+      152 +                for (const { t, available } of availableDates(
+          +ds)) {                                                        
+      153 +                        if (!available) continue;             
+      154 +                        const curve = chanceCurve(ds.deals, t)
+          +;                                                             
+      155 +                        for (const { name } of ds.agents) {   
+      156 +                                const shown = agentLists(ds, t
+          +, name, curve).focus.map(shownWeighted);                      
+      157 +                                rows += shown.length;         
+      158 +                                expect(shown).toEqual([...show
+          +n].sort((a, b) => b - a));                                    
+      159 +                        }                                     
+      160 +                }                                             
+      161 +                expect(rows).toBe(6016);                      
+      162 +        });                                                   
+      163 +                                                              
+      164 +        it("empresa fora da data padrão: em 30/09, todo negóci
+          +o sem empresa ainda estava em andamento em 31/12", () => {    
+      165 +                const t = day("2017-09-30");                  
+      166 +                const noAccount = ds.deals.filter(            
+     … 10 more lines (ctrl+o to expand)
+
+⏺ Os 61 testes passam, com a conta fechando corretamente e as 6.016 linhas sem
+  inversão de ordem conferidas. Agora falta cobrir o terceiro cenário apontado
+  pelo crítico: vendedor com histórico mas nada em andamento.
+
+⏺ Bash(python3 - <<'EOF'
+      p='src/core/reason.ts'; s=open(p).read()…)
+  ⎿  Updated solution/src/core/reference.test.ts (+19 -0)
+      22  import { type Deal, day, type Stage } from "./data.ts";
+      23  import {
+      24          chancePhrase,
+      25 +        emptyFocus,                                            
+      26          outOfTen,
+      27          showAccount,
+      28          shownWeighted,
+     ...
+      172                  expect([showAccount(t), showAccount(T)]).toEqu
+           al([false, true]);
+      173          });
+      174  
+      175 +        it('estado vazio da "Foque agora" em 31/12: 5 sem negó
+          +cios, 6 com parados, 3 sem nada em andamento', () => {        
+      176 +                const curve = chanceCurve(ds.deals, T);       
+      177 +                const kinds = ds.agents.map(({ name }) =>     
+      178 +                        emptyFocus(                           
+      179 +                                agentLists(ds, T, name, curve)
+          +,                                                             
+      180 +                                ds.deals.some((d) => d.agent =
+          +== name),                                                     
+      181 +                        ),                                    
+      182 +                );                                            
+      183 +                const count = (k: string | null) => kinds.filt
+          +er((x) => x === k).length;                                    
+      184 +                expect([                                      
+      185 +                        count("sem-negocios"),                
+      186 +                        count("revisar"),                     
+      187 +                        count("iniciar"),                     
+      188 +                        count("nada-aberto"),                 
+      189 +                        count(null),                          
+      190 +                ]).toEqual([5, 6, 0, 3, 21]);                 
+      191 +        });                                                   
+      192 +                                                              
+      193          it("o funil filtrado por vendedores soma o funil de ca
+           da um", () => {
+      194                  const [a, b] = ds.agents.map((x) => x.name);
+      195                  const one = (n: string) => funnelAt(ds, T, und
+           efined, new Set([n]));
+
+⏺ Confirmei que o estado vazio bate com o AGENTS §6: 5 vendedores sem negócios,
+  6 só com parados e 3 sem nada em andamento. Agora vou escrever a interface —
+  tokens de CSS, barra do funil, visão da equipe e visão do vendedor.
+
+⏺ Write(solution/src/ui/styles.css)
+  ⎿  Wrote 564 lines to solution/src/ui/styles.css
+       1 /* Tokens. Marcas validadas com o validate_palette.js da skill d
+         ataviz (process-log/decisoes.md, D33). */
+       2 :root {
+       3   --bg: #f6f7f8;
+       4   --surface: #ffffff;
+       6   --ink-2: #5b6470;
+       7   --line: #dde1e6;
+       8   --line-strong: #c4cad2;
+       9   --accent: #0b6488; /* texto, foco, seleção */
+      10   --accent-soft: #e8f2f7;
+     … +555 lines (ctrl+o to expand)
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+⏺ Agora a visão do vendedor, com as três listas, a ordenação e o painel de
+  motivo.
+
+⏺ Write(solution/src/ui/SellerView.tsx)
+  ⎿  Wrote 504 lines to solution/src/ui/SellerView.tsx
+       1 // Visão do vendedor: as três listas (AGENTS §7) e o painel com
+         o motivo de cada posição.
+       2
+       3 import { Fragment, type ReactNode, useState } from "react";
+       4 import type { Agent, Deal } from "../core/data.ts";
+       6   chancePhrase,
+       7   deadline,
+       8   emptyFocus,
+       9   priceRanks,
+      10   shownChance,
+     … +520 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Tipos e lint passam. Agora o build e uma primeira olhada no navegador.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ O build passou com sucesso (bundle de 894 kB, 220 kB comprimido, pois os CSVs
+  vêm embutidos). O Playwright 1.64 exige o Chromium v1248, ainda não instalado,
+  então vou baixá-lo agora (só vai para o cache do Playwright, fora do
+  repositório).
+
+  Ran 6 shell commands (ctrl+o to expand)
+⏺ O seletor por rótulo estava pegando o texto das opções junto. Ligo cada rótulo
+  ao seu campo por id, o que também melhora a acessibilidade, e tiro os prints
+  de novo.
+
+  Searched for 1 pattern, read 2 files, ran 4 shell commands (ctrl+o to expand)
+
+⏺ Os prints de 1280 px confirmam dois problemas: o arredondamento que mostra
+  "100%" quando na verdade é 99,9% (há US$ 55 parados), e as linhas da tabela
+  ultrapassando 40 px pelo ID na segunda linha. Agora vou conferir os prints de
+  390 px.
+
+  Read 2 files (ctrl+o to expand)
+
+⏺ Encontrei problemas em 390px: o cabeçalho desalinha e a aba "Inicie contato" é
+  cortada. Vou corrigir isso, ajustar o 100% para arredondamento para baixo e a
+  altura das linhas, mantendo cada célula numa única linha.
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+⏺ Agora acrescento três prints: um vendedor com lista cheia, um estado vazio e
+  uma data passada. Antes, procuro um vendedor real que só tenha negócios
+  parados.
+
+  Read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+⏺ Encontrei o problema: em telas largas a tabela empurra as colunas importantes
+  para fora, e em telas estreitas o nowrap corta o texto do painel. Vou remover
+  a coluna ID, truncar o nome da empresa com reticências e restringir o nowrap
+  apenas às células de número e prazo.
+
+  Read 2 files, ran 3 shell commands (ctrl+o to expand)
+
+⏺ A tabela ainda ultrapassa a largura da tela: em 1280px a coluna "Valor
+  ponderado" fica cortada, e em 390px o cabeçalho sem quebra de linha alarga a
+  tabela. Vou ajustar as larguras (painel 300px, célula do negócio 200px) e
+  permitir que os cabeçalhos quebrem linha em telas pequenas.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+⏺ Só a aba "Revisar ou encerrar" ultrapassa 390px (em 111px); o teste falhou
+  porque, ao escolher Zane, a lista de vendedores foi corretamente filtrada pela
+  equipe dela (cascata funcionando). Vou remover a coluna de idade dessa aba em
+  390px, já que o painel já mostra "Parado há N dias".
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Nenhuma aba passa da largura, nos três vendedores e nas duas larguras. Agora
+  escrevo o e2e dos fluxos: as personas, o estado vazio, a data passada, a
+  empresa oculta e a largura.
+
+⏺ Write(solution/e2e/fluxos.pw.ts)
+  ⎿  Wrote 90 lines to solution/e2e/fluxos.pw.ts
+       1 // Fluxos das personas no build de produção (CA4, CA5, CA6, CA14
+         ).
+       2
+       4
+       5 const pick = async (page: Page, label: string, value: string) =>
+       6   page.getByLabel(label, { exact: true }).selectOption(value);
+       7
+          e a conta", async ({
+       9   page,
+      10 }) => {
+     … +103 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Falhou só uma checagem: o .first() pegou a cópia do painel que fica escondida
+  no desktop. Aponto para o painel visível.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Os 7 fluxos e2e e os 62 testes passam. Refaço os prints e confiro os que ainda
+  não vi.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+⏺ Também apareceu "1 dias" na coluna de idade. Corrijo a concordância e registro
+  as decisões e os erros que o critico pegou no meu plano.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+⏺ Bash(python3 - <<'EOF'
+      def edit(p, pairs):…)
+  ⎿  Updated docs/benchmark-ux.md (+2 -2)
+      22  
+      23  | # | Prática de mercado | Onde aparece | No nosso app |
+      24  |---|---|---|---|
+      25 -| 1 | Score em 3–4 faixas com nome simples, ordenado pelo númer
+         -o de baixo | Salesforce, Gong, Outreach, Dynamics | Chance em f
+         -aixas (alta, média, baixa), lista ordenada pelo valor ponderado
+         - |                                                             
+      25 +| 1 | Score em 3–4 faixas com nome simples, ordenado pelo númer
+         +o de baixo | Salesforce, Gong, Outreach, Dynamics | Sem rótulo 
+         +de faixa (alta, média, baixa): a chance aparece como histórico,
+         + "X de cada 10" (D28), e a lista é ordenada pelo valor ponderad
+         +o |                                                            
+      26  | 2 | Chance e valor lado a lado | Dynamics (bolha), Clari (qua
+          drante) | Cartão mostra chance, valor e valor ponderado |
+      27  | 3 | Dizer o que o número significa | HubSpot diz que é probab
+          ilidade; Gong diz que não é | O nosso é uma taxa histórica de v
+          erdade: "de cada 10 negócios com essa idade, X viraram venda" |
+      28  | 4 | Explicação curta, em frase de coorte | Dynamics, HubSpot 
+          | É a frase da D5. A Microsoft usa o mesmo formato |
+     ...
+      36  | 12 | Cada alerta com uma próxima ação | HubSpot, Outreach, Rh
+          ythm | Texto fixo, por exemplo "Retome o contato ou marque como
+           perdido" |
+      37  | 13 | Prospecção separada do funil ativo | Rhythm | Lista "Ini
+          cie contato" (D4) |
+      38  
+      39 -**Ideia nossa, não vista nas ferramentas:** mostrar o custo de 
+         -esperar. Exemplo: "se ficar parado mais 14 dias, a chance cai d
+         -e 44% para 33%". Sai da mesma curva de chance pela idade.      
+      39 +**Ideia nossa, não vista nas ferramentas:** mostrar o prazo até
+         + a próxima mudança de situação: "Esfria em N dias" (90) e "Fica
+         + parado em N dias" (depois de 138). A primeira versão desta ide
+         +ia ("a chance cai de 44% para 33%") foi recusada na D30: os sal
+         +tos vêm dos limites das faixas, não de uma queda real dia a dia
+         +.                                                              
+      40  
+      41  **O que não cabe nos nossos dados:**
+      42  - Sinais de atividade (e-mail, reunião, ligação, "ghosted").
+  ⎿  Updated process-log/decisoes.md (+6 -0)
+      50  | D30 | 09/10/2026 (G1) | **CA3:** o score precisa ganhar de "s
+          ó preço" no backtest, com IC, calculado com a regra final. **A 
+          "Foque agora" fica no valor ponderado (D5).** O custo de espera
+          r entra **sem prever queda de chance**: os saltos entre faixas 
+          (13,5% para 4,3% em 3 dias, na coorte limpa) vêm dos limites da
+          s faixas, não de uma queda real dia a dia, e mostrá-los como fa
+          to contradiz a D28. Ficam só os dois limites com significado: "
+          Esfria em N dias" (até 90) e "Fica parado em N dias" (até 138, 
+          o maior ciclo já observado), como selo no negócio e linha no pa
+          inel de motivo. A ordem da lista não muda | Bruno, depois de av
+          aliar 3 exemplos reais em que as duas ordens divergem | "situaç
+          ão e preço"; custo de esperar como queda de chance ("em 4 dias,
+           a chance cai de 4 para 3 em cada 10"), proposto pelo orquestra
+          dor (IA) | `01-revisao-inicial.md`, G1, item 4 |
+      51  | D31 | 09/10/2026 (G1) | **Piso não cortável do CA16:** três t
+          abelas vindas de `src/core`, sem gráfico (curva da coorte × só 
+          concluídos; backtest com IC; dimensões com os p-valores entre c
+          oncluídos e na coorte), mais uma linha no painel de motivo. Grá
+          ficos e seletor continuam cortáveis | Bruno, sobre a proposta d
+          o critico | página inteira cortável | achado K4 do critico |
+      52  | D32 | 09/10/2026 (G1) | O AGENTS §2.2 recebe os trechos liter
+          ais do enunciado que faltavam; a D3 é reescrita; a tabela do §7
+           aponta para D18 em diante; o `critico.md` passa a apontar para
+           a seção 7 | Bruno | — | achados P12, K5 e V9 |
+      53 +| D33 | 09/10/2026 (incremento 4) | **Paleta e fonte.** Marcas 
+         +da barra: no prazo `#0F7DA8`, esfriando `#B7791F`, parado `#B42
+         +318`; o validador da `dataviz` passou nas 5 checagens (luminosi
+         +dade, croma, separação para daltonismo ΔE 12,2, visão normal ΔE
+         + 17,4, contraste ≥ 3:1). O primeiro azul-petróleo (`#0E6170`) f
+         +alhou no croma (0,076 < 0,10). Texto em AA: destaque `#0B6488` 
+         +6,58:1; selos âmbar 5,37:1 e vermelho 6,80:1. Fonte Source Sans
+         + 3, empacotada no build (sem chamada de rede, CA9) | orquestrad
+         +or (IA); vai ao Bruno no portão visual | Google Fonts (chamada 
+         +de rede); `system-ui` (o critico sugere como primeiro corte) | 
+         +saída do `validate_palette.js` nesta sessão; `styles.css` |    
+      54 +| D34 | 09/10/2026 (incremento 4) | **A empresa só aparece em 3
+         +1/12/2017.** Nas fotos de 31/07, 31/08 e 30/09, todo negócio em
+         + andamento sem empresa ainda estava em andamento em 31/12 (760,
+         + 934 e 1.008 de 1.008): mostrar a empresa entrega o futuro (CA6
+         +). A prospecção já ficava oculta (D13) | orquestrador (IA), sob
+         +re achado do critico, reproduzido | mostrar sempre | `reference
+         +.test.ts` ("empresa fora da data padrão"); e2e "data passada" |
+      55 +| D35 | 09/10/2026 (incremento 4) | **A barra de números não so
+         +ma o valor ponderado.** O G1 decidiu que a tela "não soma o val
+         +or ponderado como previsão", e a calibração mostra que ele supe
+         +restima (prevista 46,8–52,1%, realizada 29,7–37,4%). O valor po
+         +nderado aparece só por negócio | orquestrador (IA), sobre achad
+         +o do critico | total ao lado da barra, com aviso | `01-revisao-
+         +inicial.md`:532; `auditoria-ts.md`, calibração |               
+      56 +| D36 | 09/10/2026 (incremento 4) | **Frase e conta do painel.*
+         +* Variante da D28 na faixa 0: "Dos negócios iniciados, X de cad
+         +a 10 viraram venda"; X = 0 vira "menos de 1 de cada 10". A cont
+         +a usa a chance com uma casa, e o valor ponderado exibido é preç
+         +o × essa chance: com a chance exata, 2.373 de 6.016 linhas não 
+         +fechariam (diferença de até US$ 13). A ordem continua pelo valo
+         +r exato; um teste confere que o valor exibido nunca inverte a o
+         +rdem em nenhuma data | orquestrador (IA), sobre achados do crit
+         +ico | "chegaram a 0 dias"; conta com "X de cada 10" (não fecha)
+         + | `reason.test.ts`; `reference.test.ts` (6.016 linhas, nenhuma
+         + inversão) |                                                   
+      57 +| D37 | 09/10/2026 (incremento 4) | **H10 na tela, sem mudar a 
+         +regra.** Com a regra final, 88,6% dos 10 primeiros por valor po
+         +nderado também estão entre os 10 mais caros. A tela diz como a 
+         +lista é ordenada ("A idade decide a lista e quando o negócio es
+         +fria; dentro da Foque agora, a ordem é pelo valor ponderado"), 
+         +e o painel mostra "Pela ordem de preço, estaria em k.º" quando 
+         +as duas ordens divergem. O README declara a decomposição do gan
+         +ho sobre "só preço" (+7,66 p.p.: cerca de 4,4 vêm de separar os
+         + parados e 3,2 da chance) | orquestrador (IA), sobre achado do 
+         +critico | — | `auditoria-ts.md`, H10 e "Regra final (G1)" |    
+      58 +                                                               
+  ⎿  Updated process-log/erros-da-ia.md (+6 -0)
+      31  | C-5 | 09/10/2026 | Claude Code | Desvio do plano: o critico d
+          everia rodar em paralelo no passo 2 e só foi chamado no passo 3
+           | Claude Code | Chamado no passo 3, com o recálculo pronto | e
+          ste arquivo |
+      32  | C-6 | 09/10/2026 | Claude Code | Rodar `auditoria_sql.py` de 
+          novo sobrescreveu a saída versionada da preparação (só mudou a 
+          ordem de linhas empatadas) | Claude Code (`diff` da saída depoi
+          s de rodar) | `git restore` do arquivo | `01-revisao-inicial.md
+          `, passo 3 |
+      33  | C-7 | 09/10/2026 | Claude Code | A primeira checagem das vers
+          ões Python usou `pip download -d /dev/null`, um destino inválid
+          o, e informou "indisponível" para todos os pacotes | Claude Cod
+          e (resultado implausível) | Refeita com `pip index versions`: t
+          odas existem para o Python 3.12 | saída na sessão |
+      34 +| C-8 | 09/10/2026 | Claude Code | Propôs mostrar o custo de es
+         +perar como queda de chance ("em 4 dias, a chance cai de 4 para 
+         +3 em cada 10"). Os saltos vêm dos limites das faixas, não de um
+         +a queda real dia a dia, e apresentá-los como fato contradiz a D
+         +28 | Bruno (resposta ao G1-b) | D30: só "Esfria em N dias" e "F
+         +ica parado em N dias", sem mudar a ordem | `decisoes.md`, D30 |
+      35 +| C-9 | 09/10/2026 | Claude Code | O plano do incremento 4 most
+         +rava a empresa em todas as datas. Nas datas passadas, "sem empr
+         +esa" entrega que o negócio ainda estará em andamento em 31/12 |
+         + critico, plano do incremento 4 (reproduzido: 760, 934 e 1.008 
+         +de 1.008) | D34: empresa só em 31/12, com teste no núcleo e no 
+         +e2e | `reference.test.ts`; `fluxos.pw.ts` |                    
+      36 +| C-10 | 09/10/2026 | Claude Code | O plano punha no painel "pr
+         +eço × chance = valor ponderado" com a chance em "X de cada 10",
+         + o que não fecha. O critico propôs a chance exata com uma casa;
+         + a medição mostrou que nem assim fecha em 2.373 de 6.016 linhas
+         + | critico (a conta); Claude Code (a medição) | D36: valor exib
+         +ido = preço × chance exibida, sem inverter a ordem (teste) | `r
+         +eference.test.ts` |                                            
+      37 +| C-11 | 09/10/2026 | Claude Code | O plano somava o valor pond
+         +erado na barra de números, contra a resposta do G1 | critico, p
+         +lano do incremento 4 | D35: sem total | `01-revisao-inicial.md`
+         +:532 |                                                         
+      38 +| C-12 | 09/10/2026 | Claude Code | Primeiro layout: em 1280 px
+         +, a tabela cheia empurrava a coluna "Valor ponderado", a mais i
+         +mportante, para fora da área visível; em 390 px, a aba "Revisar
+         + ou encerrar" rolava 111 px para o lado | Claude Code (prints e
+         + medição no navegador) | Coluna ID retirada (o ID fica no paine
+         +l), larguras ajustadas; teste e2e "sem rolagem lateral" nas 3 a
+         +bas de 3 vendedores, em 1280 e 390 px | `fluxos.pw.ts` |       
+      39 +                                                               
+  ⎿  (timeout 6m 40s)
+
+⏺ Tudo verde: 62 testes, 7 fluxos e2e e 10 prints. Atualizo a tabela de comandos
+  do AGENTS.md, porque dev, build, e2e e prints agora existem.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Update(AGENTS.md)
+  ⎿  Added 2 lines, removed 2 lines
+      159  |---|---|
+      160  | `npm run check` | tipos, lint e testes; precisa passar antes
+            de qualquer commit |
+      161  | `npm run auditoria` | recalcula os números da seção 7 (inclu
+           sive o backtest) e grava `solution/analysis/saidas/auditoria-t
+           s.md` |
+      162 -| `npm run dev` * | servidor local |                          
+      163 -| `npm run build` * | build de produção |                     
+      162 +| `npm run dev` | servidor local |                            
+      163 +| `npm run build` | build de produção |                       
+      164  | `npm run bench` * | teste de desempenho com os dados multipl
+           icados por 100 |
+      165  | `npm run e2e` / `npm run prints` * | testes de navegador e p
+           rints para o process log |
+      166  | `node --test .claude/hooks/guard-pasta.test.mjs` | testes do
+            hook |
+
+⏺ Update(AGENTS.md)
+  ⎿  Added 1 line, removed 1 line
+      162  | `npm run dev` | servidor local |
+      163  | `npm run build` | build de produção |
+      164  | `npm run bench` * | teste de desempenho com os dados multipl
+           icados por 100 |
+      165 -| `npm run e2e` / `npm run prints` * | testes de navegador e p
+          -rints para o process log |                                    
+      165 +| `npm run e2e` / `npm run prints` | testes de navegador (buil
+          +d de produção) e prints em `process-log/screenshots/02-app/`. 
+          +Na primeira vez: `npx playwright install chromium` |          
+      166  | `node --test .claude/hooks/guard-pasta.test.mjs` | testes do
+            hook |
+      167  | `sh tools/adicionar-ao-git.sh` | põe no índice do git os arq
+           uivos da pasta com segurança |
+      168  
+
+⏺ Faço o commit do incremento até aqui, antes do portão visual, conferindo o que
+  vai para o índice.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+⏺ O G1 está aplicado, e o incremento 4 está construído e testado até o portão
+  visual. Daqui em diante preciso do seu ok nos prints, e só depois chamo o
+  revisor e o testador-de-uso.
+
+  G1 (commit cad53e8)
+  - Coorte: a entrada tardia é a regra do núcleo. A coorte limpa fica como
+    sensibilidade, fixada em teste: as duas ganham de "só preço" com IC acima de
+    zero (+7,66 p.p. em 3 datas com entrada tardia; +18,69 p.p. na única data
+    da limpa).
+  - Documentos: a D27 diz por que a limpa perdeu. O README mostra as duas
+    coortes e tem a hipótese nas Limitações, com a sua frase.
+  - D30: só "Esfria em N dias" e "Fica parado em N dias", sem mexer na ordem. A
+    frase "em 4 dias, a chance cai…" que eu tinha proposto foi registrada como
+    erro meu (C-8).
+  - Efeito colateral: com a regra final, 88,6% dos 10 primeiros por valor
+    ponderado também estão entre os 10 mais caros. Com a coorte limpa eram
+    85,7%.
+
+  Incremento 4 (commit 6211796)
+  - O critico revisou o plano antes do código. Reproduzi os achados graves e
+    todos se confirmaram:
+    - A empresa vazava o futuro nas datas passadas. Em 30/09, os 1.008 negócios
+      sem empresa ainda estavam em andamento em 31/12. Agora a empresa só
+      aparece em 31/12 (D34).
+    - A conta do painel não fechava. Mesmo com a chance exata de uma casa, 2.373
+      de 6.016 linhas davam diferença. Agora o valor exibido é preço × chance
+      exibida. Um teste confere que isso nunca inverte a ordem (D36).
+    - A barra somava o valor ponderado, contra o que o G1 decidiu. O total saiu
+      (D35).
+  - Para a lista não parecer "só ordenar por preço": uma linha explica como a
+    lista é ordenada, e o painel mostra "Pela ordem de preço, estaria em k.º"
+    quando as duas ordens divergem (D37).
+  - Verificação: npm run check passa (62 testes). O npm run e2e cobre 7 fluxos:
+    personas, estados vazios, data passada e falta de rolagem lateral nas 3
+    abas, em 1280 e 390 px.
+
+  Para o portão visual, os prints estão em process-log/screenshots/02-app/. Para
+  ver ao vivo: cd solution && npm run dev.
+
+  ┌─────────────────┬────────────────────────────────────────────────────────┐
+  │      Print      │                      O que mostra                      │
+  ├─────────────────┼────────────────────────────────────────────────────────┤
+  │ 01-gestor       │ equipe da Summer Sewald, quem não tem negócio aparece  │
+  │                 │ à parte (D29)                                          │
+  ├─────────────────┼────────────────────────────────────────────────────────┤
+  │ 02-vendedora    │ Anna Snelling: 1 negócio na Foque agora e 99% do valor │
+  │                 │  parado                                                │
+  ├─────────────────┼────────────────────────────────────────────────────────┤
+  │ 03-lista-cheia  │ Zane Levy: 31 negócios, painel com motivo, conta e     │
+  │                 │ prazo                                                  │
+  ├─────────────────┼────────────────────────────────────────────────────────┤
+  │ 04-estado-vazio │ Cecily Lampkin: leva para "Revisar ou encerrar" ou     │
+  │                 │ "Inicie contato"                                       │
+  ├─────────────────┼────────────────────────────────────────────────────────┤
+  │ 05-data-passada │ 30/09/2017: sem empresa, sem prospecção, com aviso     │
+  └─────────────────┴────────────────────────────────────────────────────────┘
+
+  Práticas do docs/benchmark-ux.md seguidas: 2, 4, 5, 6, 7, 8, 9, 10, 11, 12 e
+  13. A 3 entrou na forma da D28. A 1 (faixas alta, média e baixa) ficou de
+  fora, porque contradiz a D28. A paleta passou no validador da dataviz, e todos
+  os textos atingem AA (D33).
+
+  Para fechar o portão, preciso de duas respostas suas:
+  1. Ok visual nos prints, ou o que mudar.
+  2. D33 a D37 foram decisões minhas sobre os achados do critico. Você confirma?
+     Uma delas não é minha decisão só: o critico sugere trocar a fonte própria
+     (Source Sans 3, empacotada no build) pela fonte do sistema como primeiro
+     corte. Ela pesa no "sem cara de IA", então a escolha é sua.
+
+❯ <decisao>
+  Portão visual do incremento 4: reprovado por mim. A lógica, os dados e os
+  testes ficam; o problema é a interface. Registre em decisoes.md (quem
+  decidiu: Bruno) e em erros-da-ia.md (a interface não atendeu o pedido:
+  intuitiva, bonita, caprichada e na língua do usuário).
+  </decisao>
+
+  <o_que_eu_quero>
+  Quero uma interface impressionante e caprichada, com direção de arte
+  primorosa, no nível do que empresas elogiadas pelo design, como a Apple,
+  fazem. Animações estão liberadas. Nada pode existir só para enfeitar: cada
+  detalhe visual e cada movimento precisa ajudar o vendedor ou o gestor a
+  entender ou a agir.
+
+  O briefing de interface do CLAUDE.md não representa isso: "densa, tabela
+  compacta, sem animação" virou planilha. Proponha um novo texto para essa
+  seção, baseado neste pedido, e aplique depois do meu ok.
+  </o_que_eu_quero>
+
+  <problemas_da_versao_atual>
+  Vistos no app rodando:
+  1. A tela abre na visão da empresa inteira. A vendedora precisa achar o
+  próprio nome num menu de 35 opções antes de ver algo útil.
+  2. "Foque agora" é uma planilha de 7 colunas e 31 linhas. Nada diz "comece
+  por este".
+  3. Tudo tem o mesmo tamanho e o mesmo cinza; o selo "Esfriando" quase não
+  aparece. Parece relatório, não produto.
+  4. "Empresa não informada" aparece em 2 de cada 3 linhas, cortada com
+  reticências.
+  5. O painel dá o mesmo conselho para todo negócio e arredonda 47,3% para "5
+  de cada 10", com o 47,3% ao lado.
+  6. No celular, os filtros ocupam a primeira tela, e a lista de parados perde
+  a idade.
+  7. As linhas da tabela de vendedores são clicáveis, mas não parecem.
+  8. O score existe (o valor ponderado ordena a lista), mas a tela não o mostra
+  como score. Eu mesmo não o reconheci.
+  </problemas_da_versao_atual>
+
+  <direcao_de_arte>
+  Direção escolhida: calma, no estilo Apple, com a disciplina numérica da
+  Stripe.
+  - Fundo claro, com modo escuro. Muito respiro. Números grandes e legíveis.
+  Camadas suaves separando o conteúdo dos controles.
+  - Prioridade criada por espaço, tamanho e peso, não por cor. Cor só para
+  status e para uma única cor de destaque.
+  - Referências. Leia antes de desenhar e diga o que aproveitou de cada uma:
+    - Apple, hierarquia, harmonia e consistência: https://www.createwithswift.c
+  om/liquid-glass-redefining-design-through-hierarchy-harmony-and-consistency/
+    - Linear, redesenho da interface:
+  https://linear.app/now/how-we-redesigned-the-linear-ui
+    - Stripe, painel:
+  https://www.925studios.co/blog/stripe-dashboard-design-breakdown
+    - Salesforce, score de oportunidade com fatores:
+  https://trailhead.salesforce.com/content/learn/modules/sell-smarter-with-pipe
+  line-inspection/understand-deal-health-with-insights-and-scores
+    - Pipedrive, estagnação: https://support.pipedrive.com/hc/pt-br/articles/20
+  6760949-O-recurso-de-Estagna%C3%A7%C3%A3o
+    - Attio, como referência de CRM bonito.
+  - Momentos com propósito que eu quero ver:
+    1. Abertura pessoal: "Bom dia, Zane. X negócios para avançar esta semana,
+  US$ Y de potencial. Z esfriam nos próximos 14 dias."
+    2. "Comece por estes": os 3 a 5 primeiros em destaque, cada um com o motivo
+  numa frase. O resto da lista vem abaixo, mais discreto.
+    3. Régua do tempo em cada negócio: uma barra fina que mostra onde ele está
+  entre 0, 90 e 138 dias. Substitui as colunas de idade e prazo.
+    4. Score visível em cada negócio.
+    5. Ao trocar a data, a lista se reorganiza com movimento: os negócios sobem
+  e descem, e a barra do funil se transforma.
+    6. Painel de detalhe que desliza ao lado, com a conta e um "o que fazer"
+  específico da situação.
+    7. Gestor: barras da equipe que crescem uma vez ao abrir; clicar num
+  vendedor abre a semana dele com transição.
+  - Movimento: menos de 300 ms, desaceleração no fim (ease-out), só transform e
+  opacity, interrompível, sem animar ações repetitivas e respeitando "reduzir
+  movimento". Se precisar de biblioteca de animação, proponha com
+  justificativa.
+  - Fonte: proponha duas opções de licença livre, fora das mais batidas em apps
+  gerados por IA (Inter, Roboto, Geist, Space Grotesk). A escolha é minha.
+  - Fora: gradiente decorativo, vidro fosco de enfeite, ícone de enfeite,
+  cartões iguais com sombra, número gigante sem contexto.
+  </direcao_de_arte>
+
+  <navegacao>
+  - Entrada por pessoa: a primeira tela pergunta quem é você (vendedor ou
+  gestor, e o nome), lembra a escolha e leva direto para "Minha semana" ou
+  "Minha equipe".
+  - Três áreas: "Minha semana", "Minha equipe" e "Como funciona". A visão da
+  empresa inteira fica com o gestor.
+  - No celular, a lista e a ação vêm primeiro; os filtros ficam recolhidos.
+  </navegacao>
+
+  <score>
+  - Score de 0 a 100 em cada negócio quente ou esfriando: a posição do
+  potencial (preço de lista × chance de fechar pelo histórico) entre todos os
+  negócios quentes e esfriando da empresa na data escolhida. Score 92 = mais
+  potencial que 92% desses negócios.
+  - A ordem da lista continua sendo a do potencial, então o backtest continua
+  valendo. Escreva o score como função nova no núcleo, com testes: mesma ordem
+  do potencial, valores de 0 a 100, empates tratados.
+  - Negócios frios não têm score. A prospecção também não, porque não tem data.
+  - No painel: o score, o potencial em US$, a conta por trás e a frase do
+  motivo.
+  - Atualize o CA3 e o CA4 em docs/plano-e-matriz.md e registre a decisão.
+  </score>
+
+  <linguagem>
+  Os usuários são vendedores e gerentes de vendas. Fale como eles: frases
+  curtas, verbos de ação, os jargões deles. Estatística (coorte, IC, p-valor)
+  só no "Como funciona", traduzida ("margem de erro").
+  Vocabulário decidido por mim:
+  - Situações: Quente (até 89 dias), Esfriando (90 a 138), Frio (mais de 138).
+  Elas substituem "No prazo" e "Parado" em toda a interface e nos documentos.
+  Prazos: "Esfria em N dias" e "Fica frio em N dias".
+  - O valor ponderado passa a se chamar Potencial.
+  - Abas do vendedor: "Prioridades da semana", "Atualize ou dê perda" e
+  "Prospecção".
+  - Chance: "chance de fechar, pelo histórico". O número e a frase precisam
+  bater (nada de 47,3% ao lado de "5 de cada 10"). Sugestão: "De cada 100
+  negócios ainda abertos com 21 dias, 47 fecharam venda."
+  - "O que fazer" muda por situação: quente, esfriando, perto de ficar frio,
+  frio.
+  Atualize a seção 10 do AGENTS.md com esse vocabulário. Se algum termo ficar
+  estranho num contexto, me mostre o caso em vez de adivinhar.
+  </linguagem>
+
+  <como_fazer>
+  1. Confirme que a skill frontend-design está carregada nesta sessão. Se não
+  estiver, pare e me avise.
+  2. Não mexa no que já existe em src/core nem nos testes do núcleo. O score
+  entra como função nova.
+  3. Antes de escrever código de produção, me mostre:
+     - a direção de arte numa página: tipografia (as duas opções de fonte),
+  cores, espaçamentos, componentes principais e a especificação de movimento;
+     - duas variações de layout dentro dessa direção, como páginas estáticas
+  com dados reais (Zane Levy e a equipe da Summer Sewald em 31/12/2017), com a
+  tela do vendedor e a do gestor, em 1280 e 390 px;
+     - um vídeo curto (gravação do Playwright) com os movimentos principais:
+  troca de data, abertura do painel e entrada da equipe.
+     Espere eu escolher.
+  4. Depois da escolha: implemente, rode npm run check e npm run e2e, chame o
+  testador-de-uso com as três personas (medindo o tempo até achar o primeiro
+  negócio) e o revisor, e me mostre os prints antes do incremento 5. O "Como
+  funciona" usa a mesma direção.
+  5. Junto com os mockups, me mande o estado de cada critério de aceite (feito,
+  falta ou cortado), dizendo também se npm run backtest e npm run bench já
+  existem.
+  </como_fazer>
+
+  <pendencias>
+  D33 a D37: confirmo D34, D35, D36 e D37. A D33 será refeita com as cores
+  novas (rode o validador da dataviz de novo). A fonte sai da direção de arte.
+  </pendencias>
+
+⏺ Antes de qualquer coisa: a skill frontend-design foi carregada nesta sessão
+  (invoquei-a antes de construir o incremento 4), então sigo. Começo registrando
+  a reprovação e, em paralelo, lendo as referências.
+
+⏺ Fetch(https://www.createwithswift.com/liquid-glass-redefining-design-through-h
+       ierarchy-harmony-and-consistency/)  ⎿  Received 45.1KB (200 OK)
+
+⏺ Fetch(https://linear.app/now/how-we-redesigned-the-linear-ui)
+  ⎿  Received 546.9KB (200 OK)
+
+⏺ Fetch(https://www.925studios.co/blog/stripe-dashboard-design-breakdown)
+  ⎿  Received 18.9KB (200 OK)
+
+⏺ Fetch(https://trailhead.salesforce.com/content/learn/modules/sell-smarter-with
+       -pipeline-inspection/understand-deal-health-with-insights-and-scores)
+  ⎿  Received 189.1KB (200 OK)
+
+⏺ Fetch(https://support.pipedrive.com/hc/pt-br/articles/206760949-O-recurso-de-E
+       stagna%C3%A7%C3%A3o)
+  ⎿  Received 6.5KB (200 OK)
+
+⏺ Web Search("Attio CRM design interface typography record page lists")
+  ⎿  Did 1 search in 8s
+
+⏺ Já revisei as seis referências e anotei o que aproveitar na página de direção
+  de arte. Agora vou conferir as fontes candidatas, verificando licença livre e
+  se os algarismos tabulares realmente funcionam, não só constam na descrição.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+⏺ Confirmei que as cinco fontes têm algarismos tabulares funcionais e que a
+  Hanken Grotesk já os usa por padrão. Agora vou registrar a reprovação do
+  portão.
+
+⏺ Bash(python3 - <<'EOF'
+      s=open('process-log/decisoes.md').read().rstrip('\n')…)
+  ⎿  Updated process-log/decisoes.md (+3 -0)
+      55  | D35 | 09/10/2026 (incremento 4) | **A barra de números não so
+          ma o valor ponderado.** O G1 decidiu que a tela "não soma o val
+          or ponderado como previsão", e a calibração mostra que ele supe
+          restima (prevista 46,8–52,1%, realizada 29,7–37,4%). O valor po
+          nderado aparece só por negócio | orquestrador (IA), sobre achad
+          o do critico | total ao lado da barra, com aviso | `01-revisao-
+          inicial.md`:532; `auditoria-ts.md`, calibração |
+      56  | D36 | 09/10/2026 (incremento 4) | **Frase e conta do painel.*
+          * Variante da D28 na faixa 0: "Dos negócios iniciados, X de cad
+          a 10 viraram venda"; X = 0 vira "menos de 1 de cada 10". A cont
+          a usa a chance com uma casa, e o valor ponderado exibido é preç
+          o × essa chance: com a chance exata, 2.373 de 6.016 linhas não 
+          fechariam (diferença de até US$ 13). A ordem continua pelo valo
+          r exato; um teste confere que o valor exibido nunca inverte a o
+          rdem em nenhuma data | orquestrador (IA), sobre achados do crit
+          ico | "chegaram a 0 dias"; conta com "X de cada 10" (não fecha)
+           | `reason.test.ts`; `reference.test.ts` (6.016 linhas, nenhuma
+           inversão) |
+      57  | D37 | 09/10/2026 (incremento 4) | **H10 na tela, sem mudar a 
+          regra.** Com a regra final, 88,6% dos 10 primeiros por valor po
+          nderado também estão entre os 10 mais caros. A tela diz como a 
+          lista é ordenada ("A idade decide a lista e quando o negócio es
+          fria; dentro da Foque agora, a ordem é pelo valor ponderado"), 
+          e o painel mostra "Pela ordem de preço, estaria em k.º" quando 
+          as duas ordens divergem. O README declara a decomposição do gan
+          ho sobre "só preço" (+7,66 p.p.: cerca de 4,4 vêm de separar os
+           parados e 3,2 da chance) | orquestrador (IA), sobre achado do 
+          critico | — | `auditoria-ts.md`, H10 e "Regra final (G1)" |
+      58 +| D38 | 09/10/2026 (portão visual do incremento 4) | **Portão v
+         +isual reprovado.** A lógica, os dados e os testes ficam; a inte
+         +rface é refeita. O Bruno pediu uma interface impressionante e c
+         +aprichada, com direção de arte de nível Apple: calma, com a dis
+         +ciplina numérica da Stripe, modo escuro, animações com propósit
+         +o (menos de 300 ms, só transform e opacity, respeitando "reduzi
+         +r movimento"). Pediu também entrada por pessoa ("Minha semana",
+         + "Minha equipe", "Como funciona"), "Comece por estes", régua do
+         + tempo, score visível e o vocabulário de vendedor. Antes de cod
+         +ar: direção de arte, duas variações de layout com dados reais e
+         + um vídeo dos movimentos. D34–D37 confirmadas; a D33 será refei
+         +ta com as cores novas, e a fonte sai da direção de arte | Bruno
+         + | aprovar com ajustes | mensagem do Bruno no portão; prints em
+         + `process-log/screenshots/02-app/` (commit `6211796`) |        
+      59 +| D39 | 09/10/2026 | **Score de 0 a 100** em cada negócio quent
+         +e ou esfriando: a posição do potencial (preço de lista × chance
+         + de fechar pelo histórico) entre todos os negócios quentes e es
+         +friando da empresa na data escolhida. Score 92 = mais potencial
+         + que 92% desses negócios. A ordem da lista continua a do potenc
+         +ial, então o backtest vale. Frios e prospecção não têm score | 
+         +Bruno | — | mensagem do Bruno no portão |                      
+      60 +| D40 | 09/10/2026 | **Vocabulário do vendedor (AGENTS §10).** 
+         +Quente (até 89 dias), Esfriando (90 a 138), Frio (mais de 138),
+         + no lugar de "No prazo" e "Parado". Prazos: "Esfria em N dias" 
+         +e "Fica frio em N dias". "Valor ponderado" passa a ser **Potenc
+         +ial**. Abas: "Prioridades da semana", "Atualize ou dê perda" e 
+         +"Prospecção". Chance: "chance de fechar, pelo histórico", com n
+         +úmero e frase iguais. "O que fazer" muda por situação: quente, 
+         +esfriando, perto de ficar frio, frio. Estatística só no "Como f
+         +unciona", traduzida | Bruno | — | mensagem do Bruno no portão |
+      61  
+  ⎿  Updated process-log/erros-da-ia.md (+1 -0)
+      36  | C-10 | 09/10/2026 | Claude Code | O plano punha no painel "pr
+          eço × chance = valor ponderado" com a chance em "X de cada 10",
+           o que não fecha. O critico propôs a chance exata com uma casa;
+           a medição mostrou que nem assim fecha em 2.373 de 6.016 linhas
+           | critico (a conta); Claude Code (a medição) | D36: valor exib
+          ido = preço × chance exibida, sem inverter a ordem (teste) | `r
+          eference.test.ts` |
+      37  | C-11 | 09/10/2026 | Claude Code | O plano somava o valor pond
+          erado na barra de números, contra a resposta do G1 | critico, p
+          lano do incremento 4 | D35: sem total | `01-revisao-inicial.md`
+          :532 |
+      38  | C-12 | 09/10/2026 | Claude Code | Primeiro layout: em 1280 px
+          , a tabela cheia empurrava a coluna "Valor ponderado", a mais i
+          mportante, para fora da área visível; em 390 px, a aba "Revisar
+           ou encerrar" rolava 111 px para o lado | Claude Code (prints e
+           medição no navegador) | Coluna ID retirada (o ID fica no paine
+          l), larguras ajustadas; teste e2e "sem rolagem lateral" nas 3 a
+          bas de 3 vendedores, em 1280 e 390 px | `fluxos.pw.ts` |
+      39 +| C-13 | 09/10/2026 | Claude Code | **A interface do incremento
+         + 4 não atendeu o pedido** de uma interface intuitiva, bonita, c
+         +aprichada e na língua do usuário. O briefing do CLAUDE.md ("den
+         +sa, tabela compacta, sem animação") foi seguido ao pé da letra 
+         +e o resultado virou planilha. Problemas vistos pelo Bruno no ap
+         +p rodando: abre na visão da empresa e obriga a vendedora a acha
+         +r o nome entre 35; a "Foque agora" é uma planilha de 7 colunas 
+         +sem dizer "comece por este"; tudo tem o mesmo peso e o mesmo ci
+         +nza; "Empresa não informada" em 2 de cada 3 linhas; o painel dá
+         + o mesmo conselho para todo negócio e põe "5 de cada 10" ao lad
+         +o de 47,3%; no celular, os filtros tomam a primeira tela e a li
+         +sta de parados perde a idade; as linhas da tabela de vendedores
+         + não parecem clicáveis; o score existe, mas a tela não o mostra
+         + como score | Bruno (portão visual) | D38: interface refeita a 
+         +partir de uma direção de arte nova, aprovada antes do código; l
+         +ógica e testes mantidos | prints do commit `6211796`; `decisoes
+         +.md`, D38 |                                                    
+      40  
+
+⏺ Registrados D38–D40 e o erro C-13. Agora o score da D39, como função nova em
+  src/core (sem tocar no que existe), com os testes escritos antes.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+⏺ O score passou nos 65 testes (ordem consistente, valores 0-100, empates
+  corretos, 298 negócios em 31/12). Agora vou validar as cores da escala térmica
+  (quente/esfriando/frio) nas superfícies clara e escura.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ O terceiro conjunto passa em tudo, com um aviso: o âmbar tem contraste baixo
+  contra o branco. Testo âmbares mais escuros para tirar o aviso sem perder a
+  separação.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Vou com #D9480F, #E3A008 e #4F7CB8, resolvendo o aviso de contraste do âmbar
+  ao adicionar rótulo visível em todo segmento. Agora verifico a faixa de
+  luminosidade exigida pelo validador para o tema escuro.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+⏺ O problema no escuro é vermelho contra âmbar para daltônicos (deutan). Afasto
+  os dois na luminosidade, vermelho no piso da faixa e âmbar no teto.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+⏺ No escuro, #C4422F, #BF8B08 e #5B8BD6 passam nas checagens, mas como o azul
+  ficou "frio" vou trocar o destaque único por verde. Agora vou testar se
+  arredondar a chance para inteiro (para número e frase baterem) inverte a ordem
+  de algum ranking no painel.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Nenhuma das 6.016 linhas inverte a chance inteira, então a frase "47 de cada
+  100" bate com a conta de 47%. Agora vou extrair os dados reais para os
+  protótipos de Zane Levy e da equipe de Summer Sewald, nas 4 datas disponíveis.
+
+⏺ Write(solution/scripts/prototipos.ts)
+  ⎿  Wrote 92 lines to solution/scripts/prototipos.ts
+       1 // Dados reais para os protótipos de layout (process-log/prototi
+         pos/). Usa só funções do núcleo.
+       2 // Rodar: node scripts/prototipos.ts
+       4 import { writeFileSync } from "node:fs";
+       5 import { availableDates, funnelAt, teamStatus } from "../src/cor
+         e/analysis.ts";
+       6 import { isoDate, priceOf } from "../src/core/data.ts";
+       8 import { deadline, priceRanks } from "../src/core/reason.ts";
+       9 import {
+      10   agentLists,
+     … +87 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Os dados reais estão prontos, com o exemplo do Zane em 31/12/2017 confirmando
+  os valores (31 prioridades, US$ 65.831 em lista, US$ 14.191 de potencial, 2
+  esfriam e 9 ficam frios em 14 dias). Agora vou copiar as duas fontes OFL para
+  a pasta dos protótipos e montar o sistema visual comum às duas variações.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+⏺ Todos os tons de texto passam em AA nos dois modos. Escrevo agora o CSS-base
+  dos protótipos: tokens, tipografia e componentes.
+
+⏺ Write(process-log/prototipos/base.css)
+  ⎿  Wrote 637 lines to process-log/prototipos/base.css
+       1 /* Direção de arte "calma, com disciplina numérica". Protótipo:
+         tokens e componentes comuns às variações A e B. */
+       2
+       4   font-family: "Onest";
+       5   src: url(fontes/onest-latin-wght-normal.woff2) format("woff2")
+         ;
+       6   font-weight: 100 900;
+       8 }
+       9 @font-face {
+      10   font-family: "Mona Sans";
+     … +635 lines (ctrl+o to expand)
+
+⏺ Agora o JavaScript comum: textos na língua do vendedor, régua do tempo, painel
+  e o movimento (FLIP com a Web Animations API, sem biblioteca).
+
+⏺ Write(process-log/prototipos/proto.js)
+  ⎿  Wrote 275 lines to process-log/prototipos/proto.js
+       1 // Protótipo: textos, componentes e movimento comuns às variaçõe
+       2 // Movimento sem biblioteca: Web Animations API (FLIP), só trans
+         form e opacity, interrompível.
+       4 const P = (() => {
+       5   const q = new URLSearchParams(location.search);
+         ont = "b";
+       7   if (q.get("tema")) document.documentElement.dataset.theme = q.
+       8
+       9   const D = window.DADOS;
+         .matches;
+     … +332 lines (ctrl+o to expand)
+⏺ Agora a variação A, "Agenda": uma coluna, a semana lida de cima para baixo,
+  com "Comece por estes" em destaque e o detalhe numa folha que desliza.
+
+⏺ Write(process-log/prototipos/variacao-a.html)
+  ⎿  Wrote 522 lines to process-log/prototipos/variacao-a.html
+       1 <!doctype html>
+       2 <html lang="pt-BR">
+       3 <head>
+       5 <meta name="viewport" content="width=device-width, initial-scale
+         =1" />
+       6 <title>Variação A: Agenda</title>
+       7 <link rel="stylesheet" href="base.css" />
+       9   /* Variação A: uma coluna, lida de cima para baixo, como uma a
+         genda da semana */
+      10   main {
+     … +581 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Abro a variação A no navegador para conferir antes de fazer a B. Sirvo a pasta
+  por HTTP local, porque fontes carregadas por file:// esbarram em CORS.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+⏺ A variação A ficou legível e calma, mas notei que a sombra da folha fechada
+  vaza na borda direita — vou corrigir isso. Em seguida, parto para a variação
+  B, "Mesa": layout em duas colunas, com lista à esquerda e detalhe sempre
+  visível à direita, no estilo Mail e Linear.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Write(process-log/prototipos/variacao-b.html)
+  ⎿  Wrote 554 lines to process-log/prototipos/variacao-b.html
+       1 <!doctype html>
+       2 <html lang="pt-BR">
+       3 <head>
+       5 <meta name="viewport" content="width=device-width, initial-scale
+         =1" />
+       6 <title>Variação B: Mesa</title>
+       7 <link rel="stylesheet" href="base.css" />
+       9   /* Variação B: duas colunas, lista à esquerda e o motivo sempr
+         e visível à direita */
+      10   .wrap {
+     … +621 lines (ctrl+o to expand)
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+⏺ A variação B está funcionando, mas identifiquei que a barra de controles
+  quebra linha na visão da equipe com nomes longos como "Summer Sewald". Vou
+  corrigir isso e revisar as duas variações em 390 px.
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+⏺ No celular encontrei quatro problemas: abas quebrando linha, carteira
+  empurrando a lista para baixo, valores quebrando linha e legenda do título
+  espremida. Vou corrigir todos agora.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+⏺ O celular já abre com a saudação e a lista funcionando. Agora vou criar a
+  página de direção de arte, cobrindo princípios, referências, fontes, cores,
+  espaçamentos, componentes e especificação de movimento.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Escrevendo a página de direção de arte.
+
+⏺ Write(process-log/prototipos/direcao-de-arte.html)
+  ⎿  Wrote 429 lines to process-log/prototipos/direcao-de-arte.html
+       1 <!doctype html>
+       2 <html lang="pt-BR">
+       3 <head>
+       4 <meta charset="utf-8" />
+       5 <meta name="viewport" content="width=device-width, initial-scale
+       6 <title>Direção de arte: Onde focar</title>
+       7 <link rel="stylesheet" href="base.css" />
+       8 <style>
+       9   main {
+      10     max-width: 1040px;
+     … +577 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Usei uma razão de contraste (16,8:1) que eu não tinha calculado. Confiro antes
+  de seguir e tiro os "·" do espécime.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ O valor confere: 16,83:1. Vejo a página de direção de arte.
+
+  Read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+⏺ As funções de movimento somam 38 linhas, não 60. Corrijo o texto e gravo os
+  prints finais e os vídeos.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Os vídeos foram gravados sem erros na página. Para confirmar que as animações
+  rodam de fato, conto as animações ativas logo depois de cada ação.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ As animações rodam como esperado: 85 na troca de data, 2 a 3 no painel e 8 na
+  equipe, com no máximo 280 ms, e nenhuma quando "reduzir movimento" está
+  ativado. Agora vou gerar os prints finais, incluindo modo escuro e painel
+  aberto.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+⏺ O painel e o modo escuro estão funcionando. Corrijo um detalhe da conta (a
+  linha do total tinha uma falha entre as colunas) e atualizo a seção 10 do
+  AGENTS.md com o seu vocabulário.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Update(AGENTS.md)
+  ⎿  Added 13 lines, removed 7 lines
+      293  
+      294  ## 10. Vocabulário da interface
+      295  
+      296 -Use os termos de `docs/benchmark-ux.md`, seção 3:             
+      296 +Os usuários são vendedores e gerentes de vendas: frases curtas
+          +, verbos de ação, os jargões deles. Estatística (coorte, IC, p
+          +-valor) só no "Como funciona", traduzida ("margem de erro"). V
+          +ocabulário decidido pelo Bruno (D40), que substitui "No prazo"
+          +, "Parado" e "Valor ponderado" na interface e nos documentos; 
+          +os identificadores do código (`no-prazo`, `parado`, `weighted`
+          +) não mudam. Se um termo ficar estranho num contexto, mostre o
+          + caso ao Bruno em vez de adivinhar.                           
+      297  
+      298  | Use | Em vez de |
+      299  |---|---|
+      300  | Negócio | deal |
+      301 -| Funil | pipeline |                                          
+      301 +| Funil, carteira | pipeline |                                
+      302  | Em andamento (todos os abertos) | open, aberto |
+      303 -| No prazo (0–89 dias) | dentro do prazo |                    
+      304 -| Esfriando (90–138 dias) | atenção |                         
+      305 -| Parado há N dias (mais de 138) | stale, estagnado |         
+      303 +| Quente (até 89 dias) | no prazo, dentro do prazo |          
+      304 +| Esfriando (90 a 138 dias) | atenção |                       
+      305 +| Frio (mais de 138 dias) | parado, stale, estagnado |        
+      306 +| Esfria em N dias / Fica frio em N dias | — |                
+      307 +| Potencial (preço de lista × chance de fechar, pelo histórico
+          +) | valor ponderado, valor esperado |                         
+      308 +| Score (0 a 100, posição do potencial, D39) | — |            
+      309 +| Chance de fechar, pelo histórico ("De cada 100 negócios…, X 
+          +fecharam venda", com o mesmo número da conta) | probabilidade,
+          + previsão |                                                   
+      310 +| Abas: Prioridades da semana / Atualize ou dê perda / Prospec
+          +ção | Foque agora / Revisar ou encerrar / Inicie contato |    
+      311 +| Áreas: Minha semana / Minha equipe / Como funciona | — |    
+      312  | Concluídos (ganhos + perdidos) | encerrado ou fechado; "fech
+           ado" é ambíguo |
+      307 -| Ganho / Perdido | — |                                       
+      308 -| Valor ponderado | valor esperado |                          
+      313 +| Ganho / Perdido; "dar perda" | — |                          
+      314  | Taxa de ganho | win rate |
+      315  | Ticket médio | — |
+      316  | Ciclo de vendas | — |
+      317  | Empresa | conta |
+      318  | Vendedor(a), Gestor(a), Regional | — |
+      319 +| Margem de erro (no "Como funciona") | IC, intervalo de confi
+          +ança |                                                        
+      320  
+      321  Moeda sempre em US$.
+
+⏺ Agora levanto o estado de cada critério de aceite. Primeiro confiro o que
+  existe de verdade (teste de hash, backtest, bench, DataSource).
+
+  Listed 1 directory (ctrl+o to expand)
+
+⏺ O teste de hash existe (CA2); backtest, bench e DataSource não existem.
+  Atualizo o CA3 e o CA4, registro a paleta nova (D33 refeita) e escrevo um
+  README curto para a pasta dos protótipos.
+
+⏺ Bash(python3 - <<'EOF'
+      def sub_line(path, prefix, new):…)
+  ⎿  Updated docs/plano-e-matriz.md (+2 -2)
+      18  | CA0 | **Revisão completa antes de construir:** regras, dados 
+          (recalculados de forma independente), código e documentação rev
+          isados; resultado em `process-log/01-revisao-inicial.md`; erros
+           confirmados registrados. | D16; P "entendeu o problema antes d
+          e executar"; G "evidência de verificação" |
+      19  | CA1 | Roda seguindo o README: `npm ci`, `npm run dev` e `npm 
+          run build` funcionam com Node 22.18 ou superior (D20). A URL pú
+          blica abre a mesma versão. | R "precisa rodar"; R Setup; D6 |
+      20  | CA2 | Usa as 4 tabelas originais (mais `metadata.csv`), versi
+          onadas sem alteração (hash SHA-256 conferido em teste). Contage
+          ns batem: 8.800 negócios; 4.238 / 2.473 / 1.589 / 500; 35 vende
+          dores; 7 produtos; 85 empresas. | R "dados reais" |
+      21 -| CA3 | O score vai além do valor: valor ponderado = chance pel
+         -a idade (entrada tardia, D27) × preço de lista. No backtest com
+         - a regra final, ele ganha de "só preço" com IC 95% que não incl
+         -ui o zero, calculado por `npm run auditoria` e fixado em teste 
+         -(hoje, +7,66 p.p., IC de 3,49 a 12,62, em 31/07, 31/08 e 30/09)
+         -. A coorte limpa, como sensibilidade, chega à mesma conclusão (
+         -+18,69 p.p. na única foto disponível, 30/09). | R "não é só ord
+         -enar por valor"; D5; D30 |                                     
+      22 -| CA4 | Cada negócio mostra o motivo numa frase (D28): "Dos neg
+         -ócios que chegaram a N dias ainda em andamento, X de cada 10 vi
+         -raram venda", com preço e valor ponderado. Frase e score vêm do
+         - mesmo cálculo (teste). A chance é apresentada como histórico, 
+         -não como previsão. | R "entender por quê"; R "Explainability ga
+         -nha"; D5; D28 |                                                
+      21 +| CA3 | O score vai além do valor: **potencial** = chance de fe
+         +char pelo histórico (entrada tardia, D27) × preço de lista, e a
+         + lista é ordenada pelo potencial. Cada negócio quente ou esfria
+         +ndo mostra um **score de 0 a 100** (D39): a posição do potencia
+         +l entre todos os quentes e esfriando da empresa na data. Score 
+         +92 = mais potencial que 92% deles. A função do score é nova (`s
+         +rc/core/score.ts`), com testes: mesma ordem do potencial em tod
+         +a lista e data, valores de 0 a 100, empates com o mesmo score. 
+         +Frios e prospecção não têm score. No backtest com a regra final
+         +, o potencial ganha de "só preço" com IC 95% que não inclui o z
+         +ero, calculado por `npm run auditoria` e fixado em teste (hoje,
+         + +7,66 p.p., IC de 3,49 a 12,62, em 31/07, 31/08 e 30/09). A co
+         +orte limpa, como sensibilidade, chega à mesma conclusão (+18,69
+         + p.p. na única foto disponível, 30/09). | R "não é só ordenar p
+         +or valor"; D5; D30; D39 |                                      
+      22 +| CA4 | O painel de cada negócio mostra o score, o potencial em
+         + US$, a conta por trás (preço de lista × chance) e a frase do m
+         +otivo, na língua do vendedor (D40): "De cada 100 negócios que c
+         +hegaram aos N dias ainda abertos, X fecharam venda". O X da fra
+         +se é o mesmo número da conta (chance inteira; o potencial exibi
+         +do é preço × essa chance, sem inverter a ordem em nenhuma das 6
+         +.016 linhas, conferido com os dados reais). "O que fazer" muda 
+         +por situação: quente, esfriando, perto de ficar frio, frio. A c
+         +hance é apresentada como histórico, não como previsão. Frase, c
+         +onta e score vêm do mesmo cálculo (teste). | R "entender por qu
+         +ê"; R "Explainability ganha"; D5; D28; D36; D39; D40 |         
+      23  | CA5 | Filtros regional → gestor → vendedor. Três listas: "Foq
+          ue agora" (selo "Esfriando" a partir de 90 dias), "Revisar ou e
+          ncerrar" (mais de 138 dias) e "Inicie contato" (Prospecting por
+           preço, só em 31/12/2017). Vendedor sem negócios ou sem negócio
+          s recentes vê um estado vazio que diz o que fazer. | R bônus fi
+          ltros; R "segunda de manhã"; D2; D4; D13 |
+      24  | CA6 | Data de referência padrão 31/12/2017. O seletor volta n
+          o tempo e reconstrói o funil só com o que se sabia na data. Tes
+          te anti-vazamento: mudar desfechos posteriores a T não altera o
+           resultado em T. Só ficam disponíveis as datas em que toda faix
+          a tem IC 95% de no máximo ±5 p.p. (`hasEnoughHistory`, D27). | 
+          D1; D27 |
+      25  | CA7 | `npm run auditoria` reproduz o backtest (44,41% · 43,16
+          % · 40,10% · 36,17% · 32,23% · 15,40%), fixado em `src/core/ref
+          erence.test.ts`. TypeScript e Python precisam concordar; se div
+          ergirem, a revisão decide qual está certo e registra o motivo (
+          D22; revisão inicial, R1–R4). | R "o scoring faz sentido?"; G "
+          zero evidência de verificação" é fraqueza |
+  ⎿  Updated process-log/decisoes.md (+1 -0)
+      58  | D38 | 09/10/2026 (portão visual do incremento 4) | **Portão v
+          isual reprovado.** A lógica, os dados e os testes ficam; a inte
+          rface é refeita. O Bruno pediu uma interface impressionante e c
+          aprichada, com direção de arte de nível Apple: calma, com a dis
+          ciplina numérica da Stripe, modo escuro, animações com propósit
+          o (menos de 300 ms, só transform e opacity, respeitando "reduzi
+          r movimento"). Pediu também entrada por pessoa ("Minha semana",
+           "Minha equipe", "Como funciona"), "Comece por estes", régua do
+           tempo, score visível e o vocabulário de vendedor. Antes de cod
+          ar: direção de arte, duas variações de layout com dados reais e
+           um vídeo dos movimentos. D34–D37 confirmadas; a D33 será refei
+          ta com as cores novas, e a fonte sai da direção de arte | Bruno
+           | aprovar com ajustes | mensagem do Bruno no portão; prints em
+           `process-log/screenshots/02-app/` (commit `6211796`) |
+      59  | D39 | 09/10/2026 | **Score de 0 a 100** em cada negócio quent
+          e ou esfriando: a posição do potencial (preço de lista × chance
+           de fechar pelo histórico) entre todos os negócios quentes e es
+          friando da empresa na data escolhida. Score 92 = mais potencial
+           que 92% desses negócios. A ordem da lista continua a do potenc
+          ial, então o backtest vale. Frios e prospecção não têm score | 
+          Bruno | — | mensagem do Bruno no portão |
+      60  | D40 | 09/10/2026 | **Vocabulário do vendedor (AGENTS §10).** 
+          Quente (até 89 dias), Esfriando (90 a 138), Frio (mais de 138),
+           no lugar de "No prazo" e "Parado". Prazos: "Esfria em N dias" 
+          e "Fica frio em N dias". "Valor ponderado" passa a ser **Potenc
+          ial**. Abas: "Prioridades da semana", "Atualize ou dê perda" e 
+          "Prospecção". Chance: "chance de fechar, pelo histórico", com n
+          úmero e frase iguais. "O que fazer" muda por situação: quente, 
+          esfriando, perto de ficar frio, frio. Estatística só no "Como f
+          unciona", traduzida | Bruno | — | mensagem do Bruno no portão |
+      61 +| D33 (refeita) | 09/10/2026 | **Paleta da direção de arte nova
+         +** (a escolha da fonte segue com o Bruno). Escala térmica para 
+         +o status, azul com "frio"; por isso a ação é verde (`#0A7A5A`; 
+         +escuro `#3DD6A3`). Marcas no claro: quente `#D9480F`, esfriando
+         + `#E3A008`, frio `#4F7CB8`. O validador da `dataviz` passou em 
+         +luminosidade, croma, daltonismo (ΔE 14,9) e visão normal (ΔE 19
+         +,6), com aviso de contraste do âmbar com o fundo (2,26:1), reso
+         +lvido com rótulo de texto em toda parte da barra, como o valida
+         +dor exige. No escuro: `#C4422F`, `#BF8B08`, `#5B8BD6`, com as 5
+         + checagens passando. Até chegar aqui, 4 conjuntos falharam (cro
+         +ma do azul acinzentado; vermelho e âmbar indistinguíveis para d
+         +eutan na faixa de luminosidade do escuro). Textos AA nos dois m
+         +odos | orquestrador (IA); vai ao Bruno com os protótipos | pale
+         +ta anterior (D33) | saídas do `validate_palette.js` nesta sessã
+         +o; `process-log/prototipos/direcao-de-arte.html` |             
+      62  
+  Ran 2 shell commands (ctrl+o to expand)
+
+⏺ A direção de arte, as duas variações e os vídeos estão prontos para você
+  escolher (commit e64ec7d). Não escrevi nenhum código de produção da interface.
+  A skill frontend-design está carregada nesta sessão.
+
+  Já registrado: a reprovação do portão (D38) e o erro da interface (C-13); o
+  score (D39) e o vocabulário (D40); a seção 10 do AGENTS.md; o CA3 e o CA4.
+
+  O score já existe no núcleo, como função nova em src/core/score.ts, sem mexer
+  no que havia. Os testes confirmam que ele segue a ordem do potencial em todas
+  as listas de todas as datas, fica entre 0 e 100 e dá o mesmo score a empates.
+  São 298 negócios com score em 31/12. npm run check passa (65 testes).
+
+  O que abrir
+
+  O servidor local está rodando. Comece por
+  http://127.0.0.1:8765/direcao-de-arte.html. Se ele cair, rode cd
+  process-log/prototipos && python3 -m http.server 8765.
+
+  - Variação A, "Agenda" (variacao-a.html): uma coluna lida de cima para baixo.
+    "Comece por estes" mostra 3 negócios grandes, o resto da lista vem discreto,
+    e o detalhe abre numa folha que desliza.
+  - Variação B, "Mesa" (variacao-b.html): lista à esquerda, com os 5 primeiros
+    maiores, e o motivo sempre aberto à direita. Na equipe, clicar num vendedor
+    mostra uma prévia antes de abrir a semana dele.
+  - Opções no endereço: #equipe, ?fonte=b, ?tema=escuro.
+  - Prints: em process-log/prototipos/prints/, em 1280 e 390 px, com vendedor,
+    gestor, painel aberto, modo escuro e fonte B.
+  - Vídeos: em process-log/prototipos/videos/, um por variação: troca de data,
+    abertura do painel e entrada da equipe.
+
+  Movimento:
+  - Conferi no navegador: a troca de data dispara 85 animações e a mais longa
+    dura 280 ms. Com "reduzir movimento" ligado, nenhuma roda.
+  - Não há biblioteca de animação: a API de animação do navegador cobre os
+    quatro padrões em cerca de 40 linhas.
+
+  Fontes: as duas candidatas têm licença OFL, vão empacotadas no app e têm
+  algarismos tabulares, conferidos no navegador.
+  - A, Onest: calma, a mais próxima do espírito da SF Pro.
+  - B, Mona Sans: mais firme e técnica.
+
+  Três casos em que não segui o pedido ao pé da letra
+
+  1. "US$ Y de potencial" na saudação contradiz a D35, que você confirmou: o
+     potencial superestima quando é somado. Nos protótipos usei "US$ 66 mil em
+     negociação", que é o preço de lista. Para o Zane em 31/12, a soma do
+     potencial daria US$ 14.191. Qual dos dois vai na saudação?
+  2. A frase "De cada 100 negócios ainda abertos com 21 dias, 47 fecharam venda"
+     fica imprecisa. O 47 vale para todos os negócios iniciados, não para os
+     que chegaram aos 21 dias. Usei o início da faixa: "De cada 100 negócios que
+     chegaram aos 90 dias ainda abertos, 31 fecharam venda". Na faixa 0, a
+     frase vira "De cada 100 negócios iniciados, 47 fecharam venda". O número da
+     frase é o mesmo da conta. Conferi que exibir a chance arredondada para
+     inteiro não inverte a ordem em nenhuma das 6.016 linhas.
+  3. A cor de destaque é verde. O azul ficou com "frio", que é o significado
+     mais óbvio, então a ação não pode ser azul. A paleta passou no validador da
+     dataviz nos dois modos (D33 refeita). No claro, o âmbar tem contraste
+     baixo contra o fundo, e por isso toda parte da barra leva rótulo de texto,
+     como o validador exige.
+
+  Proposta de texto para a seção de interface do CLAUDE.md
+
+  Aplico só depois do seu ok:
+
+  ▎ Produto: ferramenta que o vendedor abre na segunda de manhã para saber por
+  ▎ onde começar, e o gestor, para ver onde a equipe está travada. Calma para
+  ▎ ler, rápida para agir: primeiro o que fazer, depois por quê, por último os
+  ▎ números de apoio.
+  ▎ Direção de arte: calma no estilo Apple, com a disciplina numérica da Stripe.
+  ▎ Fundo claro e modo escuro selecionado (não invertido). Muito respiro.
+  ▎ Números grandes, tabulares e sempre com contexto. Os controles ficam numa
+  ▎ camada separada do conteúdo. A prioridade se cria com espaço, tamanho e
+  ▎ peso; a cor fica só para o status térmico (quente, esfriando, frio, sempre
+  ▎ com texto) e para uma única cor de ação.
+  ▎ Estrutura: entrada por pessoa, que lembra a escolha. Três áreas: "Minha
+  ▎ semana", "Minha equipe" e "Como funciona". "Comece por estes" (3 a 5
+  ▎ negócios em destaque, cada um com o motivo numa frase) e o resto mais
+  ▎ discreto. Régua do tempo (0, 90, 138) e score em cada negócio. Painel de
+  ▎ detalhe com a conta e um "o que fazer" por situação. No celular, a lista e a
+  ▎ ação vêm primeiro, os filtros ficam recolhidos e a navegação fica embaixo.
+  ▎ Movimento: só para ajudar a entender ou agir. Menos de 300 ms, com
+  ▎ desaceleração no fim, só transform e opacity, interrompível. Nunca em ação
+  ▎ repetitiva. Respeita "reduzir movimento".
+  ▎ Língua: a do vendedor (AGENTS §10). Frases curtas, verbos de ação.
+  ▎ Estatística só no "Como funciona", traduzida.
+  ▎ Fora: gradiente decorativo, vidro fosco de enfeite, ícone de enfeite,
+  ▎ cartões iguais com sombra, número gigante sem contexto, caixa alta em
+  ▎ rótulo, texto separado por "·", "→" em botão.
+
+  Estado dos critérios de aceite
+
+  ┌──────────────────┬──────────────────────────────────────────────────────┐
+  │        CA        │                        Estado                        │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ CA0 Revisão      │ feito                                                │
+  │ inicial          │                                                      │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ CA1 Roda pelo    │ falta: dev e build funcionam, mas faltam o Setup no  │
+  │ README           │ README e o deploy                                    │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ CA2 Dados reais  │ feito (teste de hash e contagens)                    │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ CA3 Score        │ feito no núcleo (potencial, score de 0 a 100,        │
+  │                  │ backtest com IC); falta exibir na interface nova     │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ CA4 Motivo       │ parte feita no núcleo: falta a frase "de cada 100"   │
+  │                  │ como função nova, e a interface                      │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ CA5 Listas e     │ a refazer na interface nova; as regras e os estados  │
+  │ filtros          │ vazios do núcleo ficam                               │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ CA6 Voltar no    │ núcleo feito (datas, anti-vazamento, empresa         │
+  │ tempo            │ oculta); falta a interface                           │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ CA7 Backtest TS  │ feito                                                │
+  │ × Python         │                                                      │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ CA8 Descartados  │ falta (incremento 5)                                 │
+  │ na tela          │                                                      │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ CA9 Sem rede     │ feito na versão reprovada; a nova mantém (fontes     │
+  │                  │ empacotadas)                                         │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ CA10 Código e    │ em parte: TS estrito, núcleo puro, testes e Biome    │
+  │ escala           │ feitos; faltam o DataSource com dois adaptadores e o │
+  │                  │  bench                                               │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ CA11 README      │ falta (10 trechos a preencher)                       │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ CA12 Process log │ em parte: revisão, decisões, erros e prints feitos;  │
+  │                  │ faltam exports e linha do tempo                      │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ CA13 PR          │ falta                                                │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ CA14 Teste das   │ falta                                                │
+  │ personas         │                                                      │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ CA15 Como        │ falta (depende do bench)                             │
+  │ escalar          │                                                      │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ CA16 Como        │ falta (incremento 5)                                 │
+  │ funciona         │                                                      │
+  └──────────────────┴──────────────────────────────────────────────────────┘
+
+  npm run backtest e npm run bench não existem. O backtest roda dentro de npm
+  run auditoria. O bench é o segundo item da lista de cortes do plano.
+
+  Preciso de quatro respostas suas:
+  1. Variação A ou B.
+  2. Fonte Onest ou Mona Sans.
+  3. O texto do briefing acima.
+  4. O que vai na saudação: o preço de lista ou a soma do potencial.
+
+  Fontes consultadas:
+  - Apple / Create with Swift (https://www.createwithswift.com/liquid-glass-rede
+    fining-design-through-hierarchy-harmony-and-consistency/)
+  - Linear (https://linear.app/now/how-we-redesigned-the-linear-ui)
+  - Stripe / 925 Studios
+    (https://www.925studios.co/blog/stripe-dashboard-design-breakdown)
+  - Salesforce Trailhead
+    (https://trailhead.salesforce.com/content/learn/modules/sell-smarter-with-pi
+    peline-inspection/understand-deal-health-with-insights-and-scores)
+  - Pipedrive (https://support.pipedrive.com/hc/pt-br/articles/206760949-O-recur
+    so-de-Estagna%C3%A7%C3%A3o)
+  - Attio (https://attio.com/help/reference/attio-101/attios-data-model/understa
+    nding-records)
+
+❯ claude mcp add --transport http krea https://api.krea.ai/mcp
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Rodei o comando e o servidor krea foi adicionado ao ~/.claude.json, com escopo
+  local, ou seja, só para este projeto. Ele só fica disponível numa sessão
+  nova. Se pedir login, abra /mcp e autentique o krea.
+
+  Duas coisas a considerar antes de usar a Krea aqui:
+  - No app: pelo CA9, ele não faz chamada de rede. Qualquer imagem gerada teria
+    de ir empacotada no build.
+  - Na direção de arte: a proposta proíbe imagem e ícone de enfeite. Uma imagem
+    gerada só entra se ajudar o vendedor a entender ou agir.
+
+  Se você tem um uso em mente para ela, me diga qual.
+
+  Para começar a implementação, ainda preciso das quatro respostas sobre os
+  protótipos:
+  1. Variação A ou B.
+  2. Fonte Onest ou Mona Sans.
+  3. O texto proposto para a seção de interface do CLAUDE.md.
+  4. O que vai na saudação: o preço de lista ("US$ 66 mil em negociação") ou a
+     soma do potencial (US$ 14.191), que a D35 recusou somar.
+
+⏺ Rodei o comando e o servidor krea foi adicionado ao ~/.claude.json, com escopo
+  local, ou seja, só para este projeto. Ele só fica disponível numa sessão
+  nova. Se pedir login, abra /mcp e autentique o krea.
+
+  Duas coisas a considerar antes de usar a Krea aqui:
+  - No app: pelo CA9, ele não faz chamada de rede. Qualquer imagem gerada teria
+    de ir empacotada no build.
+  - Na direção de arte: a proposta proíbe imagem e ícone de enfeite. Uma imagem
+    gerada só entra se ajudar o vendedor a entender ou agir.
+
+  Se você tem um uso em mente para ela, me diga qual.
+
+  Para começar a implementação, ainda preciso das quatro respostas sobre os
+  protótipos:
+  1. Variação A ou B.
+  2. Fonte Onest ou Mona Sans.
+  3. O texto proposto para a seção de interface do CLAUDE.md.
+  4. O que vai na saudação: o preço de lista ("US$ 66 mil em negociação") ou a
+     soma do potencial (US$ 14.191), que a D35 recusou somar.
+
+❯ /compact
+  ⎿  Compacted PreCompact [[removido]
+     --data-dir '[removido]' hook
+     --event pre-compact --agent claude-code --server-url
+     http://127.0.0.1:49374 --project-strategy repo-root] completed
+     successfully: {}
+     PostCompact [if [ -z "${HOME-}" ]; then case "${OSTYPE-}" in
+     msys*|cygwin*|win32*) printf '{}\n'; if [ -z "${ORCA_AGENT_HOOK_PORT-}" ]
+     || [ -z "${ORCA_AGENT_HOOK_TOKEN-}" ] || [ -z "${ORCA_PANE_KEY-}" ]; then
+     exit 0; fi; { command -p cat 2>/dev/null || cat; } >/dev/null 2>&1 || : ;;
+     ) { command -p cat 2>/dev/null || cat; } >/dev/null 2>&1 || :; printf
+     '{}\n' ;; esac; else case "${OSTYPE-}" in msys|cygwin*|win32*) if [ -f
+     "${HOME-}/.orca/agent-hooks/claude-hook.cmd" ]; then case "${HOME-}" in
+     &|^|(|)|;|,|=|%|!) if [ -f
+     "${SYSTEMROOT-}/System32/WindowsPowerShell/v1.0/powershell.exe" ]; then
+     "${SYSTEMROOT-}/System32/WindowsPowerShell/v1.0/powershell.exe" -NoProfile
+     -EncodedCommand JABQAHIAbwBnAHIAZQBzAHMAUAByAGUAZgBlAHIAZQBuAGMAZQA9ACcAUwB
+     pAGwAZQBuAHQAbAB5AEMAbwBuAHQAaQBuAHUAZQAnADsAIAB0AHIAeQAgAHsAIABTAGUAdAAtAE
+     UAeABlAGMAdQB0AGkAbwBuAFAAbwBsAGkAYwB5ACAALQBTAGMAbwBwAGUAIABQAHIAbwBjAGUAc
+     wBzACAALQBFAHgAZQBjAHUAdABpAG8AbgBQAG8AbABpAGMAeQAgAEIAeQBwAGEAcwBzACAALQBG
+     AG8AcgBjAGUAIAAtAEUAcgByAG8AcgBBAGMAdABpAG8AbgAgAFMAaQBsAGUAbgB0AGwAeQBDAG8
+     AbgB0AGkAbgB1AGUAIAB9ACAAYwBhAHQAYwBoACAAewB9ADsAIAAkAGgAbwBtAGUAUABhAHQAaA
+     AgAD0AIAAkAGUAbgB2ADoASABPAE0ARQAgAC0AcgBlAHAAbABhAGMAZQAgACcAXgAvACgAWwBBA
+     C0AWgBhAC0AegBdACkALwAnACwAIAAnACQAMQA6AC8AJwA7ACAAJABzAGMAcgBpAHAAdABQAGEA
+     dABoACAAPQAgAEoAbwBpAG4ALQBQAGEAdABoACAAJABoAG8AbQBlAFAAYQB0AGgAIAAnAC4AbwB
+     yAGMAYQBcAGEAZwBlAG4AdAAtAGgAbwBvAGsAcwBcAGMAbABhAHUAZABlAC0AaABvAG8AawAuAG
+     MAbQBkACcAOwAgAGkAZgAgACgAVABlAHMAdAAtAFAAYQB0AGgAIAAtAEwAaQB0AGUAcgBhAGwAU
+     ABhAHQAaAAgACQAcwBjAHIAaQBwAHQAUABhAHQAaAAgAC0AUABhAHQAaABUAHkAcABlACAATABl
+     AGEAZgApACAAewAgACYAIAAkAHMAYwByAGkAcAB0AFAAYQB0AGgAOwAgAGUAeABpAHQAIAAkAEw
+     AQQBTAFQARQBYAEkAVABDAE8ARABFACAAfQA7ACAAVwByAGkAdABlAC0ATwB1AHQAcAB1AHQAIA
+     AnAHsAfQAnADsAIABpAGYAIAAoAC0AbgBvAHQAIAAkAGUAbgB2ADoATwBSAEMAQQBfAEEARwBFA
+     E4AVABfAEgATwBPAEsAXwBQAE8AUgBUACAALQBvAHIAIAAtAG4AbwB0ACAAJABlAG4AdgA6AE8A
+     UgBDAEEAXwBBAEcARQBOAFQAXwBIAE8ATwBLAF8AVABPAEsARQBOACAALQBvAHIAIAAtAG4AbwB
+     0ACAAJABlAG4AdgA6AE8AUgBDAEEAXwBQAEEATgBFAF8ASwBFAFkAKQAgAHsAIABlAHgAaQB0AC
+     AAMAAgAH0AOwAgAFsAQwBvAG4AcwBvAGwAZQBdADoAOgBJAG4ALgBSAGUAYQBkAFQAbwBFAG4AZ
+     AAoACkAIAB8ACAATwB1AHQALQBOAHUAbABsADsAIABlAHgAaQB0ACAAMAA=; else printf
+     '{}\n'; if [ -z "${ORCA_AGENT_HOOK_PORT-}" ] || [ -z
+     "${ORCA_AGENT_HOOK_TOKEN-}" ] || [ -z "${ORCA_PANE_KEY-}" ]; then exit 0;
+     fi; { command -p cat 2>/dev/null || cat; } >/dev/null 2>&1 || :; fi ;; *)
+     "${HOME-}/.orca/agent-hooks/claude-hook.cmd" ;; esac; else printf '{}\n';
+     if [ -z "${ORCA_AGENT_HOOK_PORT-}" ] || [ -z "${ORCA_AGENT_HOOK_TOKEN-}" ]
+     || [ -z "${ORCA_PANE_KEY-}" ]; then exit 0; fi; { command -p cat
+     2>/dev/null || cat; } >/dev/null 2>&1 || :; fi ;; *) if [ -f
+     "${HOME-}/.orca/agent-hooks/claude-hook.sh" ] && [ -r
+     "${HOME-}/.orca/agent-hooks/claude-hook.sh" ] && [ -x
+     "${HOME-}/.orca/agent-hooks/claude-hook.sh" ]; then /bin/sh
+     "${HOME-}/.orca/agent-hooks/claude-hook.sh"; else { command -p cat
+     2>/dev/null || cat; } >/dev/null 2>&1 || :; printf '{}\n'; fi ;; esac; fi]
+     completed successfully: {}
+  ⎿  Read solution/scripts/prototipos.ts (90 lines)
+  ⎿  Referenced file AGENTS.md
+  ⎿  Referenced file process-log/prototipos/direcao-de-arte.html
+  ⎿  Referenced file process-log/prototipos/variacao-b.html
+  ⎿  Referenced file process-log/prototipos/base.css
+  ⎿  Skills restored (dataviz, frontend-design:frontend-design)

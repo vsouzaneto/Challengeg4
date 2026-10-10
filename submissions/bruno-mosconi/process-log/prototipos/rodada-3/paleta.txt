@@ -1,0 +1,64 @@
+# Validador da skill dataviz (validate_palette.js), saída sem edição
+
+## Claro, superfície #ffffff: quente, esfriando, frio
+
+Palette (light, surface #ffffff, categorical): 3 slots
+  [PASS] Lightness band         all 3 inside L 0.43–0.77
+  [FAIL] Chroma floor           below floor (reads gray): [["#86868b",0.007]]
+  [PASS] CVD separation         worst adjacent #d9a400↔#e35400 ΔE 11.4 (deutan) · tritan 17.3
+  [PASS] Normal-vision floor    worst adjacent #d9a400↔#e35400 ΔE 17.8 (normal)
+  [WARN] Contrast vs surface    below 3:1 — relief required (visible labels or table view): [["#d9a400",2.27]]
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check WCAG text contrast; for a sequential ramp, lightness monotonicity.
+
+
+## Escuro, superfície #1d1d1f (cartões)
+
+Palette (dark, surface #1d1d1f, categorical): 3 slots
+  [PASS] Lightness band         all 3 inside L 0.48–0.67
+  [FAIL] Chroma floor           below floor (reads gray): [["#86868b",0.007]]
+  [PASS] CVD separation         worst adjacent #c78500↔#b84300 ΔE 12.8 (deutan) · tritan 14.0
+  [PASS] Normal-vision floor    worst adjacent #86868b↔#c78500 ΔE 15.5 (normal)
+  [PASS] Contrast vs surface    all 3 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check WCAG text contrast; for a sequential ramp, lightness monotonicity.
+
+
+## Escuro, superfície #000000 (página)
+
+Palette (dark, surface #000000, categorical): 3 slots
+  [PASS] Lightness band         all 3 inside L 0.48–0.67
+  [FAIL] Chroma floor           below floor (reads gray): [["#86868b",0.007]]
+  [PASS] CVD separation         worst adjacent #c78500↔#b84300 ΔE 12.8 (deutan) · tritan 14.0
+  [PASS] Normal-vision floor    worst adjacent #86868b↔#c78500 ΔE 15.5 (normal)
+  [PASS] Contrast vs surface    all 3 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check WCAG text contrast; for a sequential ramp, lightness monotonicity.
+
+
+## Contraste de texto (WCAG), calculado com o contrast() do mesmo script
+- texto principal: #1d1d1f sobre #ffffff = 16.83:1
+- texto secundário: #6e6e73 sobre #ffffff = 5.07:1
+- texto secundário sobre #f5f5f7: #6e6e73 sobre #f5f5f7 = 4.66:1
+- apoio #86868b (só marcas e texto desabilitado): #86868b sobre #ffffff = 3.62:1
+- link: #0066cc sobre #ffffff = 5.57:1
+- botão: branco sobre #0071e3: #ffffff sobre #0071e3 = 4.70:1
+- quente (texto): #b64400 sobre #ffffff = 5.50:1
+- esfriando (texto): #8a5a00 sobre #ffffff = 5.93:1
+- frio (texto): #6e6e73 sobre #ffffff = 5.07:1
+- escuro: texto principal: #f5f5f7 sobre #1d1d1f = 15.46:1
+- escuro: secundário: #a1a1a6 sobre #1d1d1f = 6.54:1
+- escuro: link: #2997ff sobre #1d1d1f = 5.58:1
+- escuro: link sobre #000: #2997ff sobre #000000 = 6.96:1
+- escuro: quente (texto): #ff9a5c sobre #1d1d1f = 8.04:1
+- escuro: esfriando (texto): #f5c451 sobre #1d1d1f = 10.34:1
+- escuro: frio (texto): #a1a1a6 sobre #1d1d1f = 6.54:1
+
+## Decisão (D44, Bruno)
+
+Paleta aprovada com o frio em cinza. A falha de croma acima ("Chroma floor", #86868b) é intencional:
+o frio é cinza porque no apple.com azul quer dizer "clicável", e ele sempre aparece com o floco de neve e o texto "Frio".
+O aviso de contraste do âmbar no claro (2,27:1) é resolvido do mesmo jeito: ícone e texto em toda parte.

@@ -1,0 +1,43 @@
+1) Taxa de vitória por mês do trimestre do FECHAMENTO:
+     size   mean
+cmq             
+1    1779  0.490
+2    2358  0.547
+3    2574  0.807
+
+2) Dia do mês do fechamento — ganhos em meses de fim de trimestre (quartis): [4.0, 8.0, 16.0, 24.0, 28.0]
+   perdidos em meses de fim de trimestre: [4.0, 9.0, 16.0, 24.0, 28.0]
+   ganhos em meses 1-2: [4.0, 8.0, 16.0, 24.0, 28.0]
+
+3) Distribuição de ciclo: ganhos x perdidos por fechamento em fim de trimestre
+            count   25%   50%   75%
+cmq won                            
+1   False   907.0   2.0   7.0   9.0
+    True    872.0   2.0   7.0   9.0
+2   False  1068.0  16.0  67.0  88.0
+    True   1290.0  19.0  69.0  88.0
+3   False   498.0  20.0  76.0  97.0
+    True   2076.0  18.0  75.0  97.0
+
+4) Ganhou (vs perdeu/nunca fechou) por emq: p=1.10e-17
+{1: 0.442, 2: 0.49, 3: 0.579}
+
+4) Ganhou (vs perdeu/nunca fechou) por emonth: p=1.80e-42
+{'2016-10': 1.0, '2016-11': 0.722, '2016-12': 0.678, '2017-01': 0.58, '2017-02': 0.538, '2017-03': 0.556, '2017-04': 0.489, '2017-05': 0.507, '2017-06': 0.572, '2017-07': 0.368, '2017-08': 0.341}
+
+4) Ganhou (vs perdeu/nunca fechou) por dow: p=7.15e-01
+{0: 0.505, 1: 0.483, 2: 0.484, 3: 0.507, 4: 0.504, 5: 0.483, 6: 0.515}
+
+   por dias até o fim do trimestre no início do deal:
+             size   mean
+bucket_qend             
+(-1, 15]      988  0.547
+(15, 30]      864  0.618
+(30, 45]      733  0.565
+(45, 60]     1036  0.433
+(60, 75]     1290  0.402
+(75, 92]     1080  0.487
+
+5) AUC (ganhou eventualmente) com atributos do início — tempo + produto + vendedor: 0.613
+   só produto+vendedor: 0.501
+   só dias até fim do trimestre: 0.568
