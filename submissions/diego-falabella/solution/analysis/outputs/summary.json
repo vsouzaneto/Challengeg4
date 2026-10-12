@@ -1,0 +1,570 @@
+{
+  "n_posts": 52214,
+  "n_creators": 5000,
+  "date_min": "2023-05-29",
+  "date_max": "2025-05-28",
+  "metrics": {
+    "content_length": {
+      "mean": 229.53778680047498,
+      "std": 167.08652472997292,
+      "min": 10.0,
+      "max": 599.0,
+      "cv_pct": 72.79260075606304
+    },
+    "views": {
+      "mean": 10100.28331481978,
+      "std": 100.02592772143451,
+      "min": 9676.0,
+      "max": 10551.0,
+      "cv_pct": 0.9903279403526245
+    },
+    "likes": {
+      "mean": 1510.2744857701,
+      "std": 38.92016781044668,
+      "min": 1354.0,
+      "max": 1668.0,
+      "cv_pct": 2.577026108641503
+    },
+    "shares": {
+      "mean": 300.01844332937526,
+      "std": 17.308912095194593,
+      "min": 227.0,
+      "max": 380.0,
+      "cv_pct": 5.7692826824622925
+    },
+    "comments_count": {
+      "mean": 200.0154556249282,
+      "std": 14.093912049927756,
+      "min": 140.0,
+      "max": 258.0,
+      "cv_pct": 7.046411491498366
+    },
+    "follower_count": {
+      "mean": 499884.5146703949,
+      "std": 288044.5936686482,
+      "min": 1013.0,
+      "max": 999998.0,
+      "cv_pct": 57.62222777766461
+    },
+    "eng": {
+      "mean": 0.19905453843442247,
+      "std": 0.0048692979761157966,
+      "min": 0.1788009592326139,
+      "max": 0.22227894629364917,
+      "cv_pct": 2.446212989873608
+    }
+  },
+  "zeros": {
+    "content_length": 0,
+    "views": 0,
+    "likes": 0,
+    "shares": 0,
+    "comments_count": 0,
+    "follower_count": 0
+  },
+  "max_abs_corr_between_numeric": 0.007427724653743314,
+  "views_normality_shapiro_p": 0.3427202532375987,
+  "followers_uniform_ks_p": 0.8106182413897531,
+  "tests_total": 80,
+  "tests_p_below_05": 1,
+  "tests_expected_by_chance": 4.0,
+  "sponsored_vs_organic": {
+    "sponsored_eng": 0.1990484033932538,
+    "organic_eng": 0.19905911693972803,
+    "t_p": 0.8035858329771238
+  },
+  "split_half_r_cells": -0.21752334624867886,
+  "split_half_r_platform_tier": -0.19842378780959255,
+  "model": {
+    "eng": {
+      "r2_mean": -0.001353622077378791,
+      "r2_std": 0.0005325213874374247
+    },
+    "views": {
+      "r2_mean": -0.0011827469035416538,
+      "r2_std": 0.00033142759145597683
+    },
+    "shares": {
+      "r2_mean": -0.000938401521366794,
+      "r2_std": 0.00046556944748091814
+    }
+  },
+  "creator_consistency": {
+    "posts_per_creator": 10.4428,
+    "distinct_names_per_creator": 10.4422,
+    "distinct_follower_counts_per_creator": 10.4428,
+    "distinct_platforms_per_creator": 4.5196
+  },
+  "text": {
+    "unique_descriptions": 52214,
+    "unique_sponsor_names": 18006,
+    "sponsored_posts": 22314
+  },
+  "mix": {
+    "platform": {
+      "Bilibili": 0.20297238288581607,
+      "YouTube": 0.20099973187267783,
+      "Instagram": 0.19962079135863944,
+      "RedNote": 0.19921860037537825,
+      "TikTok": 0.1971884935074884
+    },
+    "content_type": {
+      "video": 0.6032864748917914,
+      "image": 0.19732255716857547,
+      "mixed": 0.09983912360669553,
+      "text": 0.09955184433293753
+    },
+    "content_category": {
+      "beauty": 0.40263147814762323,
+      "lifestyle": 0.39761366683265026,
+      "tech": 0.1997548550197265
+    },
+    "is_sponsored": {
+      "False": 0.5726433523576052,
+      "True": 0.4273566476423948
+    },
+    "creator_tier": {
+      ">250K": 0.7509288696518175,
+      "50K-250K": 0.19996552648714905,
+      "10K-50K": 0.040410617841958096,
+      "<10K": 0.008694986019075344
+    }
+  },
+  "naive_findings": {
+    "top_cell": {
+      "platform": "TikTok",
+      "content_type": "mixed",
+      "content_category": "beauty",
+      "is_sponsored": false,
+      "mean": 0.1997958215680295,
+      "count": 239
+    },
+    "bottom_cell": {
+      "platform": "Instagram",
+      "content_type": "text",
+      "content_category": "tech",
+      "is_sponsored": false,
+      "mean": 0.1984823109186143,
+      "count": 122
+    },
+    "lift_top_vs_base_pct": 0.37240202581527715,
+    "spread_top_vs_bottom_pct": 0.6617771847456044,
+    "sponsored_eng": 0.1990484033932538,
+    "organic_eng": 0.19905911693972803,
+    "platform_rank": {
+      "RedNote": 0.199097617129558,
+      "Bilibili": 0.1990849642769535,
+      "TikTok": 0.1990601700739317,
+      "YouTube": 0.19903719620245708,
+      "Instagram": 0.19899250885542835
+    },
+    "creator_tier_eng": {
+      "<10K": 0.19897990738518864,
+      "10K-50K": 0.19909766706993695,
+      "50K-250K": 0.19905864892064434,
+      ">250K": 0.19905198706837826
+    }
+  },
+  "grid_pvalues": [
+    {
+      "metric": "views",
+      "factor": "platform",
+      "p": 0.9185733748075221
+    },
+    {
+      "metric": "views",
+      "factor": "content_type",
+      "p": 0.27785631750424855
+    },
+    {
+      "metric": "views",
+      "factor": "content_category",
+      "p": 0.2692184532158266
+    },
+    {
+      "metric": "views",
+      "factor": "language",
+      "p": 0.2800325196104892
+    },
+    {
+      "metric": "views",
+      "factor": "is_sponsored",
+      "p": 0.822383112383964
+    },
+    {
+      "metric": "views",
+      "factor": "disclosure_type",
+      "p": 0.5555925015959906
+    },
+    {
+      "metric": "views",
+      "factor": "sponsor_category",
+      "p": 0.9294282865371998
+    },
+    {
+      "metric": "views",
+      "factor": "disclosure_location",
+      "p": 0.21971169998677648
+    },
+    {
+      "metric": "views",
+      "factor": "audience_age_distribution",
+      "p": 0.5242036800630676
+    },
+    {
+      "metric": "views",
+      "factor": "audience_gender_distribution",
+      "p": 0.749248777380082
+    },
+    {
+      "metric": "views",
+      "factor": "audience_location",
+      "p": 0.2970291616607192
+    },
+    {
+      "metric": "views",
+      "factor": "creator_tier",
+      "p": 0.32022038700576616
+    },
+    {
+      "metric": "views",
+      "factor": "hour",
+      "p": 0.4698708360817969
+    },
+    {
+      "metric": "views",
+      "factor": "dow",
+      "p": 0.6494942550287606
+    },
+    {
+      "metric": "views",
+      "factor": "month",
+      "p": 0.8732559156887769
+    },
+    {
+      "metric": "views",
+      "factor": "n_hash",
+      "p": 0.5915346854076318
+    },
+    {
+      "metric": "likes",
+      "factor": "platform",
+      "p": 0.10558160748598078
+    },
+    {
+      "metric": "likes",
+      "factor": "content_type",
+      "p": 0.7550666909590802
+    },
+    {
+      "metric": "likes",
+      "factor": "content_category",
+      "p": 0.4396215109423629
+    },
+    {
+      "metric": "likes",
+      "factor": "language",
+      "p": 0.05350874819582217
+    },
+    {
+      "metric": "likes",
+      "factor": "is_sponsored",
+      "p": 0.9003431309868077
+    },
+    {
+      "metric": "likes",
+      "factor": "disclosure_type",
+      "p": 0.6491042440516174
+    },
+    {
+      "metric": "likes",
+      "factor": "sponsor_category",
+      "p": 0.32626150289182476
+    },
+    {
+      "metric": "likes",
+      "factor": "disclosure_location",
+      "p": 0.7146060868554579
+    },
+    {
+      "metric": "likes",
+      "factor": "audience_age_distribution",
+      "p": 0.6217934216888563
+    },
+    {
+      "metric": "likes",
+      "factor": "audience_gender_distribution",
+      "p": 0.8296969370777759
+    },
+    {
+      "metric": "likes",
+      "factor": "audience_location",
+      "p": 0.3264258048643137
+    },
+    {
+      "metric": "likes",
+      "factor": "creator_tier",
+      "p": 0.6286823468700724
+    },
+    {
+      "metric": "likes",
+      "factor": "hour",
+      "p": 0.16084944252681418
+    },
+    {
+      "metric": "likes",
+      "factor": "dow",
+      "p": 0.8224914291034192
+    },
+    {
+      "metric": "likes",
+      "factor": "month",
+      "p": 0.8431640770275611
+    },
+    {
+      "metric": "likes",
+      "factor": "n_hash",
+      "p": 0.7316098163561421
+    },
+    {
+      "metric": "shares",
+      "factor": "platform",
+      "p": 0.43905301618769743
+    },
+    {
+      "metric": "shares",
+      "factor": "content_type",
+      "p": 0.21987443190171668
+    },
+    {
+      "metric": "shares",
+      "factor": "content_category",
+      "p": 0.3118958636863771
+    },
+    {
+      "metric": "shares",
+      "factor": "language",
+      "p": 0.7887160153640297
+    },
+    {
+      "metric": "shares",
+      "factor": "is_sponsored",
+      "p": 0.18284597807750042
+    },
+    {
+      "metric": "shares",
+      "factor": "disclosure_type",
+      "p": 0.17063272508825594
+    },
+    {
+      "metric": "shares",
+      "factor": "sponsor_category",
+      "p": 0.6611693167550996
+    },
+    {
+      "metric": "shares",
+      "factor": "disclosure_location",
+      "p": 0.3474723075458258
+    },
+    {
+      "metric": "shares",
+      "factor": "audience_age_distribution",
+      "p": 0.4300198222508873
+    },
+    {
+      "metric": "shares",
+      "factor": "audience_gender_distribution",
+      "p": 0.7199686226680837
+    },
+    {
+      "metric": "shares",
+      "factor": "audience_location",
+      "p": 0.9599077147376771
+    },
+    {
+      "metric": "shares",
+      "factor": "creator_tier",
+      "p": 0.5856014132913896
+    },
+    {
+      "metric": "shares",
+      "factor": "hour",
+      "p": 0.26128764797788273
+    },
+    {
+      "metric": "shares",
+      "factor": "dow",
+      "p": 0.2114818670153177
+    },
+    {
+      "metric": "shares",
+      "factor": "month",
+      "p": 0.6358902652224099
+    },
+    {
+      "metric": "shares",
+      "factor": "n_hash",
+      "p": 0.5305865301372593
+    },
+    {
+      "metric": "comments_count",
+      "factor": "platform",
+      "p": 0.2943742002367175
+    },
+    {
+      "metric": "comments_count",
+      "factor": "content_type",
+      "p": 0.3168163721104199
+    },
+    {
+      "metric": "comments_count",
+      "factor": "content_category",
+      "p": 0.913878671400097
+    },
+    {
+      "metric": "comments_count",
+      "factor": "language",
+      "p": 0.6101139516354224
+    },
+    {
+      "metric": "comments_count",
+      "factor": "is_sponsored",
+      "p": 0.6533626587397945
+    },
+    {
+      "metric": "comments_count",
+      "factor": "disclosure_type",
+      "p": 0.9040120116667733
+    },
+    {
+      "metric": "comments_count",
+      "factor": "sponsor_category",
+      "p": 0.7739235596572916
+    },
+    {
+      "metric": "comments_count",
+      "factor": "disclosure_location",
+      "p": 0.10825978343374314
+    },
+    {
+      "metric": "comments_count",
+      "factor": "audience_age_distribution",
+      "p": 0.4246924660695798
+    },
+    {
+      "metric": "comments_count",
+      "factor": "audience_gender_distribution",
+      "p": 0.7530325181895702
+    },
+    {
+      "metric": "comments_count",
+      "factor": "audience_location",
+      "p": 0.8807802742341805
+    },
+    {
+      "metric": "comments_count",
+      "factor": "creator_tier",
+      "p": 0.7813770572209088
+    },
+    {
+      "metric": "comments_count",
+      "factor": "hour",
+      "p": 0.15355492766171364
+    },
+    {
+      "metric": "comments_count",
+      "factor": "dow",
+      "p": 0.03868971480906339
+    },
+    {
+      "metric": "comments_count",
+      "factor": "month",
+      "p": 0.09733403785848325
+    },
+    {
+      "metric": "comments_count",
+      "factor": "n_hash",
+      "p": 0.861178025180318
+    },
+    {
+      "metric": "eng",
+      "factor": "platform",
+      "p": 0.3620984536653066
+    },
+    {
+      "metric": "eng",
+      "factor": "content_type",
+      "p": 0.22294077970851586
+    },
+    {
+      "metric": "eng",
+      "factor": "content_category",
+      "p": 0.28801157318011916
+    },
+    {
+      "metric": "eng",
+      "factor": "language",
+      "p": 0.2520788210986867
+    },
+    {
+      "metric": "eng",
+      "factor": "is_sponsored",
+      "p": 0.8790032491052783
+    },
+    {
+      "metric": "eng",
+      "factor": "disclosure_type",
+      "p": 0.3026080359309105
+    },
+    {
+      "metric": "eng",
+      "factor": "sponsor_category",
+      "p": 0.27762477555391224
+    },
+    {
+      "metric": "eng",
+      "factor": "disclosure_location",
+      "p": 0.4436562213660029
+    },
+    {
+      "metric": "eng",
+      "factor": "audience_age_distribution",
+      "p": 0.5153201233214512
+    },
+    {
+      "metric": "eng",
+      "factor": "audience_gender_distribution",
+      "p": 0.9272231375894885
+    },
+    {
+      "metric": "eng",
+      "factor": "audience_location",
+      "p": 0.4453952416143475
+    },
+    {
+      "metric": "eng",
+      "factor": "creator_tier",
+      "p": 0.9470026770531882
+    },
+    {
+      "metric": "eng",
+      "factor": "hour",
+      "p": 0.08495396186793013
+    },
+    {
+      "metric": "eng",
+      "factor": "dow",
+      "p": 0.8273152732563736
+    },
+    {
+      "metric": "eng",
+      "factor": "month",
+      "p": 0.8903386064000498
+    },
+    {
+      "metric": "eng",
+      "factor": "n_hash",
+      "p": 0.3819733810137608
+    }
+  ]
+}

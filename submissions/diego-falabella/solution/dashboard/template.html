@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Social Signal Gate</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1d2430;--mut:#67707e;--line:#e3e6eb;--blue:#2F5D8A;--org:#C97B2A;--ok:#2e7d4f;--bad:#b3261e;--warn:#b7791f}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#12161c;--card:#1b212a;--ink:#e8ebf0;--mut:#9aa3b0;--line:#2b333f}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 16px}
+h1{font-size:22px;margin:0 0 4px}h2{font-size:16px;margin:0 0 10px}.sub{color:var(--mut);margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.kpi{border:1px solid var(--line);border-radius:10px;padding:12px}.kpi b{display:block;font-size:22px}.kpi span{color:var(--mut);font-size:13px}
+.badge{display:inline-block;padding:6px 12px;border-radius:999px;font-weight:600;color:#fff}.ok{background:var(--ok)}.bad{background:var(--bad)}.warn{background:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--mut);font-weight:600}td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.bar{height:10px;background:var(--blue);border-radius:4px;display:inline-block;vertical-align:middle}.bar.o{background:var(--org)}
+.check{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line)}.check:last-child{border:0}.dot{width:12px;height:12px;border-radius:50%;margin-top:6px;flex:none}
+.dot.ok{background:var(--ok)}.dot.bad{background:var(--bad)}.dot.warn{background:var(--warn)}
+.ctrl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}select,input[type=file],button{font:inherit;padding:7px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+button{cursor:pointer;background:var(--blue);color:#fff;border-color:var(--blue)}
+.locked{position:relative}.locked::after{content:"Bloqueado pelo portão de sinal: estas diferenças não são distinguíveis de acaso. Veja os testes acima.";position:absolute;inset:0;background:rgba(120,120,120,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;border-radius:12px;color:#fff;font-weight:600}
+.small{font-size:13px;color:var(--mut)}code{background:var(--bg);padding:1px 5px;border-radius:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Social Signal Gate — performance de conteúdo com teste de confiança</h1>
+<p class="sub">Carregue o export (CSV) de posts. Antes de mostrar "o que funciona", a ferramenta verifica se os dados sustentam alguma conclusão. Sem instalação: é um arquivo HTML único.</p>
+
+<div class="card">
+  <div class="ctrl">
+    <input type="file" id="file" accept=".csv">
+    <span class="small" id="src">Dados carregados: dataset do challenge (Kaggle, 52.214 posts) — pré-processado</span>
+  </div>
+  <div class="small">Colunas esperadas: <code>platform, content_type, content_category, is_sponsored, follower_count, views, likes, shares, comments_count</code> (+ opcional <code>creator_id, post_date</code>). Engagement rate = (likes+shares+comentários)/views. Tudo roda no seu navegador; nada é enviado a lugar nenhum.</div>
+</div>
+
+<div class="card">
+  <h2>1. Portão de sinal <span id="verdict" class="badge warn">calculando…</span></h2>
+  <div class="row" id="kpis"></div>
+  <div id="checks" style="margin-top:12px"></div>
+  <p class="small" id="gate-note"></p>
+</div>
+
+<div class="card" id="perf-card">
+  <h2>2. Performance por segmento</h2>
+  <div class="ctrl">
+    <label>Dimensão <select id="dim"></select></label>
+    <label>Cortar por patrocínio <input type="checkbox" id="bysp" checked></label>
+    <label>Métrica <select id="metric"><option value="eng">engagement rate</option><option value="views">views</option><option value="shares">shares</option><option value="comments_count">comentários</option></select></label>
+  </div>
+  <div id="perf"></div>
+  <p class="small">IC 95% ≈ média ± 1,96 × erro-padrão. Se os intervalos de todos os segmentos se sobrepõem, não há ranking defensável.</p>
+</div>
+
+<div class="card">
+  <h2>3. Como ler isto na segunda-feira</h2>
+  <ol class="small" style="margin:0;padding-left:18px">
+    <li><b>Portão vermelho:</b> não mude alocação de verba nem pauta de conteúdo com base neste export. Verifique a instrumentação (métricas por post real, creator estável, custo do patrocínio) antes de analisar de novo.</li>
+    <li><b>Portão amarelo:</b> há sinal, mas fraco ou pouco replicável. Trate como hipótese e valide com um teste controlado (ex.: 2 semanas, mesma pauta, com e sem patrocínio).</li>
+    <li><b>Portão verde:</b> use o ranking de segmentos; priorize os que têm IC estreito e volume alto. Re-rode mensalmente — ranking que não se repete em dois meses não é estratégia.</li>
+  </ol>
+</div>
+<p class="small">Feito para o AI Master Challenge 004 (G4) — Diego Falabella. Fonte dos métodos: teste de Kruskal-Wallis por permutação, replicação split-half, coeficiente de variação, consistência de entidade.</p>
+</div>
+
+<script>
+const EMBED = __EMBED__;
+let rows = null; // dados crus quando o usuário carrega CSV
+
+// ---------- CSV ----------
+function parseCSV(text){
+  const out=[];let row=[],f='',q=false;
+  for(let i=0;i<text.length;i++){const c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){f+='"';i++;} else q=false;} else f+=c; }
+    else if(c==='"') q=true; else if(c===','){row.push(f);f='';}
+    else if(c==='\n'){row.push(f);out.push(row);row=[];f='';}
+    else if(c!=='\r') f+=c; }
+  if(f.length||row.length){row.push(f);out.push(row);}
+  const h=out.shift().map(s=>s.trim());
+  return out.filter(r=>r.length===h.length).map(r=>Object.fromEntries(h.map((k,i)=>[k,r[i]])));
+}
+function prep(rs){
+  const num=k=>rs.forEach(r=>r[k]=+r[k]);
+  ['views','likes','shares','comments_count','follower_count'].forEach(k=>rs[0]&&k in rs[0]&&num(k));
+  rs=rs.filter(r=>r.views>0);
+  rs.forEach(r=>{r.eng=(r.likes+r.shares+r.comments_count)/r.views;
+    r.is_sponsored=String(r.is_sponsored).toLowerCase()==='true'?'patrocinado':'orgânico';
+    const f=r.follower_count; r.creator_tier=f<1e4?'<10K':f<5e4?'10K-50K':f<25e4?'50K-250K':'>250K';});
+  return rs;
+}
+// ---------- stats ----------
+const mean=a=>a.reduce((s,x)=>s+x,0)/a.length;
+const sd=a=>{const m=mean(a);return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/(a.length-1));};
+function groupStats(rs,keys,metric){
+  const g={};rs.forEach(r=>{const k=keys.map(x=>r[x]).join(' · ');(g[k]??=[]).push(r[metric]);});
+  return Object.entries(g).map(([k,v])=>({k,n:v.length,mean:mean(v),se:sd(v)/Math.sqrt(v.length)})).sort((a,b)=>b.mean-a.mean);
+}
+function betweenVar(rs,key,metric){const g=groupStats(rs,[key],metric);const gm=mean(rs.map(r=>r[metric]));return g.reduce((s,x)=>s+x.n*(x.mean-gm)**2,0);}
+function permTest(rs,key,metric,B=150){ // p-valor por permutação (robusto, sem distribuição assumida)
+  const sample=rs.length>8000?rs.filter((_,i)=>i%Math.ceil(rs.length/8000)===0):rs.slice();
+  const obs=betweenVar(sample,key,metric);const labels=sample.map(r=>r[key]);let ge=0;
+  for(let b=0;b<B;b++){for(let i=labels.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[labels[i],labels[j]]=[labels[j],labels[i]];}
+    const sh=sample.map((r,i)=>({[key]:labels[i],[metric]:r[metric]}));if(betweenVar(sh,key,metric)>=obs)ge++;}
+  return (ge+1)/(B+1);
+}
+function splitHalf(rs,keys){
+  const a=rs.filter((_,i)=>i%2===0),b=rs.filter((_,i)=>i%2===1);
+  const ga=Object.fromEntries(groupStats(a,keys,'eng').map(x=>[x.k,x.mean])),gb=Object.fromEntries(groupStats(b,keys,'eng').map(x=>[x.k,x.mean]));
+  const ks=Object.keys(ga).filter(k=>k in gb);if(ks.length<4)return NaN;
+  const xa=ks.map(k=>ga[k]),xb=ks.map(k=>gb[k]),ma=mean(xa),mb=mean(xb);
+  const cov=xa.reduce((s,x,i)=>s+(x-ma)*(xb[i]-mb),0);return cov/Math.sqrt(xa.reduce((s,x)=>s+(x-ma)**2,0)*xb.reduce((s,x)=>s+(x-mb)**2,0));
+}
+function gateFromRows(rs){
+  const dims=['platform','content_type','content_category','is_sponsored','creator_tier'].filter(d=>d in rs[0]);
+  const ps=dims.map(d=>({d,p:permTest(rs,d,'eng')}));
+  const sh=splitHalf(rs,dims.filter(d=>d!=='creator_tier'));
+  const views=rs.map(r=>r.views);const cv=sd(views)/mean(views)*100;
+  let creator=null;if('creator_id' in rs[0]&&'follower_count' in rs[0]){const m={};rs.forEach(r=>(m[r.creator_id]??=new Set()).add(r.follower_count));const arr=Object.values(m).filter(s=>s.size>0);creator=mean(arr.map(s=>s.size));}
+  const zeros=rs.filter(r=>r.likes+r.shares+r.comments_count===0).length/rs.length*100;
+  return {n:rs.length,tests:ps,sig:ps.filter(x=>x.p<.05).length,splitHalf:sh,cvViews:cv,creatorFollowerVariants:creator,zeroPct:zeros,sponsored:groupStats(rs,['is_sponsored'],'eng')};
+}
+// ---------- render ----------
+function verdictOf(g){
+  const bad=(g.sig<=Math.max(1,g.tests.length*.05*1.5)&&!(g.splitHalf>.5))||g.cvViews<3;
+  const weak=!bad&&(g.splitHalf<.7||g.sig<g.tests.length/2);
+  return bad?['bad','SEM SINAL — não decida com estes dados']:weak?['warn','SINAL FRACO — trate como hipótese']:['ok','SINAL CONFIÁVEL — pode priorizar'];
+}
+function renderGate(g){
+  const [cls,txt]=verdictOf(g);const v=document.getElementById('verdict');v.className='badge '+cls;v.textContent=txt;
+  const f=(x,d=2)=>isNaN(x)?'—':x.toFixed(d);
+  document.getElementById('kpis').innerHTML=[
+    [g.n.toLocaleString('pt-BR'),'posts analisados'],
+    [`${g.sig} / ${g.tests.length}`,'dimensões com diferença real (p<0,05)'],
+    [f(g.splitHalf),'replicação split-half (r) do ranking de segmentos'],
+    [f(g.cvViews,1)+'%','coef. de variação de views (real: >100%)'],
+  ].map(([b,s])=>`<div class="kpi"><b>${b}</b><span>${s}</span></div>`).join('');
+  const checks=[
+    [g.sig>g.tests.length*.05*1.5?'ok':'bad',`Teste de permutação por dimensão (engajamento): ${g.tests.map(t=>`${t.d} p=${f(t.p,3)}`).join(' · ')}. ${g.sig<=g.tests.length*.05*1.5?'Nenhuma dimensão separa engajamento além do acaso.':'Há dimensões com efeito real.'}`],
+    [g.splitHalf>.7?'ok':g.splitHalf>.5?'warn':'bad',`Replicação: o ranking de segmentos em metade dos posts correlaciona r=${f(g.splitHalf)} com a outra metade. Abaixo de 0,5 o "melhor segmento" é sorteio.`],
+    [g.cvViews>30?'ok':'bad',`Dispersão: views variam ${f(g.cvViews,1)}% em torno da média. Redes reais são cauda longa (poucos posts viralizam; CV bem acima de 100%). Dispersão quase nula indica dado gerado ou agregado artificialmente.`],
+    g.creatorFollowerVariants==null?['warn','Sem creator_id/follower_count para checar consistência de creator.']:[g.creatorFollowerVariants<=2?'ok':'bad',`Consistência de entidade: cada creator_id aparece com ${f(g.creatorFollowerVariants,1)} contagens diferentes de followers. Acima de ~2 (crescimento), o campo "creator" não é confiável para segmentar por faixa.`],
+    [g.zeroPct>0?'ok':'warn',`Survivorship: ${f(g.zeroPct,1)}% dos posts têm engajamento zero. Zero posts com zero engajamento é implausível em redes reais — ou o export filtra, ou é sintético.`],
+    ['ok',`Orgânico vs patrocinado (bruto): ${g.sponsored.map(s=>`${s.k} ${(s.mean*100).toFixed(2)}% (n=${s.n})`).join(' · ')}. Lembre: comparação justa exige controlar por plataforma e faixa de creator — veja a seção 2 com o corte ligado.`],
+  ];
+  document.getElementById('checks').innerHTML=checks.map(([c,t])=>`<div class="check"><div class="dot ${c}"></div><div>${t}</div></div>`).join('');
+  document.getElementById('perf-card').classList.toggle('locked',cls==='bad');
+  document.getElementById('gate-note').textContent=cls==='bad'?'Painel de performance bloqueado: qualquer ranking abaixo seria ruído apresentado como insight.':'Painel de performance liberado.';
+}
+function renderPerf(){
+  const dim=document.getElementById('dim').value,bysp=document.getElementById('bysp').checked,metric=document.getElementById('metric').value;
+  let stats;
+  if(rows){stats=groupStats(rows,bysp&&dim!=='is_sponsored'?[dim,'is_sponsored']:[dim],metric);}
+  else{const key=bysp&&dim!=='is_sponsored'?dim+'|is_sponsored':dim;stats=(EMBED.perf[metric]||{})[key]||[];}
+  const max=Math.max(...stats.map(s=>s.mean+1.96*s.se)),min=Math.min(...stats.map(s=>s.mean-1.96*s.se));
+  const pct=metric==='eng';const fmt=x=>pct?(x*100).toFixed(2)+'%':Math.round(x).toLocaleString('pt-BR');
+  document.getElementById('perf').innerHTML=`<table><tr><th>segmento</th><th class="num">n</th><th class="num">média</th><th class="num">IC 95%</th><th style="width:40%">escala (zoom no intervalo observado)</th></tr>`+
+    stats.map(s=>{const w=max>min?((s.mean-min)/(max-min))*100:50;return `<tr><td>${s.k}</td><td class="num">${s.n.toLocaleString('pt-BR')}</td><td class="num">${fmt(s.mean)}</td><td class="num">${fmt(s.mean-1.96*s.se)} – ${fmt(s.mean+1.96*s.se)}</td><td><span class="bar ${s.k.includes('patrocinado')?'o':''}" style="width:${Math.max(2,w)}%"></span></td></tr>`;}).join('')+'</table>'+
+    `<p class="small">Atenção à escala: as barras ampliam o intervalo ${fmt(min)}–${fmt(max)}. Diferenças que parecem grandes aqui podem ser décimos de ponto percentual.</p>`;
+}
+function init(){
+  const dims=['platform','content_type','content_category','creator_tier','is_sponsored'];
+  document.getElementById('dim').innerHTML=dims.map(d=>`<option value="${d}">${d}</option>`).join('');
+  ['dim','bysp','metric'].forEach(id=>document.getElementById(id).addEventListener('change',renderPerf));
+  renderGate(EMBED.gate);renderPerf();
+  document.getElementById('file').addEventListener('change',e=>{const fl=e.target.files[0];if(!fl)return;
+    const rd=new FileReader();rd.onload=()=>{try{rows=prep(parseCSV(rd.result));document.getElementById('src').textContent=`Dados carregados: ${fl.name} (${rows.length.toLocaleString('pt-BR')} posts)`;renderGate(gateFromRows(rows));renderPerf();}catch(err){alert('Não consegui ler o CSV: '+err.message);}};rd.readAsText(fl);});
+}
+init();
+</script>
+</body>
+</html>

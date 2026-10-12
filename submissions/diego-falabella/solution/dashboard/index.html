@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Social Signal Gate</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1d2430;--mut:#67707e;--line:#e3e6eb;--blue:#2F5D8A;--org:#C97B2A;--ok:#2e7d4f;--bad:#b3261e;--warn:#b7791f}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#12161c;--card:#1b212a;--ink:#e8ebf0;--mut:#9aa3b0;--line:#2b333f}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 16px}
+h1{font-size:22px;margin:0 0 4px}h2{font-size:16px;margin:0 0 10px}.sub{color:var(--mut);margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.kpi{border:1px solid var(--line);border-radius:10px;padding:12px}.kpi b{display:block;font-size:22px}.kpi span{color:var(--mut);font-size:13px}
+.badge{display:inline-block;padding:6px 12px;border-radius:999px;font-weight:600;color:#fff}.ok{background:var(--ok)}.bad{background:var(--bad)}.warn{background:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--mut);font-weight:600}td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.bar{height:10px;background:var(--blue);border-radius:4px;display:inline-block;vertical-align:middle}.bar.o{background:var(--org)}
+.check{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line)}.check:last-child{border:0}.dot{width:12px;height:12px;border-radius:50%;margin-top:6px;flex:none}
+.dot.ok{background:var(--ok)}.dot.bad{background:var(--bad)}.dot.warn{background:var(--warn)}
+.ctrl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}select,input[type=file],button{font:inherit;padding:7px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+button{cursor:pointer;background:var(--blue);color:#fff;border-color:var(--blue)}
+.locked{position:relative}.locked::after{content:"Bloqueado pelo portão de sinal: estas diferenças não são distinguíveis de acaso. Veja os testes acima.";position:absolute;inset:0;background:rgba(120,120,120,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;border-radius:12px;color:#fff;font-weight:600}
+.small{font-size:13px;color:var(--mut)}code{background:var(--bg);padding:1px 5px;border-radius:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Social Signal Gate — performance de conteúdo com teste de confiança</h1>
+<p class="sub">Carregue o export (CSV) de posts. Antes de mostrar "o que funciona", a ferramenta verifica se os dados sustentam alguma conclusão. Sem instalação: é um arquivo HTML único.</p>
+
+<div class="card">
+  <div class="ctrl">
+    <input type="file" id="file" accept=".csv">
+    <span class="small" id="src">Dados carregados: dataset do challenge (Kaggle, 52.214 posts) — pré-processado</span>
+  </div>
+  <div class="small">Colunas esperadas: <code>platform, content_type, content_category, is_sponsored, follower_count, views, likes, shares, comments_count</code> (+ opcional <code>creator_id, post_date</code>). Engagement rate = (likes+shares+comentários)/views. Tudo roda no seu navegador; nada é enviado a lugar nenhum.</div>
+</div>
+
+<div class="card">
+  <h2>1. Portão de sinal <span id="verdict" class="badge warn">calculando…</span></h2>
+  <div class="row" id="kpis"></div>
+  <div id="checks" style="margin-top:12px"></div>
+  <p class="small" id="gate-note"></p>
+</div>
+
+<div class="card" id="perf-card">
+  <h2>2. Performance por segmento</h2>
+  <div class="ctrl">
+    <label>Dimensão <select id="dim"></select></label>
+    <label>Cortar por patrocínio <input type="checkbox" id="bysp" checked></label>
+    <label>Métrica <select id="metric"><option value="eng">engagement rate</option><option value="views">views</option><option value="shares">shares</option><option value="comments_count">comentários</option></select></label>
+  </div>
+  <div id="perf"></div>
+  <p class="small">IC 95% ≈ média ± 1,96 × erro-padrão. Se os intervalos de todos os segmentos se sobrepõem, não há ranking defensável.</p>
+</div>
+
+<div class="card">
+  <h2>3. Como ler isto na segunda-feira</h2>
+  <ol class="small" style="margin:0;padding-left:18px">
+    <li><b>Portão vermelho:</b> não mude alocação de verba nem pauta de conteúdo com base neste export. Verifique a instrumentação (métricas por post real, creator estável, custo do patrocínio) antes de analisar de novo.</li>
+    <li><b>Portão amarelo:</b> há sinal, mas fraco ou pouco replicável. Trate como hipótese e valide com um teste controlado (ex.: 2 semanas, mesma pauta, com e sem patrocínio).</li>
+    <li><b>Portão verde:</b> use o ranking de segmentos; priorize os que têm IC estreito e volume alto. Re-rode mensalmente — ranking que não se repete em dois meses não é estratégia.</li>
+  </ol>
+</div>
+<p class="small">Feito para o AI Master Challenge 004 (G4) — Diego Falabella. Fonte dos métodos: teste de Kruskal-Wallis por permutação, replicação split-half, coeficiente de variação, consistência de entidade.</p>
+</div>
+
+<script>
+const EMBED = {"gate":{"n":52214,"tests":[{"d":"platform","p":0.3621},{"d":"content_type","p":0.2229},{"d":"content_category","p":0.288},{"d":"creator_tier","p":0.947},{"d":"is_sponsored","p":0.879}],"sig":0,"splitHalf":-0.0597,"cvViews":0.99,"creatorFollowerVariants":10.44,"zeroPct":0.0,"sponsored":[{"k":"orgânico","n":29900,"mean":0.1990591,"se":2.802e-05},{"k":"patrocinado","n":22314,"mean":0.1990484,"se":3.282e-05}]},"perf":{"eng":{"platform":[{"k":"RedNote","n":10402,"mean":0.1990976,"se":4.773e-05},{"k":"Bilibili","n":10598,"mean":0.199085,"se":4.724e-05},{"k":"TikTok","n":10296,"mean":0.1990602,"se":4.783e-05},{"k":"YouTube","n":10495,"mean":0.1990372,"se":4.721e-05},{"k":"Instagram","n":10423,"mean":0.1989925,"se":4.824e-05}],"platform|is_sponsored":[{"k":"RedNote · patrocinado","n":4521,"mean":0.1991534,"se":7.347e-05},{"k":"TikTok · orgânico","n":5855,"mean":0.1991238,"se":6.33e-05},{"k":"Bilibili · orgânico","n":6145,"mean":0.1991049,"se":6.209e-05},{"k":"YouTube · orgânico","n":5965,"mean":0.1990681,"se":6.266e-05},{"k":"Instagram · patrocinado","n":4369,"mean":0.1990577,"se":7.586e-05},{"k":"Bilibili · patrocinado","n":4453,"mean":0.1990574,"se":7.282e-05},{"k":"RedNote · orgânico","n":5881,"mean":0.1990547,"se":6.275e-05},{"k":"YouTube · patrocinado","n":4530,"mean":0.1989965,"se":7.181e-05},{"k":"TikTok · patrocinado","n":4441,"mean":0.1989762,"se":7.3e-05},{"k":"Instagram · orgânico","n":6054,"mean":0.1989454,"se":6.244e-05}],"content_type":[{"k":"text","n":5198,"mean":0.1991508,"se":6.721e-05},{"k":"mixed","n":5213,"mean":0.19914,"se":6.765e-05},{"k":"image","n":10303,"mean":0.1990393,"se":4.817e-05},{"k":"video","n":31500,"mean":0.1990295,"se":2.741e-05}],"content_type|is_sponsored":[{"k":"mixed · patrocinado","n":2224,"mean":0.1991709,"se":0.00010431},{"k":"text · orgânico","n":2993,"mean":0.1991576,"se":8.843e-05},{"k":"text · patrocinado","n":2205,"mean":0.1991415,"se":0.00010345},{"k":"mixed · orgânico","n":2989,"mean":0.199117,"se":8.888e-05},{"k":"image · patrocinado","n":4416,"mean":0.1990882,"se":7.361e-05},{"k":"video · orgânico","n":18031,"mean":0.1990516,"se":3.597e-05},{"k":"image · orgânico","n":5887,"mean":0.1990026,"se":6.369e-05},{"k":"video · patrocinado","n":13469,"mean":0.1989999,"se":4.231e-05}],"content_category":[{"k":"lifestyle","n":20761,"mean":0.1990789,"se":3.388e-05},{"k":"beauty","n":21023,"mean":0.1990555,"se":3.362e-05},{"k":"tech","n":10430,"mean":0.199004,"se":4.733e-05}],"content_category|is_sponsored":[{"k":"beauty · orgânico","n":12097,"mean":0.1991137,"se":4.389e-05},{"k":"lifestyle · patrocinado","n":8891,"mean":0.1991096,"se":5.186e-05},{"k":"tech · patrocinado","n":4497,"mean":0.1990697,"se":7.236e-05},{"k":"lifestyle · orgânico","n":11870,"mean":0.1990559,"se":4.474e-05},{"k":"beauty · patrocinado","n":8926,"mean":0.1989767,"se":5.228e-05},{"k":"tech · orgânico","n":5933,"mean":0.1989542,"se":6.256e-05}],"creator_tier":[{"k":"10K-50K","n":2110,"mean":0.1990977,"se":0.00010921},{"k":"50K-250K","n":10441,"mean":0.1990586,"se":4.797e-05},{"k":">250K","n":39209,"mean":0.199052,"se":2.449e-05},{"k":"<10K","n":454,"mean":0.1989799,"se":0.00023894}],"creator_tier|is_sponsored":[{"k":"<10K · patrocinado","n":192,"mean":0.1992315,"se":0.00037283},{"k":"10K-50K · patrocinado","n":922,"mean":0.199146,"se":0.00016443},{"k":"50K-250K · orgânico","n":5933,"mean":0.1990779,"se":6.33e-05},{"k":"10K-50K · orgânico","n":1188,"mean":0.1990602,"se":0.00014614},{"k":">250K · orgânico","n":22517,"mean":0.1990572,"se":3.215e-05},{"k":">250K · patrocinado","n":16692,"mean":0.199045,"se":3.781e-05},{"k":"50K-250K · patrocinado","n":4508,"mean":0.1990333,"se":7.353e-05},{"k":"<10K · orgânico","n":262,"mean":0.1987955,"se":0.00031123}],"is_sponsored":[{"k":"orgânico","n":29900,"mean":0.1990591,"se":2.802e-05},{"k":"patrocinado","n":22314,"mean":0.1990484,"se":3.282e-05}]},"views":{"platform":[{"k":"RedNote","n":10402,"mean":10100.7821573,"se":0.97420724},{"k":"TikTok","n":10296,"mean":10100.5911033,"se":0.98628306},{"k":"Instagram","n":10423,"mean":10100.3491317,"se":0.97838443},{"k":"Bilibili","n":10598,"mean":10099.9291376,"se":0.97665473},{"k":"YouTube","n":10495,"mean":10099.7792282,"se":0.97870615}],"platform|is_sponsored":[{"k":"TikTok · patrocinado","n":4441,"mean":10102.7527584,"se":1.51464529},{"k":"Instagram · orgânico","n":6054,"mean":10100.9859597,"se":1.27607623},{"k":"RedNote · orgânico","n":5881,"mean":10100.9687128,"se":1.28886418},{"k":"RedNote · patrocinado","n":4521,"mean":10100.5394824,"se":1.48786841},{"k":"Bilibili · orgânico","n":6145,"mean":10100.0411717,"se":1.28209412},{"k":"YouTube · orgânico","n":5965,"mean":10099.8336966,"se":1.28399699},{"k":"Bilibili · patrocinado","n":4453,"mean":10099.774534,"se":1.50768938},{"k":"YouTube · patrocinado","n":4530,"mean":10099.7075055,"se":1.51102587},{"k":"Instagram · patrocinado","n":4369,"mean":10099.4666972,"se":1.52369564},{"k":"TikTok · orgânico","n":5855,"mean":10098.9514944,"se":1.29900842}],"content_type":[{"k":"image","n":10303,"mean":10101.0934679,"se":0.9849063},{"k":"video","n":31500,"mean":10100.3660635,"se":0.56263684},{"k":"mixed","n":5213,"mean":10100.2484174,"se":1.40852909},{"k":"text","n":5198,"mean":10098.2110427,"se":1.37950648}],"content_type|is_sponsored":[{"k":"image · orgânico","n":5887,"mean":10102.3701376,"se":1.30651619},{"k":"mixed · patrocinado","n":2224,"mean":10101.0750899,"se":2.15739592},{"k":"video · patrocinado","n":13469,"mean":10100.83243,"se":0.87056637},{"k":"video · orgânico","n":18031,"mean":10100.0176918,"se":0.73705689},{"k":"mixed · orgânico","n":2989,"mean":10099.6333222,"se":1.85977821},{"k":"text · patrocinado","n":2205,"mean":10099.5868481,"se":2.14822777},{"k":"image · patrocinado","n":4416,"mean":10099.3915308,"se":1.49868645},{"k":"text · orgânico","n":2993,"mean":10097.1974607,"se":1.79874499}],"content_category":[{"k":"tech","n":10430,"mean":10101.5080537,"se":0.97932821},{"k":"lifestyle","n":20761,"mean":10100.0078513,"se":0.69213589},{"k":"beauty","n":21023,"mean":10099.9477239,"se":0.69192629}],"content_category|is_sponsored":[{"k":"tech · orgânico","n":5933,"mean":10101.8459464,"se":1.28894191},{"k":"tech · patrocinado","n":4497,"mean":10101.0622637,"se":1.50591329},{"k":"lifestyle · patrocinado","n":8891,"mean":10100.2950174,"se":1.06197382},{"k":"beauty · patrocinado","n":8926,"mean":10100.2918441,"se":1.07302677},{"k":"lifestyle · orgânico","n":11870,"mean":10099.7927548,"se":0.91257417},{"k":"beauty · orgânico","n":12097,"mean":10099.6938084,"se":0.90506078}],"creator_tier":[{"k":"10K-50K","n":2110,"mean":10101.3,"se":2.16668421},{"k":">250K","n":39209,"mean":10100.3654008,"se":0.50556104},{"k":"50K-250K","n":10441,"mean":10100.1919356,"se":0.97633836},{"k":"<10K","n":454,"mean":10090.5704846,"se":4.74733385}],"creator_tier|is_sponsored":[{"k":"10K-50K · orgânico","n":1188,"mean":10101.8678451,"se":2.89138143},{"k":">250K · patrocinado","n":16692,"mean":10100.6391086,"se":0.78144986},{"k":"10K-50K · patrocinado","n":922,"mean":10100.5683297,"se":3.27371838},{"k":"50K-250K · patrocinado","n":4508,"mean":10100.4148181,"se":1.49169945},{"k":">250K · orgânico","n":22517,"mean":10100.1624994,"se":0.66289284},{"k":"50K-250K · orgânico","n":5933,"mean":10100.0225855,"se":1.29142016},{"k":"<10K · orgânico","n":262,"mean":10095.3282443,"se":5.92315715},{"k":"<10K · patrocinado","n":192,"mean":10084.078125,"se":7.78389016}],"is_sponsored":[{"k":"patrocinado","n":22314,"mean":10100.4483732,"se":0.67480236},{"k":"orgânico","n":29900,"mean":10100.1601338,"se":0.57510524}]},"shares":{"platform":[{"k":"Instagram","n":10423,"mean":300.1711599,"se":0.16880897},{"k":"YouTube","n":10495,"mean":300.1404478,"se":0.16745048},{"k":"Bilibili","n":10598,"mean":300.0923759,"se":0.16874702},{"k":"TikTok","n":10296,"mean":299.8661616,"se":0.16887933},{"k":"RedNote","n":10402,"mean":299.8177274,"se":0.17297403}],"platform|is_sponsored":[{"k":"Instagram · orgânico","n":6054,"mean":300.3878427,"se":0.21847272},{"k":"YouTube · orgânico","n":5965,"mean":300.3790444,"se":0.22458412},{"k":"Bilibili · orgânico","n":6145,"mean":300.1404394,"se":0.2212022},{"k":"RedNote · patrocinado","n":4521,"mean":300.0915727,"se":0.26200294},{"k":"Bilibili · patrocinado","n":4453,"mean":300.0260499,"se":0.26101225},{"k":"TikTok · patrocinado","n":4441,"mean":299.9018239,"se":0.25168694},{"k":"Instagram · patrocinado","n":4369,"mean":299.8709087,"se":0.26555505},{"k":"TikTok · orgânico","n":5855,"mean":299.8391119,"se":0.22750245},{"k":"YouTube · patrocinado","n":4530,"mean":299.8262693,"se":0.25104373},{"k":"RedNote · orgânico","n":5881,"mean":299.6072097,"se":0.23027769}],"content_type":[{"k":"text","n":5198,"mean":300.3172374,"se":0.24006548},{"k":"image","n":10303,"mean":300.2558478,"se":0.17346007},{"k":"mixed","n":5213,"mean":300.073662,"se":0.24091537},{"k":"video","n":31500,"mean":299.8823492,"se":0.09688595}],"content_type|is_sponsored":[{"k":"image · patrocinado","n":4416,"mean":300.4759964,"se":0.26378228},{"k":"text · orgânico","n":2993,"mean":300.4143,"se":0.31525741},{"k":"text · patrocinado","n":2205,"mean":300.1854875,"se":0.37040625},{"k":"mixed · patrocinado","n":2224,"mean":300.1605216,"se":0.3771949},{"k":"image · orgânico","n":5887,"mean":300.0907083,"se":0.23022724},{"k":"video · orgânico","n":18031,"mean":300.0232378,"se":0.12888898},{"k":"mixed · orgânico","n":2989,"mean":300.0090331,"se":0.31274102},{"k":"video · patrocinado","n":13469,"mean":299.6937412,"se":0.14685856}],"content_category":[{"k":"lifestyle","n":20761,"mean":300.0917586,"se":0.12005113},{"k":"tech","n":10430,"mean":300.0586769,"se":0.16812673},{"k":"beauty","n":21023,"mean":299.926081,"se":0.119927}],"content_category|is_sponsored":[{"k":"tech · patrocinado","n":4497,"mean":300.2973093,"se":0.25618937},{"k":"lifestyle · orgânico","n":11870,"mean":300.1636057,"se":0.1595121},{"k":"beauty · orgânico","n":12097,"mean":300.0829131,"se":0.15834899},{"k":"lifestyle · patrocinado","n":8891,"mean":299.9958385,"se":0.18230127},{"k":"tech · orgânico","n":5933,"mean":299.8778021,"se":0.2228115},{"k":"beauty · patrocinado","n":8926,"mean":299.7135335,"se":0.18363915}],"creator_tier":[{"k":">250K","n":39209,"mean":300.0611594,"se":0.08732207},{"k":"50K-250K","n":10441,"mean":299.9503879,"se":0.16976632},{"k":"10K-50K","n":2110,"mean":299.6976303,"se":0.37773735},{"k":"<10K","n":454,"mean":299.3854626,"se":0.83595113}],"creator_tier|is_sponsored":[{"k":"50K-250K · orgânico","n":5933,"mean":300.1511883,"se":0.22599637},{"k":">250K · orgânico","n":22517,"mean":300.0761203,"se":0.11543252},{"k":">250K · patrocinado","n":16692,"mean":300.0409777,"se":0.13351711},{"k":"<10K · orgânico","n":262,"mean":299.9732824,"se":1.09436602},{"k":"10K-50K · patrocinado","n":922,"mean":299.7245119,"se":0.56267569},{"k":"50K-250K · patrocinado","n":4508,"mean":299.6861136,"se":0.25714499},{"k":"10K-50K · orgânico","n":1188,"mean":299.6767677,"se":0.50952584},{"k":"<10K · patrocinado","n":192,"mean":298.5833333,"se":1.29614505}],"is_sponsored":[{"k":"orgânico","n":29900,"mean":300.0742475,"se":0.10034321},{"k":"patrocinado","n":22314,"mean":299.9436677,"se":0.1154951}]},"comments_count":{"platform":[{"k":"RedNote","n":10402,"mean":200.2145741,"se":0.13775705},{"k":"Bilibili","n":10598,"mean":200.0404793,"se":0.13808718},{"k":"TikTok","n":10296,"mean":199.9986402,"se":0.1378243},{"k":"Instagram","n":10423,"mean":199.9887748,"se":0.13809217},{"k":"YouTube","n":10495,"mean":199.8358266,"se":0.13779424}],"platform|is_sponsored":[{"k":"RedNote · patrocinado","n":4521,"mean":200.5193541,"se":0.21325127},{"k":"Instagram · patrocinado","n":4369,"mean":200.2165255,"se":0.21120251},{"k":"TikTok · orgânico","n":5855,"mean":200.1395389,"se":0.18203849},{"k":"Bilibili · patrocinado","n":4453,"mean":200.0509769,"se":0.2130888},{"k":"Bilibili · orgânico","n":6145,"mean":200.0328723,"se":0.18132236},{"k":"YouTube · orgânico","n":5965,"mean":200.0253143,"se":0.18446804},{"k":"RedNote · orgânico","n":5881,"mean":199.9802755,"se":0.18021681},{"k":"Instagram · orgânico","n":6054,"mean":199.8244136,"se":0.18245001},{"k":"TikTok · patrocinado","n":4441,"mean":199.81288,"se":0.21094335},{"k":"YouTube · patrocinado","n":4530,"mean":199.5863135,"se":0.20711521}],"content_type":[{"k":"mixed","n":5213,"mean":200.3815461,"se":0.1970362},{"k":"image","n":10303,"mean":199.9886441,"se":0.13822514},{"k":"video","n":31500,"mean":199.9710476,"se":0.07957785},{"k":"text","n":5198,"mean":199.9705656,"se":0.19283976}],"content_type|is_sponsored":[{"k":"mixed · patrocinado","n":2224,"mean":200.5422662,"se":0.30220884},{"k":"mixed · orgânico","n":2989,"mean":200.2619605,"se":0.25988313},{"k":"image · orgânico","n":5887,"mean":200.1396297,"se":0.18128197},{"k":"text · patrocinado","n":2205,"mean":200.0535147,"se":0.29195983},{"k":"video · patrocinado","n":13469,"mean":200.0319994,"se":0.12166186},{"k":"video · orgânico","n":18031,"mean":199.9255172,"se":0.10520538},{"k":"text · orgânico","n":2993,"mean":199.9094554,"se":0.25674394},{"k":"image · patrocinado","n":4416,"mean":199.7873641,"se":0.21352506}],"content_category":[{"k":"tech","n":10430,"mean":200.0609779,"se":0.13675354},{"k":"lifestyle","n":20761,"mean":200.0204229,"se":0.09835273},{"k":"beauty","n":21023,"mean":199.9879656,"se":0.09711415}],"content_category|is_sponsored":[{"k":"tech · patrocinado","n":4497,"mean":200.0822771,"se":0.20928742},{"k":"tech · orgânico","n":5933,"mean":200.044834,"se":0.18065755},{"k":"lifestyle · patrocinado","n":8891,"mean":200.0321674,"se":0.14987024},{"k":"beauty · patrocinado","n":8926,"mean":200.0179252,"se":0.14946139},{"k":"lifestyle · orgânico","n":11870,"mean":200.0116259,"se":0.13035042},{"k":"beauty · orgânico","n":12097,"mean":199.9658593,"se":0.12776077}],"creator_tier":[{"k":"10K-50K","n":2110,"mean":200.2440758,"se":0.30835054},{"k":"<10K","n":454,"mean":200.0837004,"se":0.69648486},{"k":">250K","n":39209,"mean":200.0311918,"se":0.07131614},{"k":"50K-250K","n":10441,"mean":199.9071928,"se":0.13645532}],"creator_tier|is_sponsored":[{"k":"<10K · patrocinado","n":192,"mean":200.5625,"se":1.09657529},{"k":"10K-50K · patrocinado","n":922,"mean":200.2852495,"se":0.47351735},{"k":"10K-50K · orgânico","n":1188,"mean":200.2121212,"se":0.40622706},{"k":">250K · patrocinado","n":16692,"mean":200.0637431,"se":0.10910533},{"k":">250K · orgânico","n":22517,"mean":200.0070613,"se":0.09423461},{"k":"50K-250K · orgânico","n":5933,"mean":199.9410079,"se":0.18000456},{"k":"50K-250K · patrocinado","n":4508,"mean":199.8626886,"se":0.209211},{"k":"<10K · orgânico","n":262,"mean":199.7328244,"se":0.90163862}],"is_sponsored":[{"k":"patrocinado","n":22314,"mean":200.036569,"se":0.09443894},{"k":"orgânico","n":29900,"mean":199.999699,"se":0.08145119}]}}};
+let rows = null; // dados crus quando o usuário carrega CSV
+
+// ---------- CSV ----------
+function parseCSV(text){
+  const out=[];let row=[],f='',q=false;
+  for(let i=0;i<text.length;i++){const c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){f+='"';i++;} else q=false;} else f+=c; }
+    else if(c==='"') q=true; else if(c===','){row.push(f);f='';}
+    else if(c==='\n'){row.push(f);out.push(row);row=[];f='';}
+    else if(c!=='\r') f+=c; }
+  if(f.length||row.length){row.push(f);out.push(row);}
+  const h=out.shift().map(s=>s.trim());
+  return out.filter(r=>r.length===h.length).map(r=>Object.fromEntries(h.map((k,i)=>[k,r[i]])));
+}
+function prep(rs){
+  const num=k=>rs.forEach(r=>r[k]=+r[k]);
+  ['views','likes','shares','comments_count','follower_count'].forEach(k=>rs[0]&&k in rs[0]&&num(k));
+  rs=rs.filter(r=>r.views>0);
+  rs.forEach(r=>{r.eng=(r.likes+r.shares+r.comments_count)/r.views;
+    r.is_sponsored=String(r.is_sponsored).toLowerCase()==='true'?'patrocinado':'orgânico';
+    const f=r.follower_count; r.creator_tier=f<1e4?'<10K':f<5e4?'10K-50K':f<25e4?'50K-250K':'>250K';});
+  return rs;
+}
+// ---------- stats ----------
+const mean=a=>a.reduce((s,x)=>s+x,0)/a.length;
+const sd=a=>{const m=mean(a);return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/(a.length-1));};
+function groupStats(rs,keys,metric){
+  const g={};rs.forEach(r=>{const k=keys.map(x=>r[x]).join(' · ');(g[k]??=[]).push(r[metric]);});
+  return Object.entries(g).map(([k,v])=>({k,n:v.length,mean:mean(v),se:sd(v)/Math.sqrt(v.length)})).sort((a,b)=>b.mean-a.mean);
+}
+function betweenVar(rs,key,metric){const g=groupStats(rs,[key],metric);const gm=mean(rs.map(r=>r[metric]));return g.reduce((s,x)=>s+x.n*(x.mean-gm)**2,0);}
+function permTest(rs,key,metric,B=150){ // p-valor por permutação (robusto, sem distribuição assumida)
+  const sample=rs.length>8000?rs.filter((_,i)=>i%Math.ceil(rs.length/8000)===0):rs.slice();
+  const obs=betweenVar(sample,key,metric);const labels=sample.map(r=>r[key]);let ge=0;
+  for(let b=0;b<B;b++){for(let i=labels.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[labels[i],labels[j]]=[labels[j],labels[i]];}
+    const sh=sample.map((r,i)=>({[key]:labels[i],[metric]:r[metric]}));if(betweenVar(sh,key,metric)>=obs)ge++;}
+  return (ge+1)/(B+1);
+}
+function splitHalf(rs,keys){
+  const a=rs.filter((_,i)=>i%2===0),b=rs.filter((_,i)=>i%2===1);
+  const ga=Object.fromEntries(groupStats(a,keys,'eng').map(x=>[x.k,x.mean])),gb=Object.fromEntries(groupStats(b,keys,'eng').map(x=>[x.k,x.mean]));
+  const ks=Object.keys(ga).filter(k=>k in gb);if(ks.length<4)return NaN;
+  const xa=ks.map(k=>ga[k]),xb=ks.map(k=>gb[k]),ma=mean(xa),mb=mean(xb);
+  const cov=xa.reduce((s,x,i)=>s+(x-ma)*(xb[i]-mb),0);return cov/Math.sqrt(xa.reduce((s,x)=>s+(x-ma)**2,0)*xb.reduce((s,x)=>s+(x-mb)**2,0));
+}
+function gateFromRows(rs){
+  const dims=['platform','content_type','content_category','is_sponsored','creator_tier'].filter(d=>d in rs[0]);
+  const ps=dims.map(d=>({d,p:permTest(rs,d,'eng')}));
+  const sh=splitHalf(rs,dims.filter(d=>d!=='creator_tier'));
+  const views=rs.map(r=>r.views);const cv=sd(views)/mean(views)*100;
+  let creator=null;if('creator_id' in rs[0]&&'follower_count' in rs[0]){const m={};rs.forEach(r=>(m[r.creator_id]??=new Set()).add(r.follower_count));const arr=Object.values(m).filter(s=>s.size>0);creator=mean(arr.map(s=>s.size));}
+  const zeros=rs.filter(r=>r.likes+r.shares+r.comments_count===0).length/rs.length*100;
+  return {n:rs.length,tests:ps,sig:ps.filter(x=>x.p<.05).length,splitHalf:sh,cvViews:cv,creatorFollowerVariants:creator,zeroPct:zeros,sponsored:groupStats(rs,['is_sponsored'],'eng')};
+}
+// ---------- render ----------
+function verdictOf(g){
+  const bad=(g.sig<=Math.max(1,g.tests.length*.05*1.5)&&!(g.splitHalf>.5))||g.cvViews<3;
+  const weak=!bad&&(g.splitHalf<.7||g.sig<g.tests.length/2);
+  return bad?['bad','SEM SINAL — não decida com estes dados']:weak?['warn','SINAL FRACO — trate como hipótese']:['ok','SINAL CONFIÁVEL — pode priorizar'];
+}
+function renderGate(g){
+  const [cls,txt]=verdictOf(g);const v=document.getElementById('verdict');v.className='badge '+cls;v.textContent=txt;
+  const f=(x,d=2)=>isNaN(x)?'—':x.toFixed(d);
+  document.getElementById('kpis').innerHTML=[
+    [g.n.toLocaleString('pt-BR'),'posts analisados'],
+    [`${g.sig} / ${g.tests.length}`,'dimensões com diferença real (p<0,05)'],
+    [f(g.splitHalf),'replicação split-half (r) do ranking de segmentos'],
+    [f(g.cvViews,1)+'%','coef. de variação de views (real: >100%)'],
+  ].map(([b,s])=>`<div class="kpi"><b>${b}</b><span>${s}</span></div>`).join('');
+  const checks=[
+    [g.sig>g.tests.length*.05*1.5?'ok':'bad',`Teste de permutação por dimensão (engajamento): ${g.tests.map(t=>`${t.d} p=${f(t.p,3)}`).join(' · ')}. ${g.sig<=g.tests.length*.05*1.5?'Nenhuma dimensão separa engajamento além do acaso.':'Há dimensões com efeito real.'}`],
+    [g.splitHalf>.7?'ok':g.splitHalf>.5?'warn':'bad',`Replicação: o ranking de segmentos em metade dos posts correlaciona r=${f(g.splitHalf)} com a outra metade. Abaixo de 0,5 o "melhor segmento" é sorteio.`],
+    [g.cvViews>30?'ok':'bad',`Dispersão: views variam ${f(g.cvViews,1)}% em torno da média. Redes reais são cauda longa (poucos posts viralizam; CV bem acima de 100%). Dispersão quase nula indica dado gerado ou agregado artificialmente.`],
+    g.creatorFollowerVariants==null?['warn','Sem creator_id/follower_count para checar consistência de creator.']:[g.creatorFollowerVariants<=2?'ok':'bad',`Consistência de entidade: cada creator_id aparece com ${f(g.creatorFollowerVariants,1)} contagens diferentes de followers. Acima de ~2 (crescimento), o campo "creator" não é confiável para segmentar por faixa.`],
+    [g.zeroPct>0?'ok':'warn',`Survivorship: ${f(g.zeroPct,1)}% dos posts têm engajamento zero. Zero posts com zero engajamento é implausível em redes reais — ou o export filtra, ou é sintético.`],
+    ['ok',`Orgânico vs patrocinado (bruto): ${g.sponsored.map(s=>`${s.k} ${(s.mean*100).toFixed(2)}% (n=${s.n})`).join(' · ')}. Lembre: comparação justa exige controlar por plataforma e faixa de creator — veja a seção 2 com o corte ligado.`],
+  ];
+  document.getElementById('checks').innerHTML=checks.map(([c,t])=>`<div class="check"><div class="dot ${c}"></div><div>${t}</div></div>`).join('');
+  document.getElementById('perf-card').classList.toggle('locked',cls==='bad');
+  document.getElementById('gate-note').textContent=cls==='bad'?'Painel de performance bloqueado: qualquer ranking abaixo seria ruído apresentado como insight.':'Painel de performance liberado.';
+}
+function renderPerf(){
+  const dim=document.getElementById('dim').value,bysp=document.getElementById('bysp').checked,metric=document.getElementById('metric').value;
+  let stats;
+  if(rows){stats=groupStats(rows,bysp&&dim!=='is_sponsored'?[dim,'is_sponsored']:[dim],metric);}
+  else{const key=bysp&&dim!=='is_sponsored'?dim+'|is_sponsored':dim;stats=(EMBED.perf[metric]||{})[key]||[];}
+  const max=Math.max(...stats.map(s=>s.mean+1.96*s.se)),min=Math.min(...stats.map(s=>s.mean-1.96*s.se));
+  const pct=metric==='eng';const fmt=x=>pct?(x*100).toFixed(2)+'%':Math.round(x).toLocaleString('pt-BR');
+  document.getElementById('perf').innerHTML=`<table><tr><th>segmento</th><th class="num">n</th><th class="num">média</th><th class="num">IC 95%</th><th style="width:40%">escala (zoom no intervalo observado)</th></tr>`+
+    stats.map(s=>{const w=max>min?((s.mean-min)/(max-min))*100:50;return `<tr><td>${s.k}</td><td class="num">${s.n.toLocaleString('pt-BR')}</td><td class="num">${fmt(s.mean)}</td><td class="num">${fmt(s.mean-1.96*s.se)} – ${fmt(s.mean+1.96*s.se)}</td><td><span class="bar ${s.k.includes('patrocinado')?'o':''}" style="width:${Math.max(2,w)}%"></span></td></tr>`;}).join('')+'</table>'+
+    `<p class="small">Atenção à escala: as barras ampliam o intervalo ${fmt(min)}–${fmt(max)}. Diferenças que parecem grandes aqui podem ser décimos de ponto percentual.</p>`;
+}
+function init(){
+  const dims=['platform','content_type','content_category','creator_tier','is_sponsored'];
+  document.getElementById('dim').innerHTML=dims.map(d=>`<option value="${d}">${d}</option>`).join('');
+  ['dim','bysp','metric'].forEach(id=>document.getElementById(id).addEventListener('change',renderPerf));
+  renderGate(EMBED.gate);renderPerf();
+  document.getElementById('file').addEventListener('change',e=>{const fl=e.target.files[0];if(!fl)return;
+    const rd=new FileReader();rd.onload=()=>{try{rows=prep(parseCSV(rd.result));document.getElementById('src').textContent=`Dados carregados: ${fl.name} (${rows.length.toLocaleString('pt-BR')} posts)`;renderGate(gateFromRows(rows));renderPerf();}catch(err){alert('Não consegui ler o CSV: '+err.message);}};rd.readAsText(fl);});
+}
+init();
+</script>
+</body>
+</html>
