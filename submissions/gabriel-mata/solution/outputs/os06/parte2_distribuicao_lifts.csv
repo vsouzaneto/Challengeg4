@@ -1,0 +1,10 @@
+variaveis,metrica,segmentos,minimo,p5,mediana,p95,maximo,acima_1_03,acima_1_05,acima_1_10,abaixo_0_97,abaixo_0_95,abaixo_0_90,ic_exclui_1_sim,mesmo_lado_sim
+content_type x audience_age_distribution,taxa_engajamento,20,0.999271,0.99929,1.000199,1.001299,1.001334,0,0,0,0,0,0,2,8
+content_type x audience_age_distribution,shares,20,0.997,0.99725,1.000523,1.002688,1.004961,0,0,0,0,0,0,3,13
+content_type x audience_age_distribution,comments_count,20,0.997046,0.998134,0.999779,1.004211,1.007754,0,0,0,0,0,0,1,8
+content_type x audience_gender_distribution,taxa_engajamento,16,0.999554,0.999651,1.000171,1.000786,1.0008,0,0,0,0,0,0,0,10
+content_type x audience_gender_distribution,shares,16,0.996425,0.99777,1.000548,1.002193,1.003257,0,0,0,0,0,0,0,10
+content_type x audience_gender_distribution,comments_count,16,0.994353,0.995282,1.000846,1.003079,1.004368,0,0,0,0,0,0,1,11
+content_type x audience_location,taxa_engajamento,32,0.998945,0.999241,1.000146,1.001522,1.00232,0,0,0,0,0,0,2,17
+content_type x audience_location,shares,32,0.996803,0.997387,1.000282,1.002544,1.006007,0,0,0,0,0,0,2,19
+content_type x audience_location,comments_count,32,0.995016,0.997452,1.000126,1.003323,1.00394,0,0,0,0,0,0,0,13

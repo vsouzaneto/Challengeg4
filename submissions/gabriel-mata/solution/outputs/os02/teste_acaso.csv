@@ -1,0 +1,13 @@
+nivel,metrica,segmentos_avaliados,maior_lift_observado,acaso_p95_dos_maiores,maior_observado_acima_do_acaso,menor_lift_observado,acaso_p5_dos_menores,menor_observado_abaixo_do_acaso
+1,taxa_engajamento,52,1.000495,1.000995,nao,0.99943,0.998897,nao
+1,shares,52,1.001267,1.002165,nao,0.998753,0.99759,nao
+1,comments_count,52,1.001819,1.002808,nao,0.998392,0.997098,nao
+2,taxa_engajamento,260,1.001844,1.002667,nao,0.9985,0.997174,nao
+2,shares,260,1.00325,1.006547,nao,0.995899,0.993808,nao
+2,comments_count,260,1.005802,1.00829,nao,0.995154,0.991721,nao
+3,taxa_engajamento,253,1.004139,1.006826,nao,0.995435,0.993074,nao
+3,shares,253,1.012901,1.016277,nao,0.989311,0.984889,nao
+3,comments_count,253,1.013706,1.019119,nao,0.986097,0.980198,nao
+4,taxa_engajamento,128,1.004772,1.006406,nao,0.996816,0.993086,nao
+4,shares,128,1.010496,1.015699,nao,0.991731,0.984029,nao
+4,comments_count,128,1.018423,1.019989,nao,0.982784,0.979604,nao

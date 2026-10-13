@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decisor de Campanha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ---------------------------------------------------------- tema claro */
+:root{
+  --fundo:#F5F6F7; --superficie:#FFFFFF; --texto:#1F2328; --texto2:#5B636B;
+  --linha:#DCDFE3; --linha-suave:#ECEEF0; --destaque:#C0392B; --destaque-forte:#A53224;
+  --destaque-texto:#FFFFFF; --borda-campo:#B9BEC4;
+  --funciona:#1E7F4F; --funciona-fundo:#EAF3EE;
+  --nao-funciona:#B42318; --nao-funciona-fundo:#FBECEA;
+  --sem-efeito:#4A5A6A; --sem-efeito-fundo:#EFF1F3;
+  --inconclusivo:#8C5A0A; --inconclusivo-fundo:#FBF3E4;
+  --balao-fundo:#1F2328; --balao-texto:#FFFFFF;
+  --s1:8px; --s2:16px; --s3:24px; --s4:32px; --s5:40px;
+  --col-form:380px;
+  color-scheme:light;
+}
+/* ---------------------------------------------------------- tema escuro */
+:root[data-tema=escuro]{
+  --fundo:#121417; --superficie:#1B1F23; --texto:#E6E8EA; --texto2:#A3ABB3;
+  --linha:#2E343A; --linha-suave:#252A2F; --destaque:#E5584A; --destaque-forte:#F0776B;
+  /* texto escuro sobre o vermelho claro: 5,2:1 (branco daria 3,6:1) */
+  --destaque-texto:#121417; --borda-campo:#49525A;
+  --funciona:#4CC38A; --funciona-fundo:#15281F;
+  --nao-funciona:#F27063; --nao-funciona-fundo:#2E1A18;
+  --sem-efeito:#A7B4C0; --sem-efeito-fundo:#232A31;
+  --inconclusivo:#E5AE52; --inconclusivo-fundo:#2E2616;
+  --balao-fundo:#E6E8EA; --balao-texto:#121417;
+  color-scheme:dark;
+}
+/* tema Automatico (padrao): segue o sistema */
+@media (prefers-color-scheme: dark){
+  :root:not([data-tema=claro]){
+    --fundo:#121417; --superficie:#1B1F23; --texto:#E6E8EA; --texto2:#A3ABB3;
+    --linha:#2E343A; --linha-suave:#252A2F; --destaque:#E5584A; --destaque-forte:#F0776B;
+    --destaque-texto:#121417; --borda-campo:#49525A;
+    --funciona:#4CC38A; --funciona-fundo:#15281F;
+    --nao-funciona:#F27063; --nao-funciona-fundo:#2E1A18;
+    --sem-efeito:#A7B4C0; --sem-efeito-fundo:#232A31;
+    --inconclusivo:#E5AE52; --inconclusivo-fundo:#2E2616;
+    --balao-fundo:#E6E8EA; --balao-texto:#121417;
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+body{
+  margin:0; background:var(--fundo); color:var(--texto);
+  font-family:"Public Sans", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  font-size:15px; line-height:1.55;
+  font-variant-numeric:tabular-nums;
+}
+h1,h2,h3{margin:0; font-weight:600; line-height:1.25}
+h1{font-size:18px}
+h2{font-size:24px}
+h3{font-size:18px}
+p{margin:0 0 var(--s1)}
+ol,ul{margin:0 0 var(--s1); padding-left:22px}
+li{margin:0 0 4px}
+strong{font-weight:600}
+.limite{max-width:1120px; margin:0 auto; padding:0 var(--s3)}
+.secundario{color:var(--texto2); font-size:13px}
+.leitura{max-width:68ch}
+
+/* ---------------------------------------------------------- barra superior */
+.topo{position:sticky; top:0; z-index:20; background:var(--superficie); border-bottom:1px solid var(--linha)}
+.topo-linha1{display:flex; align-items:baseline; gap:var(--s2); padding:var(--s2) 0 var(--s1)}
+.topo-linha1 .marca{font-size:18px; font-weight:700}
+.topo-linha1 .dados-info{color:var(--texto2); font-size:13px; margin-left:auto}
+.filtros{display:flex; align-items:flex-end; gap:var(--s2); padding:0 0 var(--s2)}
+.filtros .empurra{margin-left:auto}
+.campo{display:flex; flex-direction:column; gap:4px}
+.campo > label, .campo > .rotulo-campo{font-size:13px; color:var(--texto2)}
+select,input[type=date],input[type=number]{
+  font:inherit; font-size:15px; color:var(--texto); background:var(--superficie);
+  border:1px solid var(--linha); border-radius:6px; padding:0 8px; height:40px;
+}
+input[type=number]{width:100%}
+.botao{
+  font:inherit; font-size:15px; border-radius:6px; padding:0 14px; height:40px;
+  border:1px solid var(--linha); background:var(--superficie); color:var(--texto);
+  cursor:pointer; display:inline-flex; align-items:center; justify-content:center;
+}
+.botao:hover{border-color:var(--borda-campo)}
+.botao-principal{background:var(--destaque); border-color:var(--destaque); color:var(--destaque-texto)}
+.botao-principal:hover{background:var(--destaque-forte); border-color:var(--destaque-forte)}
+.botao:disabled{cursor:not-allowed; opacity:1; background:var(--linha-suave);
+  border-color:var(--linha); color:var(--texto2)}
+.botao-pequeno{height:32px; font-size:13px; padding:0 10px}
+.botao-texto{
+  font:inherit; font-size:13px; background:none; border:none; padding:0; cursor:pointer;
+  color:var(--destaque); text-decoration:underline;
+}
+:focus-visible{outline:2px solid var(--destaque); outline-offset:2px}
+
+/* menus da barra superior: redes sociais, ajustes e tema */
+.menu{position:relative}
+.menu-painel{
+  position:absolute; top:calc(100% + 4px); left:0; z-index:30; min-width:240px;
+  background:var(--superficie); border:1px solid var(--linha); border-radius:6px;
+  padding:var(--s2); display:none;
+}
+.menu-painel[data-aberto=sim]{display:block}
+.menu-painel label{display:flex; gap:var(--s1); align-items:center; padding:4px 2px}
+.menu-painel > .titulo-menu{font-size:13px; color:var(--texto2); display:block; margin-bottom:4px}
+.menu-painel select{width:100%}
+.menu-painel p{margin:var(--s1) 0 0; max-width:34ch}
+
+/* ---------------------------------------------------------- abas */
+.abas-faixa{background:var(--superficie); border-top:1px solid var(--linha)}
+.abas{display:flex; gap:var(--s4)}
+.aba{
+  font:inherit; font-size:15px; background:none; border:none; cursor:pointer;
+  padding:10px 0; color:var(--texto2); border-bottom:2px solid transparent; margin-bottom:-1px;
+}
+.aba[aria-selected=true]{color:var(--destaque); border-bottom-color:var(--destaque); font-weight:600}
+
+/* ---------------------------------------------------------- conteúdo */
+main{padding:var(--s4) 0 var(--s5)}
+.secao{background:var(--superficie); border:1px solid var(--linha); padding:var(--s3); margin-bottom:var(--s4)}
+.secao > h2, .secao > h3{margin-bottom:var(--s1)}
+.secao > * + h3{margin-top:var(--s3)}
+.secao-cabecalho{display:flex; align-items:baseline; gap:var(--s2); margin-bottom:var(--s3)}
+.secao-cabecalho > h2{min-width:0; overflow-wrap:break-word}
+.secao-cabecalho .acoes{margin-left:auto; display:flex; gap:var(--s1)}
+.intro-aba{max-width:68ch; margin-bottom:var(--s3)}
+
+/* selos: barra lateral + rótulo escrito, nunca só cor */
+.selo{
+  display:inline-block; border-left:4px solid var(--sem-efeito); padding:1px var(--s1);
+  border-radius:0 6px 6px 0; font-size:13px; font-weight:600; white-space:nowrap;
+  background:var(--sem-efeito-fundo); color:var(--sem-efeito);
+}
+.selo-funciona{border-left-color:var(--funciona); color:var(--funciona); background:var(--funciona-fundo)}
+.selo-nao_funciona{border-left-color:var(--nao-funciona); color:var(--nao-funciona); background:var(--nao-funciona-fundo)}
+.selo-sem_efeito{border-left-color:var(--sem-efeito); color:var(--sem-efeito); background:var(--sem-efeito-fundo)}
+.selo-inconclusivo{border-left-color:var(--inconclusivo); color:var(--inconclusivo); background:var(--inconclusivo-fundo)}
+.selo-grande{font-size:18px; font-weight:700; padding:4px 12px; border-left-width:4px}
+
+/* listas de respostas, estilo livro-razão */
+.linhas{border-top:1px solid var(--linha-suave)}
+.item{display:flex; align-items:baseline; gap:var(--s2); padding:10px 0; border-bottom:1px solid var(--linha-suave)}
+.item .selo{flex:0 0 176px; background:none}
+.item .nome{flex:1 1 auto; min-width:0; max-width:80ch}
+.item .quanto{flex:0 0 240px; min-width:0}
+.item .base{flex:0 0 150px; text-align:right; color:var(--texto2); font-size:13px; white-space:nowrap}
+.item .chave{flex:0 0 230px; font-weight:600}
+.item .texto{flex:1 1 auto; min-width:0; max-width:68ch}
+.item .resposta{flex:0 0 420px; min-width:0}
+.vazio{color:var(--texto2); padding:10px 0; max-width:68ch}
+.mais{margin-top:var(--s2)}
+
+/* resumo: a seção mais importante da página */
+.resumo{border-top:3px solid var(--destaque)}
+.resumo > .secao-cabecalho > h2{font-size:32px; font-weight:700}
+.frase-principal{font-size:24px; font-weight:600; line-height:1.3; max-width:60ch; margin:0 0 var(--s3)}
+.linha-resumo{display:flex; gap:var(--s2); align-items:baseline; padding:10px 0; border-top:1px solid var(--linha-suave)}
+.linha-resumo .rotulo{flex:0 0 190px; color:var(--texto2); font-size:13px}
+.linha-resumo .conteudo{flex:1 1 auto; min-width:0; display:flex; gap:4px var(--s1); align-items:baseline; flex-wrap:wrap}
+.linha-resumo .frase{min-width:0; max-width:68ch}
+.linha-resumo .frase + .frase{flex-basis:100%}   /* Priorize e Evite em linhas separadas */
+
+/* barras horizontais: mesma escala, começando em zero */
+.barras{display:grid; grid-template-columns:auto 1fr auto; gap:var(--s1) var(--s2);
+  align-items:center; max-width:720px; margin:var(--s2) 0 var(--s3)}
+.barras .barra-rotulo{font-size:13px; color:var(--texto2); white-space:nowrap}
+.barras .barra-trilha{background:var(--linha-suave); height:20px; width:100%}
+.barras .barra-cheia{display:block; height:20px; background:var(--sem-efeito)}
+.barras .barra-cheia[data-cor=funciona]{background:var(--funciona)}
+.barras .barra-cheia[data-cor=nao_funciona]{background:var(--nao-funciona)}
+.barras .barra-cheia[data-cor=sem_efeito]{background:var(--sem-efeito)}
+.barras .barra-cheia[data-cor=inconclusivo]{background:var(--inconclusivo)}
+.barras .barra-cheia[data-cor=neutro]{background:var(--sem-efeito)}
+.barras .barra-valor{white-space:nowrap}
+
+/* ajuda curta "?" */
+.termo{position:relative; white-space:normal}
+button.ajuda{
+  font:inherit; font-size:11px; font-weight:700; line-height:1; cursor:pointer;
+  width:18px; height:18px; padding:0; margin-left:4px; vertical-align:middle;
+  border:1px solid var(--linha); border-radius:50%;
+  background:var(--superficie); color:var(--texto2);
+}
+button.ajuda:hover{border-color:var(--borda-campo); color:var(--texto)}
+.balao{
+  position:absolute; top:calc(100% + 6px); left:0; z-index:35; width:260px;
+  background:var(--balao-fundo); color:var(--balao-texto); font-size:13px; font-weight:400;
+  line-height:1.45; padding:var(--s1) 10px; border-radius:6px;
+}
+
+/* tabelas */
+table.tabela{width:100%; border-collapse:collapse; margin-bottom:var(--s1)}
+.tabela th{
+  font-size:13px; color:var(--texto2); font-weight:400; text-align:left;
+  padding:0 var(--s2) 6px 0; border-bottom:1px solid var(--linha);
+}
+.tabela td{padding:8px var(--s2) 8px 0; border-bottom:1px solid var(--linha-suave); vertical-align:top}
+.tabela th:last-child, .tabela td:last-child{padding-right:0}
+.tabela .num{text-align:right; white-space:nowrap}
+.tabela code{font-family:inherit; font-weight:600}
+table.comparativo{max-width:620px}
+table.comparativo td.num, table.comparativo th.num{text-align:right}
+
+/* recolhíveis */
+details.secao > summary{cursor:pointer; font-size:24px; font-weight:600; line-height:1.25; list-style:none}
+details.secao > summary::-webkit-details-marker{display:none}
+details.secao > summary::before{content:"\25B8"; display:inline-block; width:20px; margin-left:-20px; color:var(--texto2)}
+details.secao[open] > summary::before{content:"\25BE"}
+details.secao > summary .secundario{font-size:15px; font-weight:400; margin-left:var(--s1)}
+details.secao > summary .selo{margin-left:var(--s1); vertical-align:middle}
+details.secao > *:not(summary){margin-top:var(--s3)}
+dl.metodo{margin:0}
+dl.metodo dt{font-weight:600; margin-top:var(--s2)}
+dl.metodo dd{margin:0; max-width:68ch}
+
+/* ---------------------------------------------------------- aba Planejar */
+.passo{
+  background:var(--superficie); border:1px solid var(--linha);
+  display:grid; grid-template-columns:var(--col-form) 1fr; align-items:start;
+  margin-bottom:var(--s4);
+}
+.passo > div{padding:var(--s3)}
+.passo > .cel-form{border-right:1px solid var(--linha)}
+.passo h2{margin-bottom:var(--s3)}
+.form-campos{display:flex; flex-direction:column; gap:var(--s2); margin-bottom:var(--s3)}
+.exemplos{margin-bottom:var(--s3)}
+.exemplos .titulo-exemplos{font-size:13px; color:var(--texto2); display:block; margin-bottom:var(--s1)}
+.exemplos .lista-exemplos{display:flex; flex-wrap:wrap; gap:var(--s1)}
+.dica-botao{margin:var(--s1) 0 0}
+.resultado-ideia .explica{display:flex; gap:var(--s1); align-items:baseline; margin:var(--s2) 0 0; max-width:68ch}
+.resultado-ideia .explica .rotulo{font-weight:600; white-space:nowrap}
+.conclusao{border-left:4px solid var(--sem-efeito); padding:var(--s2); margin:var(--s3) 0 0; max-width:68ch}
+.conclusao[data-cor=funciona]{border-left-color:var(--funciona)}
+.conclusao[data-cor=nao_funciona]{border-left-color:var(--nao-funciona)}
+.conclusao[data-cor=sem_efeito]{border-left-color:var(--sem-efeito)}
+.conclusao[data-cor=inconclusivo]{border-left-color:var(--inconclusivo)}
+.nota{color:var(--texto2); font-size:13px; max-width:68ch; margin-top:var(--s3)}
+.texto-resultado{font-size:18px; line-height:1.5; max-width:60ch}
+
+/* ---------------------------------------------------------- upload e avisos */
+body[data-arrastando=sim]::after{
+  content:"Solte o arquivo CSV para carregar"; position:fixed; inset:0; z-index:50;
+  background:var(--fundo); opacity:.96; color:var(--texto); font-size:18px; font-weight:600;
+  display:flex; align-items:center; justify-content:center; border:2px dashed var(--destaque);
+}
+.erro{
+  border-left:4px solid var(--nao-funciona); background:var(--nao-funciona-fundo);
+  color:var(--nao-funciona); padding:var(--s2); margin-bottom:var(--s4); max-width:68ch;
+}
+.aviso{
+  position:fixed; bottom:var(--s3); left:50%; transform:translateX(-50%); z-index:40;
+  background:var(--balao-fundo); color:var(--balao-texto); font-size:13px; padding:8px 14px;
+  border-radius:6px; opacity:0; pointer-events:none; transition:opacity .15s ease;
+}
+.aviso[data-visivel=sim]{opacity:1}
+
+/* movimento: só como resposta a uma ação */
+@keyframes aparecer{from{opacity:0} to{opacity:1}}
+.fade{animation:aparecer .15s ease-out}
+@media (prefers-reduced-motion: reduce){
+  .aviso{transition:none}
+  .fade{animation:none}
+}
+
+/* ---------------------------------------------------------- impressão */
+/* o resumo impresso sai sempre no tema claro */
+@media print{
+  :root, :root[data-tema=escuro], :root:not([data-tema=claro]){
+    --fundo:#F5F6F7; --superficie:#FFFFFF; --texto:#1F2328; --texto2:#5B636B;
+    --linha:#DCDFE3; --linha-suave:#ECEEF0; --destaque:#C0392B; --destaque-forte:#A53224;
+    --destaque-texto:#FFFFFF; --borda-campo:#B9BEC4;
+    --funciona:#1E7F4F; --funciona-fundo:#EAF3EE;
+    --nao-funciona:#B42318; --nao-funciona-fundo:#FBECEA;
+    --sem-efeito:#4A5A6A; --sem-efeito-fundo:#EFF1F3;
+    --inconclusivo:#8C5A0A; --inconclusivo-fundo:#FBF3E4;
+    --balao-fundo:#1F2328; --balao-texto:#FFFFFF;
+    color-scheme:light;
+  }
+  body{background:var(--superficie)}
+  .topo, .abas-faixa, .secao-cabecalho .acoes, .aviso, .nao-imprimir, button.ajuda{display:none !important}
+  main{padding:0}
+  .secao{border:none; padding:0; margin:0}
+  body[data-imprimir=resumo] .painel > *:not(#secao-resumo){display:none !important}
+  #secao-resumo{page-break-inside:avoid; border-top:3px solid var(--destaque)}
+}
+</style>
+</head>
+<body>
+
+<header class="topo">
+  <div class="limite">
+    <div class="topo-linha1">
+      <span class="marca">Decisor de Campanha</span>
+      <span class="dados-info" id="dados-info">Carregando…</span>
+    </div>
+    <div class="filtros" id="filtros" role="group" aria-label="Opções da ferramenta">
+      <div class="campo">
+        <label for="f-periodo">Período</label>
+        <select id="f-periodo">
+          <option value="tudo">Todo o período</option>
+          <option value="30">Últimos 30 dias</option>
+          <option value="90">Últimos 90 dias</option>
+          <option value="180">Últimos 180 dias</option>
+          <option value="custom">Escolher as datas</option>
+        </select>
+      </div>
+      <div class="campo" id="campo-de" hidden>
+        <label for="f-de">De</label>
+        <input type="date" id="f-de">
+      </div>
+      <div class="campo" id="campo-ate" hidden>
+        <label for="f-ate">Até</label>
+        <input type="date" id="f-ate">
+      </div>
+      <div class="campo menu">
+        <span class="rotulo-campo" id="rot-redes">Redes sociais</span>
+        <button class="botao" id="f-redes" aria-expanded="false" aria-labelledby="rot-redes f-redes">Todas</button>
+        <div class="menu-painel" id="painel-redes"></div>
+      </div>
+      <div class="campo menu">
+        <span class="rotulo-campo">&nbsp;</span>
+        <button class="botao" id="f-ajustes" aria-expanded="false">Ajustes</button>
+        <div class="menu-painel" id="painel-ajustes">
+          <label class="titulo-menu" for="f-margem">Diferença mínima que importa</label>
+          <select id="f-margem"></select>
+          <p class="secundario">Só chamamos algo de melhor ou pior se a diferença passar
+            deste valor. Na dúvida, deixe 10%.</p>
+        </div>
+      </div>
+      <div class="campo empurra">
+        <span class="rotulo-campo">&nbsp;</span>
+        <button class="botao botao-principal" id="btn-carregar">Carregar meus dados</button>
+      </div>
+      <div class="campo menu">
+        <span class="rotulo-campo">&nbsp;</span>
+        <button class="botao" id="f-tema" aria-expanded="false">Tema</button>
+        <div class="menu-painel" id="painel-tema">
+          <span class="titulo-menu">Cores da tela</span>
+          <label><input type="radio" name="tema" value="automatico" id="tema-automatico">
+            <span>Automático (segue o sistema)</span></label>
+          <label><input type="radio" name="tema" value="claro" id="tema-claro">
+            <span>Claro</span></label>
+          <label><input type="radio" name="tema" value="escuro" id="tema-escuro">
+            <span>Escuro</span></label>
+        </div>
+      </div>
+      <input type="file" id="arquivo" accept=".csv,text/csv" hidden>
+    </div>
+  </div>
+  <div class="abas-faixa">
+    <nav class="abas limite" role="tablist" aria-label="Seções">
+      <button class="aba" role="tab" id="aba-como" aria-controls="painel-como" aria-selected="false">Como usar</button>
+      <button class="aba" role="tab" id="aba-diag" aria-controls="painel-diag" aria-selected="true">Diagnóstico</button>
+      <button class="aba" role="tab" id="aba-plan" aria-controls="painel-plan" aria-selected="false">Planejar campanha</button>
+    </nav>
+  </div>
+</header>
+
+<main class="limite">
+
+  <!-- ---------------------------------------------------------- Como usar -->
+  <section class="painel" id="painel-como" role="tabpanel" aria-labelledby="aba-como" hidden>
+    <div class="secao">
+      <h2>Para que serve</h2>
+      <p class="leitura">Suba o histórico dos seus posts e descubra o que deu mais resultado.
+        A ferramenta mostra o que funcionou melhor, o que funcionou pior, o que não faz
+        diferença e se vale a pena pagar influenciador.</p>
+    </div>
+
+    <div class="secao">
+      <h2>Passo a passo</h2>
+      <ol class="leitura">
+        <li>Baixe o modelo de planilha.</li>
+        <li>Exporte seus posts e preencha o modelo.</li>
+        <li>Clique em "Carregar meus dados".</li>
+        <li>Escolha o período que você quer olhar.</li>
+        <li>Leia o resumo para a sua próxima campanha.</li>
+      </ol>
+      <button class="botao botao-principal" id="btn-template">Baixar modelo de planilha</button>
+    </div>
+
+    <div class="secao">
+      <h2>O que vai em cada coluna</h2>
+      <p class="leitura secundario">As dez primeiras colunas são obrigatórias. As outras
+        ampliam a análise: sem elas, a ferramenta avisa o que deixou de responder.</p>
+      <table class="tabela" id="tabela-dicionario"></table>
+    </div>
+
+    <div class="secao">
+      <h2>De onde exportar</h2>
+      <div class="linhas" id="lista-exportar"></div>
+    </div>
+
+    <div class="secao">
+      <h2>Como ler as respostas</h2>
+      <div class="linhas" id="lista-selos"></div>
+    </div>
+
+    <div class="secao">
+      <h2>Dicas</h2>
+      <ul class="leitura" id="lista-dicas"></ul>
+    </div>
+  </section>
+
+  <!-- ---------------------------------------------------------- Diagnóstico -->
+  <section class="painel" id="painel-diag" role="tabpanel" aria-labelledby="aba-diag"></section>
+
+  <!-- ---------------------------------------------------------- Planejar -->
+  <section class="painel" id="painel-plan" role="tabpanel" aria-labelledby="aba-plan" hidden>
+    <p class="intro-aba">Use esta aba para testar uma ideia de campanha antes de colocar no ar.</p>
+
+    <div class="passo">
+      <div class="cel-form">
+        <h2>1. Sua ideia de campanha</h2>
+        <div class="exemplos" id="exemplos-ideia"></div>
+        <div class="form-campos" id="campos-ideia"></div>
+        <div id="mais-opcoes-caixa"></div>
+        <button class="botao botao-principal" id="btn-ideia" disabled>Ver se a ideia funciona</button>
+        <p class="dica-botao secundario" id="dica-ideia">Escolha pelo menos uma opção.</p>
+      </div>
+      <div id="res-ideia"></div>
+    </div>
+
+    <div class="passo">
+      <div class="cel-form">
+        <h2>2. Quanto você vai postar no mês</h2>
+        <div class="form-campos" id="campos-plano"></div>
+        <button class="botao botao-principal" id="btn-simular">Calcular resultado do mês</button>
+      </div>
+      <div id="res-plano"></div>
+    </div>
+  </section>
+
+</main>
+
+<div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+
+<script id="dados-embutidos" type="application/json">__DADOS__</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script>__ENGINE__</script>
+<script>__UI__</script>
+</body>
+</html>

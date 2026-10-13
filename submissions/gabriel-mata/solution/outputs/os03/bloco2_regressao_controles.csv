@@ -1,0 +1,4 @@
+metrica,n,media_metrica,coef_is_sponsored,coef_pct_da_media,ic_inferior,ic_superior,ic_exclui_0,p_valor,r2,r2_ajustado,p_valor_teste_F,numero_de_condicao,n_parametros
+taxa_engajamento,52214,0.199055,-1.1e-05,-0.0057,-9.6e-05,7.3e-05,nao,0.791777,0.000775,-8.7e-05,0.668108,17.41,46
+shares,52214,300.018443,-0.130211,-0.0434,-0.430394,0.169973,nao,0.395228,0.000667,-0.000195,0.86725,17.41,46
+comments_count,52214,200.015456,0.03888,0.0194,-0.205753,0.283513,nao,0.755418,0.000659,-0.000203,0.874329,17.41,46

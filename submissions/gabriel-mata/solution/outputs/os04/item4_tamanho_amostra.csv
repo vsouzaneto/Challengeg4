@@ -1,0 +1,25 @@
+cv_rotulo,cv_valor,lift_pct,n_por_variante
+CV da base - engajamento,0.022329,5.0,4
+CV da base - engajamento,0.022329,10.0,1
+CV da base - engajamento,0.022329,20.0,1
+CV da base - engajamento,0.022329,40.0,1
+CV da base - shares,0.057693,5.0,21
+CV da base - shares,0.057693,10.0,6
+CV da base - shares,0.057693,20.0,2
+CV da base - shares,0.057693,40.0,1
+CV da base - comments_count,0.070464,5.0,32
+CV da base - comments_count,0.070464,10.0,8
+CV da base - comments_count,0.070464,20.0,2
+CV da base - comments_count,0.070464,40.0,1
+cenario fixo CV = 0.5,0.5,5.0,1568
+cenario fixo CV = 0.5,0.5,10.0,392
+cenario fixo CV = 0.5,0.5,20.0,98
+cenario fixo CV = 0.5,0.5,40.0,25
+cenario fixo CV = 0.7,0.7,5.0,3074
+cenario fixo CV = 0.7,0.7,10.0,769
+cenario fixo CV = 0.7,0.7,20.0,193
+cenario fixo CV = 0.7,0.7,40.0,49
+cenario fixo CV = 1.0,1.0,5.0,6272
+cenario fixo CV = 1.0,1.0,10.0,1568
+cenario fixo CV = 1.0,1.0,20.0,392
+cenario fixo CV = 1.0,1.0,40.0,98

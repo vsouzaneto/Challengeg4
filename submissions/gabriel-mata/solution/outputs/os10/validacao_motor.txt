@@ -1,0 +1,125 @@
+Base embutida: 52214 posts, de 2023-05-29 a 2025-05-28
+Analise: 52214 posts, margem 10%, k desempenho=111, k publico=109
+
+10a.1 - Lift e IC 95% por valor de variavel (metrica taxa)
+| variavel   | segmento   | n     | lift engine | lift python | dif lift | dif IC95 |
+|------------|------------|-------|-------------|-------------|----------|----------|
+| plataforma | Bilibili   | 10598 | 1.000192    | 1.000153    | 3.88e-5  | 8.90e-5  |
+| plataforma | Instagram  | 10423 | 0.999611    | 0.999688    | 7.73e-5  | 1.23e-4  |
+| plataforma | RedNote    | 10402 | 1.000270    | 1.000216    | 5.43e-5  | 1.14e-4  |
+| plataforma | TikTok     | 10296 | 1.000035    | 1.000028    | 7.24e-6  | 6.83e-5  |
+| plataforma | YouTube    | 10495 | 0.999891    | 0.999913    | 2.20e-5  | 8.50e-5  |
+| formato    | image      | 10303 | 0.999904    | 0.999923    | 1.85e-5  | 1.11e-4  |
+| formato    | mixed      | 5213  | 1.000475    | 1.000428    | 4.70e-5  | 7.59e-5  |
+| formato    | text       | 5198  | 1.000539    | 1.000485    | 5.40e-5  | 1.31e-4  |
+| formato    | video      | 31500 | 0.999683    | 0.999874    | 1.91e-4  | 3.56e-4  |
+| categoria  | beauty     | 21023 | 1.000008    | 1.000005    | 3.19e-6  | 1.06e-4  |
+| categoria  | lifestyle  | 20761 | 1.000204    | 1.000123    | 8.11e-5  | 1.60e-4  |
+| categoria  | tech       | 10430 | 0.999682    | 0.999745    | 6.31e-5  | 1.34e-4  |
+| faixa      | até 50K    | 2564  | 1.000112    | 1.000106    | 5.91e-6  | 1.27e-5  |
+| faixa      | 50–100K    | 2597  | 1.000357    | 1.000339    | 1.76e-5  | 5.04e-5  |
+| faixa      | 100–500K   | 21024 | 1.000078    | 1.000046    | 3.15e-5  | 1.42e-4  |
+| faixa      | 500K–1M    | 26029 | 0.999837    | 0.999918    | 8.09e-5  | 1.76e-4  |
+| idade      | 13-18      | 7852  | 0.999628    | 0.999684    | 5.63e-5  | 9.34e-5  |
+| idade      | 19-25      | 18276 | 1.000364    | 1.000236    | 1.28e-4  | 2.29e-4  |
+| idade      | 26-35      | 15700 | 0.999886    | 0.999920    | 3.39e-5  | 1.03e-4  |
+| idade      | 36-50      | 7736  | 0.999783    | 0.999815    | 3.22e-5  | 6.31e-5  |
+| idade      | 50+        | 2650  | 1.000336    | 1.000319    | 1.67e-5  | 4.44e-5  |
+| genero     | female     | 20743 | 0.999995    | 0.999997    | 2.42e-6  | 9.06e-5  |
+| genero     | male       | 20987 | 1.000011    | 1.000006    | 4.68e-6  | 1.25e-4  |
+| genero     | non-binary | 5249  | 0.999974    | 0.999977    | 2.62e-6  | 4.97e-5  |
+| genero     | unknown    | 5235  | 1.000012    | 1.000010    | 1.60e-6  | 4.90e-5  |
+| pais       | Brazil     | 6505  | 1.000366    | 1.000320    | 4.60e-5  | 7.23e-5  |
+| pais       | China      | 6648  | 1.000073    | 1.000063    | 9.66e-6  | 3.84e-5  |
+| pais       | Germany    | 6497  | 0.999621    | 0.999668    | 4.70e-5  | 5.58e-5  |
+| pais       | India      | 6484  | 0.999349    | 0.999430    | 8.09e-5  | 1.41e-4  |
+| pais       | Japan      | 6553  | 0.999999    | 0.999999    | 7.56e-8  | 6.37e-5  |
+| pais       | Russia     | 6459  | 0.999980    | 0.999982    | 2.31e-6  | 1.02e-4  |
+| pais       | UK         | 6570  | 1.000566    | 1.000495    | 7.11e-5  | 8.66e-5  |
+| pais       | USA        | 6498  | 1.000038    | 1.000033    | 5.00e-6  | 3.79e-5  |
+
+10a.2 - Patrocinio (comparacao estratificada)
+| item                      | engine   | python   | dif     | fonte        |
+|---------------------------|----------|----------|---------|--------------|
+| efeito patrocinio - taxa  | 0.999874 | 0.999877 | 3.17e-6 | os03 bloco1  |
+| efeito patrocinio - views | 1.000053 | 1.000054 | 5.74e-7 | os06 item 1b |
+| estratos existentes       | 240      | 240      | 0.00e+0 | os03 bloco1  |
+| estratos usados           | 141      | 141      | 0.00e+0 | os03 bloco1  |
+| posts usados              | 49487    | 49487    | 0.00e+0 | os03 bloco1  |
+| patrocinados usados       | 21174    | 21174    | 0.00e+0 | os03 bloco1  |
+| organicos usados          | 28313    | 28313    | 0.00e+0 | os03 bloco1  |
+
+10b - Vereditos esperados nesta base
+| item            | esperado                  | obtido                    | ok  | detalhe                                                                                                             |
+|-----------------|---------------------------|---------------------------|-----|---------------------------------------------------------------------------------------------------------------------|
+| patrocinio      | Barrado                   | Barrado                   | sim | efeito 0.999874, IC equivalencia [0.99951; 1.00024] dentro de [0,90; 1,10]                                          |
+| nenhum positivo | 0                         | 0                         | sim | 220 segmentos sem efeito comprovado                                                                                 |
+| nenhum negativo | 0                         | 0                         | sim | 0 inconclusivos                                                                                                     |
+| publico         | Nenhum publico comprovado | Nenhum publico comprovado | sim | 109 segmentos de publico avaliados                                                                                  |
+| saude da base   | com alertas               | com alertas               | sim | Alcance acompanha seguidores; Likes acompanham alcance; Existem posts virais e fracassos; Existem posts fracassados |
+
+10d - Filtro 'Ultimos 90 dias'
+| recorte         | posts | k   | estratos | efeito patroc. | func/nao/sem/inconcl |
+|-----------------|-------|-----|----------|----------------|----------------------|
+| Toda a base     | 52214 | 111 | 141      | 0.999874       | 0/0/220/0            |
+| Ultimos 90 dias | 6403  | 93  | 24       | 0.999796       | 0/0/173/0            |
+
+Janela: 2025-02-28 a 2025-05-28
+
+Resumo das tolerancias
+| item                              | dif     | tolerancia | ok  |
+|-----------------------------------|---------|------------|-----|
+| Lift por valor de variavel (taxa) | 1.91e-4 | 0.000001   | NAO |
+| Limites do IC 95% sem correcao    | 3.56e-4 | 0.001      | sim |
+| Efeito do patrocinio em taxa      | 3.17e-6 | 0.001      | sim |
+| Efeito do patrocinio em views     | 5.74e-7 | 0.001      | sim |
+| estratos existentes               | 0.00e+0 | 0          | sim |
+| estratos usados                   | 0.00e+0 | 0          | sim |
+| posts usados                      | 0.00e+0 | 0          | sim |
+| patrocinados usados               | 0.00e+0 | 0          | sim |
+| organicos usados                  | 0.00e+0 | 0          | sim |
+
+1 checagem(ns) fora do esperado.
+
+Base embutida: 52214 posts. Analise: 52214 posts, k desempenho = 111, k publico = 109
+
+0.5.1 - maiores diferencas entre engine e Python (99 linhas comparadas)
+| metrica    | variavel   | segmento  | n     | lift engine | lift python | dif lift | dif ep   |
+|------------|------------|-----------|-------|-------------|-------------|----------|----------|
+| views      | plataforma | YouTube   | 10495 | 0.999937537 | 0.999937537 | 3.75e-14 | 2.77e-15 |
+| views      | plataforma | RedNote   | 10402 | 1.000061676 | 1.000061676 | 3.64e-14 | 2.79e-15 |
+| views      | plataforma | TikTok    | 10296 | 1.000037958 | 1.000037958 | 3.64e-14 | 2.55e-15 |
+| views      | plataforma | Bilibili  | 10598 | 0.999956004 | 0.999956004 | 3.11e-14 | 2.71e-15 |
+| views      | plataforma | Instagram | 10423 | 1.000008142 | 1.000008142 | 2.71e-14 | 2.35e-15 |
+| interacoes | categoria  | beauty    | 21023 | 0.999950583 | 0.999950583 | 1.91e-14 | 3.93e-15 |
+| interacoes | formato    | video     | 31500 | 0.999702994 | 0.999702994 | 1.87e-14 | 9.30e-15 |
+| interacoes | idade      | 19-25     | 18276 | 1.000386004 | 1.000386004 | 1.62e-14 | 2.79e-15 |
+
+0.5.2 - base com efeito conhecido: 6000 posts carregados, 0 descartados, k = 93
+
+0.5.2 - formato na base com efeito conhecido (margem 10%)
+| formato | n    | lift engine | lift da OS | veredito     | esperado     | dif lift vs Python | dif ep vs Python |
+|---------|------|-------------|------------|--------------|--------------|--------------------|------------------|
+| video   | 3659 | +19.63%     | +19.6%     | funciona     | funciona     | 4.44e-15           | 4.09e-15         |
+| image   | 1122 | -14.73%     | -14.7%     | nao_funciona | nao_funciona | 5.55e-16           | 3.22e-16         |
+| text    | 610  | -13.35%     | -13.3%     | nao_funciona | nao_funciona | 3.44e-15           | 2.94e-16         |
+| mixed   | 609  | -13.30%     | -13.3%     | nao_funciona | nao_funciona | 1.33e-15           | 2.83e-16         |
+
+0.5.3 - vereditos na base do desafio (precisam ficar inalterados)
+| item            | esperado          | obtido            | ok  | detalhe                                       |
+|-----------------|-------------------|-------------------|-----|-----------------------------------------------|
+| patrocinio      | Barrado           | Barrado           | sim | efeito 0.999874, IC equiv. [0.99951; 1.00024] |
+| nenhum positivo | 0                 | 0                 | sim | 220 sem efeito comprovado                     |
+| nenhum negativo | 0                 | 0                 | sim | 0 inconclusivos                               |
+| publico         | nenhum comprovado | nenhum comprovado | sim | 109 segmentos de publico                      |
+
+0.3 - teste A/B: dp do indice 0.024461, calculado 1 posts por versao, usado 30 (piso 30)
+
+Resumo das tolerancias
+| item                                                 | dif      | tolerancia | ok  |
+|------------------------------------------------------|----------|------------|-----|
+| 0.5.1 lift (segmentos simples, base completa)        | 3.75e-14 | 0.000001   | sim |
+| 0.5.1 erro padrao (segmentos simples, base completa) | 9.30e-15 | 0.000001   | sim |
+| 0.5.2 lift e ep contra o Python                      | 4.44e-15 | 0.000001   | sim |
+
+Todas as checagens passaram.

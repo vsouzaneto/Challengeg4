@@ -1,0 +1,4 @@
+item,n,valor,ic_inferior,ic_superior,mediana,ic_exclui_1
+patrocinado,22314,10100.448373,10099.157653,10101.781513,10100.0,
+organico,29900,10100.160134,10098.962123,10101.242899,10100.0,
+razao_medias_patrocinado_organico,52214,1.000029,0.999868,1.000195,,nao

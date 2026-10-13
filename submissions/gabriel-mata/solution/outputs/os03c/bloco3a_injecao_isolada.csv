@@ -1,0 +1,73 @@
+variavel,segmento,n,metrica,efeito_injetado_pct,lift_medido,ic_inferior,ic_superior,lift_metade_A,lift_metade_B,detectado
+platform,TikTok,10296,taxa_engajamento,1.0,1.008041,1.007621,1.008518,1.007914,1.008168,sim
+platform,TikTok,10296,taxa_engajamento,2.0,1.016022,1.015553,1.016517,1.015894,1.01615,sim
+platform,TikTok,10296,taxa_engajamento,5.0,1.039778,1.039304,1.040203,1.039647,1.039909,sim
+platform,TikTok,10296,shares,1.0,1.006197,1.004996,1.007373,1.006216,1.006177,sim
+platform,TikTok,10296,shares,2.0,1.014186,1.013082,1.015255,1.014208,1.014164,sim
+platform,TikTok,10296,shares,5.0,1.037978,1.03683,1.039126,1.038001,1.037955,sim
+platform,TikTok,10296,comments_count,1.0,1.005984,1.004625,1.007337,1.005136,1.006831,sim
+platform,TikTok,10296,comments_count,2.0,1.013973,1.012646,1.015331,1.013126,1.014819,sim
+platform,TikTok,10296,comments_count,5.0,1.037805,1.036374,1.03928,1.036949,1.03866,sim
+content_type,text,5198,taxa_engajamento,1.0,1.009483,1.008818,1.010114,1.009614,1.009355,sim
+content_type,text,5198,taxa_engajamento,2.0,1.018463,1.017784,1.019131,1.018596,1.018332,sim
+content_type,text,5198,taxa_engajamento,5.0,1.045295,1.044599,1.046027,1.045436,1.045157,sim
+content_type,text,5198,shares,1.0,1.008534,1.00693,1.010112,1.008916,1.008159,sim
+content_type,text,5198,shares,2.0,1.017515,1.015858,1.019236,1.017898,1.01714,sim
+content_type,text,5198,shares,5.0,1.044415,1.042811,1.046082,1.04483,1.044009,sim
+content_type,text,5198,comments_count,1.0,1.006571,1.004612,1.008356,1.006402,1.006737,sim
+content_type,text,5198,comments_count,2.0,1.015554,1.013638,1.017422,1.015387,1.015717,sim
+content_type,text,5198,comments_count,5.0,1.042456,1.040469,1.04436,1.042243,1.042664,sim
+content_category,tech,10430,taxa_engajamento,1.0,1.00773,1.007241,1.008197,1.008309,1.007157,sim
+content_category,tech,10430,taxa_engajamento,2.0,1.015682,1.015185,1.016151,1.016266,1.015105,sim
+content_category,tech,10430,taxa_engajamento,5.0,1.039351,1.03888,1.039833,1.039949,1.03876,sim
+content_category,tech,10430,shares,1.0,1.00681,1.005606,1.007936,1.006561,1.007057,sim
+content_category,tech,10430,shares,2.0,1.014773,1.013672,1.015937,1.014525,1.015018,sim
+content_category,tech,10430,shares,5.0,1.038513,1.037335,1.039611,1.038276,1.038747,sim
+content_category,tech,10430,comments_count,1.0,1.006269,1.004848,1.007589,1.005529,1.007001,sim
+content_category,tech,10430,comments_count,2.0,1.014231,1.012798,1.015854,1.013491,1.014962,sim
+content_category,tech,10430,comments_count,5.0,1.037979,1.036662,1.039379,1.037234,1.038716,sim
+faixa_seguidores,ate 50K,2564,taxa_engajamento,1.0,1.009611,1.008615,1.010602,1.010465,1.008691,sim
+faixa_seguidores,ate 50K,2564,taxa_engajamento,2.0,1.019106,1.01815,1.020142,1.019968,1.018178,sim
+faixa_seguidores,ate 50K,2564,taxa_engajamento,5.0,1.047537,1.046571,1.048489,1.048422,1.046582,sim
+faixa_seguidores,ate 50K,2564,shares,1.0,1.006656,1.004353,1.008959,1.006626,1.006689,sim
+faixa_seguidores,ate 50K,2564,shares,2.0,1.016159,1.013844,1.018381,1.016131,1.016188,sim
+faixa_seguidores,ate 50K,2564,shares,5.0,1.044622,1.04228,1.047147,1.044622,1.044621,sim
+faixa_seguidores,ate 50K,2564,comments_count,1.0,1.008196,1.005313,1.010999,1.009478,1.006814,sim
+faixa_seguidores,ate 50K,2564,comments_count,2.0,1.017689,1.01482,1.020724,1.018969,1.016311,sim
+faixa_seguidores,ate 50K,2564,comments_count,5.0,1.046204,1.043496,1.048974,1.047501,1.044807,sim
+is_sponsored,True,22314,taxa_engajamento,1.0,1.005669,1.00535,1.005962,1.005576,1.005762,sim
+is_sponsored,True,22314,taxa_engajamento,2.0,1.011322,1.010989,1.011633,1.011228,1.011415,sim
+is_sponsored,True,22314,taxa_engajamento,5.0,1.027996,1.027676,1.028333,1.027902,1.02809,sim
+is_sponsored,True,22314,shares,1.0,1.004524,1.003795,1.005286,1.004242,1.004807,sim
+is_sponsored,True,22314,shares,2.0,1.010188,1.009406,1.010948,1.009907,1.01047,sim
+is_sponsored,True,22314,shares,5.0,1.026915,1.026198,1.027694,1.026626,1.027205,sim
+is_sponsored,True,22314,comments_count,1.0,1.004418,1.003474,1.005305,1.003898,1.004939,sim
+is_sponsored,True,22314,comments_count,2.0,1.010082,1.009152,1.010982,1.009565,1.010601,sim
+is_sponsored,True,22314,comments_count,5.0,1.026823,1.025928,1.027763,1.02631,1.027338,sim
+audience_age_distribution,50+,2650,taxa_engajamento,1.0,1.009809,1.008838,1.010747,1.009439,1.010165,sim
+audience_age_distribution,50+,2650,taxa_engajamento,2.0,1.019289,1.018387,1.02021,1.018917,1.019648,sim
+audience_age_distribution,50+,2650,taxa_engajamento,5.0,1.047672,1.046676,1.048586,1.047291,1.04804,sim
+audience_age_distribution,50+,2650,shares,1.0,1.008278,1.005981,1.010349,1.007985,1.008559,sim
+audience_age_distribution,50+,2650,shares,2.0,1.017756,1.015486,1.01997,1.017464,1.018037,sim
+audience_age_distribution,50+,2650,shares,5.0,1.04619,1.044085,1.048476,1.045922,1.046448,sim
+audience_age_distribution,50+,2650,comments_count,1.0,1.006428,1.003765,1.009082,1.007039,1.005839,sim
+audience_age_distribution,50+,2650,comments_count,2.0,1.015913,1.013156,1.018749,1.01653,1.015319,sim
+audience_age_distribution,50+,2650,comments_count,5.0,1.044348,1.041674,1.047184,1.045011,1.043708,sim
+audience_gender_distribution,unknown,5235,taxa_engajamento,1.0,1.008998,1.008298,1.009631,1.009055,1.008944,sim
+audience_gender_distribution,unknown,5235,taxa_engajamento,2.0,1.017968,1.017323,1.018702,1.018024,1.017914,sim
+audience_gender_distribution,unknown,5235,taxa_engajamento,5.0,1.044769,1.044041,1.045423,1.044824,1.044716,sim
+audience_gender_distribution,unknown,5235,shares,1.0,1.007134,1.005532,1.00873,1.00701,1.007252,sim
+audience_gender_distribution,unknown,5235,shares,2.0,1.016106,1.014561,1.017697,1.015983,1.016223,sim
+audience_gender_distribution,unknown,5235,shares,5.0,1.042947,1.041257,1.044615,1.042788,1.043098,sim
+audience_gender_distribution,unknown,5235,comments_count,1.0,1.007446,1.005517,1.009373,1.006453,1.008394,sim
+audience_gender_distribution,unknown,5235,comments_count,2.0,1.01642,1.014304,1.0185,1.015427,1.017368,sim
+audience_gender_distribution,unknown,5235,comments_count,5.0,1.043303,1.041179,1.04523,1.042285,1.044276,sim
+audience_location,Russia,6459,taxa_engajamento,1.0,1.008733,1.008135,1.009277,1.008749,1.008717,sim
+audience_location,Russia,6459,taxa_engajamento,2.0,1.017461,1.016797,1.018069,1.017478,1.017445,sim
+audience_location,Russia,6459,taxa_engajamento,5.0,1.043519,1.042926,1.044107,1.043536,1.043502,sim
+audience_location,Russia,6459,shares,1.0,1.006637,1.005132,1.007967,1.006217,1.007051,sim
+audience_location,Russia,6459,shares,2.0,1.015372,1.013854,1.016863,1.014955,1.015784,sim
+audience_location,Russia,6459,shares,5.0,1.041476,1.039969,1.04299,1.041049,1.041897,sim
+audience_location,Russia,6459,comments_count,1.0,1.007392,1.005651,1.009175,1.006746,1.008029,sim
+audience_location,Russia,6459,comments_count,2.0,1.016124,1.014442,1.017821,1.01548,1.016761,sim
+audience_location,Russia,6459,comments_count,5.0,1.042276,1.040665,1.044036,1.041615,1.042929,sim

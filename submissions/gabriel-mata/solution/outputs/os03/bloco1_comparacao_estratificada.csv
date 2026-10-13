@@ -1,0 +1,4 @@
+metrica,estratos_existentes,estratos_usados,posts_usados,posts_fora,n_patrocinado_usado,n_organico_usado,efeito_geral,ic_inferior,ic_superior,ic_exclui_1,efeito_metade_A,efeito_metade_B,pct_estratos_razao_maior_1,razao_minimo,razao_p5,razao_mediana,razao_p95,razao_maximo,comparacao_simples_sem_estratos
+taxa_engajamento,240,141,49487,2727,21174,28313,0.999877,0.999429,1.000352,nao,0.999728,1.000021,53.19,0.988167,0.993916,1.000253,1.006637,1.010619,0.999946
+shares,240,141,49487,2727,21174,28313,0.99952,0.998507,1.000535,nao,0.999059,0.999958,46.81,0.979506,0.987602,0.9995,1.013298,1.029031,0.999565
+comments_count,240,141,49487,2727,21174,28313,1.000018,0.998796,1.001383,nao,1.00015,0.999967,46.1,0.97029,0.985417,0.999457,1.017395,1.037867,1.000184

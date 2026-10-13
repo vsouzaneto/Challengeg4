@@ -1,0 +1,28 @@
+nivel,variaveis,segmentos_existentes,segmentos_mantidos,segmentos_fora_por_n_menor_100
+1,content_type,4,4,0
+1,content_category,3,3,0
+1,language,5,5,0
+1,is_sponsored,2,2,0
+1,audience_age_distribution,5,5,0
+1,audience_gender_distribution,4,4,0
+1,audience_location,8,8,0
+1,faixa_seguidores,4,4,0
+1,n_hashtags,6,6,0
+1,periodo_dia,4,4,0
+1,dia_semana,7,7,0
+2,platform x content_type,20,20,0
+2,platform x content_category,15,15,0
+2,platform x language,25,25,0
+2,platform x is_sponsored,10,10,0
+2,platform x audience_age_distribution,25,25,0
+2,platform x audience_gender_distribution,20,20,0
+2,platform x audience_location,40,40,0
+2,platform x faixa_seguidores,20,20,0
+2,platform x n_hashtags,30,30,0
+2,platform x periodo_dia,20,20,0
+2,platform x dia_semana,35,35,0
+3,platform x content_type x content_category,60,60,0
+3,platform x content_category x faixa_seguidores,60,59,1
+3,platform x content_type x faixa_seguidores,80,59,21
+3,platform x content_category x audience_age_distribution,75,75,0
+4,platform x content_type x content_category x faixa_seguidores,240,128,112

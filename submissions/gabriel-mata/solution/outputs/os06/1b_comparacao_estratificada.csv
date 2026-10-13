@@ -1,0 +1,2 @@
+metrica,estratos_existentes,estratos_usados,posts_usados,posts_fora,n_patrocinado_usado,n_organico_usado,efeito_geral,ic_inferior,ic_superior,ic_exclui_1,efeito_metade_A,efeito_metade_B,pct_estratos_razao_maior_1,razao_minimo,razao_p5,razao_mediana,razao_p95,razao_maximo,comparacao_simples_sem_estratos
+views,240,141,49487,2727,21174,28313,1.000054,0.999869,1.000208,nao,1.000021,1.000079,50.35,0.996281,0.998053,1.000008,1.002432,1.003833,1.000029

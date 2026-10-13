@@ -1,0 +1,67 @@
+validacao 2 - varredura de linguagem (Como calculamos fechado)
+  barra superior: 275 caracteres, 0 palavra(s) proibida(s)
+    frases com mais de 25 palavras: 0
+  Diagnostico: 4008 caracteres, 0 palavra(s) proibida(s)
+    frases com mais de 25 palavras: 0
+  Planejar campanha: 1933 caracteres, 0 palavra(s) proibida(s)
+    frases com mais de 25 palavras: 0
+  total de palavras proibidas na tela: 0
+  texto conferido salvo em texto_tela.txt
+extra - barras de 'Vale a pena pagar influenciador?' contra o pandas
+  tela: ['cerca de 2.010 interações por post', 'cerca de 2.010 interações por post', 'cerca de 10 mil visualizações por post', 'cerca de 10 mil visualizações por post']; posts na tela: ['49.487']
+  pandas: 49487 posts em 141 grupos comparaveis
+  | interacoes: sem pagar 2010.4 por post; pago 2010.3 por post
+  | views: sem pagar 10100.3 por post; pago 10100.8 por post
+validacao 3 - base com efeito conhecido (video com likes x 1,3)
+  Dados: base_efeito_conhecido.csv · 6.000 posts · 29/05/2023 a 19/08/2023
+  frase principal: Neste histórico, Vídeo, Vídeo com influenciadores de 500 mil a 1 milhão de seguidores, Vídeo sobre beleza trouxeram mais resultado.
+  | Onde e como postarPriorize: Vídeo, Vídeo com influenciadores de 500 mil a 1 milhão de seguidores, Vídeo sobre beleza.Evite: Imagem, Texto, Misto.
+  | Para quem falarPode falar com o mesmo público. Nenhum grupo de pessoas respondeu melhor que os outros.
+  | Pagar influenciador?Não vale a penaPosts pagos tiveram o mesmo resultado que posts sem pagar. Use o dinheiro em outra coisa.
+  | O que testar nesta campanhaCrie duas versões bem diferentes do mesmo post (por exemplo, um vídeo e uma imagem) e publique pelo menos 30 de cada. No fim, compare qual teve mais interações.
+  ok  contém "Priorize: Vídeo"
+  ok  contém "Evite: Imagem, Texto, Misto"
+validacao 4 - aba Planejar campanha
+  ok  botao travado com tudo em Qualquer
+  dica visivel: "Escolha pelo menos uma opção."
+  exemplos prontos:
+  | Vídeo no TikTok: {'i-plataforma': 'TikTok', 'i-formato': 'video'} -> selo ['Não faz diferença'], botao travado=False
+  | Post pago no Instagram: {'i-plataforma': 'Instagram', 'i-patrocinado': 'sim'} -> selo ['Não faz diferença'], botao travado=False
+  | Imagem sobre tecnologia: {'i-formato': 'image', 'i-categoria': 'tech'} -> selo ['Não faz diferença'], botao travado=False
+  mais opcoes:
+  | antes: {'rotulo': 'Mais opções', 'escondido': True}
+  | aberto: {'rotulo': 'Menos opções', 'escondido': False, 'campos': 4}
+  | fechado de novo: {'rotulo': 'Mais opções', 'escondido': True}
+  comparativo do mes (30 organicos + 10 pagos a R$ 2.000):
+  |  | Seu plano | Se todos fossem sem pagar
+  | Posts no mês | 40 | 40
+  | Visualizações?Quantas vezes o post foi visto. | 404 mil | 404 mil
+  | Interações | 80 mil | 80 mil
+  | Investimento | R$ 20.000 | R$ 0
+  Com 30 posts sem pagar e 10 posts pagos, você deve alcançar cerca de 404 mil visualizações no mês. Você também deve receber cerca de 80 mil interações. O investimento será de R$ 20.000.
+  Pagar os 10 posts custa R$ 20.000 e traz praticamente o mesmo resultado que publicá-los sem pagar. Você economizaria R$ 20.000 no mês.
+  Este cálculo supõe que postar mais não diminui o resultado de cada post. Se for aumentar muito o número de posts, faça isso aos poucos e acompanhe.
+  conta a mao (os09/d_referencia_simulador.csv):
+  | views: plano 404011.33 -> 404 mil; sem pagar 404005.94 -> 404 mil
+  | interacoes: plano 80412.34 -> 80 mil; sem pagar 80413.89 -> 80 mil
+  | posts no mes 40; investimento R$ 20.000 vs R$ 0
+validacao 5 - tema claro e escuro a 1.440 px
+  captura_diagnostico_claro_1440.png (1440x3143, data-tema=claro), pior contraste 5.32:1
+  captura_planejar_claro_1440.png (1440x1473, data-tema=claro), pior contraste 5.44:1
+  captura_diagnostico_escuro_1440.png (1440x3143, data-tema=escuro), pior contraste 5.7:1
+  captura_planejar_escuro_1440.png (1440x1473, data-tema=escuro), pior contraste 4.6:1
+  localStorage decisor-tema = escuro; depois de recarregar: {'attr': 'escuro', 'radio': 'escuro', 'fundo': 'rgb(18, 20, 23)'}
+validacao 6 - ajuda "?"
+  botoes "?" em Diagnostico: 4
+  botoes "?" em Planejar: 2
+  clique: aberto=true aria-expanded=true "Tudo que as pessoas fazem no post: curtir, comentar e compartilhar."
+  Esc: aberto=false
+  Enter: aberto=true foco=ajuda
+  clique fora: aberto=false
+  | O que quer dizer Interações (curtidas, comentários e compartilhamentos): Tudo que as pessoas fazem no post: curtir, comentar e compartilhar.
+  | O que quer dizer Sem pagar (orgânico): Post que você publica sem pagar ninguém para divulgar.
+  | O que quer dizer Pago (patrocinado): Post em que você paga um influenciador para publicar.
+  | O que quer dizer Pessoas alcançadas (visualizações): Quantas vezes o post foi visto.
+  | O que quer dizer Posts sem pagar (orgânicos): Post que você publica sem pagar ninguém para divulgar.
+  | O que quer dizer Posts pagos (com influenciador): Post em que você paga um influenciador para publicar.
+  botoes "?" em Planejar depois de usar a aba: 4

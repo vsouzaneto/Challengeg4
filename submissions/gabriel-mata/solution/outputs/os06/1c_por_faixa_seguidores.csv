@@ -1,0 +1,5 @@
+faixa_seguidores,metrica,n_patrocinado,n_organico,estratos_existentes,estratos_usados,efeito,ic_inferior,ic_superior,ic_exclui_1,efeito_metade_A,efeito_metade_B
+ate 50K,views,1114,1450,15,15,0.999723,0.999014,1.000533,nao,0.999497,1.000114
+50-100K,views,1109,1488,15,15,1.000154,0.999346,1.000951,nao,1.000051,1.0002
+100-500K,views,8967,12057,15,15,1.000071,0.999799,1.000336,nao,1.000163,0.99998
+500K-1M,views,11124,14905,15,15,1.000013,0.999761,1.000251,nao,0.999919,1.000111

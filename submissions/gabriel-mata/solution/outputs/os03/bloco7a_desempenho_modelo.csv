@@ -1,0 +1,5 @@
+alvo,r2_medio,r2_desvio,mae_modelo,mae_modelo_da_media,dif_pct_mae_vs_media,r2_medio_modelo_da_media
+taxa_engajamento,-0.001162,0.000598,0.003882,0.00388,0.0473,-0.000122
+shares,-0.001241,0.000942,13.834531,13.824963,0.0692,-0.000135
+comments_count,-0.000807,0.000492,11.271032,11.265099,0.0527,-0.000159
+engajamento,-0.001308,0.00049,35.851408,35.831213,0.0564,-9.6e-05

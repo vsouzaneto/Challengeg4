@@ -1,0 +1,10 @@
+variaveis,metrica,segmentos_avaliados,maior_lift_observado,acaso_p95_dos_maiores,maior_observado_acima_do_acaso,menor_lift_observado,acaso_p5_dos_menores,menor_observado_abaixo_do_acaso
+content_type x audience_age_distribution,taxa_engajamento,20,1.001334,1.00293,nao,0.999271,0.997124,nao
+content_type x audience_age_distribution,shares,20,1.004961,1.007056,nao,0.997,0.992664,nao
+content_type x audience_age_distribution,comments_count,20,1.007754,1.00757,sim,0.997046,0.991618,nao
+content_type x audience_gender_distribution,taxa_engajamento,16,1.0008,1.002199,nao,0.999554,0.997621,nao
+content_type x audience_gender_distribution,shares,16,1.003257,1.005578,nao,0.996425,0.994712,nao
+content_type x audience_gender_distribution,comments_count,16,1.004368,1.006525,nao,0.994353,0.992643,nao
+content_type x audience_location,taxa_engajamento,32,1.00232,1.002709,nao,0.998945,0.99741,nao
+content_type x audience_location,shares,32,1.006007,1.006172,nao,0.996803,0.993968,nao
+content_type x audience_location,comments_count,32,1.00394,1.007371,nao,0.995016,0.992656,nao

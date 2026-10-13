@@ -1,0 +1,3 @@
+cenario,efeito_injetado_pct,segmento_sorteado,n,metrica,lift_medido,ic_inferior,ic_superior,ic_exclui_1,posicao_no_ranking,segmentos_no_ranking,maior_lift_por_acaso_p95,supera_o_acaso
+1,5.0,Bilibili | video | beauty | 50-100K,137,taxa_engajamento,1.045982,1.041436,1.050154,sim,1,128,1.006481,sim
+2,10.0,Bilibili | video | beauty | 50-100K,137,taxa_engajamento,1.095086,1.090902,1.100069,sim,1,128,1.007255,sim

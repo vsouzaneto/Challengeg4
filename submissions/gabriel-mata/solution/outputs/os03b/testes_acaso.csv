@@ -1,0 +1,16 @@
+conjunto,metrica,segmentos_existentes,segmentos_avaliados,segmentos_fora_por_n_minimo,posts_fora_por_n_minimo,maior_lift_observado,acaso_p95_dos_maiores,maior_observado_acima_do_acaso,menor_lift_observado,acaso_p5_dos_menores,menor_observado_abaixo_do_acaso
+A3 sponsor_category x content_category (so patrocinados),taxa_engajamento,18,18,0,0,1.001446,1.002177,nao,0.99858,0.997784,nao
+A3 sponsor_category x content_category (so patrocinados),shares,18,18,0,0,1.003791,1.004769,nao,0.99562,0.99489,nao
+A3 sponsor_category x content_category (so patrocinados),comments_count,18,18,0,0,1.003724,1.005993,nao,0.997909,0.993925,nao
+B1 personas (idade x genero x local),taxa_engajamento,160,126,34,2157,1.005435,1.00645,nao,0.996523,0.993089,nao
+B1 personas (idade x genero x local),shares,160,126,34,2157,1.01102,1.015717,nao,0.989645,0.984331,nao
+B1 personas (idade x genero x local),comments_count,160,126,34,2157,1.009605,1.019881,nao,0.990042,0.98014,nao
+B2 content_category x audience_age_distribution,taxa_engajamento,15,15,0,0,1.000661,1.001871,nao,0.998769,0.998276,nao
+B2 content_category x audience_age_distribution,shares,15,15,0,0,1.001096,1.004931,nao,0.998441,0.995676,nao
+B2 content_category x audience_age_distribution,comments_count,15,15,0,0,1.00256,1.005547,nao,0.997251,0.994942,nao
+B2 content_category x audience_gender_distribution,taxa_engajamento,12,12,0,0,1.000567,1.001539,nao,0.998909,0.99848,nao
+B2 content_category x audience_gender_distribution,shares,12,12,0,0,1.001831,1.00381,nao,0.998888,0.996611,nao
+B2 content_category x audience_gender_distribution,comments_count,12,12,0,0,1.002054,1.004256,nao,0.999027,0.995646,nao
+B2 content_category x audience_location,taxa_engajamento,24,24,0,0,1.00102,1.001757,nao,0.998644,0.998253,nao
+B2 content_category x audience_location,shares,24,24,0,0,1.001909,1.003917,nao,0.998188,0.996117,nao
+B2 content_category x audience_location,comments_count,24,24,0,0,1.002594,1.004944,nao,0.997076,0.995429,nao

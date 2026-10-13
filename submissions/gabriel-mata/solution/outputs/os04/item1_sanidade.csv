@@ -1,0 +1,28 @@
+indicador,valor
+1. mediana de views - faixa ate 50K (n=2564),10097.0
+1. mediana de views - faixa 50-100K (n=2597),10099.0
+1. mediana de views - faixa 100-500K (n=21024),10100.0
+1. mediana de views - faixa 500K-1M (n=26029),10101.0
+2. correlação de Pearson likes × views,0.000761
+2. correlação de Spearman likes × views,0.00149
+3. correlação de Pearson log10(follower_count) × log10(views),0.005644
+4. variância ÷ média - views,0.990585
+4. variância ÷ média - likes,1.002983
+4. variância ÷ média - shares,0.9986
+4. variância ÷ média - comments_count,0.993115
+5. engajamento no percentil 1 ÷ mediana do engajamento,0.948756
+6. % de posts com engajamento < 10% da mediana,0.0
+7. mínimo de views,9676.0
+7. máximo de views,10551.0
+7. mínimo de engajamento,1833.0
+7. máximo de engajamento,2189.0
+8. % de creator_id em uma única plataforma (de 5000 creators),0.0
+9. % de creator_id com o mesmo follower_count em todos os posts,0.0
+10. V de Cramér language × audience_location (5×8),0.011294
+11. sponsor_name distintos entre os posts patrocinados,18005.0
+11. total de posts patrocinados,22314.0
+12. % de posts em Bilibili + RedNote,40.219098
+13. mediana de content_length - image (n=10303),173.0
+13. mediana de content_length - mixed (n=5213),175.0
+13. mediana de content_length - text (n=5198),174.0
+13. mediana de content_length - video (n=31500),174.0
