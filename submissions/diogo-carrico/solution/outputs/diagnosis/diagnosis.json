@@ -1,0 +1,803 @@
+{
+  "bottlenecks": {
+    "unresolved": {
+      "channel": {
+        "n": 8469,
+        "n_segments": 4,
+        "segment_size_median": 2126.5,
+        "segment_size_min": 2073,
+        "overall": 0.6730428622033298,
+        "highest_segment": "Social media",
+        "highest_value": 0.6775106082036775,
+        "lowest_segment": "Email",
+        "lowest_value": 0.6640223985067663,
+        "largest_deviation_segment": "Email",
+        "largest_deviation": -0.009020463696563508,
+        "null_95pct_of_largest_deviation": 0.02160257918596109,
+        "familywise_p_value": 0.7036592681463707,
+        "minimum_detectable_deviation": 0.033971805743847186
+      },
+      "priority": {
+        "n": 8469,
+        "n_segments": 4,
+        "segment_size_median": 2107.0,
+        "segment_size_min": 2063,
+        "overall": 0.6730428622033298,
+        "highest_segment": "Low",
+        "highest_value": 0.6878332525448376,
+        "lowest_segment": "Critical",
+        "lowest_value": 0.6589948332550494,
+        "largest_deviation_segment": "Low",
+        "largest_deviation": 0.014790390341507864,
+        "null_95pct_of_largest_deviation": 0.021583008188731267,
+        "familywise_p_value": 0.2913417316536693,
+        "minimum_detectable_deviation": 0.03412864592942696
+      },
+      "type": {
+        "n": 8469,
+        "n_segments": 5,
+        "segment_size_median": 1695.0,
+        "segment_size_min": 1634,
+        "overall": 0.6730428622033298,
+        "highest_segment": "Cancellation request",
+        "highest_value": 0.695575221238938,
+        "lowest_segment": "Refund request",
+        "lowest_value": 0.6598173515981736,
+        "largest_deviation_segment": "Cancellation request",
+        "largest_deviation": 0.02253235903560824,
+        "null_95pct_of_largest_deviation": 0.02587650022892396,
+        "familywise_p_value": 0.12077584483103379,
+        "minimum_detectable_deviation": 0.03894124217235487
+      },
+      "subject": {
+        "n": 8469,
+        "n_segments": 16,
+        "segment_size_median": 529.5,
+        "segment_size_min": 478,
+        "overall": 0.6730428622033298,
+        "highest_segment": "Payment issue",
+        "highest_value": 0.7034220532319392,
+        "lowest_segment": "Network problem",
+        "lowest_value": 0.62708719851577,
+        "largest_deviation_segment": "Network problem",
+        "largest_deviation": -0.04595566368755977,
+        "null_95pct_of_largest_deviation": 0.058898620063759274,
+        "familywise_p_value": 0.27974405118976203,
+        "minimum_detectable_deviation": 0.07740620751721403
+      },
+      "product": {
+        "n": 8469,
+        "n_segments": 42,
+        "segment_size_median": 200.0,
+        "segment_size_min": 178,
+        "overall": 0.6730428622033298,
+        "highest_segment": "Nintendo Switch Pro Controller",
+        "highest_value": 0.7586206896551724,
+        "lowest_segment": "Microsoft Office",
+        "lowest_value": 0.6,
+        "largest_deviation_segment": "Nintendo Switch Pro Controller",
+        "largest_deviation": 0.08557782745184261,
+        "null_95pct_of_largest_deviation": 0.10619917458165348,
+        "familywise_p_value": 0.3119376124775045,
+        "minimum_detectable_deviation": 0.13543555546824576
+      },
+      "channel_x_priority": {
+        "n": 8469,
+        "n_segments": 16,
+        "segment_size_median": 525.5,
+        "segment_size_min": 499,
+        "overall": 0.6730428622033298,
+        "highest_segment": "Phone | Low",
+        "highest_value": 0.7234468937875751,
+        "lowest_segment": "Chat | High",
+        "lowest_value": 0.6344294003868471,
+        "largest_deviation_segment": "Phone | Low",
+        "largest_deviation": 0.050404031584245335,
+        "null_95pct_of_largest_deviation": 0.05795582158437429,
+        "familywise_p_value": 0.14977004599080185,
+        "minimum_detectable_deviation": 0.07770024925028433
+      },
+      "channel_x_type": {
+        "n": 8469,
+        "n_segments": 20,
+        "segment_size_median": 425.0,
+        "segment_size_min": 388,
+        "overall": 0.6730428622033298,
+        "highest_segment": "Social media | Cancellation request",
+        "highest_value": 0.738498789346247,
+        "lowest_segment": "Email | Refund request",
+        "lowest_value": 0.6241758241758242,
+        "largest_deviation_segment": "Social media | Cancellation request",
+        "largest_deviation": 0.06545592714291726,
+        "null_95pct_of_largest_deviation": 0.06659407980740652,
+        "familywise_p_value": 0.060387922415516895,
+        "minimum_detectable_deviation": 0.08795150058238523
+      },
+      "priority_x_type": {
+        "n": 8469,
+        "n_segments": 20,
+        "segment_size_median": 421.5,
+        "segment_size_min": 382,
+        "overall": 0.6730428622033298,
+        "highest_segment": "Low | Cancellation request",
+        "highest_value": 0.7463768115942029,
+        "lowest_segment": "Critical | Product inquiry",
+        "lowest_value": 0.6426799007444168,
+        "largest_deviation_segment": "Low | Cancellation request",
+        "largest_deviation": 0.07333394939087312,
+        "null_95pct_of_largest_deviation": 0.06786677900292166,
+        "familywise_p_value": 0.02399520095980804,
+        "minimum_detectable_deviation": 0.08831590611112654
+      },
+      "channel_x_priority_x_type": {
+        "n": 8469,
+        "n_segments": 80,
+        "segment_size_median": 106.0,
+        "segment_size_min": 85,
+        "overall": 0.6730428622033298,
+        "highest_segment": "Phone | Low | Cancellation request",
+        "highest_value": 0.8055555555555556,
+        "lowest_segment": "Email | High | Refund request",
+        "lowest_value": 0.5660377358490566,
+        "largest_deviation_segment": "Phone | Low | Cancellation request",
+        "largest_deviation": 0.13251269335222582,
+        "null_95pct_of_largest_deviation": 0.15725338851911919,
+        "familywise_p_value": 0.2641471705658868,
+        "minimum_detectable_deviation": 0.194208396071304
+      }
+    },
+    "never_answered": {
+      "channel": {
+        "n": 8469,
+        "n_segments": 4,
+        "segment_size_median": 2126.5,
+        "segment_size_min": 2073,
+        "overall": 0.3328610225528398,
+        "highest_segment": "Phone",
+        "highest_value": 0.3452157598499062,
+        "lowest_segment": "Email",
+        "lowest_value": 0.32711152589827347,
+        "largest_deviation_segment": "Phone",
+        "largest_deviation": 0.012354737297066432,
+        "null_95pct_of_largest_deviation": 0.0220855802995951,
+        "familywise_p_value": 0.4647070585882823,
+        "minimum_detectable_deviation": 0.0341264794668954
+      },
+      "priority": {
+        "n": 8469,
+        "n_segments": 4,
+        "segment_size_median": 2107.0,
+        "segment_size_min": 2063,
+        "overall": 0.3328610225528398,
+        "highest_segment": "High",
+        "highest_value": 0.3376498800959233,
+        "lowest_segment": "Critical",
+        "lowest_value": 0.3250352278064819,
+        "largest_deviation_segment": "Critical",
+        "largest_deviation": -0.007825794746357861,
+        "null_95pct_of_largest_deviation": 0.02191691733912443,
+        "familywise_p_value": 0.7854429114177165,
+        "minimum_detectable_deviation": 0.034284033746262536
+      },
+      "type": {
+        "n": 8469,
+        "n_segments": 5,
+        "segment_size_median": 1695.0,
+        "segment_size_min": 1634,
+        "overall": 0.3328610225528398,
+        "highest_segment": "Technical issue",
+        "highest_value": 0.34459072696050375,
+        "lowest_segment": "Refund request",
+        "lowest_value": 0.3219178082191781,
+        "largest_deviation_segment": "Technical issue",
+        "largest_deviation": 0.011729704407663966,
+        "null_95pct_of_largest_deviation": 0.025786279250156103,
+        "familywise_p_value": 0.7174565086982604,
+        "minimum_detectable_deviation": 0.03911854175284629
+      },
+      "subject": {
+        "n": 8469,
+        "n_segments": 16,
+        "segment_size_median": 529.5,
+        "segment_size_min": 478,
+        "overall": 0.3328610225528398,
+        "highest_segment": "Cancellation request",
+        "highest_value": 0.3757700205338809,
+        "lowest_segment": "Product setup",
+        "lowest_value": 0.29678638941398866,
+        "largest_deviation_segment": "Cancellation request",
+        "largest_deviation": 0.04290899798104114,
+        "null_95pct_of_largest_deviation": 0.05860465462712311,
+        "familywise_p_value": 0.39992001599680066,
+        "minimum_detectable_deviation": 0.07775863818851851
+      },
+      "product": {
+        "n": 8469,
+        "n_segments": 42,
+        "segment_size_median": 200.0,
+        "segment_size_min": 178,
+        "overall": 0.3328610225528398,
+        "highest_segment": "Nintendo Switch Pro Controller",
+        "highest_value": 0.4039408866995074,
+        "lowest_segment": "Xbox",
+        "lowest_value": 0.2620320855614973,
+        "largest_deviation_segment": "Nintendo Switch Pro Controller",
+        "largest_deviation": 0.07107986414666762,
+        "null_95pct_of_largest_deviation": 0.10661667866143706,
+        "familywise_p_value": 0.7246550689862028,
+        "minimum_detectable_deviation": 0.13605219391706214
+      },
+      "channel_x_priority": {
+        "n": 8469,
+        "n_segments": 16,
+        "segment_size_median": 525.5,
+        "segment_size_min": 499,
+        "overall": 0.3328610225528398,
+        "highest_segment": "Phone | Low",
+        "highest_value": 0.38877755511022044,
+        "lowest_segment": "Phone | Critical",
+        "lowest_value": 0.3041825095057034,
+        "largest_deviation_segment": "Phone | Low",
+        "largest_deviation": 0.05591653255738066,
+        "null_95pct_of_largest_deviation": 0.05850714581327715,
+        "familywise_p_value": 0.07618476304739052,
+        "minimum_detectable_deviation": 0.07805401869439144
+      },
+      "channel_x_type": {
+        "n": 8469,
+        "n_segments": 20,
+        "segment_size_median": 425.0,
+        "segment_size_min": 388,
+        "overall": 0.3328610225528398,
+        "highest_segment": "Social media | Cancellation request",
+        "highest_value": 0.36319612590799033,
+        "lowest_segment": "Social media | Refund request",
+        "lowest_value": 0.30180180180180183,
+        "largest_deviation_segment": "Social media | Refund request",
+        "largest_deviation": -0.031059220751037953,
+        "null_95pct_of_largest_deviation": 0.06669254887573167,
+        "familywise_p_value": 0.97000599880024,
+        "minimum_detectable_deviation": 0.08835194400141716
+      },
+      "priority_x_type": {
+        "n": 8469,
+        "n_segments": 20,
+        "segment_size_median": 421.5,
+        "segment_size_min": 382,
+        "overall": 0.3328610225528398,
+        "highest_segment": "High | Cancellation request",
+        "highest_value": 0.3793969849246231,
+        "lowest_segment": "Low | Refund request",
+        "lowest_value": 0.29772727272727273,
+        "largest_deviation_segment": "High | Cancellation request",
+        "largest_deviation": 0.04653596237178331,
+        "null_95pct_of_largest_deviation": 0.06695909790091513,
+        "familywise_p_value": 0.5342931413717257,
+        "minimum_detectable_deviation": 0.08871800866951228
+      },
+      "channel_x_priority_x_type": {
+        "n": 8469,
+        "n_segments": 80,
+        "segment_size_median": 106.0,
+        "segment_size_min": 85,
+        "overall": 0.3328610225528398,
+        "highest_segment": "Phone | High | Billing inquiry",
+        "highest_value": 0.44660194174757284,
+        "lowest_segment": "Phone | High | Product inquiry",
+        "lowest_value": 0.23076923076923078,
+        "largest_deviation_segment": "Phone | High | Billing inquiry",
+        "largest_deviation": 0.11374091919473306,
+        "null_95pct_of_largest_deviation": 0.15714878136872887,
+        "familywise_p_value": 0.648870225954809,
+        "minimum_detectable_deviation": 0.19509262742167935
+      }
+    },
+    "csat": {
+      "channel": {
+        "n": 2769,
+        "n_segments": 4,
+        "segment_size_median": 687.5,
+        "segment_size_min": 674,
+        "overall": 2.991332611050921,
+        "highest_segment": "Chat",
+        "highest_value": 3.083086053412463,
+        "lowest_segment": "Phone",
+        "lowest_value": 2.952243125904486,
+        "largest_deviation_segment": "Chat",
+        "largest_deviation": 0.09175344236154226,
+        "null_95pct_of_largest_deviation": 0.11450129717027469,
+        "familywise_p_value": 0.16736652669466107,
+        "minimum_detectable_deviation": 0.1791932115776507
+      },
+      "priority": {
+        "n": 2769,
+        "n_segments": 4,
+        "segment_size_median": 699.5,
+        "segment_size_min": 644,
+        "overall": 2.991332611050921,
+        "highest_segment": "Low",
+        "highest_value": 3.0527950310559007,
+        "lowest_segment": "Critical",
+        "lowest_value": 2.958677685950413,
+        "largest_deviation_segment": "Low",
+        "largest_deviation": 0.06146242000497981,
+        "null_95pct_of_largest_deviation": 0.11525191940826973,
+        "familywise_p_value": 0.49190161967606477,
+        "minimum_detectable_deviation": 0.177649522699985
+      },
+      "type": {
+        "n": 2769,
+        "n_segments": 5,
+        "segment_size_median": 544.0,
+        "segment_size_min": 516,
+        "overall": 2.991332611050921,
+        "highest_segment": "Cancellation request",
+        "highest_value": 3.0290697674418605,
+        "lowest_segment": "Refund request",
+        "lowest_value": 2.934563758389262,
+        "largest_deviation_segment": "Refund request",
+        "largest_deviation": -0.056768852661658986,
+        "null_95pct_of_largest_deviation": 0.13861943275634703,
+        "familywise_p_value": 0.7580483903219356,
+        "minimum_detectable_deviation": 0.20615875415200302
+      },
+      "subject": {
+        "n": 2769,
+        "n_segments": 16,
+        "segment_size_median": 175.5,
+        "segment_size_min": 147,
+        "overall": 2.991332611050921,
+        "highest_segment": "Installation support",
+        "highest_value": 3.1835443037974684,
+        "lowest_segment": "Delivery problem",
+        "lowest_value": 2.803370786516854,
+        "largest_deviation_segment": "Installation support",
+        "largest_deviation": 0.1922116927465476,
+        "null_95pct_of_largest_deviation": 0.30927613044815444,
+        "familywise_p_value": 0.6426714657068586,
+        "minimum_detectable_deviation": 0.4032522419038857
+      },
+      "product": {
+        "n": 2769,
+        "n_segments": 42,
+        "segment_size_median": 65.0,
+        "segment_size_min": 47,
+        "overall": 2.991332611050921,
+        "highest_segment": "Dyson Vacuum Cleaner",
+        "highest_value": 3.2203389830508473,
+        "lowest_segment": "Fitbit Versa Smartwatch",
+        "lowest_value": 2.5396825396825395,
+        "largest_deviation_segment": "Fitbit Versa Smartwatch",
+        "largest_deviation": -0.4516500713683813,
+        "null_95pct_of_largest_deviation": 0.5674909183608436,
+        "familywise_p_value": 0.3323335332933413,
+        "minimum_detectable_deviation": 0.7125208734322813
+      },
+      "channel_x_priority": {
+        "n": 2769,
+        "n_segments": 16,
+        "segment_size_median": 174.0,
+        "segment_size_min": 138,
+        "overall": 2.991332611050921,
+        "highest_segment": "Chat | Low",
+        "highest_value": 3.1847133757961785,
+        "lowest_segment": "Email | Critical",
+        "lowest_value": 2.8306878306878307,
+        "largest_deviation_segment": "Chat | Low",
+        "largest_deviation": 0.19338076474525767,
+        "null_95pct_of_largest_deviation": 0.3075179636617227,
+        "familywise_p_value": 0.6416716656668666,
+        "minimum_detectable_deviation": 0.40498666815285267
+      },
+      "channel_x_type": {
+        "n": 2769,
+        "n_segments": 20,
+        "segment_size_median": 137.5,
+        "segment_size_min": 108,
+        "overall": 2.991332611050921,
+        "highest_segment": "Social media | Cancellation request",
+        "highest_value": 3.240740740740741,
+        "lowest_segment": "Social media | Technical issue",
+        "lowest_value": 2.763157894736842,
+        "largest_deviation_segment": "Social media | Cancellation request",
+        "largest_deviation": 0.24940812968982007,
+        "null_95pct_of_largest_deviation": 0.35365576962331385,
+        "familywise_p_value": 0.484503099380124,
+        "minimum_detectable_deviation": 0.46375963795742836
+      },
+      "priority_x_type": {
+        "n": 2769,
+        "n_segments": 20,
+        "segment_size_median": 140.5,
+        "segment_size_min": 105,
+        "overall": 2.991332611050921,
+        "highest_segment": "High | Product inquiry",
+        "highest_value": 3.213740458015267,
+        "lowest_segment": "High | Refund request",
+        "lowest_value": 2.8037974683544302,
+        "largest_deviation_segment": "High | Product inquiry",
+        "largest_deviation": 0.22240784696434623,
+        "null_95pct_of_largest_deviation": 0.35261643353506633,
+        "familywise_p_value": 0.6942611477704459,
+        "minimum_detectable_deviation": 0.45878175171881336
+      },
+      "channel_x_priority_x_type": {
+        "n": 2769,
+        "n_segments": 80,
+        "segment_size_median": 35.0,
+        "segment_size_min": 20,
+        "overall": 2.991332611050921,
+        "highest_segment": "Email | High | Product inquiry",
+        "highest_value": 3.5714285714285716,
+        "lowest_segment": "Phone | High | Refund request",
+        "lowest_value": 2.2903225806451615,
+        "largest_deviation_segment": "Phone | High | Refund request",
+        "largest_deviation": -0.7010100304057594,
+        "null_95pct_of_largest_deviation": 0.8474319864597015,
+        "familywise_p_value": 0.3043391321735653,
+        "minimum_detectable_deviation": 1.0136627579968862
+      }
+    },
+    "resolution_hours_as_recorded": {
+      "channel": {
+        "n": 2769,
+        "n_segments": 4,
+        "segment_size_median": 687.5,
+        "segment_size_min": 674,
+        "overall": -0.057704345732514734,
+        "highest_segment": "Chat",
+        "highest_value": 0.1959446092977252,
+        "lowest_segment": "Phone",
+        "lowest_value": -0.5569946936806557,
+        "largest_deviation_segment": "Phone",
+        "largest_deviation": -0.499290347948141,
+        "null_95pct_of_largest_deviation": 0.7714614070075683,
+        "familywise_p_value": 0.3265346930613877,
+        "minimum_detectable_deviation": 1.2180559101693567
+      },
+      "priority": {
+        "n": 2769,
+        "n_segments": 4,
+        "segment_size_median": 699.5,
+        "segment_size_min": 644,
+        "overall": -0.057704345732514734,
+        "highest_segment": "Low",
+        "highest_value": 0.3852225672877857,
+        "lowest_segment": "Medium",
+        "lowest_value": -0.30785302593659913,
+        "largest_deviation_segment": "Low",
+        "largest_deviation": 0.4429269130203004,
+        "null_95pct_of_largest_deviation": 0.7833381309729579,
+        "familywise_p_value": 0.4415116976604679,
+        "minimum_detectable_deviation": 1.207562770700797
+      },
+      "type": {
+        "n": 2769,
+        "n_segments": 5,
+        "segment_size_median": 544.0,
+        "segment_size_min": 516,
+        "overall": -0.057704345732514734,
+        "highest_segment": "Refund request",
+        "highest_value": 0.2180369127516781,
+        "lowest_segment": "Product inquiry",
+        "lowest_value": -0.243183239524703,
+        "largest_deviation_segment": "Refund request",
+        "largest_deviation": 0.27574125848419284,
+        "null_95pct_of_largest_deviation": 0.9283751380586257,
+        "familywise_p_value": 0.9224155168966207,
+        "minimum_detectable_deviation": 1.4013526891847836
+      },
+      "subject": {
+        "n": 2769,
+        "n_segments": 16,
+        "segment_size_median": 175.5,
+        "segment_size_min": 147,
+        "overall": -0.057704345732514734,
+        "highest_segment": "Peripheral compatibility",
+        "highest_value": 0.9979957805907177,
+        "lowest_segment": "Battery life",
+        "lowest_value": -1.3255298651252405,
+        "largest_deviation_segment": "Battery life",
+        "largest_deviation": -1.2678255193927257,
+        "null_95pct_of_largest_deviation": 2.1180068537891206,
+        "familywise_p_value": 0.6982603479304139,
+        "minimum_detectable_deviation": 2.7410847331525385
+      },
+      "product": {
+        "n": 2769,
+        "n_segments": 42,
+        "segment_size_median": 65.0,
+        "segment_size_min": 47,
+        "overall": -0.057704345732514734,
+        "highest_segment": "Samsung Galaxy",
+        "highest_value": 2.837134502923976,
+        "lowest_segment": "Samsung Soundbar",
+        "lowest_value": -2.9752688172043014,
+        "largest_deviation_segment": "Samsung Soundbar",
+        "largest_deviation": -2.9175644714717865,
+        "null_95pct_of_largest_deviation": 3.863706886928717,
+        "familywise_p_value": 0.4289142171565687,
+        "minimum_detectable_deviation": 4.843321091028804
+      },
+      "channel_x_priority": {
+        "n": 2769,
+        "n_segments": 16,
+        "segment_size_median": 174.0,
+        "segment_size_min": 138,
+        "overall": -0.057704345732514734,
+        "highest_segment": "Chat | Low",
+        "highest_value": 1.7304670912951179,
+        "lowest_segment": "Chat | Medium",
+        "lowest_value": -1.2467280163599181,
+        "largest_deviation_segment": "Chat | Low",
+        "largest_deviation": 1.7881714370276327,
+        "null_95pct_of_largest_deviation": 2.07973049771447,
+        "familywise_p_value": 0.16676664667066587,
+        "minimum_detectable_deviation": 2.7528743993162683
+      },
+      "channel_x_type": {
+        "n": 2769,
+        "n_segments": 20,
+        "segment_size_median": 137.5,
+        "segment_size_min": 108,
+        "overall": -0.057704345732514734,
+        "highest_segment": "Social media | Technical issue",
+        "highest_value": 0.9726973684210528,
+        "lowest_segment": "Email | Product inquiry",
+        "lowest_value": -1.3328042328042324,
+        "largest_deviation_segment": "Email | Product inquiry",
+        "largest_deviation": -1.2750998870717176,
+        "null_95pct_of_largest_deviation": 2.4192181301608744,
+        "familywise_p_value": 0.8910217956408718,
+        "minimum_detectable_deviation": 3.1523803995625257
+      },
+      "priority_x_type": {
+        "n": 2769,
+        "n_segments": 20,
+        "segment_size_median": 140.5,
+        "segment_size_min": 105,
+        "overall": -0.057704345732514734,
+        "highest_segment": "High | Refund request",
+        "highest_value": 1.4425105485232077,
+        "lowest_segment": "High | Billing inquiry",
+        "lowest_value": -1.6098765432098765,
+        "largest_deviation_segment": "High | Billing inquiry",
+        "largest_deviation": -1.5521721974773617,
+        "null_95pct_of_largest_deviation": 2.4200950222703748,
+        "familywise_p_value": 0.6462707458508299,
+        "minimum_detectable_deviation": 3.1185434941367407
+      },
+      "channel_x_priority_x_type": {
+        "n": 2769,
+        "n_segments": 80,
+        "segment_size_median": 35.0,
+        "segment_size_min": 20,
+        "overall": -0.057704345732514734,
+        "highest_segment": "Email | Medium | Product inquiry",
+        "highest_value": 3.418253968253969,
+        "lowest_segment": "Email | Critical | Product inquiry",
+        "lowest_value": -4.135,
+        "largest_deviation_segment": "Email | Critical | Product inquiry",
+        "largest_deviation": -4.077295654267485,
+        "null_95pct_of_largest_deviation": 5.837891548875328,
+        "familywise_p_value": 0.6788642271545691,
+        "minimum_detectable_deviation": 6.890316337467057
+      }
+    },
+    "_summary": {
+      "n_tests": 36,
+      "smallest_familywise_p_value": 0.02399520095980804,
+      "smallest_p_after_bonferroni_across_tests": 0.8638272345530894
+    }
+  },
+  "csat_drivers": {
+    "n_closed": 2769,
+    "csat_mean": 2.991332611050921,
+    "csat_sd": 1.407015861799693,
+    "tests": [
+      {
+        "variable": "Ticket Channel",
+        "test": "kruskal",
+        "statistic": 3.8471041113917335,
+        "p_value": 0.2784544691493639,
+        "effect_size_epsilon_squared": 0.00030636676723028335,
+        "n_groups": 4,
+        "mean_range": [
+          2.952243125904486,
+          3.083086053412463
+        ],
+        "q_value_bh": 0.8315190716565333
+      },
+      {
+        "variable": "Ticket Priority",
+        "test": "kruskal",
+        "statistic": 1.7371831685690908,
+        "p_value": 0.6286990111454205,
+        "effect_size_epsilon_squared": 0.0,
+        "n_groups": 4,
+        "mean_range": [
+          2.958677685950413,
+          3.0527950310559007
+        ],
+        "q_value_bh": 0.8315190716565333
+      },
+      {
+        "variable": "Ticket Type",
+        "test": "kruskal",
+        "statistic": 2.198790774457706,
+        "p_value": 0.6992506657582733,
+        "effect_size_epsilon_squared": 0.0,
+        "n_groups": 5,
+        "mean_range": [
+          2.934563758389262,
+          3.0290697674418605
+        ],
+        "q_value_bh": 0.8315190716565333
+      },
+      {
+        "variable": "Ticket Subject",
+        "test": "kruskal",
+        "statistic": 10.205319179847276,
+        "p_value": 0.8066298085314396,
+        "effect_size_epsilon_squared": 0.0,
+        "n_groups": 16,
+        "mean_range": [
+          2.803370786516854,
+          3.1835443037974684
+        ],
+        "q_value_bh": 0.8315190716565333
+      },
+      {
+        "variable": "Product Purchased",
+        "test": "kruskal",
+        "statistic": 36.57699256979943,
+        "p_value": 0.6674244655679761,
+        "effect_size_epsilon_squared": 0.0,
+        "n_groups": 42,
+        "mean_range": [
+          2.5396825396825395,
+          3.2203389830508473
+        ],
+        "q_value_bh": 0.8315190716565333
+      },
+      {
+        "variable": "Customer Gender",
+        "test": "kruskal",
+        "statistic": 0.9384998835139909,
+        "p_value": 0.6254712322390772,
+        "effect_size_epsilon_squared": 0.0,
+        "n_groups": 3,
+        "mean_range": [
+          2.9715447154471546,
+          3.0283842794759823
+        ],
+        "q_value_bh": 0.8315190716565333
+      },
+      {
+        "variable": "Customer Age",
+        "test": "spearman",
+        "statistic": -0.004044920808271974,
+        "p_value": 0.8315190716565333,
+        "q_value_bh": 0.8315190716565333
+      },
+      {
+        "variable": "resolution_hours_as_recorded",
+        "test": "spearman",
+        "statistic": 0.021690975934877708,
+        "p_value": 0.2538591165828204,
+        "q_value_bh": 0.8315190716565333
+      }
+    ],
+    "any_q_below_0_05": false,
+    "model": {
+      "model": "random forest on all variables, 5-fold cross-validation",
+      "mae_model": 1.2220111370796811,
+      "mae_model_sd": 0.006945800084248893,
+      "mae_predicting_the_average": 1.188872116246964,
+      "improvement_over_average": -0.033139020832717136
+    },
+    "minimum_detectable_difference_between_two_channels": 0.27408189041785375
+  },
+  "waste": {
+    "assumptions": {
+      "tickets_per_month": {
+        "low": 706,
+        "base": 2500,
+        "high": 2500,
+        "unit": "tickets/mês",
+        "source": "Brief: 30.000/ano. Baixo: os 8.469 registros do Dataset 1 tratados como um ano"
+      },
+      "auto_route_share": {
+        "low": 0.4,
+        "base": 0.4351189325082189,
+        "high": 0.6410752272287759,
+        "unit": "fração",
+        "source": "Medido no Dataset 2 (tickets de TI): fluxo completo da demo no teste, só com as classes que provaram 95% de precisão. Numa operação de suporte ao cliente só vale depois de treinar com os tickets dela. Baixo: premissa original. Alto: o mesmo fluxo se o piloto comprovar as classes que faltam"
+      },
+      "triage_minutes": {
+        "low": 2,
+        "base": 4,
+        "high": 6,
+        "unit": "min/ticket",
+        "source": "Premissa: tempo de ler, classificar e encaminhar um ticket. Não medido; validar cronometrando uma semana de triagem"
+      },
+      "misroute_rate": {
+        "low": 0.017667646470866827,
+        "base": 0.023111111111111082,
+        "high": 0.03018019943623662,
+        "unit": "fração",
+        "source": "Medido no Dataset 2: 1 − precisão dos tickets roteados pelo fluxo completo no teste, com o intervalo de 95%"
+      },
+      "rework_minutes": {
+        "low": 5,
+        "base": 10,
+        "high": 20,
+        "unit": "min/erro",
+        "source": "Premissa: retriagem e transferência de um ticket mal roteado"
+      },
+      "hourly_cost_brl": {
+        "low": 35,
+        "base": 45,
+        "high": 60,
+        "unit": "R$/hora",
+        "source": "Premissa: custo por hora de um agente, com encargos. Validar com RH"
+      }
+    },
+    "scenarios": {
+      "pessimistic": {
+        "hours_per_month": 6.572370559735593,
+        "brl_per_month": 230.03296959074575,
+        "fte_at_160_hours": 0.041077315998347456
+      },
+      "base": {
+        "hours_per_month": 68.3297879198092,
+        "brl_per_month": 3074.840456391414,
+        "fte_at_160_hours": 0.42706117449880754
+      },
+      "optimistic": {
+        "hours_per_month": 157.90916295804632,
+        "brl_per_month": 9474.54977748278,
+        "fte_at_160_hours": 0.9869322684877895
+      }
+    },
+    "sensitivity": [
+      {
+        "assumption": "triage_minutes",
+        "brl_at_low": 1443.1444594855934,
+        "brl_at_high": 4706.536453297235,
+        "swing_brl": 3263.391993811642
+      },
+      {
+        "assumption": "tickets_per_month",
+        "brl_at_low": 868.3349448849353,
+        "brl_at_high": 3074.840456391414,
+        "swing_brl": 2206.505511506479
+      },
+      {
+        "assumption": "hourly_cost_brl",
+        "brl_at_low": 2391.5425771933224,
+        "brl_at_high": 4099.7872751885525,
+        "swing_brl": 1708.2446979952301
+      },
+      {
+        "assumption": "auto_route_share",
+        "brl_at_low": 2826.666666666667,
+        "brl_at_high": 4530.264939083349,
+        "swing_brl": 1703.5982724166824
+      },
+      {
+        "assumption": "rework_minutes",
+        "brl_at_low": 3169.1162251015285,
+        "brl_at_high": 2886.288918971187,
+        "swing_brl": 282.82730613034164
+      },
+      {
+        "assumption": "misroute_rate",
+        "brl_at_low": 3119.250853705339,
+        "brl_at_high": 3017.167440782009,
+        "swing_brl": 102.08341292332989
+      }
+    ],
+    "base_brl_per_month": 3074.840456391414
+  }
+}

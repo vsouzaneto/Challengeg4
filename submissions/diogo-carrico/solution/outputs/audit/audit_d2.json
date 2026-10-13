@@ -1,0 +1,58 @@
+{
+  "counts": {
+    "rows": 47837,
+    "empty_documents": 0,
+    "documents_under_5_tokens": 133,
+    "exact_duplicate_rows": 0,
+    "documents_appearing_more_than_once": 0,
+    "rows_in_duplicate_groups": 0,
+    "duplicate_texts_with_conflicting_labels": 0,
+    "rows_in_conflicting_groups": 0
+  },
+  "classes": {
+    "n_categories": 8,
+    "chi2_vs_uniform": 23495.219829838825,
+    "p_value_vs_uniform": 0.0,
+    "max_min_share_ratio": 7.736931818181818,
+    "shares": {
+      "Hardware": 0.2847,
+      "HR Support": 0.2282,
+      "Access": 0.1489,
+      "Miscellaneous": 0.1476,
+      "Storage": 0.0581,
+      "Purchase": 0.0515,
+      "Internal Project": 0.0443,
+      "Administrative rights": 0.0368
+    }
+  },
+  "tokens_per_document": {
+    "min": 2,
+    "median": 26.0,
+    "p95": 136.0,
+    "max": 981
+  },
+  "text_form": {
+    "vocabulary_size": 12327,
+    "share_lowercase_only": 1.0,
+    "share_tokens_that_are_english_stopwords": 0.21613892823339084,
+    "share_documents_with_digits": 0.0,
+    "share_documents_with_punctuation": 0.000334469134770157,
+    "most_common_tokens": [
+      "please",
+      "pm",
+      "hi",
+      "regards",
+      "thank",
+      "for",
+      "hello",
+      "you",
+      "re",
+      "thanks",
+      "sent",
+      "kind",
+      "access",
+      "help",
+      "tuesday"
+    ]
+  }
+}

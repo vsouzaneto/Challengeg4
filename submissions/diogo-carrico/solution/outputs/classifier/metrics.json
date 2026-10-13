@@ -1,0 +1,445 @@
+{
+  "data": {
+    "rows": 47837,
+    "classes": [
+      "Access",
+      "Administrative rights",
+      "HR Support",
+      "Hardware",
+      "Internal Project",
+      "Miscellaneous",
+      "Purchase",
+      "Storage"
+    ],
+    "near_duplicates": {
+      "similarity_threshold": 0.9,
+      "groups_with_more_than_one_ticket": 1286,
+      "tickets_in_those_groups": 5630,
+      "groups_with_conflicting_labels": 105,
+      "tickets_in_conflicting_groups": 617
+    },
+    "split_sizes": {
+      "train": 33185,
+      "calibration": 4740,
+      "validation": 4741,
+      "test": 5171
+    }
+  },
+  "model_selection": {
+    "validation_macro_f1": {
+      "tfidf_logreg_C1": 0.8358338509806338,
+      "tfidf_logreg_C4": 0.8562850311998405,
+      "tfidf_logreg_C16": 0.8590835140601473,
+      "tfidf_linearsvc_C0.25": 0.853322843936651,
+      "tfidf_linearsvc_C1.0": 0.8646600115613436,
+      "tfidf_complementnb_a0.1": 0.7960280833740325,
+      "tfidf_complementnb_a0.5": 0.8069981450383084
+    },
+    "chosen": "tfidf_linearsvc_C1.0"
+  },
+  "test": {
+    "accuracy": 0.8671436859408238,
+    "accuracy_ci95": [
+      0.8580545349062076,
+      0.87623283697544
+    ],
+    "macro_f1": 0.8654222941637739,
+    "macro_f1_ci95": [
+      0.8546071106929523,
+      0.8756334962722643
+    ],
+    "per_class": {
+      "Access": {
+        "precision": 0.9100294985250738,
+        "recall": 0.8665730337078652,
+        "f1": 0.8877697841726618,
+        "support": 712
+      },
+      "Administrative rights": {
+        "precision": 0.8865248226950354,
+        "recall": 0.7102272727272727,
+        "f1": 0.7886435331230284,
+        "support": 176
+      },
+      "HR Support": {
+        "precision": 0.8634237605238541,
+        "recall": 0.846012832263978,
+        "f1": 0.8546296296296296,
+        "support": 1091
+      },
+      "Hardware": {
+        "precision": 0.7945026178010471,
+        "recall": 0.8919911829537105,
+        "f1": 0.8404292142609899,
+        "support": 1361
+      },
+      "Internal Project": {
+        "precision": 0.8737864077669902,
+        "recall": 0.8530805687203792,
+        "f1": 0.8633093525179856,
+        "support": 211
+      },
+      "Miscellaneous": {
+        "precision": 0.8742038216560509,
+        "recall": 0.7776203966005666,
+        "f1": 0.823088455772114,
+        "support": 706
+      },
+      "Purchase": {
+        "precision": 0.9740061162079511,
+        "recall": 1.0,
+        "f1": 0.9868319132455461,
+        "support": 637
+      },
+      "Storage": {
+        "precision": 0.8951310861423221,
+        "recall": 0.8628158844765343,
+        "f1": 0.8786764705882353,
+        "support": 277
+      }
+    }
+  },
+  "calibration": {
+    "method": "sigmoid, fitted on the calibration split",
+    "ece_test_before": null,
+    "ece_test_after": 0.03633552847443987
+  },
+  "thresholds": {
+    "target_precision": 0.95,
+    "precision_threshold": 0.735,
+    "cost_threshold": 0.6,
+    "cost_threshold_inputs": {
+      "triage_minutes": 4,
+      "rework_minutes": 10
+    },
+    "validation_at_precision_threshold": {
+      "threshold": 0.735,
+      "coverage": 0.7238979118329466,
+      "routed": 3432,
+      "precision": 0.9574592074592074,
+      "precision_ci95": [
+        0.950180087184662,
+        0.9637153988654312
+      ]
+    },
+    "test_at_precision_threshold": {
+      "threshold": 0.735,
+      "coverage": 0.7424095919551345,
+      "routed": 3839,
+      "precision": 0.9585829643136233,
+      "precision_ci95": [
+        0.95180809739192,
+        0.9644409952991267
+      ]
+    },
+    "test_at_cost_threshold": {
+      "threshold": 0.6,
+      "coverage": 0.8580545349062076,
+      "routed": 4437,
+      "precision": 0.9244985350462024,
+      "precision_ci95": [
+        0.9163522081703794,
+        0.9319104544197776
+      ]
+    },
+    "test_per_class_at_precision_threshold": {
+      "Access": {
+        "predicted": 678,
+        "routed": 528,
+        "precision": 0.9810606060606061,
+        "precision_ci95": [
+          0.9654912837100805,
+          0.9896805848509748
+        ]
+      },
+      "Administrative rights": {
+        "predicted": 141,
+        "routed": 87,
+        "precision": 0.9540229885057471,
+        "precision_ci95": [
+          0.8876696649201269,
+          0.981977311532913
+        ]
+      },
+      "HR Support": {
+        "predicted": 1069,
+        "routed": 771,
+        "precision": 0.953307392996109,
+        "precision_ci95": [
+          0.9360356534003664,
+          0.9660843765008156
+        ]
+      },
+      "Hardware": {
+        "predicted": 1528,
+        "routed": 1050,
+        "precision": 0.9285714285714286,
+        "precision_ci95": [
+          0.911381861300739,
+          0.9426365420055316
+        ]
+      },
+      "Internal Project": {
+        "predicted": 206,
+        "routed": 127,
+        "precision": 0.984251968503937,
+        "precision_ci95": [
+          0.9443983609474612,
+          0.9956706440042485
+        ]
+      },
+      "Miscellaneous": {
+        "predicted": 628,
+        "routed": 428,
+        "precision": 0.9626168224299065,
+        "precision_ci95": [
+          0.9401427681359593,
+          0.9768604327179542
+        ]
+      },
+      "Purchase": {
+        "predicted": 654,
+        "routed": 643,
+        "precision": 0.9906687402799378,
+        "precision_ci95": [
+          0.9797929366261819,
+          0.9957165818119593
+        ]
+      },
+      "Storage": {
+        "predicted": 267,
+        "routed": 205,
+        "precision": 0.9512195121951219,
+        "precision_ci95": [
+          0.9125488082622077,
+          0.9732906272822268
+        ]
+      }
+    },
+    "per_class_thresholds": {
+      "Access": 0.65,
+      "Administrative rights": 1.0,
+      "HR Support": 0.75,
+      "Hardware": 0.86,
+      "Internal Project": 0.84,
+      "Miscellaneous": 0.86,
+      "Purchase": 0.63,
+      "Storage": 0.68
+    },
+    "validation_at_per_class_thresholds": {
+      "coverage": 0.6279265977641848,
+      "routed": 2977,
+      "precision": 0.9721195834732953,
+      "precision_ci95": [
+        0.9655699105792825,
+        0.9774524000108662
+      ]
+    },
+    "test_at_per_class_thresholds": {
+      "coverage": 0.648617288725585,
+      "routed": 3354,
+      "precision": 0.9701848539057841,
+      "precision_ci95": [
+        0.9638692622534807,
+        0.9754246379140735
+      ]
+    },
+    "test_per_class_at_per_class_thresholds": {
+      "Access": {
+        "predicted": 678,
+        "routed": 571,
+        "precision": 0.9702276707530648,
+        "precision_ci95": [
+          0.9528407030043301,
+          0.981329913536921
+        ]
+      },
+      "Administrative rights": {
+        "predicted": 141,
+        "routed": 0,
+        "precision": NaN,
+        "precision_ci95": [
+          NaN,
+          NaN
+        ]
+      },
+      "HR Support": {
+        "predicted": 1069,
+        "routed": 752,
+        "precision": 0.9561170212765957,
+        "precision_ci95": [
+          0.93901320939325,
+          0.9685845308396492
+        ]
+      },
+      "Hardware": {
+        "predicted": 1528,
+        "routed": 760,
+        "precision": 0.968421052631579,
+        "precision_ci95": [
+          0.9534419492749014,
+          0.9786886542396905
+        ]
+      },
+      "Internal Project": {
+        "predicted": 206,
+        "routed": 106,
+        "precision": 0.9905660377358491,
+        "precision_ci95": [
+          0.9484864519702955,
+          0.9983327282972411
+        ]
+      },
+      "Miscellaneous": {
+        "predicted": 628,
+        "routed": 298,
+        "precision": 0.9932885906040269,
+        "precision_ci95": [
+          0.9758637106425548,
+          0.9981575558483672
+        ]
+      },
+      "Purchase": {
+        "predicted": 654,
+        "routed": 648,
+        "precision": 0.9830246913580247,
+        "precision_ci95": [
+          0.9698609206410443,
+          0.990495300229831
+        ]
+      },
+      "Storage": {
+        "predicted": 267,
+        "routed": 219,
+        "precision": 0.9452054794520548,
+        "precision_ci95": [
+          0.9066808312574663,
+          0.9683807530274566
+        ]
+      }
+    }
+  },
+  "domain_shift_dataset1": {
+    "tickets": 8469,
+    "predicted_class_shares": {
+      "Hardware": 0.8351635376077459,
+      "Access": 0.07675050183020428,
+      "Miscellaneous": 0.05833038139095525,
+      "Administrative rights": 0.014051245719683551,
+      "HR Support": 0.012280080292832684,
+      "Purchase": 0.001298854646357303,
+      "Internal Project": 0.0011807769512339119,
+      "Storage": 0.0009446215609871296
+    },
+    "median_confidence": 0.7375879092708382,
+    "share_above_precision_threshold": 0.5061990789939781,
+    "share_above_per_class_thresholds": 0.2079348211122919,
+    "vocabulary_coverage_median_dataset2_validation": 1.0,
+    "vocabulary_coverage_median_dataset1": 0.8181818181818182,
+    "guard_threshold_vocabulary_coverage": 0.9098989898989899,
+    "share_of_dataset1_stopped_by_guard": 0.9323414806942969,
+    "share_of_dataset2_test_stopped_by_guard": 0.01063624057242313,
+    "end_to_end": {
+      "routed": 161,
+      "share_routed": 0.01901050891486598,
+      "routed_by_class": {
+        "Hardware": 94,
+        "Access": 67
+      },
+      "to_people_by_reason": {
+        "Fora do domínio": 7710,
+        "Confiança abaixo do limiar": 379,
+        "Política": 202,
+        "Classe nunca roteada sozinha": 16,
+        "Classe em piloto": 1
+      }
+    }
+  },
+  "end_to_end_dataset2_test": {
+    "enabled_classes": [
+      "Access",
+      "Hardware",
+      "Miscellaneous",
+      "Purchase"
+    ],
+    "enabling_rule": "limite inferior do IC 95% da precisão no teste >= 95%",
+    "note": "O texto do Dataset 2 já vem pré-processado; a política roda sobre ele",
+    "coverage": 0.4351189325082189,
+    "routed": 2250,
+    "precision": 0.9768888888888889,
+    "precision_ci95": [
+      0.9698198005637634,
+      0.9823323535291332
+    ],
+    "routed_by_class": {
+      "Access": {
+        "routed": 564,
+        "precision": 0.9698581560283688,
+        "precision_ci95": [
+          0.9522619473546318,
+          0.9810971650650845
+        ]
+      },
+      "Hardware": {
+        "routed": 744,
+        "precision": 0.9704301075268817,
+        "precision_ci95": [
+          0.9556346044756003,
+          0.9803926667375555
+        ]
+      },
+      "Miscellaneous": {
+        "routed": 294,
+        "precision": 0.9931972789115646,
+        "precision_ci95": [
+          0.9755399111850729,
+          0.9981324618561336
+        ]
+      },
+      "Purchase": {
+        "routed": 648,
+        "precision": 0.9830246913580247,
+        "precision_ci95": [
+          0.9698609206410443,
+          0.990495300229831
+        ]
+      }
+    },
+    "to_people_by_reason": {
+      "Confiança abaixo do limiar": 1637,
+      "Classe em piloto": 1065,
+      "Classe nunca roteada sozinha": 138,
+      "Fora do domínio": 54,
+      "Política": 27
+    },
+    "administrative_rights_routed_elsewhere": {
+      "true_administrative_rights": 176,
+      "routed_on_their_own": 5,
+      "by_queue": {
+        "Hardware": 5
+      },
+      "texts": [
+        "kb patches with big issues kb patches big issues hello please take consideration article decline two kb kb big impact users where cells form word disappear article after installing kb kb merged table cells work correctly word questions about please let decline two also users call because issues related word please two patches currently fix solution two regards senior engineer",
+        "social synchronizing issues friday pm social synchronizing issues dear facing issues regarding social job advertisements posted visible has happened several cases making difficult colleagues referral purposes also colleagues facing errors upload recommended certain job vacancy usually problem recognize format file please solving issue possible issue has proven quite uncomfortable discouraging colleagues provide referrals due malfunctioning which problematic provide additional details needed",
+        "builds not working builds working dear please log ticket with or help get boot back up currently working have tried over last couple days rebuild couple even ones but without any success currently fails after saying checking connections splash screen after usual black screen where tries find server etc available for any other info might be needed thanks kind regards engineer en",
+        "action required apply windows updates immediately sent wednesday re action required apply updates immediately hello have requested updates thought failed install following one attached please advice thank you",
+        "one of the monitors are not working correctly problem middle screen"
+      ]
+    },
+    "if_every_class_is_enabled": {
+      "coverage": 0.6410752272287759,
+      "routed": 3315,
+      "precision": 0.9704374057315234,
+      "precision_ci95": [
+        0.9641047332930709,
+        0.9756810439727991
+      ],
+      "to_people_by_reason": {
+        "Confiança abaixo do limiar": 1637,
+        "Classe nunca roteada sozinha": 138,
+        "Fora do domínio": 54,
+        "Política": 27
+      }
+    }
+  }
+}

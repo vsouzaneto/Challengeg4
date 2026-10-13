@@ -1,0 +1,30 @@
+# The upstream .gitignore excludes submissions/, so plain `git add` skips this folder.
+# Stage with ./stage.sh, which force-adds every file NOT matched by the patterns below.
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Secrets and local config
+.env
+.env.*
+*.pem
+kaggle.json
+access_token
+
+# Raw data lives in <repo>/datasets/ (never committed); local caches stay out too.
+# The "**/" prefix matters: stage.sh reads this file relative to the repo root.
+**/solution/outputs/cache/
+# The trained model is rebuilt by scripts/train_classifier.py; binaries stay out of git
+**/solution/outputs/model/
+*.joblib
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

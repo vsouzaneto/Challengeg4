@@ -1,0 +1,501 @@
+{
+  "counts": {
+    "bytes": 3945533,
+    "physical_lines": 29808,
+    "blank_physical_lines": 11046,
+    "parsed_records": 8469,
+    "unique_ticket_ids": 8469,
+    "exact_duplicate_rows": 0,
+    "duplicate_rows_ignoring_id": 0,
+    "records_with_line_breaks_in_description": 6150
+  },
+  "missing_by_column": {
+    "Resolution": 5700,
+    "First Response Time": 2819,
+    "Time to Resolution": 5700,
+    "Customer Satisfaction Rating": 5700
+  },
+  "missing_by_status": {
+    "Closed": {},
+    "Open": {
+      "Resolution": 2819,
+      "First Response Time": 2819,
+      "Time to Resolution": 2819,
+      "Customer Satisfaction Rating": 2819
+    },
+    "Pending Customer Response": {
+      "Resolution": 2881,
+      "Time to Resolution": 2881,
+      "Customer Satisfaction Rating": 2881
+    }
+  },
+  "categoricals": {
+    "Ticket Type": {
+      "n_categories": 5,
+      "chi2_vs_uniform": 7.428740110993033,
+      "p_value_vs_uniform": 0.11489291565008315,
+      "max_min_share_ratio": 1.0722154222766218,
+      "shares": {
+        "Refund request": 0.2069,
+        "Technical issue": 0.2063,
+        "Cancellation request": 0.2001,
+        "Product inquiry": 0.1938,
+        "Billing inquiry": 0.1929
+      }
+    },
+    "Ticket Priority": {
+      "n_categories": 4,
+      "chi2_vs_uniform": 4.585547290116897,
+      "p_value_vs_uniform": 0.20478541975896897,
+      "max_min_share_ratio": 1.0625302956858944,
+      "shares": {
+        "Medium": 0.2588,
+        "Critical": 0.2514,
+        "High": 0.2462,
+        "Low": 0.2436
+      }
+    },
+    "Ticket Channel": {
+      "n_categories": 4,
+      "chi2_vs_uniform": 1.3473845790530168,
+      "p_value_vs_uniform": 0.7179130597708259,
+      "max_min_share_ratio": 1.0337674867342017,
+      "shares": {
+        "Email": 0.253,
+        "Phone": 0.2517,
+        "Social media": 0.2504,
+        "Chat": 0.2448
+      }
+    },
+    "Ticket Status": {
+      "n_categories": 3,
+      "chi2_vs_uniform": 2.230251505490613,
+      "p_value_vs_uniform": 0.3278740452457159,
+      "max_min_share_ratio": 1.0404478150957026,
+      "shares": {
+        "Pending Customer Response": 0.3402,
+        "Open": 0.3329,
+        "Closed": 0.327
+      }
+    },
+    "Customer Gender": {
+      "n_categories": 3,
+      "chi2_vs_uniform": 9.987247608926673,
+      "p_value_vs_uniform": 0.006781046726791716,
+      "max_min_share_ratio": 1.0781831720029784,
+      "shares": {
+        "Male": 0.342,
+        "Female": 0.3409,
+        "Other": 0.3172
+      }
+    },
+    "Product Purchased": {
+      "n_categories": 42,
+      "chi2_vs_uniform": 40.822883457314916,
+      "p_value_vs_uniform": 0.4784100721256445,
+      "max_min_share_ratio": 1.3483146067415732,
+      "shares": {
+        "Canon EOS": 0.0283,
+        "GoPro Hero": 0.0269,
+        "Nest Thermostat": 0.0266,
+        "Philips Hue Lights": 0.0261,
+        "Amazon Echo": 0.0261,
+        "LG Smart TV": 0.0259,
+        "Sony Xperia": 0.0256,
+        "Roomba Robot Vacuum": 0.0255,
+        "LG OLED": 0.0252,
+        "Apple AirPods": 0.0252,
+        "iPhone": 0.025,
+        "Sony 4K HDR TV": 0.0248,
+        "LG Washing Machine": 0.0246,
+        "Garmin Forerunner": 0.0246,
+        "Canon DSLR Camera": 0.0243,
+        "Nikon D": 0.0241,
+        "Nintendo Switch Pro Controller": 0.024,
+        "Google Pixel": 0.024,
+        "Sony PlayStation": 0.0239,
+        "Fitbit Charge": 0.0239,
+        "Microsoft Office": 0.0236,
+        "HP Pavilion": 0.0236,
+        "Dyson Vacuum Cleaner": 0.0234,
+        "Amazon Kindle": 0.0234,
+        "Google Nest": 0.0234,
+        "Bose SoundLink Speaker": 0.0233,
+        "Autodesk AutoCAD": 0.0231,
+        "Microsoft Xbox Controller": 0.0231,
+        "Samsung Galaxy": 0.0229,
+        "PlayStation": 0.0227,
+        "Fitbit Versa Smartwatch": 0.0226,
+        "Microsoft Surface": 0.0224,
+        "Bose QuietComfort": 0.0224,
+        "Samsung Soundbar": 0.0222,
+        "Xbox": 0.0221,
+        "Asus ROG": 0.0221,
+        "MacBook Pro": 0.022,
+        "Dell XPS": 0.0218,
+        "GoPro Action Camera": 0.0216,
+        "Lenovo ThinkPad": 0.0216,
+        "Adobe Photoshop": 0.0214,
+        "Nintendo Switch": 0.021
+      }
+    },
+    "Ticket Subject": {
+      "n_categories": 16,
+      "chi2_vs_uniform": 27.857716377376313,
+      "p_value_vs_uniform": 0.022476836580291627,
+      "max_min_share_ratio": 1.2050209205020919,
+      "shares": {
+        "Refund request": 0.068,
+        "Software bug": 0.0678,
+        "Product compatibility": 0.067,
+        "Delivery problem": 0.0662,
+        "Hardware issue": 0.0646,
+        "Battery life": 0.064,
+        "Network problem": 0.0636,
+        "Installation support": 0.0626,
+        "Product setup": 0.0625,
+        "Payment issue": 0.0621,
+        "Product recommendation": 0.061,
+        "Account access": 0.0601,
+        "Peripheral compatibility": 0.0586,
+        "Data loss": 0.058,
+        "Cancellation request": 0.0575,
+        "Display issue": 0.0564
+      }
+    }
+  },
+  "age": {
+    "min": 18,
+    "max": 70,
+    "mean": 44.02680363679301,
+    "distinct_values": 53,
+    "p_value_vs_uniform": 0.5496631657345159,
+    "max_min_share_ratio": 1.3576642335766425
+  },
+  "emails": {
+    "share_reserved_example_domains": 1.0,
+    "top_domains": {
+      "example.com": 2904,
+      "example.org": 2796,
+      "example.net": 2769
+    },
+    "unique_names_share": 0.9479277364505845
+  },
+  "description_text": {
+    "share_with_placeholder": 1.0,
+    "other_curly_placeholders": [
+      "{_product_id}",
+      "{app_id}",
+      "{app_number}",
+      "{application_id}",
+      "{citations}",
+      "{content}",
+      "{customer_address}",
+      "{device_name}",
+      "{error_message}",
+      "{hashtag}",
+      "{id}",
+      "{input_id}",
+      "{input_order_key}",
+      "{item_category}",
+      "{item_id}",
+      "{item_name}",
+      "{item_price}",
+      "{item_purchased}",
+      "{item_purchase}",
+      "{item}",
+      "{i}",
+      "{key}",
+      "{manufacturer}",
+      "{model_name}",
+      "{model}",
+      "{my_device_id}",
+      "{name_purchased}",
+      "{name}",
+      "{number}",
+      "{order_id}",
+      "{order_item}",
+      "{order_name}",
+      "{order_number}",
+      "{price_tag}",
+      "{product__label}",
+      "{product_added}",
+      "{product_add}",
+      "{product_amount}",
+      "{product_app_id}",
+      "{product_available}",
+      "{product_brand}",
+      "{product_cannot_trade}",
+      "{product_category}",
+      "{product_color}",
+      "{product_created}",
+      "{product_cred_id_id}",
+      "{product_cursed}",
+      "{product_description}",
+      "{product_discount}",
+      "{product_distributed}",
+      "{product_ex_name}",
+      "{product_ex_status}",
+      "{product_featured_image_url}",
+      "{product_finance_addresses}",
+      "{product_for_all}",
+      "{product_id}",
+      "{product_item_name}",
+      "{product_item}",
+      "{product_muted}",
+      "{product_name_format}",
+      "{product_name}",
+      "{product_natures}",
+      "{product_not_applied}",
+      "{product_num_purchases}",
+      "{product_order}",
+      "{product_packaged}",
+      "{product_page}",
+      "{product_paid_by}",
+      "{product_paid}",
+      "{product_paydirt}",
+      "{product_payment}",
+      "{product_prepaid}",
+      "{product_price}",
+      "{product_pricing}",
+      "{product_product_changed}",
+      "{product_product_details}",
+      "{product_product_id}",
+      "{product_product_name}",
+      "{product_product_price}",
+      "{product_product_purchased}",
+      "{product_product_required}",
+      "{product_product}",
+      "{product_prod}",
+      "{product_promo_item}",
+      "{product_promo}",
+      "{product_prompt}",
+      "{product_props}",
+      "{product_purchased_address}",
+      "{product_purchased_amount}",
+      "{product_purchased_at}",
+      "{product_purchased_by}",
+      "{product_purchased_count}",
+      "{product_purchased_device}",
+      "{product_purchased_id}",
+      "{product_purchased_info}",
+      "{product_purchased_keyword}",
+      "{product_purchased_last_updated_day}",
+      "{product_purchased_message}",
+      "{product_purchased_name}",
+      "{product_purchased_number}",
+      "{product_purchased_payment}",
+      "{product_purchased_product}",
+      "{product_purchased_subsidized}",
+      "{product_purchased_value}",
+      "{product_purchases}",
+      "{product_purchase}",
+      "{product_purchasing}",
+      "{product_purchas}",
+      "{product_refresh_to}",
+      "{product_ref}",
+      "{product_request}",
+      "{product_selected}",
+      "{product_sell_code}",
+      "{product_sell}",
+      "{product_size}",
+      "{product_sold}",
+      "{product_store}",
+      "{product_sub_featured_image}",
+      "{product_time}",
+      "{product_title}",
+      "{product_type}",
+      "{product_updated}",
+      "{product_url}",
+      "{product_value}",
+      "{products_purchased}",
+      "{products_to_count}",
+      "{products}",
+      "{product}",
+      "{project_id}",
+      "{purchase_code}",
+      "{purchase_price}",
+      "{purchase_type}",
+      "{purchased_name}",
+      "{purchased}",
+      "{purchases}",
+      "{purchase}",
+      "{review_created}",
+      "{review_id}",
+      "{review_total_refresh}",
+      "{review}",
+      "{rpi}",
+      "{rxpi}",
+      "{sizes_for_trucular}",
+      "{slowly}",
+      "{solutions_cancel}",
+      "{sommer}",
+      "{this}",
+      "{tiddlers_id}",
+      "{title}",
+      "{url}",
+      "{user_id}",
+      "{user_mode}",
+      "{user}",
+      "{value}",
+      "{your_device_id}"
+    ],
+    "share_mentioning_actual_product": 0.0,
+    "unique_descriptions": 8077,
+    "top_sentences": [
+      {
+        "sentence": "Please assist.",
+        "count": 6181
+      },
+      {
+        "sentence": "I'm having an issue with the {product_purchased}.",
+        "count": 5998
+      },
+      {
+        "sentence": "Sometimes it works fine, but other times it acts up unexpectedly.",
+        "count": 499
+      },
+      {
+        "sentence": "Could you please guide me through the steps?",
+        "count": 490
+      },
+      {
+        "sentence": "Could it be related to the update?",
+        "count": 485
+      }
+    ]
+  },
+  "resolution_text": {
+    "present": 2769,
+    "unique": 2769,
+    "mean_words": 5.486818345973275,
+    "random_examples": [
+      "Almost Republican let strategy.",
+      "Help red business point window ever represent.",
+      "Eat increase hand situation size.",
+      "Also or language win both.",
+      "Prepare before former out sense build."
+    ]
+  },
+  "timestamps": {
+    "purchase_range": [
+      "2020-01-01",
+      "2021-12-30"
+    ],
+    "response_and_resolution_range": [
+      "2023-05-31 21:53:30",
+      "2023-06-02 00:55:33"
+    ],
+    "response_and_resolution_span_hours": 27.034166666666668,
+    "closed_with_both_timestamps": 2769,
+    "share_resolution_before_first_response": 0.49295774647887325,
+    "resolution_minus_response_hours": {
+      "min": -23.233333333333334,
+      "median": 0.16666666666666666,
+      "max": 23.466666666666665
+    },
+    "first_response_present_by_status": {
+      "Closed": 2769,
+      "Open": 0,
+      "Pending Customer Response": 2881
+    }
+  },
+  "csat": {
+    "present": 2769,
+    "present_only_when_closed": true,
+    "distribution": {
+      "n_categories": 5,
+      "chi2_vs_uniform": 1.6663055254604549,
+      "p_value_vs_uniform": 0.7968287774654618,
+      "max_min_share_ratio": 1.0681399631675874,
+      "shares": {
+        "3": 0.2095,
+        "1": 0.1997,
+        "2": 0.1983,
+        "5": 0.1965,
+        "4": 0.1961
+      }
+    },
+    "spearman_resolution_hours_vs_csat_all_valid_pairs": {
+      "rho": 0.021690975934877708,
+      "permutation_p_value": 0.2546745325467453,
+      "null_95pct_band": [
+        -0.0374694865277408,
+        0.037392291464583644
+      ],
+      "n": 2769
+    },
+    "spearman_resolution_hours_vs_csat_nonnegative_only": {
+      "rho": 0.002637570495552492,
+      "permutation_p_value": 0.9211078892110789,
+      "null_95pct_band": [
+        -0.05240693537879019,
+        0.05378321214895639
+      ],
+      "n": 1404
+    }
+  },
+  "associations": {
+    "subject_vs_type": {
+      "cramers_v": 0.034177880883779564,
+      "chi2": 39.571488602826506,
+      "dof": 60,
+      "p_value": 0.9807366560438833,
+      "n": 8469
+    },
+    "type_vs_priority": {
+      "cramers_v": 0.02045014331868244,
+      "chi2": 10.625419847100444,
+      "dof": 12,
+      "p_value": 0.5612632410400245,
+      "n": 8469
+    },
+    "channel_vs_priority": {
+      "cramers_v": 0.024685926118205897,
+      "chi2": 15.482897451801605,
+      "dof": 9,
+      "p_value": 0.07849731147286386,
+      "n": 8469
+    },
+    "channel_vs_type": {
+      "cramers_v": 0.021596961798345284,
+      "chi2": 11.850555477859746,
+      "dof": 12,
+      "p_value": 0.45775523691611186,
+      "n": 8469
+    },
+    "product_vs_subject": {
+      "cramers_v": 0.07039062911537347,
+      "chi2": 629.4381841651281,
+      "dof": 615,
+      "p_value": 0.334516527325443,
+      "n": 8469
+    }
+  },
+  "text_signal": {
+    "description_predicts_type": {
+      "accuracy_mean": 0.18904113123626626,
+      "accuracy_std": 0.008138406011454902,
+      "macro_f1_mean": 0.18788182713217458,
+      "majority_class_share": 0.20687212185618137,
+      "chance_uniform": 0.2,
+      "n_classes": 5
+    },
+    "description_predicts_subject": {
+      "accuracy_mean": 0.0575041615207002,
+      "accuracy_std": 0.005225286140131802,
+      "macro_f1_mean": 0.054639664144804936,
+      "majority_class_share": 0.06801275239107332,
+      "chance_uniform": 0.0625,
+      "n_classes": 16
+    },
+    "description_predicts_priority": {
+      "accuracy_mean": 0.25434015053303033,
+      "accuracy_std": 0.0056170474201494135,
+      "macro_f1_mean": 0.2534167895451371,
+      "majority_class_share": 0.2588263077104735,
+      "chance_uniform": 0.25,
+      "n_classes": 4
+    }
+  }
+}
