@@ -1,0 +1,11 @@
+# dados brutos do Kaggle não vão para o repositório
+solution/data/raw/
+# ambientes e caches
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+.env
+# modelo treinado: regenerar com treinar.py
+solution/prototipo/modelo.joblib
