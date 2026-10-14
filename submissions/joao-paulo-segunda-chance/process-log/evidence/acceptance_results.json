@@ -1,0 +1,14 @@
+{
+  "record_type": "curated_summary_of_observed_tool_outputs_not_raw_transcript",
+  "date": "2026-10-12",
+  "python_unit_tests": {"passed": 26},
+  "web_domain_tests": {"passed": 12, "reference_audit_checks_compared": 89},
+  "react_component_tests": {"passed": 8, "environment": "Happy DOM 21.0.1", "real_browser": false},
+  "regressions_reproduced_against_previous_site_source": ["action_error_hidden_behind_dialog", "account_detail_error_stuck_loading"],
+  "live_import": {"format": "xlsx", "source": "accounts", "rows": 500, "added": 0, "removed": 0, "changed": 0, "published_versions_after": 2, "metrics_unchanged": true, "old_snapshot_accessible": true, "replay_idempotent": true},
+  "live_decisions_after_fix": {"create": "passed", "idempotent_replay": "passed", "conflicting_replay": "rejected", "stale_revision_http_status": 409, "missing_result": "rejected", "valid_completion": "passed", "history_entries_each": 3, "qa_completed": 2, "qa_open": 0},
+  "database_security_advisor": {"findings": 0},
+  "checks": {"typescript": "passed", "portable_frontend_build": "passed", "hosted_site_build": "passed"},
+  "limits": ["real browser visual QA not performed", "no mobile viewport rendering evidence", "no fabricated screenshots or full chat export"],
+  "pull_request": "not_created"
+}

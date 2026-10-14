@@ -1,0 +1,63 @@
+{
+  "record_type": "curated_summary_of_observed_outputs_not_raw_transcript",
+  "date_local": "2026-10-12",
+  "model": "gpt-6-luna",
+  "reasoning": "none",
+  "domain_specs_passed": 7,
+  "component_tests_passed": 20,
+  "adapter_tests_passed": 9,
+  "frontend_and_provider_tests": "simulated",
+  "sql_catalog_tests": {
+    "status": "passed",
+    "role": "service_role",
+    "transaction": "rollback",
+    "real_existing_session": true,
+    "auth_users_or_sessions_created": 0
+  },
+  "http_anonymous_guards_passed": 3,
+  "frontend_typescript": "passed",
+  "portable_build": "passed",
+  "site_typescript": "passed",
+  "site_build": "passed",
+  "edge_syntax": "passed",
+  "edge_active_version": 5,
+  "verify_jwt": true,
+  "site_version_deployed": 8,
+  "site_source_commit": "1e31f2f8978392878859d71c5cba8ab457b41397",
+  "deployment_id": "appgdep_6acd9a0805988191b3547822f9fbc565",
+  "deployment_status": "succeeded",
+  "dataset_versions_preserved": 2,
+  "decisions_preserved": 3,
+  "login_required": true,
+  "conversations_at_verification": 0,
+  "completed_executions_at_verification": 0,
+  "executions_with_provider_response_at_verification": 0,
+  "key_configuration_and_real_openai": "verified_server_side_synthetic_fixture",
+  "key_read_printed_or_versioned": false,
+  "real_browser_qa": "not_performed",
+  "security_advisor_new_assistant_findings": 0,
+  "existing_auth_warnings": [
+    "auth_leaked_password_protection"
+  ],
+  "pull_request": "not_created",
+  "openai_live_check": {
+    "passed": true,
+    "fixture": "synthetic_only",
+    "tests_passed": [
+      "accounts",
+      "ambiguous_mrr",
+      "unsupported_forecast"
+    ],
+    "provider_responses": 4,
+    "input_tokens": 2539,
+    "output_tokens": 198,
+    "user_business_data_sent": false,
+    "user_conversations_created": 0,
+    "diagnostic_one_use_guards": "passed",
+    "diagnostic_retired": true,
+    "retired_verify_jwt": true,
+    "retired_version": 2,
+    "retired_anonymous_http_status": 410
+  },
+  "browser_end_to_end_user_conversation": "pending_owner_acceptance"
+}

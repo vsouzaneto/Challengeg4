@@ -1,0 +1,75 @@
+{
+  "record_type": "curated_summary_of_observed_outputs_not_raw_transcript",
+  "date": "2026-10-12",
+  "migration": "explicit_decision_scopes_and_frozen_evidence_applied",
+  "web_domain_tests": {
+    "passed": 18,
+    "skipped": 0,
+    "reference_checks_compared": 89
+  },
+  "react_component_tests": {
+    "passed": 13,
+    "real_browser": false,
+    "environment": "Happy DOM 21.0.1"
+  },
+  "adapter_contract_tests": {
+    "passed": 4,
+    "fetch": "simulated"
+  },
+  "sql_scopes": {
+    "passed": true,
+    "transaction": "rolled_back",
+    "backend_role": "service_role",
+    "weighted_score": 2.5,
+    "responses": 4,
+    "closed_tickets": 5,
+    "null_usage_preserved": true,
+    "membership_frozen": true,
+    "stale_run_blocked": true,
+    "forged_preview_blocked": true,
+    "replay_after_publication": "passed",
+    "immutability": "passed",
+    "cross_version_fk": "passed"
+  },
+  "live_fintech_read": {
+    "population": 112,
+    "missing_cancel": 12,
+    "satisfaction": 3.923076923076923,
+    "respondents": 13,
+    "closed_tickets": 22,
+    "contract_mrr_source_unit": 2416050,
+    "qualified_usage": 1928,
+    "accounts_with_usage": 87
+  },
+  "security_advisor_findings": 0,
+  "portable_typecheck": "passed",
+  "portable_build": "passed",
+  "new_edge_deployment": "active_version_1_generated_javascript",
+  "new_live_http_acceptance": {
+    "readonly": "passed",
+    "explicit_qa_write": "passed",
+    "scopes": 4,
+    "idempotent_replay": "passed",
+    "forged_preview_http_status": 409,
+    "conflicting_replay_http_status": 409,
+    "qa_completed": true,
+    "history_entries": 3,
+    "frozen_members": 79,
+    "frozen_highlights": 3
+  },
+  "new_site_publication": {
+    "status": "succeeded",
+    "version": 4,
+    "source_commit": "c784e3af17183aa3e8be20ab1e2edc866e2f817a",
+    "url": "https://challenge-g4-ravenstack.early-hake-5665.chatgpt.site"
+  },
+  "new_qa_decisions_persisted": 1,
+  "pull_request": "not_created",
+  "hosted_typecheck": "passed",
+  "hosted_build": "passed",
+  "legacy_decisions_preserved": 2,
+  "qa_actions_completed_total": 3,
+  "qa_actions_open": 0,
+  "packaged_javascript_file_sha256": "e1302f9ee049b32fae13ee52d24ab126270f690ebde9b7304530accc6eb70b46",
+  "deployment_recovery": "TypeScript_package_failed_with_generic_internal_error;generated_JavaScript_succeeded;root_cause_not_confirmed"
+}

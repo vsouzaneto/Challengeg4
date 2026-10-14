@@ -1,0 +1,80 @@
+{
+  "record_type": "curated_summary_of_observed_outputs_not_raw_transcript",
+  "date": "2026-10-12",
+  "sdk": "@supabase/supabase-js@2.117.2",
+  "web_domain_tests": {
+    "passed": 20,
+    "skipped": 0,
+    "reference_checks_compared": 89
+  },
+  "react_components": {
+    "passed": 17,
+    "auth_api": "simulated",
+    "real_browser": false
+  },
+  "adapter_tests": {
+    "passed": 6,
+    "fetch": "simulated"
+  },
+  "portable_typescript": "passed",
+  "portable_build": "passed",
+  "edge_packages_syntax": "passed",
+  "authenticated_edges": {
+    "challenge-auth-web": {
+      "active_version": 1,
+      "verify_jwt": true
+    },
+    "challenge-auth-decisions": {
+      "active_version": 1,
+      "verify_jwt": true
+    }
+  },
+  "http_guards": {
+    "anonymous_read": "blocked",
+    "anonymous_decision_route": "blocked",
+    "legacy_capability": "blocked",
+    "invalid_jwt": "blocked"
+  },
+  "sql_guards": {
+    "passed": true,
+    "transaction": "rollback",
+    "auth_identities_created": 0,
+    "unknown_identity": "rejected",
+    "unknown_session": "rejected",
+    "incomplete_activation": "rejected_without_effect",
+    "direct_browser_rpc_and_table_path": "closed"
+  },
+  "security_advisor_findings": 0,
+  "current_site_smoke": {
+    "dashboard": "passed",
+    "detail": "passed",
+    "accounts": 500,
+    "checks": 89
+  },
+  "automatic_review": {
+    "synthetic_shared_auth_fixture": "declined",
+    "reason": "not_provided",
+    "same_write_retried": false
+  },
+  "local_auth_fixture": "not_executed_not_passed",
+  "real_auth_users": 0,
+  "real_memberships": 0,
+  "login_activated": false,
+  "site_login_publication": "pending_real_accounts",
+  "valid_account_login_author_and_logout": "pending",
+  "hosted_vinext_login_build": "passed",
+  "legacy_qa_decisions_preserved": 3,
+  "pull_request": "not_created",
+  "hosted_typescript": "passed",
+  "saved_site_source_commit": "2c4ce3c9c12dbffb147db533b44fb6d6690fcf2e",
+  "site_version_saved": 6,
+  "site_version_deployed": 5,
+  "subsequent_update_2026_10_13": {
+    "scope": "later_progress_preserves_original_preparation_results",
+    "login_activated": true,
+    "existing_account_login_acceptance": "completed_reported_by_owner",
+    "acceptance_observed_by_agent": false,
+    "record": "../authentication_activation_2026-10-12.md",
+    "current_process_index": "../README.md"
+  }
+}

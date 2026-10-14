@@ -1,0 +1,57 @@
+{
+  "record_type": "curated_summary_of_observed_outputs_not_raw_transcript",
+  "date_local": "2026-10-12",
+  "timezone": "Etc/GMT+3",
+  "real_auth_users": 2,
+  "confirmed_active_profiles": {
+    "administrator": 1,
+    "user": 1
+  },
+  "real_memberships": 2,
+  "login_activated": true,
+  "site_version_deployed": 6,
+  "site_source_commit": "2c4ce3c9c12dbffb147db533b44fb6d6690fcf2e",
+  "site_deployment_id": "appgdep_6acd7ca47e588191ae4d49f9148aa422",
+  "site_deployment_status": "succeeded",
+  "authenticated_edges": {
+    "active_versions": 1,
+    "verify_jwt": true
+  },
+  "http_guards": {
+    "anonymous_read": "blocked",
+    "anonymous_decision_route": "blocked",
+    "legacy_capability": "blocked",
+    "invalid_jwt": "blocked",
+    "legacy_session_creation": "blocked",
+    "legacy_dashboard": "blocked",
+    "legacy_decisions": "blocked"
+  },
+  "post_activation_sql_guards": {
+    "status": "passed",
+    "transaction": "rollback",
+    "auth_or_business_writes": 0
+  },
+  "dataset_versions_preserved": 2,
+  "historical_qa_decisions_preserved": 3,
+  "historical_qa_actor_user_id_null": 3,
+  "new_decisions_actions_or_imports": 0,
+  "auth_sessions_at_verification": 0,
+  "valid_account_login_author_refresh_resume_and_logout": "pending_owner_acceptance",
+  "real_browser_qa": "not_performed",
+  "passwords_requested_read_or_saved": false,
+  "self_signup_configuration": "not_verified_tool_unavailable",
+  "security_advisor": {
+    "warning_count": 1,
+    "warnings": [
+      "auth_leaked_password_protection"
+    ]
+  },
+  "pull_request": "not_created",
+  "subsequent_update_2026_10_13": {
+    "existing_account_login_acceptance": "completed_reported_by_owner",
+    "acceptance_observed_by_agent": false,
+    "passwords_requested_read_or_saved": false,
+    "new_user_management_acceptance": "separate_scope_not_completed_by_this_confirmation",
+    "record": "../authentication_activation_2026-10-12.md"
+  }
+}
