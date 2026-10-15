@@ -1,0 +1,11 @@
+# App (Streamlit Cloud e local)
+pandas>=2.2,<3   # testado em 2.2; o código também roda no 3.x
+numpy>=2.0
+scipy>=1.13
+scikit-learn>=1.5
+joblib>=1.4
+streamlit>=1.50
+plotly>=5.20
+python-dotenv>=1.0
+google-genai>=1.0
+kagglehub>=0.3

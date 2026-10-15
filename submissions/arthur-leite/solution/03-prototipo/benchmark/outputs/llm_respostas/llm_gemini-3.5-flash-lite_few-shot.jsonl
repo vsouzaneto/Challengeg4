@@ -1,0 +1,400 @@
+{"id": 45270, "pred": "Miscellaneous", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 38644, "pred": "Access", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 43163, "pred": "HR Support", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 10634, "pred": "Hardware", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 39720, "pred": "Hardware", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 18373, "pred": "Storage", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 21539, "pred": "Storage", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 37014, "pred": "Hardware", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 5553, "pred": "Access", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 47642, "pred": "Administrative rights", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 12815, "pred": "Internal Project", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 21551, "pred": "Access", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 3059, "pred": "HR Support", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 46859, "pred": "Storage", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 31310, "pred": "Miscellaneous", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 290, "pred": "Access", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 47700, "pred": "Miscellaneous", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 23318, "pred": "Miscellaneous", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 19257, "pred": "Access", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 30171, "pred": "Access", "seg_lote": 2.09, "n_lote": 20, "tok_in": 1805, "tok_out": 363}
+{"id": 11681, "pred": "Hardware", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 8645, "pred": "Access", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 36367, "pred": "HR Support", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 47788, "pred": "Miscellaneous", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 3264, "pred": "Internal Project", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 9894, "pred": "Internal Project", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 19958, "pred": "Hardware", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 41769, "pred": "Administrative rights", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 34181, "pred": "Hardware", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 23387, "pred": "Access", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 43956, "pred": "Access", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 47005, "pred": "Access", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 3753, "pred": "Hardware", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 19778, "pred": "Access", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 45928, "pred": "Administrative rights", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 28351, "pred": "Storage", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 46349, "pred": "Miscellaneous", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 21403, "pred": "Access", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 13188, "pred": "Miscellaneous", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 13033, "pred": "Purchase", "seg_lote": 1.62, "n_lote": 20, "tok_in": 2224, "tok_out": 364}
+{"id": 32108, "pred": "HR Support", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 17911, "pred": "Access", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 3275, "pred": "Hardware", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 31094, "pred": "Access", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 44943, "pred": "Internal Project", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 18639, "pred": "Internal Project", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 17888, "pred": "Storage", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 15361, "pred": "Hardware", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 14085, "pred": "Purchase", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 47242, "pred": "Hardware", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 41126, "pred": "Administrative rights", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 31686, "pred": "Internal Project", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 41412, "pred": "Miscellaneous", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 41059, "pred": "Miscellaneous", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 15697, "pred": "Administrative rights", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 33949, "pred": "Hardware", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 39332, "pred": "Hardware", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 34303, "pred": "Access", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 36908, "pred": "Hardware", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 47046, "pred": "Miscellaneous", "seg_lote": 4.45, "n_lote": 20, "tok_in": 1967, "tok_out": 368}
+{"id": 29421, "pred": "Hardware", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 665, "pred": "Access", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 5682, "pred": "Administrative rights", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 39774, "pred": "Access", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 22477, "pred": "Purchase", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 21879, "pred": "Access", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 16358, "pred": "Purchase", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 18302, "pred": "Miscellaneous", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 42926, "pred": "Access", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 24627, "pred": "HR Support", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 3306, "pred": "Miscellaneous", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 29041, "pred": "Access", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 25319, "pred": "Storage", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 15172, "pred": "HR Support", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 47192, "pred": "Access", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 5734, "pred": "HR Support", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 39941, "pred": "Administrative rights", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 42734, "pred": "Hardware", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 25913, "pred": "Purchase", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 43502, "pred": "Miscellaneous", "seg_lote": 1.44, "n_lote": 20, "tok_in": 1774, "tok_out": 363}
+{"id": 34255, "pred": "Administrative rights", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 40336, "pred": "Hardware", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 12395, "pred": "Hardware", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 10417, "pred": "HR Support", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 1674, "pred": "HR Support", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 28176, "pred": "Access", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 33734, "pred": "Miscellaneous", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 46243, "pred": "HR Support", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 28309, "pred": "Purchase", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 40306, "pred": "Purchase", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 37733, "pred": "Hardware", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 40970, "pred": "Access", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 44354, "pred": "Storage", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 46235, "pred": "Hardware", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 23913, "pred": "HR Support", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 23769, "pred": "HR Support", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 24706, "pred": "Administrative rights", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 38726, "pred": "HR Support", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 47185, "pred": "Access", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 36254, "pred": "Administrative rights", "seg_lote": 1.45, "n_lote": 20, "tok_in": 2174, "tok_out": 371}
+{"id": 44276, "pred": "Access", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 2285, "pred": "Access", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 23959, "pred": "HR Support", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 46474, "pred": "Administrative rights", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 44597, "pred": "Access", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 37360, "pred": "HR Support", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 47651, "pred": "Administrative rights", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 37520, "pred": "Hardware", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 17918, "pred": "Access", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 24688, "pred": "Internal Project", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 47529, "pred": "Access", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 45363, "pred": "Storage", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 12455, "pred": "HR Support", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 11343, "pred": "Hardware", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 35776, "pred": "Access", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 42051, "pred": "Administrative rights", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 32907, "pred": "Access", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 7331, "pred": "Purchase", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 7846, "pred": "HR Support", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 8319, "pred": "HR Support", "seg_lote": 2.44, "n_lote": 20, "tok_in": 2416, "tok_out": 528}
+{"id": 45079, "pred": "Hardware", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 39497, "pred": "Storage", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 36570, "pred": "Administrative rights", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 18054, "pred": "Access", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 10104, "pred": "Miscellaneous", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 36781, "pred": "Hardware", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 35456, "pred": "Miscellaneous", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 13135, "pred": "Administrative rights", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 25689, "pred": "Administrative rights", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 33961, "pred": "Hardware", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 14732, "pred": "Miscellaneous", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 19520, "pred": "Internal Project", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 28802, "pred": "Internal Project", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 2747, "pred": "Administrative rights", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 31435, "pred": "Access", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 20848, "pred": "Access", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 46376, "pred": "Hardware", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 39304, "pred": "Access", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 17389, "pred": "Access", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 12710, "pred": "Miscellaneous", "seg_lote": 1.55, "n_lote": 20, "tok_in": 1980, "tok_out": 368}
+{"id": 43131, "pred": "Administrative rights", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 22368, "pred": "Miscellaneous", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 21189, "pred": "Access", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 43585, "pred": "Internal Project", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 9624, "pred": "Hardware", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 16319, "pred": "Access", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 16666, "pred": "Administrative rights", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 25686, "pred": "Internal Project", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 131, "pred": "Purchase", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 22448, "pred": "Storage", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 9698, "pred": "Access", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 3798, "pred": "Storage", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 24904, "pred": "Hardware", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 25280, "pred": "Access", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 30509, "pred": "Access", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 1651, "pred": "Purchase", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 17706, "pred": "Purchase", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 40799, "pred": "HR Support", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 29618, "pred": "HR Support", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 25068, "pred": "Access", "seg_lote": 2.8, "n_lote": 20, "tok_in": 1852, "tok_out": 363}
+{"id": 28044, "pred": "Access", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 14045, "pred": "Miscellaneous", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 42367, "pred": "Access", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 41708, "pred": "HR Support", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 15911, "pred": "Access", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 38816, "pred": "Access", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 25111, "pred": "Miscellaneous", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 5481, "pred": "Access", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 42765, "pred": "Hardware", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 34925, "pred": "Administrative rights", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 47480, "pred": "HR Support", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 26193, "pred": "Hardware", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 45852, "pred": "Hardware", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 3461, "pred": "HR Support", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 3755, "pred": "Access", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 20411, "pred": "HR Support", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 21700, "pred": "Administrative rights", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 29715, "pred": "Access", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 22371, "pred": "Purchase", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 10852, "pred": "HR Support", "seg_lote": 2.29, "n_lote": 20, "tok_in": 2371, "tok_out": 367}
+{"id": 7811, "pred": "Hardware", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 5580, "pred": "Miscellaneous", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 4736, "pred": "Hardware", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 2711, "pred": "HR Support", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 45068, "pred": "Hardware", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 39256, "pred": "Access", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 38700, "pred": "HR Support", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 42941, "pred": "Access", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 12822, "pred": "Storage", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 22456, "pred": "HR Support", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 11335, "pred": "Hardware", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 45235, "pred": "Access", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 31771, "pred": "Hardware", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 27037, "pred": "Access", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 29916, "pred": "Access", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 24202, "pred": "Hardware", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 30150, "pred": "Purchase", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 20607, "pred": "Administrative rights", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 24323, "pred": "Access", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 22500, "pred": "Administrative rights", "seg_lote": 3.84, "n_lote": 20, "tok_in": 1908, "tok_out": 364}
+{"id": 31017, "pred": "Access", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 47225, "pred": "Administrative rights", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 4103, "pred": "Hardware", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 11392, "pred": "Administrative rights", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 14672, "pred": "HR Support", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 3990, "pred": "Miscellaneous", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 34544, "pred": "Purchase", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 43208, "pred": "Storage", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 22612, "pred": "Internal Project", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 26532, "pred": "Internal Project", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 33376, "pred": "Administrative rights", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 37460, "pred": "Storage", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 16537, "pred": "HR Support", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 7564, "pred": "Access", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 16271, "pred": "HR Support", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 29749, "pred": "Access", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 19854, "pred": "Storage", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 18430, "pred": "Access", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 43953, "pred": "HR Support", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 31892, "pred": "Purchase", "seg_lote": 7.81, "n_lote": 20, "tok_in": 1723, "tok_out": 529}
+{"id": 41152, "pred": "HR Support", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 5039, "pred": "Access", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 36308, "pred": "Hardware", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 38005, "pred": "Access", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 12344, "pred": "Internal Project", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 21166, "pred": "Access", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 11179, "pred": "Access", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 46117, "pred": "Access", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 20553, "pred": "Access", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 18581, "pred": "Access", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 36468, "pred": "Purchase", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 19097, "pred": "Administrative rights", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 25739, "pred": "Storage", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 43122, "pred": "Internal Project", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 10799, "pred": "Access", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 44837, "pred": "HR Support", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 3270, "pred": "Internal Project", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 5933, "pred": "Hardware", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 22212, "pred": "Access", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 21218, "pred": "Miscellaneous", "seg_lote": 7.37, "n_lote": 20, "tok_in": 2014, "tok_out": 526}
+{"id": 4753, "pred": "Access", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 39494, "pred": "Hardware", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 27975, "pred": "Internal Project", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 28608, "pred": "Access", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 5417, "pred": "Purchase", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 38781, "pred": "Administrative rights", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 24127, "pred": "Hardware", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 7425, "pred": "HR Support", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 29661, "pred": "Internal Project", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 35871, "pred": "Administrative rights", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 630, "pred": "Access", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 3682, "pred": "Access", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 9738, "pred": "Administrative rights", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 32096, "pred": "Storage", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 1992, "pred": "Access", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 46750, "pred": "Administrative rights", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 45621, "pred": "HR Support", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 14472, "pred": "Storage", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 6128, "pred": "Internal Project", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 2783, "pred": "Miscellaneous", "seg_lote": 8.88, "n_lote": 20, "tok_in": 1865, "tok_out": 362}
+{"id": 40319, "pred": "Hardware", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 11378, "pred": "Purchase", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 41183, "pred": "Administrative rights", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 9697, "pred": "Access", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 47509, "pred": "Administrative rights", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 39341, "pred": "Access", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 29985, "pred": "Purchase", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 11190, "pred": "HR Support", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 15348, "pred": "HR Support", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 43119, "pred": "Hardware", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 43855, "pred": "Access", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 9735, "pred": "HR Support", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 13950, "pred": "Access", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 17558, "pred": "Access", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 14374, "pred": "HR Support", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 38751, "pred": "Miscellaneous", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 5343, "pred": "Internal Project", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 31170, "pred": "Hardware", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 10394, "pred": "Storage", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 34937, "pred": "Administrative rights", "seg_lote": 9.0, "n_lote": 20, "tok_in": 1822, "tok_out": 368}
+{"id": 17191, "pred": "Access", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 30738, "pred": "Miscellaneous", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 31888, "pred": "Administrative rights", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 19983, "pred": "Hardware", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 22905, "pred": "Access", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 24894, "pred": "Miscellaneous", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 30852, "pred": "Administrative rights", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 24826, "pred": "Purchase", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 43169, "pred": "Miscellaneous", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 24520, "pred": "Purchase", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 29511, "pred": "HR Support", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 2972, "pred": "Storage", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 14305, "pred": "Hardware", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 22842, "pred": "HR Support", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 32662, "pred": "HR Support", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 15555, "pred": "Internal Project", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 10440, "pred": "Storage", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 520, "pred": "Access", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 24252, "pred": "Administrative rights", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 3356, "pred": "Purchase", "seg_lote": 10.06, "n_lote": 20, "tok_in": 1797, "tok_out": 526}
+{"id": 23649, "pred": "Access", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 16157, "pred": "Internal Project", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 27262, "pred": "Access", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 9063, "pred": "Storage", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 28757, "pred": "Internal Project", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 46987, "pred": "Administrative rights", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 46059, "pred": "Administrative rights", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 6255, "pred": "Miscellaneous", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 31468, "pred": "HR Support", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 9664, "pred": "Hardware", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 1163, "pred": "Storage", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 18519, "pred": "Access", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 5501, "pred": "Purchase", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 31046, "pred": "HR Support", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 44624, "pred": "Access", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 22351, "pred": "Hardware", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 10850, "pred": "Hardware", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 10398, "pred": "Hardware", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 12321, "pred": "HR Support", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 33833, "pred": "Purchase", "seg_lote": 9.59, "n_lote": 20, "tok_in": 1713, "tok_out": 365}
+{"id": 11048, "pred": "Hardware", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 21782, "pred": "Access", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 37310, "pred": "Miscellaneous", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 22980, "pred": "Access", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 2994, "pred": "Purchase", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 21749, "pred": "Purchase", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 13932, "pred": "Access", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 21036, "pred": "Hardware", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 34490, "pred": "Miscellaneous", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 17264, "pred": "Hardware", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 1757, "pred": "Miscellaneous", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 16864, "pred": "Access", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 28675, "pred": "Access", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 13910, "pred": "Access", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 9388, "pred": "Internal Project", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 30254, "pred": "Storage", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 19415, "pred": "Administrative rights", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 25148, "pred": "Hardware", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 11708, "pred": "Storage", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 4746, "pred": "Hardware", "seg_lote": 10.25, "n_lote": 20, "tok_in": 1983, "tok_out": 361}
+{"id": 4969, "pred": "Internal Project", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 41020, "pred": "Internal Project", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 10497, "pred": "Internal Project", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 6548, "pred": "Purchase", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 19386, "pred": "HR Support", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 23986, "pred": "Miscellaneous", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 25423, "pred": "HR Support", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 16261, "pred": "Access", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 5779, "pred": "HR Support", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 20754, "pred": "Hardware", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 32033, "pred": "HR Support", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 37974, "pred": "Internal Project", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 1423, "pred": "HR Support", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 22225, "pred": "Access", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 30471, "pred": "Miscellaneous", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 36962, "pred": "Hardware", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 9015, "pred": "Access", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 25298, "pred": "Storage", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 3330, "pred": "HR Support", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 34829, "pred": "Internal Project", "seg_lote": 9.23, "n_lote": 20, "tok_in": 1726, "tok_out": 368}
+{"id": 22194, "pred": "HR Support", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 46335, "pred": "Administrative rights", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 1080, "pred": "HR Support", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 42838, "pred": "Access", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 33704, "pred": "Hardware", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 22594, "pred": "Hardware", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 26606, "pred": "Hardware", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 40116, "pred": "Access", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 30784, "pred": "Access", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 45753, "pred": "Access", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 451, "pred": "HR Support", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 46066, "pred": "Internal Project", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 21790, "pred": "Administrative rights", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 13134, "pred": "Access", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 36676, "pred": "Administrative rights", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 29561, "pred": "Miscellaneous", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 39418, "pred": "Access", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 32963, "pred": "Miscellaneous", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 9468, "pred": "Access", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 35802, "pred": "HR Support", "seg_lote": 19.79, "n_lote": 20, "tok_in": 1893, "tok_out": 367}
+{"id": 34957, "pred": "Administrative rights", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}
+{"id": 26747, "pred": "Purchase", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}
+{"id": 310, "pred": "Hardware", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}
+{"id": 47438, "pred": "HR Support", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}
+{"id": 23076, "pred": "Access", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}
+{"id": 11547, "pred": "HR Support", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}
+{"id": 10427, "pred": "HR Support", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}
+{"id": 20922, "pred": "Miscellaneous", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}
+{"id": 31827, "pred": "Access", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}
+{"id": 34806, "pred": "Hardware", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}
+{"id": 17366, "pred": "Internal Project", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}
+{"id": 37266, "pred": "Purchase", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}
+{"id": 20121, "pred": "Access", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}
+{"id": 8543, "pred": "Internal Project", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}
+{"id": 27740, "pred": "Hardware", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}
+{"id": 28837, "pred": "Access", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}
+{"id": 37226, "pred": "Hardware", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}
+{"id": 2200, "pred": "HR Support", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}
+{"id": 43863, "pred": "Administrative rights", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}
+{"id": 4618, "pred": "Storage", "seg_lote": 7.35, "n_lote": 20, "tok_in": 1768, "tok_out": 526}

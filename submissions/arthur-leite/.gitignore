@@ -1,0 +1,9 @@
+# Dados brutos do Kaggle (baixados por script, não versionados)
+data/
+# Segredos
+.env
+**/.env
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/

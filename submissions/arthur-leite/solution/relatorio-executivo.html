@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redesign do Suporte com IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F7F7F5;--card:#FFFFFF;--ink:#16181D;--muted:#5D6470;--line:#E4E5E8;--accent:#1F5FAD;
+        --ok:#1E7B45;--ok-bg:#E8F4EC;--warn:#A86A00;--warn-bg:#FBF2E1;--bad:#B3261E;--bad-bg:#FBEAEA}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,system-ui,sans-serif}
+  .wrap{max-width:980px;margin:0 auto;padding:40px 24px 64px}
+  header{margin-bottom:28px}
+  .eyebrow{color:var(--accent);font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  h1{font-size:32px;line-height:1.15;margin:6px 0 10px}
+  .sub{color:var(--muted);max-width:760px}
+  h2{font-size:20px;margin:0 0 12px}
+  h3{font-size:15px;margin:18px 0 6px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 26px;margin:16px 0;break-inside:avoid}
+  .tldr{border-left:5px solid var(--accent)}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .q{background:#F2F5FA;border-radius:10px;padding:14px 16px}
+  .q b{display:block;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+  .kpi{border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .kpi .v{font-size:28px;font-weight:700;line-height:1.1}
+  .kpi .l{color:var(--muted);font-size:13px}
+  .ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+  tr.hl td{background:var(--ok-bg);font-weight:600}
+  .pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600}
+  .p-ok{background:var(--ok-bg);color:var(--ok)} .p-warn{background:var(--warn-bg);color:var(--warn)} .p-bad{background:var(--bad-bg);color:var(--bad)}
+  .bar{display:flex;height:34px;border-radius:8px;overflow:hidden;margin:10px 0 6px;font-size:13px;font-weight:600;color:#fff}
+  .bar div{display:flex;align-items:center;justify-content:center}
+  .note{color:var(--muted);font-size:13px}
+  pre{background:#0F1720;color:#E6EDF3;border-radius:10px;padding:14px 16px;font-size:12.5px;line-height:1.5;overflow-x:auto}
+  ul{padding-left:20px;margin:6px 0} li{margin:3px 0}
+  footer{color:var(--muted);font-size:12px;margin-top:24px}
+  @media (max-width:760px){.grid3,.grid2{grid-template-columns:1fr}h1{font-size:26px}}
+  @media print{body{background:#fff;font-size:12.5px}.wrap{padding:0;max-width:none}section{border:1px solid #ddd;margin:10px 0;padding:16px 18px}pre{font-size:10.5px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">AI Master Challenge 002 · Redesign de Suporte · Arthur Leite</div>
+  <h1>Os dados atuais não mostram onde o suporte perde tempo. A triagem pode ser automatizada com travas de segurança, começando em modo sombra.</h1>
+  <p class="sub">Resposta às três perguntas do Diretor de Operações, com o grau de certeza de cada uma. Tudo é reproduzível
+  por script, e cada conclusão foi revisada por um agente revisor independente que recalculou os números do zero.</p>
+</header>
+
+<section class="tldr">
+  <h2>Resposta em 1 minuto</h2>
+  <div class="grid3">
+    <div class="q"><b>Onde estamos perdendo tempo?</b>
+      <strong>Não dá para afirmar com estes dados.</strong> A base de operação é sintética: tempos impossíveis e satisfação aleatória. A "pior" combinação de canal × prioridade × tipo não se distingue do acaso. O 1º gargalo é de <strong>medição</strong>: proponho instrumentar a operação já na semana 0.</div>
+    <div class="q"><b>O que automatizar com IA?</b>
+      <strong>A triagem.</strong> Validada em 9.568 tickets reais: <strong>65,5% roteados sozinhos com 96,4% de acerto</strong>, 23,3% com 2 sugestões ao agente e 11,2% para humano. Ações sensíveis e respostas: sempre humanas.</div>
+    <div class="q"><b>Mostre que funciona</b>
+      <strong>Protótipo no ar</strong> (<a href="https://ai-master-challenge-v56hxnnkz3z5z7khq8n5oz.streamlit.app/"><em>Triage Copilot</em></a>): classifica, explica, aplica a política e sugere resposta. Libera <strong>~1.200 h/ano</strong> de agente no cenário base (faixa: 550 a 2.100 h), a confirmar no piloto.</div>
+  </div>
+</section>
+
+<section>
+  <h2>1. Onde estamos perdendo tempo: o primeiro gargalo é de medição</h2>
+  <p>Antes de procurar gargalos, testei se a base de operação (8.469 tickets) consegue mostrá-los. <strong>Não consegue.</strong></p>
+  <table>
+    <tr><th>Teste</th><th>Resultado</th><th></th></tr>
+    <tr><td>Os "tempos" são tempos?</td><td>São carimbos de data e hora numa janela de 27 h. Em <strong>49%</strong> dos tickets fechados, a resolução acontece <em>antes</em> da 1ª resposta.</td><td><span class="pill p-bad">inválido</span></td></tr>
+    <tr><td>Algo explica a satisfação?</td><td>CSAT uniforme de 1 a 5. Canal, prioridade, tipo, produto, tempo e perfil: <strong>nenhum efeito</strong>. Os testes detectariam diferenças de 0,2 ponto.</td><td><span class="pill p-bad">ruído</span></td></tr>
+    <tr><td>As variáveis se relacionam?</td><td><strong>0 de 21</strong> pares associados. "Dúvida de cobrança" tem a mesma chance de vir com assunto "hardware" ou "pagamento".</td><td><span class="pill p-bad">independentes</span></td></tr>
+    <tr><td><strong>Onde o fluxo trava?</strong> (80 combinações canal × prioridade × tipo)</td><td>A "pior" parece 7,6 h mais lenta que a "melhor", mas o acaso sozinho gera em média 8,1 h de diferença (teste de permutação p = 0,68). As "melhores" têm duração média <strong>negativa</strong>.</td><td><span class="pill p-bad">ruído</span></td></tr>
+    <tr><td>O texto é real?</td><td>100% com campo não preenchido (<code>{product_purchased}</code>); 16 frases-modelo; resoluções sem sentido.</td><td><span class="pill p-bad">sintético</span></td></tr>
+  </table>
+  <p><strong>Por que isso importa:</strong> qualquer "gargalo por canal" ou "driver de satisfação" tirado desta base teria cara de verdade e levaria a decisões erradas. Uma análise automática padrão, feita por IA sem checagem, cairia nessa armadilha.</p>
+  <h3>O que dá para fazer já: plano de instrumentação (semana 0 do piloto)</h3>
+  <ul>
+    <li>Carimbos <strong>separados</strong> de criação, 1ª resposta e resolução, para medir durações reais</li>
+    <li><strong>Log de cada mudança de fila</strong>, para medir reroteamento e tempo perdido na fila errada</li>
+    <li>Categoria na abertura × na resolução, para medir o erro de triagem atual</li>
+    <li>Tempo ativo do agente separado do tempo de espera; CSAT com taxa de resposta</li>
+  </ul>
+</section>
+
+<section>
+  <h2>2. O que automatizar: a triagem, em três faixas de confiança</h2>
+  <p>Validado com 47.837 tickets reais de TI (treino em 33 mil; teste em 9.568 nunca vistos). Os tickets do Dataset 1, de outro domínio, foram usados para testar as travas que impedem a IA de decidir sobre o que não conhece. Nesta operação, o modelo é retreinado no histórico próprio antes do modo sombra.</p>
+  <div class="bar"><div style="width:65.5%;background:var(--ok)">Automático 65,5%</div><div style="width:23.3%;background:var(--warn)">Sugestão 23,3%</div><div style="width:11.2%;background:var(--bad)">Humano 11,2%</div></div>
+  <div class="grid3" style="margin-top:12px">
+    <div class="kpi"><div class="v ok">96,4%</div><div class="l">de acerto na faixa automática (margem de 95,9 a 96,8%). As 8 categorias ≥ 95% (estimativa); Hardware no limite (95,1%)</div></div>
+    <div class="kpi"><div class="v warn">91%</div><div class="l">das vezes, a categoria certa está entre as 2 sugeridas ao agente</div></div>
+    <div class="kpi"><div class="v">34% → 11%</div><div class="l">tickets de outro domínio que iriam para o automático, sem × com as travas. Dos 11,2% que vão a humano, 9,7% são barrados por essas travas</div></div>
+  </div>
+  <h3>Por que um modelo treinado no histórico, e não um LLM, para classificar</h3>
+  <table>
+    <tr><th>Abordagem (mesma amostra de 400 tickets)</th><th>Acerto</th></tr>
+    <tr class="hl"><td>Classificador simples treinado no histórico da empresa</td><td>85%</td></tr>
+    <tr><td id="llm-rag">LLM (Gemini) com os 5 tickets mais parecidos do histórico no prompt</td><td id="llm-rag-v">77%</td></tr>
+    <tr><td>Voto dos 5 tickets mais parecidos (sem LLM)</td><td>76%</td></tr>
+    <tr><td id="llm-forte">LLM mais forte (Gemini 3.8 flash) com 3 exemplos por categoria <span class="note">(n = 200, cota)</span></td><td id="llm-forte-v">54%</td></tr>
+    <tr><td>LLM (Gemini flash-lite) com o nome das categorias</td><td>44%</td></tr>
+  </table>
+  <p class="note">A diferença entre o modelo simples e o melhor LLM é estatisticamente significativa (p = 0,0003). Teste feito no plano gratuito do Gemini, com texto já pré-processado: um LLM mais forte, com definições das categorias, provavelmente reduziria a distância.</p>
+  <p><strong>O ativo é o histórico rotulado, não o modelo.</strong> As categorias seguem convenções internas: os termos que mais pesam em "Administrative rights", por exemplo, são de instalação de software. O LLM só melhora quando recebe esse histórico, e aí empata com o simples voto dos 5 tickets mais parecidos: quem acerta é o histórico. O modelo local tem custo praticamente nulo por ticket, responde em milissegundos e não envia dados para fora. O LLM fica onde agrega: <strong>redigir rascunhos</strong> para o agente revisar.</p>
+</section>
+
+<section>
+  <h2>3. O que NÃO automatizar: rotear ≠ executar ≠ responder</h2>
+  <table>
+    <tr><th>Situação</th><th>% dos tickets</th><th>Regra</th></tr>
+    <tr><td><strong>Segurança</strong> (phishing, malware)</td><td>0,7%</td><td>Fila de Segurança + escalonamento, <strong>sobrepondo o classificador</strong></td></tr>
+    <tr><td><strong>Saúde / afastamento</strong></td><td>2,0%</td><td>Só o RH responde; <strong>sem LLM</strong> (dado sensível, LGPD art. 11)</td></tr>
+    <tr><td><strong>Desligamento</strong></td><td>2,0%</td><td>Revogação de acessos por humano, com checklist</td></tr>
+    <tr><td><strong>Aprovação financeira</strong></td><td>10,4%</td><td>A IA prepara; a aprovação é humana</td></tr>
+    <tr><td><strong>Privilégio de acesso</strong></td><td>3,5%</td><td>Concessão com aprovação do gestor e registro</td></tr>
+    <tr><td><strong>Urgência / indisponibilidade</strong></td><td>7,7%</td><td>Prioridade sobe e o plantão é notificado</td></tr>
+  </table>
+  <p class="note">23,4% dos tickets acionam ao menos uma regra. As regras são explícitas, e não baseadas na categoria, porque os temas sensíveis atravessam as categorias: as menções a segurança se dividem entre Hardware (41%), Admin (19%) e Access (17%).</p>
+</section>
+
+<section>
+  <h2>4. Como funciona na prática</h2>
+<pre>TICKET ENTRA
+ ├─ 1. Política ......... segurança → fila Segurança + escalonamento | urgência → plantão | saúde → sem LLM
+ ├─ 2. Travas ........... não reconheço o ticket (idioma/assunto novo) → triagem humana
+ ├─ 3. Classificador .... confiança alta → AUTOMÁTICO | média → 2 SUGESTÕES | baixa → HUMANO
+ └─ 4. Na fila .......... agente vê: palavras-chave + 3 casos parecidos + rascunho (LLM)
+                          ação sensível → sempre humano | correção do agente → retreino mensal</pre>
+  <p>O protótipo <strong>Triage Copilot</strong> implementa esse fluxo: triagem ao vivo com explicação, uma fila com milhares de tickets reais (sem escolha a dedo), a matriz de confusão, a política e uma calculadora de ROI com premissas ajustáveis.</p>
+</section>
+
+<section>
+  <h2>5. Quanto vale e como confirmar</h2>
+  <div class="grid3">
+    <div class="kpi"><div class="v">552 h</div><div class="l">conservador (1,5 min de triagem/ticket hoje) · 0,3 pessoa · R$ 21 mil/ano</div></div>
+    <div class="kpi"><div class="v ok">1.218 h</div><div class="l"><strong>base</strong> (3 min/ticket) · 0,7 pessoa · R$ 47 mil/ano</div></div>
+    <div class="kpi"><div class="v">2.106 h</div><div class="l">otimista (5 min/ticket) · 1,2 pessoa · R$ 81 mil/ano</div></div>
+  </div>
+  <p class="note">Em base mensal: de 46 a 175 h/mês (base ≈ 101 h/mês ≈ R$ 3,9 mil/mês). <strong>Maior desperdício recuperável mensurável:</strong> o tempo de triagem manual: ~1.500 h/ano no cenário base, das quais a IA libera ~80%. O maior de todos, a espera do cliente na fila errada, só será medido com a instrumentação.</p>
+  <p class="note">É <strong>tempo de agente liberado</strong>, não economia de caixa, e ainda não desconta implantação e manutenção. Volume: 30 mil tickets/ano. Custo/hora: R$ 38 (salário + encargos, salario.com.br, out/2026). O resultado depende quase só de uma premissa de fonte fraca (minutos de triagem hoje).
+  <strong>Ficam fora, de propósito:</strong> o tempo de espera do cliente na fila errada (provavelmente o maior ganho), a redução de reroteamento (não demonstrada) e os rascunhos.</p>
+  <h3>Piloto de 4 semanas</h3>
+  <table>
+    <tr><th>Semana</th><th>O que</th><th>Avança se</th></tr>
+    <tr><td>0</td><td>Instrumentar (carimbos, log de mudança de fila)</td><td>Dados completos</td></tr>
+    <tr><td>1–2</td><td>Modo sombra: a IA classifica, mas não roteia</td><td>Concordância ≥ 95% na faixa automática</td></tr>
+    <tr><td>3–4</td><td>Automático ligado em 3 categorias estáveis (Purchase, Access, Storage)</td><td>Reatribuições não aumentam</td></tr>
+    <tr><td>5+</td><td>Todas as categorias + sugestões + rascunho</td><td>Ganho medido ≥ cenário conservador</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>6. Limitações</h2>
+  <ul>
+    <li><strong>Domínio:</strong> o desempenho foi medido em tickets internos de TI, em inglês. Uma operação de suporte ao cliente retreina com o próprio histórico (minutos, sem GPU) e mede de novo.</li>
+    <li><strong>Rótulos:</strong> o Dataset 2 tem ruído estimado de 15 a 25% (amostra de 32 textos: ordem de grandeza); parte dos "erros" pode ser rótulo errado.</li>
+    <li><strong>Travas de domínio:</strong> o limiar foi escolhido observando os mesmos tickets de outro domínio usados para avaliá-lo; o resultado (11% passando) tende a ser otimista.</li>
+    <li><strong>Política:</strong> regras por palavra-chave, sensíveis de propósito, com falsos alarmes (custam segundos) e variações que escapam (ex.: "last day" não aciona desligamento).</li>
+    <li><strong>ROI:</strong> premissas de mercado até o piloto substituí-las por medição.</li>
+  </ul>
+</section>
+
+<section class="tldr">
+  <h2>O que preciso de você</h2>
+  <ul>
+    <li><strong>Aprovar a instrumentação (semana 0):</strong> carimbos separados de criação, 1ª resposta e resolução, mais o log de mudança de fila. Sem isso, nenhum diagnóstico de gargalo é confiável.</li>
+    <li><strong>Aprovar 4 semanas de piloto:</strong> modo sombra primeiro (a IA classifica sem rotear), depois o automático em 3 categorias. A decisão de escalar sai dos números do piloto, não destas premissas.</li>
+    <li><strong>Indicar quem é dono das regras do "não automatizar"</strong> (Segurança, RH, Financeiro), para validar e manter a política.</li>
+  </ul>
+</section>
+
+<footer>
+  Fontes: <code>01-diagnostico/outputs/auditoria.md</code> · <code>modelo_desperdicio.md</code> · <code>03-prototipo/benchmark/outputs/benchmark.md</code> · <code>motor_final.md</code> · pareceres do agente juiz em <code>process-log/revisoes/</code>.
+</footer>
+</div>
+</body>
+</html>

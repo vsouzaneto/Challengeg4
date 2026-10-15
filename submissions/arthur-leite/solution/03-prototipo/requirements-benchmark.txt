@@ -1,0 +1,4 @@
+# Extras só para reproduzir o benchmark completo (inclui PyTorch, ~2 GB)
+-r requirements.txt
+sentence-transformers>=3.0
+tabulate>=0.9
