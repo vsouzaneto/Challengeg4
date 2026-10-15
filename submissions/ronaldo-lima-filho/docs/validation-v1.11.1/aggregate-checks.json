@@ -1,0 +1,36 @@
+{
+  "time": "2026-10-14T18:42:47.637504+00:00",
+  "implementation_version": "local-v1.11.1",
+  "python": 51,
+  "node": 65,
+  "browser_scenarios": 69,
+  "native_startup_scenarios": 2,
+  "native_command": "python3 -B app.py",
+  "native_port": 8765,
+  "idle_regression": {
+    "before": "failed with TimeoutError",
+    "after": "passed"
+  },
+  "dataset_hash": "c5a0244edc0ccd97307ee4ac88fff5cae566bb411f9b3e11fcaf8d43827828f3",
+  "baseline_projection_sha256": "d758d0023dff0fd18a7114a525065899db5fb243b96c19fc1268bbb1fd2e3b10",
+  "queue_counts": {
+    "cleanup": 1377,
+    "conversion": 212,
+    "qualify": 500
+  },
+  "original_csv_bytes": "unchanged",
+  "original_policy": "unchanged",
+  "original_score_rules": "unchanged",
+  "policy_csv_exact_ids_verified": 113,
+  "python_ast": "passed",
+  "javascript_syntax": "passed",
+  "analysis_byte_equal": true,
+  "page_errors": [],
+  "external_requests": [],
+  "provider_calls": 0,
+  "paid_calls": 0,
+  "python_runtime": "3.14.7",
+  "node_runtime": "v22.22.3",
+  "location": "curated stage; independent port plus separate default-port startup",
+  "pr_updated": false
+}
