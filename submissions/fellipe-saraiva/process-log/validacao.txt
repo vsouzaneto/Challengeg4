@@ -1,0 +1,51 @@
+Validação v5 — 14/10/2026 22:53 — Python 3.13.16, pandas 2.3.3, streamlit 1.50.0
+
+$ python -m unittest discover -s . -p "test_*.py" -v
+ok
+ok
+ok
+test_auc_edge_cases (test_scoring.BacktestTests.test_auc_edge_cases) ... ok
+test_close_on_cut_day_is_train_only (test_scoring.BacktestTests.test_close_on_cut_day_is_train_only) ... ok
+test_duplicate_ids_across_boundary_are_rejected (test_scoring.BacktestTests.test_duplicate_ids_across_boundary_are_rejected) ... ok
+test_real_backtest_is_consistent (test_scoring.BacktestTests.test_real_backtest_is_consistent) ... ok
+test_unresolved_are_counted_not_labeled (test_scoring.BacktestTests.test_unresolved_are_counted_not_labeled) ... ok
+test_cliff_is_longest_recorded_cycle (test_scoring.FitTests.test_cliff_is_longest_recorded_cycle) ... ok
+test_curve_counts_stale_as_loss_only_as_explicit_hypothesis (test_scoring.FitTests.test_curve_counts_stale_as_loss_only_as_explicit_hypothesis) ... ok
+test_fit_ignores_closes_after_cut (test_scoring.FitTests.test_fit_ignores_closes_after_cut) ... ok
+test_no_history_is_supported (test_scoring.FitTests.test_no_history_is_supported) ... ok
+test_plan_fills_with_prospects_when_no_alive (test_scoring.PlanTests.test_plan_fills_with_prospects_when_no_alive) ... ok
+test_plan_includes_most_valuable_last_call (test_scoring.PlanTests.test_plan_includes_most_valuable_last_call) ... ok
+test_plan_never_contains_stale_and_has_five_unique (test_scoring.PlanTests.test_plan_never_contains_stale_and_has_five_unique) ... ok
+test_team_audit_totals (test_scoring.PlanTests.test_team_audit_totals) ... ok
+test_age_changes_order_not_only_price (test_scoring.ScoreTests.test_age_changes_order_not_only_price) ... ok
+test_boundary_day_138_is_alive_and_139_is_stale (test_scoring.ScoreTests.test_boundary_day_138_is_alive_and_139_is_stale) ... ok
+test_empty_input (test_scoring.ScoreTests.test_empty_input) ... ok
+test_filter_does_not_change_scores (test_scoring.ScoreTests.test_filter_does_not_change_scores) ... ok
+test_invalid_prices_are_rejected (test_scoring.ScoreTests.test_invalid_prices_are_rejected) ... ok
+test_missing_engage_date_goes_to_cleanup (test_scoring.ScoreTests.test_missing_engage_date_goes_to_cleanup) ... ok
+test_real_dataset_partition (test_scoring.ScoreTests.test_real_dataset_partition) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 3.691s
+
+OK
+
+$ python scoring.py
+Maior ciclo entre 6,711 fechados: 138 dias. Abertos além disso: 1,291 ($3,198,664 de $4,966,215, 64%).
+Taxa de ganho entre fechados: 63.2%. Contando os parados como perda (hipótese): 53.0%. Última chamada a partir do dia 103.
+
+acao
+Requalificar ou encerrar    1291
+Fazer 1º contato             500
+Última chamada               154
+Atacar agora                  57
+Manter cadência               56
+Baixa prioridade              31 
+
+     corte  abertos_no_corte  com_desfecho  ainda_abertos  score  idade  preço  vendedor  produto  setor  conta
+2017-04-01              1346           990            356  0.533  0.472  0.533     0.495    0.448  0.480  0.469
+2017-05-01              1622          1142            480  0.524  0.538  0.520     0.457    0.486  0.466  0.482
+2017-06-01              1546           939            607  0.486  0.426  0.497     0.483    0.508  0.487  0.489
+2017-07-01              1706           983            723  0.496  0.554  0.495     0.502    0.526  0.507  0.467
+
+OK
