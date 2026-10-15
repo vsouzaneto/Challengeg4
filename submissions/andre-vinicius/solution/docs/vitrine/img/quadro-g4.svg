@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="t d">
+  <title id="t">Quadro de tarefas do projeto G4 em 13/10/2026</title>
+  <desc id="d">Cinco colunas: Backlog com 1 tarefa, Planejado com 0, Em andamento com 1, Revisão com 0 e Concluído com 6. Montado a partir dos registros do Demiurgo, não é captura de tela.</desc>
+  <style>
+    text { font-family: "Segoe UI", Arial, Helvetica, sans-serif; fill: #1b2733; }
+    .h { font-size: 14px; font-weight: 700; }
+    .n { font-size: 12px; fill: #5a6b7a; }
+    .id { font-size: 13px; font-weight: 700; fill: #0f3d6b; }
+    .t { font-size: 12px; }
+    .m { font-size: 11px; fill: #44566a; }
+    .col { fill: #eef3f8; stroke: #cfd9e3; }
+    .card { fill: #ffffff; stroke: #c3cfdb; }
+    .cx { fill: #dbe9f6; }
+    .cd { fill: #e1f1e4; }
+    .foot { font-size: 12px; fill: #44566a; }
+    .title { font-size: 20px; font-weight: 700; }
+  </style>
+  <rect width="1200" height="820" fill="#ffffff"/>
+  <text x="24" y="36" class="title">Projeto G4 AI Master · quadro de tarefas em 13/10/2026</text>
+  <text x="24" y="58" class="foot">As 8 tarefas do projeto G4. Montado a partir dos registros do Demiurgo, não é captura de tela.</text>
+
+  <!-- colunas -->
+  <rect x="24" y="76" width="220" height="668" rx="8" class="col"/>
+  <rect x="254" y="76" width="220" height="668" rx="8" class="col"/>
+  <rect x="484" y="76" width="220" height="668" rx="8" class="col"/>
+  <rect x="714" y="76" width="220" height="668" rx="8" class="col"/>
+  <rect x="944" y="76" width="232" height="668" rx="8" class="col"/>
+  <text x="38" y="102" class="h">Backlog</text><text x="210" y="102" class="n">1</text>
+  <text x="268" y="102" class="h">Planejado</text><text x="440" y="102" class="n">0</text>
+  <text x="498" y="102" class="h">Em andamento</text><text x="670" y="102" class="n">1</text>
+  <text x="728" y="102" class="h">Revisão</text><text x="900" y="102" class="n">0</text>
+  <text x="958" y="102" class="h">Concluído</text><text x="1142" y="102" class="n">6</text>
+
+  <!-- Backlog -->
+  <rect x="34" y="116" width="200" height="92" rx="6" class="card"/>
+  <text x="46" y="138" class="id">G4-003-REDESIGN-02</text>
+  <text x="46" y="158" class="t">2º redesign: botões, textos</text>
+  <text x="46" y="174" class="t">e metodologia dentro do app</text>
+  <rect x="46" y="184" width="62" height="16" rx="8" class="cx"/><text x="54" y="196" class="m">Codex</text>
+
+  <!-- Em andamento -->
+  <rect x="494" y="116" width="200" height="92" rx="6" class="card"/>
+  <text x="506" y="138" class="id">G4-VITRINE-01</text>
+  <text x="506" y="158" class="t">Vitrine do processo e</text>
+  <text x="506" y="174" class="t">rascunho do post</text>
+  <rect x="506" y="184" width="86" height="16" rx="8" class="cx"/><text x="514" y="196" class="m">Claude Code</text>
+
+  <!-- Concluído -->
+  <rect x="954" y="116" width="212" height="92" rx="6" class="card"/>
+  <text x="966" y="138" class="id">G4-RECON-01</text>
+  <text x="966" y="158" class="t">Ler o desafio e fazer a</text>
+  <text x="966" y="174" class="t">ficha dos 4 cases</text>
+  <rect x="966" y="184" width="86" height="16" rx="8" class="cd"/><text x="974" y="196" class="m">Claude Code</text>
+  <text x="1060" y="196" class="m">aprovada 09/10</text>
+
+  <rect x="954" y="220" width="212" height="92" rx="6" class="card"/>
+  <text x="966" y="242" class="id">G4-ESFORCO-01</text>
+  <text x="966" y="262" class="t">Esforço e plano de cada</text>
+  <text x="966" y="278" class="t">case, para escolher</text>
+  <rect x="966" y="288" width="86" height="16" rx="8" class="cd"/><text x="974" y="300" class="m">Claude Code</text>
+  <text x="1060" y="300" class="m">aprovada 09/10</text>
+
+  <rect x="954" y="324" width="212" height="92" rx="6" class="card"/>
+  <text x="966" y="346" class="id">G4-003-PAINEIS-01</text>
+  <text x="966" y="366" class="t">Painéis: vendedor, gerente,</text>
+  <text x="966" y="382" class="t">região, preço e Kanban</text>
+  <rect x="966" y="392" width="62" height="16" rx="8" class="cd"/><text x="974" y="404" class="m">Codex</text>
+  <text x="1036" y="404" class="m">aprovada 10/10</text>
+
+  <rect x="954" y="428" width="212" height="92" rx="6" class="card"/>
+  <text x="966" y="450" class="id">G4-003-REDESIGN-01</text>
+  <text x="966" y="470" class="t">Subpáginas Gerente, Vendedor</text>
+  <text x="966" y="486" class="t">e Mapa; RG com avatar</text>
+  <rect x="966" y="496" width="62" height="16" rx="8" class="cd"/><text x="974" y="508" class="m">Codex</text>
+  <text x="1036" y="508" class="m">aprovada 10/10</text>
+
+  <rect x="954" y="532" width="212" height="92" rx="6" class="card"/>
+  <text x="966" y="554" class="id">G4-003-DOCS-01</text>
+  <text x="966" y="574" class="t">Documentação completa do</text>
+  <text x="966" y="590" class="t">case (negócio a testes)</text>
+  <rect x="966" y="600" width="86" height="16" rx="8" class="cd"/><text x="974" y="612" class="m">Claude Code</text>
+  <text x="1060" y="612" class="m">aprovada 13/10</text>
+
+  <rect x="954" y="636" width="212" height="92" rx="6" class="card"/>
+  <text x="966" y="658" class="id">G4-INTEGRAR-DOCS-01</text>
+  <text x="966" y="678" class="t">Juntar a documentação na</text>
+  <text x="966" y="694" class="t">branch de trabalho</text>
+  <rect x="966" y="704" width="86" height="16" rx="8" class="cd"/><text x="974" y="716" class="m">Claude Code</text>
+  <text x="1060" y="716" class="m">aprovada 13/10</text>
+
+  <text x="24" y="766" class="foot">Cada cartão tem objetivo, critério de aceite, rodadas por agente e aprovação minha antes de ir a Concluído.</text>
+  <text x="24" y="786" class="foot">Regra do método: quem constrói não revisa o próprio trabalho. Quem aprova sou eu.</text>
+  <text x="24" y="806" class="foot">A construção do Foco (G4-LEAD-SCORER-01, Codex, aprovada em 10/10) foi registrada antes de o projeto G4 existir e não aparece neste quadro.</text>
+</svg>

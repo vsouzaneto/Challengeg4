@@ -1,0 +1,13 @@
+data/
+__pycache__/
+*.pyc
+.venv/
+*.local.json
+.env
+.env.*
+*.key
+*.pem
+*.log
+*.zip
+captures-private/
+internal/
