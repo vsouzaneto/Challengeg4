@@ -1,0 +1,21 @@
+services:
+  g4desk:
+    networks:
+      - default
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"
+      - "traefik.http.routers.g4desk.rule=Host(`${APP_HOST}`)"
+      - "traefik.http.routers.g4desk.entrypoints=websecure"
+      - "traefik.http.routers.g4desk.tls=true"
+      - "traefik.http.routers.g4desk.tls.certresolver=${TRAEFIK_CERTRESOLVER}"
+      - "traefik.http.services.g4desk.loadbalancer.server.port=8000"
+      - "traefik.http.routers.g4desk-http.rule=Host(`${APP_HOST}`)"
+      - "traefik.http.routers.g4desk-http.entrypoints=web"
+      - "traefik.http.routers.g4desk-http.middlewares=g4desk-https"
+      - "traefik.http.middlewares.g4desk-https.redirectscheme.scheme=https"
+networks:
+  traefik:
+    external: true
+    name: ${TRAEFIK_NETWORK}

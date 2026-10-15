@@ -1,0 +1,4 @@
+services:
+  g4desk:
+    ports:
+      - "${APP_PORT:-8080}:8000"
