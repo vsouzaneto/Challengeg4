@@ -1,0 +1,7 @@
+node_modules/
+out/
+.cache/
+.venv/
+# Regeneráveis: npm run capturas e scripts/narracao.py (os JSON de src/ guardam posições e tempos)
+public/audio/
+public/capturas/

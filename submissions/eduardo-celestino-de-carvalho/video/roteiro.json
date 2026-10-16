@@ -1,0 +1,52 @@
+{
+  "titulo": "Lead Kanban — tutorial de uso",
+  "voz": "pt-BR-AntonioNeural",
+  "velocidade": "+6%",
+  "pronuncia": {
+    "Lead Kanban": "Líd Kanban",
+    "Dashboard": "Déshbórd",
+    "CRM": "cê érre ême"
+  },
+  "cenas": [
+    {
+      "id": "abertura",
+      "texto": "Este é o Lead Kanban. Em dois minutos, você vai saber como usá-lo para decidir onde focar a sua semana de vendas."
+    },
+    {
+      "id": "problema",
+      "texto": "Hoje são mais de duas mil oportunidades abertas, e o tempo de cada vendedor é limitado. A pergunta é simples: por qual negócio começar?"
+    },
+    {
+      "id": "prazo",
+      "texto": "O histórico ajuda a responder. Nenhuma venda levou mais de cento e trinta e oito dias para fechar. Quem passou desse prazo não está em negociação: está parado."
+    },
+    {
+      "id": "colunas",
+      "texto": "Por isso, o Lead Kanban separa as oportunidades em três colunas. Negociar: negócios dentro do prazo, com chance real de fechar. Qualificar: oportunidades em prospecção, que ainda precisam provar necessidade, decisor e prazo. Confirmar ou encerrar: negócios que passaram do prazo e pedem uma decisão."
+    },
+    {
+      "id": "cartao",
+      "texto": "Dentro de cada coluna, os cartões já estão em ordem, do maior valor para o menor. Comece pelo número um. Cada cartão mostra o produto, a empresa, o valor e uma barra de prazo: quanto mais cheia, mais perto do limite."
+    },
+    {
+      "id": "filtros",
+      "texto": "Para ver só a sua carteira, escolha o seu nome no filtro de vendedor, na barra do topo. Os filtros valem para todas as telas."
+    },
+    {
+      "id": "detalhe",
+      "texto": "Clique em um cartão para abrir o detalhe. Ali estão o que fazer agora, com ações para marcar, o motivo de o negócio estar naquela coluna e o tempo que ele já tem de negociação."
+    },
+    {
+      "id": "dashboard",
+      "texto": "Para quem lidera o time, o Dashboard mostra onde está o valor, por regional, manager ou vendedor, e quem precisa de apoio. Mais abaixo, os números que sustentam as regras."
+    },
+    {
+      "id": "ajuda",
+      "texto": "Ficou com alguma dúvida? O botão de interrogação abre o procedimento completo, com todas as regras e um glossário."
+    },
+    {
+      "id": "rotina",
+      "texto": "Uma rotina simples para toda semana. Primeiro, decida os negócios parados. Depois, negocie em ordem. Por fim, qualifique as novas oportunidades. Bom trabalho!"
+    }
+  ]
+}

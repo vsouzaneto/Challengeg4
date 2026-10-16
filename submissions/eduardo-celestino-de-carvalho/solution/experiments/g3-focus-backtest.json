@@ -1,0 +1,1017 @@
+{
+  "note": "Exploratório. Outcomes observados até 31/12/2017; Prospecting excluído por falta de datas.",
+  "robustness_summary": {
+    "tie_break": {
+      "first_cutoffs": {
+        "recent_first": {
+          "won": 210.83,
+          "won_revenue": 1419721.67,
+          "beyond_cycle_slots": 0.0
+        },
+        "oldest_first": {
+          "won": 184.0,
+          "won_revenue": 1236753.0,
+          "beyond_cycle_slots": 0.0
+        }
+      },
+      "last_cutoffs": {
+        "recent_first": {
+          "won": 115.5,
+          "won_revenue": 670073.0,
+          "beyond_cycle_slots": 0.0
+        },
+        "oldest_first": {
+          "won": 87.5,
+          "won_revenue": 501690.5,
+          "beyond_cycle_slots": 0.0
+        }
+      }
+    },
+    "price_only": {
+      "first_cutoffs": {
+        "won": 191.52,
+        "won_revenue": 1269730.72,
+        "beyond_cycle_slots": 36.24
+      },
+      "last_cutoffs": {
+        "won": 83.75,
+        "won_revenue": 493246.75,
+        "beyond_cycle_slots": 55.15
+      }
+    },
+    "threshold": {
+      "max": {
+        "won": 326.33,
+        "won_revenue": 2089794.67,
+        "beyond_cycle_slots": 0.0,
+        "beyond_deals": 1443,
+        "beyond_won": 0
+      },
+      "p99": {
+        "won": 329.83,
+        "won_revenue": 2103203.67,
+        "beyond_cycle_slots": 0.0,
+        "beyond_deals": 1637,
+        "beyond_won": 9
+      },
+      "p95": {
+        "won": 333.83,
+        "won_revenue": 2093942.67,
+        "beyond_cycle_slots": 0.0,
+        "beyond_deals": 1905,
+        "beyond_won": 35
+      },
+      "p90": {
+        "won": 336.33,
+        "won_revenue": 2098363.67,
+        "beyond_cycle_slots": 0.0,
+        "beyond_deals": 2202,
+        "beyond_won": 86
+      }
+    }
+  },
+  "decomposition": {
+    "totals": {
+      "price_only_no_lanes": {
+        "won": 275.27,
+        "won_revenue": 1762977.47,
+        "beyond_cycle_slots": 91.39
+      },
+      "lanes_price_no_recency": {
+        "won": 298.78,
+        "won_revenue": 1896395.79,
+        "beyond_cycle_slots": 0.0
+      },
+      "price_recency_no_lanes": {
+        "won": 319.83,
+        "won_revenue": 2062885.67,
+        "beyond_cycle_slots": 31.0
+      },
+      "focus_rule": {
+        "won": 326.33,
+        "won_revenue": 2089794.67,
+        "beyond_cycle_slots": 0.0
+      }
+    },
+    "bootstrap": {
+      "focus_rule_vs_price_only_no_lanes": {
+        "units": 150,
+        "reps": 5000,
+        "revenue_a": 2089794.67,
+        "revenue_b": 1762977.48,
+        "lift": 0.1854,
+        "ci95": [
+          0.1241,
+          0.2536
+        ],
+        "share_reps_a_better": 1.0
+      },
+      "focus_rule_vs_lanes_price_no_recency": {
+        "units": 150,
+        "reps": 5000,
+        "revenue_a": 2089794.67,
+        "revenue_b": 1896395.78,
+        "lift": 0.102,
+        "ci95": [
+          0.0552,
+          0.1539
+        ],
+        "share_reps_a_better": 1.0
+      },
+      "focus_rule_vs_price_recency_no_lanes": {
+        "units": 150,
+        "reps": 5000,
+        "revenue_a": 2089794.67,
+        "revenue_b": 2062885.67,
+        "lift": 0.013,
+        "ci95": [
+          0.004,
+          0.0247
+        ],
+        "share_reps_a_better": 0.9994
+      }
+    }
+  },
+  "cutoffs": [
+    {
+      "cutoff": "2017-05-31",
+      "horizon_days": 214,
+      "reference": {
+        "closed": 2038,
+        "max_cycle_days": 138,
+        "base_rate": 0.6153
+      },
+      "engaging_open": 1535,
+      "lanes": {
+        "negociar": {
+          "deals": 1454,
+          "won": 687,
+          "lost": 243,
+          "open": 524,
+          "won_revenue": 1699636,
+          "win_rate_resolved": 0.7387
+        },
+        "encerrar": {
+          "deals": 81,
+          "won": 0,
+          "lost": 0,
+          "open": 81,
+          "won_revenue": 0,
+          "win_rate_resolved": null
+        }
+      },
+      "focus_outcome_by_phase": {
+        "Perto do limite": {
+          "deals": 288,
+          "won": 116,
+          "lost": 30,
+          "open": 142
+        },
+        "Em andamento": {
+          "deals": 849,
+          "won": 388,
+          "lost": 145,
+          "open": 316
+        },
+        "Início": {
+          "deals": 317,
+          "won": 183,
+          "lost": 68,
+          "open": 66
+        }
+      },
+      "top5_per_agent": {
+        "previous_attention_rule": {
+          "slots": 150.0,
+          "won": 62.83,
+          "lost": 15.5,
+          "still_open": 71.67,
+          "won_revenue": 331078.75,
+          "beyond_cycle_slots": 21.0
+        },
+        "price_only_no_lanes": {
+          "slots": 150.0,
+          "won": 71.97,
+          "lost": 27.14,
+          "still_open": 50.89,
+          "won_revenue": 501903.57,
+          "beyond_cycle_slots": 7.06
+        },
+        "lanes_expected_value_rejected": {
+          "slots": 150.0,
+          "won": 77.95,
+          "lost": 20.83,
+          "still_open": 51.22,
+          "won_revenue": 524888.32,
+          "beyond_cycle_slots": 0.0
+        },
+        "focus_rule": {
+          "slots": 150.0,
+          "won": 72.83,
+          "lost": 31.17,
+          "still_open": 46.0,
+          "won_revenue": 526250.67,
+          "beyond_cycle_slots": 0.0
+        },
+        "price_recency_no_lanes": {
+          "slots": 150.0,
+          "won": 71.83,
+          "lost": 31.17,
+          "still_open": 47.0,
+          "won_revenue": 521494.67,
+          "beyond_cycle_slots": 2.0
+        },
+        "lanes_price_no_recency": {
+          "slots": 150.0,
+          "won": 74.6,
+          "lost": 27.45,
+          "still_open": 47.94,
+          "won_revenue": 520652.63,
+          "beyond_cycle_slots": 0.0
+        }
+      },
+      "robustness": {
+        "tie_break": {
+          "recent_first": {
+            "slots": 150.0,
+            "won": 72.83,
+            "lost": 31.17,
+            "still_open": 46.0,
+            "won_revenue": 526250.67,
+            "beyond_cycle_slots": 0.0
+          },
+          "oldest_first": {
+            "slots": 150.0,
+            "won": 77.0,
+            "lost": 22.0,
+            "still_open": 51.0,
+            "won_revenue": 505848.0,
+            "beyond_cycle_slots": 0.0
+          }
+        },
+        "threshold": {
+          "max": {
+            "limit_days": 138,
+            "beyond_deals": 81,
+            "beyond_won": 0,
+            "beyond_won_revenue": 0,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 72.83,
+              "lost": 31.17,
+              "still_open": 46.0,
+              "won_revenue": 526250.67,
+              "beyond_cycle_slots": 0.0
+            }
+          },
+          "p99": {
+            "limit_days": 125,
+            "beyond_deals": 112,
+            "beyond_won": 7,
+            "beyond_won_revenue": 11698,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 71.83,
+              "lost": 33.17,
+              "still_open": 45.0,
+              "won_revenue": 520821.67,
+              "beyond_cycle_slots": 0.0
+            }
+          },
+          "p95": {
+            "limit_days": 114,
+            "beyond_deals": 157,
+            "beyond_won": 24,
+            "beyond_won_revenue": 77182,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 71.83,
+              "lost": 33.17,
+              "still_open": 45.0,
+              "won_revenue": 495293.67,
+              "beyond_cycle_slots": 0.0
+            }
+          },
+          "p90": {
+            "limit_days": 103,
+            "beyond_deals": 226,
+            "beyond_won": 48,
+            "beyond_won_revenue": 140243,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 70.83,
+              "lost": 35.17,
+              "still_open": 44.0,
+              "won_revenue": 485368.67,
+              "beyond_cycle_slots": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "cutoff": "2017-06-30",
+      "horizon_days": 184,
+      "reference": {
+        "closed": 2679,
+        "max_cycle_days": 138,
+        "base_rate": 0.6663
+      },
+      "engaging_open": 1686,
+      "lanes": {
+        "negociar": {
+          "deals": 1537,
+          "won": 609,
+          "lost": 361,
+          "open": 567,
+          "won_revenue": 1441450,
+          "win_rate_resolved": 0.6278
+        },
+        "encerrar": {
+          "deals": 149,
+          "won": 0,
+          "lost": 0,
+          "open": 149,
+          "won_revenue": 0,
+          "win_rate_resolved": null
+        }
+      },
+      "focus_outcome_by_phase": {
+        "Perto do limite": {
+          "deals": 207,
+          "won": 0,
+          "lost": 0,
+          "open": 207
+        },
+        "Em andamento": {
+          "deals": 941,
+          "won": 408,
+          "lost": 232,
+          "open": 301
+        },
+        "Início": {
+          "deals": 389,
+          "won": 201,
+          "lost": 129,
+          "open": 59
+        }
+      },
+      "top5_per_agent": {
+        "previous_attention_rule": {
+          "slots": 150.0,
+          "won": 38.82,
+          "lost": 32.18,
+          "still_open": 79.0,
+          "won_revenue": 234311.55,
+          "beyond_cycle_slots": 26.78
+        },
+        "price_only_no_lanes": {
+          "slots": 150.0,
+          "won": 62.93,
+          "lost": 33.06,
+          "still_open": 54.01,
+          "won_revenue": 393929.13,
+          "beyond_cycle_slots": 11.8
+        },
+        "lanes_expected_value_rejected": {
+          "slots": 150.0,
+          "won": 52.95,
+          "lost": 33.25,
+          "still_open": 63.8,
+          "won_revenue": 344302.43,
+          "beyond_cycle_slots": 0.0
+        },
+        "focus_rule": {
+          "slots": 150.0,
+          "won": 74.0,
+          "lost": 40.0,
+          "still_open": 36.0,
+          "won_revenue": 466947.0,
+          "beyond_cycle_slots": 0.0
+        },
+        "price_recency_no_lanes": {
+          "slots": 150.0,
+          "won": 74.0,
+          "lost": 38.0,
+          "still_open": 38.0,
+          "won_revenue": 466947.0,
+          "beyond_cycle_slots": 5.0
+        },
+        "lanes_price_no_recency": {
+          "slots": 150.0,
+          "won": 65.03,
+          "lost": 34.3,
+          "still_open": 50.67,
+          "won_revenue": 404445.29,
+          "beyond_cycle_slots": 0.0
+        }
+      },
+      "robustness": {
+        "tie_break": {
+          "recent_first": {
+            "slots": 150.0,
+            "won": 74.0,
+            "lost": 40.0,
+            "still_open": 36.0,
+            "won_revenue": 466947.0,
+            "beyond_cycle_slots": 0.0
+          },
+          "oldest_first": {
+            "slots": 150.0,
+            "won": 52.0,
+            "lost": 34.0,
+            "still_open": 64.0,
+            "won_revenue": 350641.0,
+            "beyond_cycle_slots": 0.0
+          }
+        },
+        "threshold": {
+          "max": {
+            "limit_days": 138,
+            "beyond_deals": 149,
+            "beyond_won": 0,
+            "beyond_won_revenue": 0,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 74.0,
+              "lost": 40.0,
+              "still_open": 36.0,
+              "won_revenue": 466947.0,
+              "beyond_cycle_slots": 0.0
+            }
+          },
+          "p99": {
+            "limit_days": 132,
+            "beyond_deals": 172,
+            "beyond_won": 0,
+            "beyond_won_revenue": 0,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 74.5,
+              "lost": 40.0,
+              "still_open": 35.5,
+              "won_revenue": 469409.0,
+              "beyond_cycle_slots": 0.0
+            }
+          },
+          "p95": {
+            "limit_days": 118,
+            "beyond_deals": 228,
+            "beyond_won": 0,
+            "beyond_won_revenue": 0,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 75.5,
+              "lost": 40.0,
+              "still_open": 34.5,
+              "won_revenue": 472759.0,
+              "beyond_cycle_slots": 0.0
+            }
+          },
+          "p90": {
+            "limit_days": 107,
+            "beyond_deals": 275,
+            "beyond_won": 0,
+            "beyond_won_revenue": 0,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 75.5,
+              "lost": 40.0,
+              "still_open": 34.5,
+              "won_revenue": 472759.0,
+              "beyond_cycle_slots": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "cutoff": "2017-07-31",
+      "horizon_days": 153,
+      "reference": {
+        "closed": 3306,
+        "max_cycle_days": 138,
+        "base_rate": 0.6331
+      },
+      "engaging_open": 2257,
+      "lanes": {
+        "negociar": {
+          "deals": 1982,
+          "won": 742,
+          "lost": 397,
+          "open": 843,
+          "won_revenue": 1793690,
+          "win_rate_resolved": 0.6514
+        },
+        "encerrar": {
+          "deals": 275,
+          "won": 0,
+          "lost": 0,
+          "open": 275,
+          "won_revenue": 0,
+          "win_rate_resolved": null
+        }
+      },
+      "focus_outcome_by_phase": {
+        "Perto do limite": {
+          "deals": 287,
+          "won": 47,
+          "lost": 31,
+          "open": 209
+        },
+        "Em andamento": {
+          "deals": 1162,
+          "won": 581,
+          "lost": 295,
+          "open": 286
+        },
+        "Início": {
+          "deals": 533,
+          "won": 114,
+          "lost": 71,
+          "open": 348
+        }
+      },
+      "top5_per_agent": {
+        "previous_attention_rule": {
+          "slots": 150.0,
+          "won": 42.3,
+          "lost": 23.46,
+          "still_open": 84.23,
+          "won_revenue": 258697.81,
+          "beyond_cycle_slots": 36.86
+        },
+        "price_only_no_lanes": {
+          "slots": 150.0,
+          "won": 56.62,
+          "lost": 23.92,
+          "still_open": 69.46,
+          "won_revenue": 373898.02,
+          "beyond_cycle_slots": 17.38
+        },
+        "lanes_expected_value_rejected": {
+          "slots": 150.0,
+          "won": 57.04,
+          "lost": 29.62,
+          "still_open": 63.33,
+          "won_revenue": 383946.96,
+          "beyond_cycle_slots": 0.0
+        },
+        "focus_rule": {
+          "slots": 150.0,
+          "won": 64.0,
+          "lost": 25.0,
+          "still_open": 61.0,
+          "won_revenue": 426524.0,
+          "beyond_cycle_slots": 0.0
+        },
+        "price_recency_no_lanes": {
+          "slots": 150.0,
+          "won": 62.0,
+          "lost": 23.0,
+          "still_open": 65.0,
+          "won_revenue": 419626.0,
+          "beyond_cycle_slots": 6.0
+        },
+        "lanes_price_no_recency": {
+          "slots": 150.0,
+          "won": 61.46,
+          "lost": 26.23,
+          "still_open": 62.31,
+          "won_revenue": 401866.45,
+          "beyond_cycle_slots": 0.0
+        }
+      },
+      "robustness": {
+        "tie_break": {
+          "recent_first": {
+            "slots": 150.0,
+            "won": 64.0,
+            "lost": 25.0,
+            "still_open": 61.0,
+            "won_revenue": 426524.0,
+            "beyond_cycle_slots": 0.0
+          },
+          "oldest_first": {
+            "slots": 150.0,
+            "won": 55.0,
+            "lost": 30.0,
+            "still_open": 65.0,
+            "won_revenue": 380264.0,
+            "beyond_cycle_slots": 0.0
+          }
+        },
+        "threshold": {
+          "max": {
+            "limit_days": 138,
+            "beyond_deals": 275,
+            "beyond_won": 0,
+            "beyond_won_revenue": 0,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 64.0,
+              "lost": 25.0,
+              "still_open": 61.0,
+              "won_revenue": 426524.0,
+              "beyond_cycle_slots": 0.0
+            }
+          },
+          "p99": {
+            "limit_days": 130,
+            "beyond_deals": 313,
+            "beyond_won": 0,
+            "beyond_won_revenue": 0,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 66.0,
+              "lost": 25.0,
+              "still_open": 59.0,
+              "won_revenue": 434285.0,
+              "beyond_cycle_slots": 0.0
+            }
+          },
+          "p95": {
+            "limit_days": 115,
+            "beyond_deals": 385,
+            "beyond_won": 3,
+            "beyond_won_revenue": 1714,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 66.0,
+              "lost": 25.0,
+              "still_open": 59.0,
+              "won_revenue": 434285.0,
+              "beyond_cycle_slots": 0.0
+            }
+          },
+          "p90": {
+            "limit_days": 103,
+            "beyond_deals": 446,
+            "beyond_won": 10,
+            "beyond_won_revenue": 26894,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 66.0,
+              "lost": 26.0,
+              "still_open": 58.0,
+              "won_revenue": 434285.0,
+              "beyond_cycle_slots": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "cutoff": "2017-08-31",
+      "horizon_days": 122,
+      "reference": {
+        "closed": 4091,
+        "max_cycle_days": 138,
+        "base_rate": 0.6206
+      },
+      "engaging_open": 2265,
+      "lanes": {
+        "negociar": {
+          "deals": 1857,
+          "won": 637,
+          "lost": 256,
+          "open": 964,
+          "won_revenue": 1450144,
+          "win_rate_resolved": 0.7133
+        },
+        "encerrar": {
+          "deals": 408,
+          "won": 0,
+          "lost": 0,
+          "open": 408,
+          "won_revenue": 0,
+          "win_rate_resolved": null
+        }
+      },
+      "focus_outcome_by_phase": {
+        "Perto do limite": {
+          "deals": 303,
+          "won": 80,
+          "lost": 21,
+          "open": 202
+        },
+        "Em andamento": {
+          "deals": 1239,
+          "won": 383,
+          "lost": 163,
+          "open": 693
+        },
+        "Início": {
+          "deals": 315,
+          "won": 174,
+          "lost": 72,
+          "open": 69
+        }
+      },
+      "top5_per_agent": {
+        "previous_attention_rule": {
+          "slots": 150.0,
+          "won": 23.5,
+          "lost": 8.5,
+          "still_open": 118.0,
+          "won_revenue": 125633.7,
+          "beyond_cycle_slots": 47.08
+        },
+        "price_only_no_lanes": {
+          "slots": 150.0,
+          "won": 46.22,
+          "lost": 18.46,
+          "still_open": 85.32,
+          "won_revenue": 266241.8,
+          "beyond_cycle_slots": 24.45
+        },
+        "lanes_expected_value_rejected": {
+          "slots": 150.0,
+          "won": 54.85,
+          "lost": 17.83,
+          "still_open": 77.32,
+          "won_revenue": 307934.13,
+          "beyond_cycle_slots": 0.0
+        },
+        "focus_rule": {
+          "slots": 150.0,
+          "won": 57.5,
+          "lost": 29.0,
+          "still_open": 63.5,
+          "won_revenue": 334887.0,
+          "beyond_cycle_slots": 0.0
+        },
+        "price_recency_no_lanes": {
+          "slots": 150.0,
+          "won": 56.0,
+          "lost": 27.0,
+          "still_open": 67.0,
+          "won_revenue": 329416.0,
+          "beyond_cycle_slots": 8.0
+        },
+        "lanes_price_no_recency": {
+          "slots": 150.0,
+          "won": 53.07,
+          "lost": 21.06,
+          "still_open": 75.87,
+          "won_revenue": 304694.78,
+          "beyond_cycle_slots": 0.0
+        }
+      },
+      "robustness": {
+        "tie_break": {
+          "recent_first": {
+            "slots": 150.0,
+            "won": 57.5,
+            "lost": 29.0,
+            "still_open": 63.5,
+            "won_revenue": 334887.0,
+            "beyond_cycle_slots": 0.0
+          },
+          "oldest_first": {
+            "slots": 150.0,
+            "won": 53.5,
+            "lost": 17.0,
+            "still_open": 79.5,
+            "won_revenue": 296079.5,
+            "beyond_cycle_slots": 0.0
+          }
+        },
+        "threshold": {
+          "max": {
+            "limit_days": 138,
+            "beyond_deals": 408,
+            "beyond_won": 0,
+            "beyond_won_revenue": 0,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 57.5,
+              "lost": 29.0,
+              "still_open": 63.5,
+              "won_revenue": 334887.0,
+              "beyond_cycle_slots": 0.0
+            }
+          },
+          "p99": {
+            "limit_days": 127,
+            "beyond_deals": 458,
+            "beyond_won": 2,
+            "beyond_won_revenue": 5451,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 58.5,
+              "lost": 29.0,
+              "still_open": 62.5,
+              "won_revenue": 340575.0,
+              "beyond_cycle_slots": 0.0
+            }
+          },
+          "p95": {
+            "limit_days": 114,
+            "beyond_deals": 515,
+            "beyond_won": 8,
+            "beyond_won_revenue": 17227,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 59.5,
+              "lost": 29.0,
+              "still_open": 61.5,
+              "won_revenue": 346119.0,
+              "beyond_cycle_slots": 0.0
+            }
+          },
+          "p90": {
+            "limit_days": 103,
+            "beyond_deals": 593,
+            "beyond_won": 28,
+            "beyond_won_revenue": 55026,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 62.0,
+              "lost": 30.0,
+              "still_open": 58.0,
+              "won_revenue": 355125.0,
+              "beyond_cycle_slots": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "cutoff": "2017-09-30",
+      "horizon_days": 92,
+      "reference": {
+        "closed": 4726,
+        "max_cycle_days": 138,
+        "base_rate": 0.6437
+      },
+      "engaging_open": 2409,
+      "lanes": {
+        "negociar": {
+          "deals": 1879,
+          "won": 559,
+          "lost": 376,
+          "open": 944,
+          "won_revenue": 1251928,
+          "win_rate_resolved": 0.5979
+        },
+        "encerrar": {
+          "deals": 530,
+          "won": 0,
+          "lost": 0,
+          "open": 530,
+          "won_revenue": 0,
+          "win_rate_resolved": null
+        }
+      },
+      "focus_outcome_by_phase": {
+        "Perto do limite": {
+          "deals": 201,
+          "won": 0,
+          "lost": 2,
+          "open": 199
+        },
+        "Em andamento": {
+          "deals": 1307,
+          "won": 374,
+          "lost": 230,
+          "open": 703
+        },
+        "Início": {
+          "deals": 371,
+          "won": 185,
+          "lost": 144,
+          "open": 42
+        }
+      },
+      "top5_per_agent": {
+        "previous_attention_rule": {
+          "slots": 150.0,
+          "won": 12.7,
+          "lost": 11.2,
+          "still_open": 126.1,
+          "won_revenue": 67683.3,
+          "beyond_cycle_slots": 57.79
+        },
+        "price_only_no_lanes": {
+          "slots": 150.0,
+          "won": 37.53,
+          "lost": 28.21,
+          "still_open": 84.26,
+          "won_revenue": 227004.95,
+          "beyond_cycle_slots": 30.7
+        },
+        "lanes_expected_value_rejected": {
+          "slots": 150.0,
+          "won": 32.08,
+          "lost": 27.33,
+          "still_open": 90.58,
+          "won_revenue": 195493.58,
+          "beyond_cycle_slots": 0.0
+        },
+        "focus_rule": {
+          "slots": 150.0,
+          "won": 58.0,
+          "lost": 42.0,
+          "still_open": 50.0,
+          "won_revenue": 335186.0,
+          "beyond_cycle_slots": 0.0
+        },
+        "price_recency_no_lanes": {
+          "slots": 150.0,
+          "won": 56.0,
+          "lost": 39.0,
+          "still_open": 55.0,
+          "won_revenue": 325402.0,
+          "beyond_cycle_slots": 10.0
+        },
+        "lanes_price_no_recency": {
+          "slots": 150.0,
+          "won": 44.62,
+          "lost": 34.26,
+          "still_open": 71.11,
+          "won_revenue": 264736.64,
+          "beyond_cycle_slots": 0.0
+        }
+      },
+      "robustness": {
+        "tie_break": {
+          "recent_first": {
+            "slots": 150.0,
+            "won": 58.0,
+            "lost": 42.0,
+            "still_open": 50.0,
+            "won_revenue": 335186.0,
+            "beyond_cycle_slots": 0.0
+          },
+          "oldest_first": {
+            "slots": 150.0,
+            "won": 34.0,
+            "lost": 26.0,
+            "still_open": 90.0,
+            "won_revenue": 205611.0,
+            "beyond_cycle_slots": 0.0
+          }
+        },
+        "threshold": {
+          "max": {
+            "limit_days": 138,
+            "beyond_deals": 530,
+            "beyond_won": 0,
+            "beyond_won_revenue": 0,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 58.0,
+              "lost": 42.0,
+              "still_open": 50.0,
+              "won_revenue": 335186.0,
+              "beyond_cycle_slots": 0.0
+            }
+          },
+          "p99": {
+            "limit_days": 127,
+            "beyond_deals": 582,
+            "beyond_won": 0,
+            "beyond_won_revenue": 0,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 59.0,
+              "lost": 42.0,
+              "still_open": 49.0,
+              "won_revenue": 338113.0,
+              "beyond_cycle_slots": 0.0
+            }
+          },
+          "p95": {
+            "limit_days": 115,
+            "beyond_deals": 620,
+            "beyond_won": 0,
+            "beyond_won_revenue": 0,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 61.0,
+              "lost": 42.0,
+              "still_open": 47.0,
+              "won_revenue": 345486.0,
+              "beyond_cycle_slots": 0.0
+            }
+          },
+          "p90": {
+            "limit_days": 105,
+            "beyond_deals": 662,
+            "beyond_won": 0,
+            "beyond_won_revenue": 0,
+            "focus_rule": {
+              "slots": 150.0,
+              "won": 62.0,
+              "lost": 43.0,
+              "still_open": 45.0,
+              "won_revenue": 350826.0,
+              "beyond_cycle_slots": 0.0
+            }
+          }
+        }
+      }
+    }
+  ]
+}

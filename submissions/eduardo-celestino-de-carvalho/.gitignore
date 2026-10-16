@@ -1,0 +1,10 @@
+# Artefatos locais. O PR deve conter código e instruções para reproduzir os dados públicos.
+.env
+.env.*
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+solution/data/
+solution/models/
+solution/dist/

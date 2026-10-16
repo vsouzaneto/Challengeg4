@@ -1,0 +1,272 @@
+{
+ "fps": 30,
+ "total": 116.642,
+ "quadros": 3500,
+ "cenas": [
+  {
+   "id": "abertura",
+   "texto": "Este é o Lead Kanban. Em dois minutos, você vai saber como usá-lo para decidir onde focar a sua semana de vendas.",
+   "audio": "audio/abertura.wav",
+   "fala": 1.2,
+   "duracaoFala": 6.75,
+   "inicio": 0.0,
+   "legendas": [
+    {
+     "inicio": 1.2,
+     "fim": 3.129,
+     "texto": "Este é o Lead Kanban."
+    },
+    {
+     "inicio": 3.079,
+     "fim": 7.95,
+     "texto": "Em dois minutos, você vai saber como usá-lo para decidir onde focar a sua semana de vendas."
+    }
+   ],
+   "duracao": 8.3,
+   "deQuadro": 0,
+   "quadros": 249
+  },
+  {
+   "id": "problema",
+   "texto": "Hoje são mais de duas mil oportunidades abertas, e o tempo de cada vendedor é limitado. A pergunta é simples: por qual negócio começar?",
+   "audio": "audio/problema.wav",
+   "fala": 8.65,
+   "duracaoFala": 8.733,
+   "inicio": 8.3,
+   "legendas": [
+    {
+     "inicio": 8.65,
+     "fim": 14.41,
+     "texto": "Hoje são mais de duas mil oportunidades abertas, e o tempo de cada vendedor é limitado."
+    },
+    {
+     "inicio": 14.36,
+     "fim": 17.383,
+     "texto": "A pergunta é simples: por qual negócio começar?"
+    }
+   ],
+   "duracao": 9.433,
+   "deQuadro": 249,
+   "quadros": 283
+  },
+  {
+   "id": "prazo",
+   "texto": "O histórico ajuda a responder. Nenhuma venda levou mais de cento e trinta e oito dias para fechar. Quem passou desse prazo não está em negociação: está parado.",
+   "audio": "audio/prazo.wav",
+   "fala": 18.083,
+   "duracaoFala": 9.861,
+   "inicio": 17.733,
+   "legendas": [
+    {
+     "inicio": 18.083,
+     "fim": 20.424,
+     "texto": "O histórico ajuda a responder."
+    },
+    {
+     "inicio": 20.374,
+     "fim": 24.549,
+     "texto": "Nenhuma venda levou mais de cento e trinta e oito dias para fechar."
+    },
+    {
+     "inicio": 24.549,
+     "fim": 27.944,
+     "texto": "Quem passou desse prazo não está em negociação: está parado."
+    }
+   ],
+   "duracao": 10.561,
+   "deQuadro": 532,
+   "quadros": 317
+  },
+  {
+   "id": "colunas",
+   "texto": "Por isso, o Lead Kanban separa as oportunidades em três colunas. Negociar: negócios dentro do prazo, com chance real de fechar. Qualificar: oportunidades em prospecção, que ainda precisam provar necessidade, decisor e prazo. Confirmar ou encerrar: negócios que passaram do prazo e pedem uma decisão.",
+   "audio": "audio/colunas.wav",
+   "fala": 28.644,
+   "duracaoFala": 20.019,
+   "inicio": 28.294,
+   "legendas": [
+    {
+     "inicio": 28.644,
+     "fim": 33.092,
+     "texto": "Por isso, o Lead Kanban separa as oportunidades em três colunas."
+    },
+    {
+     "inicio": 33.042,
+     "fim": 37.783,
+     "texto": "Negociar: negócios dentro do prazo, com chance real de fechar."
+    },
+    {
+     "inicio": 37.783,
+     "fim": 44.398,
+     "texto": "Qualificar: oportunidades em prospecção, que ainda precisam provar necessidade, decisor e prazo."
+    },
+    {
+     "inicio": 44.398,
+     "fim": 48.663,
+     "texto": "Confirmar ou encerrar: negócios que passaram do prazo e pedem uma decisão."
+    }
+   ],
+   "duracao": 20.719,
+   "deQuadro": 849,
+   "quadros": 621
+  },
+  {
+   "id": "cartao",
+   "texto": "Dentro de cada coluna, os cartões já estão em ordem, do maior valor para o menor. Comece pelo número um. Cada cartão mostra o produto, a empresa, o valor e uma barra de prazo: quanto mais cheia, mais perto do limite.",
+   "audio": "audio/cartao.wav",
+   "fala": 49.363,
+   "duracaoFala": 13.752,
+   "inicio": 49.013,
+   "legendas": [
+    {
+     "inicio": 49.363,
+     "fim": 54.517,
+     "texto": "Dentro de cada coluna, os cartões já estão em ordem, do maior valor para o menor."
+    },
+    {
+     "inicio": 54.467,
+     "fim": 56.507,
+     "texto": "Comece pelo número um."
+    },
+    {
+     "inicio": 56.507,
+     "fim": 63.115,
+     "texto": "Cada cartão mostra o produto, a empresa, o valor e uma barra de prazo: quanto mais cheia, mais perto do limite."
+    }
+   ],
+   "duracao": 14.451,
+   "deQuadro": 1470,
+   "quadros": 434
+  },
+  {
+   "id": "filtros",
+   "texto": "Para ver só a sua carteira, escolha o seu nome no filtro de vendedor, na barra do topo. Os filtros valem para todas as telas.",
+   "audio": "audio/filtros.wav",
+   "fala": 63.814,
+   "duracaoFala": 7.82,
+   "inicio": 63.464,
+   "legendas": [
+    {
+     "inicio": 63.814,
+     "fim": 69.445,
+     "texto": "Para ver só a sua carteira, escolha o seu nome no filtro de vendedor, na barra do topo."
+    },
+    {
+     "inicio": 69.395,
+     "fim": 71.634,
+     "texto": "Os filtros valem para todas as telas."
+    }
+   ],
+   "duracao": 8.52,
+   "deQuadro": 1904,
+   "quadros": 256
+  },
+  {
+   "id": "detalhe",
+   "texto": "Clique em um cartão para abrir o detalhe. Ali estão o que fazer agora, com ações para marcar, o motivo de o negócio estar naquela coluna e o tempo que ele já tem de negociação.",
+   "audio": "audio/detalhe.wav",
+   "fala": 72.334,
+   "duracaoFala": 9.805,
+   "inicio": 71.984,
+   "legendas": [
+    {
+     "inicio": 72.334,
+     "fim": 75.038,
+     "texto": "Clique em um cartão para abrir o detalhe."
+    },
+    {
+     "inicio": 74.988,
+     "fim": 82.139,
+     "texto": "Ali estão o que fazer agora, com ações para marcar, o motivo de o negócio estar naquela coluna e o tempo que ele já tem de negociação."
+    }
+   ],
+   "duracao": 10.505,
+   "deQuadro": 2160,
+   "quadros": 315
+  },
+  {
+   "id": "dashboard",
+   "texto": "Para quem lidera o time, o Dashboard mostra onde está o valor, por regional, manager ou vendedor, e quem precisa de apoio. Mais abaixo, os números que sustentam as regras.",
+   "audio": "audio/dashboard.wav",
+   "fala": 82.839,
+   "duracaoFala": 10.472,
+   "inicio": 82.489,
+   "legendas": [
+    {
+     "inicio": 82.839,
+     "fim": 90.46,
+     "texto": "Para quem lidera o time, o Dashboard mostra onde está o valor, por regional, manager ou vendedor, e quem precisa de apoio."
+    },
+    {
+     "inicio": 90.41,
+     "fim": 93.311,
+     "texto": "Mais abaixo, os números que sustentam as regras."
+    }
+   ],
+   "duracao": 11.172,
+   "deQuadro": 2475,
+   "quadros": 335
+  },
+  {
+   "id": "ajuda",
+   "texto": "Ficou com alguma dúvida? O botão de interrogação abre o procedimento completo, com todas as regras e um glossário.",
+   "audio": "audio/ajuda.wav",
+   "fala": 94.011,
+   "duracaoFala": 6.907,
+   "inicio": 93.661,
+   "legendas": [
+    {
+     "inicio": 94.011,
+     "fim": 96.099,
+     "texto": "Ficou com alguma dúvida?"
+    },
+    {
+     "inicio": 96.049,
+     "fim": 100.918,
+     "texto": "O botão de interrogação abre o procedimento completo, com todas as regras e um glossário."
+    }
+   ],
+   "duracao": 7.607,
+   "deQuadro": 2810,
+   "quadros": 228
+  },
+  {
+   "id": "rotina",
+   "texto": "Uma rotina simples para toda semana. Primeiro, decida os negócios parados. Depois, negocie em ordem. Por fim, qualifique as novas oportunidades. Bom trabalho!",
+   "audio": "audio/rotina.wav",
+   "fala": 101.618,
+   "duracaoFala": 13.024,
+   "inicio": 101.268,
+   "legendas": [
+    {
+     "inicio": 101.618,
+     "fim": 104.525,
+     "texto": "Uma rotina simples para toda semana."
+    },
+    {
+     "inicio": 104.475,
+     "fim": 107.576,
+     "texto": "Primeiro, decida os negócios parados."
+    },
+    {
+     "inicio": 107.576,
+     "fim": 110.336,
+     "texto": "Depois, negocie em ordem."
+    },
+    {
+     "inicio": 110.336,
+     "fim": 113.697,
+     "texto": "Por fim, qualifique as novas oportunidades."
+    },
+    {
+     "inicio": 113.697,
+     "fim": 114.642,
+     "texto": "Bom trabalho!"
+    }
+   ],
+   "duracao": 15.374,
+   "deQuadro": 3038,
+   "quadros": 461
+  }
+ ]
+}
