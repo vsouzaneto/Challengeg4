@@ -1,0 +1,12 @@
+{
+  "contas_total": 500,
+  "churn_liquido_flag": 110,
+  "contas_flag_sem_evento_churn": 35,
+  "mrr_contratual_flag_sem_evento_usd": 87952.0,
+  "linhas_uso_total": 25000,
+  "linhas_uso_antes_inicio_assinatura": 19142,
+  "pct_uso_antes_assinatura": 76.6,
+  "subscription_ids_com_uso_duplicado": 4816,
+  "eventos_churn_total": 600,
+  "contas_com_evento": 352
+}

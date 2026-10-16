@@ -1,0 +1,5 @@
+acao,premissa,impacto_mrr_usd,impacto_anual_arr_usd,confianca
+Playbook CS — reter 5% do MRR revolving (90 dias),277 contas ativas com histórico de churn,33260.0,399114.0,Média — depende execução
+Playbook CS — reter 10% do MRR revolving (90 dias),Mesma base US$ 665190 MRR,66519.0,798228.0,Baixa — upside
+Evitar 10 churns líquidos adicionais (contas ~ mediana MRR),Mediana MRR US$ 995,9950.0,119400.0,Média — cenário ilustrativo
+Corrigir métricas de board (evitar decisões erradas),Custo de oportunidade qualitativo,0.0,0.0,Alta — alinhamento estratégico

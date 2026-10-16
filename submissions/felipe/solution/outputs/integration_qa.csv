@@ -1,0 +1,5 @@
+check,pass,detail
+usage.subscription_id ⊆ subscriptions,True,4967 ids
+sub.account_id ⊆ accounts,True,500 accounts in subs
+tickets.account_id ⊆ accounts,True,492 accounts w/ tickets
+churn.account_id ⊆ accounts,True,352 accounts w/ events

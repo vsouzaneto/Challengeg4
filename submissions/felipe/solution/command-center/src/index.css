@@ -1,0 +1,64 @@
+:root {
+  --g4-navy: #0d161e;
+  --g4-navy-card: #121f2a;
+  --g4-gold: #b88e5e;
+  --g4-gold-muted: #a68966;
+  --g4-gold-soft: rgba(184, 142, 94, 0.18);
+  --g4-gold-border: rgba(184, 142, 94, 0.32);
+  --bg: var(--g4-navy);
+  --bg-elevated: #162b45;
+  --bg-card: var(--g4-navy-card);
+  --border: var(--g4-gold-border);
+  --text: #f0f2f5;
+  --muted: #8a9aab;
+  --accent: var(--g4-gold);
+  --accent-soft: var(--g4-gold-soft);
+  --accent-ink: #0d161e;
+  --success: #7aafa0;
+  --warning: #c9a876;
+  --danger: #d48484;
+  font-family: Montserrat, Inter, system-ui, sans-serif;
+  font-synthesis: none;
+  color: var(--text);
+  background: var(--bg);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 85% 60% at 12% 8%, rgba(184, 142, 94, 0.06), transparent 48%),
+    radial-gradient(ellipse 55% 45% at 88% 15%, rgba(22, 43, 69, 0.55), transparent),
+    linear-gradient(180deg, #0a1218 0%, #0d161e 45%, #101820 100%);
+}
+
+#root {
+  min-height: 100vh;
+  position: relative;
+}
+
+h1,
+h2,
+h3,
+.brand {
+  font-family: Montserrat, Inter, sans-serif;
+  letter-spacing: 0.02em;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(184, 142, 94, 0.35);
+  border-radius: 4px;
+}

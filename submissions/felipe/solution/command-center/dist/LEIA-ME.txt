@@ -1,0 +1,8 @@
+Não sirva esta pasta com python -m http.server.
+
+Use na pasta solution/:
+  python run_analysis.py
+  npm run build   (dentro de command-center)
+  python serve_dashboard.py
+
+O app está em ../dist/ (index.html + assets + data).

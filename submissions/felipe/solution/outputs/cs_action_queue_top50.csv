@@ -1,0 +1,51 @@
+account_id,account_name,industry,referral_source,mrr_amount,churn_events,escalation_rate,tickets,risk_score,risk_band,mrr_priority,why_risk,revolving_active
+A-c58f49,Company_480,EdTech,other,13930,3,0.3333333333333333,3.0,69.9,Ligar esta semana,973707.0,3 evento(s) de churn no histórico; escalações 33% (acima da mediana); conta trial,True
+A-56962b,Company_177,EdTech,partner,32437,2,0.0,4.0,30.0,Prioridade média,973110.0,2 evento(s) de churn no histórico,True
+A-afa505,Company_157,DevTools,partner,13930,1,0.25,4.0,58.9,Ligar esta semana,820477.0,1 evento(s) de churn no histórico; escalações 25% (acima da mediana); segmento DevTools; conta trial,True
+A-09316c,Company_341,FinTech,organic,13930,1,0.25,4.0,38.8,Prioridade média,540484.0,1 evento(s) de churn no histórico; escalações 25% (acima da mediana),True
+A-526d93,Company_66,HealthTech,organic,8557,3,0.2,5.0,58.4,Ligar esta semana,499729.0,3 evento(s) de churn no histórico; escalações 20% (acima da mediana),True
+A-d792a6,Company_486,DevTools,organic,12935,2,0.0,5.0,34.4,Prioridade média,444964.0,2 evento(s) de churn no histórico; segmento DevTools,True
+A-e7a1e2,Company_295,Cybersecurity,event,8756,3,0.0,1.0,48.1,Ligar esta semana,421164.0,3 evento(s) de churn no histórico; aquisição via evento,True
+A-3f9cc0,Company_359,HealthTech,event,5970,3,0.2,5.0,69.6,Ligar esta semana,415512.0,3 evento(s) de churn no histórico; escalações 20% (acima da mediana); aquisição via evento,True
+A-f5641b,Company_382,EdTech,other,8955,2,0.25,4.0,46.2,Ligar esta semana,413721.0,2 evento(s) de churn no histórico; escalações 25% (acima da mediana),True
+A-3b5cd1,Company_49,FinTech,event,6368,3,0.0,5.0,57.1,Ligar esta semana,363613.0,3 evento(s) de churn no histórico; aquisição via evento; conta trial,True
+A-e43bf7,Company_215,Cybersecurity,other,8756,1,0.2,5.0,40.0,Prioridade média,350240.0,1 evento(s) de churn no histórico; escalações 20% (acima da mediana),True
+A-832ec2,Company_19,FinTech,event,4378,2,0.3333333333333333,3.0,72.7,Ligar esta semana,318281.0,2 evento(s) de churn no histórico; escalações 33% (acima da mediana); aquisição via evento; conta trial,True
+A-993085,Company_258,HealthTech,ads,8358,2,0.0,4.0,37.6,Prioridade média,314261.0,2 evento(s) de churn no histórico; conta trial,True
+A-37f969,Company_150,HealthTech,partner,5970,4,0.2,5.0,51.9,Ligar esta semana,309843.0,4 evento(s) de churn no histórico; escalações 20% (acima da mediana),True
+A-158f4e,Company_180,FinTech,other,12139,2,0.0,5.0,25.5,Prioridade média,309544.0,2 evento(s) de churn no histórico,True
+A-0651a4,Company_255,HealthTech,organic,12935,2,0.0,4.0,23.4,Monitorar,302679.0,2 evento(s) de churn no histórico,True
+A-ad64c6,Company_175,DevTools,event,5572,2,0.0,4.0,54.1,Ligar esta semana,301445.0,2 evento(s) de churn no histórico; aquisição via evento; segmento DevTools,True
+A-0cc442,Company_198,EdTech,organic,8955,4,0.0,3.0,33.6,Prioridade média,300888.0,4 evento(s) de churn no histórico,True
+A-8e47ca,Company_191,HealthTech,organic,4975,3,0.2,5.0,58.3,Ligar esta semana,290042.0,3 evento(s) de churn no histórico; escalações 20% (acima da mediana),True
+A-8b0451,Company_245,FinTech,event,8159,1,0.0,7.0,32.4,Prioridade média,264352.0,1 evento(s) de churn no histórico; aquisição via evento,True
+A-1f7acb,Company_281,FinTech,ads,12736,0,0.0,7.0,20.0,Monitorar,254720.0,conta trial,False
+A-82861f,Company_350,DevTools,organic,8159,1,0.0,5.0,30.0,Prioridade média,244770.0,1 evento(s) de churn no histórico; segmento DevTools,True
+A-855a48,Company_389,EdTech,partner,11940,1,0.0,5.0,20.3,Monitorar,242382.0,1 evento(s) de churn no histórico; conta trial,True
+A-c37601,Company_48,EdTech,partner,10746,1,0.0,4.0,21.6,Monitorar,232114.0,1 evento(s) de churn no histórico; conta trial,True
+A-7e0a10,Company_64,FinTech,ads,13930,1,0.0,5.0,16.3,Monitorar,227059.0,1 evento(s) de churn no histórico,True
+A-80eeb6,Company_402,Cybersecurity,organic,4378,2,0.25,4.0,49.6,Ligar esta semana,217149.0,2 evento(s) de churn no histórico; escalações 25% (acima da mediana),True
+A-dec005,Company_445,HealthTech,partner,10746,1,0.0,2.0,20.0,Monitorar,214920.0,1 evento(s) de churn no histórico,True
+A-9b9fe9,Company_71,EdTech,other,9950,2,0.0,4.0,20.5,Monitorar,203975.0,2 evento(s) de churn no histórico,True
+A-aa9511,Company_203,DevTools,other,5970,1,0.0,2.0,34.0,Prioridade média,202980.0,1 evento(s) de churn no histórico; segmento DevTools; conta trial,True
+A-54ecc2,Company_289,Cybersecurity,partner,5572,3,0.0,5.0,35.5,Prioridade média,197806.0,3 evento(s) de churn no histórico,True
+A-3793ee,Company_332,Cybersecurity,organic,9751,1,0.0,4.0,20.0,Monitorar,195020.0,1 evento(s) de churn no histórico; conta trial,True
+A-883b7d,Company_313,Cybersecurity,other,9950,0,0.14285714285714285,7.0,19.4,Monitorar,193030.0,escalações 14% (acima da mediana),False
+A-94c3cd,Company_351,FinTech,other,6368,0,0.25,4.0,29.5,Prioridade média,187856.0,escalações 25% (acima da mediana),False
+A-9badbd,Company_63,Cybersecurity,ads,11741,0,0.0,5.0,15.1,Monitorar,177289.0,conta trial,False
+A-2d4502,Company_45,FinTech,event,6766,1,0.0,3.0,26.2,Prioridade média,177269.0,1 evento(s) de churn no histórico; aquisição via evento,True
+A-956988,Company_14,EdTech,ads,6368,2,0.0,2.0,27.4,Prioridade média,174483.0,2 evento(s) de churn no histórico,True
+A-202b67,Company_305,HealthTech,organic,5771,2,0.0,4.0,30.0,Prioridade média,173130.0,2 evento(s) de churn no histórico,True
+A-3b37d9,Company_384,FinTech,event,4577,2,0.0,5.0,37.3,Prioridade média,170722.0,2 evento(s) de churn no histórico; aquisição via evento,True
+A-87aa7b,Company_433,HealthTech,organic,2499,3,0.3333333333333333,3.0,67.4,Ligar esta semana,168433.0,3 evento(s) de churn no histórico; escalações 33% (acima da mediana); conta trial,True
+A-96e141,Company_134,DevTools,partner,4975,2,0.0,5.0,33.8,Prioridade média,168155.0,2 evento(s) de churn no histórico; segmento DevTools,True
+A-726cfa,Company_82,DevTools,partner,7562,1,0.0,3.0,22.0,Monitorar,166364.0,1 evento(s) de churn no histórico; segmento DevTools,True
+A-df10db,Company_143,DevTools,other,2388,2,0.5,2.0,69.3,Ligar esta semana,165488.0,2 evento(s) de churn no histórico; escalações 50% (acima da mediana); segmento DevTools; conta trial,True
+A-ac9111,Company_487,HealthTech,event,4179,1,0.0,3.0,39.2,Prioridade média,163817.0,1 evento(s) de churn no histórico; aquisição via evento; conta trial,True
+A-d42431,Company_378,FinTech,ads,4378,2,0.0,4.0,37.4,Prioridade média,163737.0,2 evento(s) de churn no histórico; conta trial,True
+A-7f4db3,Company_441,FinTech,other,4776,1,0.2,5.0,33.7,Prioridade média,160951.0,1 evento(s) de churn no histórico; escalações 20% (acima da mediana),True
+A-034368,Company_353,EdTech,event,4577,1,0.0,5.0,35.0,Prioridade média,160195.0,1 evento(s) de churn no histórico; aquisição via evento,True
+A-51ec1b,Company_247,DevTools,ads,3383,1,0.3333333333333333,3.0,46.5,Ligar esta semana,157310.0,1 evento(s) de churn no histórico; escalações 33% (acima da mediana); segmento DevTools,True
+A-474ad4,Company_261,EdTech,organic,4776,0,0.3333333333333333,3.0,32.4,Prioridade média,154742.0,escalações 33% (acima da mediana),False
+A-05d3b3,Company_213,DevTools,ads,3781,2,0.0,6.0,40.0,Prioridade média,151240.0,2 evento(s) de churn no histórico; segmento DevTools; conta trial,True
+A-39ddf4,Company_435,EdTech,partner,7960,1,0.0,5.0,18.3,Monitorar,145668.0,1 evento(s) de churn no histórico,True

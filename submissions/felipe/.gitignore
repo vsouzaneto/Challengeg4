@@ -1,0 +1,10 @@
+# Dependencias locais - nao commitar
+solution/command-center/node_modules/
+**/__pycache__/
+*.pyc
+**/.pytest_cache/
+
+# Ambiente
+.env
+.venv/
+venv/

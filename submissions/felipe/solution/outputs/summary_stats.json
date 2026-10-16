@@ -1,0 +1,24 @@
+{
+  "accounts": 500,
+  "net_churned": 110,
+  "churn_events_total": 600,
+  "revolving_active": 277,
+  "mrr_lost": 254952.0,
+  "mrr_revolving": 665190.0,
+  "model_auc": 0.6232048374905518,
+  "paradox": {
+    "monthly_usage_last6": [
+      10601,
+      10559,
+      10195,
+      11450,
+      10039,
+      10738
+    ],
+    "usage_per_row_retained": 10.014445881845623,
+    "usage_per_row_net_churned": 10.028601694915254,
+    "pct_pre_churn_usage_drop": 0.3068181818181818,
+    "accounts_with_window": 264
+  },
+  "generated_at": "2026-10-16T19:46:33.461862+00:00"
+}
