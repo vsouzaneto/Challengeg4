@@ -1,0 +1,15 @@
+.venv/
+.patch-backups/
+.patch_backups/
+_backup/
+backup/
+__pycache__/
+*.py[cod]
+.env
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+models/*.joblib
+models/*.pkl
+tmp/

@@ -1,0 +1,83 @@
+/* BEGIN: prototype.tickets-page.styles */
+.prototype-console.pc-tickets-view-active > [hidden],
+.prototype-console .pc-tickets-page[hidden] {
+  display: none;
+}
+.prototype-console .pc-tickets-page {
+  display: block;
+  min-width: 0;
+  padding: 24px 0 35px;
+}
+.prototype-console .pc-tickets-page-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: start;
+  margin: 0 0 19px;
+}
+.prototype-console .pc-tickets-page-eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  color: #436cba;
+}
+.prototype-console .pc-tickets-page-heading h1 {
+  margin: 8px 0 9px;
+  font-size: clamp(27px, 3vw, 37px);
+  color: #142e50;
+}
+.prototype-console .pc-tickets-page-heading p {
+  margin: 0;
+  color: #61748d;
+  line-height: 1.5;
+}
+.prototype-console .pc-tickets-page-shortcuts {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.prototype-console .pc-tickets-page-shortcuts a {
+  display: inline-flex;
+  align-items: center;
+  padding: 11px 15px;
+  border: 1px solid #d2deed;
+  border-radius: 9px;
+  background: #fff;
+  color: #214c83;
+  font-size: 13px;
+  font-weight: 750;
+  text-decoration: none;
+}
+.prototype-console .pc-tickets-page-shortcuts a:hover,
+.prototype-console .pc-tickets-page-shortcuts a:focus-visible {
+  border-color: #6696cd;
+  background: #edf5ff;
+}
+.prototype-console .pc-tickets-page-disclosure {
+  color: #5f728d;
+  font-size: 12px;
+  margin: 0 0 23px;
+  line-height: 1.6;
+}
+.prototype-console .pc-tickets-page > #pc-ticket-create {
+  margin-top: 0;
+}
+.prototype-console .pc-tickets-page > #pc-first-contact,
+.prototype-console .pc-tickets-page > #pc-inbox {
+  margin-top: 24px;
+}
+.prototype-console .pc-tickets-page > section,
+.prototype-console .pc-tickets-page > article {
+  min-width: 0;
+  scroll-margin-top: 25px;
+}
+@media (max-width: 720px) {
+  .prototype-console .pc-tickets-page {
+    padding-top: 18px;
+  }
+  .prototype-console .pc-tickets-page-shortcuts {
+    gap: 7px;
+  }
+}
+/* END: prototype.tickets-page.styles */
