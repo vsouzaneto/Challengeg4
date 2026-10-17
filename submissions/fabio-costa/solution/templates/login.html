@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="{{ ui_lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ tr('AI Master — Sign In') }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}?v=76b0cdef40107b7c">
+</head>
+<body>
+  <main class="login-shell">
+    <section class="login-card">
+      <header class="login-brand">
+        <span class="brand-mark">AI</span>
+        <div>
+          <strong>AI Master</strong>
+          <span>{{ tr('Support Intelligence') }}</span>
+        </div>
+      </header>
+
+      <div class="login-copy">
+        <p class="eyebrow">{{ tr('SECURE ACCESS') }}</p>
+        <h1>{{ tr('Sign in') }}</h1>
+        <p>{{ tr('Enter your credentials to access the operational workspace.') }}</p>
+      </div>
+
+      {% if error %}
+      <div class="login-error" role="alert">{{ tr(error) }}</div>
+      {% endif %}
+
+      <form
+        class="login-form"
+        method="post"
+        action="{{ url_for('login', next=next_url) }}"
+      >
+        <label for="username">{{ tr('Username') }}</label>
+        <input
+          id="username"
+          name="username"
+          type="text"
+          autocomplete="username"
+          autofocus
+          required
+        >
+
+        <label for="password">{{ tr('Password') }}</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          required
+        >
+
+        <button type="submit">{{ tr('Sign in') }}</button>
+      </form>
+
+      <section class="login-demo-access" aria-label="{{ tr('Demo credentials') }}">
+        <form class="login-form login-demo-form" method="post" action="{{ url_for('login', next=next_url) }}">
+          <input type="hidden" name="username" value="admin">
+          <input type="hidden" name="password" value="aimaster123">
+          <button type="submit">{{ tr('Access Demo') }}</button>
+        </form>
+        <p class="login-demo-label">{{ tr('Demo credentials') }}</p>
+        <p class="login-demo-credentials">
+          <span>{{ tr('Login') }}: <code>admin</code></span>
+          <span>{{ tr('Password') }}: <code>aimaster123</code></span>
+        </p>
+      </section>
+
+      <footer>
+        {{ tr('AI Master Challenge · Support Operations Intelligence') }}
+      </footer>
+    </section>
+  </main>
+</body>
+</html>
