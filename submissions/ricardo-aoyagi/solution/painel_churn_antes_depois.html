@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Churn RavenStack: Antes x Depois</title>
+<style>
+  :root {
+    --font-anthropic-sans: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+    --font-anthropic-serif: Georgia, "Times New Roman", serif;
+    --color-fg: #1f2328; --color-fg-muted: #5f6670; --color-bg: #ffffff; --color-panel: #fafaf9; --color-border-line: #e4e4e1; --color-bad: #b42318;
+    --cds-font-size-caption: 12px; --cds-font-size-body: 15px; --cds-font-size-heading: 17px; --cds-font-size-title: 30px; --cds-font-weight-medium: 600;
+    --cds-gap-xs: 4px; --cds-gap-sm: 8px; --cds-gap-md: 16px; --cds-gap-lg: 24px; --cds-pad-xs: 4px; --cds-pad-sm: 8px; --cds-pad-lg: 20px; --cds-radius: 8px;
+    --cds-chart-grid: #ececea; --cds-chart-axis: #9aa0a6; --cds-chart-muted: #a3a8ae; --cds-chart-status-critical: #c8372d;
+    --cds-surface-popover: #ffffff; --cds-border: #d9d9d6; --cds-shadow-popover: 0 4px 14px rgba(0,0,0,.12); --cds-text-secondary: #5f6670; --cds-dur-slow: .3s;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-fg: #e8e8e6; --color-fg-muted: #a5a9ae; --color-bg: #161718; --color-panel: #1e1f21; --color-border-line: #33353a; --color-bad: #f2766b;
+      --cds-chart-grid: #2b2d31; --cds-chart-axis: #6b7078; --cds-chart-muted: #6f747b; --cds-chart-status-critical: #ef6a5f;
+      --cds-surface-popover: #232427; --cds-border: #3a3c41; --cds-shadow-popover: 0 4px 14px rgba(0,0,0,.5); --cds-text-secondary: #a5a9ae; color-scheme: dark;
+    }
+  }
+  body { margin: 0; background: var(--color-bg); color: var(--color-fg); font-family: var(--font-anthropic-sans); padding: 24px max(16px, 3vw); }
+  .cx-foot { max-width: 72rem; margin: 24px auto 0; font-size: 12px; color: var(--color-fg-muted); }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+  // Versão local do painel: os dados vêm embutidos (planilha 02_Perda_Real_por_Trimestre.xlsx, DADOS_CONSOLIDA_V1).
+  window.CX_ROWS = [{"trimestre": "2023-T1", "churn_hoje_qtd": 0, "troca_qtd": 0, "compra_extra_qtd": 0, "reducao_real_qtd": 0, "saida_qtd": 0, "perda_real_qtd": 0, "churn_hoje_usd": 0, "troca_usd": 0, "troca_reposto_usd": 0, "troca_diferenca_usd": 0, "compra_extra_usd": 0, "reducao_real_usd": 0, "saida_usd": 0, "perda_real_usd": 0}, {"trimestre": "2023-T2", "churn_hoje_qtd": 2, "troca_qtd": 1, "compra_extra_qtd": 0, "reducao_real_qtd": 1, "saida_qtd": 0, "perda_real_qtd": 1, "churn_hoje_usd": 1421, "troca_usd": 245, "troca_reposto_usd": 0, "troca_diferenca_usd": 245, "compra_extra_usd": 0, "reducao_real_usd": 1176, "saida_usd": 0, "perda_real_usd": 1421}, {"trimestre": "2023-T3", "churn_hoje_qtd": 2, "troca_qtd": 1, "compra_extra_qtd": 0, "reducao_real_qtd": 1, "saida_qtd": 0, "perda_real_qtd": 1, "churn_hoje_usd": 914, "troca_usd": 228, "troca_reposto_usd": 418, "troca_diferenca_usd": -190, "compra_extra_usd": 0, "reducao_real_usd": 686, "saida_usd": 0, "perda_real_usd": 496}, {"trimestre": "2023-T4", "churn_hoje_qtd": 14, "troca_qtd": 3, "compra_extra_qtd": 0, "reducao_real_qtd": 10, "saida_qtd": 1, "perda_real_qtd": 11, "churn_hoje_usd": 49160, "troca_usd": 5083, "troca_reposto_usd": 2942, "troca_diferenca_usd": 2141, "compra_extra_usd": 0, "reducao_real_usd": 31341, "saida_usd": 12736, "perda_real_usd": 46218}, {"trimestre": "2024-T1", "churn_hoje_qtd": 27, "troca_qtd": 5, "compra_extra_qtd": 2, "reducao_real_qtd": 19, "saida_qtd": 1, "perda_real_qtd": 20, "churn_hoje_usd": 50138, "troca_usd": 17055, "troca_reposto_usd": 2860, "troca_diferenca_usd": 14195, "compra_extra_usd": 2450, "reducao_real_usd": 27449, "saida_usd": 3184, "perda_real_usd": 44828}, {"trimestre": "2024-T2", "churn_hoje_qtd": 37, "troca_qtd": 7, "compra_extra_qtd": 1, "reducao_real_qtd": 28, "saida_qtd": 1, "perda_real_qtd": 29, "churn_hoje_usd": 59026, "troca_usd": 4102, "troca_reposto_usd": 20645, "troca_diferenca_usd": -16543, "compra_extra_usd": 2189, "reducao_real_usd": 51020, "saida_usd": 1715, "perda_real_usd": 36192}, {"trimestre": "2024-T3", "churn_hoje_qtd": 80, "troca_qtd": 31, "compra_extra_qtd": 6, "reducao_real_qtd": 42, "saida_qtd": 1, "perda_real_qtd": 43, "churn_hoje_usd": 146668, "troca_usd": 73811, "troca_reposto_usd": 61892, "troca_diferenca_usd": 11919, "compra_extra_usd": 7331, "reducao_real_usd": 59755, "saida_usd": 5771, "perda_real_usd": 77445}, {"trimestre": "2024-T4", "churn_hoje_qtd": 324, "troca_qtd": 185, "compra_extra_qtd": 55, "reducao_real_qtd": 84, "saida_qtd": 0, "perda_real_qtd": 84, "churn_hoje_usd": 871812, "troca_usd": 474616, "troca_reposto_usd": 372023, "troca_diferenca_usd": 102593, "compra_extra_usd": 168475, "reducao_real_usd": 228721, "saida_usd": 0, "perda_real_usd": 331314}];
+  window.dash = (() => {
+    const calcs = {}, subs = [];
+    return {
+      colors: ['#2a78d6', '#3fa37a', '#d4a017', '#7c3aed', '#8a5a2b', '#0e7c86', '#c2477f', '#5b6b7a'],
+      calc: (id, o) => { calcs[id] = o; },
+      data: (id) => {
+        if (id === 'trimestral') return { status: 'ok', data: window.CX_ROWS };
+        if (calcs[id]) return { status: 'ok', data: calcs[id].fn(...calcs[id].inputs.map((i) => window.dash.data(i).data)) };
+        return { status: 'missing', data: [] };
+      },
+      onData: (fn) => { subs.push(fn); fn(); },
+      _redraw: () => subs.forEach((f) => f()),
+    };
+  })();
+  let cxT; window.addEventListener('resize', () => { clearTimeout(cxT); cxT = setTimeout(window.dash._redraw, 150); });
+</script>
+</head>
+<body>
+<div id="dash-root">
+<style>
+  .cx-page { font-family: var(--font-anthropic-sans); display: grid; gap: var(--cds-gap-lg); max-width: 72rem; margin-inline: auto; }
+  .cx-head h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0 0 var(--cds-gap-xs); text-wrap: balance; }
+  .cx-head p { margin: 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-body); max-width: 62ch; line-height: 1.5; }
+  .cx-head p b, .cx-tile b { font-weight: 600; }
+  .cx-tiles { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); }
+  .cx-tile, .cx-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; }
+  .cx-tile .cx-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .cx-tile .cx-big { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; margin-top: var(--cds-gap-xs); }
+  .cx-tile .cx-sub { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; margin-top: var(--cds-gap-xs); }
+  .cx-tile.cx-loss .cx-big { color: var(--color-bad); }
+  .cx-cardhead { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: flex-start; justify-content: space-between; }
+  .cx-cardhead h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; }
+  .cx-note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: var(--cds-gap-xs) 0 0; max-width: 70ch; line-height: 1.45; }
+  .cx-toggle { display: inline-flex; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); overflow: hidden; flex: none; }
+  .cx-toggle button { font: inherit; font-size: var(--cds-font-size-caption); padding: var(--cds-pad-xs) var(--cds-pad-sm); border: 0; background: transparent; color: var(--color-fg-muted); cursor: pointer; }
+  .cx-toggle button + button { border-left: 1px solid var(--color-border-line); }
+  .cx-toggle button[aria-pressed="true"] { background: var(--color-fg); color: var(--color-bg); }
+  .cx-toggle button:focus-visible { outline: 2px solid var(--color-fg); outline-offset: -2px; }
+  .cx-chart { position: relative; min-height: 300px; margin-top: var(--cds-gap-md); }
+  .cx-chart svg { display: block; overflow: visible; }
+  .cx-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm) var(--cds-gap-lg); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-top: var(--cds-gap-sm); }
+  .cx-legend .cx-group { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs) var(--cds-gap-md); align-items: center; }
+  .cx-legend .cx-gname { color: var(--color-fg); font-weight: 600; }
+  .cx-sw { display: inline-block; width: 0.7rem; height: 0.7rem; border-radius: 2px; vertical-align: -1px; margin-right: 0.35rem; }
+  .cx-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; white-space: nowrap; z-index: 2; }
+  .cx-tip .cx-tq { color: var(--cds-text-secondary); margin-bottom: 2px; }
+  .cx-tip .cx-tl { display: flex; align-items: center; gap: 0.35rem; }
+  .cx-tip .cx-tl span:last-child { margin-left: auto; padding-left: var(--cds-pad-sm); }
+  .cx-tip .cx-tsub { color: var(--cds-text-secondary); padding-left: 1.05rem; }
+  .cx-fail { display: flex; align-items: center; justify-content: center; gap: 0.4rem; min-height: 300px; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .cx-fail::before { content: ""; width: 0.375rem; height: 0.375rem; border-radius: 50%; background: var(--color-bad); }
+  [data-dash-source-state=empty] { color: transparent; }
+  [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+</style>
+
+<div class="cx-page">
+  <header class="cx-head" id="resumo">
+    <h1>Churn: o que se vê hoje × o que foi perda de verdade</h1>
+    <p>Em 24 meses foram contadas <b class="dash-skeleton" data-source="totais" data-field="churn_hoje_qtd">—</b> assinaturas encerradas como churn
+      (<b class="dash-skeleton" data-source="totais" data-field="churn_hoje_usd">—</b> de receita mensal), mas só
+      <b class="dash-skeleton" data-source="totais" data-field="perda_real_qtd">—</b> foram perda real
+      (<b class="dash-skeleton" data-source="totais" data-field="perda_real_usd">—</b>, ou <b class="dash-skeleton" data-source="totais" data-field="pct_usd">—</b> do valor).
+      No 4º trimestre de 2024 o número de hoje dispara, mas a maior parte foi troca de assinatura ou compra feita a mais e desfeita.</p>
+  </header>
+
+  <section class="cx-tiles" id="totais" aria-label="Totais de jan/2023 a dez/2024">
+    <div class="cx-tile">
+      <div class="cx-label">"Churn" como é contado hoje · 24 meses</div>
+      <div class="cx-big dash-skeleton" data-source="totais" data-field="churn_hoje_usd">—</div>
+      <div class="cx-sub"><span class="dash-skeleton" data-source="totais" data-field="churn_hoje_qtd">—</span> assinaturas encerradas</div>
+    </div>
+    <div class="cx-tile cx-loss">
+      <div class="cx-label">Perda real · 24 meses</div>
+      <div class="cx-big dash-skeleton" data-source="totais" data-field="perda_real_usd">—</div>
+      <div class="cx-sub"><span class="dash-skeleton" data-source="totais" data-field="perda_real_qtd">—</span> assinaturas (redução real + saída)</div>
+    </div>
+    <div class="cx-tile">
+      <div class="cx-label">Do "churn" de hoje, quanto era perda · 24 meses</div>
+      <div class="cx-big dash-skeleton" data-source="totais" data-field="pct_usd">—</div>
+      <div class="cx-sub">em valor · <span class="dash-skeleton" data-source="totais" data-field="pct_qtd">—</span> em quantidade</div>
+    </div>
+  </section>
+
+  <section class="cx-card" id="antes-depois">
+    <div class="cx-cardhead">
+      <div>
+        <h2>Antes × depois, por trimestre</h2>
+        <p class="cx-note">Antes: toda assinatura encerrada conta como churn (o número que se vê hoje). Depois: só a perda real, redução real e saída do cliente; em valor, também a diferença paga a menos nas trocas.</p>
+      </div>
+      <div class="cx-toggle" role="group" aria-label="Medida do gráfico antes × depois">
+        <button type="button" id="ad-qtd" data-chart="ad" data-mode="qtd" aria-pressed="false">Quantidade</button>
+        <button type="button" id="ad-usd" data-chart="ad" data-mode="usd" aria-pressed="true">Valor (US$)</button>
+      </div>
+    </div>
+    <div class="cx-chart" id="chart-antes-depois" data-source="trimestral"></div>
+    <div class="cx-legend" id="legend-antes-depois" data-source="trimestral">
+      <span><span class="cx-sw" style="background: var(--cds-chart-muted)"></span>Antes: "churn" como é contado hoje</span>
+      <span><span class="cx-sw" style="background: var(--cds-chart-status-critical)"></span>Depois: perda real</span>
+    </div>
+  </section>
+
+  <section class="cx-card" id="quatro-situacoes">
+    <div class="cx-cardhead">
+      <div>
+        <h2>O que existe dentro do "churn" de hoje</h2>
+        <p class="cx-note">Cada assinatura encerrada, separada em quatro situações. Troca: a conta abriu outra assinatura até 7 dias antes ou depois. Compra extra desfeita: durou até 30 dias e a conta já tinha outra do mesmo plano. Redução real: a conta desligou uma assinatura e seguiu cliente. Saída: a conta ficou sem assinatura.</p>
+      </div>
+      <div class="cx-toggle" role="group" aria-label="Medida do gráfico das quatro situações">
+        <button type="button" id="qs-qtd" data-chart="qs" data-mode="qtd" aria-pressed="false">Quantidade</button>
+        <button type="button" id="qs-usd" data-chart="qs" data-mode="usd" aria-pressed="true">Valor (US$)</button>
+      </div>
+    </div>
+    <div class="cx-chart" id="chart-quatro-situacoes" data-source="trimestral"></div>
+    <div class="cx-legend" id="legend-quatro-situacoes" data-source="trimestral">
+      <div class="cx-group"><span class="cx-gname">Não é perda</span>
+        <span><span class="cx-sw" style="background: var(--cds-chart-muted)"></span>Troca</span>
+        <span><span class="cx-sw cx-sw-extra"></span>Compra extra desfeita</span></div>
+      <div class="cx-group"><span class="cx-gname">É perda</span>
+        <span><span class="cx-sw" style="background: var(--cds-chart-status-critical)"></span>Redução real</span>
+        <span><span class="cx-sw cx-sw-saida"></span>Saída do cliente</span></div>
+    </div>
+    <p class="cx-note">Em valor, a barra de troca mostra a receita da assinatura encerrada; a maior parte voltou na assinatura nova e só a diferença é perda (passe o mouse para ver).</p>
+  </section>
+</div>
+
+<script>
+  dash.calc('totais', {
+    inputs: ['trimestral'],
+    title: 'Totais de 24 meses',
+    description: 'Soma dos 8 trimestres e quanto do churn de hoje era perda real.',
+    fn: (trimestral) => {
+      const s = (k) => trimestral.reduce((acc, r) => acc + Number(r[k]), 0);
+      const t = { churn_hoje_qtd: s('churn_hoje_qtd'), perda_real_qtd: s('perda_real_qtd'), churn_hoje_usd: s('churn_hoje_usd'), perda_real_usd: s('perda_real_usd') };
+      t.pct_qtd = t.perda_real_qtd / t.churn_hoje_qtd;
+      t.pct_usd = t.perda_real_usd / t.churn_hoje_usd;
+      return [t];
+    },
+  });
+
+  window.cxMode = { ad: 'usd', qs: 'usd' };
+  window.cxFmt = {
+    qtd: (v) => new Intl.NumberFormat('pt-BR').format(v),
+    usd: (v) => 'US$ ' + (Math.abs(v) >= 10000
+      ? new Intl.NumberFormat('pt-BR', { notation: 'compact', maximumFractionDigits: 1 }).format(v)
+      : new Intl.NumberFormat('pt-BR').format(Math.round(v))),
+    pct: (v) => new Intl.NumberFormat('pt-BR', { style: 'percent', maximumFractionDigits: 0 }).format(v),
+    tri: (q) => q.replace(/^(\d{2})(\d{2})-T(\d)$/, 'T$3/$2'),
+  };
+</script>
+
+<script>
+  (() => {
+    const F = window.cxFmt;
+    const fills = { totais: (el, row) => {
+      const f = el.dataset.field, v = Number(row[f]);
+      el.textContent = f.startsWith('pct') ? F.pct(v) : f.endsWith('_usd') ? F.usd(v) : F.qtd(v);
+    } };
+
+    document.querySelectorAll('.cx-toggle button').forEach((b) => b.addEventListener('click', () => {
+      window.cxMode[b.dataset.chart] = b.dataset.mode;
+      document.querySelectorAll(`.cx-toggle button[data-chart="${b.dataset.chart}"]`).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      window.cxDraw();
+    }));
+
+    const tipShow = (box, tip, html, x, y) => {
+      tip.innerHTML = '';
+      html.forEach((n) => tip.appendChild(n));
+      tip.hidden = false;
+      const bw = box.clientWidth, tw = tip.offsetWidth, th = tip.offsetHeight;
+      let left = x + 14; if (left + tw > bw) left = x - tw - 14; if (left < 0) left = 0;
+      let top = y - th / 2; if (top < 0) top = 0;
+      tip.style.left = left + 'px'; tip.style.top = top + 'px';
+    };
+    const line = (cls, parts) => { const d = document.createElement('div'); d.className = cls; parts.forEach((p) => { const s = document.createElement('span'); if (p.sw) { s.className = 'cx-sw'; s.style.background = p.sw; } else s.textContent = p; d.appendChild(s); }); return d; };
+    const measure = (svg, texts) => { const t = svg.append('text').style('font-size', 'var(--cds-font-size-caption)'); let w = 0; texts.forEach((s) => { t.text(s); w = Math.max(w, t.node().getComputedTextLength()); }); t.remove(); return w; };
+    const fail = (box, st) => { box.replaceChildren(); if (st === 'error' || st === 'connect' || st === 'declined') { const d = document.createElement('div'); d.className = 'cx-fail'; d.textContent = 'Failed to load'; box.appendChild(d); } };
+
+    function drawAntesDepois(rows) {
+      const box = document.getElementById('chart-antes-depois');
+      const mode = window.cxMode.ad, fmt = mode === 'usd' ? F.usd : F.qtd;
+      const kA = 'churn_hoje_' + mode, kD = 'perda_real_' + mode;
+      box.replaceChildren();
+      const W = box.clientWidth, H = 300;
+      const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+      const max = d3.max(rows, (r) => Number(r[kA])) || 1;
+      const y = d3.scaleLinear([0, max * 1.06], [H - 28, 12]).nice();
+      const ticks = y.ticks(5);
+      const ml = measure(svg, ticks.map(fmt)) + 10;
+      const last = rows[rows.length - 1];
+      const endA = 'Hoje: ' + fmt(Number(last[kA])), endD = 'Real: ' + fmt(Number(last[kD]));
+      const mr = Math.min(measure(svg, [endA, endD]) + 14, W * 0.35);
+      const x = d3.scalePoint(rows.map((r) => r.trimestre), [ml, W - mr]).padding(0.2);
+      const g = svg.append('g');
+      g.selectAll('line.grid').data(ticks).join('line').attr('x1', ml).attr('x2', W - mr).attr('y1', (d) => y(d)).attr('y2', (d) => y(d)).style('stroke', 'var(--cds-chart-grid)');
+      g.selectAll('text.yt').data(ticks).join('text').attr('x', ml - 8).attr('y', (d) => y(d)).attr('dy', '0.32em').attr('text-anchor', 'end').style('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text(fmt);
+      const step = W < 520 ? 2 : 1;
+      g.selectAll('text.xt').data(rows.filter((_, i) => i % step === (rows.length - 1) % step)).join('text').attr('x', (r) => x(r.trimestre)).attr('y', H - 8).attr('text-anchor', 'middle').style('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text((r) => F.tri(r.trimestre));
+      const series = [{ k: kA, c: 'var(--cds-chart-muted)', name: 'Antes (contado hoje)' }, { k: kD, c: 'var(--cds-chart-status-critical)', name: 'Depois (perda real)' }];
+      series.forEach((s) => {
+        g.append('path').datum(rows).attr('fill', 'none').style('stroke', s.c).attr('stroke-width', 2).attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round')
+          .attr('d', d3.line().x((r) => x(r.trimestre)).y((r) => y(Number(r[s.k]))));
+        g.selectAll(null).data(rows).join('circle').attr('cx', (r) => x(r.trimestre)).attr('cy', (r) => y(Number(r[s.k]))).attr('r', 3).style('fill', s.c);
+      });
+      let yA = y(Number(last[kA])), yD = y(Number(last[kD]));
+      if (Math.abs(yA - yD) < 16) { const m = (yA + yD) / 2; yA = m - 8; yD = m + 8; }
+      [[endA, yA, 'var(--color-fg-muted)'], [endD, yD, 'var(--color-bad)']].forEach(([t, yy, c]) => g.append('text').attr('x', x(last.trimestre) + 8).attr('y', yy).attr('dy', '0.32em').style('fill', c).style('font-size', 'var(--cds-font-size-caption)').text(t));
+      const tip = document.createElement('div'); tip.className = 'cx-tip'; tip.hidden = true; box.appendChild(tip);
+      const hover = g.append('line').attr('y1', 12).attr('y2', H - 28).style('stroke', 'var(--cds-chart-axis)').style('opacity', 0);
+      const bw = x.step();
+      g.selectAll('rect.hit').data(rows).join('rect').attr('x', (r) => x(r.trimestre) - bw / 2).attr('width', bw).attr('y', 0).attr('height', H - 20).attr('fill', 'transparent')
+        .on('mousemove', (ev, r) => {
+          hover.attr('x1', x(r.trimestre)).attr('x2', x(r.trimestre)).style('opacity', 1);
+          const a = Number(r[kA]), d = Number(r[kD]);
+          const parts = [line('cx-tq', [F.tri(r.trimestre)]), line('cx-tl', [{ sw: series[0].c }, 'Contado hoje', fmt(a)]), line('cx-tl', [{ sw: series[1].c }, 'Perda real', fmt(d)])];
+          if (a > 0) parts.push(line('cx-tsub', [F.pct(d / a) + ' do número de hoje era perda']));
+          const [mx, my] = d3.pointer(ev, box); tipShow(box, tip, parts, mx, my);
+        })
+        .on('mouseleave', () => { tip.hidden = true; hover.style('opacity', 0); });
+    }
+
+    function drawQuatro(rows) {
+      const box = document.getElementById('chart-quatro-situacoes');
+      const mode = window.cxMode.qs, fmt = mode === 'usd' ? F.usd : F.qtd;
+      const cats = [
+        { k: 'troca_' + mode, name: 'Troca', c: 'var(--cds-chart-muted)' },
+        { k: 'compra_extra_' + mode, name: 'Compra extra desfeita', c: dash.colors[1] },
+        { k: 'reducao_real_' + mode, name: 'Redução real', c: 'var(--cds-chart-status-critical)' },
+        { k: 'saida_' + mode, name: 'Saída do cliente', c: dash.colors[4] },
+      ];
+      document.querySelectorAll('.cx-sw-extra').forEach((e) => e.style.background = dash.colors[1]);
+      document.querySelectorAll('.cx-sw-saida').forEach((e) => e.style.background = dash.colors[4]);
+      box.replaceChildren();
+      const W = box.clientWidth, H = 300;
+      const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+      const data = rows.map((r) => Object.fromEntries([['trimestre', r.trimestre], ...cats.map((c) => [c.k, Number(r[c.k])])]));
+      const stack = d3.stack().keys(cats.map((c) => c.k))(data);
+      const max = d3.max(data, (r) => d3.sum(cats, (c) => r[c.k])) || 1;
+      const y = d3.scaleLinear([0, max * 1.1], [H - 28, 12]).nice();
+      const ticks = y.ticks(5);
+      const ml = measure(svg, ticks.map(fmt)) + 10;
+      const x = d3.scaleBand(rows.map((r) => r.trimestre), [ml, W - 8]).padding(0.3);
+      const bw = Math.min(x.bandwidth(), 48), off = (x.bandwidth() - bw) / 2;
+      const g = svg.append('g');
+      g.selectAll('line.grid').data(ticks).join('line').attr('x1', ml).attr('x2', W - 8).attr('y1', (d) => y(d)).attr('y2', (d) => y(d)).style('stroke', 'var(--cds-chart-grid)');
+      g.selectAll('text.yt').data(ticks).join('text').attr('x', ml - 8).attr('y', (d) => y(d)).attr('dy', '0.32em').attr('text-anchor', 'end').style('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text(fmt);
+      const step = W < 520 ? 2 : 1;
+      g.selectAll('text.xt').data(rows.filter((_, i) => i % step === (rows.length - 1) % step)).join('text').attr('x', (r) => x(r.trimestre) + x.bandwidth() / 2).attr('y', H - 8).attr('text-anchor', 'middle').style('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text((r) => F.tri(r.trimestre));
+      stack.forEach((layer, i) => {
+        g.selectAll(null).data(layer).join('rect').attr('x', (d) => x(d.data.trimestre) + off).attr('width', bw)
+          .attr('y', (d) => y(d[1])).attr('height', (d) => Math.max(0, y(d[0]) - y(d[1]))).style('fill', cats[i].c);
+      });
+      if (bw >= 26) g.selectAll('text.tot').data(data).join('text').attr('x', (r) => x(r.trimestre) + x.bandwidth() / 2).attr('y', (r) => y(d3.sum(cats, (c) => r[c.k])) - 5).attr('text-anchor', 'middle')
+        .style('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text((r) => { const t = d3.sum(cats, (c) => r[c.k]); return t ? fmt(t) : ''; });
+      const tip = document.createElement('div'); tip.className = 'cx-tip'; tip.hidden = true; box.appendChild(tip);
+      g.selectAll('rect.hit').data(rows).join('rect').attr('x', (r) => x(r.trimestre)).attr('width', x.bandwidth()).attr('y', 0).attr('height', H - 20).attr('fill', 'transparent')
+        .on('mousemove', (ev, r) => {
+          const parts = [line('cx-tq', [F.tri(r.trimestre) + ' · encerradas: ' + fmt(Number(r['churn_hoje_' + mode]))])];
+          cats.slice().reverse().forEach((c) => parts.push(line('cx-tl', [{ sw: c.c }, c.name, fmt(Number(r[c.k]))])));
+          if (mode === 'usd' && Number(r.troca_usd) > 0) parts.push(line('cx-tsub', ['Troca: voltou ' + fmt(Number(r.troca_reposto_usd)) + ' na assinatura nova; diferença ' + fmt(Number(r.troca_diferenca_usd))]));
+          parts.push(line('cx-tsub', ['Perda real do trimestre: ' + fmt(Number(r['perda_real_' + mode]))]));
+          const [mx, my] = d3.pointer(ev, box); tipShow(box, tip, parts, mx, my);
+        })
+        .on('mouseleave', () => { tip.hidden = true; });
+    }
+
+    window.cxDraw = () => {
+      const t = dash.data('trimestral');
+      const boxes = ['chart-antes-depois', 'chart-quatro-situacoes'].map((id) => document.getElementById(id));
+      if (t.status !== 'ok') { boxes.forEach((b) => fail(b, t.status)); }
+      else { drawAntesDepois(t.data); drawQuatro(t.data); }
+      const c = dash.data('totais');
+      document.querySelectorAll('[data-source="totais"]').forEach((el) => {
+        if (c.status === 'ok' && c.data.length) { fills.totais(el, c.data[0]); el.classList.remove('dash-skeleton'); }
+        else { el.textContent = '—'; if (c.status !== 'loading') el.classList.remove('dash-skeleton'); }
+      });
+    };
+    dash.onData(window.cxDraw);
+  })();
+</script>
+
+<p class="cx-foot">Fonte: tabela de assinaturas da RavenStack (jan/2023–dez/2024), classificada pela planilha <code>DADOS_CONSOLIDA_V1/02_Perda_Real_por_Trimestre.xlsx</code>. Valores em receita mensal (MRR). Precisa de internet para carregar a biblioteca de gráficos (d3).</p>
+</div>
+</body>
+</html>

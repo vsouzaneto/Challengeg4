@@ -1,0 +1,8 @@
+Scripts gerados com Claude (IA) para o desafio G4 data-001-churn.
+Requisitos: Python 3 com pandas e openpyxl (scipy opcional, só para p-valores).
+Rodar a partir de qualquer pasta, na ordem:
+  python 01_bases.py                     -> cruza as 5 tabelas (salva em _trabalho/bases.pkl)
+  python 02_excel.py                     -> recria ..\RavenStack_Analise_Churn.xlsx
+  python 03_dados_dashboard.py           -> recria os JSONs do dashboard em _trabalho/dash
+  python 04_diagnostico_consistencia.py  -> imprime os testes de consistência das marcações de churn
+Os CSVs em G4_DESAFIO\dados são só lidos, nunca alterados.
