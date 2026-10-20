@@ -1,0 +1,192 @@
+/* Tokens do design system Rankio (docs/design-system.md). Valores em hex para o teste de
+   contraste (tests/tokens.test.ts) poder ler; claro em :root, escuro em .dark. */
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./shadcn.css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius: 0.625rem;
+
+  --background: #f3f4f7;
+  --foreground: #111723;
+  --card: #ffffff;
+  --card-foreground: #111723;
+  --popover: #ffffff;
+  --popover-foreground: #111723;
+  --primary: #8091fa;
+  --primary-foreground: #111723;
+  --primary-strong: #4f5bd5;
+  --secondary: #eceef2;
+  --secondary-foreground: #111723;
+  --muted: #eceef2;
+  --muted-foreground: #5b6577;
+  --accent: #eef0fe;
+  --accent-foreground: #111723;
+  --destructive: #b91c1c;
+  --border: #dde1e8;
+  --input: #c9ced8;
+  --ring: #8091fa;
+
+  --status-focar: #4f5bd5;
+  --status-focar-bg: #eef0fe;
+  --status-acompanhar: #6d28d9;
+  --status-acompanhar-bg: #ede9fe;
+  --status-revisar: #92400e;
+  --status-revisar-bg: #fef3c7;
+  --status-qualificar: #0e7490;
+  --status-qualificar-bg: #cffafe;
+  --status-nao-pontuavel: #5b6577;
+  --status-nao-pontuavel-bg: #eceef2;
+
+  /* Preenchimento de gráficos e barras por grupo: objeto não textual, contraste ≥ 3:1 sobre card e fundo. */
+  --status-focar-fill: #6370e8;
+  --status-qualificar-fill: #0a8aa8;
+  --status-acompanhar-fill: #8b5cf6;
+  --status-revisar-fill: #c2680a;
+  --status-nao-pontuavel-fill: #7b8597;
+
+  --chart-1: #8091fa;
+  --chart-2: #5b6577;
+  --chart-3: #7b8597;
+
+  /* Intensidade da matriz vendedor × produto: o número da célula fica sempre escrito por cima. */
+  --heat-1: #f3f4fe;
+  --heat-2: #e2e6fd;
+  --heat-3: #c9d0fc;
+  --heat-4: #adb8fb;
+}
+
+.dark {
+  --background: #111723;
+  --foreground: #ffffff;
+  --card: #1d283b;
+  --card-foreground: #ffffff;
+  --popover: #1d283b;
+  --popover-foreground: #ffffff;
+  --primary: #8091fa;
+  --primary-foreground: #111723;
+  --primary-strong: #a5b1fc;
+  --secondary: #27344b;
+  --secondary-foreground: #ffffff;
+  --muted: #27344b;
+  --muted-foreground: #a3aebd;
+  --accent: #27344b;
+  --accent-foreground: #ffffff;
+  --destructive: #f87171;
+  --border: #2c3a52;
+  --input: #33425c;
+  --ring: #8091fa;
+
+  --status-focar: #a5b1fc;
+  --status-focar-bg: #2d395a;
+  --status-acompanhar: #c4b5fd;
+  --status-acompanhar-bg: #3b2f5c;
+  --status-revisar: #fbbf24;
+  --status-revisar-bg: #414037;
+  --status-qualificar: #67d4e8;
+  --status-qualificar-bg: #294457;
+  --status-nao-pontuavel: #a3aebd;
+  --status-nao-pontuavel-bg: #27344b;
+
+  --status-focar-fill: #8091fa;
+  --status-qualificar-fill: #2bb3cc;
+  --status-acompanhar-fill: #a78bfa;
+  --status-revisar-fill: #f59e0b;
+  --status-nao-pontuavel-fill: #7c889b;
+
+  --chart-1: #8091fa;
+  --chart-2: #a3aebd;
+  --chart-3: #7c889b;
+
+  --heat-1: #222e45;
+  --heat-2: #2a3758;
+  --heat-3: #34436d;
+  --heat-4: #3f5084;
+}
+
+@theme inline {
+  --font-sans: var(--font-sans);
+  --font-heading: var(--font-sans);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-strong: var(--primary-strong);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-status-focar: var(--status-focar);
+  --color-status-focar-bg: var(--status-focar-bg);
+  --color-status-acompanhar: var(--status-acompanhar);
+  --color-status-acompanhar-bg: var(--status-acompanhar-bg);
+  --color-status-revisar: var(--status-revisar);
+  --color-status-revisar-bg: var(--status-revisar-bg);
+  --color-status-qualificar: var(--status-qualificar);
+  --color-status-qualificar-bg: var(--status-qualificar-bg);
+  --color-status-nao-pontuavel: var(--status-nao-pontuavel);
+  --color-status-nao-pontuavel-bg: var(--status-nao-pontuavel-bg);
+  --color-status-focar-fill: var(--status-focar-fill);
+  --color-status-qualificar-fill: var(--status-qualificar-fill);
+  --color-status-acompanhar-fill: var(--status-acompanhar-fill);
+  --color-status-revisar-fill: var(--status-revisar-fill);
+  --color-status-nao-pontuavel-fill: var(--status-nao-pontuavel-fill);
+  --color-warning: var(--status-revisar);
+  --color-warning-bg: var(--status-revisar-bg);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-heat-1: var(--heat-1);
+  --color-heat-2: var(--heat-2);
+  --color-heat-3: var(--heat-3);
+  --color-heat-4: var(--heat-4);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
+/* Todo elemento clicável mostra a mãozinha. O Tailwind v4 tirou esse padrão dos botões, e alguns
+   primitivos marcam os itens com `cursor-default`; fora de @layer, esta regra vale sobre os utilitários. */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+[role="tab"]:not([data-disabled]),
+[role="option"]:not([data-disabled]),
+[role="menuitem"]:not([data-disabled]),
+[role="menuitemradio"]:not([data-disabled]),
+[role="combobox"]:not(:disabled),
+a[href]:not([aria-disabled="true"]),
+label[for] {
+  cursor: pointer;
+}

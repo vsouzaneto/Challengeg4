@@ -1,0 +1,20 @@
+{
+  "forbidden_terms": [
+    "probabilidade",
+    "perdida",
+    "encerre",
+    "prioridade alta",
+    "chance alta",
+    "score",
+    "prazo",
+    "vence",
+    "vencid",
+    "atrasad",
+    "expir",
+    "faltam",
+    "parad",
+    "inativ",
+    "chance zero"
+  ],
+  "match": "word_start"
+}

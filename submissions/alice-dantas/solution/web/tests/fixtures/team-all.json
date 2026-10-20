@@ -1,0 +1,491 @@
+{
+  "filter": {
+    "manager": null,
+    "office": null
+  },
+  "meta": {
+    "as_of": "2017-12-31",
+    "won_cycle_median_days": 60,
+    "won_cycle_limit_days": 100,
+    "cycle_limit_days": 138,
+    "cycle_percentile": 90,
+    "audited": false,
+    "contract_version": 7
+  },
+  "ordering": {
+    "group_order": [
+      "focar",
+      "qualificar",
+      "acompanhar",
+      "revisar",
+      "nao_pontuavel"
+    ],
+    "within_group": [
+      "value_band",
+      "sales_price_desc",
+      "opportunity_id"
+    ],
+    "age_affects_order": false
+  },
+  "summary": {
+    "total": 9,
+    "focar": 5,
+    "acompanhar": 2,
+    "revisar": 1,
+    "qualificar": 1,
+    "nao_pontuavel": 0,
+    "without_account": 6
+  },
+  "empty": null,
+  "groups": [
+    {
+      "state": "focar",
+      "count": 5,
+      "empty": null,
+      "next_action": {
+        "code": "check_status",
+        "params": {
+          "has_account": null
+        }
+      },
+      "items": [
+        {
+          "opportunity_id": "EPP",
+          "sales_agent": "Ana Alfa",
+          "product": "GTX Plus Pro",
+          "account": null,
+          "sales_price": 5482,
+          "value_band": "alto",
+          "engage_date": "2017-12-21",
+          "age_days": 10,
+          "group": "focar",
+          "deal_stage": "Engaging",
+          "missing_field": null,
+          "tie_size": 1,
+          "reasons": [
+            {
+              "code": "age_within_won_cycle",
+              "role": "group",
+              "params": {
+                "age_days": 10,
+                "won_cycle_limit_days": 100,
+                "percentile": 90
+              }
+            },
+            {
+              "code": "list_price",
+              "role": "order",
+              "params": {
+                "product": "GTX Plus Pro",
+                "sales_price": 5482,
+                "value_band": "alto"
+              }
+            }
+          ],
+          "next_action": {
+            "code": "check_status",
+            "params": {
+              "has_account": false
+            }
+          }
+        },
+        {
+          "opportunity_id": "EGP",
+          "sales_agent": "Ana Alfa",
+          "product": "GTX Pro",
+          "account": "Beta Corp",
+          "sales_price": 4821,
+          "value_band": "alto",
+          "engage_date": "2017-12-01",
+          "age_days": 30,
+          "group": "focar",
+          "deal_stage": "Engaging",
+          "missing_field": null,
+          "tie_size": 1,
+          "reasons": [
+            {
+              "code": "age_within_won_cycle",
+              "role": "group",
+              "params": {
+                "age_days": 30,
+                "won_cycle_limit_days": 100,
+                "percentile": 90
+              }
+            },
+            {
+              "code": "list_price",
+              "role": "order",
+              "params": {
+                "product": "GTX Pro",
+                "sales_price": 4821,
+                "value_band": "alto"
+              }
+            }
+          ],
+          "next_action": {
+            "code": "check_status",
+            "params": {
+              "has_account": true
+            }
+          }
+        },
+        {
+          "opportunity_id": "E050",
+          "sales_agent": "Ana Alfa",
+          "product": "GTX Basic",
+          "account": null,
+          "sales_price": 550,
+          "value_band": "médio",
+          "engage_date": "2017-11-11",
+          "age_days": 50,
+          "group": "focar",
+          "deal_stage": "Engaging",
+          "missing_field": null,
+          "tie_size": 2,
+          "reasons": [
+            {
+              "code": "age_within_won_cycle",
+              "role": "group",
+              "params": {
+                "age_days": 50,
+                "won_cycle_limit_days": 100,
+                "percentile": 90
+              }
+            },
+            {
+              "code": "list_price",
+              "role": "order",
+              "params": {
+                "product": "GTX Basic",
+                "sales_price": 550,
+                "value_band": "médio"
+              }
+            }
+          ],
+          "next_action": {
+            "code": "check_status",
+            "params": {
+              "has_account": false
+            }
+          }
+        },
+        {
+          "opportunity_id": "E100",
+          "sales_agent": "Ana Alfa",
+          "product": "GTX Basic",
+          "account": null,
+          "sales_price": 550,
+          "value_band": "médio",
+          "engage_date": "2017-09-22",
+          "age_days": 100,
+          "group": "focar",
+          "deal_stage": "Engaging",
+          "missing_field": null,
+          "tie_size": 2,
+          "reasons": [
+            {
+              "code": "age_within_won_cycle",
+              "role": "group",
+              "params": {
+                "age_days": 100,
+                "won_cycle_limit_days": 100,
+                "percentile": 90
+              }
+            },
+            {
+              "code": "list_price",
+              "role": "order",
+              "params": {
+                "product": "GTX Basic",
+                "sales_price": 550,
+                "value_band": "médio"
+              }
+            }
+          ],
+          "next_action": {
+            "code": "check_status",
+            "params": {
+              "has_account": false
+            }
+          }
+        },
+        {
+          "opportunity_id": "EMG",
+          "sales_agent": "Ana Alfa",
+          "product": "MG Special",
+          "account": null,
+          "sales_price": 55,
+          "value_band": "baixo",
+          "engage_date": "2017-12-11",
+          "age_days": 20,
+          "group": "focar",
+          "deal_stage": "Engaging",
+          "missing_field": null,
+          "tie_size": 1,
+          "reasons": [
+            {
+              "code": "age_within_won_cycle",
+              "role": "group",
+              "params": {
+                "age_days": 20,
+                "won_cycle_limit_days": 100,
+                "percentile": 90
+              }
+            },
+            {
+              "code": "list_price",
+              "role": "order",
+              "params": {
+                "product": "MG Special",
+                "sales_price": 55,
+                "value_band": "baixo"
+              }
+            }
+          ],
+          "next_action": {
+            "code": "check_status",
+            "params": {
+              "has_account": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "state": "qualificar",
+      "count": 1,
+      "empty": null,
+      "next_action": {
+        "code": "check_prospecting",
+        "params": {}
+      },
+      "items": [
+        {
+          "opportunity_id": "P1",
+          "sales_agent": "Bruno Beta",
+          "product": "GTX Pro",
+          "account": null,
+          "sales_price": 4821,
+          "value_band": "alto",
+          "engage_date": null,
+          "age_days": null,
+          "group": "qualificar",
+          "deal_stage": "Prospecting",
+          "missing_field": null,
+          "tie_size": 1,
+          "reasons": [
+            {
+              "code": "prospecting_stage",
+              "role": "group",
+              "params": {
+                "deal_stage": "Prospecting"
+              }
+            },
+            {
+              "code": "list_price",
+              "role": "order",
+              "params": {
+                "product": "GTX Pro",
+                "sales_price": 4821,
+                "value_band": "alto"
+              }
+            }
+          ],
+          "next_action": {
+            "code": "check_prospecting",
+            "params": {}
+          }
+        }
+      ]
+    },
+    {
+      "state": "acompanhar",
+      "count": 2,
+      "empty": null,
+      "next_action": {
+        "code": "check_progress",
+        "params": {
+          "has_account": null
+        }
+      },
+      "items": [
+        {
+          "opportunity_id": "E101",
+          "sales_agent": "Ana Alfa",
+          "product": "GTX Basic",
+          "account": "Beta Corp",
+          "sales_price": 550,
+          "value_band": "médio",
+          "engage_date": "2017-09-21",
+          "age_days": 101,
+          "group": "acompanhar",
+          "deal_stage": "Engaging",
+          "missing_field": null,
+          "tie_size": 2,
+          "reasons": [
+            {
+              "code": "age_above_won_cycle",
+              "role": "group",
+              "params": {
+                "age_days": 101,
+                "won_cycle_limit_days": 100,
+                "cycle_limit_days": 138,
+                "percentile": 90
+              }
+            },
+            {
+              "code": "list_price",
+              "role": "order",
+              "params": {
+                "product": "GTX Basic",
+                "sales_price": 550,
+                "value_band": "médio"
+              }
+            }
+          ],
+          "next_action": {
+            "code": "check_progress",
+            "params": {
+              "has_account": true
+            }
+          }
+        },
+        {
+          "opportunity_id": "E138",
+          "sales_agent": "Ana Alfa",
+          "product": "GTX Basic",
+          "account": null,
+          "sales_price": 550,
+          "value_band": "médio",
+          "engage_date": "2017-08-15",
+          "age_days": 138,
+          "group": "acompanhar",
+          "deal_stage": "Engaging",
+          "missing_field": null,
+          "tie_size": 2,
+          "reasons": [
+            {
+              "code": "age_above_won_cycle",
+              "role": "group",
+              "params": {
+                "age_days": 138,
+                "won_cycle_limit_days": 100,
+                "cycle_limit_days": 138,
+                "percentile": 90
+              }
+            },
+            {
+              "code": "list_price",
+              "role": "order",
+              "params": {
+                "product": "GTX Basic",
+                "sales_price": 550,
+                "value_band": "médio"
+              }
+            }
+          ],
+          "next_action": {
+            "code": "check_progress",
+            "params": {
+              "has_account": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "state": "revisar",
+      "count": 1,
+      "empty": null,
+      "next_action": {
+        "code": "confirm_still_active",
+        "params": {
+          "has_account": null
+        }
+      },
+      "items": [
+        {
+          "opportunity_id": "E139",
+          "sales_agent": "Ana Alfa",
+          "product": "GTX Basic",
+          "account": "Acme",
+          "sales_price": 550,
+          "value_band": "médio",
+          "engage_date": "2017-08-14",
+          "age_days": 139,
+          "group": "revisar",
+          "deal_stage": "Engaging",
+          "missing_field": null,
+          "tie_size": 1,
+          "reasons": [
+            {
+              "code": "age_above_cycle_limit",
+              "role": "group",
+              "params": {
+                "age_days": 139,
+                "cycle_limit_days": 138
+              }
+            },
+            {
+              "code": "list_price",
+              "role": "order",
+              "params": {
+                "product": "GTX Basic",
+                "sales_price": 550,
+                "value_band": "médio"
+              }
+            }
+          ],
+          "next_action": {
+            "code": "confirm_still_active",
+            "params": {
+              "has_account": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "state": "nao_pontuavel",
+      "count": 0,
+      "empty": {
+        "code": "group_empty",
+        "params": {}
+      },
+      "next_action": null,
+      "items": []
+    }
+  ],
+  "by_seller": [
+    {
+      "seller": "Ana Alfa",
+      "total": 8,
+      "focar": 5,
+      "acompanhar": 2,
+      "revisar": 1,
+      "qualificar": 0,
+      "nao_pontuavel": 0,
+      "without_account": 5
+    },
+    {
+      "seller": "Bruno Beta",
+      "total": 1,
+      "focar": 0,
+      "acompanhar": 0,
+      "revisar": 0,
+      "qualificar": 1,
+      "nao_pontuavel": 0,
+      "without_account": 1
+    },
+    {
+      "seller": "Carla Gama",
+      "total": 0,
+      "focar": 0,
+      "acompanhar": 0,
+      "revisar": 0,
+      "qualificar": 0,
+      "nao_pontuavel": 0,
+      "without_account": 0
+    }
+  ]
+}

@@ -1,0 +1,468 @@
+{
+  "meta": {
+    "as_of": "2017-12-31",
+    "won_cycle_median_days": 60,
+    "won_cycle_limit_days": 100,
+    "cycle_limit_days": 138,
+    "cycle_percentile": 90,
+    "audited": false,
+    "contract_version": 7
+  },
+  "ordering": {
+    "group_order": [
+      "focar",
+      "qualificar",
+      "acompanhar",
+      "revisar",
+      "nao_pontuavel"
+    ],
+    "within_group": [
+      "value_band",
+      "sales_price_desc",
+      "opportunity_id"
+    ],
+    "age_affects_order": false
+  },
+  "filter": {
+    "product": null,
+    "seller": null,
+    "manager": null,
+    "office": "East",
+    "sector": null,
+    "account": null,
+    "size": null
+  },
+  "options": {
+    "products": [
+      "GTX Basic",
+      "GTX Plus Pro",
+      "GTX Pro",
+      "MG Special"
+    ],
+    "sectors": [
+      "retail",
+      "technology"
+    ],
+    "accounts": [
+      {
+        "name": "Acme",
+        "sector": "technology",
+        "location": "Philippines",
+        "size": "4"
+      },
+      {
+        "name": "Beta Corp",
+        "sector": "retail",
+        "location": "United States",
+        "size": "1"
+      }
+    ],
+    "sizes": [
+      {
+        "key": "1",
+        "low": 250.5,
+        "high": 462.88,
+        "accounts": 1
+      },
+      {
+        "key": "2",
+        "low": 462.88,
+        "high": 675.27,
+        "accounts": 0
+      },
+      {
+        "key": "3",
+        "low": 675.27,
+        "high": 887.65,
+        "accounts": 0
+      },
+      {
+        "key": "4",
+        "low": 887.65,
+        "high": 1100.04,
+        "accounts": 1
+      }
+    ]
+  },
+  "history": {
+    "closed": 0,
+    "won": 0,
+    "lost": 0,
+    "win_rate": null,
+    "revenue": 0,
+    "won_without_value": 0,
+    "ticket": null,
+    "revenue_per_closed": null,
+    "median_won_cycle_days": null,
+    "median_lost_cycle_days": null,
+    "without_account": 0
+  },
+  "history_empty": {
+    "code": "no_closed_for_filter",
+    "params": {}
+  },
+  "open": {
+    "summary": {
+      "total": 0,
+      "focar": 0,
+      "acompanhar": 0,
+      "revisar": 0,
+      "qualificar": 0,
+      "nao_pontuavel": 0,
+      "without_account": 0
+    },
+    "list_value": 0,
+    "without_list_price": 0,
+    "excluded_without_account": null,
+    "empty": {
+      "code": "no_open_for_filter",
+      "params": {}
+    }
+  },
+  "diagnostics": [
+    {
+      "code": "sellers_without_opportunities",
+      "params": {
+        "count": 1,
+        "team": 1,
+        "sellers": [
+          "Carla Gama"
+        ]
+      }
+    }
+  ],
+  "findings": [],
+  "breakdowns": [
+    {
+      "dimension": "product",
+      "order": "revenue_desc",
+      "segments": [],
+      "chance": {
+        "verdict": "too_few_closed",
+        "segments_tested": 0,
+        "segments_small": 0,
+        "closed_tested": 0,
+        "min_win_rate": null,
+        "max_win_rate": null,
+        "p_value": null,
+        "alpha": 0.007143
+      },
+      "drivers": null
+    },
+    {
+      "dimension": "seller",
+      "order": "alphabetical",
+      "segments": [
+        {
+          "key": "Carla Gama",
+          "history": {
+            "closed": 0,
+            "won": 0,
+            "lost": 0,
+            "win_rate": null,
+            "revenue": 0,
+            "won_without_value": 0,
+            "ticket": null,
+            "revenue_per_closed": null,
+            "median_won_cycle_days": null,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": null,
+          "open": 0,
+          "profile": null
+        }
+      ],
+      "chance": {
+        "verdict": "too_few_closed",
+        "segments_tested": 0,
+        "segments_small": 0,
+        "closed_tested": 0,
+        "min_win_rate": null,
+        "max_win_rate": null,
+        "p_value": null,
+        "alpha": 0.007143
+      },
+      "drivers": null
+    },
+    {
+      "dimension": "manager",
+      "order": "alphabetical",
+      "segments": [
+        {
+          "key": "Nina Dois",
+          "history": {
+            "closed": 0,
+            "won": 0,
+            "lost": 0,
+            "win_rate": null,
+            "revenue": 0,
+            "won_without_value": 0,
+            "ticket": null,
+            "revenue_per_closed": null,
+            "median_won_cycle_days": null,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": null,
+          "open": 0,
+          "profile": null
+        }
+      ],
+      "chance": {
+        "verdict": "too_few_closed",
+        "segments_tested": 0,
+        "segments_small": 0,
+        "closed_tested": 0,
+        "min_win_rate": null,
+        "max_win_rate": null,
+        "p_value": null,
+        "alpha": 0.007143
+      },
+      "drivers": null
+    },
+    {
+      "dimension": "office",
+      "order": "alphabetical",
+      "segments": [
+        {
+          "key": "East",
+          "history": {
+            "closed": 0,
+            "won": 0,
+            "lost": 0,
+            "win_rate": null,
+            "revenue": 0,
+            "won_without_value": 0,
+            "ticket": null,
+            "revenue_per_closed": null,
+            "median_won_cycle_days": null,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": null,
+          "open": 0,
+          "profile": null
+        }
+      ],
+      "chance": {
+        "verdict": "too_few_closed",
+        "segments_tested": 0,
+        "segments_small": 0,
+        "closed_tested": 0,
+        "min_win_rate": null,
+        "max_win_rate": null,
+        "p_value": null,
+        "alpha": 0.007143
+      },
+      "drivers": null
+    },
+    {
+      "dimension": "sector",
+      "order": "revenue_desc",
+      "segments": [],
+      "chance": {
+        "verdict": "too_few_closed",
+        "segments_tested": 0,
+        "segments_small": 0,
+        "closed_tested": 0,
+        "min_win_rate": null,
+        "max_win_rate": null,
+        "p_value": null,
+        "alpha": 0.007143
+      },
+      "drivers": null
+    },
+    {
+      "dimension": "account",
+      "order": "revenue_desc",
+      "segments": [],
+      "chance": {
+        "verdict": "too_few_closed",
+        "segments_tested": 0,
+        "segments_small": 0,
+        "closed_tested": 0,
+        "min_win_rate": null,
+        "max_win_rate": null,
+        "p_value": null,
+        "alpha": 0.007143
+      },
+      "drivers": null
+    },
+    {
+      "dimension": "size",
+      "order": "revenue_desc",
+      "segments": [],
+      "chance": {
+        "verdict": "too_few_closed",
+        "segments_tested": 0,
+        "segments_small": 0,
+        "closed_tested": 0,
+        "min_win_rate": null,
+        "max_win_rate": null,
+        "p_value": null,
+        "alpha": 0.007143
+      },
+      "drivers": null
+    }
+  ],
+  "matrix": {
+    "products": [],
+    "rows": [
+      {
+        "seller": "Carla Gama",
+        "closed": 0,
+        "cells": []
+      }
+    ]
+  },
+  "crosstabs": [
+    {
+      "id": "account_product",
+      "row_dimension": "account",
+      "column_dimension": "product",
+      "columns": [],
+      "rows": []
+    },
+    {
+      "id": "sector_product",
+      "row_dimension": "sector",
+      "column_dimension": "product",
+      "columns": [],
+      "rows": []
+    },
+    {
+      "id": "seller_sector",
+      "row_dimension": "seller",
+      "column_dimension": "sector",
+      "columns": [],
+      "rows": [
+        {
+          "key": "Carla Gama",
+          "closed": 0,
+          "cells": []
+        }
+      ]
+    },
+    {
+      "id": "sector_office",
+      "row_dimension": "sector",
+      "column_dimension": "office",
+      "columns": [],
+      "rows": []
+    },
+    {
+      "id": "location_office",
+      "row_dimension": "location",
+      "column_dimension": "office",
+      "columns": [],
+      "rows": []
+    }
+  ],
+  "cycle_bands": [
+    {
+      "low": 0,
+      "high": 15,
+      "won": 0,
+      "lost": 0,
+      "win_rate": null
+    },
+    {
+      "low": 16,
+      "high": 30,
+      "won": 0,
+      "lost": 0,
+      "win_rate": null
+    },
+    {
+      "low": 31,
+      "high": 60,
+      "won": 0,
+      "lost": 0,
+      "win_rate": null
+    },
+    {
+      "low": 61,
+      "high": 90,
+      "won": 0,
+      "lost": 0,
+      "win_rate": null
+    },
+    {
+      "low": 91,
+      "high": 100,
+      "won": 0,
+      "lost": 0,
+      "win_rate": null
+    },
+    {
+      "low": 101,
+      "high": 138,
+      "won": 0,
+      "lost": 0,
+      "win_rate": null
+    }
+  ],
+  "monthly": [
+    {
+      "month": "2017-03",
+      "engaged": 0,
+      "won": 0,
+      "lost": 0
+    },
+    {
+      "month": "2017-04",
+      "engaged": 0,
+      "won": 0,
+      "lost": 0
+    },
+    {
+      "month": "2017-05",
+      "engaged": 0,
+      "won": 0,
+      "lost": 0
+    },
+    {
+      "month": "2017-06",
+      "engaged": 0,
+      "won": 0,
+      "lost": 0
+    },
+    {
+      "month": "2017-07",
+      "engaged": 0,
+      "won": 0,
+      "lost": 0
+    },
+    {
+      "month": "2017-08",
+      "engaged": 0,
+      "won": 0,
+      "lost": 0
+    },
+    {
+      "month": "2017-09",
+      "engaged": 0,
+      "won": 0,
+      "lost": 0
+    },
+    {
+      "month": "2017-10",
+      "engaged": 0,
+      "won": 0,
+      "lost": 0
+    },
+    {
+      "month": "2017-11",
+      "engaged": 0,
+      "won": 0,
+      "lost": 0
+    },
+    {
+      "month": "2017-12",
+      "engaged": 0,
+      "won": 0,
+      "lost": 0
+    }
+  ]
+}

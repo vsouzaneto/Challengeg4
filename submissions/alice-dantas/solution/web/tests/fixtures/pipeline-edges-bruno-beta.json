@@ -1,0 +1,241 @@
+{
+  "seller": "Bruno Beta",
+  "meta": {
+    "as_of": "2017-12-31",
+    "won_cycle_median_days": 60,
+    "won_cycle_limit_days": 100,
+    "cycle_limit_days": 138,
+    "cycle_percentile": 90,
+    "audited": false,
+    "contract_version": 7
+  },
+  "ordering": {
+    "group_order": [
+      "focar",
+      "qualificar",
+      "acompanhar",
+      "revisar",
+      "nao_pontuavel"
+    ],
+    "within_group": [
+      "value_band",
+      "sales_price_desc",
+      "opportunity_id"
+    ],
+    "age_affects_order": false
+  },
+  "summary": {
+    "total": 4,
+    "focar": 0,
+    "acompanhar": 0,
+    "revisar": 0,
+    "qualificar": 1,
+    "nao_pontuavel": 3,
+    "without_account": 4
+  },
+  "empty": null,
+  "groups": [
+    {
+      "state": "focar",
+      "count": 0,
+      "empty": {
+        "code": "start_with_group",
+        "params": {
+          "group": "qualificar",
+          "action": "check_prospecting",
+          "has_engaging": false,
+          "won_cycle_limit_days": 100,
+          "cycle_limit_days": 138
+        }
+      },
+      "next_action": null,
+      "items": []
+    },
+    {
+      "state": "qualificar",
+      "count": 1,
+      "empty": null,
+      "next_action": {
+        "code": "check_prospecting",
+        "params": {}
+      },
+      "items": [
+        {
+          "opportunity_id": "P1",
+          "sales_agent": "Bruno Beta",
+          "product": "GTX Pro",
+          "account": null,
+          "sales_price": 4821,
+          "value_band": "alto",
+          "engage_date": null,
+          "age_days": null,
+          "group": "qualificar",
+          "deal_stage": "Prospecting",
+          "missing_field": null,
+          "tie_size": 1,
+          "reasons": [
+            {
+              "code": "prospecting_stage",
+              "role": "group",
+              "params": {
+                "deal_stage": "Prospecting"
+              }
+            },
+            {
+              "code": "list_price",
+              "role": "order",
+              "params": {
+                "product": "GTX Pro",
+                "sales_price": 4821,
+                "value_band": "alto"
+              }
+            }
+          ],
+          "next_action": {
+            "code": "check_prospecting",
+            "params": {}
+          }
+        }
+      ]
+    },
+    {
+      "state": "acompanhar",
+      "count": 0,
+      "empty": {
+        "code": "group_empty",
+        "params": {}
+      },
+      "next_action": null,
+      "items": []
+    },
+    {
+      "state": "revisar",
+      "count": 0,
+      "empty": {
+        "code": "group_empty",
+        "params": {}
+      },
+      "next_action": null,
+      "items": []
+    },
+    {
+      "state": "nao_pontuavel",
+      "count": 3,
+      "empty": null,
+      "next_action": {
+        "code": "fix_missing_fields",
+        "params": {}
+      },
+      "items": [
+        {
+          "opportunity_id": "N1",
+          "sales_agent": "Bruno Beta",
+          "product": "GTX Basic",
+          "account": null,
+          "sales_price": 550,
+          "value_band": "médio",
+          "engage_date": null,
+          "age_days": null,
+          "group": "nao_pontuavel",
+          "deal_stage": "Engaging",
+          "missing_field": "engage_date",
+          "tie_size": 1,
+          "reasons": [
+            {
+              "code": "missing_field",
+              "role": "group",
+              "params": {
+                "field": "engage_date"
+              }
+            },
+            {
+              "code": "list_price",
+              "role": "order",
+              "params": {
+                "product": "GTX Basic",
+                "sales_price": 550,
+                "value_band": "médio"
+              }
+            }
+          ],
+          "next_action": {
+            "code": "fix_missing_field",
+            "params": {
+              "field": "engage_date"
+            }
+          }
+        },
+        {
+          "opportunity_id": "N2",
+          "sales_agent": "Bruno Beta",
+          "product": null,
+          "account": null,
+          "sales_price": null,
+          "value_band": null,
+          "engage_date": null,
+          "age_days": null,
+          "group": "nao_pontuavel",
+          "deal_stage": "Prospecting",
+          "missing_field": "product",
+          "tie_size": 1,
+          "reasons": [
+            {
+              "code": "missing_field",
+              "role": "group",
+              "params": {
+                "field": "product"
+              }
+            },
+            {
+              "code": "no_product",
+              "role": "order",
+              "params": {}
+            }
+          ],
+          "next_action": {
+            "code": "fix_missing_field",
+            "params": {
+              "field": "product"
+            }
+          }
+        },
+        {
+          "opportunity_id": "U1",
+          "sales_agent": "Bruno Beta",
+          "product": "GTX Ultra",
+          "account": null,
+          "sales_price": null,
+          "value_band": null,
+          "engage_date": "2017-12-11",
+          "age_days": 20,
+          "group": "nao_pontuavel",
+          "deal_stage": "Engaging",
+          "missing_field": "sales_price",
+          "tie_size": 1,
+          "reasons": [
+            {
+              "code": "missing_field",
+              "role": "group",
+              "params": {
+                "field": "sales_price"
+              }
+            },
+            {
+              "code": "no_list_price",
+              "role": "order",
+              "params": {
+                "product": "GTX Ultra"
+              }
+            }
+          ],
+          "next_action": {
+            "code": "fix_missing_field",
+            "params": {
+              "field": "sales_price"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

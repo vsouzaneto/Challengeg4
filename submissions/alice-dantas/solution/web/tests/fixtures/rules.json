@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "as_of": "2017-12-31",
+    "won_cycle_median_days": 60,
+    "won_cycle_limit_days": 100,
+    "cycle_limit_days": 138,
+    "cycle_percentile": 90,
+    "audited": false,
+    "contract_version": 7
+  },
+  "ordering": {
+    "group_order": [
+      "focar",
+      "qualificar",
+      "acompanhar",
+      "revisar",
+      "nao_pontuavel"
+    ],
+    "within_group": [
+      "value_band",
+      "sales_price_desc",
+      "opportunity_id"
+    ],
+    "age_affects_order": false
+  },
+  "value_bands": [
+    {
+      "band": "alto",
+      "min_price": 3000,
+      "max_price": null
+    },
+    {
+      "band": "médio",
+      "min_price": 500,
+      "max_price": 2999
+    },
+    {
+      "band": "baixo",
+      "min_price": 0,
+      "max_price": 499
+    }
+  ]
+}

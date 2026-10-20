@@ -1,0 +1,1155 @@
+{
+  "meta": {
+    "as_of": "2017-12-31",
+    "won_cycle_median_days": 60,
+    "won_cycle_limit_days": 100,
+    "cycle_limit_days": 138,
+    "cycle_percentile": 90,
+    "audited": false,
+    "contract_version": 7
+  },
+  "ordering": {
+    "group_order": [
+      "focar",
+      "qualificar",
+      "acompanhar",
+      "revisar",
+      "nao_pontuavel"
+    ],
+    "within_group": [
+      "value_band",
+      "sales_price_desc",
+      "opportunity_id"
+    ],
+    "age_affects_order": false
+  },
+  "filter": {
+    "product": null,
+    "seller": null,
+    "manager": null,
+    "office": null,
+    "sector": null,
+    "account": null,
+    "size": null
+  },
+  "options": {
+    "products": [
+      "GTX Basic",
+      "GTX Plus Pro",
+      "GTX Pro",
+      "MG Special"
+    ],
+    "sectors": [
+      "retail",
+      "technology"
+    ],
+    "accounts": [
+      {
+        "name": "Acme",
+        "sector": "technology",
+        "location": "Philippines",
+        "size": "4"
+      },
+      {
+        "name": "Beta Corp",
+        "sector": "retail",
+        "location": "United States",
+        "size": "1"
+      }
+    ],
+    "sizes": [
+      {
+        "key": "1",
+        "low": 250.5,
+        "high": 462.88,
+        "accounts": 1
+      },
+      {
+        "key": "2",
+        "low": 462.88,
+        "high": 675.27,
+        "accounts": 0
+      },
+      {
+        "key": "3",
+        "low": 675.27,
+        "high": 887.65,
+        "accounts": 0
+      },
+      {
+        "key": "4",
+        "low": 887.65,
+        "high": 1100.04,
+        "accounts": 1
+      }
+    ]
+  },
+  "history": {
+    "closed": 3,
+    "won": 2,
+    "lost": 1,
+    "win_rate": {
+      "value": 0.666667,
+      "low": 0.20766,
+      "high": 0.938508
+    },
+    "revenue": 200,
+    "won_without_value": 0,
+    "ticket": 100.0,
+    "revenue_per_closed": 66.67,
+    "median_won_cycle_days": 60,
+    "median_lost_cycle_days": 138,
+    "without_account": 0
+  },
+  "history_empty": null,
+  "open": {
+    "summary": {
+      "total": 9,
+      "focar": 5,
+      "acompanhar": 2,
+      "revisar": 1,
+      "qualificar": 1,
+      "nao_pontuavel": 0,
+      "without_account": 6
+    },
+    "list_value": 17929,
+    "without_list_price": 0,
+    "excluded_without_account": null,
+    "empty": null
+  },
+  "diagnostics": [
+    {
+      "code": "engaging_beyond_longest_cycle",
+      "params": {
+        "group": "revisar",
+        "count": 1,
+        "engaging": 8,
+        "share": 0.125,
+        "cycle_limit_days": 138
+      }
+    },
+    {
+      "code": "open_without_account",
+      "params": {
+        "count": 6,
+        "open": 9,
+        "share": 0.666667,
+        "closed_without_account": 0,
+        "closed": 3
+      }
+    },
+    {
+      "code": "prospecting_without_engage_date",
+      "params": {
+        "group": "qualificar",
+        "count": 1,
+        "prospecting": 1
+      }
+    },
+    {
+      "code": "sellers_without_opportunities",
+      "params": {
+        "count": 1,
+        "team": 3,
+        "sellers": [
+          "Carla Gama"
+        ]
+      }
+    }
+  ],
+  "findings": [
+    {
+      "code": "account_product_coverage",
+      "params": {
+        "accounts": 2,
+        "products": 4,
+        "distribution": [
+          {
+            "bought": 1,
+            "accounts": 2
+          }
+        ],
+        "most_missing": "GTX Plus Pro",
+        "most_missing_accounts": 2
+      }
+    }
+  ],
+  "breakdowns": [
+    {
+      "dimension": "product",
+      "order": "revenue_desc",
+      "segments": [
+        {
+          "key": "GTX Basic",
+          "history": {
+            "closed": 1,
+            "won": 1,
+            "lost": 0,
+            "win_rate": {
+              "value": 1.0,
+              "low": 0.206549,
+              "high": 1.0
+            },
+            "revenue": 100,
+            "won_without_value": 0,
+            "ticket": 100.0,
+            "revenue_per_closed": 100.0,
+            "median_won_cycle_days": 110,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": 0.5,
+          "open": 5,
+          "profile": null
+        },
+        {
+          "key": "GTX Pro",
+          "history": {
+            "closed": 1,
+            "won": 1,
+            "lost": 0,
+            "win_rate": {
+              "value": 1.0,
+              "low": 0.206549,
+              "high": 1.0
+            },
+            "revenue": 100,
+            "won_without_value": 0,
+            "ticket": 100.0,
+            "revenue_per_closed": 100.0,
+            "median_won_cycle_days": 10,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": 0.5,
+          "open": 2,
+          "profile": null
+        },
+        {
+          "key": "GTX Plus Pro",
+          "history": {
+            "closed": 0,
+            "won": 0,
+            "lost": 0,
+            "win_rate": null,
+            "revenue": 0,
+            "won_without_value": 0,
+            "ticket": null,
+            "revenue_per_closed": null,
+            "median_won_cycle_days": null,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": 0.0,
+          "open": 1,
+          "profile": null
+        },
+        {
+          "key": "MG Special",
+          "history": {
+            "closed": 1,
+            "won": 0,
+            "lost": 1,
+            "win_rate": {
+              "value": 0.0,
+              "low": 0.0,
+              "high": 0.793451
+            },
+            "revenue": 0,
+            "won_without_value": 0,
+            "ticket": null,
+            "revenue_per_closed": 0.0,
+            "median_won_cycle_days": null,
+            "median_lost_cycle_days": 138,
+            "without_account": 0
+          },
+          "revenue_share": 0.0,
+          "open": 1,
+          "profile": null
+        }
+      ],
+      "chance": {
+        "verdict": "too_few_closed",
+        "segments_tested": 0,
+        "segments_small": 3,
+        "closed_tested": 0,
+        "min_win_rate": null,
+        "max_win_rate": null,
+        "p_value": null,
+        "alpha": 0.007143
+      },
+      "drivers": null
+    },
+    {
+      "dimension": "seller",
+      "order": "alphabetical",
+      "segments": [
+        {
+          "key": "Ana Alfa",
+          "history": {
+            "closed": 1,
+            "won": 1,
+            "lost": 0,
+            "win_rate": {
+              "value": 1.0,
+              "low": 0.206549,
+              "high": 1.0
+            },
+            "revenue": 100,
+            "won_without_value": 0,
+            "ticket": 100.0,
+            "revenue_per_closed": 100.0,
+            "median_won_cycle_days": 10,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": 0.5,
+          "open": 8,
+          "profile": null
+        },
+        {
+          "key": "Bruno Beta",
+          "history": {
+            "closed": 2,
+            "won": 1,
+            "lost": 1,
+            "win_rate": {
+              "value": 0.5,
+              "low": 0.094531,
+              "high": 0.905469
+            },
+            "revenue": 100,
+            "won_without_value": 0,
+            "ticket": 100.0,
+            "revenue_per_closed": 50.0,
+            "median_won_cycle_days": 110,
+            "median_lost_cycle_days": 138,
+            "without_account": 0
+          },
+          "revenue_share": 0.5,
+          "open": 1,
+          "profile": null
+        },
+        {
+          "key": "Carla Gama",
+          "history": {
+            "closed": 0,
+            "won": 0,
+            "lost": 0,
+            "win_rate": null,
+            "revenue": 0,
+            "won_without_value": 0,
+            "ticket": null,
+            "revenue_per_closed": null,
+            "median_won_cycle_days": null,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": 0.0,
+          "open": 0,
+          "profile": null
+        }
+      ],
+      "chance": {
+        "verdict": "too_few_closed",
+        "segments_tested": 0,
+        "segments_small": 2,
+        "closed_tested": 0,
+        "min_win_rate": null,
+        "max_win_rate": null,
+        "p_value": null,
+        "alpha": 0.007143
+      },
+      "drivers": null
+    },
+    {
+      "dimension": "manager",
+      "order": "alphabetical",
+      "segments": [
+        {
+          "key": "Mara Um",
+          "history": {
+            "closed": 3,
+            "won": 2,
+            "lost": 1,
+            "win_rate": {
+              "value": 0.666667,
+              "low": 0.20766,
+              "high": 0.938508
+            },
+            "revenue": 200,
+            "won_without_value": 0,
+            "ticket": 100.0,
+            "revenue_per_closed": 66.67,
+            "median_won_cycle_days": 60,
+            "median_lost_cycle_days": 138,
+            "without_account": 0
+          },
+          "revenue_share": 1.0,
+          "open": 9,
+          "profile": null
+        },
+        {
+          "key": "Nina Dois",
+          "history": {
+            "closed": 0,
+            "won": 0,
+            "lost": 0,
+            "win_rate": null,
+            "revenue": 0,
+            "won_without_value": 0,
+            "ticket": null,
+            "revenue_per_closed": null,
+            "median_won_cycle_days": null,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": 0.0,
+          "open": 0,
+          "profile": null
+        }
+      ],
+      "chance": {
+        "verdict": "too_few_closed",
+        "segments_tested": 0,
+        "segments_small": 1,
+        "closed_tested": 0,
+        "min_win_rate": null,
+        "max_win_rate": null,
+        "p_value": null,
+        "alpha": 0.007143
+      },
+      "drivers": null
+    },
+    {
+      "dimension": "office",
+      "order": "alphabetical",
+      "segments": [
+        {
+          "key": "Central",
+          "history": {
+            "closed": 3,
+            "won": 2,
+            "lost": 1,
+            "win_rate": {
+              "value": 0.666667,
+              "low": 0.20766,
+              "high": 0.938508
+            },
+            "revenue": 200,
+            "won_without_value": 0,
+            "ticket": 100.0,
+            "revenue_per_closed": 66.67,
+            "median_won_cycle_days": 60,
+            "median_lost_cycle_days": 138,
+            "without_account": 0
+          },
+          "revenue_share": 1.0,
+          "open": 9,
+          "profile": null
+        },
+        {
+          "key": "East",
+          "history": {
+            "closed": 0,
+            "won": 0,
+            "lost": 0,
+            "win_rate": null,
+            "revenue": 0,
+            "won_without_value": 0,
+            "ticket": null,
+            "revenue_per_closed": null,
+            "median_won_cycle_days": null,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": 0.0,
+          "open": 0,
+          "profile": null
+        }
+      ],
+      "chance": {
+        "verdict": "too_few_closed",
+        "segments_tested": 0,
+        "segments_small": 1,
+        "closed_tested": 0,
+        "min_win_rate": null,
+        "max_win_rate": null,
+        "p_value": null,
+        "alpha": 0.007143
+      },
+      "drivers": null
+    },
+    {
+      "dimension": "sector",
+      "order": "revenue_desc",
+      "segments": [
+        {
+          "key": "retail",
+          "history": {
+            "closed": 1,
+            "won": 1,
+            "lost": 0,
+            "win_rate": {
+              "value": 1.0,
+              "low": 0.206549,
+              "high": 1.0
+            },
+            "revenue": 100,
+            "won_without_value": 0,
+            "ticket": 100.0,
+            "revenue_per_closed": 100.0,
+            "median_won_cycle_days": 110,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": 0.5,
+          "open": 2,
+          "profile": null
+        },
+        {
+          "key": "technology",
+          "history": {
+            "closed": 2,
+            "won": 1,
+            "lost": 1,
+            "win_rate": {
+              "value": 0.5,
+              "low": 0.094531,
+              "high": 0.905469
+            },
+            "revenue": 100,
+            "won_without_value": 0,
+            "ticket": 100.0,
+            "revenue_per_closed": 50.0,
+            "median_won_cycle_days": 10,
+            "median_lost_cycle_days": 138,
+            "without_account": 0
+          },
+          "revenue_share": 0.5,
+          "open": 1,
+          "profile": null
+        },
+        {
+          "key": null,
+          "history": {
+            "closed": 0,
+            "won": 0,
+            "lost": 0,
+            "win_rate": null,
+            "revenue": 0,
+            "won_without_value": 0,
+            "ticket": null,
+            "revenue_per_closed": null,
+            "median_won_cycle_days": null,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": 0.0,
+          "open": 6,
+          "profile": null
+        }
+      ],
+      "chance": {
+        "verdict": "too_few_closed",
+        "segments_tested": 0,
+        "segments_small": 2,
+        "closed_tested": 0,
+        "min_win_rate": null,
+        "max_win_rate": null,
+        "p_value": null,
+        "alpha": 0.007143
+      },
+      "drivers": null
+    },
+    {
+      "dimension": "account",
+      "order": "revenue_desc",
+      "segments": [
+        {
+          "key": "Acme",
+          "history": {
+            "closed": 2,
+            "won": 1,
+            "lost": 1,
+            "win_rate": {
+              "value": 0.5,
+              "low": 0.094531,
+              "high": 0.905469
+            },
+            "revenue": 100,
+            "won_without_value": 0,
+            "ticket": 100.0,
+            "revenue_per_closed": 50.0,
+            "median_won_cycle_days": 10,
+            "median_lost_cycle_days": 138,
+            "without_account": 0
+          },
+          "revenue_share": 0.5,
+          "open": 1,
+          "profile": {
+            "sector": "technology",
+            "location": "Philippines",
+            "size": "4",
+            "products_bought": 1,
+            "products_total": 4,
+            "sellers": 2
+          }
+        },
+        {
+          "key": "Beta Corp",
+          "history": {
+            "closed": 1,
+            "won": 1,
+            "lost": 0,
+            "win_rate": {
+              "value": 1.0,
+              "low": 0.206549,
+              "high": 1.0
+            },
+            "revenue": 100,
+            "won_without_value": 0,
+            "ticket": 100.0,
+            "revenue_per_closed": 100.0,
+            "median_won_cycle_days": 110,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": 0.5,
+          "open": 2,
+          "profile": {
+            "sector": "retail",
+            "location": "United States",
+            "size": "1",
+            "products_bought": 1,
+            "products_total": 4,
+            "sellers": 1
+          }
+        },
+        {
+          "key": null,
+          "history": {
+            "closed": 0,
+            "won": 0,
+            "lost": 0,
+            "win_rate": null,
+            "revenue": 0,
+            "won_without_value": 0,
+            "ticket": null,
+            "revenue_per_closed": null,
+            "median_won_cycle_days": null,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": 0.0,
+          "open": 6,
+          "profile": null
+        }
+      ],
+      "chance": {
+        "verdict": "too_few_closed",
+        "segments_tested": 0,
+        "segments_small": 2,
+        "closed_tested": 0,
+        "min_win_rate": null,
+        "max_win_rate": null,
+        "p_value": null,
+        "alpha": 0.007143
+      },
+      "drivers": null
+    },
+    {
+      "dimension": "size",
+      "order": "revenue_desc",
+      "segments": [
+        {
+          "key": "1",
+          "history": {
+            "closed": 1,
+            "won": 1,
+            "lost": 0,
+            "win_rate": {
+              "value": 1.0,
+              "low": 0.206549,
+              "high": 1.0
+            },
+            "revenue": 100,
+            "won_without_value": 0,
+            "ticket": 100.0,
+            "revenue_per_closed": 100.0,
+            "median_won_cycle_days": 110,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": 0.5,
+          "open": 2,
+          "profile": null
+        },
+        {
+          "key": "4",
+          "history": {
+            "closed": 2,
+            "won": 1,
+            "lost": 1,
+            "win_rate": {
+              "value": 0.5,
+              "low": 0.094531,
+              "high": 0.905469
+            },
+            "revenue": 100,
+            "won_without_value": 0,
+            "ticket": 100.0,
+            "revenue_per_closed": 50.0,
+            "median_won_cycle_days": 10,
+            "median_lost_cycle_days": 138,
+            "without_account": 0
+          },
+          "revenue_share": 0.5,
+          "open": 1,
+          "profile": null
+        },
+        {
+          "key": null,
+          "history": {
+            "closed": 0,
+            "won": 0,
+            "lost": 0,
+            "win_rate": null,
+            "revenue": 0,
+            "won_without_value": 0,
+            "ticket": null,
+            "revenue_per_closed": null,
+            "median_won_cycle_days": null,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": 0.0,
+          "open": 6,
+          "profile": null
+        }
+      ],
+      "chance": {
+        "verdict": "too_few_closed",
+        "segments_tested": 0,
+        "segments_small": 2,
+        "closed_tested": 0,
+        "min_win_rate": null,
+        "max_win_rate": null,
+        "p_value": null,
+        "alpha": 0.007143
+      },
+      "drivers": null
+    }
+  ],
+  "matrix": {
+    "products": [
+      "GTX Pro",
+      "GTX Basic",
+      "MG Special"
+    ],
+    "rows": [
+      {
+        "seller": "Ana Alfa",
+        "closed": 1,
+        "cells": [
+          {
+            "product": "GTX Pro",
+            "closed": 1,
+            "mix_share": 1.0
+          },
+          {
+            "product": "GTX Basic",
+            "closed": 0,
+            "mix_share": 0.0
+          },
+          {
+            "product": "MG Special",
+            "closed": 0,
+            "mix_share": 0.0
+          }
+        ]
+      },
+      {
+        "seller": "Bruno Beta",
+        "closed": 2,
+        "cells": [
+          {
+            "product": "GTX Pro",
+            "closed": 0,
+            "mix_share": 0.0
+          },
+          {
+            "product": "GTX Basic",
+            "closed": 1,
+            "mix_share": 0.5
+          },
+          {
+            "product": "MG Special",
+            "closed": 1,
+            "mix_share": 0.5
+          }
+        ]
+      },
+      {
+        "seller": "Carla Gama",
+        "closed": 0,
+        "cells": [
+          {
+            "product": "GTX Pro",
+            "closed": 0,
+            "mix_share": null
+          },
+          {
+            "product": "GTX Basic",
+            "closed": 0,
+            "mix_share": null
+          },
+          {
+            "product": "MG Special",
+            "closed": 0,
+            "mix_share": null
+          }
+        ]
+      }
+    ]
+  },
+  "crosstabs": [
+    {
+      "id": "account_product",
+      "row_dimension": "account",
+      "column_dimension": "product",
+      "columns": [
+        "GTX Pro",
+        "GTX Basic",
+        "MG Special"
+      ],
+      "rows": [
+        {
+          "key": "Acme",
+          "closed": 2,
+          "cells": [
+            {
+              "key": "GTX Pro",
+              "closed": 1,
+              "share": 0.5
+            },
+            {
+              "key": "GTX Basic",
+              "closed": 0,
+              "share": 0.0
+            },
+            {
+              "key": "MG Special",
+              "closed": 1,
+              "share": 0.5
+            }
+          ]
+        },
+        {
+          "key": "Beta Corp",
+          "closed": 1,
+          "cells": [
+            {
+              "key": "GTX Pro",
+              "closed": 0,
+              "share": 0.0
+            },
+            {
+              "key": "GTX Basic",
+              "closed": 1,
+              "share": 1.0
+            },
+            {
+              "key": "MG Special",
+              "closed": 0,
+              "share": 0.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sector_product",
+      "row_dimension": "sector",
+      "column_dimension": "product",
+      "columns": [
+        "GTX Pro",
+        "GTX Basic",
+        "MG Special"
+      ],
+      "rows": [
+        {
+          "key": "technology",
+          "closed": 2,
+          "cells": [
+            {
+              "key": "GTX Pro",
+              "closed": 1,
+              "share": 0.5
+            },
+            {
+              "key": "GTX Basic",
+              "closed": 0,
+              "share": 0.0
+            },
+            {
+              "key": "MG Special",
+              "closed": 1,
+              "share": 0.5
+            }
+          ]
+        },
+        {
+          "key": "retail",
+          "closed": 1,
+          "cells": [
+            {
+              "key": "GTX Pro",
+              "closed": 0,
+              "share": 0.0
+            },
+            {
+              "key": "GTX Basic",
+              "closed": 1,
+              "share": 1.0
+            },
+            {
+              "key": "MG Special",
+              "closed": 0,
+              "share": 0.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "seller_sector",
+      "row_dimension": "seller",
+      "column_dimension": "sector",
+      "columns": [
+        "retail",
+        "technology"
+      ],
+      "rows": [
+        {
+          "key": "Ana Alfa",
+          "closed": 1,
+          "cells": [
+            {
+              "key": "retail",
+              "closed": 0,
+              "share": 0.0
+            },
+            {
+              "key": "technology",
+              "closed": 1,
+              "share": 1.0
+            }
+          ]
+        },
+        {
+          "key": "Bruno Beta",
+          "closed": 2,
+          "cells": [
+            {
+              "key": "retail",
+              "closed": 1,
+              "share": 0.5
+            },
+            {
+              "key": "technology",
+              "closed": 1,
+              "share": 0.5
+            }
+          ]
+        },
+        {
+          "key": "Carla Gama",
+          "closed": 0,
+          "cells": [
+            {
+              "key": "retail",
+              "closed": 0,
+              "share": null
+            },
+            {
+              "key": "technology",
+              "closed": 0,
+              "share": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sector_office",
+      "row_dimension": "sector",
+      "column_dimension": "office",
+      "columns": [
+        "Central"
+      ],
+      "rows": [
+        {
+          "key": "technology",
+          "closed": 2,
+          "cells": [
+            {
+              "key": "Central",
+              "closed": 2,
+              "share": 1.0
+            }
+          ]
+        },
+        {
+          "key": "retail",
+          "closed": 1,
+          "cells": [
+            {
+              "key": "Central",
+              "closed": 1,
+              "share": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "location_office",
+      "row_dimension": "location",
+      "column_dimension": "office",
+      "columns": [
+        "Central"
+      ],
+      "rows": [
+        {
+          "key": "Philippines",
+          "closed": 2,
+          "cells": [
+            {
+              "key": "Central",
+              "closed": 2,
+              "share": 1.0
+            }
+          ]
+        },
+        {
+          "key": "United States",
+          "closed": 1,
+          "cells": [
+            {
+              "key": "Central",
+              "closed": 1,
+              "share": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "cycle_bands": [
+    {
+      "low": 0,
+      "high": 15,
+      "won": 1,
+      "lost": 0,
+      "win_rate": 1.0
+    },
+    {
+      "low": 16,
+      "high": 30,
+      "won": 0,
+      "lost": 0,
+      "win_rate": null
+    },
+    {
+      "low": 31,
+      "high": 60,
+      "won": 0,
+      "lost": 0,
+      "win_rate": null
+    },
+    {
+      "low": 61,
+      "high": 90,
+      "won": 0,
+      "lost": 0,
+      "win_rate": null
+    },
+    {
+      "low": 91,
+      "high": 100,
+      "won": 0,
+      "lost": 0,
+      "win_rate": null
+    },
+    {
+      "low": 101,
+      "high": 138,
+      "won": 1,
+      "lost": 1,
+      "win_rate": 0.5
+    }
+  ],
+  "monthly": [
+    {
+      "month": "2017-03",
+      "engaged": 1,
+      "won": 1,
+      "lost": 0
+    },
+    {
+      "month": "2017-04",
+      "engaged": 0,
+      "won": 0,
+      "lost": 0
+    },
+    {
+      "month": "2017-05",
+      "engaged": 0,
+      "won": 0,
+      "lost": 0
+    },
+    {
+      "month": "2017-06",
+      "engaged": 1,
+      "won": 0,
+      "lost": 0
+    },
+    {
+      "month": "2017-07",
+      "engaged": 0,
+      "won": 0,
+      "lost": 0
+    },
+    {
+      "month": "2017-08",
+      "engaged": 3,
+      "won": 0,
+      "lost": 0
+    },
+    {
+      "month": "2017-09",
+      "engaged": 2,
+      "won": 0,
+      "lost": 0
+    },
+    {
+      "month": "2017-10",
+      "engaged": 0,
+      "won": 1,
+      "lost": 0
+    },
+    {
+      "month": "2017-11",
+      "engaged": 1,
+      "won": 0,
+      "lost": 0
+    },
+    {
+      "month": "2017-12",
+      "engaged": 3,
+      "won": 0,
+      "lost": 1
+    }
+  ]
+}

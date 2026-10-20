@@ -1,0 +1,30 @@
+{
+  "404": {
+    "detail": "Vendedor 'Fulano' não encontrado em sales_teams.csv.",
+    "code": "seller_not_found",
+    "params": {
+      "seller": "Fulano"
+    }
+  },
+  "422": {
+    "detail": "Data inválida: '31/12/2017'. Use o formato AAAA-MM-DD, a partir de 2017-12-31.",
+    "code": "invalid_as_of_format",
+    "params": {
+      "value": "31/12/2017",
+      "minimum": "2017-12-31"
+    }
+  },
+  "503": {
+    "detail": "Arquivo ausente: sales_pipeline.csv, products.csv, sales_teams.csv, accounts.csv. Pasta esperada: tests/missing-data/. Baixe o dataset pelo navegador em https://www.kaggle.com/datasets/agungpambudi/crm-sales-predictive-analytics e copie os CSVs para essa pasta (passo a passo em data/raw/README.md).",
+    "code": "data_file_missing",
+    "params": {
+      "files": [
+        "sales_pipeline.csv",
+        "products.csv",
+        "sales_teams.csv",
+        "accounts.csv"
+      ],
+      "folder": "tests/missing-data"
+    }
+  }
+}

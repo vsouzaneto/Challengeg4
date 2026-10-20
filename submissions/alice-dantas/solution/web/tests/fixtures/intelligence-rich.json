@@ -1,0 +1,2121 @@
+{
+  "meta": {
+    "as_of": "2017-12-31",
+    "won_cycle_median_days": 65,
+    "won_cycle_limit_days": 88,
+    "cycle_limit_days": 93,
+    "cycle_percentile": 90,
+    "audited": false,
+    "contract_version": 7
+  },
+  "ordering": {
+    "group_order": [
+      "focar",
+      "qualificar",
+      "acompanhar",
+      "revisar",
+      "nao_pontuavel"
+    ],
+    "within_group": [
+      "value_band",
+      "sales_price_desc",
+      "opportunity_id"
+    ],
+    "age_affects_order": false
+  },
+  "filter": {
+    "product": null,
+    "seller": null,
+    "manager": null,
+    "office": null,
+    "sector": null,
+    "account": null,
+    "size": null
+  },
+  "options": {
+    "products": [
+      "Alfa Pro",
+      "Beta Plus",
+      "Delta Mini",
+      "Gama Basic"
+    ],
+    "sectors": [
+      "finance",
+      "medical",
+      "retail"
+    ],
+    "accounts": [
+      {
+        "name": "Cliente 1",
+        "sector": "retail",
+        "location": "United States",
+        "size": "1"
+      },
+      {
+        "name": "Cliente 2",
+        "sector": "retail",
+        "location": "United States",
+        "size": "1"
+      },
+      {
+        "name": "Cliente 3",
+        "sector": "retail",
+        "location": "United States",
+        "size": "2"
+      },
+      {
+        "name": "Cliente 4",
+        "sector": "retail",
+        "location": "United States",
+        "size": "2"
+      },
+      {
+        "name": "Cliente 5",
+        "sector": "retail",
+        "location": "United States",
+        "size": "3"
+      },
+      {
+        "name": "Cliente 6",
+        "sector": "retail",
+        "location": "United States",
+        "size": "3"
+      },
+      {
+        "name": "Cliente 7",
+        "sector": "finance",
+        "location": "United States",
+        "size": "4"
+      },
+      {
+        "name": "Cliente 8",
+        "sector": "medical",
+        "location": "United States",
+        "size": "4"
+      }
+    ],
+    "sizes": [
+      {
+        "key": "1",
+        "low": 100.0,
+        "high": 275.0,
+        "accounts": 2
+      },
+      {
+        "key": "2",
+        "low": 275.0,
+        "high": 450.0,
+        "accounts": 2
+      },
+      {
+        "key": "3",
+        "low": 450.0,
+        "high": 625.0,
+        "accounts": 2
+      },
+      {
+        "key": "4",
+        "low": 625.0,
+        "high": 800.0,
+        "accounts": 2
+      }
+    ]
+  },
+  "history": {
+    "closed": 121,
+    "won": 64,
+    "lost": 57,
+    "win_rate": {
+      "value": 0.528926,
+      "low": 0.44047,
+      "high": 0.615601
+    },
+    "revenue": 149900,
+    "won_without_value": 0,
+    "ticket": 2342.19,
+    "revenue_per_closed": 1238.84,
+    "median_won_cycle_days": 65,
+    "median_lost_cycle_days": 9,
+    "without_account": 0
+  },
+  "history_empty": null,
+  "open": {
+    "summary": {
+      "total": 6,
+      "focar": 1,
+      "acompanhar": 1,
+      "revisar": 2,
+      "qualificar": 2,
+      "nao_pontuavel": 0,
+      "without_account": 3
+    },
+    "list_value": 11940,
+    "without_list_price": 0,
+    "excluded_without_account": null,
+    "empty": null
+  },
+  "diagnostics": [
+    {
+      "code": "engaging_beyond_longest_cycle",
+      "params": {
+        "group": "revisar",
+        "count": 2,
+        "engaging": 4,
+        "share": 0.5,
+        "cycle_limit_days": 93
+      }
+    },
+    {
+      "code": "open_without_account",
+      "params": {
+        "count": 3,
+        "open": 6,
+        "share": 0.5,
+        "closed_without_account": 0,
+        "closed": 121
+      }
+    },
+    {
+      "code": "prospecting_without_engage_date",
+      "params": {
+        "group": "qualificar",
+        "count": 2,
+        "prospecting": 2
+      }
+    },
+    {
+      "code": "sellers_without_opportunities",
+      "params": {
+        "count": 1,
+        "team": 6,
+        "sellers": [
+          "Fabio Zeta"
+        ]
+      }
+    },
+    {
+      "code": "quarter_end_outcome_mix",
+      "params": {
+        "quarter_end_closed": 64,
+        "quarter_end_win_rate": 1.0,
+        "other_closed": 57,
+        "other_win_rate": 0.0
+      }
+    },
+    {
+      "code": "engagement_inflow_drop",
+      "params": {
+        "recent": [
+          {
+            "month": "2017-11",
+            "engaged": 0
+          },
+          {
+            "month": "2017-12",
+            "engaged": 1
+          }
+        ],
+        "base_average": 9.4,
+        "base_first_month": "2017-06",
+        "base_last_month": "2017-10"
+      }
+    },
+    {
+      "code": "accounts_shared_by_sellers",
+      "params": {
+        "median_sellers": 4,
+        "max_sellers": 4,
+        "accounts": 8
+      }
+    }
+  ],
+  "findings": [
+    {
+      "code": "win_rate_within_chance",
+      "params": {
+        "dimensions": [
+          "seller",
+          "manager",
+          "office",
+          "size"
+        ],
+        "closed": 121
+      }
+    },
+    {
+      "code": "win_rate_beyond_chance",
+      "params": {
+        "dimension": "product",
+        "chance": {
+          "verdict": "beyond_chance",
+          "segments_tested": 4,
+          "segments_small": 0,
+          "closed_tested": 121,
+          "min_win_rate": 0.2,
+          "max_win_rate": 0.903226,
+          "p_value": 0.0,
+          "alpha": 0.007143
+        }
+      }
+    },
+    {
+      "code": "revenue_concentrated",
+      "params": {
+        "dimension": "product",
+        "top": 1,
+        "of": 4,
+        "share": 0.933956,
+        "keys": [
+          "Alfa Pro"
+        ]
+      }
+    },
+    {
+      "code": "revenue_gap_drivers",
+      "params": {
+        "dimension": "seller",
+        "drivers": {
+          "segments_used": 5,
+          "spread_ratio": 1.22,
+          "volume_share": 0.092469,
+          "conversion_share": 0.517293,
+          "ticket_share": 0.390238,
+          "main": [
+            "conversion",
+            "ticket"
+          ],
+          "negligible": []
+        }
+      }
+    },
+    {
+      "code": "revenue_gap_drivers",
+      "params": {
+        "dimension": "product",
+        "drivers": {
+          "segments_used": 4,
+          "spread_ratio": 233.33,
+          "volume_share": 0.006558,
+          "conversion_share": 0.136648,
+          "ticket_share": 0.856794,
+          "main": [
+            "ticket"
+          ],
+          "negligible": [
+            "volume"
+          ]
+        }
+      }
+    },
+    {
+      "code": "revenue_gap_drivers",
+      "params": {
+        "dimension": "size",
+        "drivers": {
+          "segments_used": 4,
+          "spread_ratio": 1.35,
+          "volume_share": 1.094166,
+          "conversion_share": 0.018804,
+          "ticket_share": -0.11297,
+          "main": [
+            "volume"
+          ],
+          "negligible": [
+            "conversion"
+          ]
+        }
+      }
+    },
+    {
+      "code": "fast_losses",
+      "params": {
+        "median_lost_cycle_days": 9,
+        "median_won_cycle_days": 65,
+        "lost": 57,
+        "won": 64
+      }
+    },
+    {
+      "code": "account_product_coverage",
+      "params": {
+        "accounts": 8,
+        "products": 4,
+        "distribution": [
+          {
+            "bought": 2,
+            "accounts": 2
+          },
+          {
+            "bought": 3,
+            "accounts": 6
+          }
+        ],
+        "most_missing": "Delta Mini",
+        "most_missing_accounts": 4
+      }
+    }
+  ],
+  "breakdowns": [
+    {
+      "dimension": "product",
+      "order": "revenue_desc",
+      "segments": [
+        {
+          "key": "Alfa Pro",
+          "history": {
+            "closed": 31,
+            "won": 28,
+            "lost": 3,
+            "win_rate": {
+              "value": 0.903226,
+              "low": 0.751001,
+              "high": 0.966535
+            },
+            "revenue": 140000,
+            "won_without_value": 0,
+            "ticket": 5000.0,
+            "revenue_per_closed": 4516.13,
+            "median_won_cycle_days": 65,
+            "median_lost_cycle_days": 5,
+            "without_account": 0
+          },
+          "revenue_share": 0.933956,
+          "open": 2,
+          "profile": null
+        },
+        {
+          "key": "Beta Plus",
+          "history": {
+            "closed": 30,
+            "won": 6,
+            "lost": 24,
+            "win_rate": {
+              "value": 0.2,
+              "low": 0.095051,
+              "high": 0.373057
+            },
+            "revenue": 4800,
+            "won_without_value": 0,
+            "ticket": 800.0,
+            "revenue_per_closed": 160.0,
+            "median_won_cycle_days": 48,
+            "median_lost_cycle_days": 10,
+            "without_account": 0
+          },
+          "revenue_share": 0.032021,
+          "open": 2,
+          "profile": null
+        },
+        {
+          "key": "Gama Basic",
+          "history": {
+            "closed": 30,
+            "won": 15,
+            "lost": 15,
+            "win_rate": {
+              "value": 0.5,
+              "low": 0.331541,
+              "high": 0.668459
+            },
+            "revenue": 4500,
+            "won_without_value": 0,
+            "ticket": 300.0,
+            "revenue_per_closed": 150.0,
+            "median_won_cycle_days": 58,
+            "median_lost_cycle_days": 10,
+            "without_account": 0
+          },
+          "revenue_share": 0.03002,
+          "open": 1,
+          "profile": null
+        },
+        {
+          "key": "Delta Mini",
+          "history": {
+            "closed": 30,
+            "won": 15,
+            "lost": 15,
+            "win_rate": {
+              "value": 0.5,
+              "low": 0.331541,
+              "high": 0.668459
+            },
+            "revenue": 600,
+            "won_without_value": 0,
+            "ticket": 40.0,
+            "revenue_per_closed": 20.0,
+            "median_won_cycle_days": 65,
+            "median_lost_cycle_days": 9,
+            "without_account": 0
+          },
+          "revenue_share": 0.004003,
+          "open": 1,
+          "profile": null
+        }
+      ],
+      "chance": {
+        "verdict": "beyond_chance",
+        "segments_tested": 4,
+        "segments_small": 0,
+        "closed_tested": 121,
+        "min_win_rate": 0.2,
+        "max_win_rate": 0.903226,
+        "p_value": 0.0,
+        "alpha": 0.007143
+      },
+      "drivers": {
+        "segments_used": 4,
+        "spread_ratio": 233.33,
+        "volume_share": 0.006558,
+        "conversion_share": 0.136648,
+        "ticket_share": 0.856794,
+        "main": [
+          "ticket"
+        ],
+        "negligible": [
+          "volume"
+        ]
+      }
+    },
+    {
+      "dimension": "seller",
+      "order": "alphabetical",
+      "segments": [
+        {
+          "key": "Ana Alfa",
+          "history": {
+            "closed": 25,
+            "won": 14,
+            "lost": 11,
+            "win_rate": {
+              "value": 0.56,
+              "low": 0.370673,
+              "high": 0.733344
+            },
+            "revenue": 32620,
+            "won_without_value": 0,
+            "ticket": 2330.0,
+            "revenue_per_closed": 1304.8,
+            "median_won_cycle_days": 51,
+            "median_lost_cycle_days": 7,
+            "without_account": 0
+          },
+          "revenue_share": 0.217612,
+          "open": 2,
+          "profile": null
+        },
+        {
+          "key": "Bruno Beta",
+          "history": {
+            "closed": 24,
+            "won": 12,
+            "lost": 12,
+            "win_rate": {
+              "value": 0.5,
+              "low": 0.314274,
+              "high": 0.685726
+            },
+            "revenue": 26820,
+            "won_without_value": 0,
+            "ticket": 2235.0,
+            "revenue_per_closed": 1117.5,
+            "median_won_cycle_days": 76,
+            "median_lost_cycle_days": 12,
+            "without_account": 0
+          },
+          "revenue_share": 0.178919,
+          "open": 1,
+          "profile": null
+        },
+        {
+          "key": "Carla Gama",
+          "history": {
+            "closed": 24,
+            "won": 13,
+            "lost": 11,
+            "win_rate": {
+              "value": 0.541667,
+              "low": 0.350749,
+              "high": 0.721087
+            },
+            "revenue": 31820,
+            "won_without_value": 0,
+            "ticket": 2447.69,
+            "revenue_per_closed": 1325.83,
+            "median_won_cycle_days": 65,
+            "median_lost_cycle_days": 9,
+            "without_account": 0
+          },
+          "revenue_share": 0.212275,
+          "open": 1,
+          "profile": null
+        },
+        {
+          "key": "Davi Delta",
+          "history": {
+            "closed": 24,
+            "won": 12,
+            "lost": 12,
+            "win_rate": {
+              "value": 0.5,
+              "low": 0.314274,
+              "high": 0.685726
+            },
+            "revenue": 26820,
+            "won_without_value": 0,
+            "ticket": 2235.0,
+            "revenue_per_closed": 1117.5,
+            "median_won_cycle_days": 48,
+            "median_lost_cycle_days": 8,
+            "without_account": 0
+          },
+          "revenue_share": 0.178919,
+          "open": 1,
+          "profile": null
+        },
+        {
+          "key": "Eva Epsilon",
+          "history": {
+            "closed": 24,
+            "won": 13,
+            "lost": 11,
+            "win_rate": {
+              "value": 0.541667,
+              "low": 0.350749,
+              "high": 0.721087
+            },
+            "revenue": 31820,
+            "won_without_value": 0,
+            "ticket": 2447.69,
+            "revenue_per_closed": 1325.83,
+            "median_won_cycle_days": 72,
+            "median_lost_cycle_days": 12,
+            "without_account": 0
+          },
+          "revenue_share": 0.212275,
+          "open": 1,
+          "profile": null
+        },
+        {
+          "key": "Fabio Zeta",
+          "history": {
+            "closed": 0,
+            "won": 0,
+            "lost": 0,
+            "win_rate": null,
+            "revenue": 0,
+            "won_without_value": 0,
+            "ticket": null,
+            "revenue_per_closed": null,
+            "median_won_cycle_days": null,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": 0.0,
+          "open": 0,
+          "profile": null
+        }
+      ],
+      "chance": {
+        "verdict": "within_chance",
+        "segments_tested": 5,
+        "segments_small": 0,
+        "closed_tested": 121,
+        "min_win_rate": 0.5,
+        "max_win_rate": 0.56,
+        "p_value": 0.9905,
+        "alpha": 0.007143
+      },
+      "drivers": {
+        "segments_used": 5,
+        "spread_ratio": 1.22,
+        "volume_share": 0.092469,
+        "conversion_share": 0.517293,
+        "ticket_share": 0.390238,
+        "main": [
+          "conversion",
+          "ticket"
+        ],
+        "negligible": []
+      }
+    },
+    {
+      "dimension": "manager",
+      "order": "alphabetical",
+      "segments": [
+        {
+          "key": "Mara Um",
+          "history": {
+            "closed": 49,
+            "won": 26,
+            "lost": 23,
+            "win_rate": {
+              "value": 0.530612,
+              "low": 0.393809,
+              "high": 0.662965
+            },
+            "revenue": 59440,
+            "won_without_value": 0,
+            "ticket": 2286.15,
+            "revenue_per_closed": 1213.06,
+            "median_won_cycle_days": 58,
+            "median_lost_cycle_days": 8,
+            "without_account": 0
+          },
+          "revenue_share": 0.396531,
+          "open": 3,
+          "profile": null
+        },
+        {
+          "key": "Nina Dois",
+          "history": {
+            "closed": 72,
+            "won": 38,
+            "lost": 34,
+            "win_rate": {
+              "value": 0.527778,
+              "low": 0.414007,
+              "high": 0.638735
+            },
+            "revenue": 90460,
+            "won_without_value": 0,
+            "ticket": 2380.53,
+            "revenue_per_closed": 1256.39,
+            "median_won_cycle_days": 65,
+            "median_lost_cycle_days": 10,
+            "without_account": 0
+          },
+          "revenue_share": 0.603469,
+          "open": 3,
+          "profile": null
+        }
+      ],
+      "chance": {
+        "verdict": "within_chance",
+        "segments_tested": 2,
+        "segments_small": 0,
+        "closed_tested": 121,
+        "min_win_rate": 0.527778,
+        "max_win_rate": 0.530612,
+        "p_value": 0.9755,
+        "alpha": 0.007143
+      },
+      "drivers": null
+    },
+    {
+      "dimension": "office",
+      "order": "alphabetical",
+      "segments": [
+        {
+          "key": "Central",
+          "history": {
+            "closed": 49,
+            "won": 26,
+            "lost": 23,
+            "win_rate": {
+              "value": 0.530612,
+              "low": 0.393809,
+              "high": 0.662965
+            },
+            "revenue": 59440,
+            "won_without_value": 0,
+            "ticket": 2286.15,
+            "revenue_per_closed": 1213.06,
+            "median_won_cycle_days": 58,
+            "median_lost_cycle_days": 8,
+            "without_account": 0
+          },
+          "revenue_share": 0.396531,
+          "open": 3,
+          "profile": null
+        },
+        {
+          "key": "East",
+          "history": {
+            "closed": 72,
+            "won": 38,
+            "lost": 34,
+            "win_rate": {
+              "value": 0.527778,
+              "low": 0.414007,
+              "high": 0.638735
+            },
+            "revenue": 90460,
+            "won_without_value": 0,
+            "ticket": 2380.53,
+            "revenue_per_closed": 1256.39,
+            "median_won_cycle_days": 65,
+            "median_lost_cycle_days": 10,
+            "without_account": 0
+          },
+          "revenue_share": 0.603469,
+          "open": 3,
+          "profile": null
+        }
+      ],
+      "chance": {
+        "verdict": "within_chance",
+        "segments_tested": 2,
+        "segments_small": 0,
+        "closed_tested": 121,
+        "min_win_rate": 0.527778,
+        "max_win_rate": 0.530612,
+        "p_value": 0.9755,
+        "alpha": 0.007143
+      },
+      "drivers": null
+    },
+    {
+      "dimension": "sector",
+      "order": "revenue_desc",
+      "segments": [
+        {
+          "key": "retail",
+          "history": {
+            "closed": 97,
+            "won": 51,
+            "lost": 46,
+            "win_rate": {
+              "value": 0.525773,
+              "low": 0.427328,
+              "high": 0.622255
+            },
+            "revenue": 118080,
+            "won_without_value": 0,
+            "ticket": 2315.29,
+            "revenue_per_closed": 1217.32,
+            "median_won_cycle_days": 65,
+            "median_lost_cycle_days": 9,
+            "without_account": 0
+          },
+          "revenue_share": 0.787725,
+          "open": 3,
+          "profile": null
+        },
+        {
+          "key": "medical",
+          "history": {
+            "closed": 12,
+            "won": 7,
+            "lost": 5,
+            "win_rate": {
+              "value": 0.583333,
+              "low": 0.319511,
+              "high": 0.80674
+            },
+            "revenue": 15920,
+            "won_without_value": 0,
+            "ticket": 2274.29,
+            "revenue_per_closed": 1326.67,
+            "median_won_cycle_days": 65,
+            "median_lost_cycle_days": 10,
+            "without_account": 0
+          },
+          "revenue_share": 0.106204,
+          "open": 0,
+          "profile": null
+        },
+        {
+          "key": "finance",
+          "history": {
+            "closed": 12,
+            "won": 6,
+            "lost": 6,
+            "win_rate": {
+              "value": 0.5,
+              "low": 0.253782,
+              "high": 0.746218
+            },
+            "revenue": 15900,
+            "won_without_value": 0,
+            "ticket": 2650.0,
+            "revenue_per_closed": 1325.0,
+            "median_won_cycle_days": 58,
+            "median_lost_cycle_days": 9,
+            "without_account": 0
+          },
+          "revenue_share": 0.106071,
+          "open": 0,
+          "profile": null
+        },
+        {
+          "key": null,
+          "history": {
+            "closed": 0,
+            "won": 0,
+            "lost": 0,
+            "win_rate": null,
+            "revenue": 0,
+            "won_without_value": 0,
+            "ticket": null,
+            "revenue_per_closed": null,
+            "median_won_cycle_days": null,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": 0.0,
+          "open": 3,
+          "profile": null
+        }
+      ],
+      "chance": {
+        "verdict": "too_few_closed",
+        "segments_tested": 1,
+        "segments_small": 2,
+        "closed_tested": 97,
+        "min_win_rate": null,
+        "max_win_rate": null,
+        "p_value": null,
+        "alpha": 0.007143
+      },
+      "drivers": null
+    },
+    {
+      "dimension": "account",
+      "order": "revenue_desc",
+      "segments": [
+        {
+          "key": "Cliente 1",
+          "history": {
+            "closed": 17,
+            "won": 9,
+            "lost": 8,
+            "win_rate": {
+              "value": 0.529412,
+              "low": 0.309632,
+              "high": 0.738349
+            },
+            "revenue": 22000,
+            "won_without_value": 0,
+            "ticket": 2444.44,
+            "revenue_per_closed": 1294.12,
+            "median_won_cycle_days": 72,
+            "median_lost_cycle_days": 10,
+            "without_account": 0
+          },
+          "revenue_share": 0.146765,
+          "open": 0,
+          "profile": {
+            "sector": "retail",
+            "location": "United States",
+            "size": "1",
+            "products_bought": 3,
+            "products_total": 4,
+            "sellers": 4
+          }
+        },
+        {
+          "key": "Cliente 2",
+          "history": {
+            "closed": 16,
+            "won": 9,
+            "lost": 7,
+            "win_rate": {
+              "value": 0.5625,
+              "low": 0.331786,
+              "high": 0.769013
+            },
+            "revenue": 20960,
+            "won_without_value": 0,
+            "ticket": 2328.89,
+            "revenue_per_closed": 1310.0,
+            "median_won_cycle_days": 65,
+            "median_lost_cycle_days": 12,
+            "without_account": 0
+          },
+          "revenue_share": 0.139827,
+          "open": 1,
+          "profile": {
+            "sector": "retail",
+            "location": "United States",
+            "size": "1",
+            "products_bought": 3,
+            "products_total": 4,
+            "sellers": 4
+          }
+        },
+        {
+          "key": "Cliente 6",
+          "history": {
+            "closed": 16,
+            "won": 9,
+            "lost": 7,
+            "win_rate": {
+              "value": 0.5625,
+              "low": 0.331786,
+              "high": 0.769013
+            },
+            "revenue": 20960,
+            "won_without_value": 0,
+            "ticket": 2328.89,
+            "revenue_per_closed": 1310.0,
+            "median_won_cycle_days": 65,
+            "median_lost_cycle_days": 8,
+            "without_account": 0
+          },
+          "revenue_share": 0.139827,
+          "open": 0,
+          "profile": {
+            "sector": "retail",
+            "location": "United States",
+            "size": "3",
+            "products_bought": 3,
+            "products_total": 4,
+            "sellers": 4
+          }
+        },
+        {
+          "key": "Cliente 4",
+          "history": {
+            "closed": 16,
+            "won": 8,
+            "lost": 8,
+            "win_rate": {
+              "value": 0.5,
+              "low": 0.279996,
+              "high": 0.720004
+            },
+            "revenue": 20160,
+            "won_without_value": 0,
+            "ticket": 2520.0,
+            "revenue_per_closed": 1260.0,
+            "median_won_cycle_days": 65,
+            "median_lost_cycle_days": 10,
+            "without_account": 0
+          },
+          "revenue_share": 0.13449,
+          "open": 1,
+          "profile": {
+            "sector": "retail",
+            "location": "United States",
+            "size": "2",
+            "products_bought": 2,
+            "products_total": 4,
+            "sellers": 4
+          }
+        },
+        {
+          "key": "Cliente 3",
+          "history": {
+            "closed": 16,
+            "won": 8,
+            "lost": 8,
+            "win_rate": {
+              "value": 0.5,
+              "low": 0.279996,
+              "high": 0.720004
+            },
+            "revenue": 17000,
+            "won_without_value": 0,
+            "ticket": 2125.0,
+            "revenue_per_closed": 1062.5,
+            "median_won_cycle_days": 58,
+            "median_lost_cycle_days": 9,
+            "without_account": 0
+          },
+          "revenue_share": 0.113409,
+          "open": 1,
+          "profile": {
+            "sector": "retail",
+            "location": "United States",
+            "size": "2",
+            "products_bought": 3,
+            "products_total": 4,
+            "sellers": 4
+          }
+        },
+        {
+          "key": "Cliente 5",
+          "history": {
+            "closed": 16,
+            "won": 8,
+            "lost": 8,
+            "win_rate": {
+              "value": 0.5,
+              "low": 0.279996,
+              "high": 0.720004
+            },
+            "revenue": 17000,
+            "won_without_value": 0,
+            "ticket": 2125.0,
+            "revenue_per_closed": 1062.5,
+            "median_won_cycle_days": 51,
+            "median_lost_cycle_days": 8,
+            "without_account": 0
+          },
+          "revenue_share": 0.113409,
+          "open": 0,
+          "profile": {
+            "sector": "retail",
+            "location": "United States",
+            "size": "3",
+            "products_bought": 3,
+            "products_total": 4,
+            "sellers": 4
+          }
+        },
+        {
+          "key": "Cliente 8",
+          "history": {
+            "closed": 12,
+            "won": 7,
+            "lost": 5,
+            "win_rate": {
+              "value": 0.583333,
+              "low": 0.319511,
+              "high": 0.80674
+            },
+            "revenue": 15920,
+            "won_without_value": 0,
+            "ticket": 2274.29,
+            "revenue_per_closed": 1326.67,
+            "median_won_cycle_days": 65,
+            "median_lost_cycle_days": 10,
+            "without_account": 0
+          },
+          "revenue_share": 0.106204,
+          "open": 0,
+          "profile": {
+            "sector": "medical",
+            "location": "United States",
+            "size": "4",
+            "products_bought": 3,
+            "products_total": 4,
+            "sellers": 3
+          }
+        },
+        {
+          "key": "Cliente 7",
+          "history": {
+            "closed": 12,
+            "won": 6,
+            "lost": 6,
+            "win_rate": {
+              "value": 0.5,
+              "low": 0.253782,
+              "high": 0.746218
+            },
+            "revenue": 15900,
+            "won_without_value": 0,
+            "ticket": 2650.0,
+            "revenue_per_closed": 1325.0,
+            "median_won_cycle_days": 58,
+            "median_lost_cycle_days": 9,
+            "without_account": 0
+          },
+          "revenue_share": 0.106071,
+          "open": 0,
+          "profile": {
+            "sector": "finance",
+            "location": "United States",
+            "size": "4",
+            "products_bought": 2,
+            "products_total": 4,
+            "sellers": 3
+          }
+        },
+        {
+          "key": null,
+          "history": {
+            "closed": 0,
+            "won": 0,
+            "lost": 0,
+            "win_rate": null,
+            "revenue": 0,
+            "won_without_value": 0,
+            "ticket": null,
+            "revenue_per_closed": null,
+            "median_won_cycle_days": null,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": 0.0,
+          "open": 3,
+          "profile": null
+        }
+      ],
+      "chance": {
+        "verdict": "too_few_closed",
+        "segments_tested": 0,
+        "segments_small": 8,
+        "closed_tested": 0,
+        "min_win_rate": null,
+        "max_win_rate": null,
+        "p_value": null,
+        "alpha": 0.007143
+      },
+      "drivers": {
+        "segments_used": 8,
+        "spread_ratio": 1.38,
+        "volume_share": 0.778011,
+        "conversion_share": 0.109449,
+        "ticket_share": 0.11254,
+        "main": [
+          "volume"
+        ],
+        "negligible": []
+      }
+    },
+    {
+      "dimension": "size",
+      "order": "revenue_desc",
+      "segments": [
+        {
+          "key": "1",
+          "history": {
+            "closed": 33,
+            "won": 18,
+            "lost": 15,
+            "win_rate": {
+              "value": 0.545455,
+              "low": 0.379859,
+              "high": 0.701571
+            },
+            "revenue": 42960,
+            "won_without_value": 0,
+            "ticket": 2386.67,
+            "revenue_per_closed": 1301.82,
+            "median_won_cycle_days": 69,
+            "median_lost_cycle_days": 11,
+            "without_account": 0
+          },
+          "revenue_share": 0.286591,
+          "open": 1,
+          "profile": null
+        },
+        {
+          "key": "3",
+          "history": {
+            "closed": 32,
+            "won": 17,
+            "lost": 15,
+            "win_rate": {
+              "value": 0.53125,
+              "low": 0.364495,
+              "high": 0.691306
+            },
+            "revenue": 37960,
+            "won_without_value": 0,
+            "ticket": 2232.94,
+            "revenue_per_closed": 1186.25,
+            "median_won_cycle_days": 58,
+            "median_lost_cycle_days": 8,
+            "without_account": 0
+          },
+          "revenue_share": 0.253235,
+          "open": 0,
+          "profile": null
+        },
+        {
+          "key": "2",
+          "history": {
+            "closed": 32,
+            "won": 16,
+            "lost": 16,
+            "win_rate": {
+              "value": 0.5,
+              "low": 0.336309,
+              "high": 0.663691
+            },
+            "revenue": 37160,
+            "won_without_value": 0,
+            "ticket": 2322.5,
+            "revenue_per_closed": 1161.25,
+            "median_won_cycle_days": 62,
+            "median_lost_cycle_days": 10,
+            "without_account": 0
+          },
+          "revenue_share": 0.247899,
+          "open": 2,
+          "profile": null
+        },
+        {
+          "key": "4",
+          "history": {
+            "closed": 24,
+            "won": 13,
+            "lost": 11,
+            "win_rate": {
+              "value": 0.541667,
+              "low": 0.350749,
+              "high": 0.721087
+            },
+            "revenue": 31820,
+            "won_without_value": 0,
+            "ticket": 2447.69,
+            "revenue_per_closed": 1325.83,
+            "median_won_cycle_days": 65,
+            "median_lost_cycle_days": 9,
+            "without_account": 0
+          },
+          "revenue_share": 0.212275,
+          "open": 0,
+          "profile": null
+        },
+        {
+          "key": null,
+          "history": {
+            "closed": 0,
+            "won": 0,
+            "lost": 0,
+            "win_rate": null,
+            "revenue": 0,
+            "won_without_value": 0,
+            "ticket": null,
+            "revenue_per_closed": null,
+            "median_won_cycle_days": null,
+            "median_lost_cycle_days": null,
+            "without_account": 0
+          },
+          "revenue_share": 0.0,
+          "open": 3,
+          "profile": null
+        }
+      ],
+      "chance": {
+        "verdict": "within_chance",
+        "segments_tested": 4,
+        "segments_small": 0,
+        "closed_tested": 121,
+        "min_win_rate": 0.5,
+        "max_win_rate": 0.545455,
+        "p_value": 0.9838,
+        "alpha": 0.007143
+      },
+      "drivers": {
+        "segments_used": 4,
+        "spread_ratio": 1.35,
+        "volume_share": 1.094166,
+        "conversion_share": 0.018804,
+        "ticket_share": -0.11297,
+        "main": [
+          "volume"
+        ],
+        "negligible": [
+          "conversion"
+        ]
+      }
+    }
+  ],
+  "matrix": {
+    "products": [
+      "Alfa Pro",
+      "Beta Plus",
+      "Gama Basic",
+      "Delta Mini"
+    ],
+    "rows": [
+      {
+        "seller": "Ana Alfa",
+        "closed": 25,
+        "cells": [
+          {
+            "product": "Alfa Pro",
+            "closed": 7,
+            "mix_share": 0.28
+          },
+          {
+            "product": "Beta Plus",
+            "closed": 6,
+            "mix_share": 0.24
+          },
+          {
+            "product": "Gama Basic",
+            "closed": 6,
+            "mix_share": 0.24
+          },
+          {
+            "product": "Delta Mini",
+            "closed": 6,
+            "mix_share": 0.24
+          }
+        ]
+      },
+      {
+        "seller": "Bruno Beta",
+        "closed": 24,
+        "cells": [
+          {
+            "product": "Alfa Pro",
+            "closed": 6,
+            "mix_share": 0.25
+          },
+          {
+            "product": "Beta Plus",
+            "closed": 6,
+            "mix_share": 0.25
+          },
+          {
+            "product": "Gama Basic",
+            "closed": 6,
+            "mix_share": 0.25
+          },
+          {
+            "product": "Delta Mini",
+            "closed": 6,
+            "mix_share": 0.25
+          }
+        ]
+      },
+      {
+        "seller": "Carla Gama",
+        "closed": 24,
+        "cells": [
+          {
+            "product": "Alfa Pro",
+            "closed": 6,
+            "mix_share": 0.25
+          },
+          {
+            "product": "Beta Plus",
+            "closed": 6,
+            "mix_share": 0.25
+          },
+          {
+            "product": "Gama Basic",
+            "closed": 6,
+            "mix_share": 0.25
+          },
+          {
+            "product": "Delta Mini",
+            "closed": 6,
+            "mix_share": 0.25
+          }
+        ]
+      },
+      {
+        "seller": "Davi Delta",
+        "closed": 24,
+        "cells": [
+          {
+            "product": "Alfa Pro",
+            "closed": 6,
+            "mix_share": 0.25
+          },
+          {
+            "product": "Beta Plus",
+            "closed": 6,
+            "mix_share": 0.25
+          },
+          {
+            "product": "Gama Basic",
+            "closed": 6,
+            "mix_share": 0.25
+          },
+          {
+            "product": "Delta Mini",
+            "closed": 6,
+            "mix_share": 0.25
+          }
+        ]
+      },
+      {
+        "seller": "Eva Epsilon",
+        "closed": 24,
+        "cells": [
+          {
+            "product": "Alfa Pro",
+            "closed": 6,
+            "mix_share": 0.25
+          },
+          {
+            "product": "Beta Plus",
+            "closed": 6,
+            "mix_share": 0.25
+          },
+          {
+            "product": "Gama Basic",
+            "closed": 6,
+            "mix_share": 0.25
+          },
+          {
+            "product": "Delta Mini",
+            "closed": 6,
+            "mix_share": 0.25
+          }
+        ]
+      },
+      {
+        "seller": "Fabio Zeta",
+        "closed": 0,
+        "cells": [
+          {
+            "product": "Alfa Pro",
+            "closed": 0,
+            "mix_share": null
+          },
+          {
+            "product": "Beta Plus",
+            "closed": 0,
+            "mix_share": null
+          },
+          {
+            "product": "Gama Basic",
+            "closed": 0,
+            "mix_share": null
+          },
+          {
+            "product": "Delta Mini",
+            "closed": 0,
+            "mix_share": null
+          }
+        ]
+      }
+    ]
+  },
+  "crosstabs": [
+    {
+      "id": "account_product",
+      "row_dimension": "account",
+      "column_dimension": "product",
+      "columns": [
+        "Alfa Pro",
+        "Beta Plus",
+        "Gama Basic",
+        "Delta Mini"
+      ],
+      "rows": [
+        {
+          "key": "Cliente 1",
+          "closed": 17,
+          "cells": [
+            {
+              "key": "Alfa Pro",
+              "closed": 5,
+              "share": 0.294118
+            },
+            {
+              "key": "Beta Plus",
+              "closed": 4,
+              "share": 0.235294
+            },
+            {
+              "key": "Gama Basic",
+              "closed": 4,
+              "share": 0.235294
+            },
+            {
+              "key": "Delta Mini",
+              "closed": 4,
+              "share": 0.235294
+            }
+          ]
+        },
+        {
+          "key": "Cliente 2",
+          "closed": 16,
+          "cells": [
+            {
+              "key": "Alfa Pro",
+              "closed": 4,
+              "share": 0.25
+            },
+            {
+              "key": "Beta Plus",
+              "closed": 4,
+              "share": 0.25
+            },
+            {
+              "key": "Gama Basic",
+              "closed": 4,
+              "share": 0.25
+            },
+            {
+              "key": "Delta Mini",
+              "closed": 4,
+              "share": 0.25
+            }
+          ]
+        },
+        {
+          "key": "Cliente 3",
+          "closed": 16,
+          "cells": [
+            {
+              "key": "Alfa Pro",
+              "closed": 4,
+              "share": 0.25
+            },
+            {
+              "key": "Beta Plus",
+              "closed": 4,
+              "share": 0.25
+            },
+            {
+              "key": "Gama Basic",
+              "closed": 4,
+              "share": 0.25
+            },
+            {
+              "key": "Delta Mini",
+              "closed": 4,
+              "share": 0.25
+            }
+          ]
+        },
+        {
+          "key": "Cliente 4",
+          "closed": 16,
+          "cells": [
+            {
+              "key": "Alfa Pro",
+              "closed": 4,
+              "share": 0.25
+            },
+            {
+              "key": "Beta Plus",
+              "closed": 4,
+              "share": 0.25
+            },
+            {
+              "key": "Gama Basic",
+              "closed": 4,
+              "share": 0.25
+            },
+            {
+              "key": "Delta Mini",
+              "closed": 4,
+              "share": 0.25
+            }
+          ]
+        },
+        {
+          "key": "Cliente 5",
+          "closed": 16,
+          "cells": [
+            {
+              "key": "Alfa Pro",
+              "closed": 4,
+              "share": 0.25
+            },
+            {
+              "key": "Beta Plus",
+              "closed": 4,
+              "share": 0.25
+            },
+            {
+              "key": "Gama Basic",
+              "closed": 4,
+              "share": 0.25
+            },
+            {
+              "key": "Delta Mini",
+              "closed": 4,
+              "share": 0.25
+            }
+          ]
+        },
+        {
+          "key": "Cliente 6",
+          "closed": 16,
+          "cells": [
+            {
+              "key": "Alfa Pro",
+              "closed": 4,
+              "share": 0.25
+            },
+            {
+              "key": "Beta Plus",
+              "closed": 4,
+              "share": 0.25
+            },
+            {
+              "key": "Gama Basic",
+              "closed": 4,
+              "share": 0.25
+            },
+            {
+              "key": "Delta Mini",
+              "closed": 4,
+              "share": 0.25
+            }
+          ]
+        },
+        {
+          "key": "Cliente 7",
+          "closed": 12,
+          "cells": [
+            {
+              "key": "Alfa Pro",
+              "closed": 3,
+              "share": 0.25
+            },
+            {
+              "key": "Beta Plus",
+              "closed": 3,
+              "share": 0.25
+            },
+            {
+              "key": "Gama Basic",
+              "closed": 3,
+              "share": 0.25
+            },
+            {
+              "key": "Delta Mini",
+              "closed": 3,
+              "share": 0.25
+            }
+          ]
+        },
+        {
+          "key": "Cliente 8",
+          "closed": 12,
+          "cells": [
+            {
+              "key": "Alfa Pro",
+              "closed": 3,
+              "share": 0.25
+            },
+            {
+              "key": "Beta Plus",
+              "closed": 3,
+              "share": 0.25
+            },
+            {
+              "key": "Gama Basic",
+              "closed": 3,
+              "share": 0.25
+            },
+            {
+              "key": "Delta Mini",
+              "closed": 3,
+              "share": 0.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sector_product",
+      "row_dimension": "sector",
+      "column_dimension": "product",
+      "columns": [
+        "Alfa Pro",
+        "Beta Plus",
+        "Gama Basic",
+        "Delta Mini"
+      ],
+      "rows": [
+        {
+          "key": "retail",
+          "closed": 97,
+          "cells": [
+            {
+              "key": "Alfa Pro",
+              "closed": 25,
+              "share": 0.257732
+            },
+            {
+              "key": "Beta Plus",
+              "closed": 24,
+              "share": 0.247423
+            },
+            {
+              "key": "Gama Basic",
+              "closed": 24,
+              "share": 0.247423
+            },
+            {
+              "key": "Delta Mini",
+              "closed": 24,
+              "share": 0.247423
+            }
+          ]
+        },
+        {
+          "key": "finance",
+          "closed": 12,
+          "cells": [
+            {
+              "key": "Alfa Pro",
+              "closed": 3,
+              "share": 0.25
+            },
+            {
+              "key": "Beta Plus",
+              "closed": 3,
+              "share": 0.25
+            },
+            {
+              "key": "Gama Basic",
+              "closed": 3,
+              "share": 0.25
+            },
+            {
+              "key": "Delta Mini",
+              "closed": 3,
+              "share": 0.25
+            }
+          ]
+        },
+        {
+          "key": "medical",
+          "closed": 12,
+          "cells": [
+            {
+              "key": "Alfa Pro",
+              "closed": 3,
+              "share": 0.25
+            },
+            {
+              "key": "Beta Plus",
+              "closed": 3,
+              "share": 0.25
+            },
+            {
+              "key": "Gama Basic",
+              "closed": 3,
+              "share": 0.25
+            },
+            {
+              "key": "Delta Mini",
+              "closed": 3,
+              "share": 0.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "seller_sector",
+      "row_dimension": "seller",
+      "column_dimension": "sector",
+      "columns": [
+        "finance",
+        "medical",
+        "retail"
+      ],
+      "rows": [
+        {
+          "key": "Ana Alfa",
+          "closed": 25,
+          "cells": [
+            {
+              "key": "finance",
+              "closed": 0,
+              "share": 0.0
+            },
+            {
+              "key": "medical",
+              "closed": 0,
+              "share": 0.0
+            },
+            {
+              "key": "retail",
+              "closed": 25,
+              "share": 1.0
+            }
+          ]
+        },
+        {
+          "key": "Bruno Beta",
+          "closed": 24,
+          "cells": [
+            {
+              "key": "finance",
+              "closed": 4,
+              "share": 0.166667
+            },
+            {
+              "key": "medical",
+              "closed": 4,
+              "share": 0.166667
+            },
+            {
+              "key": "retail",
+              "closed": 16,
+              "share": 0.666667
+            }
+          ]
+        },
+        {
+          "key": "Carla Gama",
+          "closed": 24,
+          "cells": [
+            {
+              "key": "finance",
+              "closed": 4,
+              "share": 0.166667
+            },
+            {
+              "key": "medical",
+              "closed": 4,
+              "share": 0.166667
+            },
+            {
+              "key": "retail",
+              "closed": 16,
+              "share": 0.666667
+            }
+          ]
+        },
+        {
+          "key": "Davi Delta",
+          "closed": 24,
+          "cells": [
+            {
+              "key": "finance",
+              "closed": 4,
+              "share": 0.166667
+            },
+            {
+              "key": "medical",
+              "closed": 4,
+              "share": 0.166667
+            },
+            {
+              "key": "retail",
+              "closed": 16,
+              "share": 0.666667
+            }
+          ]
+        },
+        {
+          "key": "Eva Epsilon",
+          "closed": 24,
+          "cells": [
+            {
+              "key": "finance",
+              "closed": 0,
+              "share": 0.0
+            },
+            {
+              "key": "medical",
+              "closed": 0,
+              "share": 0.0
+            },
+            {
+              "key": "retail",
+              "closed": 24,
+              "share": 1.0
+            }
+          ]
+        },
+        {
+          "key": "Fabio Zeta",
+          "closed": 0,
+          "cells": [
+            {
+              "key": "finance",
+              "closed": 0,
+              "share": null
+            },
+            {
+              "key": "medical",
+              "closed": 0,
+              "share": null
+            },
+            {
+              "key": "retail",
+              "closed": 0,
+              "share": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sector_office",
+      "row_dimension": "sector",
+      "column_dimension": "office",
+      "columns": [
+        "Central",
+        "East"
+      ],
+      "rows": [
+        {
+          "key": "retail",
+          "closed": 97,
+          "cells": [
+            {
+              "key": "Central",
+              "closed": 41,
+              "share": 0.42268
+            },
+            {
+              "key": "East",
+              "closed": 56,
+              "share": 0.57732
+            }
+          ]
+        },
+        {
+          "key": "finance",
+          "closed": 12,
+          "cells": [
+            {
+              "key": "Central",
+              "closed": 4,
+              "share": 0.333333
+            },
+            {
+              "key": "East",
+              "closed": 8,
+              "share": 0.666667
+            }
+          ]
+        },
+        {
+          "key": "medical",
+          "closed": 12,
+          "cells": [
+            {
+              "key": "Central",
+              "closed": 4,
+              "share": 0.333333
+            },
+            {
+              "key": "East",
+              "closed": 8,
+              "share": 0.666667
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "location_office",
+      "row_dimension": "location",
+      "column_dimension": "office",
+      "columns": [
+        "Central",
+        "East"
+      ],
+      "rows": [
+        {
+          "key": "United States",
+          "closed": 121,
+          "cells": [
+            {
+              "key": "Central",
+              "closed": 49,
+              "share": 0.404959
+            },
+            {
+              "key": "East",
+              "closed": 72,
+              "share": 0.595041
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "cycle_bands": [
+    {
+      "low": 0,
+      "high": 15,
+      "won": 0,
+      "lost": 57,
+      "win_rate": 0.0
+    },
+    {
+      "low": 16,
+      "high": 30,
+      "won": 6,
+      "lost": 0,
+      "win_rate": 1.0
+    },
+    {
+      "low": 31,
+      "high": 60,
+      "won": 24,
+      "lost": 0,
+      "win_rate": 1.0
+    },
+    {
+      "low": 61,
+      "high": 88,
+      "won": 27,
+      "lost": 0,
+      "win_rate": 1.0
+    },
+    {
+      "low": 89,
+      "high": 93,
+      "won": 7,
+      "lost": 0,
+      "win_rate": 1.0
+    }
+  ],
+  "monthly": [
+    {
+      "month": "2016-12",
+      "engaged": 10,
+      "won": 0,
+      "lost": 0
+    },
+    {
+      "month": "2017-01",
+      "engaged": 22,
+      "won": 0,
+      "lost": 10
+    },
+    {
+      "month": "2017-02",
+      "engaged": 8,
+      "won": 0,
+      "lost": 9
+    },
+    {
+      "month": "2017-03",
+      "engaged": 10,
+      "won": 21,
+      "lost": 0
+    },
+    {
+      "month": "2017-04",
+      "engaged": 15,
+      "won": 0,
+      "lost": 8
+    },
+    {
+      "month": "2017-05",
+      "engaged": 12,
+      "won": 0,
+      "lost": 8
+    },
+    {
+      "month": "2017-06",
+      "engaged": 10,
+      "won": 21,
+      "lost": 0
+    },
+    {
+      "month": "2017-07",
+      "engaged": 18,
+      "won": 0,
+      "lost": 7
+    },
+    {
+      "month": "2017-08",
+      "engaged": 9,
+      "won": 0,
+      "lost": 7
+    },
+    {
+      "month": "2017-09",
+      "engaged": 4,
+      "won": 21,
+      "lost": 0
+    },
+    {
+      "month": "2017-10",
+      "engaged": 6,
+      "won": 0,
+      "lost": 8
+    },
+    {
+      "month": "2017-11",
+      "engaged": 0,
+      "won": 0,
+      "lost": 0
+    },
+    {
+      "month": "2017-12",
+      "engaged": 1,
+      "won": 1,
+      "lost": 0
+    }
+  ]
+}

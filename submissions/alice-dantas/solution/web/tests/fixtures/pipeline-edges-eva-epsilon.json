@@ -1,0 +1,137 @@
+{
+  "seller": "Eva Epsilon",
+  "meta": {
+    "as_of": "2017-12-31",
+    "won_cycle_median_days": 60,
+    "won_cycle_limit_days": 100,
+    "cycle_limit_days": 138,
+    "cycle_percentile": 90,
+    "audited": false,
+    "contract_version": 7
+  },
+  "ordering": {
+    "group_order": [
+      "focar",
+      "qualificar",
+      "acompanhar",
+      "revisar",
+      "nao_pontuavel"
+    ],
+    "within_group": [
+      "value_band",
+      "sales_price_desc",
+      "opportunity_id"
+    ],
+    "age_affects_order": false
+  },
+  "summary": {
+    "total": 1,
+    "focar": 0,
+    "acompanhar": 0,
+    "revisar": 1,
+    "qualificar": 0,
+    "nao_pontuavel": 0,
+    "without_account": 1
+  },
+  "empty": null,
+  "groups": [
+    {
+      "state": "focar",
+      "count": 0,
+      "empty": {
+        "code": "start_with_group",
+        "params": {
+          "group": "revisar",
+          "action": "confirm_still_active",
+          "has_engaging": true,
+          "won_cycle_limit_days": 100,
+          "cycle_limit_days": 138
+        }
+      },
+      "next_action": null,
+      "items": []
+    },
+    {
+      "state": "qualificar",
+      "count": 0,
+      "empty": {
+        "code": "group_empty",
+        "params": {}
+      },
+      "next_action": null,
+      "items": []
+    },
+    {
+      "state": "acompanhar",
+      "count": 0,
+      "empty": {
+        "code": "group_empty",
+        "params": {}
+      },
+      "next_action": null,
+      "items": []
+    },
+    {
+      "state": "revisar",
+      "count": 1,
+      "empty": null,
+      "next_action": {
+        "code": "confirm_still_active",
+        "params": {
+          "has_account": null
+        }
+      },
+      "items": [
+        {
+          "opportunity_id": "R200",
+          "sales_agent": "Eva Epsilon",
+          "product": "GTX Pro",
+          "account": null,
+          "sales_price": 4821,
+          "value_band": "alto",
+          "engage_date": "2017-06-14",
+          "age_days": 200,
+          "group": "revisar",
+          "deal_stage": "Engaging",
+          "missing_field": null,
+          "tie_size": 1,
+          "reasons": [
+            {
+              "code": "age_above_cycle_limit",
+              "role": "group",
+              "params": {
+                "age_days": 200,
+                "cycle_limit_days": 138
+              }
+            },
+            {
+              "code": "list_price",
+              "role": "order",
+              "params": {
+                "product": "GTX Pro",
+                "sales_price": 4821,
+                "value_band": "alto"
+              }
+            }
+          ],
+          "next_action": {
+            "code": "confirm_still_active",
+            "params": {
+              "has_account": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "state": "nao_pontuavel",
+      "count": 0,
+      "empty": {
+        "code": "group_empty",
+        "params": {}
+      },
+      "next_action": null,
+      "items": []
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "as_of": "2017-12-31",
+  "won_cycle_median_days": 60,
+  "won_cycle_limit_days": 100,
+  "cycle_limit_days": 138,
+  "cycle_percentile": 90,
+  "audited": false,
+  "contract_version": 7
+}

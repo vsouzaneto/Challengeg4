@@ -1,0 +1,139 @@
+{
+  "seller": "Davi Delta",
+  "meta": {
+    "as_of": "2017-12-31",
+    "won_cycle_median_days": 60,
+    "won_cycle_limit_days": 100,
+    "cycle_limit_days": 138,
+    "cycle_percentile": 90,
+    "audited": false,
+    "contract_version": 7
+  },
+  "ordering": {
+    "group_order": [
+      "focar",
+      "qualificar",
+      "acompanhar",
+      "revisar",
+      "nao_pontuavel"
+    ],
+    "within_group": [
+      "value_band",
+      "sales_price_desc",
+      "opportunity_id"
+    ],
+    "age_affects_order": false
+  },
+  "summary": {
+    "total": 1,
+    "focar": 0,
+    "acompanhar": 1,
+    "revisar": 0,
+    "qualificar": 0,
+    "nao_pontuavel": 0,
+    "without_account": 1
+  },
+  "empty": null,
+  "groups": [
+    {
+      "state": "focar",
+      "count": 0,
+      "empty": {
+        "code": "start_with_group",
+        "params": {
+          "group": "acompanhar",
+          "action": "check_progress",
+          "has_engaging": true,
+          "won_cycle_limit_days": 100,
+          "cycle_limit_days": 138
+        }
+      },
+      "next_action": null,
+      "items": []
+    },
+    {
+      "state": "qualificar",
+      "count": 0,
+      "empty": {
+        "code": "group_empty",
+        "params": {}
+      },
+      "next_action": null,
+      "items": []
+    },
+    {
+      "state": "acompanhar",
+      "count": 1,
+      "empty": null,
+      "next_action": {
+        "code": "check_progress",
+        "params": {
+          "has_account": null
+        }
+      },
+      "items": [
+        {
+          "opportunity_id": "A120",
+          "sales_agent": "Davi Delta",
+          "product": "GTX Basic",
+          "account": null,
+          "sales_price": 550,
+          "value_band": "médio",
+          "engage_date": "2017-09-02",
+          "age_days": 120,
+          "group": "acompanhar",
+          "deal_stage": "Engaging",
+          "missing_field": null,
+          "tie_size": 1,
+          "reasons": [
+            {
+              "code": "age_above_won_cycle",
+              "role": "group",
+              "params": {
+                "age_days": 120,
+                "won_cycle_limit_days": 100,
+                "cycle_limit_days": 138,
+                "percentile": 90
+              }
+            },
+            {
+              "code": "list_price",
+              "role": "order",
+              "params": {
+                "product": "GTX Basic",
+                "sales_price": 550,
+                "value_band": "médio"
+              }
+            }
+          ],
+          "next_action": {
+            "code": "check_progress",
+            "params": {
+              "has_account": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "state": "revisar",
+      "count": 0,
+      "empty": {
+        "code": "group_empty",
+        "params": {}
+      },
+      "next_action": null,
+      "items": []
+    },
+    {
+      "state": "nao_pontuavel",
+      "count": 0,
+      "empty": {
+        "code": "group_empty",
+        "params": {}
+      },
+      "next_action": null,
+      "items": []
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "filter": {
+    "manager": null,
+    "office": "East"
+  },
+  "meta": {
+    "as_of": "2017-12-31",
+    "won_cycle_median_days": 60,
+    "won_cycle_limit_days": 100,
+    "cycle_limit_days": 138,
+    "cycle_percentile": 90,
+    "audited": false,
+    "contract_version": 7
+  },
+  "ordering": {
+    "group_order": [
+      "focar",
+      "qualificar",
+      "acompanhar",
+      "revisar",
+      "nao_pontuavel"
+    ],
+    "within_group": [
+      "value_band",
+      "sales_price_desc",
+      "opportunity_id"
+    ],
+    "age_affects_order": false
+  },
+  "summary": {
+    "total": 0,
+    "focar": 0,
+    "acompanhar": 0,
+    "revisar": 0,
+    "qualificar": 0,
+    "nao_pontuavel": 0,
+    "without_account": 0
+  },
+  "empty": {
+    "code": "no_open_for_filter",
+    "params": {}
+  },
+  "groups": [
+    {
+      "state": "focar",
+      "count": 0,
+      "empty": {
+        "code": "group_empty",
+        "params": {}
+      },
+      "next_action": null,
+      "items": []
+    },
+    {
+      "state": "qualificar",
+      "count": 0,
+      "empty": {
+        "code": "group_empty",
+        "params": {}
+      },
+      "next_action": null,
+      "items": []
+    },
+    {
+      "state": "acompanhar",
+      "count": 0,
+      "empty": {
+        "code": "group_empty",
+        "params": {}
+      },
+      "next_action": null,
+      "items": []
+    },
+    {
+      "state": "revisar",
+      "count": 0,
+      "empty": {
+        "code": "group_empty",
+        "params": {}
+      },
+      "next_action": null,
+      "items": []
+    },
+    {
+      "state": "nao_pontuavel",
+      "count": 0,
+      "empty": {
+        "code": "group_empty",
+        "params": {}
+      },
+      "next_action": null,
+      "items": []
+    }
+  ],
+  "by_seller": [
+    {
+      "seller": "Carla Gama",
+      "total": 0,
+      "focar": 0,
+      "acompanhar": 0,
+      "revisar": 0,
+      "qualificar": 0,
+      "nao_pontuavel": 0,
+      "without_account": 0
+    }
+  ]
+}

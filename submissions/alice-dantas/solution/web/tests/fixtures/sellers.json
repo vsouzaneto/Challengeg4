@@ -1,0 +1,19 @@
+{
+  "sellers": [
+    {
+      "name": "Ana Alfa",
+      "manager": "Mara Um",
+      "office": "Central"
+    },
+    {
+      "name": "Bruno Beta",
+      "manager": "Mara Um",
+      "office": "Central"
+    },
+    {
+      "name": "Carla Gama",
+      "manager": "Nina Dois",
+      "office": "East"
+    }
+  ]
+}

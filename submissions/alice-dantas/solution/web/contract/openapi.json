@@ -1,0 +1,4566 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Lead Scorer",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/meta": {
+      "get": {
+        "summary": "Get Meta",
+        "operationId": "get_meta_api_meta_get",
+        "parameters": [
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "As Of"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Meta"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CSVs ausentes ou inválidos, ou sem venda ganha até o as_of",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "as_of inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sellers": {
+      "get": {
+        "summary": "Get Sellers",
+        "operationId": "get_sellers_api_sellers_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SellerList"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CSVs ausentes ou inválidos, ou sem venda ganha até o as_of",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sellers/{seller}/pipeline": {
+      "get": {
+        "summary": "Get Seller Pipeline",
+        "operationId": "get_seller_pipeline_api_sellers__seller__pipeline_get",
+        "parameters": [
+          {
+            "name": "seller",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Seller"
+            }
+          },
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "As Of"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SellerPipeline"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CSVs ausentes ou inválidos, ou sem venda ganha até o as_of",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "as_of inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Vendedor não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pipeline": {
+      "get": {
+        "summary": "Get Pipeline",
+        "operationId": "get_pipeline_api_pipeline_get",
+        "parameters": [
+          {
+            "name": "manager",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Manager"
+            }
+          },
+          {
+            "name": "office",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Office"
+            }
+          },
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "As Of"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeamPipeline"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CSVs ausentes ou inválidos, ou sem venda ganha até o as_of",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "as_of inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/rules": {
+      "get": {
+        "summary": "Get Rules",
+        "operationId": "get_rules_api_rules_get",
+        "parameters": [
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "As Of"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rules"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CSVs ausentes ou inválidos, ou sem venda ganha até o as_of",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "as_of inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/intelligence": {
+      "get": {
+        "summary": "Get Intelligence",
+        "operationId": "get_intelligence_api_intelligence_get",
+        "parameters": [
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "As Of"
+            }
+          },
+          {
+            "name": "product",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Product"
+            }
+          },
+          {
+            "name": "seller",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Seller"
+            }
+          },
+          {
+            "name": "manager",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Manager"
+            }
+          },
+          {
+            "name": "office",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Office"
+            }
+          },
+          {
+            "name": "sector",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Sector"
+            }
+          },
+          {
+            "name": "account",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Account"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Intelligence"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CSVs ausentes ou inválidos, ou sem venda ganha até o as_of",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "as_of inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/intelligence/deals": {
+      "get": {
+        "summary": "Get Intelligence Deals",
+        "operationId": "get_intelligence_deals_api_intelligence_deals_get",
+        "parameters": [
+          {
+            "name": "outcome",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Outcome"
+            }
+          },
+          {
+            "name": "group",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Group"
+            }
+          },
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "As Of"
+            }
+          },
+          {
+            "name": "product",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Product"
+            }
+          },
+          {
+            "name": "seller",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Seller"
+            }
+          },
+          {
+            "name": "manager",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Manager"
+            }
+          },
+          {
+            "name": "office",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Office"
+            }
+          },
+          {
+            "name": "sector",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Sector"
+            }
+          },
+          {
+            "name": "account",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Account"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntelligenceDeals"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "CSVs ausentes ou inválidos, ou sem venda ganha até o as_of",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "as_of, outcome ou group inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/evidence": {
+      "get": {
+        "summary": "Get Evidence",
+        "operationId": "get_evidence_api_evidence_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Evidence"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Resultado do backtest ausente, inválido ou de outra regra",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccountAction": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "check_status",
+              "check_progress",
+              "confirm_still_active"
+            ],
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/AccountParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "AccountAction",
+        "description": "Verificação no CRM que muda conforme a conta: registrada ou não (ADR-008)."
+      },
+      "AccountOption": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "sector": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sector"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location",
+            "description": "Sede do cliente (office_location)."
+          },
+          "size": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "sector",
+          "location",
+          "size"
+        ],
+        "title": "AccountOption"
+      },
+      "AccountParams": {
+        "properties": {
+          "has_account": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Has Account",
+            "description": "A conta da oportunidade está registrada? Nulo na ação do grupo, que não é de uma oportunidade só."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "has_account"
+        ],
+        "title": "AccountParams"
+      },
+      "AccountProductCoverage": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "account_product_coverage",
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/CoverageParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "AccountProductCoverage"
+      },
+      "AccountProfile": {
+        "properties": {
+          "sector": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sector"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location"
+          },
+          "size": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size"
+          },
+          "products_bought": {
+            "type": "integer",
+            "title": "Products Bought",
+            "description": "Produtos diferentes já ganhos com o cliente no recorte."
+          },
+          "products_total": {
+            "type": "integer",
+            "title": "Products Total",
+            "description": "Produtos negociados no catálogo."
+          },
+          "sellers": {
+            "type": "integer",
+            "title": "Sellers",
+            "description": "Vendedores diferentes com fechadas no cliente no recorte."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sector",
+          "location",
+          "size",
+          "products_bought",
+          "products_total",
+          "sellers"
+        ],
+        "title": "AccountProfile"
+      },
+      "AccountsSharedBySellers": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "accounts_shared_by_sellers",
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/SharedAccountsParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "AccountsSharedBySellers"
+      },
+      "AgeAboveCycleLimit": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "age_above_cycle_limit",
+            "title": "Code"
+          },
+          "role": {
+            "type": "string",
+            "const": "group",
+            "title": "Role"
+          },
+          "params": {
+            "$ref": "#/components/schemas/LongestCycleParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "role",
+          "params"
+        ],
+        "title": "AgeAboveCycleLimit",
+        "description": "Engaging com idade acima de L2: grupo revisar."
+      },
+      "AgeAboveWonCycle": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "age_above_won_cycle",
+            "title": "Code"
+          },
+          "role": {
+            "type": "string",
+            "const": "group",
+            "title": "Role"
+          },
+          "params": {
+            "$ref": "#/components/schemas/BetweenLimitsParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "role",
+          "params"
+        ],
+        "title": "AgeAboveWonCycle",
+        "description": "Engaging com idade acima de L1 e até L2: grupo acompanhar."
+      },
+      "AgeWithinWonCycle": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "age_within_won_cycle",
+            "title": "Code"
+          },
+          "role": {
+            "type": "string",
+            "const": "group",
+            "title": "Role"
+          },
+          "params": {
+            "$ref": "#/components/schemas/WonCycleParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "role",
+          "params"
+        ],
+        "title": "AgeWithinWonCycle",
+        "description": "Engaging com idade até L1: grupo focar."
+      },
+      "BetweenLimitsParams": {
+        "properties": {
+          "age_days": {
+            "type": "integer",
+            "title": "Age Days"
+          },
+          "won_cycle_limit_days": {
+            "type": "integer",
+            "title": "Won Cycle Limit Days",
+            "description": "L1: piso do P90 do ciclo das ganhas até o as_of."
+          },
+          "cycle_limit_days": {
+            "type": "integer",
+            "title": "Cycle Limit Days",
+            "description": "L2: maior ciclo entre as fechadas até o as_of."
+          },
+          "percentile": {
+            "type": "integer",
+            "title": "Percentile"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "age_days",
+          "won_cycle_limit_days",
+          "cycle_limit_days",
+          "percentile"
+        ],
+        "title": "BetweenLimitsParams"
+      },
+      "BeyondChanceParams": {
+        "properties": {
+          "dimension": {
+            "type": "string",
+            "enum": [
+              "product",
+              "seller",
+              "manager",
+              "office",
+              "sector",
+              "account",
+              "size"
+            ],
+            "title": "Dimension"
+          },
+          "chance": {
+            "$ref": "#/components/schemas/ChanceTest"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dimension",
+          "chance"
+        ],
+        "title": "BeyondChanceParams"
+      },
+      "Breakdown": {
+        "properties": {
+          "dimension": {
+            "type": "string",
+            "enum": [
+              "product",
+              "seller",
+              "manager",
+              "office",
+              "sector",
+              "account",
+              "size"
+            ],
+            "title": "Dimension"
+          },
+          "order": {
+            "type": "string",
+            "enum": [
+              "alphabetical",
+              "revenue_desc"
+            ],
+            "title": "Order",
+            "description": "Pessoas em ordem alfabética (nunca um ranking); o resto por receita."
+          },
+          "segments": {
+            "items": {
+              "$ref": "#/components/schemas/Segment"
+            },
+            "type": "array",
+            "title": "Segments"
+          },
+          "chance": {
+            "$ref": "#/components/schemas/ChanceTest"
+          },
+          "drivers": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RevenueDrivers"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Nulo com poucos segmentos."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dimension",
+          "order",
+          "segments",
+          "chance",
+          "drivers"
+        ],
+        "title": "Breakdown"
+      },
+      "ChanceTest": {
+        "properties": {
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "beyond_chance",
+              "within_chance",
+              "too_few_closed"
+            ],
+            "title": "Verdict"
+          },
+          "segments_tested": {
+            "type": "integer",
+            "title": "Segments Tested",
+            "description": "Segmentos com fechadas suficientes para o teste."
+          },
+          "segments_small": {
+            "type": "integer",
+            "title": "Segments Small",
+            "description": "Segmentos fora do teste por terem poucas fechadas."
+          },
+          "closed_tested": {
+            "type": "integer",
+            "title": "Closed Tested"
+          },
+          "min_win_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min Win Rate"
+          },
+          "max_win_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Win Rate"
+          },
+          "p_value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P Value"
+          },
+          "alpha": {
+            "type": "number",
+            "title": "Alpha",
+            "description": "Nível do teste já dividido pelas dimensões (Bonferroni)."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "verdict",
+          "segments_tested",
+          "segments_small",
+          "closed_tested",
+          "min_win_rate",
+          "max_win_rate",
+          "p_value",
+          "alpha"
+        ],
+        "title": "ChanceTest",
+        "description": "A taxa de ganho difere entre os segmentos mais do que o acaso explicaria (qui-quadrado)?"
+      },
+      "ClosedMetrics": {
+        "properties": {
+          "closed": {
+            "type": "integer",
+            "title": "Closed"
+          },
+          "won": {
+            "type": "integer",
+            "title": "Won"
+          },
+          "lost": {
+            "type": "integer",
+            "title": "Lost"
+          },
+          "win_rate": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WinRate"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Nula sem fechadas. Não é a chance de uma oportunidade."
+          },
+          "revenue": {
+            "type": "integer",
+            "title": "Revenue",
+            "description": "Σ close_value das ganhas: receita realizada."
+          },
+          "won_without_value": {
+            "type": "integer",
+            "title": "Won Without Value",
+            "description": "Ganhas sem close_value (contam como 0 na receita)."
+          },
+          "ticket": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ticket",
+            "description": "Receita ÷ ganhas."
+          },
+          "revenue_per_closed": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Revenue Per Closed",
+            "description": "Receita ÷ fechadas."
+          },
+          "median_won_cycle_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Median Won Cycle Days",
+            "description": "Mediana de close − engage das ganhas, em dias."
+          },
+          "median_lost_cycle_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Median Lost Cycle Days",
+            "description": "Mediana de close − engage das fechadas sem venda."
+          },
+          "without_account": {
+            "type": "integer",
+            "title": "Without Account"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "closed",
+          "won",
+          "lost",
+          "win_rate",
+          "revenue",
+          "won_without_value",
+          "ticket",
+          "revenue_per_closed",
+          "median_won_cycle_days",
+          "median_lost_cycle_days",
+          "without_account"
+        ],
+        "title": "ClosedMetrics",
+        "description": "O histórico de fechadas até o as_of de um recorte."
+      },
+      "ConcentratedParams": {
+        "properties": {
+          "dimension": {
+            "type": "string",
+            "enum": [
+              "product",
+              "seller",
+              "manager",
+              "office",
+              "sector",
+              "account",
+              "size"
+            ],
+            "title": "Dimension"
+          },
+          "top": {
+            "type": "integer",
+            "title": "Top"
+          },
+          "of": {
+            "type": "integer",
+            "title": "Of"
+          },
+          "share": {
+            "type": "number",
+            "title": "Share"
+          },
+          "keys": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Keys"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dimension",
+          "top",
+          "of",
+          "share",
+          "keys"
+        ],
+        "title": "ConcentratedParams"
+      },
+      "CoverageCount": {
+        "properties": {
+          "bought": {
+            "type": "integer",
+            "title": "Bought",
+            "description": "Quantos produtos diferentes o cliente já comprou."
+          },
+          "accounts": {
+            "type": "integer",
+            "title": "Accounts"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "bought",
+          "accounts"
+        ],
+        "title": "CoverageCount"
+      },
+      "CoverageParams": {
+        "properties": {
+          "accounts": {
+            "type": "integer",
+            "title": "Accounts"
+          },
+          "products": {
+            "type": "integer",
+            "title": "Products"
+          },
+          "distribution": {
+            "items": {
+              "$ref": "#/components/schemas/CoverageCount"
+            },
+            "type": "array",
+            "title": "Distribution"
+          },
+          "most_missing": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Most Missing",
+            "description": "O produto que mais clientes nunca compraram."
+          },
+          "most_missing_accounts": {
+            "type": "integer",
+            "title": "Most Missing Accounts"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "accounts",
+          "products",
+          "distribution",
+          "most_missing",
+          "most_missing_accounts"
+        ],
+        "title": "CoverageParams"
+      },
+      "Crosstab": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "account_product",
+              "sector_product",
+              "seller_sector",
+              "sector_office",
+              "location_office"
+            ],
+            "title": "Id"
+          },
+          "row_dimension": {
+            "type": "string",
+            "enum": [
+              "account",
+              "sector",
+              "seller",
+              "location"
+            ],
+            "title": "Row Dimension"
+          },
+          "column_dimension": {
+            "type": "string",
+            "enum": [
+              "product",
+              "sector",
+              "office"
+            ],
+            "title": "Column Dimension"
+          },
+          "columns": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Columns",
+            "description": "Produtos do maior preço ao menor; setores e escritórios em ordem alfabética."
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/CrosstabRow"
+            },
+            "type": "array",
+            "title": "Rows",
+            "description": "Vendedores em ordem alfabética (nunca um ranking); o resto por fechadas."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "row_dimension",
+          "column_dimension",
+          "columns",
+          "rows"
+        ],
+        "title": "Crosstab",
+        "description": "Quem compra o quê e quem atende quem: fechadas por linha e coluna. Sem taxa por célula."
+      },
+      "CrosstabCell": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "closed": {
+            "type": "integer",
+            "title": "Closed"
+          },
+          "share": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Share",
+            "description": "Fatia desta coluna nas fechadas da linha."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "key",
+          "closed",
+          "share"
+        ],
+        "title": "CrosstabCell"
+      },
+      "CrosstabRow": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "closed": {
+            "type": "integer",
+            "title": "Closed"
+          },
+          "cells": {
+            "items": {
+              "$ref": "#/components/schemas/CrosstabCell"
+            },
+            "type": "array",
+            "title": "Cells"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "key",
+          "closed",
+          "cells"
+        ],
+        "title": "CrosstabRow"
+      },
+      "CycleBand": {
+        "properties": {
+          "low": {
+            "type": "integer",
+            "title": "Low"
+          },
+          "high": {
+            "type": "integer",
+            "title": "High",
+            "description": "As duas últimas bordas são L1 e L2 do meta."
+          },
+          "won": {
+            "type": "integer",
+            "title": "Won"
+          },
+          "lost": {
+            "type": "integer",
+            "title": "Lost"
+          },
+          "win_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Win Rate"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "low",
+          "high",
+          "won",
+          "lost",
+          "win_rate"
+        ],
+        "title": "CycleBand"
+      },
+      "Deal": {
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "title": "Opportunity Id"
+          },
+          "sales_agent": {
+            "type": "string",
+            "title": "Sales Agent"
+          },
+          "manager": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Manager"
+          },
+          "office": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Office"
+          },
+          "product": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Product"
+          },
+          "account": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account"
+          },
+          "sector": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sector"
+          },
+          "deal_stage": {
+            "type": "string",
+            "enum": [
+              "Engaging",
+              "Prospecting",
+              "Won",
+              "Lost"
+            ],
+            "title": "Deal Stage"
+          },
+          "engage_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engage Date"
+          },
+          "close_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Close Date"
+          },
+          "close_value": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Close Value",
+            "description": "Valor fechado; nas sem venda, 0 por convenção do CRM."
+          },
+          "sales_price": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sales Price",
+            "description": "Preço de tabela (catálogo, não valor negociado)."
+          },
+          "cycle_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cycle Days",
+            "description": "Só nas fechadas."
+          },
+          "age_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age Days",
+            "description": "Só nas abertas."
+          },
+          "group": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "focar",
+                  "qualificar",
+                  "acompanhar",
+                  "revisar",
+                  "nao_pontuavel"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Group",
+            "description": "Só nas abertas: o grupo da regra."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "opportunity_id",
+          "sales_agent",
+          "manager",
+          "office",
+          "product",
+          "account",
+          "sector",
+          "deal_stage",
+          "engage_date",
+          "close_date",
+          "close_value",
+          "sales_price",
+          "cycle_days",
+          "age_days",
+          "group"
+        ],
+        "title": "Deal"
+      },
+      "DealsEmpty": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "no_deals_for_filter",
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/NoParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "DealsEmpty"
+      },
+      "Delta": {
+        "properties": {
+          "value": {
+            "type": "number",
+            "title": "Value"
+          },
+          "low": {
+            "type": "number",
+            "title": "Low",
+            "description": "Limite inferior do IC95%."
+          },
+          "high": {
+            "type": "number",
+            "title": "High",
+            "description": "Limite superior do IC95%."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "value",
+          "low",
+          "high"
+        ],
+        "title": "Delta"
+      },
+      "DriversParams": {
+        "properties": {
+          "dimension": {
+            "type": "string",
+            "enum": [
+              "product",
+              "seller",
+              "manager",
+              "office",
+              "sector",
+              "account",
+              "size"
+            ],
+            "title": "Dimension"
+          },
+          "drivers": {
+            "$ref": "#/components/schemas/RevenueDrivers"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dimension",
+          "drivers"
+        ],
+        "title": "DriversParams"
+      },
+      "EngagementInflowDrop": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "engagement_inflow_drop",
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/InflowDropParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "EngagementInflowDrop"
+      },
+      "EngagingBeyondLongestCycle": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "engaging_beyond_longest_cycle",
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/EngagingBeyondParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "EngagingBeyondLongestCycle"
+      },
+      "EngagingBeyondParams": {
+        "properties": {
+          "group": {
+            "type": "string",
+            "enum": [
+              "focar",
+              "qualificar",
+              "acompanhar",
+              "revisar",
+              "nao_pontuavel"
+            ],
+            "title": "Group",
+            "description": "O grupo da regra que reúne essas negociações."
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "engaging": {
+            "type": "integer",
+            "title": "Engaging"
+          },
+          "share": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Share"
+          },
+          "cycle_limit_days": {
+            "type": "integer",
+            "title": "Cycle Limit Days",
+            "description": "L2: maior ciclo fechado até o as_of."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "group",
+          "count",
+          "engaging",
+          "share",
+          "cycle_limit_days"
+        ],
+        "title": "EngagingBeyondParams"
+      },
+      "ErrorBody": {
+        "properties": {
+          "detail": {
+            "type": "string",
+            "title": "Detail",
+            "description": "Mensagem do núcleo, a mesma da CLI."
+          },
+          "code": {
+            "type": "string",
+            "enum": [
+              "data_file_missing",
+              "data_file_empty",
+              "data_file_invalid",
+              "data_columns_missing",
+              "data_unknown_label",
+              "data_bad_date",
+              "data_duplicate_key",
+              "data_bad_price",
+              "invalid_as_of_format",
+              "as_of_before_last_close",
+              "seller_not_found",
+              "opportunity_not_found",
+              "evidence_unavailable",
+              "no_won_history",
+              "data_bad_number",
+              "invalid_parameter"
+            ],
+            "title": "Code"
+          },
+          "params": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Params",
+            "description": "Valores citados pelo erro, por código."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "detail",
+          "code",
+          "params"
+        ],
+        "title": "ErrorBody"
+      },
+      "Evidence": {
+        "properties": {
+          "design": {
+            "$ref": "#/components/schemas/EvidenceDesign"
+          },
+          "reference": {
+            "type": "string",
+            "enum": [
+              "global_rate",
+              "product_rate",
+              "random",
+              "list_price_only",
+              "age_newest_first",
+              "age_max_cycle_only",
+              "age_p90_then_max_cycle"
+            ],
+            "title": "Reference",
+            "description": "A regra servida hoje, base das diferenças."
+          },
+          "rankers": {
+            "items": {
+              "$ref": "#/components/schemas/RankerResult"
+            },
+            "type": "array",
+            "title": "Rankers",
+            "description": "Estratégias na ordem do relatório."
+          },
+          "without_no_outcome": {
+            "items": {
+              "$ref": "#/components/schemas/RankerResult"
+            },
+            "type": "array",
+            "title": "Without No Outcome",
+            "description": "As mesmas medidas sem as oportunidades que nunca fecham na base."
+          },
+          "without_no_outcome_verdict": {
+            "$ref": "#/components/schemas/EvidenceVerdict",
+            "description": "A regra servida sem as que nunca fecham: a limitação principal da evidência."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "design",
+          "reference",
+          "rankers",
+          "without_no_outcome",
+          "without_no_outcome_verdict"
+        ],
+        "title": "Evidence"
+      },
+      "EvidenceDesign": {
+        "properties": {
+          "cuts": {
+            "items": {
+              "type": "string",
+              "format": "date"
+            },
+            "type": "array",
+            "title": "Cuts",
+            "description": "Datas de corte T; em cada uma, a carteira aberta em T."
+          },
+          "horizon_days": {
+            "type": "integer",
+            "title": "Horizon Days",
+            "description": "Desfecho: ganhou em até este número de dias depois de T."
+          },
+          "top_k": {
+            "type": "integer",
+            "title": "Top K",
+            "description": "Tamanho da lista de cada vendedor."
+          },
+          "observations": {
+            "type": "integer",
+            "title": "Observations",
+            "description": "Pares oportunidade × corte (os cortes se sobrepõem)."
+          },
+          "unique_opportunities": {
+            "type": "integer",
+            "title": "Unique Opportunities"
+          },
+          "n_boot_sellers": {
+            "type": "integer",
+            "title": "N Boot Sellers",
+            "description": "Reamostragens de vendedores no IC das diferenças."
+          },
+          "audited_data": {
+            "type": "boolean",
+            "title": "Audited Data",
+            "description": "O backtest rodou sobre os CSVs auditados."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "cuts",
+          "horizon_days",
+          "top_k",
+          "observations",
+          "unique_opportunities",
+          "n_boot_sellers",
+          "audited_data"
+        ],
+        "title": "EvidenceDesign"
+      },
+      "EvidenceVerdict": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "reference_behind",
+              "inconclusive",
+              "reference_ahead"
+            ],
+            "title": "Code"
+          },
+          "ranker": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "global_rate",
+                  "product_rate",
+                  "random",
+                  "list_price_only",
+                  "age_newest_first",
+                  "age_max_cycle_only",
+                  "age_p90_then_max_cycle"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ranker",
+            "description": "A alternativa que decidiu o veredito; nulo se inconclusivo."
+          },
+          "delta": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Delta"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A diferença dessa alternativa contra a servida."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "ranker",
+          "delta"
+        ],
+        "title": "EvidenceVerdict",
+        "description": "Como fica a regra servida contra as alternativas, pelo IC95% de cada diferença."
+      },
+      "FastLosses": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "fast_losses",
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/FastLossesParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "FastLosses"
+      },
+      "FastLossesParams": {
+        "properties": {
+          "median_lost_cycle_days": {
+            "type": "integer",
+            "title": "Median Lost Cycle Days"
+          },
+          "median_won_cycle_days": {
+            "type": "integer",
+            "title": "Median Won Cycle Days"
+          },
+          "lost": {
+            "type": "integer",
+            "title": "Lost"
+          },
+          "won": {
+            "type": "integer",
+            "title": "Won"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "median_lost_cycle_days",
+          "median_won_cycle_days",
+          "lost",
+          "won"
+        ],
+        "title": "FastLossesParams"
+      },
+      "FieldParams": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "product",
+              "sales_price",
+              "engage_date"
+            ],
+            "title": "Field"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "field"
+        ],
+        "title": "FieldParams"
+      },
+      "FixFieldAction": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "fix_missing_field",
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/FieldParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "FixFieldAction"
+      },
+      "Group": {
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "focar",
+              "qualificar",
+              "acompanhar",
+              "revisar",
+              "nao_pontuavel"
+            ],
+            "title": "State"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "empty": {
+            "anyOf": [
+              {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/GroupEmpty"
+                  },
+                  {
+                    "$ref": "#/components/schemas/StartWithGroup"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "code",
+                  "mapping": {
+                    "group_empty": "#/components/schemas/GroupEmpty",
+                    "start_with_group": "#/components/schemas/StartWithGroup"
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Empty",
+            "description": "Nulo quando o grupo tem oportunidades."
+          },
+          "next_action": {
+            "anyOf": [
+              {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/SimpleAction"
+                  },
+                  {
+                    "$ref": "#/components/schemas/AccountAction"
+                  },
+                  {
+                    "$ref": "#/components/schemas/FixFieldAction"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "code",
+                  "mapping": {
+                    "check_progress": "#/components/schemas/AccountAction",
+                    "check_prospecting": "#/components/schemas/SimpleAction",
+                    "check_status": "#/components/schemas/AccountAction",
+                    "confirm_still_active": "#/components/schemas/AccountAction",
+                    "fix_missing_field": "#/components/schemas/FixFieldAction",
+                    "fix_missing_fields": "#/components/schemas/SimpleAction"
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Action",
+            "description": "Nulo quando o grupo está vazio."
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Item"
+            },
+            "type": "array",
+            "title": "Items",
+            "description": "Na ordem de prioridade decidida pelo núcleo."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "state",
+          "count",
+          "empty",
+          "next_action",
+          "items"
+        ],
+        "title": "Group"
+      },
+      "GroupEmpty": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "group_empty",
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/NoParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "GroupEmpty"
+      },
+      "HistoryEmpty": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "no_closed_for_filter",
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/NoParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "HistoryEmpty"
+      },
+      "InflowDropParams": {
+        "properties": {
+          "recent": {
+            "items": {
+              "$ref": "#/components/schemas/MonthCount"
+            },
+            "type": "array",
+            "title": "Recent"
+          },
+          "base_average": {
+            "type": "number",
+            "title": "Base Average"
+          },
+          "base_first_month": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}$",
+            "title": "Base First Month",
+            "description": "Mês, AAAA-MM."
+          },
+          "base_last_month": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}$",
+            "title": "Base Last Month",
+            "description": "Mês, AAAA-MM."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "recent",
+          "base_average",
+          "base_first_month",
+          "base_last_month"
+        ],
+        "title": "InflowDropParams"
+      },
+      "Intelligence": {
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
+          "ordering": {
+            "$ref": "#/components/schemas/Ordering"
+          },
+          "filter": {
+            "$ref": "#/components/schemas/IntelligenceFilter"
+          },
+          "options": {
+            "$ref": "#/components/schemas/IntelligenceOptions"
+          },
+          "history": {
+            "$ref": "#/components/schemas/ClosedMetrics"
+          },
+          "history_empty": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/HistoryEmpty"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Nulo quando o recorte tem fechadas."
+          },
+          "open": {
+            "$ref": "#/components/schemas/OpenSnapshot"
+          },
+          "diagnostics": {
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/EngagingBeyondLongestCycle"
+                },
+                {
+                  "$ref": "#/components/schemas/OpenWithoutAccount"
+                },
+                {
+                  "$ref": "#/components/schemas/ProspectingWithoutEngageDate"
+                },
+                {
+                  "$ref": "#/components/schemas/SellersWithoutOpportunities"
+                },
+                {
+                  "$ref": "#/components/schemas/QuarterEndOutcomeMix"
+                },
+                {
+                  "$ref": "#/components/schemas/EngagementInflowDrop"
+                },
+                {
+                  "$ref": "#/components/schemas/AccountsSharedBySellers"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "code",
+                "mapping": {
+                  "accounts_shared_by_sellers": "#/components/schemas/AccountsSharedBySellers",
+                  "engagement_inflow_drop": "#/components/schemas/EngagementInflowDrop",
+                  "engaging_beyond_longest_cycle": "#/components/schemas/EngagingBeyondLongestCycle",
+                  "open_without_account": "#/components/schemas/OpenWithoutAccount",
+                  "prospecting_without_engage_date": "#/components/schemas/ProspectingWithoutEngageDate",
+                  "quarter_end_outcome_mix": "#/components/schemas/QuarterEndOutcomeMix",
+                  "sellers_without_opportunities": "#/components/schemas/SellersWithoutOpportunities"
+                }
+              }
+            },
+            "type": "array",
+            "title": "Diagnostics",
+            "description": "Só os que valem no recorte, na ordem da tela."
+          },
+          "findings": {
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/WinRateWithinChance"
+                },
+                {
+                  "$ref": "#/components/schemas/WinRateBeyondChance"
+                },
+                {
+                  "$ref": "#/components/schemas/RevenueConcentrated"
+                },
+                {
+                  "$ref": "#/components/schemas/RevenueGapDrivers"
+                },
+                {
+                  "$ref": "#/components/schemas/FastLosses"
+                },
+                {
+                  "$ref": "#/components/schemas/AccountProductCoverage"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "code",
+                "mapping": {
+                  "account_product_coverage": "#/components/schemas/AccountProductCoverage",
+                  "fast_losses": "#/components/schemas/FastLosses",
+                  "revenue_concentrated": "#/components/schemas/RevenueConcentrated",
+                  "revenue_gap_drivers": "#/components/schemas/RevenueGapDrivers",
+                  "win_rate_beyond_chance": "#/components/schemas/WinRateBeyondChance",
+                  "win_rate_within_chance": "#/components/schemas/WinRateWithinChance"
+                }
+              }
+            },
+            "type": "array",
+            "title": "Findings",
+            "description": "Só as que valem no recorte, na ordem da tela."
+          },
+          "breakdowns": {
+            "items": {
+              "$ref": "#/components/schemas/Breakdown"
+            },
+            "type": "array",
+            "title": "Breakdowns",
+            "description": "Um por dimensão, na ordem das dimensões."
+          },
+          "matrix": {
+            "$ref": "#/components/schemas/SellerProductMatrix"
+          },
+          "crosstabs": {
+            "items": {
+              "$ref": "#/components/schemas/Crosstab"
+            },
+            "type": "array",
+            "title": "Crosstabs"
+          },
+          "cycle_bands": {
+            "items": {
+              "$ref": "#/components/schemas/CycleBand"
+            },
+            "type": "array",
+            "title": "Cycle Bands"
+          },
+          "monthly": {
+            "items": {
+              "$ref": "#/components/schemas/MonthPoint"
+            },
+            "type": "array",
+            "title": "Monthly"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "meta",
+          "ordering",
+          "filter",
+          "options",
+          "history",
+          "history_empty",
+          "open",
+          "diagnostics",
+          "findings",
+          "breakdowns",
+          "matrix",
+          "crosstabs",
+          "cycle_bands",
+          "monthly"
+        ],
+        "title": "Intelligence"
+      },
+      "IntelligenceDeals": {
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
+          "filter": {
+            "$ref": "#/components/schemas/IntelligenceFilter"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "won",
+              "lost",
+              "open"
+            ],
+            "title": "Outcome"
+          },
+          "group": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "focar",
+                  "qualificar",
+                  "acompanhar",
+                  "revisar",
+                  "nao_pontuavel"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Group"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "deals": {
+            "items": {
+              "$ref": "#/components/schemas/Deal"
+            },
+            "type": "array",
+            "title": "Deals",
+            "description": "Abertas na ordem da regra; fechadas da mais recente para a mais antiga."
+          },
+          "empty": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DealsEmpty"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "meta",
+          "filter",
+          "outcome",
+          "group",
+          "total",
+          "deals",
+          "empty"
+        ],
+        "title": "IntelligenceDeals"
+      },
+      "IntelligenceFilter": {
+        "properties": {
+          "product": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Product"
+          },
+          "seller": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Seller"
+          },
+          "manager": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Manager"
+          },
+          "office": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Office",
+            "description": "Escritório do vendedor (regional_office), não a sede do cliente."
+          },
+          "sector": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sector"
+          },
+          "account": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account"
+          },
+          "size": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size",
+            "description": "Porte do cliente: a chave de `options.sizes`."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "product",
+          "seller",
+          "manager",
+          "office",
+          "sector",
+          "account",
+          "size"
+        ],
+        "title": "IntelligenceFilter",
+        "description": "O recorte pedido. Valor inexistente dá recorte vazio, nunca erro."
+      },
+      "IntelligenceOptions": {
+        "properties": {
+          "products": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Products"
+          },
+          "sectors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Sectors"
+          },
+          "accounts": {
+            "items": {
+              "$ref": "#/components/schemas/AccountOption"
+            },
+            "type": "array",
+            "title": "Accounts"
+          },
+          "sizes": {
+            "items": {
+              "$ref": "#/components/schemas/SizeBand"
+            },
+            "type": "array",
+            "title": "Sizes"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "products",
+          "sectors",
+          "accounts",
+          "sizes"
+        ],
+        "title": "IntelligenceOptions",
+        "description": "Valores dos filtros que não vêm de /api/sellers (vendedor, gerente e escritório vêm de lá)."
+      },
+      "Item": {
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "title": "Opportunity Id"
+          },
+          "sales_agent": {
+            "type": "string",
+            "title": "Sales Agent"
+          },
+          "product": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Product"
+          },
+          "account": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account",
+            "description": "Nulo quando a oportunidade não tem conta registrada."
+          },
+          "sales_price": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sales Price",
+            "description": "Preço de tabela do produto (catálogo, não valor negociado)."
+          },
+          "value_band": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "alto",
+                  "médio",
+                  "baixo"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value Band"
+          },
+          "engage_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engage Date"
+          },
+          "age_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age Days",
+            "description": "Dias corridos de engage_date até o as_of."
+          },
+          "group": {
+            "type": "string",
+            "enum": [
+              "focar",
+              "qualificar",
+              "acompanhar",
+              "revisar",
+              "nao_pontuavel"
+            ],
+            "title": "Group"
+          },
+          "deal_stage": {
+            "type": "string",
+            "enum": [
+              "Engaging",
+              "Prospecting"
+            ],
+            "title": "Deal Stage"
+          },
+          "missing_field": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "product",
+                  "sales_price",
+                  "engage_date"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Missing Field"
+          },
+          "tie_size": {
+            "type": "integer",
+            "title": "Tie Size",
+            "description": "Quantas oportunidades do mesmo grupo e produto (mesmo preço) há na carteira."
+          },
+          "reasons": {
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AgeWithinWonCycle"
+                },
+                {
+                  "$ref": "#/components/schemas/AgeAboveWonCycle"
+                },
+                {
+                  "$ref": "#/components/schemas/AgeAboveCycleLimit"
+                },
+                {
+                  "$ref": "#/components/schemas/ProspectingStage"
+                },
+                {
+                  "$ref": "#/components/schemas/MissingFieldReason"
+                },
+                {
+                  "$ref": "#/components/schemas/ListPrice"
+                },
+                {
+                  "$ref": "#/components/schemas/NoProduct"
+                },
+                {
+                  "$ref": "#/components/schemas/NoListPrice"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "code",
+                "mapping": {
+                  "age_above_cycle_limit": "#/components/schemas/AgeAboveCycleLimit",
+                  "age_above_won_cycle": "#/components/schemas/AgeAboveWonCycle",
+                  "age_within_won_cycle": "#/components/schemas/AgeWithinWonCycle",
+                  "list_price": "#/components/schemas/ListPrice",
+                  "missing_field": "#/components/schemas/MissingFieldReason",
+                  "no_list_price": "#/components/schemas/NoListPrice",
+                  "no_product": "#/components/schemas/NoProduct",
+                  "prospecting_stage": "#/components/schemas/ProspectingStage"
+                }
+              }
+            },
+            "type": "array",
+            "title": "Reasons",
+            "description": "Exatamente dois: o que decidiu o grupo e o que decidiu a ordem."
+          },
+          "next_action": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SimpleAction"
+              },
+              {
+                "$ref": "#/components/schemas/AccountAction"
+              },
+              {
+                "$ref": "#/components/schemas/FixFieldAction"
+              }
+            ],
+            "title": "Next Action",
+            "discriminator": {
+              "propertyName": "code",
+              "mapping": {
+                "check_progress": "#/components/schemas/AccountAction",
+                "check_prospecting": "#/components/schemas/SimpleAction",
+                "check_status": "#/components/schemas/AccountAction",
+                "confirm_still_active": "#/components/schemas/AccountAction",
+                "fix_missing_field": "#/components/schemas/FixFieldAction",
+                "fix_missing_fields": "#/components/schemas/SimpleAction"
+              }
+            }
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "opportunity_id",
+          "sales_agent",
+          "product",
+          "account",
+          "sales_price",
+          "value_band",
+          "engage_date",
+          "age_days",
+          "group",
+          "deal_stage",
+          "missing_field",
+          "tie_size",
+          "reasons",
+          "next_action"
+        ],
+        "title": "Item"
+      },
+      "ListPrice": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "list_price",
+            "title": "Code"
+          },
+          "role": {
+            "type": "string",
+            "const": "order",
+            "title": "Role"
+          },
+          "params": {
+            "$ref": "#/components/schemas/ListPriceParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "role",
+          "params"
+        ],
+        "title": "ListPrice",
+        "description": "Faixa e preço de tabela: ordenam dentro do grupo."
+      },
+      "ListPriceParams": {
+        "properties": {
+          "product": {
+            "type": "string",
+            "title": "Product"
+          },
+          "sales_price": {
+            "type": "integer",
+            "title": "Sales Price",
+            "description": "Preço de tabela (catálogo, não valor negociado)."
+          },
+          "value_band": {
+            "type": "string",
+            "enum": [
+              "alto",
+              "médio",
+              "baixo"
+            ],
+            "title": "Value Band"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "product",
+          "sales_price",
+          "value_band"
+        ],
+        "title": "ListPriceParams"
+      },
+      "LongestCycleParams": {
+        "properties": {
+          "age_days": {
+            "type": "integer",
+            "title": "Age Days"
+          },
+          "cycle_limit_days": {
+            "type": "integer",
+            "title": "Cycle Limit Days",
+            "description": "L2: maior ciclo entre as fechadas até o as_of."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "age_days",
+          "cycle_limit_days"
+        ],
+        "title": "LongestCycleParams"
+      },
+      "MatrixCell": {
+        "properties": {
+          "product": {
+            "type": "string",
+            "title": "Product"
+          },
+          "closed": {
+            "type": "integer",
+            "title": "Closed"
+          },
+          "mix_share": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mix Share",
+            "description": "Fatia do produto nas fechadas do vendedor."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "product",
+          "closed",
+          "mix_share"
+        ],
+        "title": "MatrixCell"
+      },
+      "MatrixRow": {
+        "properties": {
+          "seller": {
+            "type": "string",
+            "title": "Seller"
+          },
+          "closed": {
+            "type": "integer",
+            "title": "Closed"
+          },
+          "cells": {
+            "items": {
+              "$ref": "#/components/schemas/MatrixCell"
+            },
+            "type": "array",
+            "title": "Cells"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "seller",
+          "closed",
+          "cells"
+        ],
+        "title": "MatrixRow"
+      },
+      "Meta": {
+        "properties": {
+          "as_of": {
+            "type": "string",
+            "format": "date",
+            "title": "As Of"
+          },
+          "won_cycle_median_days": {
+            "type": "integer",
+            "title": "Won Cycle Median Days",
+            "description": "Mediana do ciclo das ganhas até o as_of: contexto da idade, não decide grupo nem ordem."
+          },
+          "won_cycle_limit_days": {
+            "type": "integer",
+            "title": "Won Cycle Limit Days",
+            "description": "L1: piso do P90 do ciclo das ganhas até o as_of."
+          },
+          "cycle_limit_days": {
+            "type": "integer",
+            "title": "Cycle Limit Days",
+            "description": "L2: maior ciclo entre as fechadas até o as_of."
+          },
+          "cycle_percentile": {
+            "type": "integer",
+            "title": "Cycle Percentile",
+            "description": "Percentil do ciclo das ganhas que define L1."
+          },
+          "audited": {
+            "type": "boolean",
+            "title": "Audited",
+            "description": "Os CSVs são a versão auditada (hash)."
+          },
+          "contract_version": {
+            "type": "integer",
+            "const": 7,
+            "title": "Contract Version"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "as_of",
+          "won_cycle_median_days",
+          "won_cycle_limit_days",
+          "cycle_limit_days",
+          "cycle_percentile",
+          "audited",
+          "contract_version"
+        ],
+        "title": "Meta"
+      },
+      "MissingFieldReason": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "missing_field",
+            "title": "Code"
+          },
+          "role": {
+            "type": "string",
+            "const": "group",
+            "title": "Role"
+          },
+          "params": {
+            "$ref": "#/components/schemas/FieldParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "role",
+          "params"
+        ],
+        "title": "MissingFieldReason",
+        "description": "Falta um campo necessário: grupo nao_pontuavel."
+      },
+      "MonthCount": {
+        "properties": {
+          "month": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}$",
+            "title": "Month",
+            "description": "Mês, AAAA-MM."
+          },
+          "engaged": {
+            "type": "integer",
+            "title": "Engaged"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "month",
+          "engaged"
+        ],
+        "title": "MonthCount"
+      },
+      "MonthPoint": {
+        "properties": {
+          "month": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}$",
+            "title": "Month",
+            "description": "Mês, AAAA-MM."
+          },
+          "engaged": {
+            "type": "integer",
+            "title": "Engaged",
+            "description": "Novas negociações (engage_date no mês)."
+          },
+          "won": {
+            "type": "integer",
+            "title": "Won"
+          },
+          "lost": {
+            "type": "integer",
+            "title": "Lost"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "month",
+          "engaged",
+          "won",
+          "lost"
+        ],
+        "title": "MonthPoint"
+      },
+      "NoListPrice": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "no_list_price",
+            "title": "Code"
+          },
+          "role": {
+            "type": "string",
+            "const": "order",
+            "title": "Role"
+          },
+          "params": {
+            "$ref": "#/components/schemas/ProductParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "role",
+          "params"
+        ],
+        "title": "NoListPrice",
+        "description": "O produto não tem preço no catálogo."
+      },
+      "NoParams": {
+        "properties": {},
+        "additionalProperties": false,
+        "type": "object",
+        "title": "NoParams",
+        "description": "Código sem parâmetros."
+      },
+      "NoProduct": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "no_product",
+            "title": "Code"
+          },
+          "role": {
+            "type": "string",
+            "const": "order",
+            "title": "Role"
+          },
+          "params": {
+            "$ref": "#/components/schemas/NoParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "role",
+          "params"
+        ],
+        "title": "NoProduct",
+        "description": "Sem produto, não há preço para ordenar."
+      },
+      "OpenSnapshot": {
+        "properties": {
+          "summary": {
+            "$ref": "#/components/schemas/Summary"
+          },
+          "list_value": {
+            "type": "integer",
+            "title": "List Value",
+            "description": "Σ preço de tabela das abertas. Não é receita e não se soma a ela."
+          },
+          "without_list_price": {
+            "type": "integer",
+            "title": "Without List Price"
+          },
+          "excluded_without_account": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Excluded Without Account",
+            "description": "Abertas sem cliente que saíram do recorte por filtro de setor, cliente ou porte; nulo sem esses filtros."
+          },
+          "empty": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PipelineEmpty"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "summary",
+          "list_value",
+          "without_list_price",
+          "excluded_without_account",
+          "empty"
+        ],
+        "title": "OpenSnapshot",
+        "description": "A carteira aberta do recorte no as_of, com os grupos da regra (os mesmos da Equipe)."
+      },
+      "OpenWithoutAccount": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "open_without_account",
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/OpenWithoutAccountParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "OpenWithoutAccount"
+      },
+      "OpenWithoutAccountParams": {
+        "properties": {
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "open": {
+            "type": "integer",
+            "title": "Open"
+          },
+          "share": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Share"
+          },
+          "closed_without_account": {
+            "type": "integer",
+            "title": "Closed Without Account"
+          },
+          "closed": {
+            "type": "integer",
+            "title": "Closed"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "count",
+          "open",
+          "share",
+          "closed_without_account",
+          "closed"
+        ],
+        "title": "OpenWithoutAccountParams"
+      },
+      "Ordering": {
+        "properties": {
+          "group_order": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "focar",
+                "qualificar",
+                "acompanhar",
+                "revisar",
+                "nao_pontuavel"
+              ]
+            },
+            "type": "array",
+            "title": "Group Order"
+          },
+          "within_group": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "value_band",
+                "sales_price_desc",
+                "opportunity_id"
+              ]
+            },
+            "type": "array",
+            "title": "Within Group",
+            "description": "Critérios dentro do grupo, na ordem em que valem."
+          },
+          "age_affects_order": {
+            "type": "boolean",
+            "title": "Age Affects Order"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "group_order",
+          "within_group",
+          "age_affects_order"
+        ],
+        "title": "Ordering",
+        "description": "A ordem da lista como dado, para quem apresenta explicar a ordem."
+      },
+      "PipelineEmpty": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "no_open_for_seller",
+              "no_open_for_filter"
+            ],
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/NoParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "PipelineEmpty"
+      },
+      "ProductParams": {
+        "properties": {
+          "product": {
+            "type": "string",
+            "title": "Product"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "product"
+        ],
+        "title": "ProductParams"
+      },
+      "ProspectingParams": {
+        "properties": {
+          "deal_stage": {
+            "type": "string",
+            "const": "Prospecting",
+            "title": "Deal Stage"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "deal_stage"
+        ],
+        "title": "ProspectingParams"
+      },
+      "ProspectingStage": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "prospecting_stage",
+            "title": "Code"
+          },
+          "role": {
+            "type": "string",
+            "const": "group",
+            "title": "Role"
+          },
+          "params": {
+            "$ref": "#/components/schemas/ProspectingParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "role",
+          "params"
+        ],
+        "title": "ProspectingStage",
+        "description": "Estágio Prospecting: grupo qualificar (a regra é o estágio, não a falta de data)."
+      },
+      "ProspectingWithoutDateParams": {
+        "properties": {
+          "group": {
+            "type": "string",
+            "enum": [
+              "focar",
+              "qualificar",
+              "acompanhar",
+              "revisar",
+              "nao_pontuavel"
+            ],
+            "title": "Group",
+            "description": "O grupo da regra que reúne essas oportunidades."
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "prospecting": {
+            "type": "integer",
+            "title": "Prospecting"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "group",
+          "count",
+          "prospecting"
+        ],
+        "title": "ProspectingWithoutDateParams"
+      },
+      "ProspectingWithoutEngageDate": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "prospecting_without_engage_date",
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/ProspectingWithoutDateParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "ProspectingWithoutEngageDate"
+      },
+      "QuarterEndOutcomeMix": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "quarter_end_outcome_mix",
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/QuarterEndParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "QuarterEndOutcomeMix",
+        "description": "Higiene de registro: nunca um sinal para prever (RJ-02)."
+      },
+      "QuarterEndParams": {
+        "properties": {
+          "quarter_end_closed": {
+            "type": "integer",
+            "title": "Quarter End Closed"
+          },
+          "quarter_end_win_rate": {
+            "type": "number",
+            "title": "Quarter End Win Rate"
+          },
+          "other_closed": {
+            "type": "integer",
+            "title": "Other Closed"
+          },
+          "other_win_rate": {
+            "type": "number",
+            "title": "Other Win Rate"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "quarter_end_closed",
+          "quarter_end_win_rate",
+          "other_closed",
+          "other_win_rate"
+        ],
+        "title": "QuarterEndParams"
+      },
+      "RankerResult": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "global_rate",
+              "product_rate",
+              "random",
+              "list_price_only",
+              "age_newest_first",
+              "age_max_cycle_only",
+              "age_p90_then_max_cycle"
+            ],
+            "title": "Code"
+          },
+          "auc_mean": {
+            "type": "number",
+            "title": "Auc Mean",
+            "description": "AUC média entre os cortes; 0,5 é o acaso."
+          },
+          "auc_min": {
+            "type": "number",
+            "title": "Auc Min"
+          },
+          "auc_max": {
+            "type": "number",
+            "title": "Auc Max"
+          },
+          "cuts_auc_above_chance": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cuts Auc Above Chance",
+            "description": "Cortes com o IC95% da AUC acima de 0,5; nulo quando não calculado."
+          },
+          "p_at_k": {
+            "type": "number",
+            "title": "P At K",
+            "description": "Ganhas nas top_k de cada vendedor ÷ top_k."
+          },
+          "lift_at_k": {
+            "type": "number",
+            "title": "Lift At K",
+            "description": "Ganhas nas top_k ÷ ganhas esperadas ao acaso."
+          },
+          "val_at_k": {
+            "type": "number",
+            "title": "Val At K",
+            "description": "Valor ganho nas top_k ÷ valor ganho nas top_k melhores sabendo o futuro (o oráculo)."
+          },
+          "delta_val": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Delta"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "val_at_k menos o da referência, com IC95% por bootstrap de vendedores; nulo na referência."
+          },
+          "cuts_val_above_reference": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cuts Val Above Reference",
+            "description": "Cortes com val_at_k acima da referência."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "auc_mean",
+          "auc_min",
+          "auc_max",
+          "cuts_auc_above_chance",
+          "p_at_k",
+          "lift_at_k",
+          "val_at_k",
+          "delta_val",
+          "cuts_val_above_reference"
+        ],
+        "title": "RankerResult"
+      },
+      "RevenueConcentrated": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "revenue_concentrated",
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/ConcentratedParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "RevenueConcentrated"
+      },
+      "RevenueDrivers": {
+        "properties": {
+          "segments_used": {
+            "type": "integer",
+            "title": "Segments Used"
+          },
+          "spread_ratio": {
+            "type": "number",
+            "title": "Spread Ratio",
+            "description": "Maior receita ÷ menor receita entre os segmentos."
+          },
+          "volume_share": {
+            "type": "number",
+            "title": "Volume Share"
+          },
+          "conversion_share": {
+            "type": "number",
+            "title": "Conversion Share"
+          },
+          "ticket_share": {
+            "type": "number",
+            "title": "Ticket Share"
+          },
+          "main": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "volume",
+                "conversion",
+                "ticket"
+              ]
+            },
+            "type": "array",
+            "title": "Main",
+            "description": "Fatores que explicam boa parte da diferença."
+          },
+          "negligible": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "volume",
+                "conversion",
+                "ticket"
+              ]
+            },
+            "type": "array",
+            "title": "Negligible",
+            "description": "Fatores que quase não explicam a diferença."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "segments_used",
+          "spread_ratio",
+          "volume_share",
+          "conversion_share",
+          "ticket_share",
+          "main",
+          "negligible"
+        ],
+        "title": "RevenueDrivers",
+        "description": "Quanto da diferença de receita entre segmentos vem do volume, da conversão e do ticket."
+      },
+      "RevenueGapDrivers": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "revenue_gap_drivers",
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/DriversParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "RevenueGapDrivers"
+      },
+      "Rules": {
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
+          "ordering": {
+            "$ref": "#/components/schemas/Ordering"
+          },
+          "value_bands": {
+            "items": {
+              "$ref": "#/components/schemas/ValueBandRule"
+            },
+            "type": "array",
+            "title": "Value Bands",
+            "description": "Da faixa de cima para a de baixo."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "meta",
+          "ordering",
+          "value_bands"
+        ],
+        "title": "Rules",
+        "description": "A política que monta a lista, como dado."
+      },
+      "Segment": {
+        "properties": {
+          "key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Key",
+            "description": "Nulo: oportunidades sem esse dado (ex.: sem cliente registrado)."
+          },
+          "history": {
+            "$ref": "#/components/schemas/ClosedMetrics"
+          },
+          "revenue_share": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Revenue Share",
+            "description": "Fatia da receita do recorte."
+          },
+          "open": {
+            "type": "integer",
+            "title": "Open",
+            "description": "Abertas do segmento no as_of."
+          },
+          "profile": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AccountProfile"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Só na dimensão account."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "key",
+          "history",
+          "revenue_share",
+          "open",
+          "profile"
+        ],
+        "title": "Segment"
+      },
+      "Seller": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "manager": {
+            "type": "string",
+            "title": "Manager"
+          },
+          "office": {
+            "type": "string",
+            "title": "Office"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "manager",
+          "office"
+        ],
+        "title": "Seller"
+      },
+      "SellerList": {
+        "properties": {
+          "sellers": {
+            "items": {
+              "$ref": "#/components/schemas/Seller"
+            },
+            "type": "array",
+            "title": "Sellers",
+            "description": "Em ordem alfabética, sem métricas."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sellers"
+        ],
+        "title": "SellerList"
+      },
+      "SellerPipeline": {
+        "properties": {
+          "seller": {
+            "type": "string",
+            "title": "Seller"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
+          "ordering": {
+            "$ref": "#/components/schemas/Ordering"
+          },
+          "summary": {
+            "$ref": "#/components/schemas/Summary"
+          },
+          "empty": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PipelineEmpty"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Nulo quando há oportunidades abertas."
+          },
+          "groups": {
+            "items": {
+              "$ref": "#/components/schemas/Group"
+            },
+            "type": "array",
+            "title": "Groups",
+            "description": "Na ordem de `ordering.group_order`."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "seller",
+          "meta",
+          "ordering",
+          "summary",
+          "empty",
+          "groups"
+        ],
+        "title": "SellerPipeline"
+      },
+      "SellerProductMatrix": {
+        "properties": {
+          "products": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Products",
+            "description": "Do maior preço de tabela para o menor."
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/MatrixRow"
+            },
+            "type": "array",
+            "title": "Rows"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "products",
+          "rows"
+        ],
+        "title": "SellerProductMatrix",
+        "description": "O mix de cada vendedor, em ordem alfabética. Sem taxa por célula."
+      },
+      "SellerSummary": {
+        "properties": {
+          "seller": {
+            "type": "string",
+            "title": "Seller"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "focar": {
+            "type": "integer",
+            "title": "Focar"
+          },
+          "acompanhar": {
+            "type": "integer",
+            "title": "Acompanhar"
+          },
+          "revisar": {
+            "type": "integer",
+            "title": "Revisar"
+          },
+          "qualificar": {
+            "type": "integer",
+            "title": "Qualificar"
+          },
+          "nao_pontuavel": {
+            "type": "integer",
+            "title": "Nao Pontuavel"
+          },
+          "without_account": {
+            "type": "integer",
+            "title": "Without Account"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "seller",
+          "total",
+          "focar",
+          "acompanhar",
+          "revisar",
+          "qualificar",
+          "nao_pontuavel",
+          "without_account"
+        ],
+        "title": "SellerSummary",
+        "description": "Resumo da carteira aberta de um vendedor do filtro."
+      },
+      "SellersWithoutOpportunities": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "sellers_without_opportunities",
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/SellersWithoutOpportunitiesParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "SellersWithoutOpportunities"
+      },
+      "SellersWithoutOpportunitiesParams": {
+        "properties": {
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "team": {
+            "type": "integer",
+            "title": "Team"
+          },
+          "sellers": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Sellers",
+            "description": "Em ordem alfabética."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "count",
+          "team",
+          "sellers"
+        ],
+        "title": "SellersWithoutOpportunitiesParams"
+      },
+      "SharedAccountsParams": {
+        "properties": {
+          "median_sellers": {
+            "type": "integer",
+            "title": "Median Sellers"
+          },
+          "max_sellers": {
+            "type": "integer",
+            "title": "Max Sellers"
+          },
+          "accounts": {
+            "type": "integer",
+            "title": "Accounts"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "median_sellers",
+          "max_sellers",
+          "accounts"
+        ],
+        "title": "SharedAccountsParams"
+      },
+      "SimpleAction": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "check_prospecting",
+              "fix_missing_fields"
+            ],
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/NoParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "SimpleAction"
+      },
+      "SizeBand": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key",
+            "description": "1 é o menor porte."
+          },
+          "low": {
+            "type": "number",
+            "title": "Low",
+            "description": "Receita anual mínima do porte, em US$ milhões."
+          },
+          "high": {
+            "type": "number",
+            "title": "High",
+            "description": "Receita anual máxima do porte, em US$ milhões."
+          },
+          "accounts": {
+            "type": "integer",
+            "title": "Accounts"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "key",
+          "low",
+          "high",
+          "accounts"
+        ],
+        "title": "SizeBand",
+        "description": "Porte do cliente: quantil da receita anual entre os clientes cadastrados."
+      },
+      "StartWithGroup": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "start_with_group",
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/StartWithParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "StartWithGroup",
+        "description": "O grupo focar está vazio: comece pelo grupo indicado."
+      },
+      "StartWithParams": {
+        "properties": {
+          "group": {
+            "type": "string",
+            "enum": [
+              "focar",
+              "qualificar",
+              "acompanhar",
+              "revisar",
+              "nao_pontuavel"
+            ],
+            "title": "Group",
+            "description": "Primeiro grupo seguinte que tem oportunidades."
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "check_progress",
+              "confirm_still_active",
+              "check_prospecting",
+              "fix_missing_fields"
+            ],
+            "title": "Action"
+          },
+          "has_engaging": {
+            "type": "boolean",
+            "title": "Has Engaging",
+            "description": "Há negociações em andamento (Engaging) acima de L1 na carteira? Define o porquê de Focar estar vazio quando o grupo indicado é Qualificar."
+          },
+          "won_cycle_limit_days": {
+            "type": "integer",
+            "title": "Won Cycle Limit Days",
+            "description": "L1, o limite que deixou o grupo focar vazio."
+          },
+          "cycle_limit_days": {
+            "type": "integer",
+            "title": "Cycle Limit Days",
+            "description": "L2, o limite de acompanhar."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "group",
+          "action",
+          "has_engaging",
+          "won_cycle_limit_days",
+          "cycle_limit_days"
+        ],
+        "title": "StartWithParams"
+      },
+      "Summary": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "focar": {
+            "type": "integer",
+            "title": "Focar"
+          },
+          "acompanhar": {
+            "type": "integer",
+            "title": "Acompanhar"
+          },
+          "revisar": {
+            "type": "integer",
+            "title": "Revisar"
+          },
+          "qualificar": {
+            "type": "integer",
+            "title": "Qualificar"
+          },
+          "nao_pontuavel": {
+            "type": "integer",
+            "title": "Nao Pontuavel"
+          },
+          "without_account": {
+            "type": "integer",
+            "title": "Without Account",
+            "description": "Oportunidades sem conta registrada."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "total",
+          "focar",
+          "acompanhar",
+          "revisar",
+          "qualificar",
+          "nao_pontuavel",
+          "without_account"
+        ],
+        "title": "Summary"
+      },
+      "TeamFilter": {
+        "properties": {
+          "manager": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Manager"
+          },
+          "office": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Office"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "manager",
+          "office"
+        ],
+        "title": "TeamFilter"
+      },
+      "TeamPipeline": {
+        "properties": {
+          "filter": {
+            "$ref": "#/components/schemas/TeamFilter"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
+          "ordering": {
+            "$ref": "#/components/schemas/Ordering"
+          },
+          "summary": {
+            "$ref": "#/components/schemas/Summary"
+          },
+          "empty": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PipelineEmpty"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Nulo quando há oportunidades abertas."
+          },
+          "groups": {
+            "items": {
+              "$ref": "#/components/schemas/Group"
+            },
+            "type": "array",
+            "title": "Groups",
+            "description": "Na ordem de `ordering.group_order`."
+          },
+          "by_seller": {
+            "items": {
+              "$ref": "#/components/schemas/SellerSummary"
+            },
+            "type": "array",
+            "title": "By Seller",
+            "description": "Todo vendedor do filtro, inclusive com zero abertas, em ordem alfabética: nunca um ranking."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "filter",
+          "meta",
+          "ordering",
+          "summary",
+          "empty",
+          "groups",
+          "by_seller"
+        ],
+        "title": "TeamPipeline"
+      },
+      "ValueBandRule": {
+        "properties": {
+          "band": {
+            "type": "string",
+            "enum": [
+              "alto",
+              "médio",
+              "baixo"
+            ],
+            "title": "Band"
+          },
+          "min_price": {
+            "type": "integer",
+            "title": "Min Price",
+            "description": "Preço de tabela mínimo da faixa, inclusive."
+          },
+          "max_price": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Price",
+            "description": "Preço de tabela máximo, inclusive; nulo na faixa de cima."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "band",
+          "min_price",
+          "max_price"
+        ],
+        "title": "ValueBandRule"
+      },
+      "WinRate": {
+        "properties": {
+          "value": {
+            "type": "number",
+            "title": "Value",
+            "description": "Ganhas ÷ fechadas."
+          },
+          "low": {
+            "type": "number",
+            "title": "Low",
+            "description": "Faixa provável (Wilson, 95%): limite inferior."
+          },
+          "high": {
+            "type": "number",
+            "title": "High",
+            "description": "Faixa provável (Wilson, 95%): limite superior."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "value",
+          "low",
+          "high"
+        ],
+        "title": "WinRate"
+      },
+      "WinRateBeyondChance": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "win_rate_beyond_chance",
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/BeyondChanceParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "WinRateBeyondChance"
+      },
+      "WinRateWithinChance": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "const": "win_rate_within_chance",
+            "title": "Code"
+          },
+          "params": {
+            "$ref": "#/components/schemas/WithinChanceParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "title": "WinRateWithinChance"
+      },
+      "WithinChanceParams": {
+        "properties": {
+          "dimensions": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "product",
+                "seller",
+                "manager",
+                "office",
+                "sector",
+                "account",
+                "size"
+              ]
+            },
+            "type": "array",
+            "title": "Dimensions"
+          },
+          "closed": {
+            "type": "integer",
+            "title": "Closed"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dimensions",
+          "closed"
+        ],
+        "title": "WithinChanceParams"
+      },
+      "WonCycleParams": {
+        "properties": {
+          "age_days": {
+            "type": "integer",
+            "title": "Age Days",
+            "description": "Dias corridos desde engage_date até o as_of."
+          },
+          "won_cycle_limit_days": {
+            "type": "integer",
+            "title": "Won Cycle Limit Days",
+            "description": "L1: piso do P90 do ciclo das ganhas até o as_of."
+          },
+          "percentile": {
+            "type": "integer",
+            "title": "Percentile",
+            "description": "Percentil do ciclo das ganhas que define L1."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "age_days",
+          "won_cycle_limit_days",
+          "percentile"
+        ],
+        "title": "WonCycleParams"
+      }
+    }
+  }
+}
