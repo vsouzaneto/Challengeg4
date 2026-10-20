@@ -1,0 +1,60 @@
+sponsored × disclosure_type
+ disclosure_type  explicit  implicit   none
+is_sponsored                              
+False                   0         0  29900
+True                11784     10530      0
+implicit share: 0.472 · video-only share: 0.325
+ad marker in hashtags, by declared location
+ disclosure_location
+caption     0.0028
+hashtags    0.0023
+video       0.0014
+Name: m, dtype: float64
+ad marker in organic hashtags: 0.0021
+sponsor × content category
+ sponsor_category  cosmetics  electronics  fashion   food  gaming  travel
+content_category                                                        
+beauty                0.168        0.164    0.164  0.172   0.168   0.164
+lifestyle             0.164        0.172    0.165  0.176   0.164   0.159
+tech                  0.161        0.169    0.172  0.167   0.162   0.168
+content_length by type
+                min    50%    max
+content_type                    
+image         10.0  173.0  599.0
+mixed         10.0  175.0  599.0
+text          10.0  174.0  599.0
+video         10.0  174.0  599.0
+platform × content_type
+ content_type  image  mixed   text  video
+platform                                
+Bilibili      0.192  0.099  0.102  0.608
+Instagram     0.195  0.100  0.099  0.606
+RedNote       0.201  0.105  0.092  0.601
+TikTok        0.193  0.097  0.105  0.606
+YouTube       0.206  0.099  0.100  0.595
+platform × audience_location
+ audience_location  Brazil  China  Germany  India  Japan  Russia     UK    USA
+platform                                                                     
+Bilibili            0.122  0.128    0.119  0.123  0.126   0.130  0.127  0.126
+Instagram           0.124  0.127    0.126  0.122  0.119   0.127  0.128  0.127
+RedNote             0.124  0.127    0.129  0.127  0.129   0.119  0.122  0.123
+TikTok              0.126  0.122    0.124  0.125  0.132   0.123  0.125  0.123
+YouTube             0.127  0.132    0.125  0.124  0.123   0.119  0.127  0.123
+language × audience_location
+ audience_location  Brazil  China  Germany  India  Japan  Russia     UK    USA
+language                                                                     
+Chinese             0.130  0.124    0.124  0.124  0.126   0.124  0.125  0.122
+English             0.122  0.128    0.126  0.124  0.124   0.127  0.125  0.124
+Hindi               0.120  0.133    0.119  0.123  0.123   0.121  0.132  0.129
+Japanese            0.128  0.130    0.122  0.126  0.127   0.118  0.126  0.123
+Spanish             0.126  0.124    0.128  0.126  0.130   0.113  0.123  0.130
+post_date sample (no timezone): ['5/29/23 12:15 AM', '5/29/23 12:18 AM']
+follower tiers
+ follower_count
+(0.0, 10000.0]            0.009
+(10000.0, 50000.0]        0.040
+(50000.0, 100000.0]       0.050
+(100000.0, 500000.0]      0.403
+(500000.0, 10000000.0]    0.499
+Name: proportion, dtype: float64
+comments_count min: 140

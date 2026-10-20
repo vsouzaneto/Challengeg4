@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+{% from "_notes.html" import time_note, length_note %}
+{% set hl = d.insights.destaque %}
+{% set hl_dims = hl.dimensao.split(' × ') %}
+{% set hl_vals = hl.bolsao.split(' · ') %}
+{% set hour = d.insights.horario_comentarios | sort(attribute='q (hora)') | first %}
+{% block body %}
+<main class="wrap wide bi2" id="bi">
+  <section class="bi-head">
+    <div>
+      <span class="eyebrow">Painel interativo</span>
+      <h1 style="font-size:2.3rem">Explorar <em>dados</em></h1>
+    </div>
+    <div class="bi-metric">
+      <div class="seg" role="group" aria-label="Métrica" id="metric-tabs"></div>
+      <div class="seg small" role="group" aria-label="Medida" id="mode-tabs"></div>
+    </div>
+  </section>
+
+  <section class="suggest" aria-label="Sugestões de filtro">
+    <span class="chip-label">Sugestões</span>
+    <div class="suggest-list" id="suggestions"></div>
+  </section>
+
+  <section class="bi-filters" aria-label="Filtros">
+    <div class="quick" id="quick-filters"></div>
+    <div class="bi-filter-row">
+      <details class="popover" id="more-filters"><summary>Mais filtros <span class="badge" id="more-count"></span></summary>
+        <div class="popover-body" id="more-body"></div></details>
+      <label class="field inline" for="de">De<select id="de"></select></label>
+      <label class="field inline" for="ate">Até<select id="ate"></select></label>
+      <button class="btn" type="button" id="reset">Limpar filtros</button>
+      <div class="active-filters" id="active"></div>
+    </div>
+  </section>
+
+  <p class="bi-summary" id="summary" aria-live="polite"></p>
+
+  <section class="kpi-row" id="kpis" aria-label="Indicadores"></section>
+
+  <section class="bi-grid" id="grid">
+    {% for dim in ['platform', 'content_type', 'content_category', 'follower_tier'] %}
+    <div class="tile"><div class="tile-head"><h3>{{ dim | label }}</h3><span class="tile-status" id="st-ch-{{ dim }}"></span></div><div class="chart bar-chart"><canvas id="ch-{{ dim }}"></canvas></div></div>
+    {% endfor %}
+    <div class="tile"><div class="tile-head"><label class="field inline" for="free-dim"><span class="sr">Característica</span><select id="free-dim"></select></label><span class="tile-status" id="st-ch-free"></span></div>
+      <div class="chart bar-chart"><canvas id="ch-free"></canvas></div></div>
+    <div class="tile"><div class="tile-head"><h3>Mês a mês</h3></div><div class="chart bar-chart"><canvas id="ch-ts"></canvas></div></div>
+  </section>
+  <p class="caption" id="legend"></p>
+  <div id="caveats">{{ time_note() }}{{ length_note(d) }}</div>
+
+  <details class="more panel"><summary>Cruzar duas características (matriz)</summary><div class="more-body">
+    <div class="visual-head"><span></span>
+      <div class="controls">
+        <label class="field" for="row">Linhas<select id="row"></select></label>
+        <label class="field" for="col">Colunas<select id="col"></select></label>
+      </div></div>
+    <div class="table-wrap"><table id="matrix"></table></div>
+    <p class="caption">Diferença em relação à média da seleção. Dourado = acima, vermelho = abaixo. Passe o mouse para ver o nº de posts.</p>
+  </div></details>
+  <details class="more panel"><summary>Ver os 10 melhores posts da seleção</summary><div class="more-body">
+    <div class="table-wrap"><table id="top"></table></div>
+  </div></details>
+</main>
+<script>
+const QUICK = ["platform", "content_type", "content_category"];
+const FIXED = ["platform", "content_type", "content_category", "follower_tier"];
+const BASE_METRICS = { views: "Views", likes: "Likes", comments_count: "Comentários", eng_rate: "Engajamento" };
+const HIT_METRIC = { views: "top5_views", likes: "top5_likes", comments_count: "top5_comments" };
+const S = { filtros: {}, base: "views", modo: "chance", livre: "language", linha: "platform", coluna: "content_type", de: null, ate: null };
+/* Ready-made views, built from the analysis results (the confirmed highlight and the strongest posting-time pattern). */
+const SUGGESTIONS = [
+  { icon: "★", label: "{{ hl.plataforma }} · {{ hl_vals[0] | val }}: qual idioma chega mais ao top 5% em {{ hl.metrica | val }}?",
+    state: { base: "{{ hl.metrica }}", modo: "chance", livre: "{{ hl_dims[1] }}", filtros: { platform: ["{{ hl.plataforma }}"], "{{ hl_dims[0] }}": ["{{ hl_vals[0] }}"] } } },
+  { label: "{{ hour.plataforma }}: melhor horário para comentários",
+    state: { base: "comments_count", modo: "chance", livre: "daypart", filtros: { platform: ["{{ hour.plataforma }}"] } } },
+  { label: "Patrocinado × orgânico", state: { base: "views", modo: "chance", livre: "is_sponsored", filtros: {} } },
+  { label: "Qual público chega mais ao top 5% em likes?", state: { base: "likes", modo: "chance", livre: "audience_location", filtros: {} } },
+  { label: "Creators grandes × pequenos", state: { base: "views", modo: "media", livre: "follower_tier", filtros: {} } },
+];
+function applySuggestion(i) {
+  const st = SUGGESTIONS[i].state;
+  Object.assign(S, { base: st.base, modo: st.modo, livre: st.livre, filtros: structuredClone(st.filtros) });
+  $("free-dim").value = S.livre;
+  load();
+}
+function drawSuggestions() {
+  const same = st => st.base === S.base && st.modo === S.modo && st.livre === S.livre && JSON.stringify(st.filtros) === JSON.stringify(S.filtros);
+  $("suggestions").innerHTML = SUGGESTIONS.map((g, i) => `<button type="button" class="suggest-btn${same(g.state) ? " on" : ""}" data-i="${i}">${g.icon ? `<b>${g.icon}</b> ` : ""}${esc(g.label)}</button>`).join("");
+}
+let OPT = null, LAST = null, timer = null;
+const CH = {};
+const metric = () => S.modo === "chance" && HIT_METRIC[S.base] ? HIT_METRIC[S.base] : S.base;
+const isPct = m => m === "eng_rate" || m.startsWith("top5");
+const fmtMetric = (m, v) => isPct(m) ? pct(v, m.startsWith("top5") ? 1 : 2) : nf(v, m === "views" ? 0 : 1);
+const metricName = m => m.startsWith("top5") ? `chance de top 5% em ${BASE_METRICS[S.base].toLowerCase()}` : BASE_METRICS[m].toLowerCase();
+
+async function boot() {
+  OPT = await (await fetch("/api/options")).json();
+  /* No view in the address: open pre-filled with the first suggestion, so the panel shows a real finding right away. */
+  if (location.search) readUrl();
+  else { const st = SUGGESTIONS[0].state; Object.assign(S, { base: st.base, modo: st.modo, livre: st.livre, filtros: structuredClone(st.filtros) }); }
+  const opts = (vals, value, lab = v => val(v)) => vals.map(v => `<option value="${esc(v)}"${v === value ? " selected" : ""}>${esc(lab(v))}</option>`).join("");
+  $("de").innerHTML = opts(OPT.meses, OPT.meses[0], v => v); $("ate").innerHTML = opts(OPT.meses, OPT.meses.at(-1), v => v);
+  const free = OPT.dimensoes.filter(d => !FIXED.includes(d));
+  $("free-dim").innerHTML = opts(free, S.livre, label);
+  $("row").innerHTML = opts(OPT.dimensoes, S.linha, label); $("col").innerHTML = opts(OPT.dimensoes, S.coluna, label);
+  $("more-body").innerHTML = Object.entries(OPT.filtros).filter(([f]) => !QUICK.includes(f)).map(([f, vals]) =>
+    `<fieldset><legend>${label(f)}</legend>${vals.map(v => `<label><input type="checkbox" data-f="${f}" value="${esc(v)}"> ${esc(val(v))}</label>`).join("")}</fieldset>`).join("");
+  $("more-body").addEventListener("change", e => { const c = e.target; if (c.dataset.f) toggle(c.dataset.f, c.value, c.checked); });
+  $("quick-filters").addEventListener("click", e => { const b = e.target.closest("button[data-f]"); if (b) toggle(b.dataset.f, b.dataset.v); });
+  $("active").addEventListener("click", e => { const b = e.target.closest("button"); if (b) toggle(b.dataset.f, b.dataset.v, false); });
+  $("kpis").addEventListener("click", e => { const k = e.target.closest("[data-metric]"); if (k) { S.base = k.dataset.metric; if (S.base === "eng_rate") S.modo = "media"; load(); } });
+  $("reset").onclick = () => { S.filtros = {}; load(); };
+  $("suggestions").addEventListener("click", e => { const b = e.target.closest("button[data-i]"); if (b) applySuggestion(+b.dataset.i); });
+  [["de", "de"], ["ate", "ate"], ["free-dim", "livre"], ["row", "linha"], ["col", "coluna"]].forEach(([id, k]) => $(id).addEventListener("change", e => { S[k] = e.target.value; load(); }));
+  document.addEventListener("click", e => { const p = $("more-filters"); if (p.open && !p.contains(e.target)) p.open = false; });
+  load();
+}
+function toggle(field, value, on) {
+  const set = new Set(S.filtros[field] || []);
+  (on ?? !set.has(value)) ? set.add(value) : set.delete(value);
+  set.size ? S.filtros[field] = [...set] : delete S.filtros[field];
+  load();
+}
+function load() { drawControls(); saveUrl(); clearTimeout(timer); timer = setTimeout(fetchData, 100); }
+/* The panel state lives in the address (?m=likes&modo=chance&platform=TikTok), so a view can be shared like a bookmark. */
+function saveUrl() {
+  const q = new URLSearchParams({ m: S.base, modo: S.modo, livre: S.livre });
+  Object.entries(S.filtros).forEach(([f, vs]) => vs.forEach(v => q.append(f, v)));
+  try { history.replaceState(null, "", "?" + q.toString()); } catch (e) { /* sandboxed viewers may block history */ }
+}
+function readUrl() {
+  const q = new URLSearchParams(location.search);
+  if (BASE_METRICS[q.get("m")]) S.base = q.get("m");
+  if (["media", "chance"].includes(q.get("modo"))) S.modo = q.get("modo");
+  if (q.get("livre") && OPT.dimensoes.includes(q.get("livre"))) S.livre = q.get("livre");
+  Object.keys(OPT.filtros).forEach(f => { const vs = q.getAll(f).filter(v => OPT.filtros[f].includes(v)); if (vs.length) S.filtros[f] = vs; });
+}
+async function fetchData() {
+  $("bi").classList.add("loading");
+  const body = { filtros: S.filtros, dimensao: S.livre, metrica: metric(), linha: S.linha, coluna: S.coluna, de: S.de, ate: S.ate, graficos: [...FIXED, S.livre] };
+  const res = await fetch("/api/explore", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  LAST = await res.json();
+  $("bi").classList.remove("loading");
+  draw();
+}
+
+/* ---------- controls ---------- */
+function drawControls() {
+  drawSuggestions();
+  $("metric-tabs").innerHTML = Object.entries(BASE_METRICS).map(([k, t]) => `<button type="button" data-m="${k}" aria-pressed="${S.base === k}">${t}</button>`).join("");
+  $("metric-tabs").onclick = e => { const b = e.target.closest("button"); if (b) { S.base = b.dataset.m; if (S.base === "eng_rate") S.modo = "media"; load(); } };
+  const noHit = !HIT_METRIC[S.base];
+  $("mode-tabs").innerHTML = [["media", "Média"], ["chance", "Chance de top 5%"]].map(([k, t]) =>
+    `<button type="button" data-k="${k}" aria-pressed="${S.modo === k}"${k === "chance" && noHit ? " disabled title='Disponível para views, likes e comentários'" : ""}>${t}</button>`).join("");
+  $("mode-tabs").onclick = e => { const b = e.target.closest("button"); if (b && !b.disabled) { S.modo = b.dataset.k; load(); } };
+  $("quick-filters").innerHTML = QUICK.map(f => `<div class="chip-group"><span class="chip-label">${label(f)}</span>${OPT.filtros[f].map(v =>
+    `<button type="button" class="pill${(S.filtros[f] || []).includes(v) ? " on" : ""}" data-f="${f}" data-v="${esc(v)}" aria-pressed="${(S.filtros[f] || []).includes(v)}">${esc(val(v))}</button>`).join("")}</div>`).join("");
+  document.querySelectorAll("#more-body input").forEach(i => i.checked = (S.filtros[i.dataset.f] || []).includes(i.value));
+  const extra = Object.keys(S.filtros).filter(f => !QUICK.includes(f)).reduce((n, f) => n + S.filtros[f].length, 0);
+  $("more-count").textContent = extra || "";
+  const tags = Object.entries(S.filtros).flatMap(([f, vs]) => vs.map(v => `<button type="button" data-f="${f}" data-v="${esc(v)}" title="Remover filtro">${label(f)}: ${esc(val(v))} ✕</button>`));
+  $("active").innerHTML = tags.join("");
+}
+
+/* ---------- visuals ---------- */
+function draw() {
+  const R = LAST, m = metric();
+  if (!R.posts) { $("summary").textContent = "Nenhum post com esses filtros. Remova algum filtro."; return; }
+  drawSummary(R.resumo, R);
+  $("kpis").innerHTML = R.kpis.map(k => {
+    const isCount = k.id === "posts", base = k.id === "top5_views" ? null : k.id;
+    const v = isCount ? nf(k.valor) : fmtMetric(k.id, k.valor);
+    const diff = k.vs_total, cls = isCount || diff == null || Math.abs(diff) < 0.5 ? "flat" : diff > 0 ? "up" : "down";
+    const note = isCount ? `${pct(diff)} do total` : diff == null ? "—" : `${diff >= 0 ? "+" : ""}${nf(diff, 2)}% vs. todos os posts`;
+    const active = base && S.base === base && S.modo === "media";
+    const attrs = base && BASE_METRICS[base] ? ` data-metric="${base}" role="button" tabindex="0" title="Ver ${esc(k.rotulo)} nos gráficos"` : "";
+    return `<div class="kpi${active ? " active" : ""}${attrs ? " clickable" : ""}"${attrs}><span class="l">${esc(k.rotulo)}</span><span class="v">${v}</span><span class="d ${cls}">${note}</span></div>`;
+  }).join("");
+  FIXED.forEach(d => barChart(`ch-${d}`, d, R.graficos[d] || []));
+  barChart("ch-free", S.livre, R.graficos[S.livre] || []);
+  lineChart(R.serie, m, R.media_geral);
+  drawMatrix(R.matriz); drawTop(R.top);
+  drawCaveats();
+  $("legend").innerHTML = `Cada barra mostra quanto o grupo está <b>acima ou abaixo da média</b> em ${esc(metricName(m))}. <span class="sw gold"></span> acima (significativo) · <span class="sw red"></span> abaixo (significativo) · <span class="sw gray"></span> variação normal. Clique numa barra para filtrar.`;
+}
+/* Show the timezone / length-unit caveats only while a time or length field is grouped or filtered. */
+const CAVEAT_FIELDS = { fuso: ["hour", "daypart", "weekday"], duracao: ["length_bin", "content_length"] };
+function drawCaveats() {
+  const used = [S.livre, S.linha, S.coluna, ...Object.keys(S.filtros)];
+  Object.entries(CAVEAT_FIELDS).forEach(([note, fields]) => { $("caveats").querySelector(`[data-note="${note}"]`).hidden = !used.some(f => fields.includes(f)); });
+}
+function drawSummary(r, R) {
+  const name = metricName(r.metrica);
+  if (r.tipo === "nenhum") { $("summary").innerHTML = `<b>${nf(R.posts)} posts.</b> Nenhum grupo se destaca em ${esc(name)}: as diferenças estão dentro da variação normal.`; return; }
+  const dir = r.vs_media > 0 ? "acima" : "abaixo";
+  $("summary").innerHTML = `<b>${nf(R.posts)} posts.</b> Destaque: <b>${esc(label(r.dimensao).toLowerCase())} ${esc(val(r.grupo))}</b> está <b>${nf(Math.abs(r.vs_media), 1)}% ${dir}</b> da média em ${esc(name)}${r.outros ? ` (e mais ${r.outros} grupo(s) diferente(s))` : ""}.`;
+}
+/* Data labels drawn at the end of each bar. */
+const VALUE_LABELS = { id: "valueLabels", afterDatasetsDraw(chart) {
+  const { ctx } = chart, meta = chart.getDatasetMeta(0);
+  ctx.save(); ctx.font = "600 11px Manrope, sans-serif"; ctx.fillStyle = css("--ink"); ctx.textBaseline = "middle";
+  meta.data.forEach((bar, i) => { const v = chart.data.datasets[0].data[i]; const txt = `${v >= 0 ? "+" : ""}${nf(v, Math.abs(v) < 1 ? 2 : 1)}%`;
+    ctx.textAlign = v >= 0 ? "left" : "right"; ctx.fillText(txt, bar.x + (v >= 0 ? 6 : -6), bar.y); });
+  ctx.restore(); } };
+function barChart(id, dim, rows) {
+  const selected = S.filtros[dim] || [], floor = metric().startsWith("top5") ? 30 : 2;
+  const span = Math.max(floor, ...rows.map(r => Math.abs(r.vs_media))) * 1.35;
+  const color = r => { const base = r.diferente ? (r.vs_media > 0 ? css("--gold") : css("--bad")) : css("--none");
+    return selected.length && !selected.includes(r.grupo) ? base + "55" : base; };
+  const build = () => ({ type: "bar", plugins: [VALUE_LABELS],
+    data: { labels: rows.map(r => val(r.grupo)), datasets: [{ data: rows.map(r => r.vs_media), backgroundColor: rows.map(color),
+      borderColor: rows.map(r => selected.includes(r.grupo) ? css("--ink") : "transparent"), borderWidth: 2, borderRadius: 4, barPercentage: 0.72 }] },
+    options: chartOptions({ indexAxis: "y", plugins: { legend: { display: false }, tooltip: { callbacks: {
+        title: it => it[0].label,
+        label: c => { const r = rows[c.dataIndex]; return [`${fmtMetric(metric(), r.media)} (${r.vs_media >= 0 ? "+" : ""}${nf(r.vs_media, 1)}% vs. média)`, `${nf(r.posts)} posts`, r.diferente ? "diferença real" : "variação normal"]; } } } },
+      scales: { x: { min: -span, max: span, ticks: { callback: v => `${v > 0 ? "+" : ""}${nf(v, 0)}%`, maxTicksLimit: 5 }, grid: { color: c => c.tick.value === 0 ? css("--ink") : css("--rule") } },
+                y: { grid: { display: false }, ticks: { font: { size: 12, weight: "600" } } } },
+      onHover: (e, els) => { e.native.target.style.cursor = els.length ? "pointer" : "default"; },
+      onClick: (e, els) => { if (els.length && OPT.filtros[dim]) toggle(dim, rows[els[0].index].grupo); } }) });
+  CH[id] = setChart(CH[id], id, build);
+  const real = rows.filter(r => r.diferente).length;
+  $("st-" + id).innerHTML = real ? `<span class="chip repetiu">${real} diferença${real > 1 ? "s" : ""} real${real > 1 ? "is" : ""}</span>` : '<span class="chip nada">sem diferença real</span>';
+}
+function lineChart(serie, m, avg) {
+  const build = () => ({ type: "line", data: { labels: serie.map(r => r.mes), datasets: [
+      { label: "média do mês", data: serie.map(r => r.media), borderColor: css("--c1"), backgroundColor: css("--c1"), borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 5, tension: 0.3 },
+      { label: "média do período", data: serie.map(() => avg), borderColor: css("--gold"), borderDash: [6, 4], pointRadius: 0, borderWidth: 1.5 }] },
+    options: chartOptions({ interaction: { mode: "index", intersect: false }, plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: c => `${c.dataset.label}: ${fmtMetric(m, c.raw)}` } } },
+      scales: { x: { ticks: { maxTicksLimit: 6 }, grid: { display: false } }, y: { ticks: { maxTicksLimit: 5, callback: v => fmtMetric(m, v) } } } }) });
+  CH.ts = setChart(CH.ts, "ch-ts", build);
+}
+function drawMatrix(M) {
+  if (!M) return;
+  const cell = (v, n) => { if (v == null) return '<td class="n">—</td>';
+    const d = v - 100, strength = Math.min(1, Math.abs(d) / (metric().startsWith("top5") ? 40 : 2)), color = d >= 0 ? "--gold" : "--bad";
+    return `<td class="n" title="${nf(n)} posts" style="background:color-mix(in srgb, var(${color}) ${Math.round(strength * 50)}%, transparent)">${d >= 0 ? "+" : ""}${nf(d, 1)}%</td>`; };
+  $("matrix").innerHTML = `<thead><tr><th>${label(S.linha)} \\ ${label(S.coluna)}</th>${M.colunas.map(c => `<th>${esc(val(c))}</th>`).join("")}</tr></thead><tbody>` +
+    M.linhas.map((l, i) => `<tr><td>${esc(val(l))}</td>${M.indice[i].map((v, j) => cell(v, M.posts[i][j])).join("")}</tr>`).join("") + "</tbody>";
+}
+function drawTop(top) {
+  const key = Object.keys(top[0] || {}).at(-1);
+  $("top").innerHTML = `<thead><tr><th>Data</th><th>Plataforma</th><th>Formato</th><th>Tema</th><th>Idioma</th><th>Patrocinado</th><th>Seguidores</th><th>${esc(OPT.metricas[key] || key)}</th></tr></thead><tbody>` +
+    top.map(t => `<tr><td>${t.post_date}</td><td>${t.platform}</td><td>${val(t.content_type)}</td><td>${t.content_category}</td><td>${val(t.language)}</td><td>${val(t.is_sponsored)}</td><td class="n">${nf(t.follower_count)}</td><td class="n">${fmtMetric(key, t[key])}</td></tr>`).join("") + "</tbody>";
+}
+$("kpis").addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target.dataset.metric) { e.preventDefault(); e.target.click(); } });
+boot();
+</script>
+{% endblock %}

@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+{% block body %}
+<main class="wrap wide bi2" id="aud">
+  <section class="bi-head">
+    <div>
+      <span class="eyebrow">Segmentação</span>
+      <h1 style="font-size:2.3rem">Agrupamento de <em>audiência</em></h1>
+    </div>
+    <div class="bi-metric">
+      <span class="chip-label">Nº de grupos</span>
+      <div class="seg small" role="group" aria-label="Número de grupos" id="k-tabs"></div>
+    </div>
+  </section>
+
+  <p class="lede">Cada <b>perfil de público</b> (idade × gênero × país) é agrupado com os perfis que <b>consomem conteúdo parecido</b>:
+    plataforma, formato, tema, idioma e patrocínio. Filtre para ver os grupos dentro de uma plataforma ou tipo de conteúdo.</p>
+
+  <section class="bi-filters" aria-label="Filtros">
+    <div class="quick" id="filters"></div>
+    <div class="bi-filter-row">
+      <button class="btn" type="button" id="reset">Limpar filtros</button>
+      <span class="caption" id="coverage"></span>
+    </div>
+  </section>
+
+  <p class="bi-summary" id="summary" aria-live="polite"></p>
+
+  <section class="kpi-row aud-kpis" id="kpis" aria-label="Indicadores"></section>
+
+  <section class="aud-groups" id="groups" aria-label="Grupos"></section>
+
+  <section class="aud-grid">
+    <div class="tile"><div class="tile-head"><h3>Mapa dos perfis</h3><span class="caption">perfis próximos consomem parecido</span></div>
+      <div class="chart tall"><canvas id="ch-map"></canvas></div>
+      <p class="caption" id="map-legend"></p></div>
+    <div class="tile"><div class="tile-head"><h3>O que cada grupo consome a mais ou a menos</h3></div>
+      <div class="table-wrap"><table id="heat"></table></div>
+      <p class="caption">Diferença em relação à média dos perfis. Dourado = consome mais, vermelho = consome menos. Passe o mouse para ver a participação.</p></div>
+  </section>
+
+  <details class="more panel"><summary>Ver todos os perfis e seus grupos</summary><div class="more-body">
+    <div class="table-wrap"><table id="profiles"></table></div>
+  </div></details>
+  <details class="more panel"><summary>Como os grupos são formados e como ler a confiabilidade</summary><div class="more-body">
+    <ul>
+      <li><b>Unidade:</b> perfil de público = idade × gênero × país. Perfis com menos de <span id="min-posts"></span> posts na seleção ficam de fora (o mix deles é ruído).</li>
+      <li><b>O que agrupa:</b> a participação de cada plataforma, formato, tema e idioma nos posts do perfil, e a % de posts patrocinados. Campos filtrados não entram (são iguais para todos).</li>
+      <li><b>Método:</b> KMeans sobre as participações padronizadas. No modo <i>Automático</i>, o nº de grupos é o que separa melhor (silhouette, de 2 a 6).</li>
+      <li><b>Separação:</b> comparada com a de dados embaralhados (perfil sorteado ao acaso para cada post). Só conta se ficar acima de 95% das rodadas embaralhadas.</li>
+      <li><b>Estabilidade:</b> os posts são divididos ao acaso em duas metades e os grupos refeitos em cada uma (ARI: 1 = mesmos grupos, 0 = sorteio).</li>
+      <li><b>Nomes dos grupos:</b> o traço de público mais acima da média no grupo + o que ele consome a mais. Desempenho (views, likes) não entra.</li>
+    </ul>
+  </div></details>
+</main>
+<script>
+const FILTERS = ["platform", "content_type", "content_category"];
+const KS = [null, 2, 3, 4, 5, 6];
+const LETTERS = "ABCDEF";
+const S = { filtros: {}, k: null };
+const RELIABILITY = {
+  consistente: { chip: "confirmado", text: "consistentes", note: "separam mais que o acaso e se repetem em outra amostra. Dá para usar como segmentação." },
+  fraco: { chip: "pista", text: "fracos", note: "passam em só um dos dois testes. Use como pista, confirme antes de investir." },
+  nao_sustenta: { chip: "nada", text: "não se sustentam", note: "separam tanto quanto dados embaralhados e mudam quando a amostra muda. Use só como descrição do público, não para direcionar campanha." },
+};
+const COUNTRY_OF = { USA: "dos EUA", UK: "do Reino Unido", India: "da Índia", Japan: "do Japão", Brazil: "do Brasil", Germany: "da Alemanha", Russia: "da Rússia", China: "da China" };
+let OPT = null, R = null, MAP = null, timer = null;
+
+const groupColor = g => css(PALETTE[g % PALETTE.length]);
+const signed = (x, d = 0) => `${x >= 0 ? "+" : ""}${nf(x * 100, d)}%`;
+function traitName(t) {
+  if (!t) return "Público variado";
+  if (t.campo === "audience_age_distribution") return `Público de ${t.valor} anos`;
+  if (t.campo === "audience_location") return `Público ${COUNTRY_OF[t.valor] || val(t.valor)}`;
+  return `Público ${val(t.valor)}`;
+}
+function itemName(c) {
+  if (c.campo === "language") return `conteúdo em ${val(c.valor)}`;
+  if (c.campo === "is_sponsored") return "posts patrocinados";
+  if (c.campo === "content_type") return val(c.valor);
+  return val(c.valor);
+}
+const likes = g => g.consumo.filter(c => c.lift > 0.02).slice(0, 2);
+function groupTitle(g) {
+  const more = likes(g).map(itemName);
+  return { name: `Grupo ${LETTERS[g.grupo]}`, trait: traitName(g.traco), pref: more.length ? `consome mais ${more.join(" e ")}` : "consumo na média" };
+}
+const profileName = p => `${p.audience_age_distribution} · ${val(p.audience_gender_distribution)} · ${val(p.audience_location)}`;
+
+async function boot() {
+  OPT = await (await fetch("/api/options")).json();
+  readUrl();
+  $("filters").addEventListener("click", e => { const b = e.target.closest("button[data-f]"); if (!b) return;
+    S.filtros[b.dataset.f] = b.dataset.v && S.filtros[b.dataset.f] !== b.dataset.v ? b.dataset.v : null; load(); });
+  $("k-tabs").addEventListener("click", e => { const b = e.target.closest("button"); if (b) { S.k = b.dataset.k ? +b.dataset.k : null; load(); } });
+  $("reset").onclick = () => { S.filtros = {}; load(); };
+  load();
+}
+function load() { drawControls(); saveUrl(); clearTimeout(timer); timer = setTimeout(fetchData, 80); }
+function saveUrl() {
+  const q = new URLSearchParams();
+  FILTERS.forEach(f => S.filtros[f] && q.set(f, S.filtros[f]));
+  if (S.k) q.set("k", S.k);
+  try { history.replaceState(null, "", q.toString() ? "?" + q : location.pathname); } catch (e) { /* sandboxed viewers may block history */ }
+}
+function readUrl() {
+  const q = new URLSearchParams(location.search);
+  FILTERS.forEach(f => { const v = q.get(f); if (v && OPT.filtros[f].includes(v)) S.filtros[f] = v; });
+  const k = +q.get("k"); if (KS.includes(k)) S.k = k;
+}
+async function fetchData() {
+  $("aud").classList.add("loading");
+  const body = { ...Object.fromEntries(FILTERS.map(f => [f, S.filtros[f] || null])), k: S.k };
+  const res = await fetch("/api/audience", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  R = await res.json();
+  $("aud").classList.remove("loading");
+  draw();
+}
+
+/* ---------- controls ---------- */
+function drawControls() {
+  $("k-tabs").innerHTML = KS.map(k => `<button type="button" data-k="${k ?? ""}" aria-pressed="${S.k === k}">${k ?? "Automático"}</button>`).join("");
+  $("filters").innerHTML = FILTERS.map(f => { const cur = S.filtros[f];
+    return `<div class="chip-group"><span class="chip-label">${label(f)}</span>` +
+      `<button type="button" class="pill${cur ? "" : " on"}" data-f="${f}" data-v="" aria-pressed="${!cur}">Todos</button>` +
+      OPT.filtros[f].map(v => `<button type="button" class="pill${cur === v ? " on" : ""}" data-f="${f}" data-v="${esc(v)}" aria-pressed="${cur === v}">${esc(val(v))}</button>`).join("") + "</div>"; }).join("");
+}
+
+/* ---------- visuals ---------- */
+function draw() {
+  $("min-posts").textContent = R.min_posts;
+  const empty = !!R.erro;
+  ["kpis", "groups"].forEach(id => $(id).hidden = empty);
+  document.querySelector(".aud-grid").hidden = empty;
+  if (empty) { $("summary").innerHTML = `<b>${nf(R.posts)} posts.</b> ${esc(R.erro)}`; $("coverage").textContent = ""; return; }
+  const rel = RELIABILITY[R.confiabilidade];
+  const sel = Object.entries(R.filtros).map(([f, v]) => `${label(f).toLowerCase()} ${val(v)}`).join(", ");
+  $("summary").innerHTML = `<b>${nf(R.perfis)} perfis</b> de público${sel ? ` em ${esc(sel)}` : ""} formam <b>${R.k} grupos</b>. Esses grupos <b>${rel.text}</b>: ${rel.note}`;
+  $("coverage").textContent = `${nf(R.posts_usados)} de ${nf(R.posts)} posts usados` + (R.perfis_fora ? ` · ${R.perfis_fora} perfis com menos de ${R.min_posts} posts ficaram de fora` : "");
+  drawKpis(rel); drawGroups(); drawMap(); drawHeat(); drawProfiles();
+}
+function drawKpis(rel) {
+  const sepOk = R.silhouette > R.acaso_p95, stabOk = R.estabilidade >= 0.5;
+  const cards = [
+    ["Perfis de público", nf(R.perfis), `${nf(R.posts_usados)} posts`, "flat"],
+    ["Grupos", R.k, S.k ? "escolhido" : "automático", "flat"],
+    ["Separação", nf(R.silhouette, 2), `acaso chega a ${nf(R.acaso_p95, 2)}`, sepOk ? "up" : "down"],
+    ["Estabilidade", nf(R.estabilidade, 2), "1 = mesmos grupos sempre", stabOk ? "up" : "down"],
+  ];
+  $("kpis").innerHTML = cards.map(([l, v, d, cls]) => `<div class="kpi"><span class="l">${l}</span><span class="v">${v}</span><span class="d ${cls}">${d}</span></div>`).join("") +
+    `<div class="kpi aud-rel"><span class="l">Confiabilidade</span><span class="v"><span class="chip ${rel.chip}">${rel.text}</span></span></div>`;
+}
+function drawGroups() {
+  const lessOf = g => g.consumo.filter(c => c.lift < -0.02).slice(-2).reverse();
+  const line = c => `<li><b class="${c.lift >= 0 ? "up" : "down"}">${signed(c.lift)}</b> ${esc(itemName(c))} <span class="muted">(${nf(c.share * 100, 0)}% dos posts)</span></li>`;
+  const who = (field, n) => g => g.publico[field].slice(0, n).map(r => `${esc(field === "audience_age_distribution" ? r.valor : val(r.valor))} <span class="muted">${nf(r.share * 100, 0)}%</span>`).join(" · ");
+  $("groups").innerHTML = R.grupos.map(g => { const t = groupTitle(g), more = g.consumo.filter(c => c.lift > 0.02).slice(0, 3), less = lessOf(g);
+    return `<article class="aud-card" style="--g:${groupColor(g.grupo)}">
+      <div class="aud-card-head"><span class="aud-tag">${t.name}</span><span class="muted">${nf(g.share_posts * 100, 0)}% dos posts · ${g.perfis} perfis</span></div>
+      <h3>${esc(t.trait)}</h3><p class="aud-pref">${esc(t.pref)}</p>
+      <dl class="aud-who">
+        <dt>Idade</dt><dd>${who("audience_age_distribution", 2)(g)}</dd>
+        <dt>Gênero</dt><dd>${who("audience_gender_distribution", 2)(g)}</dd>
+        <dt>Países</dt><dd>${who("audience_location", 3)(g)}</dd>
+      </dl>
+      <div class="aud-lists">
+        <div><span class="chip-label">Consome mais</span><ul>${more.map(line).join("") || '<li class="muted">nada acima da média</li>'}</ul></div>
+        <div><span class="chip-label">Consome menos</span><ul>${less.map(line).join("") || '<li class="muted">nada abaixo da média</li>'}</ul></div>
+      </div>
+    </article>`; }).join("");
+}
+function drawMap() {
+  const radius = p => 3 + Math.sqrt(p.posts) / 4;
+  const build = () => ({ type: "scatter",
+    data: { datasets: R.grupos.map(g => { const pts = R.mapa.filter(p => p.grupo === g.grupo);
+      return { label: `Grupo ${LETTERS[g.grupo]}`, data: pts.map(p => ({ x: p.x, y: p.y, p })), pointRadius: pts.map(radius), pointHoverRadius: pts.map(p => radius(p) + 2),
+               backgroundColor: groupColor(g.grupo) + "bb", borderColor: groupColor(g.grupo), borderWidth: 1 }; }) },
+    options: chartOptions({ plugins: { legend: { position: "bottom" }, tooltip: { callbacks: {
+        title: it => profileName(it[0].raw.p), label: c => [`Grupo ${LETTERS[c.raw.p.grupo]} · ${groupTitle(R.grupos[c.raw.p.grupo]).trait}`, `${nf(c.raw.p.posts)} posts`] } } },
+      scales: { x: { ticks: { display: false }, grid: { display: false }, title: { display: true, text: "eixo de consumo 1", color: css("--muted") } },
+                y: { ticks: { display: false }, grid: { display: false }, title: { display: true, text: "eixo de consumo 2", color: css("--muted") } } } }) });
+  MAP = setChart(MAP, "ch-map", build);
+  $("map-legend").textContent = "Cada ponto é um perfil de público; o tamanho é o nº de posts. Os eixos resumem o mix de consumo (não têm unidade).";
+}
+function drawHeat() {
+  const cols = R.grupos.map(g => `<th><span class="sw" style="background:${groupColor(g.grupo)}"></span> ${LETTERS[g.grupo]}</th>`).join("");
+  const byKey = g => Object.fromEntries(g.consumo.map(c => [c.campo + "=" + c.valor, c]));
+  const maps = R.grupos.map(byKey);
+  const cell = c => { const strength = Math.min(1, Math.abs(c.lift) / 0.3), color = c.lift >= 0 ? "--gold" : "--bad";
+    return `<td class="n" title="${nf(c.share * 100, 1)}% dos posts (média ${nf(c.media * 100, 1)}%)" style="background:color-mix(in srgb, var(${color}) ${Math.round(strength * 55)}%, transparent)">${signed(c.lift)}</td>`; };
+  let last = null;
+  const rows = R.colunas.map(col => { const key = col.campo + "=" + col.valor, head = col.campo !== last ? `<tr class="aud-sub"><td colspan="${R.grupos.length + 2}">${label(col.campo)}</td></tr>` : "";
+    last = col.campo;
+    return head + `<tr><td>${esc(col.campo === "is_sponsored" ? "sim" : val(col.valor))}</td><td class="n muted">${nf(maps[0][key].media * 100, 0)}%</td>${maps.map(m => cell(m[key])).join("")}</tr>`; }).join("");
+  $("heat").innerHTML = `<thead><tr><th>Consumo</th><th>Média</th>${cols}</tr></thead><tbody>${rows}</tbody>`;
+}
+function drawProfiles() {
+  const rows = [...R.mapa].sort((a, b) => a.grupo - b.grupo || b.posts - a.posts);
+  $("profiles").innerHTML = `<thead><tr><th>Grupo</th><th>Idade</th><th>Gênero</th><th>País</th><th>Posts</th></tr></thead><tbody>` +
+    rows.map(p => `<tr><td><span class="sw" style="background:${groupColor(p.grupo)}"></span> ${LETTERS[p.grupo]}</td><td>${esc(p.audience_age_distribution)}</td><td>${esc(val(p.audience_gender_distribution))}</td><td>${esc(val(p.audience_location))}</td><td class="n">${nf(p.posts)}</td></tr>`).join("") + "</tbody>";
+}
+/* Group colors come from the theme: re-render the cards and tables when it changes (charts redraw on their own). */
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => R && !R.erro && draw());
+boot();
+</script>
+{% endblock %}

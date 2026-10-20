@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% set m = d.modelos %}
+{% set eng_best = m.engajamento | selectattr('supera baseline') | list %}
+{% block body %}
+<main class="wrap">
+  <section class="page-head">
+    <span class="eyebrow">Transparência</span>
+    <h1>Como <em>chegamos lá</em></h1>
+    <p class="lede">Com {{ d.meta.posts | num }} posts, sempre aparece algum grupo "melhor" por puro acaso. Para separar o que funciona do que só parece funcionar, cada conclusão passou por cinco checagens.</p>
+  </section>
+
+  <section>
+    <div class="board-grid">
+      <article class="qcard info"><span class="q">1 · Comparar parecido com parecido</span><p>Patrocinado contra orgânico só dentro da mesma plataforma, formato, tema e tamanho de creator.</p></article>
+      <article class="qcard info"><span class="q">2 · Descontar o acaso</span><p>Quando se testam milhares de combinações, algumas parecem boas por acaso. Só conta o que sobra depois desse desconto.</p></article>
+      <article class="qcard info"><span class="q">3 · Ver se daria para enxergar</span><p>Diferenças de ~{{ d.dados.mde_views | num(1) }} views já apareceriam. Quando dizemos "não faz diferença", é porque não há diferença, e não porque faltou dado.</p></article>
+      <article class="qcard info"><span class="q">4 · Repetir no tempo</span><p>Um padrão só ganha força se aparecer no 1º ano e de novo no 2º.</p></article>
+      <article class="qcard good"><span class="q">5 · Provar que o método funciona</span><p>Plantamos de propósito efeitos de 2% a 10% em cópias dos dados, e os métodos encontraram todos.</p></article>
+      <article class="qcard"><span class="q">Previsões</span><p>{{ m.engajamento | length }} modelos testados, de regras simples a inteligência artificial. {% if eng_best %}{{ eng_best | length }} superaram a média.{% else %}Nenhum acertou mais que a média, e o site avisa isso em cada previsão.{% endif %}</p></article>
+    </div>
+  </section>
+
+  <section>
+    <details class="more"><summary>Glossário</summary><div class="more-body">
+      <div class="table-wrap"><table><thead><tr><th>Termo</th><th>Significado</th></tr></thead><tbody>
+        <tr><td>Top 5% / "virar destaque"</td><td>Estar entre os 5% de posts com mais views (ou likes, ou comentários).</td></tr>
+        <tr><td>Engajamento</td><td>(likes + compartilhamentos + comentários) ÷ views. Aqui fica em ~20%.</td></tr>
+        <tr><td>Faixa provável</td><td>Onde o valor real deve estar em 9 de cada 10 casos.</td></tr>
+        <tr><td>"2x mais chance"</td><td>O dobro do normal. Ex.: 10% em vez de 5%.</td></tr>
+        <tr><td>Confirmado · Se repetiu · Pista</td><td>Passou em tudo · apareceu nos 2 anos · pode ser coincidência.</td></tr>
+        <tr><td>Custo por mil views</td><td>Quanto se paga para o post ser visto mil vezes.</td></tr>
+        <tr><td>Teste A/B</td><td>Publicar duas versões para públicos parecidos e comparar. É a forma de provar causa e efeito.</td></tr>
+      </tbody></table></div></div></details>
+
+    <details class="more"><summary>Os modelos de previsão, em detalhe</summary><div class="more-body">
+      <p>Modelos complexos "decoram" os posts de treino e erram mais em posts novos. Com um efeito plantado, os modelos de boosting acertaram, o que mostra que, quando há padrão, eles o encontram.</p>
+      <div class="panel"><h3>Acerto em posts nunca vistos (0 = igual à média; abaixo de 0 = pior)</h3><div class="chart tall"><canvas id="ch-models"></canvas></div></div>
+      <details class="tech"><summary>Tabelas técnicas</summary>
+        <div class="table-wrap"><table><thead><tr><th>Modelo</th><th>Família</th><th>R² validação</th><th>R² treino</th><th>Supera a média?</th></tr></thead><tbody>
+          {% for e in m.engajamento %}<tr><td>{{ e.modelo }}</td><td>{{ e['família'] }}</td><td class="n">{{ e['R² validação'] | num(4) }}</td><td class="n">{{ e['R² treino'] | num(4) }}</td><td>{{ 'sim' if e['supera baseline'] else 'não' }}</td></tr>{% endfor %}
+        </tbody></table></div>
+        <div class="table-wrap"><table><thead><tr><th>Previsão de views (antes de postar)</th><th>R² teste</th><th>Supera a média?</th></tr></thead><tbody>
+          {% for v in m.views %}<tr><td>{{ v.abordagem }}{% if v.modelo != '—' %} · {{ v.modelo }}{% endif %}</td><td class="n">{{ v['R²'] | num(4) }}</td><td>{{ 'sim' if v['supera a média'] else 'não' }}</td></tr>{% endfor %}
+        </tbody></table></div>
+        <div class="table-wrap"><table><thead><tr><th>Controle positivo (+5% plantado)</th><th>R²</th><th>Detecta?</th></tr></thead><tbody>
+          {% for s in m.sensibilidade %}<tr><td>{{ s.modelo }}</td><td class="n">{{ s['R² validação'] | num(3) }}</td><td>{{ 'sim' if s['supera baseline'] else 'não' }}</td></tr>{% endfor %}
+        </tbody></table></div>
+      </details>
+    </div></details>
+
+    <details class="more"><summary>Limitações</summary><div class="more-body"><ul>
+      <li><b>Dados simulados:</b> as conclusões descrevem este conjunto de dados, não o mercado.</li>
+      <li><b>Sem preços:</b> custos de patrocínio e produção são premissas, e devem ser trocados pelos reais.</li>
+      <li><b>Identificação de creators:</b> o mesmo creator aparece com nomes e seguidores diferentes. A "duração" vale para todos os formatos, inclusive imagem.</li>
+      <li><b>Correlação não é causa:</b> antes de mudar a operação, confirme com teste A/B.</li>
+    </ul></div></details>
+
+    <details class="more"><summary>Rodar com os dados da empresa</summary><div class="more-body">
+<pre style="overflow-x:auto;background:var(--tint);padding:14px;border-radius:8px;font:0.85rem/1.5 ui-monospace, Menlo, Consolas, monospace;margin:0">cd submissions/rafael
+python -m venv .venv && .venv/bin/pip install -r requirements.txt && .venv/bin/pip install -e .
+# coloque o CSV (mesmas colunas) em data/raw/social_media_dataset.csv
+.venv/bin/social-web --rebuild      # recalcula tudo (~5 min) e abre o site em http://127.0.0.1:8000
+.venv/bin/python -m pytest -q       # testes automáticos</pre>
+      <p class="caption">API documentada em <a href="/docs">/docs</a>: <code>POST /api/predict</code> (previsão de um post) e <code>POST /api/explore</code> (dados do painel).</p>
+    </div></details>
+  </section>
+</main>
+<script>
+const ENG = {{ m.engajamento | tojson }};
+lazyChart("ch-models", () => ({ type: "bar", data: { labels: ENG.map(r => r.modelo), datasets: [
+    { label: "nos posts de treino", data: ENG.map(r => r["R² treino"]), backgroundColor: css("--none"), borderRadius: 3 },
+    { label: "em posts novos", data: ENG.map(r => r["R² validação"]), backgroundColor: css("--c1"), borderRadius: 3 }] },
+  options: chartOptions({ indexAxis: "y", plugins: { tooltip: { callbacks: { label: c => `${c.dataset.label}: ${nf(c.raw, 3)}` } } }, scales: { y: { grid: { display: false } } } }) }));
+</script>
+{% endblock %}

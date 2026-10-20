@@ -1,0 +1,1331 @@
+ ▐▛███▛█   Claude Code v2.1.303
+▝▜██████▀  Opus 5.5 · Claude Pro
+ ▝▝   ▝▝   ~/Documents/desafios/ai-master-challenge
+
+
+❯ Faça um crítico com base nos requisitos de entrega (desafio 4) para validar   
+  se a solução atende os requisitos, se os dados são verídicos, pontos da       
+  entrega são suficientes e guarde isso na pasta review/ (como existe, por      
+  exemplo, knowledge). Considere todos os requisitos. Desde reprodutibilidade,  
+  veracidade das informações, clareza na entrega, ROI, entrega de valor para a  
+  equipe de marketing etc. O objetivo é garantir que a entrega faça sentido     
+  para o time, e agregue real valor para a empresa                              
+
+  Read 1 file, listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● Lendo os artefatos da entrega (respostas, knowledge, código) para montar a
+  crítica; em seguida vou rodar testes e reproduzir números.
+
+  Read 1 file, listed 1 directory, ran 5 shell commands (ctrl+o to expand)
+
+● Background command "Run the submission test suite" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Testes passam (57) e o relatório regenera idêntico. Checando histórico/tempo
+  gasto e depois escrevo a crítica.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(submissions/rafael/review/critica-entrega.md)
+  ⎿  Wrote 174 lines to submissions/rafael/review/critica-entrega.md
+      1 # Crítica da entrega — Challenge 004 (Social Media)
+      3 Revisão feita em 2026-10-19 contra `challenges/marketing-004-soci
+        al/README.md`, `submission-guide.md`, `templates/submission-templ
+      4 Estado revisado: branch `submission/rafael` @ `8d7597e`, com 3 no
+         fora do git.
+      5 
+      7 
+      8 **O rigor técnico é alto; como entrega, ainda não está pronta.** 
+        em acima do baseline de LLM. Mas faltam dois itens obrigatórios (
+        utivo também não consegue tirar a decisão em 5 minutos. E 
+     … +339 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Escrevi a crítica em submissions/rafael/review/critica-entrega.md. Não fiz
+  commit.
+
+  Veredito: a análise é rigorosa e os números são verdadeiros, mas a entrega
+  ainda não está pronta. Hoje há risco de desclassificação, porque faltam dois
+  itens obrigatórios.
+
+  O que conferi rodando:
+  - Números: recalculei 15 afirmações direto do CSV, sem usar o código da
+    submissão. 14 batem: Poisson, ρ seguidores × views, valores de p dos testes,
+    22.122 patrocinados acima do teto, US$ 109 mi de excedente, TikTok · beauty
+    · espanhol com 451 posts e 10%. A exceção é pequena: o corte de treino dá
+    41.794 posts no meu cálculo contra 41.771 no seu. Nenhum número foi
+    inventado.
+  - Testes: pytest com 57 passed em 25 s.
+  - Relatório: answer_questions.py gera um respostas.md idêntico ao versionado.
+  - Não verifiquei: não reexecutei os 12 notebooks.
+
+  O que bloqueia a entrega (P0):
+  - README: não existe README.md no formato do template.
+  - Process log: não há um texto que diga "a IA errou aqui e eu corrigi assim".
+    O material existe no DEVELOPMENT_PROCESS.md (Hopkins, R² de treino, p sem
+    correção, contagem de picos), mas precisa virar narrativa, com export ou
+    screenshots do chat.
+  - Site quebrado: build_site.py lê um template.html que não existe, e
+    site_export.py está fora do git. Os 3 notebooks modificados também não foram
+    commitados.
+
+  O que mais pesa no valor para o time:
+  - Teto de 10.050 seguidores: não vem dos dados. É uma conta feita só com as
+    premissas (0,05 × 2.010 ÷ 0,01). O "texto como formato padrão" e o "evitar
+    US$ 109 mi" também saem das premissas, mas aparecem como quick wins para
+    esta semana. No mundo real, isso pode levar a uma decisão errada.
+  - A entrega se contradiz: a tese é que o dataset é ruído, mas os bolsões
+    mandam "priorizar beauty em espanhol no TikTok". A estratégia manda tirar o
+    horário do checklist, mas os bolsões dizem para postar cedo no YouTube.
+    Sobre o TikTok espanhol: o efeito não aparece nas outras plataformas nem nas
+    outras métricas. Deve virar hipótese de A/B, não prioridade.
+  - Não passa no teste dos 5 minutos: o respostas.md tem tabelas de pandas cruas
+    (p, ε², nan, 1.01e+04) e números em dois formatos. No total são dezenas de
+    recomendações sem uma ordem única.
+  - Ferramentas: com estes dados, os previsores sempre devolvem a média, e são
+    CLIs em Python, que o time de social media não vai rodar. Falta mostrar como
+    converter as exportações reais do Meta, TikTok e YouTube para o formato que
+    o código espera.
+  - ROI: o único valor apresentado é premissa vezes o volume do dataset. Falta o
+    ROI da própria entrega e uma tabela de sensibilidade às premissas.
+
+  O arquivo traz uma tabela que separa o que vale mesmo com dados reais do que
+  depende das premissas, uma proposta de mensagem de 3 frases para o Head de
+  Marketing e um plano de correção ordenado por prioridade, com estimativa de
+  esforço.
+
+✻ Sautéed for 3m 45s · done 1:09 AM
+
+※ recap: Você pediu uma crítica do desafio 4 contra os requisitos, e ela está pronta em review/critica-entrega.md: números confirmados, mas faltam o README e o process log obrigatórios. O próximo passo é criar esse README seguindo o template. (disable recaps in /config)
+
+❯ Corrija as contradições e aplique, trazendo informações e insights valiosos   
+  para o time de marketing, porém verdadeiros, baseados nos dados.              
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Outra sessão deixou alterações sem commit em strategy.py, no site e nas
+  auditorias — vou mantê-las e seguir em cima delas. Agora vou localizar onde
+  estão as frases contraditórias.
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Agora vou ajustar strategy.py: separar o que é robusto do que depende de
+  premissa, adicionar a sensibilidade do teto e montar a fila de testes A/B.
+
+  Searched for 2 patterns, ran 2 shell commands (ctrl+o to expand)
+
+● Now the edits to strategy.py.
+
+● Bash(.venv/bin/python -c 1 2>/dev/null; python3 - <<'EOF'
+      import re, pathlib…)
+  ⎿  210:    within = costs[costs["follower_count"] <= be["threshold"]]
+  ⎿  Updated submissions/rafael/solution/src/social_insights/strategy.py
+     (+141 -38)
+       9  import pandas as pd
+      10  from scipy import stats
+      11  from statsmodels.stats.multitest import multipletests
+      12 +from statsmodels.stats.power import NormalIndPower             
+      13 +from statsmodels.stats.proportion import proportion_effectsize 
+      14  
+      13 -from . import audits, questions                                
+      15 +from . import audits, discovery, questions                     
+      16  from .data import PLATFORMS
+      17  from .questions import ALPHA, ENGAGEMENT, REACH, Answer
+      18  
+     ...
+      22  TARGET_CPM = 10.0    # max US$ per 1,000 views worth paying (pa
+          id-social benchmark)
+      23  TARGET_CPE = 0.05    # max US$ per interaction (like/share/comm
+          ent) worth paying
+      24  FOLLOWER_GRID = [5_000, 10_000, 25_000, 50_000, 100_000, 250_00
+          0, 500_000, 1_000_000]
+      25 +COST_GRID = [0.005, 0.01, 0.02, 0.05]   # US$ per follower trie
+         +d in the threshold sensitivity                                 
+      26 +CPM_GRID = [5.0, 10.0, 20.0]            # target CPMs tried in 
+         +the threshold sensitivity                                      
+      27 +                                                               
+      28 +# --- A/B test sizing ---                                      
+      29 +POWER = 0.8                                                    
+      30 +RELEVANT_UPLIFT = 0.05     # smallest uplift worth detecting in
+         + a sponsorship test (5%)                                       
+      31 +MIN_TEST_POSTS = 30        # practical floor per group, even wh
+         +en the math asks for fewer                                     
+      32 +MAX_AB_POSTS = 2_000       # above this per group, a dedicated 
+         +A/B is impractical: monitor instead                            
+      33 +                                                               
+      34 +ROBUST = "robusta (vale com dados reais)"                      
+      35 +ASSUMED = "depende de premissa (recalcular com preços reais)"  
+      36  
+      37  
+      38  @dataclass
+     ...
+      112              "teto de seguidores (CPE)": max_followers_cpe, "th
+           reshold": min(max_followers_cpm, max_followers_cpe), "grade": 
+           grid.set_index("seguidores")}
+      113  
+      114  
+      115 +def threshold_sensitivity(df: pd.DataFrame, costs: list[float]
+          + = COST_GRID, cpms: list[float] = CPM_GRID) -> pd.DataFrame:  
+      116 +    """Follower ceiling (CPM rule) for each price × target CPM
+          +: shows how much the ceiling owes to the assumptions."""      
+      117 +    views = df[REACH].median()                                
+      118 +    grid = pd.DataFrame({f"CPM-alvo US$ {cpm:.0f}": [cpm * vie
+          +ws / 1000 / c for c in costs] for cpm in cpms},               
+      119 +                        index=pd.Index([f"US$ {c * 1000:.0f} p
+          +or mil seguidores" for c in costs], name="preço do creator")) 
+      120 +    return grid.round(-2)                                     
+      121 +                                                              
+      122 +                                                              
+      123 +def tier_cost_ratio(df: pd.DataFrame) -> float:               
+     … 204 more lines (ctrl+o to expand)
+
+● Bash(python3 - <<'EOF'
+      import pathlib…)
+  ⎿  ## 1. Onde concentrar esforço?
+     Plataforma: nenhuma vence (diferenças ≤ 0.01%), então concentre em 1–2
+      por custo operacional e presença do público-alvo. Formato: nenhum eng
+     … +113 lines (ctrl+o to expand)
+  ⎿  Updated submissions/rafael/solution/src/social_insights/strategy.py
+     (+3 -3)
+      207      good_conditions = conditions[conditions["significativo"] &
+            (conditions["uplift engajamento (%)"] > 0)]
+      208      be = break_even(df, cost_per_follower, target_cpm, target_
+           cpe)
+      209      costs = implied_costs(df, cost_per_follower)
+      210 -    within = costs[costs["follower_count"] <= be["threshold"]]
+      210      profile = costs.groupby("follower_tier", observed=True).ag
+           g(
+      211          posts=("custo", "size"), cpm_mediano=("cpm", "median")
+           , cpe_mediano=("cpe", "median"), engajamento=(ENGAGEMENT, "mea
+           n"))
+      212      profile["dentro do threshold"] = profile["cpm_mediano"] <=
+            target_cpm
+      213  
+      214      lift = eng["p_value"] < ALPHA and eng["diferença"] > 0
+      215      ratio = tier_cost_ratio(df)
+      216 +    sensitivity = threshold_sensitivity(df)                   
+      217      group_size = mean_sample_size(df, ENGAGEMENT)
+      218      decision = (
+      219          ("Patrocinar para ganhar desempenho: SIM, " if lift el
+           se "Patrocinar para ganhar desempenho: NÃO. O patrocínio não m
+           uda engajamento nem alcance. ")
+     ...
+      222            f"creator {profile.index[-1]} ~{ratio:,.0f}x mais ca
+           ro por mil views que o {profile.index[0]}. Por isso, pagar por
+            resultado, não por post. "
+      223          + f"Com as premissas atuais (US$ {cost_per_follower * 
+           1000:.0f} por mil seguidores, até US$ {target_cpm:.0f} por mil
+            views e "
+      224            f"US$ {target_cpe:.2f} por interação), o post de pre
+           ço fixo se paga até ~{be['threshold']:,.0f} seguidores; "
+      225 -          f"com outros preços o teto vai de {threshold_sensiti
+          -vity(df).min().min():,.0f} a {threshold_sensitivity(df).max().
+          -max():,.0f} (tabela de sensibilidade). "                      
+      225 +          f"com outros preços o teto vai de {sensitivity.min()
+          +.min():,.0f} a {sensitivity.max().max():,.0f} (tabela de sensi
+          +bilidade). "                                                  
+      226          + "O desempenho histórico do creator não serve de crit
+           ério, porque não diferencia creators."
+      227      )
+      228      actions = [
+     ...
+      232          f"Todo novo patrocínio entra com grupo de comparação (
+           posts orgânicos parecidos, ≥ {group_size} por grupo) para medi
+           r o ganho real.",
+      233      ]
+      234      return Recommendation("2. Política de patrocínio", decisio
+           n, answer.evidence,
+      235 -                          {"Ponto de equilíbrio por tamanho de
+          - creator": be["grade"], "Teto de seguidores por premissa (sens
+          -ibilidade)": threshold_sensitivity(df),                       
+      235 +                          {"Ponto de equilíbrio por tamanho de
+          + creator": be["grade"], "Teto de seguidores por premissa (sens
+          +ibilidade)": sensitivity,                                     
+      236                             "Perfil de influenciador (patrocina
+           dos)": profile, "Condições testadas": conditions}, actions)
+      237  
+      238  
+
+● Bash(cd /home/half/Documents/desafios/ai-master-challenge/submissions/rafael/s
+      olution/src/social_insights && python3 - <<'EOF'
+      import pathlib…)
+  ⎿  ../social_insights/site_export.py:306:    payload = {"meta": meta(df),
+      "dados": data_quality(df), "respostas": answers(df), "estrategia": st
+     rategy_section(df, by_platform),
+     … +14 lines (ctrl+o to expand)
+  ⎿  Updated submissions/rafael/solution/src/social_insights/strategy.py
+     (+2 -1)
+      337                       "posts por grupo": ab_sample_size(p_late,
+            (p_early + p_late) / 2)})
+      338  
+      339      rows.append({"hipótese": f"Patrocínio aumenta o engajament
+           o em pelo menos {RELEVANT_UPLIFT:.0%}",
+      340 -                 "evidência": "nenhum efeito neste histórico; 
+          -precisa ser medido com os contratos da empresa",              
+      340 +                 "evidência": "nenhum efeito neste histórico; 
+          +aqui as métricas variam só ~1% entre posts, por isso bastam po
+          +ucos posts "                                                  
+      341 +                             "(mínimo prático); com os dados d
+          +a empresa a conta é refeita",                                 
+      342                   "posts por grupo": mean_sample_size(df, ENGAG
+           EMENT)})
+      343      table = pd.DataFrame(rows)
+      344      table["como tratar"] = np.where(table["posts por grupo"] <
+           = MAX_AB_POSTS, "teste A/B",
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Atualizando agora a página de Estratégia (sensibilidade, coluna "base" e fila
+  de testes) e o filtro de tradução.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Update(submissions/rafael/solution/src/social_web/templates/estrategia.html)
+  ⎿  Added 1 line, removed 1 line
+      47        <div class="table-wrap"><table><thead><tr>{% for c in col
+          s %}<th>{{ c | capitalize }}</th>{% endfor %}</tr></thead><tbod
+          y>
+      48        {% for row in s.sensibilidade %}<tr>{% for c in cols %}{%
+           if loop.first %}<td>{{ row[c] }}</td>{% else %}<td class="n">{
+          { row[c] | num }}</td>{% endif %}{% endfor %}</tr>{% endfor %}
+      49        </tbody></table></div>
+      50 -      <p class="caption">O teto sai das premissas, não dos dado
+         -s: com outros preços ele vai de {{ s.sensibilidade | map('dict_
+         -min') | first if false else '' }}poucos milhares a dezenas de m
+         -ilhares de seguidores. O que vale com qualquer preço é pagar po
+         -r resultado.</p>                                               
+      50 +      <p class="caption">O teto sai das premissas, não dos dado
+         +s: com outros preços ele vai de poucos milhares a dezenas de mi
+         +lhares de seguidores. O que vale com qualquer preço é pagar por
+         + resultado.</p>                                                
+      51      </div></details>
+      52      <details class="more"><summary>Quick wins com esforço, resu
+          ltado e responsável</summary><div class="more-body">
+      53        <div class="table-wrap"><table><thead><tr><th>Ação</th><t
+          h>Base</th><th>Esforço</th><th>Resultado esperado</th><th>Quem<
+          /th></tr></thead><tbody>
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Bash(cd /home/half/Documents/desafios/ai-master-challenge/submissions/rafael/s
+      olution/src && python3 - <<'EOF'
+      import pathlib…)
+  ⎿  40:    {% if t_hour %}<div class="means"><span class="tag">Na prática<
+     /span><p>{{ t_hour[0]['como tratar'] | capitalize }}: confirmar exigir
+     ia ~{{ t_hour[0]['posts por grupo'] | num }} posts por grupo. Agende o
+     … +2 lines (ctrl+o to expand)
+  ⎿  Updated submissions/rafael/solution/src/social_insights/strategy.py
+     (+3 -3)
+      320      rows = []
+      321      rest_rate = best["taxa top 5% (%)"] / best["lift"] / 100
+      322      target = (rest_rate + best["taxa top 5% (%)"] / 100) / 2
+      323 -    rows.append({"hipótese": f"{best['plataforma']} · {best['b
+          -olsão']} aumenta a chance de top 5% em {metric_names.get(best[
+          -'alvo'], best['alvo'])}",                                     
+      323 +    rows.append({"tipo": "bolsão", "hipótese": f"{best['plataf
+          +orma']} · {best['bolsão']} aumenta a chance de top 5% em {metr
+          +ic_names.get(best['alvo'], best['alvo'])}",                   
+      324                   "evidência": f"{best['taxa top 5% (%)']:.1f}%
+            vs. {rest_rate:.1%} ({best['lift']:.1f}x), nos 2 anos; q glob
+           al = {best['q_global']:.3f} entre {len(by_platform):,} testes"
+           ,
+      325                   "posts por grupo": ab_sample_size(rest_rate, 
+           target)})
+      326  
+     ...
+      332          top = g["comments_count"] >= g["comments_count"].quant
+           ile(discovery.TOP1_Q)
+      333          early = g["daypart"].isin(["madrugada", "manhã"])
+      334          p_early, p_late = top[early].mean(), top[~early].mean(
+           )
+      335 -        rows.append({"hipótese": f"{platform}: posts até 12h e
+          -ntram mais no top 1% de comentários",                         
+      335 +        rows.append({"tipo": "horário", "hipótese": f"{platfor
+          +m}: posts até 12h entram mais no top 1% de comentários",      
+      336                       "evidência": f"{p_early:.2%} vs. {p_late:
+           .2%}; hora típica do top {top_hour['hora mediana top']:.0f}h v
+           s. {top_hour['hora mediana demais']:.0f}h (q = {top_hour['q (h
+           ora)']:.2f})",
+      337                       "posts por grupo": ab_sample_size(p_late,
+            (p_early + p_late) / 2)})
+      338  
+      339 -    rows.append({"hipótese": f"Patrocínio aumenta o engajament
+          -o em pelo menos {RELEVANT_UPLIFT:.0%}",                       
+      339 +    rows.append({"tipo": "patrocínio", "hipótese": f"Patrocíni
+          +o aumenta o engajamento em pelo menos {RELEVANT_UPLIFT:.0%}", 
+      340                   "evidência": "nenhum efeito neste histórico; 
+           aqui as métricas variam só ~1% entre posts, por isso bastam po
+           ucos posts "
+      341                               "(mínimo prático); com os dados d
+           a empresa a conta é refeita",
+      342                   "posts por grupo": mean_sample_size(df, ENGAG
+           EMENT)})
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Bash(cd /home/half/Documents/desafios/ai-master-challenge/submissions/rafael/s
+      olution/src/social_insights && python3 - <<'EOF'
+      import pathlib…)
+  ⎿  -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.htm
+     l
+     111 passed, 19 warnings in 135.20s (0:02:15)
+  ⎿  Updated submissions/rafael/solution/src/social_insights/strategy.py
+     (+5 -5)
+      127      return float(cpm.iloc[-1] / cpm.iloc[0])
+      128  
+      129  
+      130 -def ab_sample_size(p_control: float, p_test: float, power: flo
+          -at = POWER) -> int:                                           
+      131 -    """Posts per group to tell two rates apart (two-sided α, g
+          -iven power)."""                                               
+      132 -    if p_control == p_test:                                   
+      133 -        return np.inf                                         
+      130 +def ab_sample_size(p_control: float, p_test: float, power: flo
+          +at = POWER) -> int | None:                                    
+      131 +    """Posts per group to tell two rates apart (two-sided α, g
+          +iven power); None when there is no gap to size."""            
+      132 +    if not np.isfinite([p_control, p_test]).all() or p_control
+          + == p_test:                                                   
+      133 +        return None                                           
+      134      n = NormalIndPower().solve_power(proportion_effectsize(p_t
+           est, p_control), alpha=ALPHA, power=power)
+      135      return int(np.ceil(n))
+      136  
+     ...
+      340                   "evidência": "nenhum efeito neste histórico; 
+           aqui as métricas variam só ~1% entre posts, por isso bastam po
+           ucos posts "
+      341                               "(mínimo prático); com os dados d
+           a empresa a conta é refeita",
+      342                   "posts por grupo": mean_sample_size(df, ENGAG
+           EMENT)})
+      343 -    table = pd.DataFrame(rows)                                
+      343 +    table = pd.DataFrame(rows).dropna(subset=["posts por grupo
+          +"]).astype({"posts por grupo": int})                          
+      344      table["como tratar"] = np.where(table["posts por grupo"] <
+           = MAX_AB_POSTS, "teste A/B",
+      345                                      "acompanhar no histórico (
+           A/B exigiria posts demais)")
+      346      table.index = pd.RangeIndex(1, len(table) + 1, name="#")
+  ⎿  (timeout 10m)
+
+● Testes passam (111). Agora vou adicionar testes para as funções novas e depois
+  regenerar o relatório e verificar as páginas renderizadas com os dados reais.
+
+● Bash(cat >> solution/tests/test_strategy.py <<'EOF'…)
+  ⎿  ...........
+        [100%]
+     11 passed in 5.37s
+  ⎿  Updated submissions/rafael/solution/tests/test_strategy.py (+27 -0)
+      43  def test_quick_wins_has_owner_and_effort(posts):
+      44      wins = strategy.quick_wins(posts).evidence
+      45      assert {"ação", "esforço", "impacto", "dono"} <= set(wins.c
+          olumns) and len(wins) >= 5
+      46 +                                                               
+      47 +                                                               
+      48 +def test_threshold_sensitivity_scales_with_price(posts):       
+      49 +    grid = strategy.threshold_sensitivity(posts, costs=[0.01, 0
+         +.02], cpms=[10.0])                                             
+      50 +    assert grid.iloc[0, 0] == pytest.approx(2 * grid.iloc[1, 0]
+         +, rel=0.02)                                                    
+      51 +                                                               
+      52 +                                                               
+      53 +def test_tier_cost_ratio_does_not_depend_on_price(posts, monkey
+         +patch):                                                        
+      54 +    ratio = strategy.tier_cost_ratio(posts)                    
+      55 +    monkeypatch.setattr(strategy, "COST_PER_FOLLOWER", 0.05)   
+      56 +    assert strategy.tier_cost_ratio(posts) == pytest.approx(rat
+         +io)                                                            
+      57 +                                                               
+      58 +                                                               
+      59 +def test_ab_sample_size():                                     
+      60 +    assert strategy.ab_sample_size(0.05, 0.10) < strategy.ab_sa
+         +mple_size(0.05, 0.07)                                          
+      61 +    assert strategy.ab_sample_size(0.05, 0.05) is None         
+      62 +                                                               
+      63 +                                                               
+      64 +def test_quick_wins_list_robust_actions_first(posts):          
+      65 +    bases = strategy.quick_wins(posts).evidence["base"].tolist(
+         +)                                                              
+      66 +    assert bases == sorted(bases, key=lambda b: b != strategy.R
+         +OBUST) and strategy.ASSUMED in bases                           
+      67 +                                                               
+      68 +                                                               
+      69 +def test_test_queue_is_short_and_sized(posts):                 
+      70 +    queue = strategy.test_queue(posts).evidence                
+      71 +    assert 1 <= len(queue) <= 3 and (queue["posts por grupo"] >
+         += strategy.MIN_TEST_POSTS).all()                               
+      72 +    assert set(queue["como tratar"]) <= {"teste A/B", "acompanh
+         +ar no histórico (A/B exigiria posts demais)"}                  
+  ⎿  (timeout 5m)
+
+● Bash(python3 - <<'EOF'
+      import pathlib…)
+  ⎿  Relatório salvo em docs/respostas.md
+     ## 2. Política de patrocínio
+     … +59 lines (ctrl+o to expand)
+  ⎿  Updated submissions/rafael/solution/answer_questions.py (+2 -2)
+      1 -"""CLI: answers the four Challenge 004 questions + the four stra
+        -tegy decisions and writes a Markdown report.                    
+      1 +"""CLI: answers the four Challenge 004 questions + the four stra
+        +tegy decisions + the test queue and writes a Markdown report.   
+      2  
+      3  Usage (from submissions/rafael): .venv/bin/python solution/answe
+         r_questions.py [--out docs/respostas.md]
+      4  """
+     ...
+      17      args = parser.parse_args()
+      18  
+      19      df = data.load_posts()
+      20 -    sections = [*questions.answer_all(df), *strategy.recommend_
+         -all(df)]                                                       
+      20 +    sections = [*questions.answer_all(df), *strategy.recommend_
+         +all(df), strategy.test_queue(df)]                              
+      21      report = "# Respostas e estratégia — Challenge 004\n\n" + "
+          \n\n---\n\n".join(s.to_markdown() for s in sections)
+      22      if args.out:
+      23          args.out.parent.mkdir(parents=True, exist_ok=True)
+  ⎿  Updated submissions/rafael/docs/respostas.md (+53 -33)
+      159  
+      160  ## 1. Onde concentrar esforço?
+      161  
+      162 -**Decisão:** Plataforma: nenhuma vence (diferenças ≤ 0.01%), e
+          -ntão concentre em 1–2 por custo operacional e presença do públ
+          -ico-alvo. Formato: text (mesmo engajamento que o melhor e meno
+          -r custo por resultado, pela premissa de custo de produção). Cr
+          -eators: nano (<10K) (equivalente em engajamento e mais barato)
+          -. Frequência: postar mais não reduz o desempenho por post em n
+          -enhuma plataforma, então o limite é a capacidade de produção. 
+      162 +**Decisão:** Plataforma: nenhuma vence (diferenças ≤ 0.01%), e
+          +ntão concentre em 1–2 por custo operacional e presença do públ
+          +ico-alvo. Formato: nenhum engaja mais (diferenças ≤ 0.06%), en
+          +tão vale o mais barato de produzir; pela premissa de custo, te
+          +xt, mas a escolha depende do custo real e do formato que cada 
+          +plataforma comporta. Creators: o porte não muda o engajamento 
+          +nem as views, então não há motivo para pagar mais por creators
+          + grandes. Frequência: dias com mais posts (mediana de 14 por p
+          +lataforma, somando todos os creators) não têm pior desempenho 
+          +por post; o limite é a capacidade de produção, e a cadência da
+          + marca deve ser medida com os dados dela.                     
+      163  
+      164  | platform   |     n |    média |   vs. melhor (%) |   p_value
+            |   q_value | equivalente ao melhor   |   vs. melhor (%) (eng
+           ajamento) | equivalente ao melhor (engajamento)   |
+      165  |:-----------|------:|---------:|-----------------:|----------
+           :|----------:|:------------------------|----------------------
+           ---------:|:--------------------------------------|
+     ...
+      196  | YouTube      |                    14 |              -0.01193
+             |   0.7475  |                            1.01e+04 |         
+                             1.01e+04 |    0.8126 | False       |
+      197  
+      198  **Ações:**
+      199 -1. Fixar o mix de produção em text como padrão; formatos mais 
+          -caros só com hipótese a testar.                               
+      200 -2. Priorizar creators nano (<10K) nas próximas contratações.  
+      199 +1. Não pagar a mais por formato esperando engajamento: levanta
+          +r o custo real de produção por formato e usar o mais barato qu
+          +e a plataforma comporta (pela premissa atual, text).          
+      200 +2. Não pagar prêmio por porte de creator: escolher pelo preço 
+          +por resultado e pelo público-alvo.                            
+      201  3. Concentrar o time em 1–2 plataformas (critério: onde está o
+            cliente-alvo e o menor custo operacional).
+      202  4. Aumentar a frequência até o limite da capacidade e reavalia
+           r a saturação mensalmente (`frequency_effect`).
+      203  
+     ...
+      205  
+      206  ## 2. Política de patrocínio
+      207  
+      208 -**Decisão:** Patrocinar para ganhar desempenho: NÃO. O patrocí
+          -nio não muda engajamento nem alcance. Nenhuma condição tem efe
+          -ito. Patrocinar só se o post se pagar como mídia: até ~10,050 
+          -seguidores (até US$ 10 por mil views e US$ 0.05 por interação,
+          - com ~10,100 views e ~2,010 interações por post). Hoje só 1% d
+          -os posts patrocinados estão dentro desse limite. Perfil: nano 
+          -(<10K), em qualquer plataforma ou categoria. O engajamento his
+          -tórico não serve de critério, porque não diferencia creators. 
+      208 +**Decisão:** Patrocinar para ganhar desempenho: NÃO. O patrocí
+          +nio não muda engajamento nem alcance. Nenhuma condição tem efe
+          +ito. Regra que vale com qualquer preço: como as views não cres
+          +cem com os seguidores, um cachê proporcional aos seguidores de
+          +ixa o creator mega (500K+) ~134x mais caro por mil views que o
+          + nano (<10K). Por isso, pagar por resultado, não por post. Com
+          + as premissas atuais (US$ 10 por mil seguidores, até US$ 10 po
+          +r mil views e US$ 0.05 por interação), o post de preço fixo se
+          + paga até ~10,050 seguidores; com outros preços o teto vai de 
+          +1,000 a 40,400 (tabela de sensibilidade). O desempenho históri
+          +co do creator não serve de critério, porque não diferencia cre
+          +ators.                                                        
+      209  
+      210  |                                |   diferença |   IC95 inf | 
+             IC95 sup |   diferença (%) |   p_value |   estratos |   q_va
+           lue |
+      211  |:-------------------------------|------------:|-----------:|-
+           ----------:|----------------:|----------:|-----------:|-------
+           ---:|
+     ...
+      227  |       500000 |              5000     |              495     
+           |              2.488   |                         5e+05   |    
+                                     9.901   | False          |
+      228  |      1000000 |                 1e+04 |              990.1   
+           |              4.975   |                         1e+06   |    
+                                    19.8     | False          |
+      229  
+      230 +### Teto de seguidores por premissa (sensibilidade)           
+      231 +| preço do creator          |   CPM-alvo US$ 5 |   CPM-alvo US
+          +$ 10 |   CPM-alvo US$ 20 |                                    
+      232 +|:--------------------------|-----------------:|--------------
+          +----:|------------------:|                                    
+      233 +| US$ 5 por mil seguidores  |         1.01e+04 |          2.02
+          +e+04 |          4.04e+04 |                                    
+      234 +| US$ 10 por mil seguidores |      5000        |          1.01
+          +e+04 |          2.02e+04 |                                    
+      235 +| US$ 20 por mil seguidores |      2500        |       5000   
+          +     |          1.01e+04 |                                    
+      236 +| US$ 50 por mil seguidores |      1000        |       2000   
+          +     |       4000        |                                    
+      237 +                                                              
+      238  ### Perfil de influenciador (patrocinados)
+      239  | follower_tier    |   posts |   cpm_mediano |   cpe_mediano |
+              engajamento | dentro do threshold   |
+      240  |:-----------------|--------:|--------------:|--------------:|
+           --------------:|:----------------------|
+     … 97 more lines (ctrl+o to expand)
+
+● Bash(python3 - <<'EOF'
+      import pathlib…)
+  ⎿  35:def load_state(rebuild: bool = False, df: pd.DataFrame | None = Non
+     e, cache_dir: Path = CACHE_DIR, light: bool = False) -> AppState:
+     36-    """First run trains everything (~5 min) and caches it; later ru
+     … +14 lines (ctrl+o to expand)
+  ⎿  Updated submissions/rafael/solution/src/social_insights/strategy.py
+     (+2 -2)
+      294          {"ação": "Todo patrocínio novo com grupo de comparação
+            orgânico", "base": ROBUST, "esforço": "baixo",
+      295           "impacto": f"mede o ganho real; ≥ {mean_sample_size(d
+           f, ENGAGEMENT)} posts por grupo para ver +{RELEVANT_UPLIFT:.0%
+           } de engajamento",
+      296           "dono": "AI Master / Analytics"},
+      297 -        {"ação": "Não pagar prêmio por creator \"campeão\" nem
+          - por horário/hashtags ideais", "base": ROBUST, "esforço": "bai
+          -xo",                                                          
+      297 +        {"ação": "Não pagar a mais por creator \"campeão\" e t
+          +irar horário/hashtags ideais do checklist", "base": ROBUST, "e
+          +sforço": "baixo",                                             
+      298           "impacto": "desempenho passado e essas regras não mud
+           am o resultado; horas do time liberadas", "dono": "Social medi
+           a"},
+      299          {"ação": f"Teto de ~{be['threshold']:,.0f} seguidores 
+           para contratos de preço fixo", "base": ASSUMED, "esforço": "ba
+           ixo (regra de compra)",
+      300           "impacto": f"pelas premissas, {waste_share:.0%} do ga
+           sto implícito com patrocínio é excedente", "dono": "Head de Ma
+           rketing"},
+     ...
+      346      table.index = pd.RangeIndex(1, len(table) + 1, name="#")
+      347      decision = (f"Só {len(table)} hipóteses merecem teste; o r
+           esto das variações encontradas está no nível do acaso. "
+      348                  "Nenhuma vira regra antes do teste: os números
+            de posts mostram o custo de confirmar cada uma.")
+      349 -    actions = [f"{r['hipótese']}: {r['como tratar']} ({r['post
+          -s por grupo']:,} posts por grupo)." for _, r in table.iterrows
+          -()]                                                           
+      349 +    actions = [f"{r['hipótese']}: {r['como tratar']}; {r['post
+          +s por grupo']:,} posts por grupo." for _, r in table.iterrows(
+          +)]                                                            
+      350      return Recommendation("5. Fila de testes", decision, table
+           , {}, actions)
+      351  
+      352  
+
+  Listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● Site conferido com os dados reais. Agora vou corrigir a última frase de
+  premissa na home e alinhar os arquivos de knowledge/.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Rewriting sections 1–4 of strategy-recommendations.md and adding section 5
+  (test queue).
+
+● Bash(python3 - <<'EOF'
+      import pathlib…)
+  ⎿  knowledge/website.md:111:- **Texto de disclosure corrigido:** a estrat
+     égia e o quick win não dizem mais "elimina o risco / conformidade". Ag
+     ora `strategy.disclosure_rule` exige rótulo verificável no texto e cit
+     … +2 lines (ctrl+o to expand)
+  ⎿  Updated submissions/rafael/knowledge/strategy-recommendations.md (+58 
+     -40)
+       1  # Estratégia recomendada — decisões e como usar
+       2  
+       3 -Fonte: `solution/src/social_insights/strategy.py` · relatório: 
+         -`docs/respostas.md` (seções 1–4 de estratégia) · gerado em 2026
+         --10-18 sobre 52.214 posts.                                     
+       3 +Fonte: `solution/src/social_insights/strategy.py` · relatório: 
+         +`docs/respostas.md` (seções 1–5 de estratégia) · atualizado em 
+         +2026-10-19 sobre 52.214 posts.                                 
+       4  Complementa `questions-answers.md` (diagnóstico) com as **decis
+          ões**. Mesmo formato para o site: manchete, números-chave, açõe
+          s, premissas.
+       5  
+       6  > **Regra de decisão (vale para tudo):** opções que **não são s
+          ignificativamente piores** que a melhor são "equivalentes" (tes
+          te de Welch + correção FDR). **Entre equivalentes, vence a mais
+           barata.** Com dados reais, se uma opção for de fato melhor, el
+          a vence mesmo sendo cara (coberto por teste).
+       7  
+       8 +> **Duas classes de recomendação (revisão de 2026-10-19, `revie
+         +w/critica-entrega.md`):**                                      
+       9 +> - **robusta**: decorre de um resultado dos dados que não depe
+         +nde de preço (ex.: views não crescem com seguidores) e continua
+         + válida com os dados reais da empresa;                         
+      10 +> - **depende de premissa**: sai das premissas de custo abaixo.
+         + É ilustrativa e precisa ser recalculada com os preços reais.  
+      11 +                                                               
+      12  > **Premissas de custo** (o dataset não tem preços, e todas são
+           parâmetros configuráveis):
+      13  > custo de patrocínio = US$ 10 por mil seguidores por post · pr
+          odução própria por post: texto US$ 50, imagem US$ 100, misto US
+          $ 150, vídeo US$ 300 · CPM-alvo US$ 10 · CPE-alvo US$ 0,05.
+      14  
+     ...
+      18  
+      19  - **Manchete:** nenhuma plataforma, formato ou faixa de creator
+           entrega mais, então a escolha é pelo menor custo por resultado
+          .
+      20  
+      17 -| Decisão | Escolha | Evidência |                              
+      18 -|---|---|---|                                                  
+      19 -| Plataforma | Nenhuma vence: concentrar em 1–2 por custo opera
+         -cional e por onde está o cliente-alvo | diferenças ≤ 0,01% em v
+         -iews e ≤ 0,05% em engajamento, todas equivalentes |            
+      20 -| Formato | **Texto** (pela premissa de custo) | 4 formatos equ
+         -ivalentes (diferença ≤ 0,06%); texto custa 6x menos que vídeo |
+      21 -| Faixa de creator | **Nano (<10K)** | 5 faixas equivalentes; c
+         -usto mediano US$ 56 (nano) vs. US$ 7.508 (mega) |              
+      22 -| Frequência | Limite = capacidade de produção | ~14 posts/dia 
+         -por plataforma; dias de alto volume não têm pior desempenho por
+         - post (0 de 5 plataformas com saturação) |                     
+      21 +| Decisão | Escolha | Evidência | Classe |                     
+      22 +|---|---|---|---|                                              
+      23 +| Plataforma | Nenhuma vence: concentrar em 1–2 pelo custo oper
+         +acional e por onde está o cliente-alvo | diferenças ≤ 0,01% em 
+         +views e ≤ 0,05% em engajamento | robusta (o dataset não diz ond
+         +e está o cliente: audiência uniforme entre plataformas) |      
+      24 +| Formato | Nenhum engaja mais: usar o mais barato **que a plat
+         +aforma comporta**, pelo custo real (pela premissa, texto) | 4 f
+         +ormatos equivalentes (diferença ≤ 0,06%) | depende de premissa 
+         +|                                                              
+      25 +| Faixa de creator | Não pagar prêmio por porte | 5 faixas equi
+         +valentes em engajamento e views | robusta |                    
+      26 +| Frequência | Limite = capacidade de produção | dias de alto v
+         +olume não têm pior desempenho por post (0 de 5 plataformas com 
+         +saturação). Os ~14 posts/dia somam **todos os creators** da bas
+         +e, não a cadência de uma marca | robusta para esta base; medir 
+         +a cadência da marca com os dados dela |                        
+      27  
+      24 -- **Ações:** fixar o mix padrão no formato mais barato equivale
+         -nte; priorizar nano; focar 1–2 plataformas; aumentar a frequênc
+         -ia e monitorar a saturação mensalmente.                        
+      25 -- **Atenção para o site:** "texto" é consequência da premissa d
+         -e custo, não de desempenho. Com custos reais, o formato recomen
+         -dado pode mudar.                                               
+      28 +- **Ações:** não pagar a mais por formato nem por porte esperan
+         +do engajamento; levantar o custo real de produção por formato; 
+         +focar 1–2 plataformas; aumentar a frequência e monitorar a satu
+         +ração mensalmente.                                             
+      29  
+      30  ## 2. Política de patrocínio
+      31  
+      29 -- **Manchete:** patrocinar **não** compra desempenho. Patrocine
+         - só quando o post se pagar como mídia: **até ~10 mil seguidores
+         -**.                                                            
+      32 +- **Manchete:** patrocinar **não** compra desempenho. Como as v
+         +iews não crescem com os seguidores, **pague por resultado (CPM/
+         +CPE), não por post**.                                          
+      33  - **Números-chave:**
+     … 101 more lines (ctrl+o to expand)
+  ⎿  Updated submissions/rafael/knowledge/pockets-by-platform.md (+2 -1)
+      11  - **10,0%** dos 451 posts chegam ao top 5% de likes do TikTok (
+          **2,02x**). Nas metades: 2,23x e 1,83x.
+      12  - q (TikTok) = 0,002 · **q global (14,7 mil testes) = 0,035**.
+      13  - O efeito está na **cauda**: a média de likes quase não muda (
+          1.516 vs. 1.510, +0,4%), mas a chance de bombar dobra.
+      14 -- **Ação:** priorizar beauty em espanhol no TikTok. A/B: mesmo 
+         -conteúdo em espanhol × inglês.                                 
+      14 +- **Ressalvas:** não aparece nas outras plataformas (beauty·esp
+         +anhol: 4,5–5,5%) nem em views/shares do TikTok (4,7% / 4,4%); o
+         + desvio de likes no segmento é um pouco maior (42,6 vs. 38,9; L
+         +evene p = 0,045).                                              
+      15 +- **Ação:** hipótese nº 1 da fila de testes (`strategy.test_que
+         +ue`): A/B com o mesmo conteúdo em espanhol × inglês, ~1.430 pos
+         +ts por grupo. Não mudar o mix antes do resultado.              
+      16  
+      17  ## Horário × comentários (top 1%) por plataforma
+      18  | Plataforma | madrugada | manhã | tarde | noite | hora mediana
+           top vs. resto | evidência |
+  ⎿  Updated submissions/rafael/knowledge/pockets-and-top1.md (+1 -1)
+      25  - Sobrevive à correção entre os 12 testes numéricos do top 1% (
+          q ≈ 0,02) e **se repete nas duas metades** (p = 0,013 e 0,047).
+      26  - Taxa de entrada no top 1% de comentários: **madrugada 1,33% ·
+           manhã 1,20% · tarde 0,96% · noite 1,01%**. Por hora, de 0h a 8
+          h fica acima de 1% e entre 15h e 20h fica abaixo.
+      27  - Coerente com o bolsão exploratório "hora 0–4h → 1,13x mais to
+          p 5% de comentários".
+      28 -- **Ação:** teste A/B postando conteúdo que busca conversa **an
+         -tes do meio-dia**.                                             
+      28 +- **Ação:** o padrão é puxado pelo YouTube (`pockets-by-platfor
+         +m.md`) e não muda a média de comentários. Confirmar por A/B exi
+         +giria ~17 mil posts por grupo (`strategy.test_queue`), então: u
+         +sar como desempate de agenda no YouTube e acompanhar no históri
+         +co. A regra geral continua "sem melhor horário".               
+      29  
+      30  ## Insights replicados (hipóteses fortes para A/B)
+      31  | Métrica | Bolsão | Top 5% | Lift (1ª · 2ª metade) |
+  ⎿  Updated submissions/rafael/knowledge/top5-chance-predictor.md (+1 -1)
+      29  | misto (44) | 5,0% | 6,0% | 5,5% |
+      30  | texto (48) | 4,9% | 5,0% | 5,1% |
+      31  (sinal do segmento e intervalo de 90%; base ≈ 5%)
+      32 -- **Likes em vídeo** nesse segmento: ~**9%**, quase 2x a base, 
+         -com intervalo que não cruza 5%. É o achado robusto do notebook 
+         -11 aparecendo na ferramenta.                                   
+      32 +- **Likes em vídeo** nesse segmento: ~**9%**, quase 2x a base, 
+         +com intervalo que não cruza 5%. É o achado robusto do notebook 
+         +11 aparecendo na ferramenta, e a hipótese nº 1 da fila de teste
+         +s (não uma regra).                                             
+      33  
+      34  ## Mensagens para o site
+      35  1. "Antes de postar, a ferramenta mostra a chance de o post vir
+          ar destaque em views, likes e comentários, em cada formato."
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● Bash(python3 - <<'EOF'
+      import pathlib…)
+  ⎿  -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.htm
+     l
+     116 passed, 19 warnings in 139.31s (0:02:19)
+  ⎿  Updated submissions/rafael/knowledge/questions-answers.md (+1 -1)
+      27    - diferença em engajamento: **+0,008%** (IC95 inclui zero; p 
+          = 0,72)
+      28    - diferença em alcance (views): **+0,004%** (p = 0,63)
+      29    - **0 de 17** condições (plataforma, porte, formato, categori
+          a) com efeito
+      30 -  - CPM implícito: **US$ 5,55 (nano) → US$ 29 (micro) → US$ 75 
+         -(mid) → US$ 296 (macro) → US$ 744 (mega)**, ou seja, **134x** m
+         -ais caro por mil views no mega                                 
+      30 +  - CPM implícito: **US$ 5,55 (nano) → US$ 29 (micro) → US$ 75 
+         +(mid) → US$ 296 (macro) → US$ 744 (mega)**, ou seja, **134x** m
+         +ais caro por mil views no mega. Os valores em US$ vêm da premis
+         +sa; a razão de 134x não, porque vale para qualquer cachê propor
+         +cional aos seguidores                                          
+      31  - **Comparação justa:** diferença estratificada em 269 estratos
+           idênticos (plataforma × formato × categoria × porte), confirma
+          da por regressão com controles.
+      32  - **Recomendação (política de patrocínio):**
+      33    1. Não pagar prêmio por seguidores: views não crescem com o p
+          orte.
+  ⎿  Updated submissions/rafael/DEVELOPMENT_PROCESS.md (+1 -0)
+      40  | 2026-10-19 | Símbolo oficial do G4 (do site g4educacao.com) c
+          omo favicon (.ico 16–64 px, PNG 192 e apple-touch) e no cabeçal
+          ho ao lado de "G4 Marketing" | Pedido do usuário; o /favicon.ic
+          o do G4 não existe (retorna HTML), então o .ico foi gerado do P
+          NG oficial | — |
+      41  | 2026-10-19 | Revisão visual alinhada ao g4educacao.com: títul
+          os Manrope leve + itálico serifado dourado, números em Libre Ba
+          skerville, botões de 6 px dourados, cartões chapados, filetes d
+          ourados, marca-d'água | Pedido do usuário: tipografia e element
+          os visuais como os do G4 | Manter Playfair e pílulas (estética 
+          própria, distante do G4) |
+      42  | 2026-10-19 | Auditorias no site: página `/auditorias` (5 vere
+          ditos primeiro, gráficos sob demanda, regras como premissas edi
+          táveis), aviso de fuso único (`TIME_NOTE`) e de unidade da dura
+          ção em todas as telas com hora/duração, alerta de mercado no Si
+          mular, texto de disclosure da estratégia trocado pelo resultado
+           da auditoria | Os textos "compliance sem perda" e "conteúdo cu
+          rto" eram contraditos pelas auditorias; o fuso é desconhecido |
+           Converter horários pelo país do público; esconder as auditoria
+          s só nos notebooks |
+      43 +| 2026-10-19 | Revisão crítica (`review/critica-entrega.md`) ap
+         +licada: recomendações marcadas como **robusta** × **depende de 
+         +premissa**; teto de seguidores mostrado como fórmula + sensibil
+         +idade; "US$ 109 mi" rebaixado a ordem de grandeza ilustrativa; 
+         +destaques (TikTok espanhol, horário no YouTube) viram **fila de
+         + testes** com nº de posts por grupo (`strategy.test_queue`) | C
+         +ontradições entre "dataset é ruído" e "priorizar segmento X" / 
+         +"tirar horário do checklist" × "postar cedo no YouTube"; o teto
+         + e o formato "texto" saíam das premissas, não dos dados | Mante
+         +r "priorizar" e os valores em US$ como impacto dos quick wins |
+  ⎿  (timeout 10m)
+
+● Bash(SP=/tmp/claude-1000/-home-half-Documents-desafios/37054157-b8cb-436e-ac26
+      -e17fef74c4ea/scratchpad && .venv/bin/python solution/answer_questions.py
+      --out docs/re…)
+  ⎿  Relatório salvo em docs/respostas.md
+     {'/': 200, '/perguntas': 200, '/estrategia': 200, '/descobertas': 200,
+      '/explorar': 200, '/simular': 200, '/auditorias': 200, '/metodo': 200
+     … +2 lines (ctrl+o to expand)
+  ⎿  Updated submissions/rafael/docs/respostas.md (+12 -12)
+      313  
+      314  **Decisão:** 6 ações para esta semana, sem contratação nem fer
+           ramenta nova. As 4 primeiras valem também com os dados reais d
+           a empresa; as 2 últimas dependem das premissas de preço e deve
+           m ser recalculadas com os preços reais.
+      315  
+      316 -|    | ação                                                   
+          -                        | base                                
+          -              | esforço                 | impacto             
+          -                                                              
+          -                                                              
+          -               | dono                  |                      
+      317 -|---:|:-------------------------------------------------------
+          -------------------------|:------------------------------------
+          ---------------|:------------------------|:--------------------
+          ---------------------------------------------------------------
+          ---------------------------------------------------------------
+          ----------------|:----------------------|                      
+      318 -|  0 | Novos contratos e renovações por resultado (views ou in
+          -terações), não por post | robusta (vale com dados reais)      
+          -              | médio                   | o custo por view dei
+          -xa de crescer com o porte (hoje o maior porte paga ~134x mais 
+          -por mil views)                                                
+          -               | Parcerias / Compras   |                      
+      319 -|  1 | Rótulo de publicidade verificável no texto (#publi/#ad)
+          - como padrão            | robusta (vale com dados reais)      
+          -              | baixo                   | hoje 47% dos patroci
+          -nados usam disclosure implícito (risco regulatório alto) e só 
+          -2.3% mostram o rótulo no texto; o tipo de disclosure não muda 
+          -o engajamento. | Social media          |                      
+      320 -|  2 | Todo patrocínio novo com grupo de comparação orgânico  
+          -                        | robusta (vale com dados reais)      
+          -              | baixo                   | mede o ganho real; ≥
+          - 30 posts por grupo para ver +5% de engajamento               
+          -                                                              
+          -               | AI Master / Analytics |                      
+      321 -|  3 | Não pagar prêmio por creator "campeão" nem por horário/
+          -hashtags ideais         | robusta (vale com dados reais)      
+          -              | baixo                   | desempenho passado e
+          - essas regras não mudam o resultado; horas do time liberadas  
+          -                                                              
+          -               | Social media          |                      
+      322 -|  4 | Teto de ~10,050 seguidores para contratos de preço fixo
+          -                        | depende de premissa (recalcular com 
+          -preços reais) | baixo (regra de compra) | pelas premissas, 98%
+          - do gasto implícito com patrocínio é excedente                
+          -                                                              
+          -               | Head de Marketing     |                      
+      323 -|  5 | Formato padrão pelo custo real de produção (pela premis
+          -sa, text)               | depende de premissa (recalcular com 
+          -preços reais) | baixo                   | mesmo engajamento co
+          -m menor custo por post                                        
+          -                                                              
+          -               | Conteúdo              |                      
+      316 +|    | ação                                                   
+          +                             | base                           
+          +                   | esforço                 | impacto        
+          +                                                              
+          +                                                              
+          +                    | dono                  |                 
+      317 +|---:|:-------------------------------------------------------
+          +-----------------------------|:-------------------------------
+          +-------------------|:------------------------|:---------------
+          +--------------------------------------------------------------
+          +--------------------------------------------------------------
+          +--------------------|:----------------------|                 
+      318 +|  0 | Novos contratos e renovações por resultado (views ou in
+          +terações), não por post      | robusta (vale com dados reais) 
+          +                   | médio                   | o custo por vie
+          +w deixa de crescer com o porte (hoje o maior porte paga ~134x 
+          +mais por mil views)                                           
+          +                    | Parcerias / Compras   |                 
+      319 +|  1 | Rótulo de publicidade verificável no texto (#publi/#ad)
+          + como padrão                 | robusta (vale com dados reais) 
+          +                   | baixo                   | hoje 47% dos pa
+          +trocinados usam disclosure implícito (risco regulatório alto) 
+          +e só 2.3% mostram o rótulo no texto; o tipo de disclosure não 
+          +muda o engajamento. | Social media          |                 
+      320 +|  2 | Todo patrocínio novo com grupo de comparação orgânico  
+          +                             | robusta (vale com dados reais) 
+          +                   | baixo                   | mede o ganho re
+          +al; ≥ 30 posts por grupo para ver +5% de engajamento          
+          +                                                              
+          +                    | AI Master / Analytics |                 
+      321 +|  3 | Não pagar a mais por creator "campeão" e tirar horário/
+          +hashtags ideais do checklist | robusta (vale com dados reais) 
+          +                   | baixo                   | desempenho pass
+          +ado e essas regras não mudam o resultado; horas do time libera
+          +das                                                           
+          +                    | Social media          |                 
+      322 +|  4 | Teto de ~10,050 seguidores para contratos de preço fixo
+          +                             | depende de premissa (recalcular
+          + com preços reais) | baixo (regra de compra) | pelas premissas
+          +, 98% do gasto implícito com patrocínio é excedente           
+          +                                                              
+          +                    | Head de Marketing     |                 
+      323 +|  5 | Formato padrão pelo custo real de produção (pela premis
+          +sa, text)                    | depende de premissa (recalcular
+          + com preços reais) | baixo                   | mesmo engajamen
+          +to com menor custo por post                                   
+          +                                                              
+          +                    | Conteúdo              |                 
+      324  
+      325  ### Base: onde concentrar
+      326  |    | decisão                                                
+                                                                         
+                                                                         
+                                                                         
+                                                                         
+                                                                         
+                                                                         
+                                                                         
+                                                                         
+                                                                         
+                                               |
+     ...
+      331  1. Novos contratos e renovações por resultado (views ou intera
+           ções), não por post
+      332  2. Rótulo de publicidade verificável no texto (#publi/#ad) com
+           o padrão
+      333  3. Todo patrocínio novo com grupo de comparação orgânico
+      334 -4. Não pagar prêmio por creator "campeão" nem por horário/hash
+          -tags ideais                                                   
+      334 +4. Não pagar a mais por creator "campeão" e tirar horário/hash
+          +tags ideais do checklist                                      
+      335  5. Teto de ~10,050 seguidores para contratos de preço fixo
+      336  6. Formato padrão pelo custo real de produção (pela premissa, 
+           text)
+      337  
+     ...
+      348  |   3 | patrocínio | Patrocínio aumenta o engajamento em pelo 
+           menos 5%             | nenhum efeito neste histórico; aqui as 
+           métricas variam só ~1% entre posts, por isso bastam poucos pos
+           ts (mínimo prático); com os dados da empresa a conta é refeita
+            |                30 | teste A/B                              
+                        |
+      349  
+      350  **Ações:**
+      351 -1. TikTok · beauty · Spanish aumenta a chance de top 5% em lik
+          -es: teste A/B (1,430 posts por grupo).                        
+      352 -2. YouTube: posts até 12h entram mais no top 1% de comentários
+          -: acompanhar no histórico (A/B exigiria posts demais) (17,049 
+          -posts por grupo).                                             
+      353 -3. Patrocínio aumenta o engajamento em pelo menos 5%: teste A/
+          -B (30 posts por grupo).                                       
+      351   No newline at end of file
+      352 +1. TikTok · beauty · Spanish aumenta a chance de top 5% em lik
+          +es: teste A/B; 1,430 posts por grupo.                         
+      353 +2. YouTube: posts até 12h entram mais no top 1% de comentários
+          +: acompanhar no histórico (A/B exigiria posts demais); 17,049 
+          +posts por grupo.                                              
+      354 +3. Patrocínio aumenta o engajamento em pelo menos 5%: teste A/
+          +B; 30 posts por grupo.                                        
+     … 1 more lines (ctrl+o to expand)
+  ⎿  (timeout 10m)
+
+● Updating the review with what was fixed.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● As contradições estão corrigidas e as recomendações agora separam o que os
+  dados sustentam do que vem só das premissas de custo. Não fiz commit, porque
+  as mudanças estão misturadas com o trabalho ainda sem commit de outra sessão
+  (desafios-79: auditorias, app web), que eu mantive sem reverter.
+
+  Com os dados reais, os 116 testes passam (5 novos são para as funções que
+  criei). Também regenerei docs/respostas.md, que ganhou a seção "5. Fila de
+  testes", e o cache do site (solution/models/site_payload.json). As 8 páginas
+  do site carregam sem erro.
+
+  Contradições resolvidas:
+
+  Antes: "Os dados são ruído", mas "priorizar beauty em espanhol no TikTok"
+  Agora: Vira o teste A/B nº 1, a fazer antes de mudar o mix (~1.430 posts por
+  versão). O efeito não aparece nas outras plataformas nem nas outras métricas
+  do TikTok.
+  ────────────────────────────────────────
+  Antes: "Tirar o melhor horário do checklist", mas "postar cedo no YouTube"
+  Agora: A regra geral continua: não existe melhor horário. No YouTube, os posts
+
+  publicados cedo só entram mais no top 1% de comentários; a média de
+  comentários não muda. Confirmar exigiria ~17 mil posts por grupo, então vira
+  só critério de desempate na agenda.
+  ────────────────────────────────────────
+  Antes: Teto de 10.050 seguidores apresentado como achado
+  Agora: A ação principal passa a ser pagar por resultado. O teto vem só das
+  premissas de custo e agora aparece com uma tabela de sensibilidade: vai de
+  1.000 a 40.400 seguidores, conforme o preço do creator e o custo aceitável
+  por mil views.
+  ────────────────────────────────────────
+  Antes: "Evita US$ 109 mi" e "texto como formato padrão"
+  Agora: O impacto aparece em % (98% do gasto implícito é excedente, pelas
+  premissas). "Texto" virou "nenhum formato engaja mais: use o mais barato que
+  a plataforma comporta, pelo custo real".
+
+  O que o time de marketing ganha:
+  - Quick wins em duas classes. As 4 primeiras valem também com os dados reais
+    da empresa: pagar por resultado, rótulo #publi/#ad, grupo de comparação em
+    todo patrocínio, não pagar a mais por creator "campeão". As 2 últimas
+    dependem de preço e precisam ser recalculadas com os valores reais.
+  - Achado novo e confiável: o creator mega paga ~134x mais por mil views que o
+    nano, qualquer que seja o valor do cachê. Basta o cachê ser proporcional aos
+    seguidores, porque as views não crescem com eles. É a base mais sólida da
+    política de patrocínio.
+  - Fila de testes: só 3 hipóteses merecem teste, cada uma com a evidência e o
+    número de posts necessários. Isso mostra ao time quanto custa confirmar cada
+    ideia antes de investir nela.
+
+  Ajustei também o site (Início, Estratégia, Descobertas, Perguntas), o
+  strategy-recommendations.md e outros arquivos de knowledge/, e registrei a
+  decisão no DEVELOPMENT_PROCESS.md. Acrescentei ao review/critica-entrega.md a
+  seção "Status das correções".
+
+  Ainda falta, da crítica: o README no formato do template e o process log
+  narrativo, que são obrigatórios e decisivos para não ser desclassificado.
+  Também faltam um resumo executivo de 1 página, o script de download com make 
+  all, a seção de ROI e o commit com limpeza dos arquivos temporários. Quer que
+  eu siga pelo README e pelo process log?
+
+✻ Churned for 20m 46s · done 4:36 PM
+
+※ recap: Estamos deixando a entrega do Challenge 004 confiável e útil para o time de marketing. As contradições foram corrigidas, com testes passando e site regenerado, ainda sem commit. Próximo passo: escrever o README no template e o process log, que são obrigatórios. (disable recaps in /config)
+
+❯ /export                                                                       
+  ⎿  Conversation exported to:
+     /home/half/Documents/desafios/ai-master-challenge/submissions/rafael/2026-1
+     0-19-173421-faa-um-crtico-com-base-nos-requisitos-de-entreg.txt
+
+※ recap: The goal is to make the Challenge 004 delivery truthful and useful for marketing, and the contradictions are now fixed and tested, though not committed. Next step is writing the required README and process log, if you confirm. (disable recaps in /config)
+
+❯ I exported all the conversations. Now prepare the deliver material (all       
+  portuguese)                                                                   
+
+  Searched for 1 pattern, listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+
+● Montando o material de entrega. Vou checar se há transcrições das outras
+  sessões além das 2 exportações.
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Agora o script de download com checagem do checksum e o Makefile. Vou testar o
+  download numa pasta temporária.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Bash(cat > Makefile <<'EOF'
+      # Atalhos para reproduzir a entrega do zero (rodar dentro de
+      submissions/rafael). Requer Python 3.14.…)
+  ⎿  *.csv
+     data/raw/
+     *.egg-info/
+     … +8 lines (ctrl+o to expand)
+  ⎿  Updated submissions/rafael/.gitignore (+1 -0)
+      6  .pytest_cache/
+      7  solution/models/
+      8  .venv/
+      9 +catboost_info/                                                  
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● Agora gero o process-log/prompts.md (com os prompts do usuário, em ordem
+  cronológica) e escrevo a narrativa do process log.
+
+  Ran 1 shell command (ctrl+o to expand)
+● Write(submissions/rafael/process-log/README.md)
+  ⎿  Wrote 78 lines to submissions/rafael/process-log/README.md
+       1 # Process log — como usei IA
+       3 Período: 18/10/2026 17:45 → 19/10/2026 · 30 prompts com conteúdo
+         al + 2 paralelas de checagem) · histórico completo em `git log` 
+         · 30+ decisões registradas com motivo e alternativa descartada e
+       4 
+       6 
+       8 |---|---|
+       9 | **Claude Code** (Opus, terminal) | Toda a execução: download d
+         stes, site FastAPI, documentação |
+         conferir a descrição oficial do Kaggle contra os dados e as
+     … +167 lines (ctrl+o to expand)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Write(submissions/rafael/docs/resumo-executivo.md)
+  ⎿  Wrote 65 lines to submissions/rafael/docs/resumo-executivo.md
+      1 # Resumo executivo — Estratégia de Social Media
+      3 Para: Head de Marketing · Base: 52.214 posts (mai/2023 → mai/2025
+      4 
+      5 ## A conclusão em uma frase
+      7 **Nos dados entregues, nada do que o time controla (plataforma, f
+        muda o engajamento ou o alcance. Então a decisão é de preço e de 
+      8 
+      9 Antes de qualquer conclusão, verificamos se os testes enxergariam
+        o, "não faz diferença" aqui é um resultado, não falta de dados. O
+        s). Com os dad
+     … +100 lines (ctrl+o to expand)
+
+● Write(submissions/rafael/README.md)
+  ⎿  Wrote 160 lines to submissions/rafael/README.md
+      1 # Submissão — Rafael — Challenge 004
+      2 
+      3 ## Sobre mim
+      4 
+      5 - **Nome:** Rafael
+      6 - **LinkedIn:** _[preencher]_
+      7 - **Challenge escolhido:** 004 — Estratégia Social Media
+      8 
+      9 ---
+     … +261 lines (ctrl+o to expand)
+
+● Faltam a checagem dos links e o registro do que foi concluído na revisão.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Bash(python3 - <<'EOF'
+      import pathlib…)
+  ⎿   M submissions/rafael/.gitignore
+      M submissions/rafael/DEVELOPMENT_PROCESS.md
+      M submissions/rafael/docs/respostas.md
+     … +54 lines (ctrl+o to expand)
+  ⎿  Updated submissions/rafael/DEVELOPMENT_PROCESS.md (+1 -0)
+      41  | 2026-10-19 | Revisão visual alinhada ao g4educacao.com: títul
+          os Manrope leve + itálico serifado dourado, números em Libre Ba
+          skerville, botões de 6 px dourados, cartões chapados, filetes d
+          ourados, marca-d'água | Pedido do usuário: tipografia e element
+          os visuais como os do G4 | Manter Playfair e pílulas (estética 
+          própria, distante do G4) |
+      42  | 2026-10-19 | Auditorias no site: página `/auditorias` (5 vere
+          ditos primeiro, gráficos sob demanda, regras como premissas edi
+          táveis), aviso de fuso único (`TIME_NOTE`) e de unidade da dura
+          ção em todas as telas com hora/duração, alerta de mercado no Si
+          mular, texto de disclosure da estratégia trocado pelo resultado
+           da auditoria | Os textos "compliance sem perda" e "conteúdo cu
+          rto" eram contraditos pelas auditorias; o fuso é desconhecido |
+           Converter horários pelo país do público; esconder as auditoria
+          s só nos notebooks |
+      43  | 2026-10-19 | Revisão crítica (`review/critica-entrega.md`) ap
+          licada: recomendações marcadas como **robusta** × **depende de 
+          premissa**; teto de seguidores mostrado como fórmula + sensibil
+          idade; "US$ 109 mi" rebaixado a ordem de grandeza ilustrativa; 
+          destaques (TikTok espanhol, horário no YouTube) viram **fila de
+           testes** com nº de posts por grupo (`strategy.test_queue`) | C
+          ontradições entre "dataset é ruído" e "priorizar segmento X" / 
+          "tirar horário do checklist" × "postar cedo no YouTube"; o teto
+           e o formato "texto" saíam das premissas, não dos dados | Mante
+          r "priorizar" e os valores em US$ como impacto dos quick wins |
+      44 +| 2026-10-19 | Material de entrega em pt-BR: README no template
+         +, resumo executivo de 1 página, process log narrativo com promp
+         +ts extraídos das transcrições locais e conversas exportadas, `s
+         +cripts/get_data.sh` (sha256) e `Makefile` | O template e o guia
+         + exigem executive summary, limitações e process log (sem proces
+         +s log = desclassificado); o executivo precisa decidir em 5 minu
+         +tos | Só apontar para o git log e para `docs/respostas.md` |   
+
+● Achei a exportação da sessão principal, salva por engano em static/js/. Vou
+  conferir se há segredos e movê-la para process-log/conversas/.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● O material de entrega está pronto em português. O README.md saiu com o nome só
+  como "Rafael" e o LinkedIn como _[preencher]_: me passe o nome completo e o
+  link que eu preencho. Os 116 testes continuam passando, todos os links
+  internos dos documentos novos funcionam e o script de download foi testado
+  (baixou o CSV e o sha256 bateu). Nada foi commitado ainda.
+
+  O que criei:
+  - README.md segue o template do desafio: executive summary, abordagem,
+    resultados, recomendações em ordem de prioridade, limitações, como rodar,
+    process log e evidências.
+  - docs/resumo-executivo.md é a leitura de 5 minutos para o Head de Marketing,
+    com as 4 respostas, o que fazer na semana, a fila de testes, o que parar e
+    os limites.
+  - process-log/README.md conta o processo:
+    - ferramentas usadas e como o problema foi quebrado antes dos prompts;
+    - as 16 iterações;
+    - 10 erros da IA, cada um com a correção;
+    - o que você acrescentou que a IA sozinha não faria.
+  - process-log/prompts.md traz os seus 30 prompts com conteúdo, em ordem,
+    tirados das transcrições locais das 3 sessões.
+  - process-log/conversas/ reúne as 3 conversas exportadas. Não há credenciais
+    nelas: conferi inclusive contra a sua chave do Kaggle.
+  - Reprodutibilidade: scripts/get_data.sh baixa o dataset e confere o sha256, e
+    o Makefile tem os alvos setup data test report notebooks site. O make não
+    está instalado nesta máquina, então o alvo notebooks não foi executado (o
+    README também traz os comandos manuais). Também adicionei catboost_info/ ao
+    .gitignore.
+
+  Ajustes de organização:
+  - A exportação da sessão principal tinha sido salva por engano dentro de
+    solution/src/social_web/static/js/; movi para process-log/conversas/.
+  - Registrei a decisão no DEVELOPMENT_PROCESS.md e atualizei o status no
+    review/critica-entrega.md.
+
+  Para fechar a entrega:
+  1. Commit: há muitos arquivos pendentes, entre eles as auditorias da outra
+     sessão, que nunca foram commitadas. O .gitignore da raiz ignora
+     submissions/, então o commit precisa adicionar os arquivos um a um com git 
+     add -f.
+  2. Push e PR: enviar a branch submission/rafael para o seu fork e abrir o PR
+     com o título [Submission] Rafael — Challenge 004. Isso publica o conteúdo,
+     então só faço com o seu ok.
+
+  Quer que eu faça o commit e o push e abra o PR?
+
+✻ Cooked for 6m 48s · done 5:45 PM
+
+※ recap: Estamos preparando a entrega do Challenge 004 do G4; o material em português (README, resumo executivo, process log) está pronto e os testes passam. Próximo passo: você me passa nome e LinkedIn e autoriza o commit, o push e o PR.
+
+❯ linkedin: https://www.linkedin.com/in/rafaelcostaf/  (faça o commit e push,   
+  mas não abra pr ainda)                                                        
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Faço três commits (auditorias da outra sessão, correções da estratégia,
+  material de entrega), mais um com a limpeza de metadados dos notebooks.
+
+  Pushed to submission/rafael, ran 1 shell command (ctrl+o to expand)
+
+● Fiz o commit e o push para o seu fork (origin/submission/rafael, até abf6fed).
+  O PR não foi aberto.
+
+  O LinkedIn já está no README.md. Antes do push, conferi que a branch só altera
+  arquivos em submissions/rafael/ e que nenhum CSV, __pycache__, modelo .joblib
+  ou catboost_info entrou.
+
+  Separei em 4 commits:
+
+  ┌─────────┬────────────────────────────────────────────────────────────────┐
+  │ Commit  │                            Conteúdo                            │
+  ├─────────┼────────────────────────────────────────────────────────────────┤
+  │         │ Auditorias (disclosure, fit, mercado, duração, poder), página  │
+  │ e743738 │ /auditorias e avisos de fuso e de duração. Era o trabalho da   │
+  │         │ outra sessão que ainda não tinha sido commitado                │
+  ├─────────┼────────────────────────────────────────────────────────────────┤
+  │         │ Correção das contradições: ações robustas separadas das que    │
+  │ dd0c1bd │ dependem de premissa, sensibilidade do teto e fila de testes   │
+  │         │ com número de posts por grupo                                  │
+  ├─────────┼────────────────────────────────────────────────────────────────┤
+  │ b5ec6eb │ Remoção de metadados de execução dos notebooks 01–03 (sem      │
+  │         │ mudança de conteúdo)                                           │
+  ├─────────┼────────────────────────────────────────────────────────────────┤
+  │         │ Material de entrega em português: README, resumo executivo,    │
+  │ abf6fed │ process log com os prompts e as conversas exportadas, script   │
+  │         │ de download e Makefile                                         │
+  └─────────┴────────────────────────────────────────────────────────────────┘
+
+  Quando quiser abrir o PR, o título deve ser [Submission] Rafael — Challenge 
+  004, da branch submission/rafael do seu fork para main do repositório
+  original. Pela interface do GitHub leva um minuto, ou eu abro se você pedir.
+
+✻ Worked for 31s · done 5:52 PM
+
+※ recap: A entrega do Challenge 004 está pronta e enviada ao seu fork, com README, resumo executivo, process log e correções commitados. O próximo passo é abrir o PR "[Submission] Rafael — Challenge 004" para o repositório original, quando você autorizar.
+  ⎿  Referenced file submissions/rafael/README.md
+  ⎿  Read submissions/rafael/docs/resumo-executivo.md (66 lines)
+  ⎿  Read submissions/rafael/process-log/README.md (79 lines)
+  ⎿  Referenced file ../../../../../tmp/claude-1000/-home-half-Documents-desafio
+     s/37054157-b8cb-436e-ac26-e17fef74c4ea/scratchpad/prompts_raw.md
+  ⎿  Referenced file submissions/rafael/review/critica-entrega.md
+
+● Compacted while idle, before the prompt cache expired · turn off with 
+  "idleCompaction": false in settings.json

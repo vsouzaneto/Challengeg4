@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{ title }} · G4 Marketing</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="/static/img/g4-icon-192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="/static/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/static/css/site.css">
+<script>window.SITE_LABELS = {{ LABELS | tojson }}; window.SITE_VALUES = {{ VALUES | tojson }};</script>
+<script src="/static/vendor/chart.umd.min.js"></script>
+<script src="/static/js/common.js"></script>
+</head>
+<body>
+<header class="top">
+  <div class="inner">
+    <a class="brand" href="/" aria-label="G4 Marketing, início"><img src="/static/img/g4-icon-192.png" alt="" width="30" height="30"><span><b>G4</b> <i>Marketing</i></span></a>
+    <nav class="nav" aria-label="Páginas">
+      {% for href in MAIN_PAGES %}
+      <a href="{{ href }}"{% if href == path %} aria-current="page"{% endif %}{% if href != '/' %} class="tool"{% endif %}>{{ PAGES[href][1] }}</a>
+      {% endfor %}
+      <details class="menu"{% if path in DEEP_PAGES %} data-current="true"{% endif %}>
+        <summary>Aprofundar</summary>
+        <div class="menu-list">
+          {% for href in DEEP_PAGES %}<a href="{{ href }}"{% if href == path %} aria-current="page"{% endif %}>{{ PAGES[href][1] }}</a>{% endfor %}
+        </div>
+      </details>
+    </nav>
+  </div>
+</header>
+{% block body %}{% endblock %}
+<footer class="site">
+  <div class="wrap">
+    <span>{{ d.meta.posts | num }} posts · {{ d.meta.plataformas | length }} plataformas · {{ d.meta.inicio[:7] }} a {{ d.meta.fim[:7] }}</span>
+    <span>Atualizado em {{ d.meta.gerado_em }}</span>
+    <a href="/docs">API (previsões e dados)</a>
+  </div>
+</footer>
+</body>
+</html>

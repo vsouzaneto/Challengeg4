@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% from "_notes.html" import time_note, length_note %}
+{% set ins = d.insights %}
+{% set hl = ins.destaque %}
+{% set hl_vals = hl.bolsao.split(' · ') %}
+{% set hour = ins.horario_comentarios | sort(attribute='q (hora)') | first %}
+{% set t_pocket = d.estrategia.testes.itens | selectattr('tipo', 'equalto', 'bolsão') | first %}
+{% set t_hour = d.estrategia.testes.itens | selectattr('tipo', 'equalto', 'horário') | list %}
+{% block body %}
+<main class="wrap">
+  <section class="page-head">
+    <span class="eyebrow">Padrões por grupo</span>
+    <h1>Grupos com resultado <em>fora da média</em></h1>
+    <p class="lede">Grupos de posts que chegam ao top 5% com mais ou menos frequência do que o normal.</p>
+    <details class="more"><summary>Como ler os selos</summary><div class="more-body">
+      <div class="tabs"><span class="chip confirmado">confirmado</span><span class="muted">passou na correção de todos os testes: primeiro da fila de testes A/B</span></div>
+      <div class="tabs"><span class="chip repetiu">se repetiu nos 2 anos</span><span class="muted">apareceu no 1º ano e de novo no 2º: candidato a teste A/B</span></div>
+      <div class="tabs"><span class="chip pista">pista</span><span class="muted">apareceu, mas pode ser coincidência: acompanhar</span></div>
+      <p class="caption">No conjunto, o número de padrões que se repetem é parecido com o que o acaso produziria. Por isso, cada um (inclusive o confirmado) é uma hipótese até ser testado com os posts da empresa.</p>
+    </div></details>
+  </section>
+
+  <section>
+    <div class="highlight">
+      <div style="display:grid;gap:10px;align-content:start">
+        <span class="chip confirmado" style="justify-self:start">confirmado</span>
+        <h2>{{ hl.plataforma }}: {{ hl_vals[0] | val }} em {{ hl_vals[1] | val }} tem {{ hl.lift | num(1) }}x a taxa normal de posts no top 5% de {{ hl.metrica | val }}</h2>
+        <p>{{ hl.taxa | num(1) }}% desses {{ hl.posts | num }} posts ficaram entre os 5% com mais {{ hl.metrica | val }} do {{ hl.plataforma }}; nos outros, ~5%. O padrão apareceu nos dois anos ({{ hl.lift_1 | num(1) }}x e {{ hl.lift_2 | num(1) }}x) e é o único entre {{ hl.testes | num }} verificações que passou em todas as checagens.</p>
+        <p><b>O que fazer:</b> testar antes de mudar o mix. Teste A/B no {{ hl.plataforma }}: o mesmo conteúdo de {{ hl_vals[0] | val }} em {{ hl_vals[1] | val }} e em inglês, com ~{{ t_pocket['posts por grupo'] | num }} posts em cada versão (o necessário para confirmar ao menos metade da diferença).</p>
+        <details class="more"><summary>Detalhe</summary><div class="more-body"><p>A média de {{ hl.metrica | val }} quase não muda; o que muda é a chance de o post virar destaque.</p></div></details>
+      </div>
+      <div style="display:grid;align-content:center;gap:6px"><span class="big">{{ hl.lift | num(1) }}x</span><span class="muted">mais chance de ficar no top 5%</span></div>
+    </div>
+  </section>
+
+  <section id="horario">
+    <span class="chip repetiu" style="justify-self:start">se repetiu nos 2 anos</span>
+    <h2>No {{ hour.plataforma }}, posts publicados cedo entram mais no top 1% de comentários</h2>
+    <p class="answer">Os posts mais comentados do {{ hour.plataforma }} saíram por volta das <b>{{ hour['hora mediana top'] | num }}h</b>; os demais, das {{ hour['hora mediana demais'] | num }}h. A média de comentários não muda: o efeito é só na chance de virar destaque. No TikTok, não há horário melhor.</p>
+    {% if t_hour %}<div class="means"><span class="tag">Na prática</span><p>{% if t_hour[0]['como tratar'] == 'teste A/B' %}Teste A/B com ~{{ t_hour[0]['posts por grupo'] | num }} posts por grupo antes de mudar a agenda.{% else %}Não vale um teste A/B: confirmar exigiria ~{{ t_hour[0]['posts por grupo'] | num }} posts por grupo. Agende os posts de conversa do {{ hour.plataforma }} pela manhã quando for indiferente e acompanhe no histórico.{% endif %}</p></div>{% endif %}
+    {{ time_note() }}
+    <details class="more"><summary>Ver gráfico por plataforma</summary><div class="more-body">
+      <div class="chart"><canvas id="ch-hour"></canvas></div>
+      <p class="caption">% dos posts que entram no top 1% de comentários. A linha tracejada é o normal (1%). Madrugada = 0h–6h, manhã = 6h–12h, tarde = 12h–18h, noite = 18h–24h.</p>
+    </div></details>
+  </section>
+
+  {% set cr = d.criadores %}
+  {% set icc = cr.variancia | selectattr('métrica', 'equalto', 'views') | first %}
+  <section id="creators">
+    <span class="chip nada" style="justify-self:start">sem diferença real</span>
+    <h2>Quem posta <em>não muda</em> as views</h2>
+    <p class="answer">A diferença entre creators é a esperada pelo acaso. As médias de views variam entre creators <b>tanto quanto numa redistribuição aleatória dos posts</b> ({{ cr.dispersao.observado | num(1) }} views contra {{ cr.dispersao.acaso | num(1) }}), e só {{ cr.persistencia['% que continuou'] | num(1) }}% dos 10% melhores do 1º ano continuaram entre os melhores no 2º (o acaso daria 10%).</p>
+    <div class="means"><span class="tag">Na prática</span><p>Não pague a mais por um creator por causa do desempenho passado. Contrate por preço e por resultado.</p></div>
+    <details class="more"><summary>Ver gráfico e ranking</summary><div class="more-body">
+      <div class="grid-2">
+        <div class="panel"><h3>Média de views por creator: real × sorteio</h3><div class="chart"><canvas id="ch-creators"></canvas></div>
+          <p class="caption">As barras mostram os creators reais; a linha mostra o que aconteceria redistribuindo os mesmos posts ao acaso entre eles. Quase não há diferença.</p></div>
+        <div class="panel"><h3>Top 10 creators: média bruta × ajustada ao acaso</h3>
+          <div class="table-wrap"><table><thead><tr><th>Creator</th><th>Posts</th><th>Média bruta</th><th>Ajustada ao acaso</th></tr></thead><tbody>
+          {% for c in cr.ranking %}<tr><td>{{ c.creator }}</td><td class="n">{{ c.posts }}</td><td class="n">{{ c['média bruta'] | num }}</td><td class="n">{{ c['média ajustada'] | num }}</td></tr>{% endfor %}
+          </tbody></table></div>
+          <p class="caption">Com ~10 posts cada, a vantagem dos creators com maior média desaparece quando se desconta o acaso: todos voltam à média geral ({{ cr.media_geral | num }}). Parte da variação de views ligada ao creator: {{ icc['ICC (% da variação ligada ao creator)'] | num(1) }}%.</p></div>
+      </div>
+    </div></details>
+  </section>
+
+  <section>
+    <h2>Padrões por <em>plataforma</em></h2>
+    <p class="caption">Escolha a plataforma e a métrica. Aparecem primeiro os padrões confirmados e os que se repetiram; as pistas ficam recolhidas.</p>
+    <div class="tabs" role="group" aria-label="Plataforma" id="plat-tabs"></div>
+    <div class="tabs" role="group" aria-label="Métrica" id="metric-tabs"></div>
+    <div class="cards" id="pocket-cards"></div>
+    <details class="more" id="pistas-box"><summary id="pistas-summary">Pistas</summary><div class="more-body"><div class="cards" id="pistas-cards"></div></div></details>
+  </section>
+</main>
+<script>
+const INS = {{ ins | tojson }};
+const parts = ["madrugada", "manhã", "tarde", "noite"];
+lazyChart("ch-hour", () => ({ type: "bar", data: { labels: parts, datasets: [
+    ...INS.horario_comentarios.map((r, i) => ({ label: r.plataforma, data: parts.map(p => r[p]), backgroundColor: css(PALETTE[i]), borderRadius: 3 })),
+    { type: "line", label: "normal (1%)", data: parts.map(() => 1), borderColor: css("--ink"), borderDash: [6, 4], pointRadius: 0, borderWidth: 1.5 }] },
+  options: chartOptions({ plugins: { tooltip: { callbacks: { label: c => `${c.dataset.label}: ${pct(c.raw, 2)}` } } }, scales: { y: { ticks: { callback: v => v + "%" } }, x: { grid: { display: false } } } }) }));
+
+const CR = {{ d.criadores.dispersao | tojson }};
+lazyChart("ch-creators", () => ({ type: "bar", data: { labels: CR.centros.map(c => nf(c)), datasets: [
+    { type: "bar", label: "creators reais", data: CR.reais, backgroundColor: css("--c1"), barPercentage: 1, categoryPercentage: 1 },
+    { type: "line", label: "sorteio ao acaso", data: CR.sorteio, borderColor: css("--gold"), borderWidth: 2.5, pointRadius: 0, tension: 0.3 }] },
+  options: chartOptions({ plugins: { tooltip: { callbacks: { title: it => `média ≈ ${it[0].label} views`, label: c => `${c.dataset.label}: ${nf(c.raw)} creators` } } },
+    scales: { x: { ticks: { maxTicksLimit: 6 }, grid: { display: false }, title: { display: true, text: "média de views do creator", color: css("--muted") } },
+              y: { title: { display: true, text: "nº de creators", color: css("--muted") } } } }) }));
+const state = { plat: "todas", metric: "views" };
+const METRIC_NAME = { views: "views", likes: "likes", comments_count: "comentários" };
+function tabs(id, items, key) {
+  $(id).innerHTML = items.map(([v, t]) => `<button type="button" data-v="${v}" aria-pressed="${state[key] === v}">${t}</button>`).join("");
+  $(id).onclick = e => { const b = e.target.closest("button"); if (!b) return; state[key] = b.dataset.v; render(); };
+}
+function sentence(p) {
+  const more = p.lift >= 1;
+  return `${describeConditions(p.condicoes)}: <b>${nf(p.lift, 1)}x</b> ${more ? "mais" : "menos"} chance de ficar no top 5% de ${METRIC_NAME[p.metrica]} (${pct(p.taxa)} dos ${nf(p.posts)} posts).`;
+}
+function render() {
+  tabs("plat-tabs", [["todas", "Geral"], ...{{ d.meta.plataformas | tojson }}.map(p => [p, p])], "plat");
+  tabs("metric-tabs", Object.entries(METRIC_NAME), "metric");
+  const rank = p => p.evidencia.startsWith("robusta") ? 0 : p.evidencia.startsWith("replicada") ? 1 : 2;
+  const rows = INS.bolsoes.filter(p => p.plataforma === state.plat && p.metrica === state.metric && !p.evidencia.startsWith("explor"))
+    .sort((a, b) => rank(a) - rank(b) || Math.abs(Math.log(b.lift)) - Math.abs(Math.log(a.lift)));
+  const pistas = INS.bolsoes.filter(p => p.plataforma === state.plat && p.metrica === state.metric && p.evidencia.startsWith("explor"))
+    .sort((a, b) => Math.abs(Math.log(b.lift)) - Math.abs(Math.log(a.lift))).slice(0, 5);
+  const card = p => `<div class="card">${chip(p.evidencia)}<span>${sentence(p)}</span>
+    <span class="caption">1º ano: ${nf(p.lift_1, 2)}x · 2º ano: ${nf(p.lift_2, 2)}x</span></div>`;
+  $("pocket-cards").innerHTML = rows.map(card).join("") || '<p class="muted">Nenhum padrão confirmado ou repetido para esta combinação.</p>';
+  $("pistas-cards").innerHTML = pistas.map(card).join("");
+  $("pistas-summary").textContent = `Ver ${pistas.length} pistas mais fortes`;
+  $("pistas-box").hidden = !pistas.length;
+}
+render();
+</script>
+{% endblock %}

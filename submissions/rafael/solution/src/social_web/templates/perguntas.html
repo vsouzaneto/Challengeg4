@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% from "_notes.html" import time_note, length_note %}
+{% set r = d.respostas %}
+{% set q1max = r.q1.efeitos | map(attribute='diferença melhor−pior (%)') | max %}
+{% set q1sig = r.q1.efeitos | selectattr('significativo') | list %}
+{% set eng = r.q2.diferencas | selectattr('medida', 'equalto', 'eng_rate_views — estratificado') | first %}
+{% set reach = r.q2.diferencas | selectattr('medida', 'equalto', 'views — estratificado') | first %}
+{% set cost = r.q2.custo_por_porte %}
+{% set q3max = r.q3.efeitos | map(attribute='diferença melhor−pior (%)') | max %}
+{% set myths = r.q4.crencas | selectattr('se sustenta?', 'equalto', 'não') | list %}
+{% block body %}
+<main class="wrap">
+  <section class="page-head">
+    <span class="eyebrow">O que o desafio pediu</span>
+    <h1>As 4 <em>perguntas</em></h1>
+    <p class="lede">Primeiro a resposta, depois o que fazer com ela. Gráficos e números ficam em "Ver gráfico e dados".</p>
+  </section>
+
+  <section id="engajamento">
+    <span class="eyebrow">Pergunta 1</span>
+    <h2>O que gera <em>engajamento</em>?</h2>
+    <p class="answer">
+      {% if q1sig %}{{ q1sig | map(attribute='dimensão') | map('label') | join(', ') }} fazem diferença.
+      {% else %}<b>Nenhum fator testado.</b> Plataforma, formato, tema e tamanho do creator dão o mesmo engajamento (~20%). A maior diferença entre grupos é de {{ q1max | num(2) }}%.{% endif %}</p>
+    <div class="means"><span class="tag">Na prática</span><p>Não troque de formato ou tema esperando mais interação. Nem as {{ r.q1.segmentos_testados }} combinações testadas (ex.: vídeo de tech no TikTok com creator pequeno) se destacaram.</p></div>
+    <details class="more"><summary>Ver gráfico e dados</summary><div class="more-body">
+      <div class="grid-2" id="q1-charts"></div>
+      <p class="caption">100 = engajamento médio de todos os posts. Cada barra é a faixa provável do grupo, e todas cruzam o 100.</p>
+      <details class="tech"><summary>Detalhes técnicos</summary><p>{{ r.q1.veredito | pt }}</p></details>
+    </div></details>
+  </section>
+
+  <section id="patrocinio">
+    <span class="eyebrow">Pergunta 2</span>
+    <h2>Vale a pena <em>patrocinar</em> influenciadores?</h2>
+    <p class="answer">
+      {% if eng.p_value < 0.05 and eng['diferença (%)'] > 0 %}<b>Sim:</b> o patrocinado engaja {{ eng['diferença (%)'] | num(2) }}% mais.
+      {% else %}<b>Não para ganhar desempenho.</b> Patrocinado e orgânico parecidos têm o mesmo engajamento ({{ eng['diferença (%)'] | num(2) }}% de diferença) e as mesmas views. Vale só quando o preço é justo.{% endif %}</p>
+    <div class="means"><span class="tag">Na prática</span><p>Como as views não crescem com os seguidores, pague por resultado (até US$ {{ d.estrategia.premissas.cpm_alvo | num }} por mil views), não por post. Se o preço for fixo, o limite com as premissas atuais é de ~{{ d.estrategia.threshold | num }} seguidores (veja a sensibilidade em Estratégia).</p></div>
+    <details class="more"><summary>Ver gráfico e dados</summary><div class="more-body">
+      <div class="grid-2">
+        <div class="panel"><h3>Quanto custam mil views, por tamanho do creator</h3><div class="chart"><canvas id="ch-cpm"></canvas></div>
+          <p class="caption">Mesmas ~{{ cost[0].views_medianas | num }} views em todos os tamanhos. Premissa de preço: US$ {{ (d.estrategia.premissas.custo_por_seguidor * 1000) | num }} por mil seguidores. Escala logarítmica.</p></div>
+        <div class="panel"><h3>Em que condição patrocinar rendeu mais?</h3>
+          <div class="table-wrap"><table><thead><tr><th>Condição</th><th>Ganho</th><th>Real?</th></tr></thead><tbody>
+          {% for c in r.q2.condicoes[:8] %}<tr><td>{{ c['condição'].split(' = ')[0] | label }}: {{ c['condição'].split(' = ')[1] | val }}</td><td class="n">{{ c['uplift engajamento (%)'] | num(2) }}%</td><td>{% if c.significativo %}<span class="yes">sim</span>{% else %}<span class="no">não</span>{% endif %}</td></tr>{% endfor %}
+          </tbody></table></div>
+          <p class="caption">As 8 condições com maior ganho aparente. Nenhuma é significativa após a correção para múltiplos testes.</p></div>
+      </div>
+      <details class="tech"><summary>Detalhes técnicos</summary><p>{{ r.q2.veredito | pt }}</p></details>
+    </div></details>
+  </section>
+
+  <section id="audiencia">
+    <span class="eyebrow">Pergunta 3</span>
+    <h2>Qual público <em>engaja mais</em>?</h2>
+    <p class="answer"><b>Nenhum.</b> Homens, mulheres, todas as idades e todos os países engajam igual, em todas as plataformas, formatos e temas (maior diferença: {{ q3max | num(2) }}%).</p>
+    <div class="means"><span class="tag">Na prática</span><p>Escolha o público pelo objetivo do negócio (quem compra), não pela expectativa de engajamento.</p></div>
+    <details class="more"><summary>Ver dados</summary><div class="more-body">
+      <div class="grid-2">
+        <div class="panel"><h3>Gênero do público em cada formato (% dos posts)</h3>
+          <div class="table-wrap"><table><thead><tr><th>Formato</th>{% for c in r.q3.mix_formato_genero.colunas %}<th>{{ c | val }}</th>{% endfor %}</tr></thead><tbody>
+          {% for l in r.q3.mix_formato_genero.linhas %}{% set i = loop.index0 %}<tr><td>{{ l | val }}</td>{% for v in r.q3.mix_formato_genero.valores[i] %}<td class="n">{{ v | num(1) }}%</td>{% endfor %}</tr>{% endfor %}
+          </tbody></table></div><p class="caption">O mesmo público consome todos os formatos.</p></div>
+        <div class="panel"><h3>Diferença de engajamento entre públicos</h3>
+          <div class="table-wrap"><table><thead><tr><th>Público</th><th>Mais</th><th>Menos</th><th>Diferença</th></tr></thead><tbody>
+          {% for e in r.q3.efeitos %}<tr><td>{{ e['dimensão'] | label }}</td><td>{{ e.melhor | val }}</td><td>{{ e.pior | val }}</td><td class="n">{{ e['diferença melhor−pior (%)'] | num(2) }}%</td></tr>{% endfor %}
+          </tbody></table></div></div>
+      </div>
+      <details class="tech"><summary>Detalhes técnicos</summary><p>{{ r.q3.veredito | pt }}</p></details>
+    </div></details>
+  </section>
+
+  <section id="nao-funciona">
+    <span class="eyebrow">Pergunta 4</span>
+    <h2>O que <em>não funciona</em></h2>
+    <p class="answer"><b>{{ myths | length }} de {{ r.q4.crencas | length }} "verdades" de social media não se confirmam</b>, entre elas "mais seguidores = mais alcance", "vídeo engaja mais" e "postar à noite dá mais alcance".</p>
+    <div class="means"><span class="tag">Pare de</span><p>pagar mais por creators grandes, otimizar "melhor horário" e "nº ideal de hashtags" sem teste e investir em formatos caros "porque engajam mais".</p></div>
+    {{ time_note() }}{{ length_note(d) }}
+    <details class="more"><summary>Ver todas as crenças testadas</summary><div class="more-body">
+      <div class="table-wrap"><table><thead><tr><th>O que se costuma dizer</th><th>O que os dados mostram</th><th>Vale?</th></tr></thead><tbody>
+        {% for c in r.q4.crencas %}<tr><td>{{ c['crença de mercado'] }}</td>
+          <td>{% if c.unidade.startswith('%') %}diferença de {{ c.efeito | num(2) }}%{% else %}relação praticamente nula ({{ c.efeito | num(3) }}, numa escala de −1 a 1){% endif %}</td>
+          <td>{% if c['se sustenta?'] == 'sim' %}<span class="yes">sim</span>{% else %}<span class="bad">não</span>{% endif %}</td></tr>{% endfor %}
+      </tbody></table></div>
+    </div></details>
+    <details class="more"><summary>Ver duração do vídeo × views</summary><div class="more-body">
+      <div class="chart tall"><canvas id="ch-duracao"></canvas></div>
+      <p class="caption">{{ d.duracao.faixas | sum(attribute='size') | num }} vídeos. A linha do meio (valor típico) é reta: vídeos curtos e longos têm as mesmas views. Os recordes oscilam com a quantidade de vídeos em cada faixa, não com a duração.</p>
+      {{ length_note(d) }}
+    </div></details>
+  </section>
+</main>
+<script>
+const R = {{ r | tojson }}, PREM = {{ d.estrategia.premissas | tojson }}, DUR = {{ d.duracao | tojson }};
+$("q1-charts").innerHTML = Object.entries(R.q1.grupos).map(([k, g]) => `<div class="panel"><h3>${esc(g.titulo)}</h3><div class="chart short"><canvas id="q1-${k}"></canvas></div></div>`).join("");
+Object.entries(R.q1.grupos).forEach(([k, g]) => lazyChart(`q1-${k}`, () => ({ type: "bar",
+  data: { labels: g.dados.map(r => val(r.grupo)), datasets: [{ label: "faixa provável", data: g.dados.map(r => [r.lo, r.hi]), backgroundColor: css("--c1"), borderRadius: 4, barPercentage: 0.5 }] },
+  options: chartOptions({ indexAxis: "y", plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => { const r = g.dados[c.dataIndex]; return `${nf(r.indice, 2)} (100 = média) · ${nf(r.size)} posts`; } } } },
+    scales: { x: { min: 99.5, max: 100.5, title: { display: true, text: "engajamento (100 = média)", color: css("--muted") } }, y: { grid: { display: false } } } }) })));
+const cost = R.q2.custo_por_porte;
+lazyChart("ch-cpm", () => ({ type: "bar", data: { labels: cost.map(c => c.porte), datasets: [
+    { label: "custo por mil views (US$)", data: cost.map(c => c.cpm_implicito_mediano), backgroundColor: css("--c2"), borderRadius: 4, barPercentage: 0.6 },
+    { type: "line", label: `custo aceitável (US$ ${nf(PREM.cpm_alvo)})`, data: cost.map(() => PREM.cpm_alvo), borderColor: css("--ink"), borderDash: [6, 4], pointRadius: 0, borderWidth: 2 }] },
+  options: chartOptions({ scales: { y: { type: "logarithmic", ticks: { callback: v => [1, 10, 100, 1000].includes(v) ? "US$ " + v : "" } }, x: { grid: { display: false } } },
+    plugins: { tooltip: { callbacks: { label: c => c.datasetIndex ? c.dataset.label : `US$ ${nf(c.raw, 2)} por mil views` } } } }) }));
+const bins = DUR.bins;
+lazyChart("ch-duracao", () => ({ type: "line", data: { labels: bins.map(b => b.centro + " s"), datasets: [
+    { label: "recorde da faixa", data: bins.map(b => b.max), borderColor: css("--c3"), backgroundColor: css("--c3"), borderWidth: 2, pointRadius: 3 },
+    { label: "valor típico (mediana)", data: bins.map(b => b.median), borderColor: css("--c2"), backgroundColor: css("--c2"), borderWidth: 3, pointRadius: 3 },
+    { label: "pior da faixa", data: bins.map(b => b.min), borderColor: css("--c1"), backgroundColor: css("--c1"), borderWidth: 2, pointRadius: 3 }] },
+  options: chartOptions({ interaction: { mode: "index", intersect: false }, plugins: { tooltip: { callbacks: { afterBody: it => `${nf(bins[it[0].dataIndex].size)} vídeos nesta faixa` } } },
+    scales: { y: { title: { display: true, text: "views", color: css("--muted") } }, x: { title: { display: true, text: "duração do vídeo", color: css("--muted") } } } }) }));
+</script>
+{% endblock %}

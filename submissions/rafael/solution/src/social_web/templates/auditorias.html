@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% from "_notes.html" import length_note %}
+{% set a = d.auditorias %}
+{% set by_id = {} %}
+{% for c in a.cartoes %}{% set _ = by_id.update({c.id: c}) %}{% endfor %}
+{% block body %}
+<main class="wrap">
+  <section class="page-head">
+    <span class="eyebrow">Checagens de qualidade</span>
+    <h1>As 5 <em>auditorias</em></h1>
+    <p class="lede">Antes de confiar nos resultados, conferimos se os posts seguem regras de publicidade, combinam patrocinador e nicho, falam a língua do público, medem a duração na unidade certa e se os testes teriam enxergado diferenças pequenas.</p>
+  </section>
+
+  <section>
+    <div class="board-grid">
+      {% for c in a.cartoes %}
+      <article class="qcard {{ c.tom }}" data-audit="{{ c.id }}">
+        <span class="q">{{ c.pergunta }}</span>
+        <p class="headline">{{ c.manchete | pt }}</p>
+        <div class="kpi-line"><b>{{ c.numero | num(1 if c.numero < 10 else 0) }}{{ c.sufixo }}</b><span>{{ c.rotulo }}</span></div>
+        <p><b>Na prática:</b> {{ c.pratica | pt }}</p>
+        <a href="#{{ c.id }}">Ver detalhes →</a>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section id="disclosure">
+    <span class="eyebrow">Auditoria 1</span>
+    <h2>Publicidade <em>identificada</em></h2>
+    <p class="answer">{{ by_id.disclosure.manchete | pt }}.</p>
+    <details class="more"><summary>Ver gráfico e dados</summary><div class="more-body">
+      <div class="grid-2">
+        <div class="panel"><h3>Risco regulatório dos patrocinados, por mercado (% dos posts)</h3><div class="chart tall"><canvas id="ch-risco"></canvas></div>
+          <p class="caption">Alto = disclosure implícito; médio = só dentro do vídeo; baixo = explícito no texto. A norma de cada mercado está em "As regras usadas".</p></div>
+        <div class="panel"><h3>O rótulo aparece no texto?</h3>
+          <div class="table-wrap"><table><thead><tr><th>Onde a base diz que está o disclosure</th><th>% com #ad/#publi no texto</th></tr></thead><tbody>
+          {% for r in a.rotulo_local %}<tr><td>{{ {'caption': 'legenda', 'hashtags': 'hashtags', 'video': 'dentro do vídeo'}.get(r.local, r.local) }}</td><td class="n">{{ r['% com rótulo no texto'] | num(2) }}%</td></tr>{% endfor %}
+          </tbody></table></div>
+          <p class="caption">A última linha (orgânicos) é a referência: se o rótulo existe de fato, os patrocinados ficam bem acima dela.</p></div>
+      </div>
+      <details class="tech"><summary>Detalhes técnicos</summary><p>{{ by_id.disclosure.veredito | pt }}</p></details>
+    </div></details>
+  </section>
+
+  <section id="fit">
+    <span class="eyebrow">Auditoria 2</span>
+    <h2>Patrocinador × <em>nicho</em></h2>
+    <p class="answer">{{ by_id.fit.manchete | pt }}.</p>
+    <details class="more"><summary>Ver dados</summary><div class="more-body">
+      <div class="table-wrap"><table><thead><tr><th>Tema do creator</th>{% for c in a.nicho.colunas %}<th>{{ c | val }}</th>{% endfor %}</tr></thead><tbody>
+      {% for l in a.nicho.linhas %}{% set i = loop.index0 %}<tr><td>{{ l }}</td>{% for v in a.nicho.valores[i] %}{% set col = a.nicho.colunas[loop.index0] %}<td class="n{% if col in a.nicho.encaixe.get(l, []) %} fit{% endif %}">{{ v | num(1) }}%</td>{% endfor %}</tr>{% endfor %}
+      </tbody></table></div>
+      <p class="caption">% dos patrocínios de cada tema. Em destaque, os setores que combinam com o tema.</p>
+      <details class="tech"><summary>Detalhes técnicos</summary><p>{{ by_id.fit.veredito | pt }}</p></details>
+    </div></details>
+  </section>
+
+  <section id="mercado">
+    <span class="eyebrow">Auditoria 3</span>
+    <h2>Idioma e rede <em>do mercado</em></h2>
+    <p class="answer">{{ by_id.mercado.manchete | pt }}.</p>
+    <details class="more"><summary>Ver gráfico e dados</summary><div class="more-body">
+      <div class="grid-2">
+        <div class="panel"><h3>% de posts coerentes, por mercado</h3><div class="chart tall"><canvas id="ch-coerente"></canvas></div>
+          <p class="caption">Coerente = no idioma do mercado e numa rede disponível lá.</p></div>
+        <div class="panel"><h3>Posts em redes indisponíveis no mercado</h3>
+          <div class="table-wrap"><table><thead><tr><th>Mercado</th><th>Rede</th><th>Posts</th></tr></thead><tbody>
+          {% for b in a.bloqueadas %}<tr><td>{{ b.audience_location | val }}</td><td>{{ b.platform }}</td><td class="n">{{ b.posts | num }}</td></tr>{% endfor %}
+          </tbody></table></div>
+          <div class="table-wrap"><table><thead><tr><th>Mercado</th><th>No idioma</th><th>Rede disponível</th><th>Idiomas do mercado na base</th></tr></thead><tbody>
+          {% for m in a.mercado %}<tr><td>{{ m.mercado | val }}</td><td class="n">{{ m['% no idioma do mercado'] | num(1) }}%</td><td class="n">{{ m['% em plataforma disponível'] | num(1) }}%</td><td>{{ m['idiomas do mercado no dataset'] | val }}</td></tr>{% endfor %}
+          </tbody></table></div></div>
+      </div>
+      <details class="tech"><summary>Detalhes técnicos</summary><p>{{ by_id.mercado.veredito | pt }}</p></details>
+    </div></details>
+  </section>
+
+  <section id="duracao">
+    <span class="eyebrow">Auditoria 4</span>
+    <h2>Duração na <em>unidade certa</em></h2>
+    <p class="answer">{{ by_id.duracao.manchete | pt }}.</p>
+    {{ length_note(d) }}
+    <details class="more"><summary>Ver dados</summary><div class="more-body">
+      <div class="grid-2">
+        <div class="panel"><h3>"Duração" em cada formato</h3>
+          <div class="table-wrap"><table><thead><tr><th>Formato</th><th>Unidade</th><th>Posts</th><th>Mínimo</th><th>Mediana</th><th>Máximo</th></tr></thead><tbody>
+          {% for f in a.duracao.formatos %}<tr><td>{{ f.formato | val }}</td><td>{{ f.unidade }}</td><td class="n">{{ f.count | num }}</td><td class="n">{{ f.min | num }}</td><td class="n">{{ f['50%'] | num }}</td><td class="n">{{ f.max | num }}</td></tr>{% endfor %}
+          </tbody></table></div>
+</div>
+        <div class="panel"><h3>Duração × resultado, só onde há unidade</h3>
+          <div class="table-wrap"><table><thead><tr><th>Formato</th><th>Resultado</th><th>Relação (−1 a 1)</th><th>Real?</th></tr></thead><tbody>
+          {% for c in a.duracao.correlacoes %}<tr><td>{{ c.formato | val }} ({{ c.unidade }})</td><td>{{ c['métrica'] | val }}</td><td class="n">{{ c['ρ'] | num(3) }}</td><td>{% if c.significativo %}<span class="yes">sim</span>{% else %}<span class="no">não</span>{% endif %}</td></tr>{% endfor %}
+          </tbody></table></div></div>
+      </div>
+      <details class="tech"><summary>Detalhes técnicos</summary><p>{{ by_id.duracao.veredito | pt }}</p></details>
+    </div></details>
+  </section>
+
+  <section id="poder">
+    <span class="eyebrow">Auditoria 5</span>
+    <h2>"Sem diferença" é <em>conclusivo</em>?</h2>
+    <p class="answer">{{ by_id.poder.manchete | pt }}.</p>
+    <details class="more"><summary>Ver gráfico</summary><div class="more-body">
+      <div class="chart tall"><canvas id="ch-poder"></canvas></div>
+      <p class="caption">Cada ponto é um grupo (ex.: creators nano). Quanto menos posts, maior a diferença que poderia passar despercebida. {% if a.poder.inconclusivos %}{{ a.poder.inconclusivos }} grupos ficam acima{% else %}Todos os grupos ficam abaixo{% endif %} de {{ a.poder.relevante | num }}%, o menor efeito que mudaria uma decisão.</p>
+      <details class="tech"><summary>Detalhes técnicos</summary><p>{{ by_id.poder.veredito | pt }}</p></details>
+    </div></details>
+  </section>
+
+  <section id="regras">
+    <h2>As regras <em>usadas</em></h2>
+    <div class="notice"><strong>Premissas</strong><p>Normas, idiomas, redes indisponíveis e encaixe patrocinador × nicho são premissas de mercado editáveis (em <code>audits.py</code>), não parecer jurídico. Confirme com o jurídico antes de usar como política.</p></div>
+    <details class="more"><summary>Ver regras por mercado</summary><div class="more-body">
+      <div class="table-wrap"><table><thead><tr><th>Mercado</th><th>Norma de publicidade</th><th>Idiomas</th><th>Redes indisponíveis</th></tr></thead><tbody>
+      {% for m, norma in a.regras.anuncio.items() %}<tr><td>{{ m | val }}</td><td>{{ norma }}</td><td>{{ a.regras.idiomas.get(m, []) | map('val') | join(', ') }}</td><td>{{ a.regras.bloqueios.get(m, []) | join(', ') or '—' }}</td></tr>{% endfor %}
+      </tbody></table></div>
+      <div class="table-wrap"><table><thead><tr><th>Tema do creator</th><th>Setores que combinam</th></tr></thead><tbody>
+      {% for t, setores in a.regras.encaixe.items() %}<tr><td>{{ t }}</td><td>{{ setores | map('val') | join(', ') }}</td></tr>{% endfor %}
+      </tbody></table></div>
+    </div></details>
+  </section>
+</main>
+<script>
+const A = {{ a | tojson }};
+const RISK = [["% risco alto", "alto", "--bad"], ["% risco médio", "médio", "--warn"], ["% risco baixo", "baixo", "--ok"]];
+lazyChart("ch-risco", () => ({ type: "bar", data: { labels: A.risco_mercado.map(r => val(r.mercado)),
+    datasets: RISK.map(([k, name, color]) => ({ label: "risco " + name, data: A.risco_mercado.map(r => r[k]), backgroundColor: css(color), borderColor: css("--sheet"), borderWidth: 1 })) },
+  options: chartOptions({ indexAxis: "y", plugins: { tooltip: { callbacks: { label: c => `${c.dataset.label}: ${pct(c.raw)}` } } },
+    scales: { x: { stacked: true, max: 100, ticks: { callback: v => v + "%" } }, y: { stacked: true, grid: { display: false } } } }) }));
+lazyChart("ch-coerente", () => ({ type: "bar", data: { labels: A.mercado.map(r => val(r.mercado)),
+    datasets: [{ label: "% coerente", data: A.mercado.map(r => r["% coerente"]), backgroundColor: css("--c1"), borderRadius: 4, barPercentage: 0.6 }] },
+  options: chartOptions({ indexAxis: "y", plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => pct(c.raw) } } },
+    scales: { x: { min: 0, max: 100, ticks: { callback: v => v + "%" } }, y: { grid: { display: false } } } }) }));
+lazyChart("ch-poder", () => ({ type: "scatter", data: { datasets: [
+    { label: "grupos testados", data: A.poder.pontos.map(p => ({ x: p.n, y: p["MDE (%)"], p })), backgroundColor: css("--c1"), pointRadius: 4 }] },
+  options: chartOptions({ plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => { const p = c.raw.p;
+      return `${label(p["dimensão"])}: ${val(p.valor)} · ${nf(p.n)} posts · diferença detectável ${nf(p["MDE (%)"], 2)}%`; } } } },
+    scales: { x: { type: "logarithmic", title: { display: true, text: "posts no grupo (escala log)", color: css("--muted") }, ticks: { callback: v => [100, 1000, 10000].includes(v) ? nf(v) : "" } },
+              y: { min: 0, title: { display: true, text: "menor diferença detectável (%)", color: css("--muted") } } } }) }));
+</script>
+{% endblock %}

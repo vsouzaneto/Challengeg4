@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+{% from "_notes.html" import time_note, length_note %}
+{% set hl = d.insights.destaque %}
+{% set hl_dims = hl.dimensao.split(' × ') %}
+{% set hl_vals = hl.bolsao.split(' · ') %}
+{% set hour = d.insights.horario_comentarios | sort(attribute='q (hora)') | first %}
+{% block body %}
+<main class="wrap wide">
+  <section class="page-head sim-head">
+    <span class="eyebrow">Ferramenta</span>
+    <h1 style="font-size:2.4rem">Simule seu post <em>antes de publicar</em></h1>
+    <p class="lede">Monte o post com alguns cliques e veja, com base em posts parecidos do histórico, a chance de ele <b>chegar ao top 5%</b> (ficar entre os 5% com mais views, likes ou comentários do formato) e o que mudar para melhorar.</p>
+    <div class="suggest"><span class="chip-label">Experimente</span><div class="suggest-list" id="examples"></div></div>
+  </section>
+
+  <div class="simulator">
+    <form id="post-form" class="sim-form" autocomplete="off" aria-label="Descrição do post">
+      <div class="step"><span class="step-n">1</span><h3>O post</h3></div>
+      <div class="pick" data-field="platform"><span class="pick-label">Plataforma</span><div class="pills"></div></div>
+      <div class="pick" data-field="content_type"><span class="pick-label">Formato</span><div class="pills"></div></div>
+      <div class="pick" data-field="content_category"><span class="pick-label">Tema</span><div class="pills"></div></div>
+      <div class="pick" data-field="language"><span class="pick-label">Idioma</span><div class="pills"></div></div>
+
+      <div class="step"><span class="step-n">2</span><h3>Quando</h3></div>
+      <div class="pick" data-field="weekday"><span class="pick-label">Dia</span><div class="pills"></div></div>
+      <label class="pick" for="hour"><span class="pick-label">Hora: <b id="hour-label"></b></span>
+        <input type="range" id="hour" name="hour" min="0" max="23" step="1"></label>
+      {{ time_note() }}
+
+      <div class="step"><span class="step-n">3</span><h3>Quem posta</h3></div>
+      <label class="pick" for="follower_count"><span class="pick-label">Seguidores do creator</span>
+        <input type="number" id="follower_count" name="follower_count" min="1" step="1000"></label>
+      <div class="pills" id="follower-presets"></div>
+      <label class="switch" for="is_sponsored"><input type="checkbox" id="is_sponsored" name="is_sponsored"><span class="track"></span> Post patrocinado</label>
+
+      <details class="more"><summary>Mais opções (duração, legenda, público, creator)</summary><div class="more-body sim-extra">
+        <label class="field" for="content_length"><span id="length-label">Duração (segundos)</span><input type="number" id="content_length" name="content_length" min="1" max="3600"></label>
+        <label class="field" for="n_hashtags">Nº de hashtags<input type="number" id="n_hashtags" name="n_hashtags" min="0" max="30"></label>
+        <label class="field" for="caption_words">Palavras na legenda<input type="number" id="caption_words" name="caption_words" min="0" max="500"></label>
+        <label class="field" for="creator_id">Creator conhecido<input type="text" id="creator_id" name="creator_id" placeholder="ex.: creator_586"></label>
+        <label class="field" for="audience_gender_distribution">Gênero do público<select id="audience_gender_distribution" name="audience_gender_distribution"></select></label>
+        <label class="field" for="audience_age_distribution">Idade do público<select id="audience_age_distribution" name="audience_age_distribution"></select></label>
+        <label class="field" for="audience_location">País do público<select id="audience_location" name="audience_location"></select></label>
+        {{ length_note(d) }}
+      </div></details>
+    </form>
+
+    <div class="result" id="result" aria-live="polite"><p class="muted">Calculando…</p></div>
+  </div>
+</main>
+<script>
+const UNITS = {{ d.auditorias.regras.unidades | tojson }};
+const CHOICES = {
+  platform: ["Instagram", "TikTok", "YouTube", "Bilibili", "RedNote"], content_type: ["video", "image", "text", "mixed"],
+  content_category: ["beauty", "lifestyle", "tech"], language: ["English", "Spanish", "Chinese", "Hindi", "Japanese"],
+  weekday: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+  audience_gender_distribution: ["female", "male", "non-binary", "unknown"], audience_age_distribution: ["13-18", "19-25", "26-35", "36-50", "50+"],
+  audience_location: ["USA", "Brazil", "China", "Germany", "India", "Japan", "Russia", "UK"] };
+const SHORT_DAY = { Monday: "seg", Tuesday: "ter", Wednesday: "qua", Thursday: "qui", Friday: "sex", Saturday: "sáb", Sunday: "dom" };
+const FOLLOWER_PRESETS = [5000, 25000, 100000, 1000000];
+const METRIC_NAME = { views: "views", likes: "likes", comments_count: "comentários" };
+const DEFAULT = { platform: "TikTok", content_type: "video", content_category: "beauty", language: "English", weekday: "Friday", hour: 19,
+  follower_count: 25000, is_sponsored: false, content_length: 45, n_hashtags: 3, caption_words: 15, creator_id: "",
+  audience_gender_distribution: "female", audience_age_distribution: "19-25", audience_location: "USA", objetivo: "qualquer" };
+const GOALS = [["qualquer", "Qualquer métrica"], ["views", "Views"], ["likes", "Likes"], ["comments_count", "Comentários"]];
+/* Examples built from the analysis results (the confirmed highlight and the strongest posting-time pattern). */
+const EXAMPLES = [
+  { icon: "★", label: "{{ hl.plataforma }} · {{ hl_vals[0] | val }} em {{ hl_vals[1] | val }}", post: { platform: "{{ hl.plataforma }}", "{{ hl_dims[0] }}": "{{ hl_vals[0] }}", "{{ hl_dims[1] }}": "{{ hl_vals[1] }}", content_type: "video" } },
+  { label: "{{ hour.plataforma }} de manhã", post: { platform: "{{ hour.plataforma }}", hour: 9, content_category: "tech", language: "English", content_type: "video" } },
+  { label: "Creator grande patrocinado", post: { platform: "Instagram", follower_count: 1000000, is_sponsored: true, content_type: "image", language: "English", content_category: "lifestyle" } },
+];
+const POST = { ...DEFAULT };
+let timer = null;
+const daypart = h => h < 6 ? "madrugada" : h < 12 ? "manhã" : h < 18 ? "tarde" : "noite";
+
+/* ---------- form ---------- */
+function drawForm() {
+  document.querySelectorAll(".pick[data-field]").forEach(box => {
+    const f = box.dataset.field;
+    box.querySelector(".pills").innerHTML = CHOICES[f].map(v => `<button type="button" class="pill${POST[f] === v ? " on" : ""}" aria-pressed="${POST[f] === v}" data-f="${f}" data-v="${v}">${esc(f === "weekday" ? SHORT_DAY[v] : val(v))}</button>`).join("");
+  });
+  $("follower-presets").innerHTML = FOLLOWER_PRESETS.map(n => `<button type="button" class="pill small${POST.follower_count === n ? " on" : ""}" data-followers="${n}">${n >= 1e6 ? nf(n / 1e6) + " mi" : nf(n / 1000) + " mil"}</button>`).join("");
+  ["hour", "follower_count", "content_length", "n_hashtags", "caption_words", "creator_id", "audience_gender_distribution", "audience_age_distribution", "audience_location"]
+    .forEach(k => { if (document.activeElement !== $(k)) $(k).value = POST[k]; });
+  $("is_sponsored").checked = POST.is_sponsored;
+  $("hour-label").textContent = `${POST.hour}h (${daypart(POST.hour)})`;
+  const unit = UNITS[POST.content_type];
+  $("length-label").textContent = unit ? `Duração (${unit})` : "Duração (sem unidade neste formato)";
+  const same = ex => Object.entries(ex.post).every(([k, v]) => POST[k] === v);
+  $("examples").innerHTML = EXAMPLES.map((ex, i) => `<button type="button" class="suggest-btn${same(ex) ? " on" : ""}" data-ex="${i}">${ex.icon ? `<b>${ex.icon}</b> ` : ""}${esc(ex.label)}</button>`).join("");
+}
+function set(changes) { Object.assign(POST, changes); drawForm(); clearTimeout(timer); timer = setTimeout(predict, 200); }
+function initForm() {
+  ["audience_gender_distribution", "audience_age_distribution", "audience_location"].forEach(k => $(k).innerHTML = CHOICES[k].map(v => `<option value="${v}">${esc(val(v))}</option>`).join(""));
+  $("post-form").addEventListener("click", e => {
+    const b = e.target.closest("button[data-f]"); if (b) set({ [b.dataset.f]: b.dataset.v });
+    const p = e.target.closest("button[data-followers]"); if (p) set({ follower_count: +p.dataset.followers });
+  });
+  $("post-form").addEventListener("input", e => {
+    const t = e.target; if (!t.name) return;
+    set({ [t.name]: t.type === "checkbox" ? t.checked : t.type === "number" || t.type === "range" ? Number(t.value) : t.value });
+  });
+  $("post-form").addEventListener("submit", e => e.preventDefault());
+  $("examples").addEventListener("click", e => { const b = e.target.closest("button[data-ex]"); if (b) set({ ...DEFAULT, ...EXAMPLES[+b.dataset.ex].post }); });
+  $("result").addEventListener("click", e => {
+    const b = e.target.closest("button[data-apply-field]"); if (b) set({ [b.dataset.applyField]: b.dataset.applyValue });
+    const all = e.target.closest("button[data-apply-all]"); if (all) set(JSON.parse(all.dataset.applyAll));
+    const g = e.target.closest("button[data-goal]"); if (g) set({ objetivo: g.dataset.goal });
+  });
+}
+
+/* ---------- prediction ---------- */
+async function predict() {
+  $("result").classList.add("loading");
+  const body = { ...POST, creator_id: POST.creator_id.trim() || null };
+  const res = await fetch("/api/predict", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const data = await res.json();
+  $("result").classList.remove("loading");
+  if (!res.ok) { $("result").innerHTML = `<p class="bad">Confira os campos: ${esc((data.detail || []).map(e => e.msg).join("; "))}</p>`; return; }
+  const wasOpen = [...$("result").querySelectorAll("details")].map(d => d.open);  // keep what the user opened across updates
+  render(data);
+  $("result").querySelectorAll("details").forEach((d, i) => { if (i < wasOpen.length) d.open = wasOpen[i]; });
+}
+const STATUS = { acima: ["Acima do normal", "good"], normal: ["Na média", "neutral"], abaixo: ["Abaixo do normal", "low"] };
+function verdict(r) {
+  const by = s => r.status.filter(x => x.status === s).map(x => METRIC_NAME[x.metrica]);
+  const up = by("acima"), down = by("abaixo");
+  if (up.length) return ["good", `Acima do normal em ${up.join(" e ")}`, "Posts parecidos com este viraram destaque com mais frequência que o normal."];
+  if (down.length) return ["low", `Atenção: abaixo do normal em ${down.join(" e ")}`, "Posts parecidos com este viraram destaque com menos frequência. Veja como melhorar."];
+  return ["neutral", "Na média", "Nada no histórico indica vantagem ou desvantagem para este post: a chance de top 5% fica perto de 5%."];
+}
+function card(c, st) {
+  const [txt, cls] = STATUS[st], scale = v => Math.min(100, v / 15 * 100), ratio = c.historico / c.base;
+  return `<div class="meter ${cls}"><div class="meter-top"><span class="eyebrow">${METRIC_NAME[c.metrica]}</span><span class="status ${cls}">${txt}</span></div>
+    <span class="pct">${pct(c.historico)}</span>
+    <span class="caption">chance de top 5% · ${nf(ratio, 1)}x o normal (${pct(c.base)})</span>
+    <div class="bar" role="img" aria-label="faixa provável de ${pct(c.historico_min)} a ${pct(c.historico_max)}"><span class="range" style="left:${scale(c.historico_min)}%;width:${scale(c.historico_max) - scale(c.historico_min)}%"></span>
+      <span class="base" style="left:${scale(c.base)}%"></span><span class="dot" style="left:${scale(c.historico)}%"></span></div>
+    <span class="caption">Faixa provável ${pct(c.historico_min)}–${pct(c.historico_max)} · ${nf(c.posts_parecidos)} posts parecidos. O traço escuro é o normal.</span></div>`;
+}
+/* The closest better version of the user's post (computed on the server), with one-click apply. */
+function suggestionCard(r) {
+  const goals = `<div class="seg small" role="group" aria-label="Otimizar para">${GOALS.map(([k, t]) => `<button type="button" data-goal="${k}" aria-pressed="${r.objetivo === k}">${t}</button>`).join("")}</div>`;
+  const fieldName = f => ({ content_type: "formato", platform: "plataforma", content_category: "tema", language: "idioma" }[f]);
+  const sg = r.sugestao;
+  if (!sg) return `<div class="suggestion none"><div class="suggestion-head"><span class="eyebrow">Sugestão para o seu post</span>${goals}</div>
+    <p>Nenhuma versão próxima (até 2 mudanças de formato, plataforma, tema ou idioma) é comprovadamente melhor. <b>Seu post já está no melhor cenário</b> que o histórico consegue indicar.</p></div>`;
+  const changes = Object.entries(sg.mudancas).map(([f, v]) => `${fieldName(f)} <b>${esc(val(v))}</b>`).join(" e ");
+  return `<div class="suggestion"><div class="suggestion-head"><span class="eyebrow">Sugestão para o seu post</span>${goals}</div>
+    <div class="suggestion-body">
+      <div><p class="suggestion-title">Mesmo post, mas com ${changes}</p>
+        <p class="caption">Chance de top 5% em ${METRIC_NAME[sg.metrica]}: ${pct(sg.de)} → <b>${pct(sg.para)}</b> (${nf(sg.para / sg.base, 1)}x o normal; faixa provável ${pct(sg.para_min)}–${pct(sg.para_max)})</p>
+        ${chip(sg.evidencia)} ${sg.evidencia === "pista" ? '<span class="caption">confirme com um teste antes de mudar a operação</span>' : ""}</div>
+      <button type="button" class="btn primary" data-apply-all='${esc(JSON.stringify(sg.mudancas))}'>Aplicar sugestão</button>
+    </div></div>`;
+}
+/* Warn when the post does not speak the audience's language or uses a platform blocked in that market (rules: /auditorias#regras). */
+function marketWarning(m) {
+  if (!m || (m.idioma_ok && m.plataforma_ok)) return "";
+  const where = esc(val(m.mercado));
+  const issues = [
+    m.idioma_ok ? "" : `o idioma escolhido não é falado nesse mercado (${m.idiomas.length ? "idiomas: " + m.idiomas.map(val).join(", ") : "nenhum idioma local na base"})`,
+    m.plataforma_ok ? "" : `${esc(POST.platform)} não está disponível em ${where}`].filter(Boolean);
+  return `<div class="notice"><strong>Mercado</strong><p>Público em ${where}: ${issues.join("; ")}. <a href="/auditorias#mercado">Ver auditoria →</a></p></div>`;
+}
+function render(r) {
+  const [cls, title, sub] = verdict(r);
+  const statusOf = m => (r.status.find(s => s.metrica === m) || {}).status || "normal";
+  const formats = [...new Set(r.por_formato.map(c => c.formato))];
+  const cell = (f, m) => { const c = r.por_formato.find(x => x.formato === f && x.metrica === m);
+    const tag = c.historico_min > c.base ? ' <span class="yes">▲</span>' : c.historico_max < c.base ? ' <span class="bad">▼</span>' : "";
+    return `<td class="n">${pct(c.historico)}${tag}</td>`; };
+  const fieldName = f => ({ content_type: "formato", platform: "plataforma", content_category: "tema", language: "idioma" }[f] || label(f).toLowerCase());
+  const sameAsSuggestion = m => r.sugestao && Object.keys(r.sugestao.mudancas).length === 1 && r.sugestao.mudancas[m.campo] === m.valor;
+  const improvements = r.melhorias.filter(m => !sameAsSuggestion(m)).map(m => `<div class="improve"><div><b>Trocar ${fieldName(m.campo)} para ${esc(val(m.valor))}</b>
+      <span class="caption">${METRIC_NAME[m.metrica]}: ${pct(m.de)} → <b>${pct(m.para)}</b> de chance de top 5%</span></div>
+      <button type="button" class="btn" data-apply-field="${m.campo}" data-apply-value="${esc(m.valor)}">Aplicar</button></div>`).join("");
+  const pocket = p => `<div class="card">${chip(p.evidencia)}<span><b>${nf(p.lift, 1)}x</b> ${p.lift >= 1 ? "mais" : "menos"} chance de top 5% em ${METRIC_NAME[p.metrica]} ${p.plataforma === "todas" ? "(geral)" : "no " + p.plataforma}</span>
+    <span class="caption">${describeConditions(p.condicoes)} · ${nf(p.posts)} posts</span></div>`;
+  $("result").innerHTML = `
+    <div class="verdict-banner ${cls}"><b>${esc(title)}</b><span>${esc(sub)}</span></div>
+    ${marketWarning(r.mercado)}
+    ${suggestionCard(r)}
+    <div class="meters">${r.chances.map(c => card(c, statusOf(c.metrica))).join("")}</div>
+    <div class="panel"><h3>Outras melhorias possíveis</h3>
+      ${improvements || `<p class="muted">${r.sugestao ? "Fora a sugestão acima, nenhuma outra troca simples aumenta a chance com segurança." : "Nenhuma troca simples (formato, plataforma, tema ou idioma) aumenta a chance com segurança."}</p>`}</div>
+    <div class="expect">
+      <div><span class="eyebrow">Views esperadas</span><b class="num">${nf(r.views.estimativa)}</b><span class="caption">entre ${nf(r.views.min)} e ${nf(r.views.max)}</span></div>
+      <div><span class="eyebrow">Engajamento esperado</span><b class="num">${pct(r.engajamento.estimativa)}</b><span class="caption">entre ${pct(r.engajamento.min)} e ${pct(r.engajamento.max)}</span></div>
+      <p class="caption">${r.views.melhor_que_media ? "" : "No histórico, nada do que se sabe antes de postar mudou views e engajamento: a estimativa é a média."}</p>
+    </div>
+    <details class="more panel"><summary>Comparar com outros formatos</summary><div class="more-body">
+      <div class="table-wrap"><table><thead><tr><th>Formato</th>${Object.values(METRIC_NAME).map(n => `<th>${n}</th>`).join("")}</tr></thead><tbody>
+      ${formats.map(f => `<tr${f === r.post.content_type ? ' style="font-weight:700"' : ""}><td>${val(f)}</td>${Object.keys(METRIC_NAME).map(m => cell(f, m)).join("")}</tr>`).join("")}
+      </tbody></table></div><p class="caption">Chance de top 5% de posts parecidos. ▲ acima do normal com segurança · ▼ abaixo · sem seta = na média.</p></div></details>
+    <details class="more panel"><summary>Descobertas que se aplicam a este post (${r.descobertas_total})</summary><div class="more-body">
+      <div class="cards">${r.descobertas.map(pocket).join("") || '<p class="muted">Nenhuma descoberta se aplica.</p>'}</div></div></details>
+    <details class="more panel"><summary>Como o cálculo é feito</summary><div class="more-body">
+      <p>"Posts parecidos" são os da mesma plataforma, tema e idioma no histórico. A faixa provável mostra a incerteza: com poucos posts, ela fica larga. Também testamos modelos de previsão (regressão e LightGBM) em posts que eles não tinham visto; ${r.chances[0].modelo === "taxa base" ? "nenhum acertou mais que a média, por isso o simulador usa o histórico de posts parecidos" : "o melhor deles foi adotado"}. As sugestões de melhoria só aparecem quando a troca leva a chance para acima do normal com segurança. API: <a href="/docs">/docs</a>.</p></div></details>`;
+}
+initForm(); drawForm(); predict();
+</script>
+{% endblock %}

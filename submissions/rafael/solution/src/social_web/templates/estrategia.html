@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% from "_notes.html" import time_note %}
+{% set s = d.estrategia %}
+{% set plain = ["Onde concentrar o esforço", "Política de patrocínio", "O que parar de fazer", "Quick wins desta semana"] %}
+{% set tone = ["info", "info", "stop", "good"] %}
+{% block body %}
+<main class="wrap">
+  <section class="page-head">
+    <span class="eyebrow">Recomendação</span>
+    <h1>Estratégia <em>recomendada</em></h1>
+    <p class="lede">Regra de decisão: <b>quando nenhuma opção dá resultado melhor, escolha a mais barata.</b> Abaixo, as ações; o porquê de cada uma fica em "Por quê".</p>
+  </section>
+
+  <section>
+    <div class="board-grid">
+      {% for rec in s.recomendacoes %}
+      <article class="qcard {{ tone[loop.index0] }}" id="decisao-{{ loop.index }}">
+        <span class="q">Decisão {{ loop.index }}</span>
+        <h2 style="font-size:1.45rem">{{ plain[loop.index0] }}</h2>
+        <ul>{% for a in rec.acoes %}<li>{{ a | pt | words | replace('`frequency_effect`', 'o painel Explorar') }}</li>{% endfor %}</ul>
+        <details class="more"><summary>Por quê</summary><div class="more-body"><p>{{ rec.decisao | pt | words }}</p></div></details>
+      </article>
+      {% endfor %}
+    </div>
+    {{ time_note() }}
+  </section>
+
+  <section id="testes">
+    <h2>Fila de <em>testes</em></h2>
+    <p class="answer">{{ s.testes.decisao }}</p>
+    <div class="table-wrap"><table><thead><tr><th>#</th><th>Hipótese</th><th>O que os dados mostram</th><th>Posts por grupo</th><th>Como tratar</th></tr></thead><tbody>
+      {% for t in s.testes.itens %}<tr><td class="n">{{ loop.index }}</td><td>{{ t['hipótese'] | values | pt }}</td><td>{{ t['evidência'] | pt }}</td><td class="n">{{ t['posts por grupo'] | num }}</td><td>{{ t['como tratar'] }}</td></tr>{% endfor %}
+    </tbody></table></div>
+    <p class="caption">Posts por grupo: o necessário para confirmar ao menos metade da diferença observada (80% de chance, 5% de erro). A diferença achada numa busca costuma ser maior que a real.</p>
+    <details class="more" id="brief"><summary>Brief do teste 1: como rodar</summary><div class="more-body">
+      <div class="table-wrap"><table><tbody>
+        {% for b in s.testes.brief %}<tr><th scope="row">{{ b.campo }}</th><td>{{ b.valor | values | pt }}</td></tr>{% endfor %}
+      </tbody></table></div>
+    </div></details>
+  </section>
+
+  <section>
+    <h2>Detalhes para quem decide o <em>orçamento</em></h2>
+    <details class="more"><summary>Até quantos seguidores o patrocínio se paga?</summary><div class="more-body">
+      <div class="table-wrap"><table><thead><tr><th>Seguidores</th><th>Custo do post</th><th>Custo por mil views</th><th>Custo por interação</th><th>Vale?</th></tr></thead><tbody>
+      {% for b in s.break_even %}<tr><td class="n">{{ b.seguidores | num }}</td><td class="n">US$ {{ b['custo do post (US$)'] | num }}</td><td class="n">US$ {{ b['CPM esperado (US$)'] | num(2) }}</td><td class="n">US$ {{ b['CPE esperado (US$)'] | num(3) }}</td><td>{% if b['vale a pena?'] %}<span class="yes">sim</span>{% else %}<span class="bad">não</span>{% endif %}</td></tr>{% endfor %}
+      </tbody></table></div>
+      <p class="caption">Como todo post recebe ~{{ d.respostas.q2.custo_por_porte[0].views_medianas | num }} views, o custo por resultado sobe junto com os seguidores. Limite com as premissas atuais: ~{{ s.threshold | num }} seguidores.</p>
+    </div></details>
+    <details class="more"><summary>E se o preço for outro? (teto de seguidores por premissa)</summary><div class="more-body">
+      {% set cols = s.sensibilidade[0].keys() | list %}
+      <div class="table-wrap"><table><thead><tr>{% for c in cols %}<th>{{ c[:1] | upper }}{{ c[1:] }}</th>{% endfor %}</tr></thead><tbody>
+      {% for row in s.sensibilidade %}<tr>{% for c in cols %}{% if loop.first %}<td>{{ row[c] }}</td>{% else %}<td class="n">{{ row[c] | num }}</td>{% endif %}{% endfor %}</tr>{% endfor %}
+      </tbody></table></div>
+      <p class="caption">O teto sai das premissas, não dos dados: com outros preços ele vai de poucos milhares a dezenas de milhares de seguidores. O que vale com qualquer preço é pagar por resultado.</p>
+    </div></details>
+    <details class="more"><summary>Quick wins com esforço, resultado e responsável</summary><div class="more-body">
+      <div class="table-wrap"><table><thead><tr><th>Ação</th><th>Base</th><th>Esforço</th><th>Resultado esperado</th><th>Quem</th></tr></thead><tbody>
+        {% for w in s.quick_wins %}<tr><td>{{ w['ação'] | pt | words }}</td><td>{{ w.base }}</td><td>{{ w['esforço'] }}</td><td>{{ w.impacto | pt }}</td><td>{{ w.dono }}</td></tr>{% endfor %}
+      </tbody></table></div>
+    </div></details>
+    <details class="more"><summary>Premissas de custo (troque pelos valores reais)</summary><div class="more-body">
+      <div class="table-wrap"><table><thead><tr><th>Premissa</th><th>Valor usado</th></tr></thead><tbody>
+        <tr><td>Preço do post patrocinado</td><td class="n">US$ {{ (s.premissas.custo_por_seguidor * 1000) | num }} por mil seguidores</td></tr>
+        <tr><td>Custo aceitável por mil views</td><td class="n">US$ {{ s.premissas.cpm_alvo | num }}</td></tr>
+        <tr><td>Custo aceitável por interação</td><td class="n">US$ {{ s.premissas.cpe_alvo | num(2) }}</td></tr>
+        {% for f, c in s.premissas.custo_producao.items() %}<tr><td>Produção de um post ({{ f | val }})</td><td class="n">US$ {{ c | num }}</td></tr>{% endfor %}
+      </tbody></table></div>
+      <p class="caption">O formato recomendado ("texto") vem dessas premissas: se todos os formatos rendem igual, o mais barato vence. Com outros custos, a recomendação muda sozinha.</p>
+    </div></details>
+  </section>
+</main>
+{% endblock %}

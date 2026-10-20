@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% from "_notes.html" import time_note, length_note %}
+{% set r = d.respostas %}
+{% set q2 = r.q2 %}
+{% set cost = q2.custo_por_porte %}
+{% set cpm_min = cost | map(attribute='cpm_implicito_mediano') | min %}
+{% set cpm_max = cost | map(attribute='cpm_implicito_mediano') | max %}
+{% set hl = d.insights.destaque %}
+{% set hl_vals = hl.bolsao.split(' · ') %}
+{% set hour = d.insights.horario_comentarios | sort(attribute='q (hora)') | first %}
+{% set scan = d.modelos.varredura %}
+{% set eng = q2.diferencas | selectattr('medida', 'equalto', 'eng_rate_views — estratificado') | first %}
+{% set q1max = r.q1.efeitos | map(attribute='diferença melhor−pior (%)') | max %}
+{% set q3max = r.q3.efeitos | map(attribute='diferença melhor−pior (%)') | max %}
+{% set myths = r.q4.crencas | selectattr('se sustenta?', 'equalto', 'não') | list %}
+{% set s = d.estrategia %}
+{% set pv = d.provas %}
+{% set t_pocket = s.testes.itens | selectattr('tipo', 'equalto', 'bolsão') | first %}
+{% set t_hour = s.testes.itens | selectattr('tipo', 'equalto', 'horário') | list %}
+{% block body %}
+<div class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Resumo para o time de marketing · {{ d.meta.posts | num }} posts · {{ d.meta.plataformas | length }} plataformas</span>
+    <h1>Desempenho de conteúdo <em>em redes sociais</em></h1>
+    <p class="lede">Análise aprofundada dos dados de {{ d.meta.posts | num }} posts em {{ d.meta.plataformas | length }} plataformas, publicados entre {{ d.meta.inicio[:7] }} e {{ d.meta.fim[:7] }}: o que gera engajamento, se vale patrocinar, qual público responde melhor e onde investir.</p>
+    <details class="more data-note"><summary>Sobre os dados</summary><div class="more-body">
+      <p>Os dados do desafio são simulados: os números de cada post foram gerados quase ao acaso. Por isso a maioria das respostas é "não faz diferença". Os métodos usados encontram diferenças reais quando elas existem (testamos isso de propósito). Com os dados da empresa, o site é recalculado e mostra o que os dados da empresa indicam.</p>
+      <p>{% if pv.posts_com_zero == 0 %}Nenhum post tem zero views, likes, compartilhamentos ou comentários (mínimo de {{ pv.min_likes | num }} likes; views de {{ pv.views_min | num }} a {{ pv.views_max | num }}): a base não mostra posts que fracassaram.{% else %}{{ pv.posts_com_zero | num }} registros com zero em alguma métrica.{% endif %}
+        O engajamento médio ficou entre {{ (pv.trimestres.min * 100) | num(2) }}% e {{ (pv.trimestres.max * 100) | num(2) }}% nos {{ pv.trimestres.n }} trimestres ({{ pv.trimestres.inicio }} a {{ pv.trimestres.fim }}){% if pv.trimestres.p >= 0.05 %}, sem sazonalidade{% endif %}.</p></div></details>
+  </div>
+</div>
+<main class="wrap compact">
+
+  <section>
+    <div class="section-title"><h2>As 4 <em>respostas</em></h2><a href="/perguntas">Aprofundar →</a></div>
+    <div class="board-grid">
+      <article class="qcard info">
+        <span class="q">O que gera engajamento?</span>
+        <p class="headline">Nenhum dos fatores testados (plataforma, formato, tema e tamanho do creator) mostrou diferença relevante.</p>
+        <div class="kpi-line"><b>{{ q1max | num(2) }}%</b><span>maior diferença entre grupos</span></div>
+        <details class="more"><summary>Ver detalhes</summary><div class="more-body">
+          <p>O engajamento fica em ~20% (1 interação a cada 5 views) em todos os grupos. Testamos também {{ r.q1.segmentos_testados }} combinações (ex.: vídeo de tech no TikTok com creator pequeno). Nenhuma ficou acima da variação esperada pelo acaso.</p>
+          <p><b>Na prática:</b> não troque de formato ou tema esperando mais interação.</p>
+          <a href="/perguntas#engajamento">Ver gráficos →</a></div></details>
+      </article>
+      <article class="qcard stop">
+        <span class="q">Vale a pena patrocinar?</span>
+        <p class="headline">Não houve ganho de desempenho. A decisão depende do custo por resultado.</p>
+        <div class="kpi-line"><b>{{ (cpm_max / cpm_min) | round | int }}x</b><span>mais caro por mil views no creator grande do que no pequeno, se o cachê acompanha os seguidores</span></div>
+        <details class="more"><summary>Ver detalhes</summary><div class="more-body">
+          <p>Comparando posts parecidos, o patrocinado tem {{ eng['diferença (%)'] | num(2) }}% de diferença no engajamento, uma diferença desprezível. Como as views não crescem com os seguidores, mil views custam US$ {{ cpm_min | num(2) }} com creators pequenos e US$ {{ cpm_max | num(0) }} com os grandes (premissa: US$ {{ (s.premissas.custo_por_seguidor * 1000) | num }} por mil seguidores).</p>
+          <p>Medida por seguidor, o creator nano parece ~{{ pv.razao_por_seguidor | round | int }}x melhor que o mega. É efeito da conta: as views são iguais em todos os portes (~{{ pv.views | num }} por post).</p>
+          <p><b>Na prática:</b> pague por resultado (views ou interações), não por post. Essa proporção vale para qualquer preço por seguidor. Se o preço for fixo, o limite com as premissas atuais é de ~{{ s.threshold | num }} seguidores, e ele muda com o cachê real.</p>
+          <a href="/perguntas#patrocinio">Ver custo por tamanho de creator →</a></div></details>
+      </article>
+      <article class="qcard info">
+        <span class="q">Qual público engaja mais?</span>
+        <p class="headline">Nenhum se destacou: gênero, idade e país têm engajamento semelhante.</p>
+        <div class="kpi-line"><b>{{ q3max | num(2) }}%</b><span>maior diferença entre públicos</span></div>
+        <details class="more"><summary>Ver detalhes</summary><div class="more-body">
+          <p>Vale em todas as plataformas, formatos e temas, e o mesmo público consome vídeo, imagem e texto.</p>
+          <p><b>Na prática:</b> escolha o público pelo objetivo de negócio (quem compra), não pela expectativa de engajamento.</p>
+          <a href="/perguntas#audiencia">Ver tabelas →</a></div></details>
+      </article>
+      <article class="qcard stop">
+        <span class="q">O que não funciona?</span>
+        <p class="headline">{{ myths | length }} de {{ r.q4.crencas | length }} crenças comuns de social media não foram confirmadas nesta base.</p>
+        <div class="kpi-line"><b>{{ myths | length }}/{{ r.q4.crencas | length }}</b><span>crenças não confirmadas</span></div>
+        <details class="more"><summary>Ver a lista</summary><div class="more-body">
+          <ul>{% for m in myths %}<li>{{ m['crença de mercado'] }}</li>{% endfor %}</ul>
+          {{ time_note() }}{{ length_note(d) }}
+          <a href="/perguntas#nao-funciona">Ver os números de cada crença →</a></div></details>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title"><h2>Os 2 <em>destaques</em></h2><a href="/descobertas">Todas as descobertas →</a></div>
+    <div class="board-grid">
+      <article class="qcard good">
+        <span class="chip confirmado" style="justify-self:start">confirmado</span>
+        <p class="headline">{{ hl.plataforma }}: {{ hl_vals[0] | val }} em {{ hl_vals[1] | val }} tem mais posts no top 5% de {{ hl.metrica | val }}.</p>
+        <div class="kpi-line"><b>{{ hl.lift | num(1) }}x</b><span>{{ hl.taxa | num(1) }}% desses posts chegam ao top 5%, contra ~5% nos demais</span></div>
+        <details class="more"><summary>Ver detalhes</summary><div class="more-body">
+          <p>Foram {{ hl.posts | num }} posts. O padrão apareceu nos dois anos ({{ hl.lift_1 | num(1) }}x e {{ hl.lift_2 | num(1) }}x) e foi o único que passou em todas as checagens.</p>
+          <p><b>Ação:</b> testar antes de mudar o mix: o mesmo conteúdo em {{ hl_vals[1] | val }} e em inglês, ~{{ t_pocket["posts por grupo"] | num }} posts em cada versão.</p></div></details>
+      </article>
+      <article class="qcard good">
+        <span class="chip repetiu" style="justify-self:start">se repetiu nos 2 anos</span>
+        <p class="headline">No {{ hour.plataforma }}, posts publicados cedo entram mais no top 1% de comentários.</p>
+        <div class="kpi-line"><b>{{ hour['hora mediana top'] | num }}h</b><span>horário típico dos posts mais comentados (resto: {{ hour['hora mediana demais'] | num }}h)</span></div>
+        <details class="more"><summary>Ver detalhes</summary><div class="more-body">
+          <p>Madrugada e manhã concentram mais posts entre os 1% mais comentados, mas a média de comentários não muda. No TikTok, o horário não faz diferença.{% if t_hour %}{% if t_hour[0]['como tratar'] == 'teste A/B' %} Teste A/B com ~{{ t_hour[0]["posts por grupo"] | num }} posts por grupo antes de mudar a agenda.{% else %} Confirmar por teste exigiria ~{{ t_hour[0]["posts por grupo"] | num }} posts por grupo: use como desempate de agenda e acompanhe no histórico.{% endif %}{% endif %}</p>
+          {{ time_note() }}
+          <a href="/descobertas#horario">Ver gráfico por plataforma →</a></div></details>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title"><h2>O que fazer <em>agora</em></h2><a href="/estrategia">Estratégia completa →</a></div>
+    <div class="board-grid three">
+      <article class="qcard">
+        <span class="q">Comece</span>
+        <ul>{% for w in s.quick_wins[:3] %}<li>{{ w['ação'] | pt | words }}</li>{% endfor %}</ul>
+        <details class="more"><summary>Mais {{ s.quick_wins | length - 3 }} ações</summary><div class="more-body">
+          <ul>{% for w in s.quick_wins[3:] %}<li>{{ w['ação'] | pt | words }}</li>{% endfor %}</ul></div></details>
+      </article>
+      <article class="qcard">
+        <span class="q">Pare</span>
+        <ul><li>Pagar mais por creators grandes ou pelo histórico de desempenho (ele não previu o desempenho seguinte)</li><li>Ajustar horário e nº de hashtags sem teste</li><li>Escolher formatos mais caros esperando mais engajamento</li></ul>
+      </article>
+      <article class="qcard">
+        <span class="q">Teste</span>
+        <ul>{% for t in s.testes.itens %}<li>{{ t['hipótese'] | values | pt }} <span class="muted">({{ t['como tratar'] }})</span></li>{% endfor %}</ul>
+        <a href="/estrategia#testes">Brief do teste 1 →</a>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div class="cta">
+      <a href="/simular"><b>Simular um post</b><span>Monte o próximo post e veja, antes de publicar, a chance de ele chegar ao top 5% e o que pode melhorá-la.</span></a>
+      <a href="/explorar"><b>Explorar os dados →</b><span>Filtre por plataforma, formato, tema e público.</span></a>
+    </div>
+  </section>
+</main>
+{% endblock %}

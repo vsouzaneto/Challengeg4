@@ -1,0 +1,82 @@
+(52214, 27)
+{<StringDtype(storage='python', na_value=nan)>: 19, dtype('int64'): 7, dtype('bool'): 1}
+                  count      mean       std  ...       50%       75%       max
+views           52214.0   10100.3     100.0  ...   10100.0   10168.0   10551.0
+likes           52214.0    1510.3      38.9  ...    1510.0    1536.0    1668.0
+shares          52214.0     300.0      17.3  ...     300.0     312.0     380.0
+comments_count  52214.0     200.0      14.1  ...     200.0     210.0     258.0
+follower_count  52214.0  499884.5  288044.6  ...  498490.0  749818.8  999998.0
+content_length  52214.0     229.5     167.1  ...     174.0     360.0     599.0
+
+[6 rows x 8 columns]
+nulls: {'hashtags': 8743, 'comments_text': 8688}
+
+corr (spearman):
+                 views  likes  shares  ...  follower_count  content_length    eng
+views           1.000  0.001  -0.008  ...           0.005          -0.003 -0.392
+likes           0.001  1.000   0.007  ...          -0.004           0.004  0.777
+shares         -0.008  0.007   1.000  ...           0.007           0.003  0.346
+comments_count -0.004 -0.003  -0.002  ...           0.002           0.006  0.273
+follower_count  0.005 -0.004   0.007  ...           1.000           0.003 -0.003
+content_length -0.003  0.004   0.003  ...           0.003           1.000  0.005
+eng            -0.392  0.777   0.346  ...          -0.003           0.005  1.000
+
+[7 rows x 7 columns]
+
+platform: kruskal p=0.362
+platform    Bilibili  Instagram     RedNote      TikTok    YouTube
+count     10598.0000  10423.000  10402.0000  10296.0000  10495.000
+mean          0.1991      0.199      0.1991      0.1991      0.199
+
+content_type: kruskal p=0.223
+content_type      image      mixed       text      video
+count         10303.000  5213.0000  5198.0000  31500.000
+mean              0.199     0.1991     0.1992      0.199
+
+content_category: kruskal p=0.288
+content_category      beauty   lifestyle       tech
+count             21023.0000  20761.0000  10430.000
+mean                  0.1991      0.1991      0.199
+
+is_sponsored: kruskal p=0.879
+is_sponsored       False      True 
+count         29900.0000  22314.000
+mean              0.1991      0.199
+
+language: kruskal p=0.252
+language     Chinese    English      Hindi   Japanese    Spanish
+count     10428.0000  26110.000  5272.0000  5177.0000  5227.0000
+mean          0.1991      0.199     0.1991     0.1991     0.1991
+
+audience_age_distribution: kruskal p=0.515
+audience_age_distribution     13-18       19-25      26-35     36-50        50+
+count                      7852.000  18276.0000  15700.000  7736.000  2650.0000
+mean                          0.199      0.1991      0.199     0.199     0.1991
+
+audience_gender_distribution: kruskal p=0.927
+audience_gender_distribution      female        male  non-binary    unknown
+count                         20743.0000  20987.0000   5249.0000  5235.0000
+mean                              0.1991      0.1991      0.1991     0.1991
+
+audience_location: kruskal p=0.445
+audience_location     Brazil      China   Germany      India      Japan     Russia         UK        USA
+count              6505.0000  6648.0000  6497.000  6484.0000  6553.0000  6459.0000  6570.0000  6498.0000
+mean                  0.1991     0.1991     0.199     0.1989     0.1991     0.1991     0.1992     0.1991
+
+disclosure_type: kruskal p=0.303
+disclosure_type    explicit   implicit        none
+count            11784.0000  10530.000  29900.0000
+mean                 0.1991      0.199      0.1991
+
+sponsor_category: kruskal p=0.278
+sponsor_category  Not sponsors  cosmetics  electronics    fashion       food    gaming     travel
+count               29900.0000  3688.0000    3750.0000  3710.0000  3846.0000  3687.000  3633.0000
+mean                    0.1991     0.1992       0.1991     0.1989     0.1991     0.199     0.1991
+
+likes/views ratio stats: {'count': 52214.0, 'mean': 0.1495, 'std': 0.0041, 'min': 0.1335, '25%': 0.1467, '50%': 0.1495, '75%': 0.1523, 'max': 0.1662}
+views var/mean: 0.9905847098222871
+creators: 5000 followers per creator nunique (mean): 10.4428
+hashtags n tags: {0: 8743, 1: 8738, 2: 8746, 3: 8586, 4: 8720, 5: 8681}
+dates: 2023-05-29 00:15:00 2025-05-28 11:08:00
+monthly mean eng: {Period('2023Q2', 'Q-DEC'): 0.199, Period('2023Q3', 'Q-DEC'): 0.1991, Period('2023Q4', 'Q-DEC'): 0.1991, Period('2024Q1', 'Q-DEC'): 0.1991, Period('2024Q2', 'Q-DEC'): 0.199, Period('2024Q3', 'Q-DEC'): 0.1991, Period('2024Q4', 'Q-DEC'): 0.1991, Period('2025Q1', 'Q-DEC'): 0.199, Period('2025Q2', 'Q-DEC'): 0.1991}
+zero-ish engagement posts: 0 0

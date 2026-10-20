@@ -1,0 +1,9 @@
+# Build context hygiene: no local env, caches, previously trained models or chat transcripts (models are retrained inside the image).
+.venv/
+solution/models/
+catboost_info/
+**/__pycache__/
+**/.ipynb_checkpoints/
+.pytest_cache/
+*.egg-info/
+process-log/conversas/

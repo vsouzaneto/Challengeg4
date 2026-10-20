@@ -1,0 +1,3 @@
+{# Shared caveats: the timezone note (text defined once in server.TIME_NOTE) and the length-unit note (from the audits payload). #}
+{% macro time_note() %}<p class="caveat" data-note="fuso"><b>Fuso horário:</b> {{ TIME_NOTE }}</p>{% endmacro %}
+{% macro length_note(d) %}<p class="caveat" data-note="duracao"><b>Duração:</b> {{ d.auditorias.nota_duracao | pt }} <a href="/auditorias#duracao">Ver auditoria →</a></p>{% endmacro %}
