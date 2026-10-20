@@ -1,0 +1,18 @@
+{
+  "policy_version": "heuristic-v1",
+  "reference_date": "2017-12-31",
+  "score_range": [0, 100],
+  "base_points": 10,
+  "stage_points": {
+    "Prospecting": 30,
+    "Engaging": 60
+  },
+  "weighted_fields": ["deal_stage"],
+  "context_only_fields": ["engage_date", "sales_price", "account", "sector", "employees", "regional_office", "sales_agent"],
+  "tie_breakers": ["sales_price_desc_null_last", "opportunity_id_asc"],
+  "limitations": [
+    "Heuristic priority score; not a probability of closing.",
+    "Stage contribution is a commercial rule, not a measured conversion rate.",
+    "Catalog price is context and tie-break only, not expected revenue."
+  ]
+}

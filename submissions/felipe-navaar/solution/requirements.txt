@@ -1,0 +1,5 @@
+# Dependências propostas. Validar e registrar versões efetivamente testadas no ambiente de destino.
+streamlit
+pandas
+plotly
+pytest
